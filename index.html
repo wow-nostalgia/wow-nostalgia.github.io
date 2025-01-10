@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Nostalgia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body{
+        font-family: 'Roboto', open-sans;
+        background: #1d2636;
+        color: #c5c6cd;
+        line-height: 1.5;
+        font-size: 1rem;
+        font-weight: 300;
+      }
+      *{
+        margin:0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .container{
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1rem 0.5rem 8rem;
+        position: relative;
+        min-height: 100vh;
+      }
+      h1{
+        margin: 1.5rem 0;
+      }
+      p{
+        margin: 0.75rem 0;
+      }
+      a{
+        color: #7baaf5;
+      }
+      .collapsible{
+        border: 1px solid;
+        margin: 0.5rem 0;
+        border-radius: 3px;
+      }
+      .collapsible .heading{
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 400;
+      }
+      .collapsible .heading,.collapsible .hider{
+        padding: 0.5rem 1rem;
+      }
+      .collapsible .hider{
+        display: none;
+      }
+      .collapsible.open>.hider{
+        display: block;
+      }
+      footer{
+        padding: 2rem 0; 
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+      }
+      footer span{
+        font-size: 0.75rem;
+      }
+    </style>
+    <script>
+      $(function() {
+        $(".collapsible").each(function(  ) {
+          $( this ).children('.heading').click(function(){ $(this).parent().toggleClass('open')});
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Nostalgia</h1>
+      <p>Ми гільдія націлена на фарм енд-гейм рейдів. А саме РС 25 гер і ЛК 25 гер - топовий шмот, більше бусту гс на гільдію</p>
+      <p>Так вже у вові повелося що серед сотні гравців гри якщо найдеться 2-3 РЛа то це гарна вдача. Наш ламповий колектив не виключення</p>
+      <p>Тож доступний ресурс РЛів (наскільки РЛи можуть його виділити) ми абузим і вижимаємо максимум</p>
+      <div class="collapsible">
+        <p class="heading">Які РТ і коли?</p>
+        <div class="hider">      
+          <div class="collapsible">
+            <p class="heading">Стабільні РТ</p>
+            <div class="hider">   
+              <p>Стабільні РТ - це РТ які не анонсуються і завжди відбуваються. У нас завжди стабільні РТ:
+                <br/>ПН: 19:30 РС 25 об (2-3 рейда)
+                <br/>СР: 20:10 ЦЛК 25 об/гер
+                <br/>СБ: 20:10 ЦЛК 25 гер
+              </p>
+            </div>
+          </div>
+          <div class="collapsible">
+            <p class="heading">Планові РТ</p>
+            <div class="hider">   
+              <p>Планові РТ - це РТ в різні рейди які водять наші РЛ, коли “планово” мають на це ресурс. Про ці РТ анонсується завчасно (сьогодні на завтра і раніше). Частіше всього це ЦЛК 25об 1-3 рейда в тиждень</p>
+            </div>
+          </div>
+          <div class="collapsible">
+            <p class="heading">Рандомні РТ</p>
+            <div class="hider">   
+              <p>Рандомні РТ - це РТ які відбуваються спонтанно: онлайн з’явився РЛ, є з кого набирати - починається збір. Також ми дружимо з декількома гільдіями і часом вони добирають людей з наших. Про ці РТ анонсується частіше всього “на вже”. ІК / СА / ЦЛК / РС тощо</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="collapsible">
+        <p class="heading">Де шукати анонси РТ?</p>
+        <div class="hider">      
+          <p>Стабільниі РТ не анонсуються. Тому що вони СТАБІЛЬНІ РТ</p>
+          <p>Планові РТ і Рандомні РТ анонсуються в нашому <a href="https://t.me/+6JrHpUiKls5iNGY6" target="_blank">ТГ каналі</a></p>
+        </div>
+      </div>
+      <div class="collapsible">
+        <p class="heading">На що ти ТОЧНО можеш розраховувати від гільдії?</p>
+        <div class="hider">      
+          <div class="collapsible">
+            <p class="heading">Ми тебе накормим і напоїм</p>
+            <div class="hider">      
+              <p>В рейді ти завжди можеш розраховувати на одну а то і дві тарелі риби - бафо-їжа в рейд не потрібна</p>
+            </div>
+          </div> 
+          <div class="collapsible">
+            <p class="heading">Крафт шмоток</p>
+            <div class="hider">      
+              <p>В гільдії є всі рецепти/професії/спеціалізації, відповідно ти можеш найвигідніше і безкоштовно скрафтити все що крафтиться і зачарити все що чариться з базових (не перероблених) регів</p>
+            </div>
+          </div>
+          <div class="collapsible">
+            <p class="heading">Хлам-БОЕ для “проходки” в ППГ</p>
+            <div class="hider">      
+              <p>Звичайно якщо він є в ГБ</p>
+            </div>
+          </div>
+          <div class="collapsible">
+            <p class="heading">+/- 380 голд :)</p>
+            <div class="hider">      
+              <p>Якщо це твій перший персонаж на цьому сервері дамо на скіли і маунтів щоб полегчити прокачку до ЛК контенту (20лвл, 40лвл, 60лвл)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="collapsible">
+        <p class="heading">На що ти можеш розраховувати від гільдії, але є умови?</p>
+        <div class="hider">    
+          <div class="collapsible">
+            <p class="heading">Пріорітет на рол деяких біс речей</p>
+            <div class="hider">      
+              <p>Якщо ти відчутно ефективніший в рейді за інших гравців свого класу+спеку, буваєш на більшості Стабільних РТ і у нас є внутрішнє відчуття що ти з нами на довго</p>
+            </div>
+          </div>
+          <div class="collapsible">
+            <p class="heading">Рейдовий БОЕ з ГБ</p>
+            <div class="hider">      
+              <p>Якщо ти “молодий-перспективний”, гарно “жмеш кнопки”, буваєш на більшості Стабільних і Планових РТ … а також у нас є внутрішнє відчуття що ти з нами на довго</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="collapsible">
+        <p class="heading">Вимоги для енд-гейм рейдів (ЦЛК гер, РС):</p>
+        <div class="hider">   
+          <div class="collapsible">
+            <p class="heading">Фласки, поти</p>
+            <div class="hider">      
+              <p>Це не потребує пояснення</p>
+            </div>
+          </div>
+          <div class="collapsible">
+            <p class="heading">Аддони</p>
+            <div class="hider">      
+              <p>Омен і ДБМ (обов’язково ту версію що в розділі <a href="https://discordapp.com/channels/1055547379832602788/1166749893440847956" target="_blank">“аддони”</a> нашого <a href="https://discord.gg/VvPQhQwXTc" target="_blank">діскорду</a> (!)(!)(!))</p>
+            </div>
+          </div>
+          <div class="collapsible">
+            <p class="heading">Аддони</p>
+            <div class="hider">      
+              <p>Омен і ДБМ (обов’язково ту версію що в розділі <a href="https://discordapp.com/channels/1055547379832602788/1166749893440847956" target="_blank">“аддони”</a> нашого <a href="https://discord.gg/VvPQhQwXTc" target="_blank">діскорду</a> (!)(!)(!))</p>
+            </div>
+          </div>
+          <div class="collapsible">
+            <p class="heading">Мати 5.6гс або дати 5.25+ ДПС в палку</p>
+            <div class="hider">      
+              <div class="collapsible">
+                <p class="heading">Як заміряється ДПС в палку?</p>
+                <div class="hider">      
+                  <p>Портібно за один бій з одним (“замір ДМГ в соло таргет”) манекеном рейдера 80 лвл нанести 3млн демеджу і лінканути рекаунт скаду “цей/останній бій” (“за весь час” не підходить) офіцеру в гі чат. Після цього офіцер добавить вам позначку в замітку. Можна використовувати фласку і поти, але не можна бафів інших класів/барабанів/інших бустів крім своїх класових/спекових бафів. Ми віримо в вашу порядність і не будемо ходити до вас на манекен, щоб “дивитись-перевіряти”, але якщо ви будете “мухлювати” на цьому -  це стане явним в першому рейді і до 5.6к гс ви в енд-гейм РТ не попадете</p>
+                </div>
+              </div>
+              <div class="collapsible">
+                <p class="heading">Як дати ДПС в палку?</p>
+                <div class="hider">    
+                  <div class="collapsible">
+                    <p class="heading">Гайди</p>
+                    <div class="hider">   
+                      <p>Камон. пошукай в інтернеті, їх вагон УЗ і маленький возик :)</p>
+                      <p>Деякі гайди "під наш сервер"" є в нашому діскорді</p>
+                    </div>
+                  </div>
+                  <div class="collapsible">
+                    <p class="heading">Макроси</p>
+                    <div class="hider">     
+                      <p>Наші гравці діляться своїми макросами в <a href="https://t.me/+6JrHpUiKls5iNGY6" target="_blank">телеграм каналі</a></p>                       
+                    </div>
+                  </div>
+                  <div class="collapsible">
+                    <p class="heading">Аддони</p>
+                    <div class="hider">      
+                      <p>аддони які “рєшають” ти можеш найти в розділі <a href="https://discordapp.com/channels/1055547379832602788/1166749893440847956" target="_blank">“аддони”</a> нашого <a href="https://discord.gg/VvPQhQwXTc" target="_blank">діскорду</a></p>
+                    </div>
+                  </div>  
+                </div>
+              </div>  
+              <div class="collapsible">
+                <p class="heading">Як вдітись в 5.6гс?</p>
+                <div class="hider">        
+                  <div class="collapsible">
+                    <p class="heading">0 => "проходка" в ППГ</p>
+                    <div class="hider">   
+                      <p>Тариш самий дешевий хлам навіть анклас просто що пропустило на регу в ппг (приблизно 3.8)</p>
+                    </div>
+                  </div>       
+                  <div class="collapsible">
+                    <p class="heading">ППГ => 5.2гс</p>
+                    <div class="hider">   
+                      <p>Фармиш ППГ => баджі => шмот за тріумф,4т9</p>
+                      <p>Фармиш 1 рейдове БОЕ</p>
+                      <p>Сокети-чарки</p>
+                      <p>Робиш крафтошмот (тапкі, наручі)</p>
+                    </div>
+                  </div>    
+                  <div class="collapsible">
+                    <p class="heading">5.2гс => 5.6гс</p>
+                    <div class="hider">   
+                      <p>Фармиш рейдові БОЕ</p>
+                      <p>Фармиш льодик => 4t10, шмот за льодик (плащ, пояс, триня)</p>
+                      <p>Попадаєш на Стабільні, Планові, / Рандомні РТ, (як працюють анонси - вище)</p>
+                      <p>Сам ініціюєш збори або ходиш з ЛФГ ІК 10/25, ЦЛКгер 10 на 4 боса, СА щоб дібрати ГС за рахунок декількох ітемів</p>
+                    </div>
+                  </div> 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank">Freedom WoW</a></span>
+      </footer>
+    </div>
+  </body>
+</html>
