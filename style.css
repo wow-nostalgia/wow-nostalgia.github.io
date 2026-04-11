@@ -1,6 +1,10 @@
       body{
-        font-family: 'Roboto', open-sans;
-        background: #1d2636;
+        font-family: 'Roboto', 'Open Sans', sans-serif;
+        background-image: url("./images/background.jpg");
+        background-repeat: no-repeat;
+        background-position: center top;
+        background-size: cover;
+        background-attachment: fixed;
         color: #c5c6cd;
         line-height: 1.5;
         font-size: 1rem;
@@ -21,12 +25,16 @@
       .container{
         max-width: 900px;
         margin: 0 auto;
-        padding: 1rem 0.5rem 8rem;
-        position: relative;
         min-height: 100vh;
+        background-color: #1d2636;
       }
+      .container-inner{
+        padding: 1rem 1rem 4.5rem;
+      }
+
       h1{
         margin: 1.5rem 0;
+        text-align: center;
       }
       p{
         margin: 0.75rem 0;
@@ -35,7 +43,7 @@
         color: #7baaf5;
       }
       .collapsible{
-        border: 1px solid;
+        border: 1px solid rgba(197, 198, 205, 0.45);
         margin: 0.5rem 0;
         border-radius: 3px;
       }
@@ -46,7 +54,8 @@
         font-size: 1.25rem;
         font-weight: 400;
       }
-      .collapsible .heading,.collapsible .hider{
+      .collapsible .heading,
+      .collapsible .hider{
         padding: 0.5rem 1rem;
       }
       .collapsible .hider{
@@ -56,13 +65,21 @@
         display: block;
       }
       footer{
-        padding: 2rem 0; 
-        position: absolute;
+        position: fixed;
+        left: 50%;
         bottom: 0;
-        left: 0;
+        transform: translateX(-50%);
         width: 100%;
+        max-width: 900px;
+        background-color: #1d2636;
         text-align: center;
+        padding: 0.75rem 1rem;
+        border-top: 1px solid rgba(197, 198, 205, 0.15);
+        z-index: 10;
       }
       footer span{
         font-size: 0.75rem;
       }
+      html{
+       scrollbar-gutter: stable;
+    }
