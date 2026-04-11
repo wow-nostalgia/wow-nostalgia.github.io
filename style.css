@@ -1,0 +1,68 @@
+      body{
+        font-family: 'Roboto', open-sans;
+        background: #1d2636;
+        color: #c5c6cd;
+        line-height: 1.5;
+        font-size: 1rem;
+        font-weight: 300;
+      }
+      *{
+        margin:0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      ul {
+        padding-left: 2em;
+        margin-left: 1em;
+      }
+      ol {
+        padding-left: 2em;
+      }
+      .container{
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1rem 0.5rem 8rem;
+        position: relative;
+        min-height: 100vh;
+      }
+      h1{
+        margin: 1.5rem 0;
+      }
+      p{
+        margin: 0.75rem 0;
+      }
+      a{
+        color: #7baaf5;
+      }
+      .collapsible{
+        border: 1px solid;
+        margin: 0.5rem 0;
+        border-radius: 3px;
+      }
+      .collapsible .heading{
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 400;
+      }
+      .collapsible .heading,.collapsible .hider{
+        padding: 0.5rem 1rem;
+      }
+      .collapsible .hider{
+        display: none;
+      }
+      .collapsible.open>.hider{
+        display: block;
+      }
+      footer{
+        padding: 2rem 0; 
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+      }
+      footer span{
+        font-size: 0.75rem;
+      }
