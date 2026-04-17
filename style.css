@@ -32,17 +32,21 @@
         padding: 1rem 1rem 4.5rem;
       }
 
-      h1{
-        margin: 1.5rem 0;
+      h1 {
+        background: linear-gradient(45deg, #87ceeb, #000080);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         text-align: center;
-      }
+        margin: 1.5rem 0;
+        }
       p{
         margin: 0.75rem 0;
       }
       a{
         color: #7baaf5;
       }
-      .collapsible{
+      .collapsible {
         border: 1px solid rgba(197, 198, 205, 0.45);
         margin: 0.5rem 0;
         border-radius: 3px;
@@ -53,6 +57,14 @@
         margin: 0;
         font-size: 1.25rem;
         font-weight: 400;
+      }
+      .collapsible .heading:hover {
+        background-color: rgba(123, 170, 245, 0.1);
+        transition: background-color 0.2s ease;
+      }
+      a:hover {
+        text-decoration: underline;
+        color: #ffd700;
       }
       .collapsible .heading,
       .collapsible .hider{
