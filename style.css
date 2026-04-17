@@ -62,6 +62,11 @@
         background-color: rgba(123, 170, 245, 0.1);
         transition: background-color 0.2s ease;
       }
+      .collapsible .heading .icon {
+        float: right;
+        font-size: 1.25rem; /* або підігнайте під розмір тексту */
+        margin-left: 0.5rem;
+      }
       a:hover {
         text-decoration: underline;
         color: #ffd700;
