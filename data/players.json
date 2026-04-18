@@ -1,7 +1,3242 @@
 [
-  { "name": "Boro", "server": "FreedomUA" },
-  { "name": "Firre", "server": "FreedomUA" },
-  { "name": "Chuchundra", "server": "FreedomUA" },
-  { "name": "Boronir", "server": "FreedomUA" },
-  { "name": "Sumplesh", "server": "FreedomUA" }
+  {
+    "name": "Abrika",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Acronis",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Adk",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Agahnim",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Agett",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Aghanim",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ahullvaldin",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ahulvaldin",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Airvkus",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Akronis",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Aliya",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Allashayka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Allbane",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Alldie",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Alldietwo",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Alt",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Amffitaminka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Amqpetaminka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Anafilakciya",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Andrev",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Anenji",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Angae",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Angbad",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Anigilation",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Anshaliya",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Anybis",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Aomine",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Apokalipses",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Apokalipsis",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Aprilholy",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Arabika",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Archangel",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Archimed",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Artorias",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Artztin",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Asfej",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ashmore",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Astaroth",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Attiyi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Auchenai",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ausa",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Awake",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Axiom",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Azarellia",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Azux",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Balrok",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Bandliwka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Barabella",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Battlemonsta",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Beliala",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Bidjo",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Bioweapon",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Blackboy",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Blackline",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Blackmagic",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Blackmore",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Bliss",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Blodsikerr",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Bordo",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Boro",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Boroheal",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Borolgin",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Borolit",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Borolock",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Boromit",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Boronir",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Boronit",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Boynextdor",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Braga",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Brandmauer",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Bristol",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Bu",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Buka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Butterfly",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Bvb",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Castfast",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Catowlbear",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Chechedon",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Chilia",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Chingizi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Chuchundra",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Chucknorris",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Crazycat",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Crystallas",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ctrl",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Dangenmaster",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Daremyth",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Darkangel",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Darkrunner",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Dartagnan",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ddos",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "De",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Deadline",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Debris",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Dedotmoroz",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Defendente",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Degni",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Deisi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Demis",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Dendi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Denisishep",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Deser",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Didbodyn",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Discover",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Djezabel",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Djsex",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Doblo",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Dofaminka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Dreiton",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Drextor",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Druidko",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Drulya",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Dubasik",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Dubasinka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Dutic",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Dysar",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Easypal",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Easyshadow",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Eaxbeet",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Eaxbeetferal",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Eaxbeetmage",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Eddy",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Eira",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Eith",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Eldrik",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Elinoir",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Elisande",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Elunia",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Em",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Emirose",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Emris",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Energymix",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Epicmouse",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Eroistka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Esca",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Evrika",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Excalibur",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Exoticsun",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Extezi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Extravert",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Eydora",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Facronis",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Fakronis",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Falinrash",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Farm",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Farmaliny",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Fascisto",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Femidda",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ferolux",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ferox",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Fikus",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Fiona",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Firre",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Flysky",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Fonbraun",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Frostboltgod",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Galadrail",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Galios",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Galiossham",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Gamora",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ganjcool",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ganjia",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Garp",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Geefors",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Geralt",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Glivera",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Glonas",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Glor",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Glu",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Gobsek",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Goolyx",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Gothic",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Graftrahula",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Greedy",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Grimmi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Grimmo",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Grindewald",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Grozd",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Groznui",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Gubor",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Harakternyk",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Hardheal",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Harp",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Harpagon",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Havroshka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Henderson",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Hilliton",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Hito",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Hodgenville",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Holyhammer",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Holypalka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Hoplit",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Howdareyou",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Humster",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Huyutin",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Hyligan",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Hynda",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Idry",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ijachok",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Iki",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ikisen",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ilessa",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Iluminat",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ilvet",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Imni",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ingibition",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Intensa",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Introvert",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Invisiblee",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Isciel",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ishtalith",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ivett",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Jabawood",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Jekaneoleg",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Jekanerab",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Jesika",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Jil",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Justlife",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kalimistfan",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kalistrat",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kamazz",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kangal",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kao",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kapacik",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Karatel",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Karbafos",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Karina",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kartofa",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kas",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kasp",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kawai",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Keishi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kekulbek",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Khazgorot",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Killmyhope",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kilona",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kimtres",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kingowar",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kingsman",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kipih",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kipish",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kiriya",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kissmoon",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kissofdez",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kissoflife",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kodlo",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kofooshka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kohaiibaka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kondor",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kostek",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kpblcenok",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kramantina",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Krasna",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kubita",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kvarta",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Kykyrydza",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lakomka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lamo",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lashtaleth",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lbeeatch",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Legalize",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "leoflnhw",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Leprekon",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Leriss",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lestter",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lightring",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lito",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lliss",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lonesome",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lucifera",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lucis",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Lumeen",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Luminaria",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Luterok",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Luuna",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Luxfero",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Luxlemorne",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Macadamia",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Madlax",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Magicdru",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Magitron",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Magma",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Magnifixia",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Makri",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Mallboro",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Malz",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Mankasho",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Marka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Maxigrob",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Mediumhealer",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Melande",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Memy",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Mercedes",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Metadon",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Metallheaddk",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Metallheadxd",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Metallheadxp",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Method",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Methodixq",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Methodlq",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Miche",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Michi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Midermiha",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Mioner",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Mirzoo",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Mixa",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Molfaris",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Monarch",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Monarius",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Mongol",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Moriokka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Morlix",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Muriken",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Murkin",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Murkina",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Muzon",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Nacisto",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Naijel",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Namikaze",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Naname",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Napas",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Nature",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Nazaryna",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Nedstark",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Nekoma",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Nekropat",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Nekropatka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Neytiriavata",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Nica",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Nightrobber",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Nihto",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Nikolete",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Niomi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Niyy",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Noni",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Oksana",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Okuwok",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ololosh",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Oniom",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Onlyshit",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Onyx",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Orestovych",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Osminojek",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Overlordz",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Oxygen",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Paladinovuch",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Papagey",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Parabellum",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Peaceduke",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Peendos",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Phenix",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Pitzkur",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Plague",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Plastun",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Pochesunchik",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Polad",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Polak",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Polas",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Polax",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Polaz",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Polyven",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Potujnist",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Povistb",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Pristik",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Psyhoz",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Puchatek",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Puyachok",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Pyx",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Quadrobear",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Quadrobeer",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Quattro",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Qvak",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ragnaroock",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ragul",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Rake",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ranzer",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Raspator",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Raspberry",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ravanna",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ravenous",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Reformator",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Reiko",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Rickle",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Riman",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Rockshield",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Rozbimbasik",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Rozdubas",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Rrampage",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Rubi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Russlan",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Samsar",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sane",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sangria",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sas",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Saskwatch",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sata",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Satisfaction",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Saudade",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Selessa",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Selya",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Semenn",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "September",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Serlion",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Setik",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sexbusters",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sexlol",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sexmachine",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sexmusic",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shadarrow",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shadowofdark",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shafa",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shafran",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shaina",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shamaniac",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shardik",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shepeshka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shh",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shkafran",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sho",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shoni",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Shroud",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Siemens",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Silmaril",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Silmarilion",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Silmarillas",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Silmarillion",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Silmarills",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Silmarit",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Silmas",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sim",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Simple",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sinda",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sindamagg",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sindarella",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sindragosa",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Skyfallion",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Slem",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sleyks",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Slonik",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Smaragd",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Smaragthella",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "smicmekk",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Snih",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Snowball",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sober",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Soka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Soniana",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sorabi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Souli",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Soundstorm",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sprinter",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sprite",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Squirtman",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ssprint",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Staminka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Starbanner",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Starius",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Staruy",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sumplesh",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Sunrise",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Svitanok",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Swim",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Swimig",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Swm",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tango",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tankycik",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tanos",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tanti",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tapok",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tazikrovi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tecc",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tenara",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Teramu",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Thasarian",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Thunderlight",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tinf",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Topgun",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tophealer",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Torrin",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Total",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Traitordru",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Trevok",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Trideo",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Troyanda",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Trymyskill",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tuman",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Turbowollf",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Turinger",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tvoyiochi",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Tyz",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Useless",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Vahtang",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Vampiree",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Vappermess",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Velementum",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Vendetka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Verity",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Vesper",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Vidimo",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Vilial",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Vivisekciya",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Wakan",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Wartander",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Waryourdream",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Wasovsky",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Western",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Whitemane",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Windfall",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Wlrtus",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Woodman",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Wtfbos",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Wtfboss",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Wtfhill",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Wthl",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Xavian",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Xelli",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Xlupik",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Xulorith",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Xznasho",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Yorick",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Zeerocul",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Zibrow",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Zibrowix",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Zloetelo",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Zlynka",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Zodiac",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Zufar",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Єнефер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Єнотіха",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ікар",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Іліданчик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Іскер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Автор",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Агрочинитель",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Айдрисия",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Алковар",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Алкогуль",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Алкохолик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Альберт",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Альв",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Альфа",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Альфабета",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Амадей",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Амунксунамун",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Андретан",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Анотель",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Антей",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Арау",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ареля",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Архагет",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Архадід",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Арчи",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ауфидерзейн",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ахульвальдин",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ашторет",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Бальтазар",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Бандерос",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Бвб",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Белаз",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Белазик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Белазище",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Белазлок",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Белазприст",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Белазхант",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Бердичів",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Бердянськ",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Брила",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Букофина",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Бульбошка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Буреветчина",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Більшенедам",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Вагончик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Вадя",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Вайолет",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Валенор",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Варр",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Веспер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ветала",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Вонгельт",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ворон",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Втряпках",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Вуглик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Вусатийжук",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Війна",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Вік",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Віночок",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Галадрієль",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Гамбіт",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Гейзенберг",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Гектор",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Гепардик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Герда",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Герсеона",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Гномвпальто",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Гобсек",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Горгона",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Давар",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Дамаганебуде",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Дарианна",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Двд",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Дедотмороз",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Деревозкавою",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Деревяна",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Джимбо",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Дивак",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Дизпетчер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Диспетчер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Диспетчерз",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Дисспетчер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Доктор",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Домовина",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Дровина",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Друлян",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Дуболом",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Дукасик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Душнила",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Евріка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ейфорія",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Екстези",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Емріс",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ефеймл",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Живая",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Загиблик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Заньковецька",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Запаска",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Захар",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Зорг",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Зсушка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Зуфар",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Зібров",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Итзошник",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Йа",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кабанос",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кабачок",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кавалєрка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кавунева",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кавєлик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Капуста",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кас'тіель",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кацит",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Квадробер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Квадробобер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Квотербек",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Келих",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кобринська",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Коко",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Корпорат",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Котпузатий",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кракенн",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Красотуля",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Крафтер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кровянка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ксеноморф",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ксерокс",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кся",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кукуррудза",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кукурузка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Куниметник",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Кізячьок",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ланарей",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Лапа",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Летівпердів",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Липа",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ллойд",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Льонт",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Лютерок",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ляйтнер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Манга",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Махнатий",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Медичка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Мейнпрото",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Меланда",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Менетіл",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Мерид",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Мерида",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Миннет",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Монстро",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Моякиця",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Муркин",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Мурчальник",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Міа",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Мінітанк",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Наора",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Наорович",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Наофумі",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Нашдк",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Нашдруід",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Небеса",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Некропат",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Некропатт",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Некропатус",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Непокірна",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Непридумав",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Непушинка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Нечупара",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ноаукр",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Нормально",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Нульпомилок",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Оби",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Огояка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Одуванчик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Оксана",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Окунь",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ополоник",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Оркодав",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Орлангур",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Оррик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Остапович",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Отруйна",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Палідан",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Паніка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Пельмешек",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Персеваль",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Песик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Петропавло",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Петух",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Покійник",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Полкилло",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Потужнослав",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Префлека",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Пупок",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Пухнастик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Підлизунька",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Раздва",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Райден",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Рендалл",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Реформатор",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ровена",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Ровер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Рудатравка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Санюрік",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Саняфлешхил",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Святець",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Свіміг",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Сивобород",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Сидор",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Сильмарилион",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Сильмарилс",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Сильмс",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Скубиду",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Соваой",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Совуня",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Солдат",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Сопляк",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Стасик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Стасяндр",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Степан",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Стограм",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Сяйва",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Сільм",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Сірко",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Сіськаста",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Сітх",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Тайра",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Тамацуро",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Танчузакаву",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Тас",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Телем",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Тесей",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Тикуда",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Точний",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Трансдк",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Триграмма",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Тукосан",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Умань",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Умпалумп",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Упік",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Утопія",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Фарамір",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Фелляция",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Фея",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Фибоначчи",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Флетуайт",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Форд",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Формула",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Фуко",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Фухфух",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Хаммер",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Херсонський",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Холивор",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Холоднийчай",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Цацик",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Цеглина",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Циганчаа",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Цирі",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Цукорь",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Чайчай",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Чаплинка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Чегевара",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Чоколокомоко",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Чокомоколоко",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Чокошокомоко",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Чіта",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Чітко",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шаановний",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шаловлива",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шалупонька",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шамуська",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шафран",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шая",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шдпц",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шипуч",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шипучдругий",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шипучка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шляпа",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Шоша",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Штрикалка",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Щастячко",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Япал",
+    "server": "FreedomUA"
+  },
+  {
+    "name": "Япєрдолю",
+    "server": "FreedomUA"
+  }
 ]
