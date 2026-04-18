@@ -1,102 +1,335 @@
-      body{
-        font-family: 'Roboto', 'Open Sans', sans-serif;
-        background-image: url("./images/background.jpg");
-        background-repeat: no-repeat;
-        background-position: center top;
-        background-size: cover;
-        background-attachment: fixed;
-        color: #c5c6cd;
-        line-height: 1.5;
-        font-size: 1rem;
-        font-weight: 300;
-      }
-      *{
-        margin:0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      ul {
-        padding-left: 2em;
-        margin-left: 1em;
-      }
-      ol {
-        padding-left: 2em;
-      }
-      .container{
-        max-width: 900px;
-        margin: 0 auto;
-        min-height: 100vh;
-        background-color: rgba(29, 38, 54, 0.94);
-      }
-      .container-inner{
-        padding: 1rem 1rem 4.5rem;
-      }
+body {
+  font-family: 'Roboto', 'Open Sans', sans-serif;
+  background-image: url("./images/background.jpg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+  background-attachment: fixed;
+  color: #c5c6cd;
+  line-height: 1.5;
+  font-size: 1rem;
+  font-weight: 300;
+}
 
-      h1 {
-        background: linear-gradient(45deg, #87ceeb, #000080);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-align: center;
-        margin: 1.5rem 0;
-        }
-      p{
-        margin: 0.75rem 0;
-      }
-      a{
-        color: #7baaf5;
-      }
-      .collapsible {
-        border: 1px solid rgba(197, 198, 205, 0.45);
-        margin: 0.5rem 0;
-        border-radius: 3px;
-      }
-      .collapsible .heading{
-        padding: 0.5rem 1rem;
-        cursor: pointer;
-        margin: 0;
-        font-size: 1.25rem;
-        font-weight: 400;
-      }
-      .collapsible .heading:hover {
-        background-color: rgba(123, 170, 245, 0.1);
-        transition: background-color 0.2s ease;
-      }
-      .collapsible .heading .icon {
-        float: right;
-        font-size: 1.25rem; /* або підігнайте під розмір тексту */
-        margin-left: 0.5rem;
-      }
-      a:hover {
-        text-decoration: underline;
-        color: #ffd700;
-      }
-      .collapsible .heading,
-      .collapsible .hider{
-        padding: 0.5rem 1rem;
-      }
-      .collapsible .hider{
-        display: none;
-      }
-      .collapsible.open>.hider{
-        display: block;
-      }
-      footer{
-        position: fixed;
-        left: 50%;
-        bottom: 0;
-        transform: translateX(-50%);
-        width: 100%;
-        max-width: 900px;
-        background-color: #1d2636;
-        text-align: center;
-        padding: 0.75rem 1rem;
-        border-top: 1px solid rgba(197, 198, 205, 0.15);
-        z-index: 10;
-      }
-      footer span{
-        font-size: 0.75rem;
-      }
-      html{
-       scrollbar-gutter: stable;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul {
+  padding-left: 2em;
+  margin-left: 1em;
+}
+
+ol {
+  padding-left: 2em;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: rgba(29, 38, 54, 0.94);
+}
+
+.container-inner {
+  padding: 1rem 1rem 4.5rem;
+}
+
+h1 {
+  background: linear-gradient(45deg, #87ceeb, #000080);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+p {
+  margin: 0.75rem 0;
+}
+
+a {
+  color: #7baaf5;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #ffd700;
+}
+
+.collapsible {
+  border: 1px solid rgba(197, 198, 205, 0.45);
+  margin: 0.5rem 0;
+  border-radius: 3px;
+}
+
+.collapsible .heading,
+.collapsible .hider {
+  padding: 0.5rem 1rem;
+}
+
+.collapsible .heading {
+  cursor: pointer;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.collapsible .heading:hover {
+  background-color: rgba(123, 170, 245, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.collapsible .heading .icon {
+  float: right;
+  font-size: 1.25rem;
+  margin-left: 0.5rem;
+}
+
+.collapsible .hider {
+  display: none;
+}
+
+.collapsible.open > .hider {
+  display: block;
+}
+
+footer {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 900px;
+  background-color: #1d2636;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid rgba(197, 198, 205, 0.15);
+  z-index: 10;
+}
+
+footer span {
+  font-size: 0.75rem;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+.ranking-link-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.ranking-link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 280px;
+  padding: 12px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(20, 35, 60, 0.55);
+  color: #e8edf7;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.ranking-link-btn:hover {
+  background: rgba(36, 58, 96, 0.72);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+.ranking-link-btn:active {
+  transform: translateY(0);
+}
+
+.ranking-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.75rem 1rem;
+  margin: 1.25rem 0 1rem;
+}
+
+.ranking-controls label {
+  font-weight: 400;
+  color: #d6deed;
+}
+
+.ranking-controls select {
+  min-width: 180px;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: 4px;
+  background-color: rgba(12, 21, 33, 0.88);
+  color: #e8edf7;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.ranking-controls select:hover {
+  border-color: rgba(123, 170, 245, 0.55);
+}
+
+.ranking-controls select:focus {
+  border-color: #7baaf5;
+  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+}
+
+#tableStatus {
+  margin: 0.75rem 0 1rem;
+  color: #b8c2d9;
+}
+
+.ranking-table-wrap {
+  margin-top: 1rem;
+  border: 1px solid rgba(197, 198, 205, 0.28);
+  border-radius: 8px;
+  overflow: visible;
+  background-color: rgba(11, 18, 29, 0.45);
+  width: max-content;
+}
+
+#rankingTable {
+  width: max-content;
+  border-collapse: collapse;
+  min-width: 0;
+}
+
+#rankingTable thead {
+  background-color: rgba(123, 170, 245, 0.12);
+}
+
+#rankingTable th,
+#rankingTable td {
+  padding: 0.2rem 0.3rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(197, 198, 205, 0.16);
+}
+
+#rankingTable th {
+  color: #e6eefc;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+#rankingTable td {
+  color: #d3d9e5;
+  font-size: 0.95rem;
+}
+
+#rankingTable tbody tr:hover {
+  background-color: rgba(123, 170, 245, 0.08);
+}
+
+#rankingTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+body.ranking-page .container {
+  max-width: none;
+  width: fit-content;
+  min-width: 900px;
+}
+
+body.ranking-page .container-inner {
+  width: max-content;
+}
+
+body.ranking-page .ranking-table-wrap {
+  overflow: visible;
+  width: max-content;
+}
+
+body.ranking-page #rankingTable {
+  width: max-content;
+  min-width: 0;
+}
+
+body.ranking-page #rankingTable th,
+body.ranking-page #rankingTable td {
+  white-space: normal;
+}
+
+body.ranking-page #rankingTable th {
+  max-width: 42px;
+  padding: 0.3rem 0.15rem 0.9rem;
+  line-height: 1;
+  vertical-align: bottom;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+body.ranking-page #rankingTable th .boss-header {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+  line-height: 1;
+  width: 2.2ch;
+  max-width: 2.2ch;
+  text-align: center;
+  display: inline-block;
+  transform: rotate(180deg);
+  transform-origin: center center;
+}
+
+@media (max-width: 768px) {
+  .container-inner {
+    padding: 1rem 0.875rem 5rem;
+  }
+
+  .collapsible .heading {
+    font-size: 1.1rem;
+  }
+
+  .ranking-link-btn {
+    width: 100%;
+    min-width: 0;
+    font-size: 1.05rem;
+  }
+
+  .ranking-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ranking-controls label {
+    margin-bottom: -0.35rem;
+  }
+
+  .ranking-controls select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #rankingTable {
+    min-width: 560px;
+  }
+
+  body.ranking-page .container {
+    min-width: 100%;
+  }
+
+  body.ranking-page .container-inner {
+    width: 100%;
+  }
+
+  body.ranking-page .ranking-table-wrap {
+    width: 100%;
+  }
+
+  body.ranking-page #rankingTable {
+    width: 100%;
+    min-width: 560px;
+  }
+}
