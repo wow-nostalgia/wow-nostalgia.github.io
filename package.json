@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "update:guild": "node scripts/update-guild-data.js"
   },
   "repository": {
     "type": "git",
