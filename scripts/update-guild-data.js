@@ -1,8 +1,10 @@
 const fs = require('node:fs/promises');
 const path = require('path');
 
+
 const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
 const DATA_FILE = path.join(__dirname, '..', 'data', 'guild-data.json');
+
 
 const CLASSES = [
   'Death Knight',
@@ -17,6 +19,7 @@ const CLASSES = [
   'Warrior'
 ];
 
+
 const SPECS_SELECT_OPTIONS = {
   'Death Knight': ['Blood', 'Frost', 'Unholy'],
   'Druid': ['Balance', 'Feral Combat', 'Restoration'],
@@ -30,32 +33,39 @@ const SPECS_SELECT_OPTIONS = {
   'Warrior': ['Arms', 'Fury', 'Protection']
 };
 
+
 const REQUEST_DELAY_MS = 1500;
 const MAX_RETRIES = 3;
+
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 
 function normalizeScore(points) {
   if (typeof points !== 'number') return 0;
   return Number((points / 100).toFixed(2));
 }
 
+
 function getClassName(classIndex) {
   return CLASSES[classIndex] ?? 'Unknown';
 }
+
 
 function getSpecName(className, specIndex) {
   const specs = SPECS_SELECT_OPTIONS[className] ?? [];
   return specs[specIndex - 1] ?? `Spec ${specIndex}`;
 }
 
+
 function getSpecIndexByName(className, specName) {
   const specs = SPECS_SELECT_OPTIONS[className] ?? [];
   const index = specs.findIndex(spec => spec === specName);
   return index >= 0 ? index + 1 : null;
 }
+
 
 function normalizeBosses(rawBosses, bossOrder) {
   const result = {};
@@ -71,14 +81,17 @@ function normalizeBosses(rawBosses, bossOrder) {
   return result;
 }
 
+
 async function readJson(filePath) {
   const raw = await fs.readFile(filePath, 'utf8');
   return JSON.parse(raw);
 }
 
+
 async function writeJson(filePath, data) {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
 }
+
 
 async function readPlayers() {
   const players = await readJson(PLAYERS_FILE);
@@ -88,6 +101,7 @@ async function readPlayers() {
   return players;
 }
 
+
 async function readGuildData() {
   try {
     return await readJson(DATA_FILE);
@@ -96,35 +110,8 @@ async function readGuildData() {
   }
 }
 
-function buildInitialRows(players, existingRows = []) {
-  const existingMap = new Map(
-    Array.isArray(existingRows)
-      ? existingRows.map(row => [`${row.name}::${row.server}`, row])
-      : []
-  );
-
-  return players.map(player => {
-    const key = `${player.name}::${player.server}`;
-    const existing = existingMap.get(key);
-    return {
-      name: player.name,
-      server: player.server,
-      class: existing?.class ?? player.class ?? 'Unknown',
-      spec: existing?.spec ?? player.spec ?? 'Spec 1',
-      specIndex: existing?.specIndex ?? player.specIndex ?? 1,
-      overallRank: existing?.overallRank ?? null,
-      overallScore: existing?.overallScore ?? 0,
-      bosses: existing?.bosses ?? {}
-    };
-  });
-}
 
 async function fetchCharacterOnce(row) {
-  const specIndex = row.specIndex ?? getSpecIndexByName(row.class, row.spec);
-  if (!specIndex) {
-    throw new Error(`Не знайдено specIndex для ${row.name} / ${row.class} / ${row.spec}`);
-  }
-
   const response = await fetch('https://uwu-logs.xyz/character', {
     method: 'POST',
     headers: {
@@ -134,12 +121,13 @@ async function fetchCharacterOnce(row) {
     body: JSON.stringify({
       name: row.name,
       server: row.server,
-      spec: specIndex
+      spec: row.specIndex
     })
   });
 
-  return { response, specIndex };
+  return { response, specIndex: row.specIndex };
 }
+
 
 async function fetchCharacterWithRetry(row, bossOrder) {
   let lastError = null;
@@ -189,22 +177,50 @@ async function fetchCharacterWithRetry(row, bossOrder) {
   throw lastError ?? new Error(`Failed to fetch ${row.name}`);
 }
 
+
 async function updateGuildData() {
   const players = await readPlayers();
   const guildData = await readGuildData();
   const bossOrder = guildData.bossOrder || [];
-  const existingRows = guildData.rows || [];
-  const initialRows = buildInitialRows(players, existingRows);
+  const existingRows = Array.isArray(guildData.rows) ? guildData.rows : [];
+
+  // Генеруємо 3 spec-рядки на кожного гравця
+  const initialRows = [];
+  const existingMap = new Map();
+  for (const row of existingRows) {
+    const key = `${row.name}::${row.server}::${row.specIndex}`;
+    existingMap.set(key, row);
+  }
+
+  for (const player of players) {
+    for (let specIndex = 1; specIndex <= 3; specIndex++) {
+      const existingKey = `${player.name}::${player.server}::${specIndex}`;
+      const existingRow = existingMap.get(existingKey) || null;
+
+      const playerClass = existingRow?.class ?? player.class ?? 'Unknown';
+      const specName = getSpecName(playerClass, specIndex) ?? `Spec ${specIndex}`;
+
+      initialRows.push({
+        name: player.name,
+        server: player.server,
+        class: playerClass,
+        spec: specName,
+        specIndex,
+        overallRank: existingRow?.overallRank ?? null,
+        overallScore: existingRow?.overallScore ?? 0,
+        bosses: existingRow?.bosses ?? {}
+      });
+    }
+  }
 
   const updatedRows = [];
   const failedPlayers = [];
 
   for (const row of initialRows) {
     try {
-      console.log(`Updating ${row.name} / ${row.class} / ${row.spec}`);
+      console.log(`Updating ${row.name} / ${row.class} / ${row.spec} (specIndex: ${row.specIndex})`);
       const fresh = await fetchCharacterWithRetry(row, bossOrder);
       updatedRows.push({
-        ...row,
         name: fresh.name,
         server: fresh.server,
         class: fresh.class,
@@ -221,6 +237,7 @@ async function updateGuildData() {
         name: row.name,
         class: row.class,
         spec: row.spec,
+        specIndex: row.specIndex,
         error: error.message
       });
       updatedRows.push(row);
@@ -238,9 +255,10 @@ async function updateGuildData() {
   await writeJson(DATA_FILE, guildData);
 
   console.log('guild-data.json updated successfully');
-  console.log(`Total players: ${updatedRows.length}`);
-  console.log(`Failed players: ${failedPlayers.length}`);
+  console.log(`Total rows (players × specs): ${updatedRows.length}`);
+  console.log(`Failed rows: ${failedPlayers.length}`);
 }
+
 
 updateGuildData().catch((error) => {
   console.error(error);
