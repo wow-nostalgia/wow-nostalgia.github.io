@@ -1,0 +1,312 @@
+{
+  "updatedAt": "2026-04-18T09:31:37.900Z",
+  "totalPlayersInSource": 5,
+  "totalRows": 9,
+  "bossOrder": [
+    "Lord Marrowgar",
+    "Lady Deathwhisper",
+    "Deathbringer Saurfang",
+    "Festergut",
+    "Rotface",
+    "Professor Putricide",
+    "Blood Prince Council",
+    "Blood-Queen Lana'thel",
+    "Sindragosa",
+    "The Lich King",
+    "Toravon the Ice Watcher",
+    "Halion",
+    "Anub'arak",
+    "Valithria Dreamwalker"
+  ],
+  "classes": [
+    "Death Knight",
+    "Druid",
+    "Hunter",
+    "Mage",
+    "Paladin",
+    "Priest",
+    "Rogue",
+    "Shaman",
+    "Warlock",
+    "Warrior"
+  ],
+  "specsByClass": {
+    "Death Knight": [
+      "Blood",
+      "Frost",
+      "Unholy"
+    ],
+    "Druid": [
+      "Balance",
+      "Feral Combat",
+      "Restoration"
+    ],
+    "Hunter": [
+      "Beast Mastery",
+      "Marksmanship",
+      "Survival"
+    ],
+    "Mage": [
+      "Arcane",
+      "Fire",
+      "Frost"
+    ],
+    "Paladin": [
+      "Holy",
+      "Protection",
+      "Retribution"
+    ],
+    "Priest": [
+      "Discipline",
+      "Holy",
+      "Shadow"
+    ],
+    "Rogue": [
+      "Assassination",
+      "Combat",
+      "Subtlety"
+    ],
+    "Shaman": [
+      "Elemental",
+      "Enhancement",
+      "Restoration"
+    ],
+    "Warlock": [
+      "Affliction",
+      "Demonology",
+      "Destruction"
+    ],
+    "Warrior": [
+      "Arms",
+      "Fury",
+      "Protection"
+    ]
+  },
+  "rows": [
+    {
+      "name": "Sumplesh",
+      "server": "FreedomUA",
+      "class": "Shaman",
+      "spec": "Elemental",
+      "specIndex": 1,
+      "overallRank": 4,
+      "overallScore": 95.97,
+      "bosses": {
+        "Lord Marrowgar": 19504.9,
+        "Lady Deathwhisper": 17059.4,
+        "Deathbringer Saurfang": 21359.7,
+        "Festergut": 16884.3,
+        "Rotface": 18223.3,
+        "Professor Putricide": 13302.9,
+        "Blood Prince Council": 15065.9,
+        "Blood-Queen Lana'thel": 29430.8,
+        "Sindragosa": 10655.3,
+        "The Lich King": 9958.3,
+        "Toravon the Ice Watcher": 0,
+        "Halion": 11854,
+        "Anub'arak": 9536.8,
+        "Valithria Dreamwalker": 0
+      }
+    },
+    {
+      "name": "Boronir",
+      "server": "FreedomUA",
+      "class": "Shaman",
+      "spec": "Elemental",
+      "specIndex": 1,
+      "overallRank": 6,
+      "overallScore": 94.34,
+      "bosses": {
+        "Lord Marrowgar": 18032.9,
+        "Lady Deathwhisper": 17596.3,
+        "Deathbringer Saurfang": 20422.3,
+        "Festergut": 17474.9,
+        "Rotface": 18205.2,
+        "Professor Putricide": 12725,
+        "Blood Prince Council": 13549.6,
+        "Blood-Queen Lana'thel": 21253.2,
+        "Sindragosa": 10920.1,
+        "The Lich King": 9826.3,
+        "Toravon the Ice Watcher": 0,
+        "Halion": 11181,
+        "Anub'arak": 9977.3,
+        "Valithria Dreamwalker": 0
+      }
+    },
+    {
+      "name": "Boro",
+      "server": "FreedomUA",
+      "class": "Mage",
+      "spec": "Fire",
+      "specIndex": 2,
+      "overallRank": 7,
+      "overallScore": 99.38,
+      "bosses": {
+        "Lord Marrowgar": 24495.2,
+        "Lady Deathwhisper": 22862.8,
+        "Deathbringer Saurfang": 26778.7,
+        "Festergut": 24021.6,
+        "Rotface": 25438.3,
+        "Professor Putricide": 19536.5,
+        "Blood Prince Council": 20847.7,
+        "Blood-Queen Lana'thel": 46183.2,
+        "Sindragosa": 18295.4,
+        "The Lich King": 15835.3,
+        "Toravon the Ice Watcher": 15699.7,
+        "Halion": 21555.6,
+        "Anub'arak": 10099.5,
+        "Valithria Dreamwalker": 0
+      }
+    },
+    {
+      "name": "Chuchundra",
+      "server": "FreedomUA",
+      "class": "Mage",
+      "spec": "Fire",
+      "specIndex": 2,
+      "overallRank": 26,
+      "overallScore": 96.24,
+      "bosses": {
+        "Lord Marrowgar": 23453.3,
+        "Lady Deathwhisper": 17986.8,
+        "Deathbringer Saurfang": 26180.3,
+        "Festergut": 22074.9,
+        "Rotface": 22445.1,
+        "Professor Putricide": 17959.8,
+        "Blood Prince Council": 18335.4,
+        "Blood-Queen Lana'thel": 43821,
+        "Sindragosa": 19112.9,
+        "The Lich King": 16129.8,
+        "Toravon the Ice Watcher": 16723.7,
+        "Halion": 17484.5,
+        "Anub'arak": 8199.1,
+        "Valithria Dreamwalker": 0
+      }
+    },
+    {
+      "name": "Firre",
+      "server": "FreedomUA",
+      "class": "Mage",
+      "spec": "Arcane",
+      "specIndex": 1,
+      "overallRank": 47,
+      "overallScore": 44.1,
+      "bosses": {
+        "Lord Marrowgar": 14838.3,
+        "Lady Deathwhisper": 10842.8,
+        "Deathbringer Saurfang": 17803.8,
+        "Festergut": 15818.7,
+        "Rotface": 9717.2,
+        "Professor Putricide": 9575,
+        "Blood Prince Council": 9108.1,
+        "Blood-Queen Lana'thel": 16518.7,
+        "Sindragosa": 0,
+        "The Lich King": 0,
+        "Toravon the Ice Watcher": 15081.9,
+        "Halion": 13860.2,
+        "Anub'arak": 0,
+        "Valithria Dreamwalker": 0
+      }
+    },
+    {
+      "name": "Chuchundra",
+      "server": "FreedomUA",
+      "class": "Mage",
+      "spec": "Arcane",
+      "specIndex": 1,
+      "overallRank": 101,
+      "overallScore": 2.87,
+      "bosses": {
+        "Lord Marrowgar": 0,
+        "Lady Deathwhisper": 0,
+        "Deathbringer Saurfang": 0,
+        "Festergut": 0,
+        "Rotface": 0,
+        "Professor Putricide": 0,
+        "Blood Prince Council": 0,
+        "Blood-Queen Lana'thel": 11389.1,
+        "Sindragosa": 0,
+        "The Lich King": 0,
+        "Toravon the Ice Watcher": 0,
+        "Halion": 0,
+        "Anub'arak": 0,
+        "Valithria Dreamwalker": 0
+      }
+    },
+    {
+      "name": "Firre",
+      "server": "FreedomUA",
+      "class": "Mage",
+      "spec": "Fire",
+      "specIndex": 2,
+      "overallRank": 133,
+      "overallScore": 68.97,
+      "bosses": {
+        "Lord Marrowgar": 19263.8,
+        "Lady Deathwhisper": 16648.5,
+        "Deathbringer Saurfang": 22199.2,
+        "Festergut": 18337.5,
+        "Rotface": 18755.5,
+        "Professor Putricide": 12139.9,
+        "Blood Prince Council": 13152.4,
+        "Blood-Queen Lana'thel": 24427.4,
+        "Sindragosa": 12390.6,
+        "The Lich King": 10480.6,
+        "Toravon the Ice Watcher": 13897.5,
+        "Halion": 13166,
+        "Anub'arak": 0,
+        "Valithria Dreamwalker": 0
+      }
+    },
+    {
+      "name": "Boronir",
+      "server": "FreedomUA",
+      "class": "Shaman",
+      "spec": "Restoration",
+      "specIndex": 3,
+      "overallRank": 152,
+      "overallScore": 24.05,
+      "bosses": {
+        "Lord Marrowgar": 36.7,
+        "Lady Deathwhisper": 0,
+        "Deathbringer Saurfang": 0,
+        "Festergut": 0,
+        "Rotface": 0,
+        "Professor Putricide": 0,
+        "Blood Prince Council": 0,
+        "Blood-Queen Lana'thel": 0,
+        "Sindragosa": 140.9,
+        "The Lich King": 15.4,
+        "Toravon the Ice Watcher": 0,
+        "Halion": 0.9,
+        "Anub'arak": 0,
+        "Valithria Dreamwalker": 27432.9
+      }
+    },
+    {
+      "name": "Sumplesh",
+      "server": "FreedomUA",
+      "class": "Shaman",
+      "spec": "Restoration",
+      "specIndex": 3,
+      "overallRank": 181,
+      "overallScore": 16.92,
+      "bosses": {
+        "Lord Marrowgar": 0,
+        "Lady Deathwhisper": 70,
+        "Deathbringer Saurfang": 0,
+        "Festergut": 0,
+        "Rotface": 0,
+        "Professor Putricide": 0,
+        "Blood Prince Council": 0,
+        "Blood-Queen Lana'thel": 0,
+        "Sindragosa": 5.5,
+        "The Lich King": 10.3,
+        "Toravon the Ice Watcher": 0,
+        "Halion": 137,
+        "Anub'arak": 0,
+        "Valithria Dreamwalker": 28565.3
+      }
+    }
+  ]
+}
