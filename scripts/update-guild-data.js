@@ -60,13 +60,6 @@ function getSpecName(className, specIndex) {
 }
 
 
-function getSpecIndexByName(className, specName) {
-  const specs = SPECS_SELECT_OPTIONS[className] ?? [];
-  const index = specs.findIndex(spec => spec === specName);
-  return index >= 0 ? index + 1 : null;
-}
-
-
 function normalizeBosses(rawBosses, bossOrder) {
   const result = {};
 
@@ -150,8 +143,17 @@ async function fetchCharacterWithRetry(row, bossOrder) {
 
       const source = await response.json();
       const className = getClassName(source.class_i);
+
+      // Відкидаємо все, що не має відомого класу
+      if (className === 'Unknown') {
+        throw new Error(`Unknown class for ${row.name}`);
+      }
+
       const finalSpecIndex = specIndex;
       const specName = getSpecName(className, finalSpecIndex);
+      if (!specName) {
+        throw new Error(`Unknown spec for ${row.name}`);
+      }
 
       return {
         name: source.name ?? row.name,
@@ -220,6 +222,12 @@ async function updateGuildData() {
     try {
       console.log(`Updating ${row.name} / ${row.class} / ${row.spec} (specIndex: ${row.specIndex})`);
       const fresh = await fetchCharacterWithRetry(row, bossOrder);
+
+      // Не додаємо рядки, де клас невідомий
+      if (fresh.class === 'Unknown') {
+        throw new Error(`Fresh class is Unknown for ${row.name}`);
+      }
+
       updatedRows.push({
         name: fresh.name,
         server: fresh.server,
@@ -240,7 +248,16 @@ async function updateGuildData() {
         specIndex: row.specIndex,
         error: error.message
       });
-      updatedRows.push(row);
+
+      // Не додаємо в updatedRows помилкові рядки з Unknown-*
+      // Якщо ти хочеш зберегти принаймні базовий запис для spec 1:
+      // if (row.specIndex === 1) {
+      //   updatedRows.push(row);
+      // }
+      // Для spec 2/3 — просто викидаємо
+      if (row.specIndex === 1) {
+        updatedRows.push(row);
+      }
       await sleep(REQUEST_DELAY_MS);
     }
   }
@@ -248,14 +265,14 @@ async function updateGuildData() {
   guildData.rows = updatedRows;
   guildData.lastUpdated = new Date().toISOString();
   guildData.updateSummary = {
-    totalPlayers: updatedRows.length,
+    totalRows: updatedRows.length,
     failedPlayers: failedPlayers.length
   };
 
   await writeJson(DATA_FILE, guildData);
 
   console.log('guild-data.json updated successfully');
-  console.log(`Total rows (players × specs): ${updatedRows.length}`);
+  console.log(`Total rows (players × specs, filtered): ${updatedRows.length}`);
   console.log(`Failed rows: ${failedPlayers.length}`);
 }
 
