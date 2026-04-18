@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="uk-UA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Рейтинг Гравців Гільдії</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="ranking-page">
+    <div class="container">
+      <div class="container-inner">
+        <h1>Рейтинг Гравців Гільдії</h1>
+        <p>Актуальний рейтинг гравців за класами, спеціалізаціями та пріоритетом набору</p>
+
+        <div class="ranking-controls">
+          <label for="classSelect">Клас</label>
+          <select id="classSelect">
+            <option value="">Завантаження класів...</option>
+          </select>
+
+          <label for="specSelect">Спеціалізація</label>
+          <select id="specSelect">
+            <option value="">Спочатку обери клас</option>
+          </select>
+        </div>
+
+        <p id="tableStatus">Завантаження даних...</p>
+
+        <div class="ranking-table-wrap">
+          <table id="rankingTable">
+            <thead id="rankingHead"></thead>
+            <tbody id="rankingBody"></tbody>
+          </table>
+        </div>
+
+        <div class="ranking-link-wrap">
+          <a class="ranking-link-btn" href="./index.html">← Назад на головну</a>
+        </div>
+
+        <footer>
+          <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank">Freedom WoW</a></span>
+        </footer>
+      </div>
+    </div>
+
+    <script src="./guild-ranking.js"></script>
+  </body>
+</html>

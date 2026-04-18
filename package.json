@@ -1,0 +1,21 @@
+{
+  "name": "wow-nostalgia.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "update:guild": "node scripts/update-guild-data.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wow-nostalgia/wow-nostalgia.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/wow-nostalgia/wow-nostalgia.github.io/issues"
+  },
+  "homepage": "https://github.com/wow-nostalgia/wow-nostalgia.github.io#readme"
+}
