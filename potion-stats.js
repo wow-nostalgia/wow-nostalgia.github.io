@@ -58,7 +58,7 @@ function createRaidSection(raid, index) {
         aria-controls="potion-raid-${index}"
       >
         <span class="potion-raid-title">${escapeHtml(formatRaidTitle(raid))}</span>
-        <span class="potion-raid-meta">${raid.players.length} гравців</span>
+        <span class="potion-raid-meta">${raid.players.length} гравці(в)</span>
       </button>
 
       <div class="potion-raid-content" id="potion-raid-${index}" hidden>
