@@ -31,7 +31,7 @@ function formatRaidTitle(raid) {
 }
 
 function getRowClass(player) {
-  return player.total >= 13 ? 'potion-good' : 'potion-bad';
+  return player.total >= 12 ? 'potion-good' : 'potion-bad';
 }
 
 function createPlayerRow(player) {
