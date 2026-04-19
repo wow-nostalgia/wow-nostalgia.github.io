@@ -1,1 +1,5 @@
 Додай нове посилання на лог в data/raid-logs.json, потім в консолі запусти команду "npm run update:potions".
+
+Рейтинг гравців оновлюється автоматично кожен ранок. Є спеціальний Action https://github.com/wow-nostalgia/wow-nostalgia.github.io/actions/workflows/update-guild-data.yml
+Єдине. що список согільдійців треба заливати (оновлювати вручну). 
+Для цього є спеціальний аддон для експорту списку гравців гільдії. Він лежить в папці Addon-to-export-guild-members. Читай ReadMe всередині аддону.
