@@ -374,3 +374,129 @@ body.ranking-page #rankingTable th .boss-header {
     min-width: 560px;
   }
 }
+
+body.potion-page #potionStatus {
+  margin: 1rem 0 1.25rem;
+  font-size: 1rem;
+}
+
+body.potion-page .potion-raids {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+body.potion-page .potion-raid-block {
+  border: 1px solid rgba(197, 198, 205, 0.45);
+  margin: 0.5rem 0;
+  border-radius: 3px;
+  background: transparent;
+  overflow: hidden;
+}
+
+body.potion-page .potion-raid-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: #c5c6cd;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+body.potion-page .potion-raid-toggle:hover {
+  background-color: rgba(123, 170, 245, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+body.potion-page .potion-raid-toggle.open {
+  background-color: rgba(123, 170, 245, 0.1);
+}
+
+body.potion-page .potion-raid-title {
+  display: inline-block;
+  word-break: break-word;
+}
+
+body.potion-page .potion-raid-meta {
+  flex-shrink: 0;
+  color: #cdb7e9;
+  font-size: 0.95rem;
+}
+
+body.potion-page .potion-raid-content {
+  padding: 0.5rem 1rem 0.75rem;
+}
+
+body.potion-page .potion-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+}
+
+body.potion-page .potion-table th,
+body.potion-page .potion-table td {
+  padding: 0.2rem 0.35rem;
+  border: 1px solid rgba(197, 198, 205, 0.08);
+  text-align: center;
+  line-height: 1.2;
+}
+
+body.potion-page .potion-table th:first-child,
+body.potion-page .potion-table td:first-child {
+  text-align: left;
+}
+
+body.potion-page .potion-table th {
+  background: rgba(255, 255, 255, 0.06);
+  font-weight: 500;
+}
+
+body.potion-page .potion-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+body.potion-page .potion-raid-link {
+  margin-top: 0.5rem;
+}
+
+body.potion-page .potion-raid-link a {
+  color: #7baaf5;
+  text-decoration: none;
+}
+
+body.potion-page .potion-raid-link a:hover {
+  color: #ffd700;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  body.potion-page .potion-raid-toggle {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1.1rem;
+  }
+
+  body.potion-page .potion-raid-meta {
+    font-size: 0.9rem;
+  }
+
+  body.potion-page .potion-table {
+    min-width: 560px;
+  }
+}
+
+body.potion-page .potion-table tbody tr.potion-good > td {
+  color: #63d471 !important;
+}
+
+body.potion-page .potion-table tbody tr.potion-bad > td {
+  color: #ff6b6b !important;
+}

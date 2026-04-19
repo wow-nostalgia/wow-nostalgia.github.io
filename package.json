@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "update:guild": "node scripts/update-guild-data.js"
+    "update:guild": "node scripts/update-guild-data.js",
+    "update:potions": "node scripts/update-potion-stats.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/wow-nostalgia/wow-nostalgia.github.io/issues"
   },
-  "homepage": "https://github.com/wow-nostalgia/wow-nostalgia.github.io#readme"
+  "homepage": "https://github.com/wow-nostalgia/wow-nostalgia.github.io#readme",
+  "dependencies": {
+    "cheerio": "^1.2.0"
+  }
 }
