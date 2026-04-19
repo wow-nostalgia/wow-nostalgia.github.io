@@ -1,10 +1,8 @@
 const fs = require('node:fs/promises');
 const path = require('path');
 
-
 const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
 const DATA_FILE = path.join(__dirname, '..', 'data', 'guild-data.json');
-
 
 const CLASSES = [
   'Death Knight',
@@ -19,7 +17,6 @@ const CLASSES = [
   'Warrior'
 ];
 
-
 const SPECS_SELECT_OPTIONS = {
   'Death Knight': ['Blood', 'Frost', 'Unholy'],
   'Druid': ['Balance', 'Feral Combat', 'Restoration'],
@@ -33,32 +30,26 @@ const SPECS_SELECT_OPTIONS = {
   'Warrior': ['Arms', 'Fury', 'Protection']
 };
 
-
 const REQUEST_DELAY_MS = 1500;
 const MAX_RETRIES = 3;
-
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
 
 function normalizeScore(points) {
   if (typeof points !== 'number') return 0;
   return Number((points / 100).toFixed(2));
 }
 
-
 function getClassName(classIndex) {
   return CLASSES[classIndex] ?? 'Unknown';
 }
-
 
 function getSpecName(className, specIndex) {
   const specs = SPECS_SELECT_OPTIONS[className] ?? [];
   return specs[specIndex - 1] ?? `Spec ${specIndex}`;
 }
-
 
 function normalizeBosses(rawBosses, bossOrder) {
   const result = {};
@@ -74,17 +65,22 @@ function normalizeBosses(rawBosses, bossOrder) {
   return result;
 }
 
+function hasAnyBossData(bosses) {
+  return Object.values(bosses || {}).some(value => Number(value) > 0);
+}
+
+function isUnknownName(name) {
+  return typeof name === 'string' && name.startsWith('Unknown-');
+}
 
 async function readJson(filePath) {
   const raw = await fs.readFile(filePath, 'utf8');
   return JSON.parse(raw);
 }
 
-
 async function writeJson(filePath, data) {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
 }
-
 
 async function readPlayers() {
   const players = await readJson(PLAYERS_FILE);
@@ -94,7 +90,6 @@ async function readPlayers() {
   return players;
 }
 
-
 async function readGuildData() {
   try {
     return await readJson(DATA_FILE);
@@ -102,7 +97,6 @@ async function readGuildData() {
     return {};
   }
 }
-
 
 async function fetchCharacterOnce(row) {
   const response = await fetch('https://uwu-logs.xyz/character', {
@@ -120,7 +114,6 @@ async function fetchCharacterOnce(row) {
 
   return { response, specIndex: row.specIndex };
 }
-
 
 async function fetchCharacterWithRetry(row, bossOrder) {
   let lastError = null;
@@ -143,27 +136,21 @@ async function fetchCharacterWithRetry(row, bossOrder) {
 
       const source = await response.json();
       const className = getClassName(source.class_i);
-
-      // Відкидаємо все, що не має відомого класу
-      if (className === 'Unknown') {
-        throw new Error(`Unknown class for ${row.name}`);
-      }
-
       const finalSpecIndex = specIndex;
       const specName = getSpecName(className, finalSpecIndex);
-      if (!specName) {
-        throw new Error(`Unknown spec for ${row.name}`);
-      }
+      const normalizedBosses = normalizeBosses(source.bosses, bossOrder);
+      const normalizedName = source.name ?? row.name;
+      const normalizedServer = source.server ?? row.server;
 
       return {
-        name: source.name ?? row.name,
-        server: source.server ?? row.server,
+        name: normalizedName,
+        server: normalizedServer,
         class: className,
         spec: specName,
         specIndex: finalSpecIndex,
         overallRank: source.overall_rank ?? null,
         overallScore: normalizeScore(source.overall_points),
-        bosses: normalizeBosses(source.bosses, bossOrder)
+        bosses: normalizedBosses
       };
     } catch (error) {
       lastError = error;
@@ -179,16 +166,15 @@ async function fetchCharacterWithRetry(row, bossOrder) {
   throw lastError ?? new Error(`Failed to fetch ${row.name}`);
 }
 
-
 async function updateGuildData() {
   const players = await readPlayers();
   const guildData = await readGuildData();
   const bossOrder = guildData.bossOrder || [];
   const existingRows = Array.isArray(guildData.rows) ? guildData.rows : [];
 
-  // Генеруємо 3 spec-рядки на кожного гравця
   const initialRows = [];
   const existingMap = new Map();
+
   for (const row of existingRows) {
     const key = `${row.name}::${row.server}::${row.specIndex}`;
     existingMap.set(key, row);
@@ -200,7 +186,7 @@ async function updateGuildData() {
       const existingRow = existingMap.get(existingKey) || null;
 
       const playerClass = existingRow?.class ?? player.class ?? 'Unknown';
-      const specName = getSpecName(playerClass, specIndex) ?? `Spec ${specIndex}`;
+      const specName = getSpecName(playerClass, specIndex);
 
       initialRows.push({
         name: player.name,
@@ -220,12 +206,26 @@ async function updateGuildData() {
 
   for (const row of initialRows) {
     try {
-      console.log(`Updating ${row.name} / ${row.class} / ${row.spec} (specIndex: ${row.specIndex})`);
+      console.log(`Updating ${row.name} / ${row.spec} (specIndex: ${row.specIndex})`);
+
       const fresh = await fetchCharacterWithRetry(row, bossOrder);
 
-      // Не додаємо рядки, де клас невідомий
       if (fresh.class === 'Unknown') {
-        throw new Error(`Fresh class is Unknown for ${row.name}`);
+        console.log(`Skipping ${row.name} / ${row.spec}: unknown class`);
+        await sleep(REQUEST_DELAY_MS);
+        continue;
+      }
+
+      if (isUnknownName(fresh.name)) {
+        console.log(`Skipping ${row.name} / ${row.spec}: unknown name ${fresh.name}`);
+        await sleep(REQUEST_DELAY_MS);
+        continue;
+      }
+
+      if (!hasAnyBossData(fresh.bosses)) {
+        console.log(`Skipping ${row.name} / ${row.spec}: no boss data`);
+        await sleep(REQUEST_DELAY_MS);
+        continue;
       }
 
       updatedRows.push({
@@ -238,44 +238,44 @@ async function updateGuildData() {
         overallScore: fresh.overallScore,
         bosses: fresh.bosses
       });
+
       await sleep(REQUEST_DELAY_MS);
     } catch (error) {
-      console.error(`Failed ${row.name} / ${row.class} / ${row.spec}: ${error.message}`);
+      console.error(`Failed ${row.name} / ${row.spec} (specIndex: ${row.specIndex}): ${error.message}`);
       failedPlayers.push({
         name: row.name,
-        class: row.class,
+        server: row.server,
         spec: row.spec,
         specIndex: row.specIndex,
         error: error.message
       });
-
-      // Не додаємо в updatedRows помилкові рядки з Unknown-*
-      // Якщо ти хочеш зберегти принаймні базовий запис для spec 1:
-      // if (row.specIndex === 1) {
-      //   updatedRows.push(row);
-      // }
-      // Для spec 2/3 — просто викидаємо
-      if (row.specIndex === 1) {
-        updatedRows.push(row);
-      }
       await sleep(REQUEST_DELAY_MS);
     }
   }
 
-  guildData.rows = updatedRows;
+  const uniqueRows = [];
+  const seen = new Set();
+
+  for (const row of updatedRows) {
+    const key = `${row.name}::${row.server}::${row.specIndex}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    uniqueRows.push(row);
+  }
+
+  guildData.rows = uniqueRows;
   guildData.lastUpdated = new Date().toISOString();
   guildData.updateSummary = {
-    totalRows: updatedRows.length,
+    totalRows: uniqueRows.length,
     failedPlayers: failedPlayers.length
   };
 
   await writeJson(DATA_FILE, guildData);
 
   console.log('guild-data.json updated successfully');
-  console.log(`Total rows (players × specs, filtered): ${updatedRows.length}`);
+  console.log(`Total rows (filtered): ${uniqueRows.length}`);
   console.log(`Failed rows: ${failedPlayers.length}`);
 }
-
 
 updateGuildData().catch((error) => {
   console.error(error);
