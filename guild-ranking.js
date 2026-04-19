@@ -1,5 +1,6 @@
 const classSelect = document.getElementById('classSelect');
 const specSelect = document.getElementById('specSelect');
+const hideEmptyPlayersCheckbox = document.getElementById('hideEmptyPlayers');
 const tableStatus = document.getElementById('tableStatus');
 const rankingHead = document.getElementById('rankingHead');
 const rankingBody = document.getElementById('rankingBody');
@@ -23,7 +24,8 @@ function clearTable() {
 
 function populateClasses() {
   classSelect.innerHTML = '<option value="">Оберіть клас</option>';
-  data.classes.forEach(cls => {
+
+  (data.classes || []).forEach(cls => {
     const option = document.createElement('option');
     option.value = cls;
     option.textContent = cls;
@@ -51,15 +53,23 @@ function populateSpecs(className) {
   setStatus('Оберіть спеціалізацію.');
 }
 
+function hasBossData(row) {
+  return Object.values(row.bosses || {}).some(value => Number(value) > 0);
+}
+
 function getBossColumns(rows) {
-  const bossOrder = (data.bossOrder || []).filter(b => !excludedBosses.has(b));
+  const bossOrder = (data.bossOrder || []).filter(bossName => !excludedBosses.has(bossName));
   const bossSet = new Set();
+
   rows.forEach(row => {
-    Object.keys(row.bosses || {}).forEach(b => {
-      if (!excludedBosses.has(b)) bossSet.add(b);
+    Object.entries(row.bosses || {}).forEach(([bossName, value]) => {
+      if (!excludedBosses.has(bossName) && Number(value) > 0) {
+        bossSet.add(bossName);
+      }
     });
   });
-  return bossOrder.filter(b => bossSet.has(b));
+
+  return bossOrder.filter(bossName => bossSet.has(bossName));
 }
 
 function renderTable(className, specName) {
@@ -70,7 +80,13 @@ function renderTable(className, specName) {
     return;
   }
 
-  const rows = (data.rows || []).filter(row => row.class === className && row.spec === specName);
+  let rows = (data.rows || []).filter(
+    row => row.class === className && row.spec === specName
+  );
+
+  if (hideEmptyPlayersCheckbox?.checked) {
+    rows = rows.filter(row => hasBossData(row));
+  }
 
   if (!rows.length) {
     setStatus('Для цієї комбінації даних немає.');
@@ -78,15 +94,20 @@ function renderTable(className, specName) {
   }
 
   const bossColumns = getBossColumns(rows);
+
   const columns = [
     { key: '__index', label: '#' },
     { key: 'name', label: 'Нік' },
     { key: 'overallRank', label: 'Rank' },
     { key: 'overallScore', label: 'Score' },
-    ...bossColumns.map(b => ({ key: `bosses.${b}`, label: b }))
+    ...bossColumns.map(bossName => ({
+      key: `bosses.${bossName}`,
+      label: bossName
+    }))
   ];
 
   const headRow = document.createElement('tr');
+
   columns.forEach(col => {
     const th = document.createElement('th');
     const wrap = document.createElement('div');
@@ -95,30 +116,41 @@ function renderTable(className, specName) {
     th.appendChild(wrap);
     headRow.appendChild(th);
   });
+
   rankingHead.appendChild(headRow);
 
   rows
     .slice()
-    .sort((a, b) => a.overallRank - b.overallRank)
+    .sort((a, b) => {
+      const rankA = Number.isFinite(Number(a.overallRank)) ? Number(a.overallRank) : Infinity;
+      const rankB = Number.isFinite(Number(b.overallRank)) ? Number(b.overallRank) : Infinity;
+      return rankA - rankB;
+    })
     .forEach((row, idx) => {
       const tr = document.createElement('tr');
+
       columns.forEach(col => {
         const td = document.createElement('td');
+
         if (col.key === '__index') {
           td.textContent = idx + 1;
         } else if (col.key.startsWith('bosses.')) {
           const boss = col.key.slice(7);
           const val = row.bosses?.[boss];
-          td.textContent = val === undefined || val === null || val === 0
-          ? '—'
-          : Math.round(Number(val)).toLocaleString('en-US');
+
+          td.textContent =
+            val === undefined || val === null || Number(val) === 0
+              ? '—'
+              : Math.round(Number(val)).toLocaleString('en-US');
         } else if (col.key === 'overallScore') {
           td.textContent = Number(row[col.key] ?? 0).toFixed(2);
         } else {
           td.textContent = row[col.key] ?? '';
         }
+
         tr.appendChild(td);
       });
+
       rankingBody.appendChild(tr);
     });
 
@@ -129,7 +161,10 @@ async function init() {
   try {
     setStatus('Завантаження даних...');
     const response = await fetch('./data/guild-data.json');
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
     data = await response.json();
     populateClasses();
     setStatus('Оберіть клас і спеціалізацію.');
@@ -147,5 +182,11 @@ classSelect.addEventListener('change', () => {
 specSelect.addEventListener('change', () => {
   renderTable(classSelect.value, specSelect.value);
 });
+
+if (hideEmptyPlayersCheckbox) {
+  hideEmptyPlayersCheckbox.addEventListener('change', () => {
+    renderTable(classSelect.value, specSelect.value);
+  });
+}
 
 init();
