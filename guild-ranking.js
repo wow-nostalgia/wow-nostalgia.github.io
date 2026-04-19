@@ -97,7 +97,7 @@ function renderTable(className, specName) {
 
   const columns = [
     { key: '__index', label: '#' },
-    { key: 'name', label: 'Нік' },
+    { key: 'name', label: 'Player Name' },
     { key: 'overallRank', label: 'Rank' },
     { key: 'overallScore', label: 'Score' },
     ...bossColumns.map(bossName => ({
