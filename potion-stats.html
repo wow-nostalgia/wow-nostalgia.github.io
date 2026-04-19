@@ -14,22 +14,71 @@
       <div class="container-inner">
         <h1>Статистика Potion</h1>
 
-        <div class="ranking-link-wrap">
+        <div class="potion-top-actions">
           <a class="ranking-link-btn" href="./index.html">← Назад на головну</a>
+
+          <div class="potion-view-switch" role="tablist" aria-label="Режим перегляду статистики Potion">
+            <button
+              class="ranking-link-btn potion-view-btn active"
+              type="button"
+              data-view="logs"
+              aria-pressed="true"
+            >
+              Логи
+            </button>
+            <button
+              class="ranking-link-btn potion-view-btn"
+              type="button"
+              data-view="honor"
+              aria-pressed="false"
+            >
+              Дошка Пошани
+            </button>
+          </div>
         </div>
 
-        <p>Лог містить танків і хілів, котрим не обов'язково пити поти.</p>
-        <p>Лог містить гравців котрих логер wow помилково додає в статистику рейду.</p>
-        
-        <p id="potionStatus">Завантаження даних...</p>
+        <section id="logsView">
+          <p>Лог містить танків і хілів, котрим не обов'язково пити поти.</p>
+          <p>Лог може містити гравців котрих логер wow помилково додає в статистику рейду.</p>
 
-        <div id="potionRaids" class="potion-raids"></div>
+          <p id="potionStatus">Завантаження даних...</p>
 
-        <footer>
-          <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank">Freedom WoW</a></span>
-        </footer>
+          <div id="potionRaids" class="potion-raids"></div>
+        </section>
+
+        <section id="honorView" hidden>
+          <div class="ranking-status-row potion-honor-status-row">
+            <p id="honorStatus">Завантаження даних...</p>
+
+            <label class="ranking-checkbox-label potion-hide-zero-label">
+              <input type="checkbox" id="hideZeroPlayers" checked />
+              <span>Приховати не потних гравців</span>
+            </label>
+          </div>
+
+          <div class="ranking-table-wrap">
+            <table class="potion-table honor-table">
+              <thead>
+                <tr>
+                  <th>№</th>
+                  <th>Ім'я</th>
+                  <th>Середня кількість потів</th>
+                </tr>
+              </thead>
+              <tbody id="honorTableBody">
+                <tr>
+                  <td colspan="3">Завантаження...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
       </div>
     </div>
+
+    <footer>
+      <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank" rel="noopener noreferrer">Freedom WoW</a></span>
+    </footer>
 
     <script src="./potion-stats.js"></script>
   </body>

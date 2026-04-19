@@ -1,5 +1,14 @@
 const statusEl = document.getElementById('potionStatus');
 const raidsEl = document.getElementById('potionRaids');
+const honorStatusEl = document.getElementById('honorStatus');
+const honorTableBodyEl = document.getElementById('honorTableBody');
+const hideZeroPlayersEl = document.getElementById('hideZeroPlayers');
+
+const logsViewEl = document.getElementById('logsView');
+const honorViewEl = document.getElementById('honorView');
+const viewButtons = document.querySelectorAll('.potion-view-btn');
+
+let honorBoardCache = [];
 
 function escapeHtml(value) {
   return String(value)
@@ -41,7 +50,13 @@ function createRaidSection(raid, index) {
 
   return `
     <div class="potion-raid-block">
-      <button class="potion-raid-toggle" type="button" data-target="potion-raid-${index}">
+      <button
+        class="potion-raid-toggle"
+        type="button"
+        data-target="potion-raid-${index}"
+        aria-expanded="false"
+        aria-controls="potion-raid-${index}"
+      >
         <span class="potion-raid-title">${escapeHtml(formatRaidTitle(raid))}</span>
         <span class="potion-raid-meta">${raid.players.length} гравців</span>
       </button>
@@ -71,7 +86,7 @@ function createRaidSection(raid, index) {
   `;
 }
 
-function attachToggles() {
+function attachRaidToggles() {
   const buttons = document.querySelectorAll('.potion-raid-toggle');
 
   buttons.forEach((button) => {
@@ -81,14 +96,105 @@ function attachToggles() {
       if (!content) return;
 
       const isHidden = content.hasAttribute('hidden');
+
       if (isHidden) {
         content.removeAttribute('hidden');
         button.classList.add('open');
+        button.setAttribute('aria-expanded', 'true');
       } else {
         content.setAttribute('hidden', '');
         button.classList.remove('open');
+        button.setAttribute('aria-expanded', 'false');
       }
     });
+  });
+}
+
+function buildHonorBoard(raids) {
+  const playersMap = new Map();
+
+  raids.forEach((raid) => {
+    if (!Array.isArray(raid.players)) return;
+
+    raid.players.forEach((player) => {
+      const name = String(player.name || '').trim();
+      if (!name) return;
+
+      const current = playersMap.get(name) || {
+        name,
+        totalPotions: 0,
+        raidsCount: 0
+      };
+
+      current.totalPotions += Number(player.total || 0);
+      current.raidsCount += 1;
+
+      playersMap.set(name, current);
+    });
+  });
+
+  return [...playersMap.values()]
+    .map((player) => ({
+      name: player.name,
+      averagePotions: player.raidsCount > 0 ? player.totalPotions / player.raidsCount : 0
+    }))
+    .sort((a, b) => b.averagePotions - a.averagePotions || a.name.localeCompare(b.name));
+}
+
+function renderHonorBoard(players) {
+  const hideZeroPlayers = hideZeroPlayersEl?.checked ?? true;
+  const visiblePlayers = hideZeroPlayers ? players.filter((player) => player.averagePotions > 0) : players;
+
+  if (!players.length) {
+    honorStatusEl.textContent = 'Немає даних для відображення.';
+    honorTableBodyEl.innerHTML = '<tr><td colspan="3">Немає даних</td></tr>';
+    return;
+  }
+
+  honorStatusEl.textContent = `Гравців у зведеній таблиці: ${visiblePlayers.length}`;
+
+  if (!visiblePlayers.length) {
+    honorTableBodyEl.innerHTML = '<tr><td colspan="3">Немає гравців з потами</td></tr>';
+    return;
+  }
+
+  honorTableBodyEl.innerHTML = visiblePlayers
+    .map(
+      (player, index) => `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${escapeHtml(player.name)}</td>
+          <td>${player.averagePotions.toFixed(2)}</td>
+        </tr>
+      `
+    )
+    .join('');
+}
+
+function switchView(viewName) {
+  const isLogsView = viewName === 'logs';
+
+  logsViewEl.hidden = !isLogsView;
+  honorViewEl.hidden = isLogsView;
+
+  viewButtons.forEach((button) => {
+    const isActive = button.dataset.view === viewName;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+}
+
+function attachViewSwitch() {
+  viewButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      switchView(button.dataset.view);
+    });
+  });
+}
+
+function attachHonorFilter() {
+  hideZeroPlayersEl.addEventListener('change', () => {
+    renderHonorBoard(honorBoardCache);
   });
 }
 
@@ -98,13 +204,18 @@ async function loadPotionStats() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const raids = await response.json();
+
     if (!Array.isArray(raids) || raids.length === 0) {
       statusEl.textContent = 'Немає даних для відображення.';
       raidsEl.innerHTML = '';
+      honorStatusEl.textContent = 'Немає даних для відображення.';
+      honorTableBodyEl.innerHTML = '<tr><td colspan="3">Немає даних</td></tr>';
       return;
     }
 
-    const sortedRaids = [...raids].sort((a, b) => {
+    const validRaids = raids.filter((raid) => Array.isArray(raid.players) && raid.players.length > 0);
+
+    const sortedRaids = [...validRaids].sort((a, b) => {
       const aDate = a.date || '';
       const bDate = b.date || '';
       return bDate.localeCompare(aDate);
@@ -112,12 +223,20 @@ async function loadPotionStats() {
 
     statusEl.textContent = `Знайдено рейдів: ${sortedRaids.length}`;
     raidsEl.innerHTML = sortedRaids.map((raid, index) => createRaidSection(raid, index)).join('');
-    attachToggles();
+    attachRaidToggles();
+
+    honorBoardCache = buildHonorBoard(sortedRaids);
+    renderHonorBoard(honorBoardCache);
   } catch (error) {
     console.error(error);
     statusEl.textContent = 'Не вдалося завантажити дані potion.';
     raidsEl.innerHTML = '';
+    honorStatusEl.textContent = 'Не вдалося завантажити дані.';
+    honorTableBodyEl.innerHTML = '<tr><td colspan="3">Помилка завантаження</td></tr>';
   }
 }
 
+attachViewSwitch();
+attachHonorFilter();
+switchView('logs');
 loadPotionStats();
