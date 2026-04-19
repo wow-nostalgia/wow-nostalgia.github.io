@@ -64,7 +64,7 @@ function createRaidSection(raid, index) {
         </div>
 
         <p class="potion-raid-link">
-          <a href="${raid.raidUrl}" target="_blank" rel="noopener noreferrer">Відкрити лог рейду</a>
+          <a href="${raid.raidUrl}" target="_blank" rel="noopener noreferrer">Відкрити оригінальний лог UwU-Logs</a>
         </p>
       </div>
     </div>
