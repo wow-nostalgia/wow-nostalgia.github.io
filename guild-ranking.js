@@ -5,6 +5,15 @@ const tableStatus = document.getElementById('tableStatus');
 const rankingHead = document.getElementById('rankingHead');
 const rankingBody = document.getElementById('rankingBody');
 
+let lastUpdatedText = document.getElementById('lastUpdatedText');
+
+if (!lastUpdatedText && tableStatus) {
+  lastUpdatedText = document.createElement('p');
+  lastUpdatedText.id = 'lastUpdatedText';
+  lastUpdatedText.className = 'last-updated-text';
+  tableStatus.insertAdjacentElement('afterend', lastUpdatedText);
+}
+
 let data = null;
 
 const excludedBosses = new Set([
@@ -70,6 +79,33 @@ function getBossColumns(rows) {
   });
 
   return bossOrder.filter(bossName => bossSet.has(bossName));
+}
+
+function formatLastUpdatedKyiv(isoString) {
+  if (!isoString) return '';
+
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return '';
+
+  return new Intl.DateTimeFormat('uk-UA', {
+    timeZone: 'Europe/Kyiv',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23'
+  }).format(date);
+}
+
+function renderLastUpdated() {
+  if (!lastUpdatedText) return;
+
+  const formatted = formatLastUpdatedKyiv(data?.lastUpdated);
+
+  lastUpdatedText.textContent = formatted
+    ? `Останнє оновлення: ${formatted}`
+    : '';
 }
 
 function renderTable(className, specName) {
@@ -167,10 +203,12 @@ async function init() {
 
     data = await response.json();
     populateClasses();
+    renderLastUpdated();
     setStatus('Оберіть клас і спеціалізацію.');
   } catch (error) {
     console.error(error);
     setStatus('Не вдалося завантажити дані рейтингу.');
+    renderLastUpdated();
   }
 }
 

@@ -209,3 +209,11 @@ body.potion-page .potion-table tbody tr.potion-bad > td { color: #ff6b6b !import
     padding: 0.75rem 0.875rem;
   }
 }
+
+.last-updated-text {
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: #8f96a3;
+  line-height: 1.35;
+}
