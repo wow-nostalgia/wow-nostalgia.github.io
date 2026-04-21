@@ -1,6 +1,5 @@
 const classSelect = document.getElementById('classSelect');
 const specSelect = document.getElementById('specSelect');
-const hideEmptyPlayersCheckbox = document.getElementById('hideEmptyPlayers');
 const tableStatus = document.getElementById('tableStatus');
 const rankingHead = document.getElementById('rankingHead');
 const rankingBody = document.getElementById('rankingBody');
@@ -62,10 +61,6 @@ function populateSpecs(className) {
   setStatus('Оберіть спеціалізацію.');
 }
 
-function hasBossData(row) {
-  return Object.values(row.bosses || {}).some(value => Number(value) > 0);
-}
-
 function getBossColumns(rows) {
   const bossOrder = (data.bossOrder || []).filter(bossName => !excludedBosses.has(bossName));
   const bossSet = new Set();
@@ -119,10 +114,6 @@ function renderTable(className, specName) {
   let rows = (data.rows || []).filter(
     row => row.class === className && row.spec === specName
   );
-
-  if (hideEmptyPlayersCheckbox?.checked) {
-    rows = rows.filter(row => hasBossData(row));
-  }
 
   if (!rows.length) {
     setStatus('Для цієї комбінації даних немає.');
@@ -220,11 +211,5 @@ classSelect.addEventListener('change', () => {
 specSelect.addEventListener('change', () => {
   renderTable(classSelect.value, specSelect.value);
 });
-
-if (hideEmptyPlayersCheckbox) {
-  hideEmptyPlayersCheckbox.addEventListener('change', () => {
-    renderTable(classSelect.value, specSelect.value);
-  });
-}
 
 init();
