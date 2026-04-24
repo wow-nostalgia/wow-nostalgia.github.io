@@ -4,194 +4,8 @@
     "consumablesUrl": "https://uwu-logs.xyz/reports/26-04-19--20-31--Boro--FreedomUA/consumables/",
     "date": "2026-04-19",
     "title": "https://uwu-logs.xyz/reports/26-04-19--20-31--Boro--FreedomUA/",
-    "players": [
-      {
-        "name": "Жеканежаб",
-        "total": 23,
-        "potionOfSpeed": 23,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Кумакума",
-        "total": 23,
-        "potionOfSpeed": 12,
-        "potionOfWildMagic": 11
-      },
-      {
-        "name": "Elizabeth",
-        "total": 23,
-        "potionOfSpeed": 23,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Muzon",
-        "total": 23,
-        "potionOfSpeed": 23,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Оби",
-        "total": 22,
-        "potionOfSpeed": 1,
-        "potionOfWildMagic": 21
-      },
-      {
-        "name": "Ланарей",
-        "total": 20,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 20
-      },
-      {
-        "name": "Boro",
-        "total": 20,
-        "potionOfSpeed": 5,
-        "potionOfWildMagic": 15
-      },
-      {
-        "name": "Firre",
-        "total": 20,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 20
-      },
-      {
-        "name": "Wasovsky",
-        "total": 18,
-        "potionOfSpeed": 18,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Knee",
-        "total": 17,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 15
-      },
-      {
-        "name": "Чіта",
-        "total": 15,
-        "potionOfSpeed": 15,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Kawaiibaka",
-        "total": 15,
-        "potionOfSpeed": 10,
-        "potionOfWildMagic": 5
-      },
-      {
-        "name": "Blackmore",
-        "total": 14,
-        "potionOfSpeed": 14,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Namikaze",
-        "total": 14,
-        "potionOfSpeed": 14,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Tvoyiochi",
-        "total": 14,
-        "potionOfSpeed": 14,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Wtfboss",
-        "total": 14,
-        "potionOfSpeed": 11,
-        "potionOfWildMagic": 3
-      },
-      {
-        "name": "Єва",
-        "total": 13,
-        "potionOfSpeed": 13,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Варр",
-        "total": 12,
-        "potionOfSpeed": 12,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Sim",
-        "total": 8,
-        "potionOfSpeed": 8,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Blodsikerr",
-        "total": 4,
-        "potionOfSpeed": 4,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Allashayka",
-        "total": 2,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Butterfly",
-        "total": 2,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Niyy",
-        "total": 2,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 2
-      },
-      {
-        "name": "Sweetest",
-        "total": 2,
-        "potionOfSpeed": 1,
-        "potionOfWildMagic": 1
-      },
-      {
-        "name": "Іліданчик",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Кас'тіель",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Япєрдолю",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Ashmore",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Deser",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Discocum",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Onyx",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      }
-    ]
+    "players": [],
+    "error": "Request failed with status 502"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-04-18--20-40--Boromit--FreedomUA/",
@@ -3812,194 +3626,8 @@
     "consumablesUrl": "https://uwu-logs.xyz/reports/26-03-07--20-28--Vampirickiss--FreedomUA/consumables/",
     "date": "2026-03-07",
     "title": "https://uwu-logs.xyz/reports/26-03-07--20-28--Vampirickiss--FreedomUA/",
-    "players": [
-      {
-        "name": "Fuko",
-        "total": 21,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 21
-      },
-      {
-        "name": "Quadrobeer",
-        "total": 20,
-        "potionOfSpeed": 20,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Skyfallion",
-        "total": 20,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 20
-      },
-      {
-        "name": "Agett",
-        "total": 19,
-        "potionOfSpeed": 19,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Ashmore",
-        "total": 19,
-        "potionOfSpeed": 19,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Vampirickiss",
-        "total": 19,
-        "potionOfSpeed": 14,
-        "potionOfWildMagic": 5
-      },
-      {
-        "name": "Goolyx",
-        "total": 17,
-        "potionOfSpeed": 17,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Гобсек",
-        "total": 16,
-        "potionOfSpeed": 14,
-        "potionOfWildMagic": 2
-      },
-      {
-        "name": "Жабнерека",
-        "total": 16,
-        "potionOfSpeed": 7,
-        "potionOfWildMagic": 9
-      },
-      {
-        "name": "Twilight",
-        "total": 16,
-        "potionOfSpeed": 16,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Коко",
-        "total": 15,
-        "potionOfSpeed": 15,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Alldie",
-        "total": 15,
-        "potionOfSpeed": 15,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Полкилло",
-        "total": 14,
-        "potionOfSpeed": 13,
-        "potionOfWildMagic": 1
-      },
-      {
-        "name": "Арау",
-        "total": 12,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 12
-      },
-      {
-        "name": "Іліданчик",
-        "total": 12,
-        "potionOfSpeed": 12,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Агрочинитель",
-        "total": 7,
-        "potionOfSpeed": 7,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Kawaiibaka",
-        "total": 5,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 3
-      },
-      {
-        "name": "Deser",
-        "total": 4,
-        "potionOfSpeed": 3,
-        "potionOfWildMagic": 1
-      },
-      {
-        "name": "Allashayka",
-        "total": 3,
-        "potionOfSpeed": 3,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Япєрдолю",
-        "total": 2,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Esca",
-        "total": 2,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Wirtus",
-        "total": 2,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Зібров",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Совуня",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Шипуч",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Blodsikerr",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Boromit",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Fromhell",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Mios",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Sangria",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Unforgiven",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      }
-    ]
+    "players": [],
+    "error": "Request failed with status 502"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-03-06--21-33--Borolgin--FreedomUA/",
@@ -16527,6 +16155,606 @@
       },
       {
         "name": "Shadarrow",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-02--20-23--Boronir--FreedomUA/",
+    "consumablesUrl": "https://uwu-logs.xyz/reports/25-03-02--20-23--Boronir--FreedomUA/consumables/",
+    "date": "2025-03-02",
+    "title": "https://uwu-logs.xyz/reports/25-03-02--20-23--Boronir--FreedomUA/",
+    "players": [
+      {
+        "name": "Boronir",
+        "total": 22,
+        "potionOfSpeed": 4,
+        "potionOfWildMagic": 18
+      },
+      {
+        "name": "Котпузатий",
+        "total": 12,
+        "potionOfSpeed": 12,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Quattro",
+        "total": 12,
+        "potionOfSpeed": 12,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Kamerunets",
+        "total": 8,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 8
+      },
+      {
+        "name": "Doblo",
+        "total": 7,
+        "potionOfSpeed": 7,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Easyfury",
+        "total": 7,
+        "potionOfSpeed": 7,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Quadrobear",
+        "total": 6,
+        "potionOfSpeed": 6,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Kingowar",
+        "total": 5,
+        "potionOfSpeed": 5,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Nikanor",
+        "total": 5,
+        "potionOfSpeed": 5,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Херсонський",
+        "total": 4,
+        "potionOfSpeed": 4,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Sindamagg",
+        "total": 4,
+        "potionOfSpeed": 4,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Стограм",
+        "total": 3,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 3
+      },
+      {
+        "name": "Silmaril",
+        "total": 3,
+        "potionOfSpeed": 3,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Catowlbear",
+        "total": 2,
+        "potionOfSpeed": 2,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Sunrise",
+        "total": 2,
+        "potionOfSpeed": 2,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Душнила",
+        "total": 1,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Фухфух",
+        "total": 1,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Temeria",
+        "total": 1,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 1
+      },
+      {
+        "name": "Бурярожденна",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Джараксус",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Дід",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Кум",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Шипуч",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Archimed",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Chechedon",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Ferolux",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Holyhammer",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Karatel",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Kitty",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Luminaria",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Mankasho",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Puyachok",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Sprinter",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Wisconsiya",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-01--20-34--Reformator--FreedomUA/",
+    "consumablesUrl": "https://uwu-logs.xyz/reports/25-03-01--20-34--Reformator--FreedomUA/consumables/",
+    "date": "2025-03-01",
+    "title": "https://uwu-logs.xyz/reports/25-03-01--20-34--Reformator--FreedomUA/",
+    "players": [
+      {
+        "name": "Castfast",
+        "total": 17,
+        "potionOfSpeed": 11,
+        "potionOfWildMagic": 6
+      },
+      {
+        "name": "Malz",
+        "total": 17,
+        "potionOfSpeed": 10,
+        "potionOfWildMagic": 7
+      },
+      {
+        "name": "Abrika",
+        "total": 16,
+        "potionOfSpeed": 8,
+        "potionOfWildMagic": 8
+      },
+      {
+        "name": "Ksard",
+        "total": 15,
+        "potionOfSpeed": 10,
+        "potionOfWildMagic": 5
+      },
+      {
+        "name": "Reformator",
+        "total": 15,
+        "potionOfSpeed": 15,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Goodzone",
+        "total": 14,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 14
+      },
+      {
+        "name": "Квадробер",
+        "total": 13,
+        "potionOfSpeed": 13,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Boro",
+        "total": 13,
+        "potionOfSpeed": 7,
+        "potionOfWildMagic": 6
+      },
+      {
+        "name": "Luxfero",
+        "total": 11,
+        "potionOfSpeed": 5,
+        "potionOfWildMagic": 6
+      },
+      {
+        "name": "Бурерожденна",
+        "total": 8,
+        "potionOfSpeed": 8,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Котикмяу",
+        "total": 7,
+        "potionOfSpeed": 7,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Anybis",
+        "total": 6,
+        "potionOfSpeed": 6,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Маргарин",
+        "total": 2,
+        "potionOfSpeed": 2,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Bordo",
+        "total": 2,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 2
+      },
+      {
+        "name": "Introvert",
+        "total": 2,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 2
+      },
+      {
+        "name": "Zeerocul",
+        "total": 2,
+        "potionOfSpeed": 2,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Биджо",
+        "total": 1,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Диспетчер",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Конфетка",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Меланда",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Юджин",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Anafilakciya",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Anger",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Deadline",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Ebola",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Elisande",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Fascisto",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Harpagon",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Macadamia",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Operator",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Sinda",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-02-24--20-17--Reformator--FreedomUA/",
+    "consumablesUrl": "https://uwu-logs.xyz/reports/25-02-24--20-17--Reformator--FreedomUA/consumables/",
+    "date": "2025-02-24",
+    "title": "https://uwu-logs.xyz/reports/25-02-24--20-17--Reformator--FreedomUA/",
+    "players": [
+      {
+        "name": "Bvb",
+        "total": 12,
+        "potionOfSpeed": 12,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Castfast",
+        "total": 11,
+        "potionOfSpeed": 5,
+        "potionOfWildMagic": 6
+      },
+      {
+        "name": "Malz",
+        "total": 11,
+        "potionOfSpeed": 7,
+        "potionOfWildMagic": 4
+      },
+      {
+        "name": "Камаелька",
+        "total": 10,
+        "potionOfSpeed": 6,
+        "potionOfWildMagic": 4
+      },
+      {
+        "name": "Sumplesh",
+        "total": 10,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 10
+      },
+      {
+        "name": "Kipih",
+        "total": 8,
+        "potionOfSpeed": 8,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Boro",
+        "total": 6,
+        "potionOfSpeed": 3,
+        "potionOfWildMagic": 3
+      },
+      {
+        "name": "Reformator",
+        "total": 6,
+        "potionOfSpeed": 6,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Silmarillion",
+        "total": 6,
+        "potionOfSpeed": 6,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Квадробер",
+        "total": 5,
+        "potionOfSpeed": 5,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Abrika",
+        "total": 3,
+        "potionOfSpeed": 2,
+        "potionOfWildMagic": 1
+      },
+      {
+        "name": "Биджо",
+        "total": 2,
+        "potionOfSpeed": 2,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Introvert",
+        "total": 2,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 2
+      },
+      {
+        "name": "Anybis",
+        "total": 1,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Dubasik",
+        "total": 1,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Бурярождена",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Веспер",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Маргарин",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Шотигалава",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Anafilakciya",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Anger",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Bordo",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Elisande",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Fascisto",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Harpagon",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Kubita",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Luxfero",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Nipherlion",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Sinda",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Sindarella",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Zeerocul",
         "total": 0,
         "potionOfSpeed": 0,
         "potionOfWildMagic": 0
