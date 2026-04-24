@@ -1,3 +1,4 @@
+// potion-stats.js - Виправлена версія (помилки усунені)
 const statusEl = document.getElementById('potionStatus');
 const raidsEl = document.getElementById('potionRaids');
 const honorStatusEl = document.getElementById('honorStatus');
@@ -38,14 +39,18 @@ function createPlayerRow(player) {
   return `
     <tr class="${getRowClass(player)}">
       <td>${escapeHtml(player.name)}</td>
-      <td>${player.total}</td>
-      <td>${player.potionOfSpeed}</td>
-      <td>${player.potionOfWildMagic}</td>
+      <td>${player.total || 0}</td>
+      <td>${player.potionOfSpeed || 0}</td>
+      <td>${player.potionOfWildMagic || 0}</td>
     </tr>
   `;
 }
 
 function createRaidSection(raid, index) {
+  if (!Array.isArray(raid.players) || raid.players.length === 0) {
+    return `<div class="potion-raid-block empty"><p>Немає даних гравців</p></div>`;
+  }
+
   const rowsHtml = raid.players.map(createPlayerRow).join('');
 
   return `
@@ -73,13 +78,15 @@ function createRaidSection(raid, index) {
               </tr>
             </thead>
             <tbody>
-              ${rowsHtml || '<tr><td colspan="4">Немає даних</td></tr>'}
+              ${rowsHtml}
             </tbody>
           </table>
         </div>
 
         <p class="potion-raid-link">
-          <a href="${raid.raidUrl}" target="_blank" rel="noopener noreferrer">Відкрити оригінальний лог UwU-Logs</a>
+          <a href="${escapeHtml(raid.raidUrl || '#')}" target="_blank" rel="noopener noreferrer">
+            Відкрити оригінальний лог UwU-Logs
+          </a>
         </p>
       </div>
     </div>
@@ -88,15 +95,20 @@ function createRaidSection(raid, index) {
 
 function attachRaidToggles() {
   const buttons = document.querySelectorAll('.potion-raid-toggle');
-
   buttons.forEach((button) => {
-    button.addEventListener('click', () => {
+    // Видаляємо старі обробники
+    button.replaceWith(button.cloneNode(true));
+  });
+
+  const newButtons = document.querySelectorAll('.potion-raid-toggle');
+  newButtons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
       const targetId = button.getAttribute('data-target');
       const content = document.getElementById(targetId);
       if (!content) return;
 
       const isHidden = content.hasAttribute('hidden');
-
       if (isHidden) {
         content.removeAttribute('hidden');
         button.classList.add('open');
@@ -120,100 +132,116 @@ function buildHonorBoard(raids) {
       const name = String(player.name || '').trim();
       if (!name) return;
 
-      const current = playersMap.get(name) || {
-        name,
-        totalPotions: 0,
-        raidsCount: 0
-      };
+      if (!playersMap.has(name)) {
+        playersMap.set(name, {
+          name,
+          totalPotions: 0,
+          raidsCount: 0
+        });
+      }
 
+      const current = playersMap.get(name);
       current.totalPotions += Number(player.total || 0);
       current.raidsCount += 1;
-
-      playersMap.set(name, current);
     });
   });
 
-  return [...playersMap.values()]
+  return Array.from(playersMap.values())
     .map((player) => ({
       name: player.name,
-      averagePotions: player.raidsCount > 0 ? player.totalPotions / player.raidsCount : 0
+      raidsCount: player.raidsCount,
+      averagePotions: player.raidsCount > 0 ? (player.totalPotions / player.raidsCount).toFixed(2) : '0.00'
     }))
-    .sort((a, b) => b.averagePotions - a.averagePotions || a.name.localeCompare(b.name));
+    .sort((a, b) => parseFloat(b.averagePotions) - parseFloat(a.averagePotions) || a.name.localeCompare(b.name));
 }
 
 function renderHonorBoard(players) {
   const hideZeroPlayers = hideZeroPlayersEl?.checked ?? true;
-  const visiblePlayers = hideZeroPlayers ? players.filter((player) => player.averagePotions > 0) : players;
+  const visiblePlayers = hideZeroPlayers 
+    ? players.filter((player) => parseFloat(player.averagePotions) > 0) 
+    : players;
 
   if (!players.length) {
     honorStatusEl.textContent = 'Немає даних для відображення.';
-    honorTableBodyEl.innerHTML = '<tr><td colspan="3">Немає даних</td></tr>';
+    honorTableBodyEl.innerHTML = '<tr><td colspan="4">Немає даних</td></tr>';
     return;
   }
 
   honorStatusEl.textContent = `Гравців у зведеній таблиці: ${visiblePlayers.length}`;
 
   if (!visiblePlayers.length) {
-    honorTableBodyEl.innerHTML = '<tr><td colspan="3">Немає гравців з потами</td></tr>';
+    honorTableBodyEl.innerHTML = '<tr><td colspan="4">Немає гравців з потами</td></tr>';
     return;
   }
 
   honorTableBodyEl.innerHTML = visiblePlayers
-    .map(
-      (player, index) => `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${escapeHtml(player.name)}</td>
-          <td>${player.averagePotions.toFixed(2)}</td>
-        </tr>
-      `
-    )
+    .map((player, index) => `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${escapeHtml(player.name)}</td>
+        <td>${player.raidsCount}</td>
+        <td>${player.averagePotions}</td>
+      </tr>
+    `)
     .join('');
 }
 
 function switchView(viewName) {
-  const isLogsView = viewName === 'logs';
-
-  logsViewEl.hidden = !isLogsView;
-  honorViewEl.hidden = isLogsView;
+  logsViewEl.hidden = viewName !== 'logs';
+  honorViewEl.hidden = viewName !== 'honor';
 
   viewButtons.forEach((button) => {
     const isActive = button.dataset.view === viewName;
     button.classList.toggle('active', isActive);
-    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    button.setAttribute('aria-pressed', isActive.toString());
   });
 }
 
 function attachViewSwitch() {
   viewButtons.forEach((button) => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
       switchView(button.dataset.view);
     });
   });
 }
 
 function attachHonorFilter() {
-  hideZeroPlayersEl.addEventListener('change', () => {
-    renderHonorBoard(honorBoardCache);
-  });
+  if (hideZeroPlayersEl) {
+    hideZeroPlayersEl.addEventListener('change', () => {
+      renderHonorBoard(honorBoardCache);
+    });
+  }
 }
 
 async function loadPotionStats() {
   try {
-    const response = await fetch('./data/potion-stats.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    statusEl.textContent = 'Завантаження даних...';
+    const response = await fetch('./data/potion-stats.json?t=' + Date.now());
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
 
     const raids = await response.json();
 
-    if (!Array.isArray(raids) || raids.length === 0) {
-      statusEl.textContent = 'Немає даних для відображення.';
-      raidsEl.innerHTML = '';
-      honorStatusEl.textContent = 'Немає даних для відображення.';
-      honorTableBodyEl.innerHTML = '<tr><td colspan="3">Немає даних</td></tr>';
-      return;
+    if (!Array.isArray(raids)) {
+      throw new Error('Невалідний формат даних');
     }
 
-    const validRaids = raids.filter((raid) => Array.isArray(raid.players) && raid.players.length > 0);
+    const validRaids = raids.filter((raid) => 
+      Array.isArray(raid.players) && 
+      raid.players.length > 0 && 
+      raid.raidUrl
+    );
+
+    if (validRaids.length === 0) {
+      statusEl.textContent = 'Немає валідних рейдів з даними гравців.';
+      raidsEl.innerHTML = '<p class="no-data">Немає даних для відображення.</p>';
+      honorStatusEl.textContent = 'Немає даних.';
+      honorTableBodyEl.innerHTML = '<tr><td colspan="4">Немає даних</td></tr>';
+      return;
+    }
 
     const sortedRaids = [...validRaids].sort((a, b) => {
       const aDate = a.date || '';
@@ -227,16 +255,20 @@ async function loadPotionStats() {
 
     honorBoardCache = buildHonorBoard(sortedRaids);
     renderHonorBoard(honorBoardCache);
+
   } catch (error) {
-    console.error(error);
-    statusEl.textContent = 'Не вдалося завантажити дані potion.';
-    raidsEl.innerHTML = '';
-    honorStatusEl.textContent = 'Не вдалося завантажити дані.';
-    honorTableBodyEl.innerHTML = '<tr><td colspan="3">Помилка завантаження</td></tr>';
+    console.error('Помилка завантаження:', error);
+    statusEl.textContent = `Помилка: ${error.message}`;
+    raidsEl.innerHTML = '<p class="error">Не вдалося завантажити дані. Перевірте data/potion-stats.json</p>';
+    honorStatusEl.textContent = 'Помилка завантаження.';
+    honorTableBodyEl.innerHTML = '<tr><td colspan="4">Помилка завантаження</td></tr>';
   }
 }
 
-attachViewSwitch();
-attachHonorFilter();
-switchView('logs');
-loadPotionStats();
+// Ініціалізація
+document.addEventListener('DOMContentLoaded', () => {
+  attachViewSwitch();
+  attachHonorFilter();
+  switchView('logs');
+  loadPotionStats();
+});
