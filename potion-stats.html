@@ -57,13 +57,17 @@
           </div>
 
           <div class="ranking-table-wrap">
-            <table class="potion-table honor-table">
+            <table class="potion-table honor-table" id="honorTable">
               <thead>
                 <tr>
                   <th>№</th>
                   <th>Ім'я</th>
-                  <th>Кількість рейдів</th>
-                  <th>Середня кількість потів</th>
+                  <th class="sortable" data-sort="raidsCount" data-direction="desc">
+                    Кількість рейдів <span class="sort-indicator">↓</span>
+                  </th>
+                  <th class="sortable active" data-sort="averagePotions" data-direction="desc">
+                    Середня кількість потів <span class="sort-indicator">↓</span>
+                  </th>
                 </tr>
               </thead>
               <tbody id="honorTableBody">

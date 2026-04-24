@@ -81,6 +81,7 @@ html { scrollbar-gutter: stable; }
 #rankingTable td { color: #d3d9e5; font-size: 0.95rem; }
 #rankingTable tbody tr:hover { background-color: rgba(123, 170, 245, 0.08); }
 #rankingTable tbody tr:last-child td { border-bottom: none; }
+
 body.ranking-page .container { max-width: none; width: fit-content; min-width: 900px; }
 body.ranking-page .container-inner { width: max-content; }
 body.ranking-page .ranking-table-wrap { overflow: visible; width: max-content; }
@@ -139,6 +140,10 @@ body.potion-page .potion-raid-link a:hover { color: #ffd700; text-decoration: un
 body.potion-page .honor-table { min-width: 420px; width: 100%; }
 body.potion-page .honor-table th, body.potion-page .honor-table td { padding: 0.35rem 0.55rem; }
 body.potion-page #honorStatus { margin: 0 0 1rem; }
+body.potion-page .sortable { cursor: pointer; user-select: none; }
+body.potion-page .sortable .sort-indicator { margin-left: 0.35rem; font-size: 0.9em; opacity: 0.85; }
+body.potion-page .sortable.active { background: rgba(123, 170, 245, 0.12); }
+
 @media (max-width: 768px) {
   body.potion-page .potion-top-actions { align-items: stretch; }
   body.potion-page .potion-top-actions .ranking-link-btn,
@@ -148,10 +153,10 @@ body.potion-page #honorStatus { margin: 0 0 1rem; }
   body.potion-page .potion-raid-meta { font-size: 0.9rem; }
   body.potion-page .potion-table { min-width: 560px; }
 }
+
 body.potion-page .potion-table tbody tr.potion-good > td { color: #63d471 !important; }
 body.potion-page .potion-table tbody tr.potion-bad > td { color: #ff6b6b !important; }
 
-/* Main page mobile fixes */
 @media (max-width: 768px) {
   body:not(.ranking-page):not(.potion-page) .container-inner {
     padding: 1rem 0.875rem 5rem;
