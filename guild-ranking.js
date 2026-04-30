@@ -123,7 +123,7 @@ function renderTable(className, specName) {
   const bossColumns = getBossColumns(rows);
 
   const columns = [
-    { key: '__index', label: '#' },
+    { key: '__index', label: 'Guild Rank' },
     { key: 'name', label: 'Player Name' },
     { key: 'overallRank', label: 'Server Rank' },
     { key: 'overallScore', label: 'Score' },
