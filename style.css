@@ -222,3 +222,193 @@ body.potion-page .potion-table tbody tr.potion-bad > td { color: #ff6b6b !import
   color: #8f96a3;
   line-height: 1.35;
 }
+
+/* =========================
+   GALLERY PAGE
+   ========================= */
+
+body.gallery-page .container-inner {
+  padding-bottom: 6rem;
+}
+
+body.gallery-page .potion-top-actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+body.gallery-page .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+body.gallery-page .gallery-card {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 1px solid rgba(197, 198, 205, 0.18);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.gallery-page .gallery-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(123, 170, 245, 0.5);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
+}
+
+body.gallery-page .gallery-card:focus {
+  outline: none;
+}
+
+body.gallery-page .gallery-card:focus-visible {
+  outline: 2px solid #7baaf5;
+  outline-offset: 3px;
+  border-color: rgba(123, 170, 245, 0.7);
+}
+
+body.gallery-page .gallery-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: rgba(8, 13, 22, 0.65);
+}
+
+body.gallery-page .gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  z-index: 9999;
+}
+
+body.gallery-page .gallery-lightbox.is-open {
+  display: flex;
+}
+
+body.gallery-page .gallery-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 8, 14, 0.84);
+  backdrop-filter: blur(5px);
+}
+
+body.gallery-page .gallery-lightbox-content {
+  position: relative;
+  z-index: 1;
+  width: min(1200px, calc(100vw - 2rem));
+  max-height: min(90vh, 900px);
+  padding: 1rem 1rem 0.875rem;
+  border: 1px solid rgba(197, 198, 205, 0.18);
+  border-radius: 14px;
+  background: rgba(20, 27, 39, 0.97);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+body.gallery-page .gallery-lightbox-content img {
+  display: block;
+  width: 100%;
+  max-height: calc(90vh - 5rem);
+  object-fit: contain;
+  border-radius: 10px;
+  background: rgba(8, 13, 22, 0.75);
+}
+
+body.gallery-page .gallery-lightbox-close {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(197, 198, 205, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e8edf7;
+  font-size: 1.9rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+body.gallery-page .gallery-lightbox-close:hover {
+  background: rgba(123, 170, 245, 0.18);
+  border-color: rgba(123, 170, 245, 0.45);
+  transform: scale(1.03);
+}
+
+body.gallery-page .gallery-lightbox-close:focus {
+  outline: none;
+}
+
+body.gallery-page .gallery-lightbox-close:focus-visible {
+  outline: 2px solid #7baaf5;
+  outline-offset: 2px;
+}
+
+body.gallery-page #lightboxCaption {
+  margin: 0.75rem 0 0;
+  color: #d6deed;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 1024px) {
+  body.gallery-page .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  body.gallery-page .container-inner {
+    padding-bottom: 5.5rem;
+  }
+
+  body.gallery-page .potion-top-actions {
+    justify-content: stretch;
+  }
+
+  body.gallery-page .potion-top-actions .ranking-link-btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  body.gallery-page .gallery-grid {
+    gap: 0.875rem;
+  }
+
+  body.gallery-page .gallery-lightbox {
+    padding: 0.75rem;
+  }
+
+  body.gallery-page .gallery-lightbox-content {
+    width: min(100%, calc(100vw - 1rem));
+    padding: 0.75rem 0.75rem 0.625rem;
+    border-radius: 12px;
+  }
+
+  body.gallery-page .gallery-lightbox-content img {
+    max-height: calc(90vh - 4.5rem);
+  }
+
+  body.gallery-page #lightboxCaption {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 640px) {
+  body.gallery-page .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
