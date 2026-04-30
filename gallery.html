@@ -20,22 +20,69 @@
           <a class="ranking-link-btn" href="./index.html">← Назад на головну</a>
         </div>
 
-        <div class="gallery-grid" id="galleryGrid" aria-label="Галерея скріншотів гільдії"></div>
+        <div
+          class="gallery-grid"
+          id="galleryGrid"
+          aria-label="Галерея скріншотів гільдії"
+        ></div>
       </div>
     </div>
 
     <div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true">
       <div class="gallery-lightbox-backdrop" data-close-lightbox></div>
 
-      <div class="gallery-lightbox-content" role="dialog" aria-modal="true" aria-label="Перегляд скріншоту">
-        <button class="gallery-lightbox-close" type="button" id="lightboxClose" aria-label="Закрити перегляд">×</button>
+      <div
+        class="gallery-lightbox-content"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Перегляд скріншоту"
+      >
+        <button
+          class="gallery-lightbox-close"
+          type="button"
+          id="lightboxClose"
+          aria-label="Закрити перегляд"
+        >
+          ×
+        </button>
+
         <img id="lightboxImage" src="" alt="">
-        <p id="lightboxCaption"></p>
+
+        <div class="gallery-lightbox-footer">
+          <button
+            class="gallery-lightbox-nav gallery-lightbox-prev"
+            type="button"
+            id="lightboxPrev"
+            aria-label="Попередній скріншот"
+          >
+            ‹
+          </button>
+
+          <p id="lightboxCaption"></p>
+
+          <button
+            class="gallery-lightbox-nav gallery-lightbox-next"
+            type="button"
+            id="lightboxNext"
+            aria-label="Наступний скріншот"
+          >
+            ›
+          </button>
+        </div>
       </div>
     </div>
 
     <footer>
-      <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank" rel="noopener noreferrer">Freedom WoW</a></span>
+      <span>
+        &copy; Гільдія "Nostalgia", сервер
+        <a
+          href="https://freedom-wow.in.ua/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Freedom WoW
+        </a>
+      </span>
     </footer>
 
     <script src="./gallery.js"></script>

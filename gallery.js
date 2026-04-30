@@ -1,4 +1,6 @@
 let lastFocusedCard = null;
+let currentIndex = 0;
+let galleryItems = [];
 
 async function loadGallery() {
   const galleryGrid = document.getElementById('galleryGrid');
@@ -26,12 +28,13 @@ async function loadGallery() {
       return;
     }
 
-    galleryGrid.innerHTML = items.map((item) => `
+    galleryItems = items;
+
+    galleryGrid.innerHTML = items.map((item, index) => `
       <button
         class="gallery-card"
         type="button"
-        data-image="${item.src}"
-        data-title="${item.title || ''}"
+        data-index="${index}"
       >
         <img
           src="${item.src}"
@@ -55,24 +58,38 @@ function initLightbox() {
   const lightboxImage = document.getElementById('lightboxImage');
   const lightboxCaption = document.getElementById('lightboxCaption');
   const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
   const backdrop = document.querySelector('[data-close-lightbox]');
   const galleryGrid = document.getElementById('galleryGrid');
 
-  if (!lightbox || !lightboxImage || !lightboxCaption || !lightboxClose || !backdrop || !galleryGrid) {
+  if (
+    !lightbox ||
+    !lightboxImage ||
+    !lightboxCaption ||
+    !lightboxClose ||
+    !lightboxPrev ||
+    !lightboxNext ||
+    !backdrop ||
+    !galleryGrid
+  ) {
     console.error('Елементи lightbox не знайдено в DOM');
     return;
   }
 
-  function openLightbox(card) {
-    const src = card.dataset.image;
-    const title = card.dataset.title || '';
-    const img = card.querySelector('img');
-    const alt = img ? img.alt : title;
+  function renderLightbox(index) {
+    const item = galleryItems[index];
+    if (!item) return;
 
-    lastFocusedCard = card;
-    lightboxImage.src = src;
-    lightboxImage.alt = alt || 'Скріншот галереї';
-    lightboxCaption.textContent = title;
+    currentIndex = index;
+    lightboxImage.src = item.src;
+    lightboxImage.alt = item.alt || item.title || 'Скріншот галереї';
+    lightboxCaption.textContent = item.title || '';
+  }
+
+  function openLightbox(index, card) {
+    lastFocusedCard = card || null;
+    renderLightbox(index);
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -92,21 +109,42 @@ function initLightbox() {
     }
   }
 
+  function showPrev() {
+    const prevIndex = currentIndex === 0 ? galleryItems.length - 1 : currentIndex - 1;
+    renderLightbox(prevIndex);
+  }
+
+  function showNext() {
+    const nextIndex = currentIndex === galleryItems.length - 1 ? 0 : currentIndex + 1;
+    renderLightbox(nextIndex);
+  }
+
   galleryGrid.addEventListener('click', (event) => {
     const card = event.target.closest('.gallery-card');
-    if (!card) {
-      return;
-    }
+    if (!card) return;
 
-    openLightbox(card);
+    const index = Number(card.dataset.index);
+    openLightbox(index, card);
   });
 
   lightboxClose.addEventListener('click', closeLightbox);
+  lightboxPrev.addEventListener('click', showPrev);
+  lightboxNext.addEventListener('click', showNext);
   backdrop.addEventListener('click', closeLightbox);
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && lightbox.classList.contains('is-open')) {
+    if (!lightbox.classList.contains('is-open')) return;
+
+    if (event.key === 'Escape') {
       closeLightbox();
+    }
+
+    if (event.key === 'ArrowLeft') {
+      showPrev();
+    }
+
+    if (event.key === 'ArrowRight') {
+      showNext();
     }
   });
 }
