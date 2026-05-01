@@ -1,31 +1,45 @@
 <!doctype html>
 <html lang="uk-UA">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Рейтинг DPS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body class="ranking-page">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Рейтинг DPS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="ranking-page">
+  <div class="container">
+
+    <header class="topbar">
+      <div class="topbar__inner">
+
+        <nav class="nav">
+          <a class="nav__link" href="./index.html">Головна</a>
+          <a class="nav__link nav__link--active" href="./guild-ranking.html">Рейтинг DPS</a>
+          <a class="nav__link" href="./potion-stats.html">Статистика Potion</a>
+          <a class="nav__link" href="./gallery.html">Галерея</a>
+        </nav>
+      </div>
+    </header>
+
     <div class="container">
       <div class="container-inner">
-        
+
         <h1>Рейтинг DPS</h1>
 
-        <div class="ranking-link-wrap">
-          <a class="ranking-link-btn" href="./index.html">← Назад на головну</a>
-        </div>
         <p>
-          <ul>
-            <li>Рейтинг DPS з сайту <a href="https://uwu-logs.xyz/" target="_blank">uwu-logs.xyz</a> куди ми завантажуємо логи наших рейдів.</li>
-            <li>Враховується тільки режим ЦЛК 25 ХМ.</li>
-            <li>Таблиця нижче оновлюється раз на добу.</li>
-            <li>Список гравців формується вручну (учасники гільдії + легіонери).</li>
-            <li>Якщо себе не бачите, але хотіли б - зверніться до Boro</li>
-          </ul>
+        <ul>
+          <li>Рейтинг DPS з сайту <a href="https://uwu-logs.xyz/" target="_blank">uwu-logs.xyz</a> куди ми завантажуємо
+            логи наших рейдів.</li>
+          <li>Враховується тільки режим ЦЛК 25 ХМ.</li>
+          <li>Таблиця нижче оновлюється раз на добу.</li>
+          <li>Список гравців формується вручну (учасники гільдії + легіонери).</li>
+          <li>Якщо себе не бачите, але хотіли б - зверніться до Boro</li>
+        </ul>
         </p>
         <div class="ranking-controls">
           <label for="classSelect">Клас</label>
@@ -52,12 +66,16 @@
         </div>
 
         <footer>
-          <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank">Freedom WoW</a></span>
+          <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank">Freedom
+              WoW</a></span>
         </footer>
       </div>
     </div>
+  </div>
+  <script src="./guild-ranking.js"></script>
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+    data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
 
-    <script src="./guild-ranking.js"></script>
-    <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
-  </body>
 </html>

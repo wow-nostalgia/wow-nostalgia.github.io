@@ -1,37 +1,42 @@
 <!doctype html>
 <html lang="uk-UA">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Статистика Potion</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body class="ranking-page potion-page">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Статистика Potion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="ranking-page potion-page">
+  <div class="container">
+
+    <header class="topbar">
+      <div class="topbar__inner">
+
+        <nav class="nav">
+          <a class="nav__link" href="./index.html">Головна</a>
+          <a class="nav__link" href="./guild-ranking.html">Рейтинг DPS</a>
+          <a class="nav__link nav__link--active" href="./potion-stats.html">Статистика Potion</a>
+          <a class="nav__link" href="./gallery.html">Галерея</a>
+        </nav>
+      </div>
+    </header>
+
     <div class="container">
       <div class="container-inner">
         <h1>Статистика Potion</h1>
 
         <div class="potion-top-actions">
-          <a class="ranking-link-btn" href="./index.html">← Назад на головну</a>
 
           <div class="potion-view-switch" role="tablist" aria-label="Режим перегляду статистики Potion">
-            <button
-              class="ranking-link-btn potion-view-btn active"
-              type="button"
-              data-view="logs"
-              aria-pressed="true"
-            >
+            <button class="ranking-link-btn potion-view-btn active" type="button" data-view="logs" aria-pressed="true">
               Логи
             </button>
-            <button
-              class="ranking-link-btn potion-view-btn"
-              type="button"
-              data-view="honor"
-              aria-pressed="false"
-            >
+            <button class="ranking-link-btn potion-view-btn" type="button" data-view="honor" aria-pressed="false">
               Дошка Пошани
             </button>
           </div>
@@ -82,10 +87,16 @@
     </div>
 
     <footer>
-      <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank" rel="noopener noreferrer">Freedom WoW</a></span>
+      <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank"
+          rel="noopener noreferrer">Freedom WoW</a></span>
     </footer>
 
-    <script src="./potion-stats.js"></script>
-    <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
-  </body>
+  </div>
+
+  <script src="./potion-stats.js"></script>
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+    data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+
 </html>
