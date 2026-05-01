@@ -11,7 +11,7 @@ async function loadGallery() {
   }
 
   try {
-    const response = await fetch('./images/gallery/gallery.json', { cache: 'no-store' });
+    const response = await fetch('../images/gallery/gallery.json', { cache: 'no-store' });
 
     if (!response.ok) {
       throw new Error(`Не вдалося завантажити gallery.json: ${response.status}`);

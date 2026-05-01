@@ -39,7 +39,7 @@ function buildGalleryManifest() {
 
     return {
       id: index + 1,
-      src: `images/gallery/${encodeURIComponent(fileName).replace(/%2F/g, '/')}`,
+      src: `/images/gallery/${encodeURIComponent(fileName).replace(/%2F/g, '/')}`,
       fileName,
       title,
       alt: title

@@ -187,7 +187,7 @@ function renderTable(className, specName) {
 async function init() {
   try {
     setStatus('Завантаження даних...');
-    const response = await fetch('./data/guild-data.json');
+    const response = await fetch('/data/guild-data.json');
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }

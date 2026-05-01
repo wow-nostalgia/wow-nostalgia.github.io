@@ -189,7 +189,7 @@ function attachHonorFilter() {
 async function loadPotionStats() {
   try {
     statusEl.textContent = 'Завантаження даних...';
-    const response = await fetch('./data/potion-stats.json?t=' + Date.now());
+    const response = await fetch('/data/potion-stats.json?t=' + Date.now());
     if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
     const raids = await response.json();
