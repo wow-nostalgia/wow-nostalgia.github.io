@@ -503,15 +503,23 @@ body.potion-page .potion-view-btn.active {
 }
 
 body.ranking-page .container {
-  width: fit-content;
-  min-width: 900px;
-  max-width: none;
+  max-width: var(--container-width);
+  min-height: 100vh;
+  margin: 0 auto;
 }
 
-body.ranking-page .container-inner,
-body.ranking-page .ranking-table-wrap,
+body.ranking-page .container-inner {
+  padding: 1rem 1rem 4.5rem;
+}
+
+body.ranking-page .ranking-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
 body.ranking-page #rankingTable {
   width: max-content;
+  min-width: 100%;
 }
 
 body.ranking-page #rankingTable th,
@@ -555,19 +563,20 @@ body.potion-page #potionStatus {
 
 body.potion-page .potion-top-actions {
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  gap: 1rem;
-  flex-wrap: wrap;
   margin-top: 1rem;
   margin-bottom: 1.25rem;
 }
 
 body.potion-page .potion-view-switch {
   display: flex;
+  justify-content: center;
   align-items: center;
+  flex-wrap: nowrap;
   gap: 0.75rem;
-  flex-wrap: wrap;
+  width: auto;
+  margin: 0 auto;
 }
 
 body.potion-page .potion-raids {
@@ -914,6 +923,7 @@ body.gallery-page #lightboxCaption {
     grid-row: auto;
     margin-bottom: 0.75rem;
   }
+
   .container-inner {
     padding: 1rem 0.875rem 5rem;
   }
@@ -965,25 +975,37 @@ body.gallery-page #lightboxCaption {
 
   body.ranking-page .ranking-table-wrap {
     width: 100%;
+    overflow-x: auto;
   }
 
   body.ranking-page #rankingTable {
-    width: 100%;
-    min-width: 560px;
+    width: max-content;
+    min-width: 100%;
   }
 
   body.potion-page .potion-top-actions {
     align-items: stretch;
   }
 
-  body.potion-page .potion-top-actions .ranking-link-btn,
-  body.potion-page .potion-view-btn {
-    width: 100%;
-    min-width: 0;
-  }
+  @media (max-width: 768px) {
+    body.potion-page .potion-top-actions {
+      justify-content: center;
+      align-items: center;
+    }
 
-  body.potion-page .potion-view-switch {
-    width: 100%;
+    body.potion-page .potion-view-switch {
+      width: auto;
+      max-width: 100%;
+      flex-wrap: nowrap;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    body.potion-page .potion-view-btn {
+      width: 180px;
+      min-width: 180px;
+      max-width: 180px;
+    }
   }
 
   body.potion-page .potion-raid-toggle {
