@@ -190,15 +190,40 @@ async function readUniqueRaidLogs() {
   return [...new Set(cleaned)];
 }
 
+async function readExistingStats() {
+  try {
+    const raw = await fs.readFile(OUTPUT_FILE, 'utf8');
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+
+function normalizeUrl(url) {
+  return url.endsWith('/') ? url : `${url}/`;
+}
+
 async function main() {
   const raidLogs = await readUniqueRaidLogs();
-  const results = [];
+  const existing = await readExistingStats();
 
-  for (let i = 0; i < raidLogs.length; i += 1) {
-    const raidUrl = raidLogs[i];
+  const existingUrls = new Set(existing.map((r) => normalizeUrl(r.raidUrl)));
+  const toFetch = raidLogs.filter((url) => !existingUrls.has(normalizeUrl(url)));
+
+  console.log(`Total raids: ${raidLogs.length}, already cached: ${existing.length}, to fetch: ${toFetch.length}`);
+
+  if (toFetch.length === 0) {
+    console.log('Nothing new to fetch.');
+    return;
+  }
+
+  const newResults = [];
+
+  for (let i = 0; i < toFetch.length; i += 1) {
+    const raidUrl = toFetch[i];
     const consumablesUrl = buildConsumablesUrl(raidUrl);
 
-    console.log(`Fetching (${i + 1}/${raidLogs.length}): ${consumablesUrl}`);
+    console.log(`Fetching (${i + 1}/${toFetch.length}): ${consumablesUrl}`);
 
     try {
       const html = await fetchConsumablesPage(consumablesUrl);
@@ -207,7 +232,7 @@ async function main() {
 
       const players = parseConsumablesTable(html);
 
-      results.push({
+      newResults.push({
         raidUrl,
         consumablesUrl,
         date: extractRaidDateFromUrl(raidUrl),
@@ -217,7 +242,7 @@ async function main() {
 
       console.log(`OK: ${players.length} players`);
     } catch (error) {
-      results.push({
+      newResults.push({
         raidUrl,
         consumablesUrl,
         date: extractRaidDateFromUrl(raidUrl),
@@ -229,17 +254,18 @@ async function main() {
       console.error(`FAILED: ${error.message}`);
     }
 
-    if (i < raidLogs.length - 1) {
+    if (i < toFetch.length - 1) {
       console.log(`Sleeping ${REQUEST_DELAY_MS}ms before next request...`);
       await sleep(REQUEST_DELAY_MS);
     }
   }
 
-  results.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-  await fs.writeFile(OUTPUT_FILE, JSON.stringify(results, null, 2), 'utf8');
+  const combined = [...existing, ...newResults];
+  combined.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  await fs.writeFile(OUTPUT_FILE, JSON.stringify(combined, null, 2), 'utf8');
 
   console.log('potion-stats.json updated');
-  console.log(`Raids processed: ${results.length}`);
+  console.log(`Newly fetched: ${newResults.length}, total: ${combined.length}`);
 }
 
 main().catch((error) => {
