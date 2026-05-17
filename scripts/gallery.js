@@ -135,18 +135,23 @@ function initLightbox() {
   document.addEventListener('keydown', (event) => {
     if (!lightbox.classList.contains('is-open')) return;
 
-    if (event.key === 'Escape') {
-      closeLightbox();
-    }
-
-    if (event.key === 'ArrowLeft') {
-      showPrev();
-    }
-
-    if (event.key === 'ArrowRight') {
-      showNext();
-    }
+    if (event.key === 'Escape') closeLightbox();
+    if (event.key === 'ArrowLeft') showPrev();
+    if (event.key === 'ArrowRight') showNext();
   });
+
+  let touchStartX = 0;
+
+  lightbox.addEventListener('touchstart', (event) => {
+    touchStartX = event.changedTouches[0].clientX;
+  }, { passive: true });
+
+  lightbox.addEventListener('touchend', (event) => {
+    const diff = touchStartX - event.changedTouches[0].clientX;
+    if (Math.abs(diff) < 40) return;
+    if (diff > 0) showNext();
+    else showPrev();
+  }, { passive: true });
 }
 
 loadGallery();
