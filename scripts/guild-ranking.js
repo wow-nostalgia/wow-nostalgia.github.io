@@ -146,6 +146,8 @@ function renderTable(className, specName) {
 
   rankingHead.appendChild(headRow);
 
+  const bodyFragment = document.createDocumentFragment();
+
   rows
     .slice()
     .sort((a, b) => {
@@ -178,8 +180,10 @@ function renderTable(className, specName) {
         tr.appendChild(td);
       });
 
-      rankingBody.appendChild(tr);
+      bodyFragment.appendChild(tr);
     });
+
+  rankingBody.appendChild(bodyFragment);
 
   setStatus(`Знайдено гравців: ${rows.length}`);
 }

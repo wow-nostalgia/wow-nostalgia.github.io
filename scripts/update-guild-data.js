@@ -1,73 +1,14 @@
+'use strict';
+
 const fs = require('node:fs/promises');
 const path = require('path');
+const { BOSS_ORDER, sleep, getClassName, getSpecName, normalizeScore, normalizeBosses, hasAnyBossData } = require('./shared');
 
 const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
 const DATA_FILE = path.join(__dirname, '..', 'data', 'guild-data.json');
 
-const CLASSES = [
-  'Death Knight',
-  'Druid',
-  'Hunter',
-  'Mage',
-  'Paladin',
-  'Priest',
-  'Rogue',
-  'Shaman',
-  'Warlock',
-  'Warrior'
-];
-
-const SPECS_SELECT_OPTIONS = {
-  'Death Knight': ['Blood', 'Frost', 'Unholy'],
-  'Druid': ['Balance', 'Feral Combat', 'Restoration'],
-  'Hunter': ['Beast Mastery', 'Marksmanship', 'Survival'],
-  'Mage': ['Arcane', 'Fire', 'Frost'],
-  'Paladin': ['Holy', 'Protection', 'Retribution'],
-  'Priest': ['Discipline', 'Holy', 'Shadow'],
-  'Rogue': ['Assassination', 'Combat', 'Subtlety'],
-  'Shaman': ['Elemental', 'Enhancement', 'Restoration'],
-  'Warlock': ['Affliction', 'Demonology', 'Destruction'],
-  'Warrior': ['Arms', 'Fury', 'Protection']
-};
-
 const REQUEST_DELAY_MS = 1500;
 const MAX_RETRIES = 3;
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function normalizeScore(points) {
-  if (typeof points !== 'number') return 0;
-  return Number((points / 100).toFixed(2));
-}
-
-function getClassName(classIndex) {
-  return CLASSES[classIndex] ?? 'Unknown';
-}
-
-function getSpecName(className, specIndex) {
-  const specs = SPECS_SELECT_OPTIONS[className] ?? [];
-  return specs[specIndex - 1] ?? `Spec ${specIndex}`;
-}
-
-function normalizeBosses(rawBosses, bossOrder) {
-  const result = {};
-
-  for (const bossName of bossOrder) {
-    const bossData = rawBosses?.[bossName] ?? {};
-    result[bossName] =
-      typeof bossData.dps_max === 'number'
-        ? Number(bossData.dps_max.toFixed(1))
-        : 0;
-  }
-
-  return result;
-}
-
-function hasAnyBossData(bosses) {
-  return Object.values(bosses || {}).some(value => Number(value) > 0);
-}
 
 function isUnknownName(name) {
   return typeof name === 'string' && name.startsWith('Unknown-');
@@ -115,7 +56,7 @@ async function fetchCharacterOnce(row) {
   return { response, specIndex: row.specIndex };
 }
 
-async function fetchCharacterWithRetry(row, bossOrder) {
+async function fetchCharacterWithRetry(row) {
   let lastError = null;
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
@@ -136,21 +77,17 @@ async function fetchCharacterWithRetry(row, bossOrder) {
 
       const source = await response.json();
       const className = getClassName(source.class_i);
-      const finalSpecIndex = specIndex;
-      const specName = getSpecName(className, finalSpecIndex);
-      const normalizedBosses = normalizeBosses(source.bosses, bossOrder);
-      const normalizedName = source.name ?? row.name;
-      const normalizedServer = source.server ?? row.server;
+      const specName = getSpecName(className, specIndex);
 
       return {
-        name: normalizedName,
-        server: normalizedServer,
+        name: source.name ?? row.name,
+        server: source.server ?? row.server,
         class: className,
         spec: specName,
-        specIndex: finalSpecIndex,
+        specIndex,
         overallRank: source.overall_rank ?? null,
         overallScore: normalizeScore(source.overall_points),
-        bosses: normalizedBosses
+        bosses: normalizeBosses(source.bosses)
       };
     } catch (error) {
       lastError = error;
@@ -169,17 +106,15 @@ async function fetchCharacterWithRetry(row, bossOrder) {
 async function updateGuildData() {
   const players = await readPlayers();
   const guildData = await readGuildData();
-  const bossOrder = guildData.bossOrder || [];
   const existingRows = Array.isArray(guildData.rows) ? guildData.rows : [];
 
-  const initialRows = [];
   const existingMap = new Map();
-
   for (const row of existingRows) {
     const key = `${row.name}::${row.server}::${row.specIndex}`;
     existingMap.set(key, row);
   }
 
+  const initialRows = [];
   for (const player of players) {
     for (let specIndex = 1; specIndex <= 3; specIndex++) {
       const existingKey = `${player.name}::${player.server}::${specIndex}`;
@@ -208,7 +143,7 @@ async function updateGuildData() {
     try {
       console.log(`Updating ${row.name} / ${row.spec} (specIndex: ${row.specIndex})`);
 
-      const fresh = await fetchCharacterWithRetry(row, bossOrder);
+      const fresh = await fetchCharacterWithRetry(row);
 
       if (fresh.class === 'Unknown') {
         console.log(`Skipping ${row.name} / ${row.spec}: unknown class`);
@@ -255,7 +190,6 @@ async function updateGuildData() {
 
   const uniqueRows = [];
   const seen = new Set();
-
   for (const row of updatedRows) {
     const key = `${row.name}::${row.server}::${row.specIndex}`;
     if (seen.has(key)) continue;
@@ -263,6 +197,7 @@ async function updateGuildData() {
     uniqueRows.push(row);
   }
 
+  guildData.bossOrder = BOSS_ORDER;
   guildData.rows = uniqueRows;
   guildData.lastUpdated = new Date().toISOString();
   guildData.updateSummary = {

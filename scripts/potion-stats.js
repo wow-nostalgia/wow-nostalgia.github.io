@@ -11,6 +11,14 @@ const viewButtons = document.querySelectorAll('.potion-view-btn');
 let honorBoardCache = [];
 let sortState = { column: 'averagePotions', direction: 'desc' };
 
+function isSafeUrl(url) {
+  try {
+    return ['https:', 'http:'].includes(new URL(String(url)).protocol);
+  } catch {
+    return false;
+  }
+}
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -42,7 +50,7 @@ function createPlayerRow(player) {
 function createRaidSection(raid, index) {
   if (!Array.isArray(raid.players) || raid.players.length === 0) return `<div class="potion-raid-block empty"><p>Немає даних гравців</p></div>`;
   const rowsHtml = raid.players.map(createPlayerRow).join('');
-  return `<div class="potion-raid-block"><button class="potion-raid-toggle" type="button" data-target="potion-raid-${index}" aria-expanded="false" aria-controls="potion-raid-${index}"><span class="potion-raid-title">${escapeHtml(formatRaidTitle(raid))}</span><span class="potion-raid-meta">${raid.players.length} гравці(в)</span></button><div class="potion-raid-content" id="potion-raid-${index}" hidden><div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div><p class="potion-raid-link"><a href="${escapeHtml(raid.raidUrl || '#')}" target="_blank" rel="noopener noreferrer">Відкрити оригінальний лог UwU-Logs</a></p></div></div>`;
+  return `<div class="potion-raid-block"><button class="potion-raid-toggle" type="button" data-target="potion-raid-${index}" aria-expanded="false" aria-controls="potion-raid-${index}"><span class="potion-raid-title">${escapeHtml(formatRaidTitle(raid))}</span><span class="potion-raid-meta">${raid.players.length} гравці(в)</span></button><div class="potion-raid-content" id="potion-raid-${index}" hidden><div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div><p class="potion-raid-link"><a href="${escapeHtml(isSafeUrl(raid.raidUrl) ? raid.raidUrl : '#')}" target="_blank" rel="noopener noreferrer">Відкрити оригінальний лог UwU-Logs</a></p></div></div>`;
 }
 
 function attachRaidToggles() {
