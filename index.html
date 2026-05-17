@@ -4,12 +4,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
   <title>Nostalgia</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -36,7 +35,7 @@
 
       <div class="info-tabs">
         <div class="collapsible open">
-          <p class="heading">Графік рейдів<span class="icon">📅</span></p>
+          <button type="button" class="heading" aria-expanded="true">Графік рейдів<span class="icon">📅</span></button>
           <div class="hider">
             <p><b>Регулярні рейди (Raid Time)</b></p>
             <ul>
@@ -60,7 +59,7 @@
           </div>
         </div>
         <div class="collapsible">
-          <p class="heading">Вимоги до гравців у режимі 25 гер<span class="icon">📜</span></p>
+          <button type="button" class="heading" aria-expanded="false">Вимоги до гравців у режимі 25 гер<span class="icon">📜</span></button>
           <div class="hider">
             <p>Щоб йти в 25 гер ви маєте бути підготовленими, а саме:</p>
             <ul>
@@ -79,7 +78,7 @@
           </div>
         </div>
         <div class="collapsible">
-          <p class="heading">Принцип відбору у режимі 25 гер<span class="icon">🥇</span></p>
+          <button type="button" class="heading" aria-expanded="false">Принцип відбору у режимі 25 гер<span class="icon">🥇</span></button>
           <div class="hider">
             <p><b>Час збору і гс:</b></p>
             <ul>
@@ -119,7 +118,7 @@
           </div>
         </div>
         <div class="collapsible">
-          <p class="heading">Правила ролу 25 гер<span class="icon">🎲</span></p>
+          <button type="button" class="heading" aria-expanded="false">Правила ролу 25 гер<span class="icon">🎲</span></button>
           <div class="hider">
             <p>З початку 2026 року в рейдах <b>25 ХМ</b> впроваджена система розролу "Софт-рол (Софт-резерв)".</p>
             <p><b>Порядок дій:</b></p>
@@ -174,7 +173,7 @@
         </div>
 
         <div class="collapsible">
-          <p class="heading">Правила ролу 25 гер/зв<span class="icon">🎲</span></p>
+          <button type="button" class="heading" aria-expanded="false">Правила ролу 25 гер/зв<span class="icon">🎲</span></button>
           <div class="hider">
             <p>Правила розролу "Софт-рол" на випадок якщо рейд явно йде не на 12/12 в гер режимі.</p>
             <p><b>Порядок дій:</b></p>
@@ -216,7 +215,7 @@
         </div>
 
         <div class="collapsible">
-          <p class="heading">Правила ролу 25 зв<span class="icon">🎲</span></p>
+          <button type="button" class="heading" aria-expanded="false">Правила ролу 25 зв<span class="icon">🎲</span></button>
           <div class="hider">
             <p>В рейдах <b>25 зв</b> продовжує діяти система звичайного ролу:</p>
             <ul>
@@ -244,7 +243,7 @@
           </div>
         </div>
         <div class="collapsible">
-          <p class="heading">На що можна розраховувати від гільдії<span class="icon">💰</span></p>
+          <button type="button" class="heading" aria-expanded="false">На що можна розраховувати від гільдії<span class="icon">💰</span></button>
           <div class="hider">
             <ul>
               <li>Безкоштовний крафт шмоток, зачарувань, камінців і тд. при наявності реагентів з вашого боку.</li>
@@ -259,7 +258,7 @@
           </div>
         </div>
         <div class="collapsible">
-          <p class="heading">Спілкування & Стріми<span class="icon">💬</span></p>
+          <button type="button" class="heading" aria-expanded="false">Спілкування & Стріми<span class="icon">💬</span></button>
           <div class="hider">
 
             <p><b>Discord</b></p>

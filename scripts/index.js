@@ -1,15 +1,26 @@
-$(function () {
-  const $container = $(".info-tabs");
-  const $blocks = $container.find(".collapsible");
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.querySelector('.info-tabs');
+  if (!container) return;
 
-  // Спочатку видаляємо клас open у всіх
-  $blocks.removeClass("open");
-  // Потім додаємо лише першому
-  $blocks.first().addClass("open");
+  const blocks = Array.from(container.querySelectorAll('.collapsible'));
+  blocks.forEach((b) => b.classList.remove('open'));
+  if (blocks[0]) blocks[0].classList.add('open');
 
-  // Обробка кліку
-  $blocks.children(".heading").on("click", function () {
-    $blocks.removeClass("open");
-    $(this).parent(".collapsible").addClass("open");
+  function activateBlock(targetBlock) {
+    blocks.forEach((b) => {
+      b.classList.remove('open');
+      const h = b.querySelector('.heading');
+      if (h) h.setAttribute('aria-expanded', 'false');
+    });
+    targetBlock.classList.add('open');
+    const heading = targetBlock.querySelector('.heading');
+    if (heading) heading.setAttribute('aria-expanded', 'true');
+  }
+
+  blocks.forEach((block, i) => {
+    const heading = block.querySelector('.heading');
+    if (!heading) return;
+    heading.setAttribute('aria-expanded', i === 0 ? 'true' : 'false');
+    heading.addEventListener('click', () => activateBlock(block));
   });
 });

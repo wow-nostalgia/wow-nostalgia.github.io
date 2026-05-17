@@ -60,7 +60,6 @@ function initLightbox() {
   const lightboxClose = document.getElementById('lightboxClose');
   const lightboxPrev = document.getElementById('lightboxPrev');
   const lightboxNext = document.getElementById('lightboxNext');
-  const backdrop = document.querySelector('[data-close-lightbox]');
   const galleryGrid = document.getElementById('galleryGrid');
 
   if (
@@ -70,7 +69,6 @@ function initLightbox() {
     !lightboxClose ||
     !lightboxPrev ||
     !lightboxNext ||
-    !backdrop ||
     !galleryGrid
   ) {
     console.error('Елементи lightbox не знайдено в DOM');
@@ -90,23 +88,12 @@ function initLightbox() {
   function openLightbox(index, card) {
     lastFocusedCard = card || null;
     renderLightbox(index);
-    lightbox.classList.add('is-open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+    lightbox.showModal();
     lightboxClose.focus();
   }
 
   function closeLightbox() {
-    lightbox.classList.remove('is-open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    lightboxImage.src = '';
-    lightboxImage.alt = '';
-    lightboxCaption.textContent = '';
-    document.body.style.overflow = '';
-
-    if (lastFocusedCard) {
-      lastFocusedCard.focus();
-    }
+    lightbox.close();
   }
 
   function showPrev() {
@@ -119,6 +106,19 @@ function initLightbox() {
     renderLightbox(nextIndex);
   }
 
+  lightbox.addEventListener('close', () => {
+    lightboxImage.src = '';
+    lightboxImage.alt = '';
+    lightboxCaption.textContent = '';
+    if (lastFocusedCard) {
+      lastFocusedCard.focus();
+    }
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
   galleryGrid.addEventListener('click', (event) => {
     const card = event.target.closest('.gallery-card');
     if (!card) return;
@@ -130,12 +130,10 @@ function initLightbox() {
   lightboxClose.addEventListener('click', closeLightbox);
   lightboxPrev.addEventListener('click', showPrev);
   lightboxNext.addEventListener('click', showNext);
-  backdrop.addEventListener('click', closeLightbox);
 
   document.addEventListener('keydown', (event) => {
-    if (!lightbox.classList.contains('is-open')) return;
+    if (!lightbox.open) return;
 
-    if (event.key === 'Escape') closeLightbox();
     if (event.key === 'ArrowLeft') showPrev();
     if (event.key === 'ArrowRight') showNext();
   });
