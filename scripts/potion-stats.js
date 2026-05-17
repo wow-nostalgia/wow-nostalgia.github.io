@@ -177,7 +177,7 @@ function switchView(viewName) {
   viewButtons.forEach((button) => {
     const isActive = button.dataset.view === viewName;
     button.classList.toggle('active', isActive);
-    button.setAttribute('aria-pressed', isActive.toString());
+    button.setAttribute('aria-selected', isActive.toString());
   });
 }
 
