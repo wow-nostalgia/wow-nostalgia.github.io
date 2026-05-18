@@ -55,7 +55,8 @@ async function fetchCharacterSpec(player, specIndex, attempt = 1, maxAttempts = 
 
 async function main() {
   const rawPlayers = await fs.readFile('./data/players.json', 'utf8');
-  const players = JSON.parse(rawPlayers);
+  const rawLegionnaires = await fs.readFile('./data/legionnaires.json', 'utf8');
+  const players = [...JSON.parse(rawPlayers), ...JSON.parse(rawLegionnaires)];
   const rows = [];
 
   for (const player of players) {

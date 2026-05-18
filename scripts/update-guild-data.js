@@ -5,6 +5,7 @@ const path = require('path');
 const { BOSS_ORDER, sleep, getClassName, getSpecName, normalizeScore, normalizeBosses, hasAnyBossData } = require('./shared');
 
 const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
+const LEGIONNAIRES_FILE = path.join(__dirname, '..', 'data', 'legionnaires.json');
 const DATA_FILE = path.join(__dirname, '..', 'data', 'guild-data.json');
 
 const REQUEST_DELAY_MS = 1500;
@@ -28,7 +29,8 @@ async function readPlayers() {
   if (!Array.isArray(players)) {
     throw new Error('players.json не містить масив гравців');
   }
-  return players;
+  const legionnaires = await readJson(LEGIONNAIRES_FILE).catch(() => []);
+  return [...players, ...legionnaires];
 }
 
 async function readGuildData() {
