@@ -4,9 +4,17 @@ const bossCheckboxes = document.getElementById('bossCheckboxes');
 const selectAllBossesBtn = document.getElementById('selectAllBosses');
 const deselectAllBossesBtn = document.getElementById('deselectAllBosses');
 const tableStatus = document.getElementById('tableStatus');
+const splineSelect = document.getElementById('splineSelect');
 
 let personalStats = [];
 let chart = null;
+
+const SPLINE_MODES = {
+  smooth: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
+  smoothNoPoints: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 },
+  linear: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
+  linearNoPoints: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 }
+};
 
 const BOSS_ORDER = [
   'Lord Marrowgar',
@@ -235,6 +243,7 @@ function render() {
 
     const isSecondPlayer = combo.player !== primaryPlayer;
     const color = getBossColor(combo.boss);
+    const spline = SPLINE_MODES[splineSelect.value] || SPLINE_MODES.smoothNoPoints;
 
     return {
       label: `${combo.boss} — ${combo.player}`,
@@ -242,9 +251,11 @@ function render() {
       borderColor: color,
       backgroundColor: color,
       borderDash: isSecondPlayer ? [6, 4] : [],
-      spanGaps: false,
-      tension: 0.2,
-      pointRadius: 4,
+      spanGaps: true,
+      tension: spline.tension,
+      cubicInterpolationMode: spline.cubicInterpolationMode,
+      pointRadius: spline.pointRadius,
+      hitRadius: spline.hitRadius,
       pointHoverRadius: 6
     };
   });
@@ -331,5 +342,7 @@ deselectAllBossesBtn.addEventListener('click', () => {
   });
   render();
 });
+
+splineSelect.addEventListener('change', render);
 
 init();

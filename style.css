@@ -1017,6 +1017,36 @@ body.personal-analytics-page .autocomplete-empty {
   color: var(--color-text-faint);
 }
 
+body.personal-analytics-page .spline-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+body.personal-analytics-page .spline-select-wrap label {
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+}
+
+body.personal-analytics-page .spline-select-wrap select {
+  padding: 0.35rem 0.55rem;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.88);
+  color: var(--color-text-strong);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+body.personal-analytics-page .spline-select-wrap select:hover {
+  border-color: rgba(123, 170, 245, 0.55);
+}
+
+body.personal-analytics-page .spline-select-wrap select:focus {
+  border-color: var(--color-link);
+  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+}
+
 body.personal-analytics-page .boss-checkboxes-head {
   display: flex;
   align-items: center;
