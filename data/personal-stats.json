@@ -1730,9 +1730,1572 @@
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-05-31--21-06--Boromit--FreedomUA/",
     "date": "2026-05-31",
-    "boss": null,
-    "players": [],
-    "error": "No fights-container found (corrupted or empty report)"
+    "boss": "Lord Marrowgar",
+    "players": [
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 21153.6
+      },
+      {
+        "name": "Deathmark",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 20862.8
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19888.5
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18983.8
+      },
+      {
+        "name": "Мурчальник",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 18819
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18323.3
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 16724.2
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 16548.1
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 15417.9
+      },
+      {
+        "name": "Methodlx",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 14967.7
+      },
+      {
+        "name": "Darckside",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 14904.5
+      },
+      {
+        "name": "Marka",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 14738.2
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 14022.4
+      },
+      {
+        "name": "Crystallas",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 13996.5
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12707.6
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 12490.5
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 11424.1
+      },
+      {
+        "name": "Parabellum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 11215.6
+      },
+      {
+        "name": "Predator",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 9622.5
+      },
+      {
+        "name": "Blodsikerr",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 4617
+      },
+      {
+        "name": "Boromit",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3629.2
+      },
+      {
+        "name": "Maxcrazy",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 380.3
+      },
+      {
+        "name": "Niyy",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 139.2
+      },
+      {
+        "name": "Кабачок",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Sweetest",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-05-31--21-06--Boromit--FreedomUA/",
+    "date": "2026-05-31",
+    "boss": "Lady Deathwhisper",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15105.6
+      },
+      {
+        "name": "Deathmark",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 14572.4
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 14215.3
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 12037.5
+      },
+      {
+        "name": "Darckside",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 11632.2
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 11235.9
+      },
+      {
+        "name": "Мурчальник",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 11024.8
+      },
+      {
+        "name": "Crystallas",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 9947.3
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 9859.9
+      },
+      {
+        "name": "Parabellum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 9295.2
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8615.5
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 8454.4
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8449
+      },
+      {
+        "name": "Predator",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 7964.5
+      },
+      {
+        "name": "Marka",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 7654.3
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 5720.7
+      },
+      {
+        "name": "Methodlx",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 5373.3
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 4980.8
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 4744.4
+      },
+      {
+        "name": "Blodsikerr",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 4200.2
+      },
+      {
+        "name": "Boromit",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3261
+      },
+      {
+        "name": "Sweetest",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 157.2
+      },
+      {
+        "name": "Maxcrazy",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 126.1
+      },
+      {
+        "name": "Niyy",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Кабачок",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-05-31--21-06--Boromit--FreedomUA/",
+    "date": "2026-05-31",
+    "boss": "Deathbringer Saurfang",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 23310.2
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 22144.3
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 20549
+      },
+      {
+        "name": "Deathmark",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 19946.5
+      },
+      {
+        "name": "Мурчальник",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 18590.8
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 17906.8
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 17668
+      },
+      {
+        "name": "Methodlx",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 17648.6
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 17411.3
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 16859.9
+      },
+      {
+        "name": "Darckside",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 16777.1
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 16308.8
+      },
+      {
+        "name": "Crystallas",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15689.7
+      },
+      {
+        "name": "Sweetest",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15212.5
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 15066.5
+      },
+      {
+        "name": "Niyy",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 14749.1
+      },
+      {
+        "name": "Parabellum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 14310.7
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 13729
+      },
+      {
+        "name": "Marka",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 13365.5
+      },
+      {
+        "name": "Predator",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 12815
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 10976.7
+      },
+      {
+        "name": "Blodsikerr",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 5199.6
+      },
+      {
+        "name": "Boromit",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 4307
+      },
+      {
+        "name": "Maxcrazy",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 336.6
+      },
+      {
+        "name": "Кабачок",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 7.1
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-05-31--21-06--Boromit--FreedomUA/",
+    "date": "2026-05-31",
+    "boss": "Blood Prince Council",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 16195.2
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 14808.9
+      },
+      {
+        "name": "Methodlx",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13329.9
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 12029.6
+      },
+      {
+        "name": "Мурчальник",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 11823
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 11779.2
+      },
+      {
+        "name": "Blodsikerr",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 10500
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 10169.4
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 9981.5
+      },
+      {
+        "name": "Crystallas",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 9651.3
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 9348.1
+      },
+      {
+        "name": "Marka",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 8694.8
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 7702.8
+      },
+      {
+        "name": "Predator",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 7266.2
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 7134
+      },
+      {
+        "name": "Darckside",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 5845.6
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3073.3
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 2027.3
+      },
+      {
+        "name": "Boromit",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 737
+      },
+      {
+        "name": "Parabellum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 308.8
+      },
+      {
+        "name": "Deathmark",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 169.6
+      },
+      {
+        "name": "Maxcrazy",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 76.7
+      },
+      {
+        "name": "Sweetest",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Кабачок",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Niyy",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-05-31--21-06--Boromit--FreedomUA/",
+    "date": "2026-05-31",
+    "boss": "Rotface",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 21278.7
+      },
+      {
+        "name": "Deathmark",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 19094.2
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18765.2
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 18083.7
+      },
+      {
+        "name": "Мурчальник",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 17927.2
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17210.6
+      },
+      {
+        "name": "Darckside",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 16809.6
+      },
+      {
+        "name": "Methodlx",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15812.4
+      },
+      {
+        "name": "Crystallas",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15440.1
+      },
+      {
+        "name": "Marka",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 15274.3
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 15158.5
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 14978.9
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 14736.4
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 14361.4
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 13270.4
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12941.9
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12253.3
+      },
+      {
+        "name": "Predator",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 11349.5
+      },
+      {
+        "name": "Parabellum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 10753.2
+      },
+      {
+        "name": "Blodsikerr",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 5953.6
+      },
+      {
+        "name": "Boromit",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 864
+      },
+      {
+        "name": "Maxcrazy",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 361.4
+      },
+      {
+        "name": "Niyy",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 2.2
+      },
+      {
+        "name": "Sweetest",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Кабачок",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-05-31--21-06--Boromit--FreedomUA/",
+    "date": "2026-05-31",
+    "boss": "Festergut",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 20325
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18375.5
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17634.5
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 16241.4
+      },
+      {
+        "name": "Crystallas",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15870.8
+      },
+      {
+        "name": "Deathmark",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 15395.9
+      },
+      {
+        "name": "Мурчальник",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 15330.2
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 15247.1
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15215.9
+      },
+      {
+        "name": "Darckside",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 14731
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 13467.4
+      },
+      {
+        "name": "Marka",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 13316.5
+      },
+      {
+        "name": "Methodlx",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13245
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12811.1
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12519.9
+      },
+      {
+        "name": "Parabellum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 11102
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9538.3
+      },
+      {
+        "name": "Predator",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 8695.2
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 8670.8
+      },
+      {
+        "name": "Blodsikerr",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 6317.2
+      },
+      {
+        "name": "Boromit",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3846.4
+      },
+      {
+        "name": "Maxcrazy",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 229.4
+      },
+      {
+        "name": "Кабачок",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Sweetest",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Niyy",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-05-31--21-06--Boromit--FreedomUA/",
+    "date": "2026-05-31",
+    "boss": "Professor Putricide",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 14913.7
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 13617.6
+      },
+      {
+        "name": "Мурчальник",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 13048.5
+      },
+      {
+        "name": "Methodlx",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 12199.9
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 11626.9
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 11511.2
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8924.7
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 8755.4
+      },
+      {
+        "name": "Darckside",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 8178.1
+      },
+      {
+        "name": "Blodsikerr",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 8120.7
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 7905.3
+      },
+      {
+        "name": "Marka",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 7620.9
+      },
+      {
+        "name": "Parabellum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 6824.5
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 6798
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 6797.3
+      },
+      {
+        "name": "Crystallas",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 6706.3
+      },
+      {
+        "name": "Deathmark",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 6629.1
+      },
+      {
+        "name": "Predator",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 5162.3
+      },
+      {
+        "name": "Boromit",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3249.3
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 704.4
+      },
+      {
+        "name": "Maxcrazy",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 140.9
+      },
+      {
+        "name": "Sweetest",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 107.1
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Кабачок",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Niyy",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-05-31--21-06--Boromit--FreedomUA/",
+    "date": "2026-05-31",
+    "boss": "Blood-Queen Lana'thel",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 27625.1
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 27246.7
+      },
+      {
+        "name": "Methodlx",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 23413.3
+      },
+      {
+        "name": "Мурчальник",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 20302.6
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18229
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17975.7
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 16534.8
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 16385.5
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 15724.2
+      },
+      {
+        "name": "Darckside",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 15378.5
+      },
+      {
+        "name": "Crystallas",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15222.8
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15117.1
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 14502.4
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 14242.7
+      },
+      {
+        "name": "Marka",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 12940.3
+      },
+      {
+        "name": "Parabellum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 11981
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 10575.5
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 10518.9
+      },
+      {
+        "name": "Predator",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 9696.6
+      },
+      {
+        "name": "Blodsikerr",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 4582.7
+      },
+      {
+        "name": "Boromit",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3347
+      },
+      {
+        "name": "Maxcrazy",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 306.8
+      },
+      {
+        "name": "Кабачок",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Sweetest",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Niyy",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-05-31--21-06--Boromit--FreedomUA/",
+    "date": "2026-05-31",
+    "boss": "Valithria Dreamwalker",
+    "players": [
+      {
+        "name": "Methodlx",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 7757.4
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 6638.7
+      },
+      {
+        "name": "Мурчальник",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 6165.6
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 6156.4
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 6008.6
+      },
+      {
+        "name": "Marka",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 5544.1
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 4920.3
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 4789.1
+      },
+      {
+        "name": "Parabellum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 4212.6
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 3886.5
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 3714.1
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 3156.6
+      },
+      {
+        "name": "Blodsikerr",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3093.9
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 3018.2
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 3012.3
+      },
+      {
+        "name": "Predator",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 2523.5
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 1980.2
+      },
+      {
+        "name": "Boromit",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 1682.8
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 1680.5
+      },
+      {
+        "name": "Darckside",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 1671.4
+      },
+      {
+        "name": "Crystallas",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 1579
+      },
+      {
+        "name": "Maxcrazy",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 12.4
+      },
+      {
+        "name": "Кабачок",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Niyy",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Sweetest",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-05-31--21-06--Boromit--FreedomUA/",
+    "date": "2026-05-31",
+    "boss": "Sindragosa",
+    "players": [
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 12423.2
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12329.5
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 11030.4
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 10854.9
+      },
+      {
+        "name": "Crystallas",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 10677.4
+      },
+      {
+        "name": "Methodlx",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 10528.6
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 10482.2
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 9470.4
+      },
+      {
+        "name": "Мурчальник",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 9333.3
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8741
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 8550.9
+      },
+      {
+        "name": "Darckside",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 7169.5
+      },
+      {
+        "name": "Parabellum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 6897.7
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 6863.8
+      },
+      {
+        "name": "Marka",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 6218
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 6090.8
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 5796.5
+      },
+      {
+        "name": "Predator",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 2920.2
+      },
+      {
+        "name": "Blodsikerr",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2605.4
+      },
+      {
+        "name": "Boromit",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2038
+      },
+      {
+        "name": "Maxcrazy",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 84.4
+      },
+      {
+        "name": "Sweetest",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 1.8
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Кабачок",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Niyy",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-05-30--20-52--Boro--FreedomUA/",
@@ -17118,23 +18681,1737 @@
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-04-25--19-56--Boro--FreedomUA/",
     "date": "2026-04-25",
-    "boss": null,
-    "players": [],
-    "error": "Request failed with status 502"
+    "boss": "Lord Marrowgar",
+    "players": [
+      {
+        "name": "Херсонський",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 20654.8
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19419.8
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19372.7
+      },
+      {
+        "name": "Ashmore",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 18839.1
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 17506.3
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 17132.3
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 16253.6
+      },
+      {
+        "name": "Жеканежаб",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 16232.5
+      },
+      {
+        "name": "Чіта",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 15984
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 15114.5
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15104.3
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 14537.4
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 14530.7
+      },
+      {
+        "name": "Tvoyiochi",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 14390
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 13793
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13696.7
+      },
+      {
+        "name": "Firre",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 12508.6
+      },
+      {
+        "name": "Demis",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 12023.9
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 10796.9
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 4732.9
+      },
+      {
+        "name": "Кас'тіель",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3141.3
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 361.7
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 57.9
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-04-25--19-56--Boro--FreedomUA/",
+    "date": "2026-04-25",
+    "boss": "Lady Deathwhisper",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19784.5
+      },
+      {
+        "name": "Херсонський",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 17967.5
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17393.2
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 16230.1
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 14610.6
+      },
+      {
+        "name": "Ashmore",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 14479.8
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 14206.6
+      },
+      {
+        "name": "Чіта",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 13601.5
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13571.1
+      },
+      {
+        "name": "Жеканежаб",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 13260.7
+      },
+      {
+        "name": "Demis",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 13066.8
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12648.6
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 12423.6
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 11975.3
+      },
+      {
+        "name": "Tvoyiochi",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 11957.3
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 11155.1
+      },
+      {
+        "name": "Firre",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 9814.2
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8021.5
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Protection",
+        "dps": 4481
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3687.6
+      },
+      {
+        "name": "Кас'тіель",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3108.3
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 1151.6
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 350
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 14.1
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-04-25--19-56--Boro--FreedomUA/",
+    "date": "2026-04-25",
+    "boss": "Deathbringer Saurfang",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 22757.3
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 22516.7
+      },
+      {
+        "name": "Чіта",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 21746.1
+      },
+      {
+        "name": "Firre",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 20986.4
+      },
+      {
+        "name": "Херсонський",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 20950.2
+      },
+      {
+        "name": "Ashmore",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 20280.4
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 18681.9
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 18485.8
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 18285.7
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 18247.5
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 17704.4
+      },
+      {
+        "name": "Жеканежаб",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 17032.2
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 16918.6
+      },
+      {
+        "name": "Demis",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 16609.5
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 16316.6
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 15389.8
+      },
+      {
+        "name": "Tvoyiochi",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 14121.5
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 13716.6
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 13071.6
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 5915.1
+      },
+      {
+        "name": "Кас'тіель",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3777.1
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 1084.3
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 218.5
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-04-25--19-56--Boro--FreedomUA/",
+    "date": "2026-04-25",
+    "boss": "Blood Prince Council",
+    "players": [
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18327.4
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17132
+      },
+      {
+        "name": "Ashmore",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 15651.8
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 14826.2
+      },
+      {
+        "name": "Чіта",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 14678.8
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 14593.9
+      },
+      {
+        "name": "Херсонський",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 13860
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 13125.9
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13052.2
+      },
+      {
+        "name": "Жеканежаб",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12526.1
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12297.6
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 10402
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 9548.3
+      },
+      {
+        "name": "Firre",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 9446.6
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 9120.5
+      },
+      {
+        "name": "Tvoyiochi",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 8881.4
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 7777.7
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3832.6
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 2712.8
+      },
+      {
+        "name": "Demis",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 2416.3
+      },
+      {
+        "name": "Кас'тіель",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 641.9
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 161.8
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-04-25--19-56--Boro--FreedomUA/",
+    "date": "2026-04-25",
+    "boss": "Festergut",
+    "players": [
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 22157.2
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 20249.6
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 19086.6
+      },
+      {
+        "name": "Firre",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18334.1
+      },
+      {
+        "name": "Херсонський",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 18200.7
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 17803.6
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 16683
+      },
+      {
+        "name": "Чіта",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 16392.5
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 15693.4
+      },
+      {
+        "name": "Жеканежаб",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 15655.2
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15043.6
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 15005.6
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 14854.9
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 14785.5
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 13831.1
+      },
+      {
+        "name": "Demis",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 13270.7
+      },
+      {
+        "name": "Tvoyiochi",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 13008.2
+      },
+      {
+        "name": "Ashmore",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 12861.4
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 12668.9
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 12369.9
+      },
+      {
+        "name": "Кас'тіель",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 5140.4
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 294
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 238.4
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 3.9
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-04-25--19-56--Boro--FreedomUA/",
+    "date": "2026-04-25",
+    "boss": "Rotface",
+    "players": [
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 20136.6
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 19152.7
+      },
+      {
+        "name": "Херсонський",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 19028.9
+      },
+      {
+        "name": "Ashmore",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 18842.6
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 18446.8
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18337
+      },
+      {
+        "name": "Firre",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17616.7
+      },
+      {
+        "name": "Чіта",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 17559.9
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 17130.2
+      },
+      {
+        "name": "Жеканежаб",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 14809.1
+      },
+      {
+        "name": "Demis",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 14418.5
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 14111.4
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 13099
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13064.6
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12185.2
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 12119.8
+      },
+      {
+        "name": "Tvoyiochi",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 11754
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 11343.2
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 10476.1
+      },
+      {
+        "name": "Кас'тіель",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3256.1
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 902.3
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 379.3
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 78.3
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-04-25--19-56--Boro--FreedomUA/",
+    "date": "2026-04-25",
+    "boss": "Professor Putricide",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 16719.5
+      },
+      {
+        "name": "Херсонський",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 13680.9
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12747.7
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 12698.5
+      },
+      {
+        "name": "Ashmore",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 12106.9
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 11429
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 10843.7
+      },
+      {
+        "name": "Firre",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 10777.6
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 10717.1
+      },
+      {
+        "name": "Demis",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 10331.9
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 10303.7
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 10188.8
+      },
+      {
+        "name": "Жеканежаб",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9502.6
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 9337.5
+      },
+      {
+        "name": "Чіта",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 9194.2
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 9091
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 8858.8
+      },
+      {
+        "name": "Tvoyiochi",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 8512.6
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 5987.7
+      },
+      {
+        "name": "Кас'тіель",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2469.1
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 766.1
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 306.3
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 205.3
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 3.9
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-04-25--19-56--Boro--FreedomUA/",
+    "date": "2026-04-25",
+    "boss": "Blood-Queen Lana'thel",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 35047.4
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 30986.7
+      },
+      {
+        "name": "Firre",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 21891.5
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 17701.5
+      },
+      {
+        "name": "Херсонський",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 17044.8
+      },
+      {
+        "name": "Чіта",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 16881.6
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 16577.6
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 16495.8
+      },
+      {
+        "name": "Ashmore",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 15932.9
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15829.7
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 15460.8
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 14523.3
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 14107.8
+      },
+      {
+        "name": "Demis",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 13880.4
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13769.9
+      },
+      {
+        "name": "Жеканежаб",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 13684.8
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 13173.9
+      },
+      {
+        "name": "Tvoyiochi",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 12305.5
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 11954.2
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 4595.2
+      },
+      {
+        "name": "Кас'тіель",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3213.7
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 214.5
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 211.2
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-04-25--19-56--Boro--FreedomUA/",
+    "date": "2026-04-25",
+    "boss": "Valithria Dreamwalker",
+    "players": [
+      {
+        "name": "Ashmore",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 8594.9
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 7422.9
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 7243.9
+      },
+      {
+        "name": "Жеканежаб",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 7165.7
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 6999
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 6451.4
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 5795.2
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 4951.1
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 4876.8
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 4805.6
+      },
+      {
+        "name": "Tvoyiochi",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 4602
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 4109.2
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 3787.2
+      },
+      {
+        "name": "Demis",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 3522.8
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3338.6
+      },
+      {
+        "name": "Firre",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 2350.6
+      },
+      {
+        "name": "Кас'тіель",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 1130.2
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 798.7
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 105.9
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 44.2
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Чіта",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-04-25--19-56--Boro--FreedomUA/",
+    "date": "2026-04-25",
+    "boss": "Sindragosa",
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15811.2
+      },
+      {
+        "name": "Ashmore",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 12870.4
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 11918.9
+      },
+      {
+        "name": "Demis",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 11860.4
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 11769.8
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 11118.7
+      },
+      {
+        "name": "Беллатрікс",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9351.4
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 9350.8
+      },
+      {
+        "name": "Херсонський",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 9112.5
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 9101.1
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 8790
+      },
+      {
+        "name": "Tvoyiochi",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 8584.3
+      },
+      {
+        "name": "Чіта",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 8523
+      },
+      {
+        "name": "Жеканежаб",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 8350.6
+      },
+      {
+        "name": "Firre",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 8349.6
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 8148.2
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 6766.4
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 6551.6
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2796.5
+      },
+      {
+        "name": "Кас'тіель",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2548.1
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 243.3
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 102.6
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 3.3
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-04-25--19-56--Boro--FreedomUA/",
+    "date": "2026-04-25",
+    "boss": "The Lich King",
+    "players": [
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 12686.9
+      },
+      {
+        "name": "Ashmore",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 12124.8
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 11758.3
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 11578.3
+      },
+      {
+        "name": "Херсонський",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 10935.4
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 10624.6
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 10369.2
+      },
+      {
+        "name": "Жеканежаб",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9953.1
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "dps": 8920
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8890.4
+      },
+      {
+        "name": "Firre",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 8862.2
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 8451.9
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 7552
+      },
+      {
+        "name": "Demis",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 7126
+      },
+      {
+        "name": "Tvoyiochi",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 6930.3
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 5549.5
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 4578.2
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 4079.7
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2503
+      },
+      {
+        "name": "Кас'тіель",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2280
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 260.5
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 111.1
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 11.5
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-04-19--20-31--Boro--FreedomUA/",
     "date": "2026-04-19",
     "boss": null,
     "players": [],
-    "error": "Request failed with status 502"
+    "error": "Request failed with status 504"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-04-18--20-40--Boromit--FreedomUA/",
     "date": "2026-04-18",
     "boss": null,
     "players": [],
-    "error": "Request failed with status 502"
+    "error": "Request failed with status 504"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-04-15--21-51--Borolgin--FreedomUA/",
@@ -108974,23 +112251,2829 @@
   {
     "raidUrl": "https://uwu-logs.xyz/reports/25-03-15--20-28--Boro--FreedomUA/",
     "date": "2025-03-15",
-    "boss": null,
-    "players": [],
-    "error": "Request failed with status 502"
+    "boss": "Lord Marrowgar",
+    "players": [
+      {
+        "name": "Ksard",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 22767.3
+      },
+      {
+        "name": "Shardik",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 21331.5
+      },
+      {
+        "name": "Квадробер",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 18552.8
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17881.7
+      },
+      {
+        "name": "Archimed",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 17799.6
+      },
+      {
+        "name": "Inferndk",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 17665.2
+      },
+      {
+        "name": "Bvb",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 17164.4
+      },
+      {
+        "name": "Sumplesh",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 16720.6
+      },
+      {
+        "name": "Бурерожденна",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 16361.8
+      },
+      {
+        "name": "Камаелька",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 15850.1
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 15726.1
+      },
+      {
+        "name": "Castfast",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 14803.2
+      },
+      {
+        "name": "Abrika",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 14593.7
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 14445.8
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 14276.6
+      },
+      {
+        "name": "Reformator",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 14165
+      },
+      {
+        "name": "Dum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 11664.9
+      },
+      {
+        "name": "Bordo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 11392.3
+      },
+      {
+        "name": "Ferox",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8203.5
+      },
+      {
+        "name": "Sinda",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 4408.5
+      },
+      {
+        "name": "Zeerocul",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3157.4
+      },
+      {
+        "name": "Anafilakciya",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 392.8
+      },
+      {
+        "name": "Luminaria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Auchenai",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Rubi",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-15--20-28--Boro--FreedomUA/",
+    "date": "2025-03-15",
+    "boss": "Lady Deathwhisper",
+    "players": [
+      {
+        "name": "Ksard",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17271.9
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15819.9
+      },
+      {
+        "name": "Bvb",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 13968.1
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 13930.8
+      },
+      {
+        "name": "Shardik",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 13750.8
+      },
+      {
+        "name": "Reformator",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 13556.5
+      },
+      {
+        "name": "Archimed",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13533
+      },
+      {
+        "name": "Камаелька",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 13273.5
+      },
+      {
+        "name": "Квадробер",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12839.7
+      },
+      {
+        "name": "Sumplesh",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 12838.5
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 12532.2
+      },
+      {
+        "name": "Dum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 12500.9
+      },
+      {
+        "name": "Abrika",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 11815.1
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 11765.7
+      },
+      {
+        "name": "Bordo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 11657.6
+      },
+      {
+        "name": "Castfast",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 11177.1
+      },
+      {
+        "name": "Бурерожденна",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 10016.1
+      },
+      {
+        "name": "Ferox",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8932
+      },
+      {
+        "name": "Inferndk",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3771
+      },
+      {
+        "name": "Sinda",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3645
+      },
+      {
+        "name": "Zeerocul",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2537.9
+      },
+      {
+        "name": "Anafilakciya",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 306.4
+      },
+      {
+        "name": "Rubi",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Auchenai",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Luminaria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-15--20-28--Boro--FreedomUA/",
+    "date": "2025-03-15",
+    "boss": "Deathbringer Saurfang",
+    "players": [
+      {
+        "name": "Shardik",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 25736.6
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 24136.9
+      },
+      {
+        "name": "Ksard",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 23415.1
+      },
+      {
+        "name": "Castfast",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 22027.5
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 21459.7
+      },
+      {
+        "name": "Квадробер",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 20582.6
+      },
+      {
+        "name": "Sumplesh",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 20561.6
+      },
+      {
+        "name": "Камаелька",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 20375.2
+      },
+      {
+        "name": "Bvb",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 20347.1
+      },
+      {
+        "name": "Reformator",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 19865.6
+      },
+      {
+        "name": "Inferndk",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 19387.2
+      },
+      {
+        "name": "Auchenai",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 18327.5
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 18188.8
+      },
+      {
+        "name": "Ferox",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 17849.5
+      },
+      {
+        "name": "Bordo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 17816.7
+      },
+      {
+        "name": "Abrika",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 17735.9
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 17487.3
+      },
+      {
+        "name": "Dum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 17462.7
+      },
+      {
+        "name": "Бурерожденна",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 16880.9
+      },
+      {
+        "name": "Archimed",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 16845.3
+      },
+      {
+        "name": "Rubi",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 16500.8
+      },
+      {
+        "name": "Sinda",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 6006.4
+      },
+      {
+        "name": "Zeerocul",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 4131.7
+      },
+      {
+        "name": "Anafilakciya",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 393.5
+      },
+      {
+        "name": "Luminaria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-15--20-28--Boro--FreedomUA/",
+    "date": "2025-03-15",
+    "boss": "Rotface",
+    "players": [
+      {
+        "name": "Ksard",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 23574
+      },
+      {
+        "name": "Shardik",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 22675.5
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 22382.5
+      },
+      {
+        "name": "Bvb",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 21104.7
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 20779.5
+      },
+      {
+        "name": "Reformator",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 20666.9
+      },
+      {
+        "name": "Castfast",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 20015.2
+      },
+      {
+        "name": "Квадробер",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 19751.6
+      },
+      {
+        "name": "Камаелька",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 19135.8
+      },
+      {
+        "name": "Sumplesh",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 18223.3
+      },
+      {
+        "name": "Inferndk",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 18058.5
+      },
+      {
+        "name": "Бурерожденна",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 17853.6
+      },
+      {
+        "name": "Abrika",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 17564.2
+      },
+      {
+        "name": "Archimed",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 16309.1
+      },
+      {
+        "name": "Bordo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 15292.6
+      },
+      {
+        "name": "Dum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 14966
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 14263
+      },
+      {
+        "name": "Ferox",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12591.8
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 11150.3
+      },
+      {
+        "name": "Zeerocul",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3406.5
+      },
+      {
+        "name": "Anafilakciya",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 475.2
+      },
+      {
+        "name": "Sinda",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 48.1
+      },
+      {
+        "name": "Auchenai",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Rubi",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Luminaria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-15--20-28--Boro--FreedomUA/",
+    "date": "2025-03-15",
+    "boss": "Festergut",
+    "players": [
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 21109.7
+      },
+      {
+        "name": "Shardik",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 20506.8
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 19104.1
+      },
+      {
+        "name": "Bvb",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 17592.9
+      },
+      {
+        "name": "Квадробер",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 17565.9
+      },
+      {
+        "name": "Inferndk",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 17423.7
+      },
+      {
+        "name": "Ksard",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17413.6
+      },
+      {
+        "name": "Castfast",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 17386.7
+      },
+      {
+        "name": "Reformator",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 17213.4
+      },
+      {
+        "name": "Sumplesh",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 16609.2
+      },
+      {
+        "name": "Bordo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 16202.8
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 16196.4
+      },
+      {
+        "name": "Archimed",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 16196.3
+      },
+      {
+        "name": "Бурерожденна",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 16048.3
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15633
+      },
+      {
+        "name": "Ferox",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 15385
+      },
+      {
+        "name": "Abrika",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 13845.8
+      },
+      {
+        "name": "Камаелька",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 13634.6
+      },
+      {
+        "name": "Dum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 12113.2
+      },
+      {
+        "name": "Zeerocul",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 5288.9
+      },
+      {
+        "name": "Sinda",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 4712.4
+      },
+      {
+        "name": "Anafilakciya",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 104.3
+      },
+      {
+        "name": "Rubi",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Auchenai",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Luminaria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-15--20-28--Boro--FreedomUA/",
+    "date": "2025-03-15",
+    "boss": "Professor Putricide",
+    "players": [
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 14722.8
+      },
+      {
+        "name": "Ksard",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 13756.3
+      },
+      {
+        "name": "Castfast",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 12748.4
+      },
+      {
+        "name": "Archimed",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 12516.4
+      },
+      {
+        "name": "Inferndk",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 12193.4
+      },
+      {
+        "name": "Reformator",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 11829.2
+      },
+      {
+        "name": "Bvb",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 11238.7
+      },
+      {
+        "name": "Квадробер",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 11168.8
+      },
+      {
+        "name": "Zeerocul",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 11164.2
+      },
+      {
+        "name": "Bordo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 10688.2
+      },
+      {
+        "name": "Sumplesh",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 10425.6
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 10354.8
+      },
+      {
+        "name": "Dum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 10050.7
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 9996.6
+      },
+      {
+        "name": "Бурерожденна",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9730.7
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 9677.7
+      },
+      {
+        "name": "Abrika",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 8807.3
+      },
+      {
+        "name": "Камаелька",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 7937.4
+      },
+      {
+        "name": "Sinda",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3675.3
+      },
+      {
+        "name": "Shardik",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 2227.5
+      },
+      {
+        "name": "Anafilakciya",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 138.5
+      },
+      {
+        "name": "Luminaria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 85.5
+      },
+      {
+        "name": "Auchenai",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Rubi",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Ferox",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-15--20-28--Boro--FreedomUA/",
+    "date": "2025-03-15",
+    "boss": "Valithria Dreamwalker",
+    "players": [
+      {
+        "name": "Inferndk",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 7319.1
+      },
+      {
+        "name": "Бурерожденна",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 7264.9
+      },
+      {
+        "name": "Bvb",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 7142.8
+      },
+      {
+        "name": "Bordo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 6377.8
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 6023.6
+      },
+      {
+        "name": "Reformator",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 5744.8
+      },
+      {
+        "name": "Castfast",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 5706.2
+      },
+      {
+        "name": "Ksard",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 5500.6
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 5158.5
+      },
+      {
+        "name": "Квадробер",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 5147
+      },
+      {
+        "name": "Камаелька",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 5021.3
+      },
+      {
+        "name": "Abrika",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 4300.1
+      },
+      {
+        "name": "Archimed",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 4207.6
+      },
+      {
+        "name": "Dum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 2477.4
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 2311.1
+      },
+      {
+        "name": "Sinda",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2010.9
+      },
+      {
+        "name": "Zeerocul",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 1755.8
+      },
+      {
+        "name": "Luminaria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 116.7
+      },
+      {
+        "name": "Anafilakciya",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 73.2
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 62.6
+      },
+      {
+        "name": "Shardik",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Auchenai",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Ferox",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Sumplesh",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-15--20-28--Boro--FreedomUA/",
+    "date": "2025-03-15",
+    "boss": "Sindragosa",
+    "players": [
+      {
+        "name": "Ksard",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17867.9
+      },
+      {
+        "name": "Inferndk",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 11969.3
+      },
+      {
+        "name": "Castfast",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 11648.1
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 11216.3
+      },
+      {
+        "name": "Sumplesh",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 9949.2
+      },
+      {
+        "name": "Камаелька",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 9477.3
+      },
+      {
+        "name": "Dum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 9339.8
+      },
+      {
+        "name": "Archimed",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 9150.2
+      },
+      {
+        "name": "Бурерожденна",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9085.1
+      },
+      {
+        "name": "Abrika",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 8847.1
+      },
+      {
+        "name": "Bordo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8845.1
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 8472.8
+      },
+      {
+        "name": "Квадробер",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 8379.7
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 8250.8
+      },
+      {
+        "name": "Reformator",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 8209.1
+      },
+      {
+        "name": "Bvb",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 8116
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 8000.1
+      },
+      {
+        "name": "Zeerocul",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2704.9
+      },
+      {
+        "name": "Sinda",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2188.9
+      },
+      {
+        "name": "Anafilakciya",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 130.8
+      },
+      {
+        "name": "Luminaria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 50.6
+      },
+      {
+        "name": "Auchenai",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Rubi",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Ferox",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Shardik",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-15--20-28--Boro--FreedomUA/",
+    "date": "2025-03-15",
+    "boss": "Blood Prince Council",
+    "players": [
+      {
+        "name": "Reformator",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 20466.7
+      },
+      {
+        "name": "Ksard",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17333.7
+      },
+      {
+        "name": "Castfast",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 16865.3
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15684.3
+      },
+      {
+        "name": "Archimed",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 14914.1
+      },
+      {
+        "name": "Sumplesh",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 14756.8
+      },
+      {
+        "name": "Камаелька",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 14154
+      },
+      {
+        "name": "Shardik",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 13642.2
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 13533.4
+      },
+      {
+        "name": "Inferndk",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 13054.4
+      },
+      {
+        "name": "Abrika",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 12253.7
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 12236.5
+      },
+      {
+        "name": "Bordo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12029.5
+      },
+      {
+        "name": "Bvb",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 11360
+      },
+      {
+        "name": "Квадробер",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 10363.1
+      },
+      {
+        "name": "Бурерожденна",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 8055
+      },
+      {
+        "name": "Ferox",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 5097.7
+      },
+      {
+        "name": "Sinda",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3322.2
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 2495.5
+      },
+      {
+        "name": "Dum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 627.8
+      },
+      {
+        "name": "Zeerocul",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 379.9
+      },
+      {
+        "name": "Anafilakciya",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 34
+      },
+      {
+        "name": "Rubi",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Luminaria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Auchenai",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-15--20-28--Boro--FreedomUA/",
+    "date": "2025-03-15",
+    "boss": "Blood-Queen Lana'thel",
+    "players": [
+      {
+        "name": "Dum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 33809.9
+      },
+      {
+        "name": "Reformator",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 26579.2
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 22679.9
+      },
+      {
+        "name": "Bordo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 21927.7
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19292.8
+      },
+      {
+        "name": "Ksard",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19267.8
+      },
+      {
+        "name": "Shardik",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 18900.3
+      },
+      {
+        "name": "Bvb",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 16356.8
+      },
+      {
+        "name": "Castfast",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 16084.4
+      },
+      {
+        "name": "Sumplesh",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 15811.3
+      },
+      {
+        "name": "Квадробер",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 15794.5
+      },
+      {
+        "name": "Abrika",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 15674.7
+      },
+      {
+        "name": "Ferox",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 15366.6
+      },
+      {
+        "name": "Anybis",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 15178.9
+      },
+      {
+        "name": "Archimed",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15008.7
+      },
+      {
+        "name": "Камаелька",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 14911.7
+      },
+      {
+        "name": "Бурерожденна",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 14648.2
+      },
+      {
+        "name": "Inferndk",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 14518.9
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 13654.8
+      },
+      {
+        "name": "Sinda",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 4392.2
+      },
+      {
+        "name": "Zeerocul",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3296.7
+      },
+      {
+        "name": "Anafilakciya",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 121.4
+      },
+      {
+        "name": "Auchenai",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Luminaria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Rubi",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/25-03-11--20-27--Boroheal--FreedomUA/",
     "date": "2025-03-11",
-    "boss": null,
-    "players": [],
-    "error": "Request failed with status 502"
+    "boss": "Lord Marrowgar",
+    "players": [
+      {
+        "name": "Nacisto",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 15780.1
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 14611.7
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 12687
+      },
+      {
+        "name": "Tsezar",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12289.2
+      },
+      {
+        "name": "Chuchundra",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 12052.7
+      },
+      {
+        "name": "Stugna",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 11735.5
+      },
+      {
+        "name": "Чернорук",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 11295.5
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 11145.8
+      },
+      {
+        "name": "Gobsek",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 10265.7
+      },
+      {
+        "name": "Sempron",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9579.2
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9487.9
+      },
+      {
+        "name": "Форд",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 9483.8
+      },
+      {
+        "name": "Коко",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 9060.9
+      },
+      {
+        "name": "Ельфбар",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 7489.8
+      },
+      {
+        "name": "Stormrange",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 7312.2
+      },
+      {
+        "name": "Kamerunets",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 7055.7
+      },
+      {
+        "name": "Дкашка",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 3980.3
+      },
+      {
+        "name": "Sho",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3271.8
+      },
+      {
+        "name": "Chucknorris",
+        "class": "Warrior",
+        "spec": "Protection",
+        "dps": 2484.5
+      },
+      {
+        "name": "Deadgirl",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2352.3
+      },
+      {
+        "name": "Silmarills",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 278.4
+      },
+      {
+        "name": "Luxfero",
+        "class": "Priest",
+        "spec": "Holy",
+        "dps": 231.3
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Деревце",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Allashayka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-11--20-27--Boroheal--FreedomUA/",
+    "date": "2025-03-11",
+    "boss": "Lady Deathwhisper",
+    "players": [
+      {
+        "name": "Nacisto",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 14664.8
+      },
+      {
+        "name": "Коко",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 11893.7
+      },
+      {
+        "name": "Stugna",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 11400.6
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 10461.5
+      },
+      {
+        "name": "Чернорук",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 9975.3
+      },
+      {
+        "name": "Sempron",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9640.8
+      },
+      {
+        "name": "Gobsek",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 8898.6
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 8848.8
+      },
+      {
+        "name": "Stormrange",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 8373.2
+      },
+      {
+        "name": "Форд",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 8289.8
+      },
+      {
+        "name": "Kamerunets",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8287.5
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 7224.2
+      },
+      {
+        "name": "Ельфбар",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 7103.9
+      },
+      {
+        "name": "Tsezar",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 6941.1
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 5889.2
+      },
+      {
+        "name": "Chuchundra",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 4831.8
+      },
+      {
+        "name": "Дкашка",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 4270.5
+      },
+      {
+        "name": "Chucknorris",
+        "class": "Warrior",
+        "spec": "Protection",
+        "dps": 2896.8
+      },
+      {
+        "name": "Sho",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2597.2
+      },
+      {
+        "name": "Deadgirl",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 1888.4
+      },
+      {
+        "name": "Silmarills",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 282.6
+      },
+      {
+        "name": "Luxfero",
+        "class": "Priest",
+        "spec": "Holy",
+        "dps": 111.4
+      },
+      {
+        "name": "Деревце",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Allashayka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-11--20-27--Boroheal--FreedomUA/",
+    "date": "2025-03-11",
+    "boss": "Deathbringer Saurfang",
+    "players": [
+      {
+        "name": "Nacisto",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 18417.8
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 17253.6
+      },
+      {
+        "name": "Коко",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 15843.2
+      },
+      {
+        "name": "Stugna",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 15708.2
+      },
+      {
+        "name": "Stormrange",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 14520.2
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 14488.6
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 14372.6
+      },
+      {
+        "name": "Kamerunets",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 14312.5
+      },
+      {
+        "name": "Tsezar",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 14271.5
+      },
+      {
+        "name": "Ельфбар",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 13892.1
+      },
+      {
+        "name": "Chuchundra",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 13879.8
+      },
+      {
+        "name": "Чернорук",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13588.5
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 13517
+      },
+      {
+        "name": "Sempron",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 13375.6
+      },
+      {
+        "name": "Sho",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 12615.9
+      },
+      {
+        "name": "Дкашка",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 12600.2
+      },
+      {
+        "name": "Gobsek",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 12033.9
+      },
+      {
+        "name": "Форд",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 11850.3
+      },
+      {
+        "name": "Chucknorris",
+        "class": "Warrior",
+        "spec": "Protection",
+        "dps": 3819
+      },
+      {
+        "name": "Deadgirl",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3030.2
+      },
+      {
+        "name": "Silmarills",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 482.1
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Luxfero",
+        "class": "Priest",
+        "spec": "Holy",
+        "dps": 0
+      },
+      {
+        "name": "Allashayka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Деревце",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-11--20-27--Boroheal--FreedomUA/",
+    "date": "2025-03-11",
+    "boss": "Rotface",
+    "players": [
+      {
+        "name": "Nacisto",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 17223
+      },
+      {
+        "name": "Stugna",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 16597.5
+      },
+      {
+        "name": "Коко",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 15727.1
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15003.2
+      },
+      {
+        "name": "Tsezar",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 14010.3
+      },
+      {
+        "name": "Chuchundra",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 13371.9
+      },
+      {
+        "name": "Kamerunets",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 13192.1
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 13156.3
+      },
+      {
+        "name": "Sho",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 12969.6
+      },
+      {
+        "name": "Дкашка",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 12792.3
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12445.7
+      },
+      {
+        "name": "Stormrange",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 12381
+      },
+      {
+        "name": "Sempron",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12212.9
+      },
+      {
+        "name": "Чернорук",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 11490.8
+      },
+      {
+        "name": "Ельфбар",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 10379.3
+      },
+      {
+        "name": "Gobsek",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 10336.1
+      },
+      {
+        "name": "Форд",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 10257.2
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 10010.2
+      },
+      {
+        "name": "Chucknorris",
+        "class": "Warrior",
+        "spec": "Protection",
+        "dps": 4609
+      },
+      {
+        "name": "Silmarills",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 701.4
+      },
+      {
+        "name": "Luxfero",
+        "class": "Priest",
+        "spec": "Holy",
+        "dps": 161.2
+      },
+      {
+        "name": "Deadgirl",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 89.6
+      },
+      {
+        "name": "Allashayka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 8.6
+      },
+      {
+        "name": "Деревце",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-11--20-27--Boroheal--FreedomUA/",
+    "date": "2025-03-11",
+    "boss": "Festergut",
+    "players": [
+      {
+        "name": "Nacisto",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 17512
+      },
+      {
+        "name": "Tsezar",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 15441.2
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15045.8
+      },
+      {
+        "name": "Коко",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 14975.6
+      },
+      {
+        "name": "Stugna",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 14922.3
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 14520.2
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 13228.6
+      },
+      {
+        "name": "Kamerunets",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 13210.3
+      },
+      {
+        "name": "Ельфбар",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 13208.3
+      },
+      {
+        "name": "Чернорук",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13133.4
+      },
+      {
+        "name": "Stormrange",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 12602.3
+      },
+      {
+        "name": "Sho",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 12532.7
+      },
+      {
+        "name": "Дкашка",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 12387.1
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12115.5
+      },
+      {
+        "name": "Gobsek",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 11457.6
+      },
+      {
+        "name": "Sempron",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 11232.5
+      },
+      {
+        "name": "Форд",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 10644.9
+      },
+      {
+        "name": "Chuchundra",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 7753.2
+      },
+      {
+        "name": "Deadgirl",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 4546.6
+      },
+      {
+        "name": "Chucknorris",
+        "class": "Warrior",
+        "spec": "Protection",
+        "dps": 4489.5
+      },
+      {
+        "name": "Silmarills",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 266.2
+      },
+      {
+        "name": "Luxfero",
+        "class": "Priest",
+        "spec": "Holy",
+        "dps": 153.6
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Allashayka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Деревце",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-11--20-27--Boroheal--FreedomUA/",
+    "date": "2025-03-11",
+    "boss": "Blood Prince Council",
+    "players": [
+      {
+        "name": "Nacisto",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 14137.7
+      },
+      {
+        "name": "Чернорук",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 9605.2
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 9554.2
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 9336.5
+      },
+      {
+        "name": "Chuchundra",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 9025.2
+      },
+      {
+        "name": "Коко",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 8688.9
+      },
+      {
+        "name": "Форд",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 8326.2
+      },
+      {
+        "name": "Дкашка",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 7796.2
+      },
+      {
+        "name": "Stormrange",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 6776.1
+      },
+      {
+        "name": "Ельфбар",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 6510
+      },
+      {
+        "name": "Sempron",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 6401.5
+      },
+      {
+        "name": "Kamerunets",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 5931.2
+      },
+      {
+        "name": "Tsezar",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 5925.6
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 4056.3
+      },
+      {
+        "name": "Gobsek",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 3529
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 2689
+      },
+      {
+        "name": "Stugna",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 2666.6
+      },
+      {
+        "name": "Sho",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2583.9
+      },
+      {
+        "name": "Chucknorris",
+        "class": "Warrior",
+        "spec": "Protection",
+        "dps": 1371.6
+      },
+      {
+        "name": "Deadgirl",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 422.9
+      },
+      {
+        "name": "Luxfero",
+        "class": "Priest",
+        "spec": "Holy",
+        "dps": 65.4
+      },
+      {
+        "name": "Silmarills",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 57.2
+      },
+      {
+        "name": "Деревце",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Allashayka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-11--20-27--Boroheal--FreedomUA/",
+    "date": "2025-03-11",
+    "boss": "Blood-Queen Lana'thel",
+    "players": [
+      {
+        "name": "Nacisto",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 32594.4
+      },
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 20948.6
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 19799.6
+      },
+      {
+        "name": "Чернорук",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 17802.7
+      },
+      {
+        "name": "Kamerunets",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 17801.7
+      },
+      {
+        "name": "Stormrange",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 16888.3
+      },
+      {
+        "name": "Коко",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 15429
+      },
+      {
+        "name": "Stugna",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 14829.9
+      },
+      {
+        "name": "Tsezar",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 14233
+      },
+      {
+        "name": "Ельфбар",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 14072.6
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 13519.5
+      },
+      {
+        "name": "Sho",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 12824.5
+      },
+      {
+        "name": "Дкашка",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 11396.1
+      },
+      {
+        "name": "Chuchundra",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 11389.1
+      },
+      {
+        "name": "Gobsek",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 11319.4
+      },
+      {
+        "name": "Форд",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 10577.5
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9790.5
+      },
+      {
+        "name": "Sempron",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 8538.9
+      },
+      {
+        "name": "Chucknorris",
+        "class": "Warrior",
+        "spec": "Protection",
+        "dps": 3255
+      },
+      {
+        "name": "Deadgirl",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2430.7
+      },
+      {
+        "name": "Silmarills",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 424.1
+      },
+      {
+        "name": "Luxfero",
+        "class": "Priest",
+        "spec": "Holy",
+        "dps": 167.4
+      },
+      {
+        "name": "Деревце",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Allashayka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/25-03-11--20-27--Boroheal--FreedomUA/",
+    "date": "2025-03-11",
+    "boss": "Valithria Dreamwalker",
+    "players": [
+      {
+        "name": "Malz",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 7361.6
+      },
+      {
+        "name": "Kamerunets",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 7127.2
+      },
+      {
+        "name": "Stugna",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 6720.1
+      },
+      {
+        "name": "Коко",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 6063.4
+      },
+      {
+        "name": "Дкашка",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 5166.1
+      },
+      {
+        "name": "Чернорук",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 4909
+      },
+      {
+        "name": "Sempron",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 4802.2
+      },
+      {
+        "name": "Gobsek",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 4727.6
+      },
+      {
+        "name": "Sho",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 4545.3
+      },
+      {
+        "name": "Chuchundra",
+        "class": "Mage",
+        "spec": "Arcane",
+        "dps": 4365.6
+      },
+      {
+        "name": "Stormrange",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 4132.4
+      },
+      {
+        "name": "Nacisto",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 4003.7
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 3760.5
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 3614.4
+      },
+      {
+        "name": "Ельфбар",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 3418.1
+      },
+      {
+        "name": "Tsezar",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 3141.3
+      },
+      {
+        "name": "Chucknorris",
+        "class": "Warrior",
+        "spec": "Protection",
+        "dps": 1931.9
+      },
+      {
+        "name": "Deadgirl",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 1038
+      },
+      {
+        "name": "Silmarills",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 14
+      },
+      {
+        "name": "Форд",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Luxfero",
+        "class": "Priest",
+        "spec": "Holy",
+        "dps": 0
+      },
+      {
+        "name": "Allashayka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Деревце",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/25-03-09--20-57--Boronir--FreedomUA/",
     "date": "2025-03-09",
     "boss": null,
     "players": [],
-    "error": "Request failed with status 502"
+    "error": "Request failed with status 404"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/25-03-04--20-31--Borolgin--FreedomUA/",

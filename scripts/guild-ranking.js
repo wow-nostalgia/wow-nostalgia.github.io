@@ -1,5 +1,6 @@
 const classSelect = document.getElementById('classSelect');
 const specSelect = document.getElementById('specSelect');
+const legionnairesCheckbox = document.getElementById('legionnairesCheckbox');
 const tableStatus = document.getElementById('tableStatus');
 const rankingHead = document.getElementById('rankingHead');
 const rankingBody = document.getElementById('rankingBody');
@@ -14,6 +15,7 @@ if (!lastUpdatedText && tableStatus) {
 }
 
 let data = null;
+let guildMemberNames = new Set();
 
 const excludedBosses = new Set([
   "Valithria Dreamwalker",
@@ -115,6 +117,10 @@ function renderTable(className, specName) {
     row => row.class === className && row.spec === specName
   );
 
+  if (!legionnairesCheckbox.checked) {
+    rows = rows.filter(row => guildMemberNames.has(row.name));
+  }
+
   if (!rows.length) {
     setStatus('Для цієї комбінації даних немає.');
     return;
@@ -191,12 +197,22 @@ function renderTable(className, specName) {
 async function init() {
   try {
     setStatus('Завантаження даних...');
-    const response = await fetch('/data/guild-data.json');
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+    const [rankingResponse, playersResponse] = await Promise.all([
+      fetch('/data/guild-data.json'),
+      fetch('/data/players.json')
+    ]);
+
+    if (!rankingResponse.ok) {
+      throw new Error(`HTTP ${rankingResponse.status}`);
     }
 
-    data = await response.json();
+    data = await rankingResponse.json();
+
+    if (playersResponse.ok) {
+      const players = await playersResponse.json();
+      guildMemberNames = new Set(players.map(player => player.name));
+    }
+
     populateClasses();
     renderLastUpdated();
     setStatus('Оберіть клас і спеціалізацію.');
@@ -213,6 +229,10 @@ classSelect.addEventListener('change', () => {
 });
 
 specSelect.addEventListener('change', () => {
+  renderTable(classSelect.value, specSelect.value);
+});
+
+legionnairesCheckbox.addEventListener('change', () => {
   renderTable(classSelect.value, specSelect.value);
 });
 
