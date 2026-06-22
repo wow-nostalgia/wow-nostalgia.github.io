@@ -207,7 +207,7 @@ async function main() {
   const raidLogs = await readUniqueRaidLogs();
   const existing = await readExistingStats();
 
-  const existingUrls = new Set(existing.map((r) => normalizeUrl(r.raidUrl)));
+  const existingUrls = new Set(existing.filter((r) => !r.error).map((r) => normalizeUrl(r.raidUrl)));
   const toFetch = raidLogs.filter((url) => !existingUrls.has(normalizeUrl(url)));
 
   console.log(`Total raids: ${raidLogs.length}, already cached: ${existing.length}, to fetch: ${toFetch.length}`);
@@ -260,7 +260,9 @@ async function main() {
     }
   }
 
-  const combined = [...existing, ...newResults];
+  const refetchedUrls = new Set(toFetch.map(normalizeUrl));
+  const keptExisting = existing.filter((r) => !refetchedUrls.has(normalizeUrl(r.raidUrl)));
+  const combined = [...keptExisting, ...newResults];
   combined.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   await fs.writeFile(OUTPUT_FILE, JSON.stringify(combined, null, 2), 'utf8');
 

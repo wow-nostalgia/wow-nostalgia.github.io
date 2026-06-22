@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "update:guild": "node scripts/update-guild-data.js",
-    "update:potions": "node scripts/update-potion-stats.js"
+    "update:potions": "node scripts/update-potion-stats.js",
+    "update:players": "node scripts/update-players.js"
   },
   "repository": {
     "type": "git",
