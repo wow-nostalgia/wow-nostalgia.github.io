@@ -415,7 +415,8 @@ body.potion-page .potion-view-btn.active {
   font-weight: 400;
 }
 
-.ranking-controls select {
+.ranking-controls select,
+.ranking-controls input[type="text"] {
   min-width: 180px;
   padding: 0.45rem 0.65rem;
   border: 1px solid rgba(197, 198, 205, 0.35);
@@ -427,11 +428,13 @@ body.potion-page .potion-view-btn.active {
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.ranking-controls select:hover {
+.ranking-controls select:hover,
+.ranking-controls input[type="text"]:hover {
   border-color: rgba(123, 170, 245, 0.55);
 }
 
-.ranking-controls select:focus {
+.ranking-controls select:focus,
+.ranking-controls input[type="text"]:focus {
   border-color: var(--color-link);
   box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
 }
@@ -959,6 +962,115 @@ body.analytics-page .analytics-chart-wrap canvas {
 
 
 /* =========================
+   PERSONAL ANALYTICS
+   ========================= */
+
+body.personal-analytics-page .personal-analytics-chart-wrap {
+  position: relative;
+  height: 420px;
+  margin-top: 1.25rem;
+}
+
+body.personal-analytics-page .personal-analytics-chart-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+body.personal-analytics-page .autocomplete-wrap {
+  position: relative;
+}
+
+body.personal-analytics-page .autocomplete-list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin-top: 0.25rem;
+  max-height: 37.5rem;
+  overflow-y: auto;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.97);
+  box-shadow: var(--shadow-sm);
+}
+
+body.personal-analytics-page .autocomplete-list.is-open {
+  display: block;
+}
+
+body.personal-analytics-page .autocomplete-item {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.85rem;
+  color: var(--color-text-strong);
+  cursor: pointer;
+}
+
+body.personal-analytics-page .autocomplete-item:hover {
+  background-color: rgba(123, 170, 245, 0.18);
+}
+
+body.personal-analytics-page .autocomplete-empty {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.85rem;
+  color: var(--color-text-faint);
+}
+
+body.personal-analytics-page .boss-checkboxes-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0.5rem;
+  color: var(--color-text-soft);
+}
+
+body.personal-analytics-page .link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-link);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+body.personal-analytics-page .link-button:hover {
+  text-decoration: underline;
+}
+
+body.personal-analytics-page .boss-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.88);
+}
+
+body.personal-analytics-page .boss-checkboxes-empty {
+  color: var(--color-text-faint);
+  font-size: 0.9rem;
+}
+
+body.personal-analytics-page .boss-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--color-text-strong);
+  cursor: pointer;
+}
+
+body.personal-analytics-page .boss-checkbox-swatch {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+}
+
+
+/* =========================
    UTILITY
    ========================= */
 
@@ -1003,6 +1115,10 @@ body.analytics-page .analytics-chart-wrap canvas {
     height: 340px;
   }
 
+  body.personal-analytics-page .personal-analytics-chart-wrap {
+    height: 320px;
+  }
+
   .info-tabs {
     grid-template-columns: 1fr;
   }
@@ -1040,7 +1156,8 @@ body.analytics-page .analytics-chart-wrap canvas {
     margin-bottom: -0.35rem;
   }
 
-  .ranking-controls select {
+  .ranking-controls select,
+  .ranking-controls input[type="text"] {
     width: 100%;
     min-width: 0;
   }

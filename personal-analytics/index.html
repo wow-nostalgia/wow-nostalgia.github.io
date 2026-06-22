@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="uk-UA">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Персональна Аналітика</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="personal-analytics-page">
+  <div class="container">
+
+    <header class="topbar">
+      <div class="topbar__inner">
+
+        <nav class="nav">
+          <a class="nav__link" href="../">Головна</a>
+          <a class="nav__link" href="../guild-ranking/">Рейтинг DPS</a>
+          <a class="nav__link" href="../potion-stats/">Статистика Potion</a>
+          <a class="nav__link" href="../gallery/">Галерея</a>
+          <a class="nav__link" href="../analytics/">Аналітика</a>
+          <a class="nav__link nav__link--active" href="../personal-analytics/">Персональна Аналітика</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container-inner">
+
+      <h1>Персональна Аналітика</h1>
+
+      <ul>
+        <li>Обери гравця і боса (можна кілька босів одразу) — побачиш, як змінювався DPS від рейду до рейду.</li>
+        <li>Можна порівняти двох гравців — лінії одного кольору, лінія другого гравця штрихова.</li>
+        <li>Враховуються тільки успішні кіли (режим ЦЛК 25 ХМ), вайпи не рахуються.</li>
+        <li>Боси без чіткого DPS-чека (Валітрія Дрімвокер, Анубарак, Toravon) у списку не показані.</li>
+      </ul>
+
+      <div class="ranking-controls">
+        <label for="playerSelect">Гравець</label>
+        <div class="autocomplete-wrap">
+          <input type="text" id="playerSelect" autocomplete="off" placeholder="Почни вводити ім'я...">
+          <div class="autocomplete-list" id="playerSelectList"></div>
+        </div>
+
+        <label for="player2Select">Порівняти з</label>
+        <div class="autocomplete-wrap">
+          <input type="text" id="player2Select" autocomplete="off" placeholder="Без порівняння (опційно)">
+          <div class="autocomplete-list" id="player2SelectList"></div>
+        </div>
+      </div>
+
+      <div class="boss-checkboxes-head">
+        <span>Боси</span>
+        <button type="button" id="selectAllBosses" class="link-button">Обрати всі</button>
+        <button type="button" id="deselectAllBosses" class="link-button">Зняти всі</button>
+      </div>
+      <div class="boss-checkboxes" id="bossCheckboxes">
+        <span class="boss-checkboxes-empty">Спочатку обери гравця</span>
+      </div>
+
+      <div class="ranking-status-row">
+        <p id="tableStatus">Завантаження даних...</p>
+      </div>
+
+      <div class="personal-analytics-chart-wrap">
+        <canvas id="chartPersonalDps"></canvas>
+      </div>
+
+      <footer>
+        <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank" rel="noopener noreferrer">Freedom WoW</a></span>
+      </footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="../scripts/personal-analytics.js"></script>
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+    data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+
+</html>
