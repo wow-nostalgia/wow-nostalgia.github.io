@@ -18,7 +18,13 @@
     <header class="topbar">
       <div class="topbar__inner">
 
-        <nav class="nav">
+        <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Меню">
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </button>
+
+        <nav class="nav" id="primaryNav">
           <a class="nav__link" href="../">Головна</a>
           <a class="nav__link" href="../guild-ranking/">Рейтинг DPS</a>
           <a class="nav__link" href="../potion-stats/">Статистика Potion</a>
@@ -162,6 +168,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="../scripts/nav.js"></script>
   <script src="../scripts/analytics.js"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'

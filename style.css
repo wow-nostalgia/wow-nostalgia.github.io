@@ -212,6 +212,42 @@ h1 {
   flex-wrap: wrap;
 }
 
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-toggle__bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-text-strong);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.nav-toggle.is-active .nav-toggle__bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.is-active .nav-toggle__bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.is-active .nav-toggle__bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 .nav__link {
   min-height: 44px;
   padding: 0 16px;
@@ -1430,13 +1466,24 @@ body.personal-analytics-page .boss-checkbox-swatch {
 
   .topbar__inner {
     padding: 10px 14px;
-    align-items: flex-start;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .nav-toggle {
+    display: flex;
   }
 
   .nav {
+    display: none;
     width: 100%;
     gap: 8px;
+    margin-top: 10px;
+  }
+
+  .nav.is-open {
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .nav__link {
