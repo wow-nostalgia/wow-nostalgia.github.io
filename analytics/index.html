@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="uk-UA">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Аналітика</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="analytics-page">
+  <div class="container">
+
+    <header class="topbar">
+      <div class="topbar__inner">
+
+        <nav class="nav">
+          <a class="nav__link" href="../">Головна</a>
+          <a class="nav__link" href="../guild-ranking/">Рейтинг DPS</a>
+          <a class="nav__link" href="../potion-stats/">Статистика Potion</a>
+          <a class="nav__link" href="../gallery/">Галерея</a>
+          <a class="nav__link nav__link--active" href="../analytics/">Аналітика</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container-inner">
+
+      <h1>Аналітика</h1>
+
+      <ul>
+        <li>Графіки будуються на основі тих самих даних, що й <a href="../guild-ranking/">Рейтинг DPS</a> (uwu-logs.xyz, режим ЦЛК 25 ХМ).</li>
+        <li>Це знімок поточного стану — історія змін поки не зберігається.</li>
+      </ul>
+
+      <p id="analyticsStatus">Завантаження даних...</p>
+      <p id="lastUpdatedText" class="last-updated-text"></p>
+
+      <div class="analytics-grid">
+        <div class="analytics-card analytics-card--wide">
+          <h2>Топ-50 / Топ-100 / Топ-200 серверу по спеку</h2>
+          <p class="analytics-card-caption">Кількість гравців гільдії в топ-50, топ-100 та топ-200 серверу для кожної спеціалізації.</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartTopRanks"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card analytics-card--wide">
+          <h2>Популярність спеків</h2>
+          <p class="analytics-card-caption">Скільки активних логів (гравець + спек) є по кожній спеціалізації.</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartSpecPopularity"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card analytics-card--wide analytics-card--medium">
+          <h2>Слабка ланка по боссах</h2>
+          <p class="analytics-card-caption">Середній DPS гільдії по кожному боссу ЦЛК (боси без чіткого DPS-чеку — Валітрія, Анубарак, Toravon — не враховані).</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartBossAvg"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card analytics-card--wide">
+          <h2>Середній Score по спеку</h2>
+          <p class="analytics-card-caption">Середній показник Score серед гравців гільдії на спеку.</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartAvgScore"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card">
+          <h2>Розподіл ролей</h2>
+          <p class="analytics-card-caption">За активними логами спеків. Feral Combat зараховано як DPS — дані не розрізняють кет/друїд-танк.</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartRoles"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card">
+          <h2>Гільдія проти серверу</h2>
+          <p class="analytics-card-caption">Скільки гравців гільдії потрапляють в топ-50/100/200/500 серверу (за найкращим спеком кожного гравця).</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartGuildVsServer"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card">
+          <h2>Елітні виконавці</h2>
+          <p class="analytics-card-caption">Кількість гравців гільдії з найкращим Score не нижче порогу.</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartElite"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card">
+          <h2>Гільдія проти легіонерів</h2>
+          <p class="analytics-card-caption" id="guildVsLegionCaption">Завантаження...</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartGuildVsLegion"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card">
+          <h2>Середній результат по класу</h2>
+          <p class="analytics-card-caption">Який клас в середньому показує кращий результат (Score) в рейдах.</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartScoreByClass"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card">
+          <h2>Скільки гравців показують який результат</h2>
+          <p class="analytics-card-caption">Кожен стовпчик — діапазон Score. Висота стовпчика — скільки гравців гільдії в нього потрапили.</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartScoreHistogram"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card analytics-card--wide">
+          <h2>Топ-3 ДД кожної спеціалізації</h2>
+          <p class="analytics-card-caption">3 найкращих гравця кожної дамаг-спеки за результатом (Score). Наприклад, Шаман Елементаль і Шаман Підсилення рахуються окремо, а не разом.</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartTopByClassDps"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card analytics-card--wide">
+          <h2>Топ-3 хілери кожної спеціалізації</h2>
+          <p class="analytics-card-caption">3 найкращих гравця кожної хіл-спеки за швидкістю хілу (HPS) на Валітрії Дрімвокер — це єдиний бос ЦЛК, де результат залежить саме від хілу, а не від дамагу. Жрець Дисципліна і Жрець Свято рахуються окремо.</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartTopByClassHealer"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card analytics-card--wide analytics-card--medium">
+          <h2>Відвідуваність рейдів</h2>
+          <p class="analytics-card-caption">Топ-15 гравців за кількістю рейдів, в яких вони брали участь (за даними логів потів).</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartRaidAttendance"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card analytics-card--wide analytics-card--medium">
+          <h2>Чи допомагають поти показати кращий результат?</h2>
+          <p class="analytics-card-caption">Кожна крапка — один гравець. Праворуч — хто п'є більше потів за рейд. Вище — у кого кращий результат (Score). Якщо крапки тягнуться знизу-зліва до верху-справа — поти допомагають.</p>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartPotionScore"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank" rel="noopener noreferrer">Freedom WoW</a></span>
+      </footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="../scripts/analytics.js"></script>
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+    data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+
+</html>

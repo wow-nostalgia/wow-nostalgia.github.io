@@ -6,7 +6,8 @@
   "scripts": {
     "update:guild": "node scripts/update-guild-data.js",
     "update:potions": "node scripts/update-potion-stats.js",
-    "update:players": "node scripts/update-players.js"
+    "update:players": "node scripts/update-players.js",
+    "update:healers": "node scripts/update-healer-rankings.js"
   },
   "repository": {
     "type": "git",

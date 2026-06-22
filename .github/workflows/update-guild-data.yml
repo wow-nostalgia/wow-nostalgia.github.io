@@ -27,10 +27,13 @@ jobs:
       - name: Run guild data update
         run: npm run update:guild
 
+      - name: Run healer rankings update
+        run: npm run update:healers
+
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/guild-data.json
+          git add data/guild-data.json data/healer-rankings.json
           git diff --cached --quiet || git commit -m "chore: update guild data"
           git push

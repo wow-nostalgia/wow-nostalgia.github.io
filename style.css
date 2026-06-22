@@ -904,6 +904,61 @@ body.gallery-page #lightboxCaption {
 
 
 /* =========================
+   ANALYTICS
+   ========================= */
+
+body.analytics-page .analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+body.analytics-page .analytics-card {
+  padding: 1.1rem 1.2rem 1.3rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-table);
+  box-shadow: var(--shadow-sm);
+}
+
+body.analytics-page .analytics-card--wide {
+  grid-column: 1 / -1;
+}
+
+body.analytics-page .analytics-card h2 {
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+  color: var(--color-text-strong);
+}
+
+body.analytics-page .analytics-card-caption {
+  margin: 0 0 0.8rem;
+  color: var(--color-text-faint);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+body.analytics-page .analytics-chart-wrap {
+  position: relative;
+  height: 320px;
+}
+
+body.analytics-page .analytics-card--wide .analytics-chart-wrap {
+  height: 760px;
+}
+
+body.analytics-page .analytics-card--medium .analytics-chart-wrap {
+  height: 380px;
+}
+
+body.analytics-page .analytics-chart-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+
+/* =========================
    UTILITY
    ========================= */
 
@@ -932,6 +987,22 @@ body.gallery-page #lightboxCaption {
 }
 
 @media (max-width: 768px) {
+  body.analytics-page .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.analytics-page .analytics-chart-wrap {
+    height: 280px;
+  }
+
+  body.analytics-page .analytics-card--wide .analytics-chart-wrap {
+    height: 620px;
+  }
+
+  body.analytics-page .analytics-card--medium .analytics-chart-wrap {
+    height: 340px;
+  }
+
   .info-tabs {
     grid-template-columns: 1fr;
   }

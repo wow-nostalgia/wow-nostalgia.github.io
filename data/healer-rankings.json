@@ -1,0 +1,4621 @@
+{
+  "boss": "Valithria Dreamwalker",
+  "mode": "25H",
+  "updatedAt": "2026-06-22T08:40:15.498Z",
+  "specs": [
+    {
+      "class": "Paladin",
+      "spec": "Holy",
+      "players": [
+        {
+          "name": "Трахер",
+          "hps": 52895.8
+        },
+        {
+          "name": "Япєрдолю",
+          "hps": 49508.2
+        },
+        {
+          "name": "Joydi",
+          "hps": 47496.9
+        },
+        {
+          "name": "Лісовиця",
+          "hps": 46435.1
+        },
+        {
+          "name": "Хейтер",
+          "hps": 46307.3
+        },
+        {
+          "name": "Баблодинка",
+          "hps": 46168.8
+        },
+        {
+          "name": "Itamii",
+          "hps": 45810.1
+        },
+        {
+          "name": "Babyflex",
+          "hps": 44993.9
+        },
+        {
+          "name": "Zhyrbunka",
+          "hps": 44916.7
+        },
+        {
+          "name": "Гудтайм",
+          "hps": 44874.6
+        },
+        {
+          "name": "Агресія",
+          "hps": 44344.8
+        },
+        {
+          "name": "Facelessprot",
+          "hps": 44116
+        },
+        {
+          "name": "Магніт",
+          "hps": 44007
+        },
+        {
+          "name": "Пактайтус",
+          "hps": 43867
+        },
+        {
+          "name": "Anymore",
+          "hps": 43236.6
+        },
+        {
+          "name": "Ок",
+          "hps": 43162.9
+        },
+        {
+          "name": "Стетхем",
+          "hps": 42721.1
+        },
+        {
+          "name": "Скажена",
+          "hps": 41965.3
+        },
+        {
+          "name": "Мейбл",
+          "hps": 41954.5
+        },
+        {
+          "name": "Dalinar",
+          "hps": 41771.6
+        },
+        {
+          "name": "Андипал",
+          "hps": 41657.2
+        },
+        {
+          "name": "Hoolipalka",
+          "hps": 41625.5
+        },
+        {
+          "name": "Зіронька",
+          "hps": 41527.8
+        },
+        {
+          "name": "Kleef",
+          "hps": 41201.7
+        },
+        {
+          "name": "Chocofini",
+          "hps": 40927.4
+        },
+        {
+          "name": "Sacralis",
+          "hps": 40309.1
+        },
+        {
+          "name": "Esquizofrnp",
+          "hps": 40246.2
+        },
+        {
+          "name": "Кендал",
+          "hps": 40243.7
+        },
+        {
+          "name": "Oxygen",
+          "hps": 39971.2
+        },
+        {
+          "name": "Theon",
+          "hps": 39930.4
+        },
+        {
+          "name": "Uabunx",
+          "hps": 39843.3
+        },
+        {
+          "name": "Sweden",
+          "hps": 39838.3
+        },
+        {
+          "name": "Fareeya",
+          "hps": 39807.9
+        },
+        {
+          "name": "Шионо",
+          "hps": 39523.6
+        },
+        {
+          "name": "Choppa",
+          "hps": 39424.5
+        },
+        {
+          "name": "Enuhemz",
+          "hps": 39283.6
+        },
+        {
+          "name": "Світоч",
+          "hps": 39124.2
+        },
+        {
+          "name": "Нестелепа",
+          "hps": 38852
+        },
+        {
+          "name": "Muffin",
+          "hps": 38851.7
+        },
+        {
+          "name": "Мандрагорка",
+          "hps": 38843.2
+        },
+        {
+          "name": "Жур",
+          "hps": 38768.3
+        },
+        {
+          "name": "Antes",
+          "hps": 38450.6
+        },
+        {
+          "name": "Ibizalover",
+          "hps": 38440.3
+        },
+        {
+          "name": "Kamasytra",
+          "hps": 38434
+        },
+        {
+          "name": "Hollylight",
+          "hps": 38418.1
+        },
+        {
+          "name": "Necrobite",
+          "hps": 38354.5
+        },
+        {
+          "name": "Імператор",
+          "hps": 38265.4
+        },
+        {
+          "name": "Destiqq",
+          "hps": 38226.2
+        },
+        {
+          "name": "Enuhemzz",
+          "hps": 38148.1
+        },
+        {
+          "name": "Дя",
+          "hps": 38125.9
+        },
+        {
+          "name": "Kirito",
+          "hps": 37935.1
+        },
+        {
+          "name": "Fuckduck",
+          "hps": 37896.1
+        },
+        {
+          "name": "Нашпал",
+          "hps": 37877.7
+        },
+        {
+          "name": "Палідан",
+          "hps": 37877.5
+        },
+        {
+          "name": "Ivett",
+          "hps": 37745.9
+        },
+        {
+          "name": "Misspall",
+          "hps": 37613.3
+        },
+        {
+          "name": "Ковбой",
+          "hps": 37587.2
+        },
+        {
+          "name": "Фантоматик",
+          "hps": 37413
+        },
+        {
+          "name": "Chzs",
+          "hps": 37089.5
+        },
+        {
+          "name": "Grothar",
+          "hps": 36801.7
+        },
+        {
+          "name": "Садистка",
+          "hps": 36714.8
+        },
+        {
+          "name": "Da",
+          "hps": 36712.2
+        },
+        {
+          "name": "Stylemooph",
+          "hps": 36676.5
+        },
+        {
+          "name": "Kalistrat",
+          "hps": 36666.9
+        },
+        {
+          "name": "Shavik",
+          "hps": 36586
+        },
+        {
+          "name": "Onizuka",
+          "hps": 36585.7
+        },
+        {
+          "name": "Тарілка",
+          "hps": 36578.1
+        },
+        {
+          "name": "Olimbria",
+          "hps": 36389.8
+        },
+        {
+          "name": "Boma",
+          "hps": 36235.2
+        },
+        {
+          "name": "Heilwige",
+          "hps": 36130.3
+        },
+        {
+          "name": "Тимчасово",
+          "hps": 36102.9
+        },
+        {
+          "name": "Панамера",
+          "hps": 36074.1
+        },
+        {
+          "name": "Neyolo",
+          "hps": 35568.3
+        },
+        {
+          "name": "Thanos",
+          "hps": 35488.6
+        },
+        {
+          "name": "Sashyk",
+          "hps": 35415.5
+        },
+        {
+          "name": "Howdareyou",
+          "hps": 35361.9
+        },
+        {
+          "name": "Kykarekrat",
+          "hps": 35334.3
+        },
+        {
+          "name": "Juliet",
+          "hps": 35268.7
+        },
+        {
+          "name": "Nutrillite",
+          "hps": 35263.1
+        },
+        {
+          "name": "Humipal",
+          "hps": 35073.5
+        },
+        {
+          "name": "Fxheal",
+          "hps": 34682.7
+        },
+        {
+          "name": "Impalla",
+          "hps": 34611
+        },
+        {
+          "name": "Meganfox",
+          "hps": 34573.5
+        },
+        {
+          "name": "Laparra",
+          "hps": 34484
+        },
+        {
+          "name": "Гирклас",
+          "hps": 34379.1
+        },
+        {
+          "name": "Ukrboy",
+          "hps": 34252.1
+        },
+        {
+          "name": "Ironboobs",
+          "hps": 34175.3
+        },
+        {
+          "name": "Льодяна",
+          "hps": 34084.1
+        },
+        {
+          "name": "Askeladd",
+          "hps": 33719.6
+        },
+        {
+          "name": "Караюча",
+          "hps": 33649
+        },
+        {
+          "name": "Ethereum",
+          "hps": 33575.7
+        },
+        {
+          "name": "Поплавський",
+          "hps": 33458.5
+        },
+        {
+          "name": "Anitrum",
+          "hps": 33222.7
+        },
+        {
+          "name": "Мурзо",
+          "hps": 33210
+        },
+        {
+          "name": "Баблон",
+          "hps": 33122.7
+        },
+        {
+          "name": "Svitlonosna",
+          "hps": 32959.7
+        },
+        {
+          "name": "Davinchi",
+          "hps": 32959.7
+        },
+        {
+          "name": "Purple",
+          "hps": 32706.7
+        },
+        {
+          "name": "Esquizofrni",
+          "hps": 32631.8
+        },
+        {
+          "name": "Яворон",
+          "hps": 32572.8
+        },
+        {
+          "name": "Zelenskyy",
+          "hps": 32473.5
+        },
+        {
+          "name": "Smyle",
+          "hps": 32473.1
+        },
+        {
+          "name": "Getter",
+          "hps": 32419.1
+        },
+        {
+          "name": "Mastercard",
+          "hps": 32397.7
+        },
+        {
+          "name": "Bloodjoker",
+          "hps": 32381.7
+        },
+        {
+          "name": "Aste",
+          "hps": 32333.2
+        },
+        {
+          "name": "Olachil",
+          "hps": 32204
+        },
+        {
+          "name": "Риболов",
+          "hps": 32103.4
+        },
+        {
+          "name": "Valseene",
+          "hps": 32076.9
+        },
+        {
+          "name": "Пихунець",
+          "hps": 32072.3
+        },
+        {
+          "name": "Апельсинова",
+          "hps": 32022.2
+        },
+        {
+          "name": "Кофейна",
+          "hps": 32002.5
+        },
+        {
+          "name": "Palilik",
+          "hps": 31889
+        },
+        {
+          "name": "Kavo",
+          "hps": 31737.4
+        },
+        {
+          "name": "Apostol",
+          "hps": 31521.8
+        },
+        {
+          "name": "Link",
+          "hps": 31439.3
+        },
+        {
+          "name": "Вариан",
+          "hps": 31029.5
+        },
+        {
+          "name": "Хор",
+          "hps": 30881
+        },
+        {
+          "name": "Феміда",
+          "hps": 30827.6
+        },
+        {
+          "name": "Дюбель",
+          "hps": 30811.4
+        },
+        {
+          "name": "Джекічан",
+          "hps": 30737.5
+        },
+        {
+          "name": "Kaiji",
+          "hps": 30691.4
+        },
+        {
+          "name": "Измаил",
+          "hps": 30663.5
+        },
+        {
+          "name": "Hpal",
+          "hps": 30508.5
+        },
+        {
+          "name": "Facelesspal",
+          "hps": 30327.9
+        },
+        {
+          "name": "Пекельна",
+          "hps": 30286.5
+        },
+        {
+          "name": "Гаситесвет",
+          "hps": 30273
+        },
+        {
+          "name": "Akroma",
+          "hps": 30242.2
+        },
+        {
+          "name": "Rpal",
+          "hps": 30188.6
+        },
+        {
+          "name": "Nerta",
+          "hps": 30172.1
+        },
+        {
+          "name": "Ангтердрак",
+          "hps": 30167
+        },
+        {
+          "name": "Limko",
+          "hps": 30160
+        },
+        {
+          "name": "Mdnghtxq",
+          "hps": 30158.8
+        },
+        {
+          "name": "Чудоо",
+          "hps": 30095.7
+        },
+        {
+          "name": "Амелия",
+          "hps": 30066.7
+        },
+        {
+          "name": "Sandora",
+          "hps": 30045.7
+        },
+        {
+          "name": "Кауфліна",
+          "hps": 30029.2
+        },
+        {
+          "name": "Нульпомилок",
+          "hps": 30026.3
+        },
+        {
+          "name": "Массакра",
+          "hps": 30020
+        },
+        {
+          "name": "Anybis",
+          "hps": 29804.4
+        },
+        {
+          "name": "Очеретянкаа",
+          "hps": 29758.2
+        },
+        {
+          "name": "Хілюнеори",
+          "hps": 29748.4
+        },
+        {
+          "name": "Fistahska",
+          "hps": 29692.7
+        },
+        {
+          "name": "Милий",
+          "hps": 29558.8
+        },
+        {
+          "name": "Цицькорелла",
+          "hps": 29390
+        },
+        {
+          "name": "Povistb",
+          "hps": 29371.5
+        },
+        {
+          "name": "Ferolux",
+          "hps": 29334.1
+        },
+        {
+          "name": "Чоко'фіні",
+          "hps": 29307.6
+        },
+        {
+          "name": "Teneritas",
+          "hps": 29095.6
+        },
+        {
+          "name": "Suguha",
+          "hps": 29085.8
+        },
+        {
+          "name": "Ангер",
+          "hps": 28955.6
+        },
+        {
+          "name": "Зсушка",
+          "hps": 28859.4
+        },
+        {
+          "name": "Milfar",
+          "hps": 28854.1
+        },
+        {
+          "name": "Galios",
+          "hps": 28797.4
+        },
+        {
+          "name": "Joydii",
+          "hps": 28774.4
+        },
+        {
+          "name": "Kampett",
+          "hps": 28679.1
+        },
+        {
+          "name": "Зозулечка",
+          "hps": 28609.9
+        },
+        {
+          "name": "Anafilakciya",
+          "hps": 28576
+        },
+        {
+          "name": "Moranna",
+          "hps": 28548.8
+        },
+        {
+          "name": "Ikisen",
+          "hps": 28447
+        },
+        {
+          "name": "Zaluzhna",
+          "hps": 28430.7
+        },
+        {
+          "name": "Chechedon",
+          "hps": 28306.8
+        },
+        {
+          "name": "Шипуч",
+          "hps": 28155.4
+        },
+        {
+          "name": "Haenzo",
+          "hps": 28120.8
+        },
+        {
+          "name": "Luckyinlife",
+          "hps": 27858.4
+        },
+        {
+          "name": "Nikanor",
+          "hps": 27780.6
+        },
+        {
+          "name": "Bitdragon",
+          "hps": 27729.1
+        },
+        {
+          "name": "Deadinsside",
+          "hps": 27713.5
+        },
+        {
+          "name": "Ікарус",
+          "hps": 27518.5
+        },
+        {
+          "name": "Lemac",
+          "hps": 27421.9
+        },
+        {
+          "name": "Бурярождена",
+          "hps": 27174.3
+        },
+        {
+          "name": "Тайде",
+          "hps": 27036.3
+        },
+        {
+          "name": "Trojan",
+          "hps": 26946.3
+        },
+        {
+          "name": "Vektor",
+          "hps": 26765
+        },
+        {
+          "name": "Агенор",
+          "hps": 26737.5
+        },
+        {
+          "name": "Horto",
+          "hps": 26697
+        },
+        {
+          "name": "Спейскраффт",
+          "hps": 26672.2
+        },
+        {
+          "name": "Тепла",
+          "hps": 26628.4
+        },
+        {
+          "name": "Щока",
+          "hps": 26509.7
+        },
+        {
+          "name": "Sedness",
+          "hps": 26221.3
+        },
+        {
+          "name": "Konstan",
+          "hps": 26176.2
+        },
+        {
+          "name": "Protkleef",
+          "hps": 26131.7
+        },
+        {
+          "name": "Reshalo",
+          "hps": 26056
+        },
+        {
+          "name": "Ginaviel",
+          "hps": 25907.6
+        },
+        {
+          "name": "Hast",
+          "hps": 25755.5
+        },
+        {
+          "name": "Фанатик",
+          "hps": 25654.7
+        },
+        {
+          "name": "Saizel",
+          "hps": 25052.7
+        },
+        {
+          "name": "Розовий",
+          "hps": 24857.9
+        },
+        {
+          "name": "Гор",
+          "hps": 24793.9
+        },
+        {
+          "name": "Шайтан",
+          "hps": 24744.8
+        },
+        {
+          "name": "Янекожаний",
+          "hps": 24478
+        },
+        {
+          "name": "Deliell",
+          "hps": 24354.6
+        },
+        {
+          "name": "Єва",
+          "hps": 24314.3
+        },
+        {
+          "name": "Толерантний",
+          "hps": 24225.3
+        },
+        {
+          "name": "Лио",
+          "hps": 24148.4
+        },
+        {
+          "name": "Патіфон",
+          "hps": 23931.2
+        },
+        {
+          "name": "Фотограф",
+          "hps": 23498.3
+        },
+        {
+          "name": "Філадельфія",
+          "hps": 23456.8
+        },
+        {
+          "name": "Ворон",
+          "hps": 23298.4
+        },
+        {
+          "name": "Фойтух",
+          "hps": 22924.5
+        },
+        {
+          "name": "Метро",
+          "hps": 22846.8
+        },
+        {
+          "name": "Balboa",
+          "hps": 22654.1
+        },
+        {
+          "name": "Hora",
+          "hps": 22644.4
+        },
+        {
+          "name": "Vulkanchik",
+          "hps": 22443
+        },
+        {
+          "name": "Батязнебес",
+          "hps": 22425
+        },
+        {
+          "name": "Bildder",
+          "hps": 22355.2
+        },
+        {
+          "name": "Улибака",
+          "hps": 22346.7
+        },
+        {
+          "name": "Darkbeer",
+          "hps": 22232.2
+        },
+        {
+          "name": "Твістер",
+          "hps": 22154.9
+        },
+        {
+          "name": "Айсік'ю",
+          "hps": 21865.4
+        },
+        {
+          "name": "Silmarills",
+          "hps": 21810.3
+        },
+        {
+          "name": "Abram",
+          "hps": 21774.5
+        },
+        {
+          "name": "Welena",
+          "hps": 21507.3
+        },
+        {
+          "name": "Аеліна",
+          "hps": 21506.4
+        },
+        {
+          "name": "Вознесенець",
+          "hps": 21459.4
+        },
+        {
+          "name": "Wirtus",
+          "hps": 21360.3
+        },
+        {
+          "name": "Beeze",
+          "hps": 21283.1
+        },
+        {
+          "name": "Averina",
+          "hps": 21245.4
+        },
+        {
+          "name": "Debit",
+          "hps": 21195.8
+        },
+        {
+          "name": "Wilder",
+          "hps": 21081.1
+        },
+        {
+          "name": "Luminaris",
+          "hps": 21077.5
+        },
+        {
+          "name": "Stafed",
+          "hps": 21073.2
+        },
+        {
+          "name": "Максимум",
+          "hps": 21068.6
+        },
+        {
+          "name": "Morgant",
+          "hps": 21061.8
+        },
+        {
+          "name": "Kriks",
+          "hps": 20871.3
+        },
+        {
+          "name": "Mobil",
+          "hps": 20663.4
+        },
+        {
+          "name": "Staruy",
+          "hps": 20327.2
+        },
+        {
+          "name": "Ibuprofen",
+          "hps": 20284.3
+        },
+        {
+          "name": "Daenerys",
+          "hps": 20029.8
+        },
+        {
+          "name": "Justlikegod",
+          "hps": 20011.3
+        },
+        {
+          "name": "Claude",
+          "hps": 19969.1
+        },
+        {
+          "name": "Metallheadxp",
+          "hps": 19881.5
+        },
+        {
+          "name": "Mirzoo",
+          "hps": 19704.9
+        },
+        {
+          "name": "Маршал",
+          "hps": 19388.3
+        },
+        {
+          "name": "Battlepal",
+          "hps": 19169.4
+        },
+        {
+          "name": "Pyx",
+          "hps": 18788.5
+        },
+        {
+          "name": "Titushka",
+          "hps": 18631.5
+        },
+        {
+          "name": "Зузулька",
+          "hps": 18508.9
+        },
+        {
+          "name": "Некрасуньчик",
+          "hps": 18469.5
+        },
+        {
+          "name": "Chikistman",
+          "hps": 18385.3
+        },
+        {
+          "name": "Кадр",
+          "hps": 18223.7
+        },
+        {
+          "name": "Боровий",
+          "hps": 17677
+        },
+        {
+          "name": "Киевстарь",
+          "hps": 17622.7
+        },
+        {
+          "name": "Душний",
+          "hps": 17380.3
+        },
+        {
+          "name": "Кузовпро",
+          "hps": 17354.5
+        },
+        {
+          "name": "Ширня",
+          "hps": 17137
+        },
+        {
+          "name": "Playerone",
+          "hps": 17069
+        },
+        {
+          "name": "Kubita",
+          "hps": 16923.9
+        },
+        {
+          "name": "Xatyn",
+          "hps": 16699.7
+        },
+        {
+          "name": "Hammer",
+          "hps": 16525.3
+        },
+        {
+          "name": "Healthstone",
+          "hps": 16460.2
+        },
+        {
+          "name": "Starcrabs",
+          "hps": 16217.3
+        },
+        {
+          "name": "Quadrobeer",
+          "hps": 16051.5
+        },
+        {
+          "name": "Кікімора",
+          "hps": 15989.7
+        },
+        {
+          "name": "Maxcrazy",
+          "hps": 15946.3
+        },
+        {
+          "name": "Балаган",
+          "hps": 15945
+        },
+        {
+          "name": "Oleksa",
+          "hps": 15896.7
+        },
+        {
+          "name": "Kelgara",
+          "hps": 15867.5
+        },
+        {
+          "name": "Huyutin",
+          "hps": 15593
+        },
+        {
+          "name": "Eriksson",
+          "hps": 15214.5
+        },
+        {
+          "name": "Уронютанка",
+          "hps": 14915.1
+        },
+        {
+          "name": "Deganstyle",
+          "hps": 14488.6
+        },
+        {
+          "name": "Tenshi",
+          "hps": 13630.9
+        },
+        {
+          "name": "Maverick",
+          "hps": 13336.2
+        },
+        {
+          "name": "Хаммер",
+          "hps": 13301.2
+        },
+        {
+          "name": "Grimaldus",
+          "hps": 12833.6
+        },
+        {
+          "name": "Реровець",
+          "hps": 12759.6
+        },
+        {
+          "name": "Takenada",
+          "hps": 12446
+        },
+        {
+          "name": "Sonytix",
+          "hps": 12066.2
+        },
+        {
+          "name": "Meruem",
+          "hps": 11813.7
+        },
+        {
+          "name": "Аллах",
+          "hps": 11298.4
+        },
+        {
+          "name": "Харизма",
+          "hps": 10507
+        },
+        {
+          "name": "Ogge",
+          "hps": 10432.8
+        },
+        {
+          "name": "Holydoly",
+          "hps": 10185.8
+        },
+        {
+          "name": "Aragarn",
+          "hps": 9694.1
+        },
+        {
+          "name": "Atalhim",
+          "hps": 9642.3
+        },
+        {
+          "name": "Джедай",
+          "hps": 9336.8
+        },
+        {
+          "name": "Seraphiel",
+          "hps": 8703
+        },
+        {
+          "name": "Nonna",
+          "hps": 8454.1
+        },
+        {
+          "name": "Sindrey",
+          "hps": 8356.7
+        },
+        {
+          "name": "Goodyoufeer",
+          "hps": 6092.4
+        },
+        {
+          "name": "Sfor",
+          "hps": 5583.2
+        },
+        {
+          "name": "Bublety",
+          "hps": 5085.1
+        },
+        {
+          "name": "Ribibi",
+          "hps": 4601
+        },
+        {
+          "name": "Басслопата",
+          "hps": 3250.4
+        },
+        {
+          "name": "Pallok",
+          "hps": 2050
+        }
+      ]
+    },
+    {
+      "class": "Priest",
+      "spec": "Discipline",
+      "players": [
+        {
+          "name": "Boroheal",
+          "hps": 13117.6
+        },
+        {
+          "name": "Азмодан",
+          "hps": 12311.4
+        },
+        {
+          "name": "Holy",
+          "hps": 11113.8
+        },
+        {
+          "name": "Askyourmom",
+          "hps": 8909.7
+        },
+        {
+          "name": "Длань",
+          "hps": 7800.2
+        },
+        {
+          "name": "Equanimity",
+          "hps": 6731.8
+        },
+        {
+          "name": "Skyggejomfru",
+          "hps": 6678.4
+        },
+        {
+          "name": "Owsla",
+          "hps": 6330.2
+        },
+        {
+          "name": "Engeltje",
+          "hps": 5980.6
+        },
+        {
+          "name": "Мелісера",
+          "hps": 5886.7
+        },
+        {
+          "name": "Lamarachka",
+          "hps": 5844.4
+        },
+        {
+          "name": "Incorrect",
+          "hps": 5773.6
+        },
+        {
+          "name": "Steshka",
+          "hps": 5331.9
+        },
+        {
+          "name": "Iohans",
+          "hps": 5326.4
+        },
+        {
+          "name": "Deser",
+          "hps": 5150.6
+        },
+        {
+          "name": "Hanika",
+          "hps": 4440.8
+        },
+        {
+          "name": "Starborn",
+          "hps": 4398.4
+        },
+        {
+          "name": "Amonra",
+          "hps": 4308.9
+        },
+        {
+          "name": "Valsiine",
+          "hps": 3780.4
+        },
+        {
+          "name": "Редошосе",
+          "hps": 3630.2
+        },
+        {
+          "name": "Хралайн",
+          "hps": 3521.1
+        },
+        {
+          "name": "Влада",
+          "hps": 3149.5
+        },
+        {
+          "name": "Ісус",
+          "hps": 3010.9
+        },
+        {
+          "name": "Zexus",
+          "hps": 2868.2
+        },
+        {
+          "name": "Balance",
+          "hps": 2673.3
+        },
+        {
+          "name": "Reinhardt",
+          "hps": 2361.1
+        },
+        {
+          "name": "Greyder",
+          "hps": 2139
+        },
+        {
+          "name": "Sangria",
+          "hps": 1988.7
+        },
+        {
+          "name": "Candy",
+          "hps": 1716
+        },
+        {
+          "name": "Закарпайтус",
+          "hps": 1707.9
+        },
+        {
+          "name": "Шепе",
+          "hps": 1612.4
+        },
+        {
+          "name": "Loraly",
+          "hps": 1527
+        },
+        {
+          "name": "Ibiza",
+          "hps": 1462.2
+        },
+        {
+          "name": "Seweks",
+          "hps": 1453.5
+        },
+        {
+          "name": "Andragos",
+          "hps": 1453.2
+        },
+        {
+          "name": "Авіталька",
+          "hps": 1444.2
+        },
+        {
+          "name": "Пвпглад",
+          "hps": 1408.2
+        },
+        {
+          "name": "Melaniaocean",
+          "hps": 1368.3
+        },
+        {
+          "name": "Марселін",
+          "hps": 1263.3
+        },
+        {
+          "name": "Likeaboss",
+          "hps": 1201.3
+        },
+        {
+          "name": "Лвб",
+          "hps": 1195.6
+        },
+        {
+          "name": "Диспетчер",
+          "hps": 1181.6
+        },
+        {
+          "name": "Poviya",
+          "hps": 1156
+        },
+        {
+          "name": "Amaterasuxqz",
+          "hps": 1143.1
+        },
+        {
+          "name": "Хардвишня",
+          "hps": 1137.4
+        },
+        {
+          "name": "Whitemane",
+          "hps": 1127.8
+        },
+        {
+          "name": "Demiurg",
+          "hps": 1088.7
+        },
+        {
+          "name": "Арья",
+          "hps": 1031.9
+        },
+        {
+          "name": "Pvedrakon",
+          "hps": 1001.5
+        },
+        {
+          "name": "Повинуйся",
+          "hps": 930.8
+        },
+        {
+          "name": "Футурама",
+          "hps": 918.7
+        },
+        {
+          "name": "Слим",
+          "hps": 874.1
+        },
+        {
+          "name": "Mooncake",
+          "hps": 844.6
+        },
+        {
+          "name": "Ihoor",
+          "hps": 833.8
+        },
+        {
+          "name": "Леопардовна",
+          "hps": 821
+        },
+        {
+          "name": "Guerrero",
+          "hps": 778
+        },
+        {
+          "name": "Vitaminplus",
+          "hps": 757.6
+        },
+        {
+          "name": "Активист",
+          "hps": 747.6
+        },
+        {
+          "name": "Zatoka",
+          "hps": 743.6
+        },
+        {
+          "name": "Hiil",
+          "hps": 714
+        },
+        {
+          "name": "Сількамяна",
+          "hps": 713.3
+        },
+        {
+          "name": "Гімно",
+          "hps": 712.9
+        },
+        {
+          "name": "Shv",
+          "hps": 709.6
+        },
+        {
+          "name": "Типоимба",
+          "hps": 708.7
+        },
+        {
+          "name": "Темнийлорд",
+          "hps": 703.3
+        },
+        {
+          "name": "Shadowmoon",
+          "hps": 687.5
+        },
+        {
+          "name": "Банзай",
+          "hps": 681.3
+        },
+        {
+          "name": "Devos",
+          "hps": 645.9
+        },
+        {
+          "name": "Свіфт",
+          "hps": 641.6
+        },
+        {
+          "name": "Дцпрістік",
+          "hps": 625.7
+        },
+        {
+          "name": "Мегатайтус",
+          "hps": 623.4
+        },
+        {
+          "name": "Помогатор",
+          "hps": 599.9
+        },
+        {
+          "name": "Кумакума",
+          "hps": 591.5
+        },
+        {
+          "name": "Санлейн",
+          "hps": 583.5
+        },
+        {
+          "name": "Реб",
+          "hps": 561.2
+        },
+        {
+          "name": "Вальсиндар",
+          "hps": 559.3
+        },
+        {
+          "name": "Спайх",
+          "hps": 553.1
+        },
+        {
+          "name": "Oppenheimer",
+          "hps": 552
+        },
+        {
+          "name": "Чітко",
+          "hps": 541.8
+        },
+        {
+          "name": "Шотигалава",
+          "hps": 532.5
+        },
+        {
+          "name": "Sensey",
+          "hps": 531.4
+        },
+        {
+          "name": "Лорелайн",
+          "hps": 529.5
+        },
+        {
+          "name": "Reavenn",
+          "hps": 520.2
+        },
+        {
+          "name": "Demonya",
+          "hps": 518.8
+        },
+        {
+          "name": "Джарвис",
+          "hps": 518.4
+        },
+        {
+          "name": "Stygna",
+          "hps": 511.6
+        },
+        {
+          "name": "Делайна",
+          "hps": 511.2
+        },
+        {
+          "name": "Zexuz",
+          "hps": 509.9
+        },
+        {
+          "name": "Нексо",
+          "hps": 506.7
+        },
+        {
+          "name": "Pillar",
+          "hps": 503.2
+        },
+        {
+          "name": "Казантип",
+          "hps": 501.9
+        },
+        {
+          "name": "Соцетаке",
+          "hps": 500.4
+        },
+        {
+          "name": "Kreditka",
+          "hps": 493.7
+        },
+        {
+          "name": "Ohara",
+          "hps": 488.8
+        },
+        {
+          "name": "Dobrodiyka",
+          "hps": 487.1
+        },
+        {
+          "name": "Softer",
+          "hps": 486.2
+        },
+        {
+          "name": "Ангелик",
+          "hps": 484.1
+        },
+        {
+          "name": "Heins",
+          "hps": 484
+        },
+        {
+          "name": "Pick",
+          "hps": 473.7
+        },
+        {
+          "name": "Nuvoin",
+          "hps": 473.4
+        },
+        {
+          "name": "Arho",
+          "hps": 470.9
+        },
+        {
+          "name": "Spacecreator",
+          "hps": 453.9
+        },
+        {
+          "name": "Destroik",
+          "hps": 449.5
+        },
+        {
+          "name": "Няшмяш",
+          "hps": 449
+        },
+        {
+          "name": "Gobsek",
+          "hps": 443.5
+        },
+        {
+          "name": "Одиндватри",
+          "hps": 441.2
+        },
+        {
+          "name": "Шпдц",
+          "hps": 440.4
+        },
+        {
+          "name": "Divadla",
+          "hps": 439.5
+        },
+        {
+          "name": "Dlgl",
+          "hps": 433.5
+        },
+        {
+          "name": "Missprist",
+          "hps": 431.3
+        },
+        {
+          "name": "Пісочок",
+          "hps": 428.4
+        },
+        {
+          "name": "Костлявая",
+          "hps": 425.1
+        },
+        {
+          "name": "Безобмежень",
+          "hps": 420.4
+        },
+        {
+          "name": "Metrlife",
+          "hps": 419.9
+        },
+        {
+          "name": "Harleyquinn",
+          "hps": 418.7
+        },
+        {
+          "name": "Sinatra",
+          "hps": 410.7
+        },
+        {
+          "name": "Ophelia",
+          "hps": 407
+        },
+        {
+          "name": "Стара",
+          "hps": 404.5
+        },
+        {
+          "name": "Unforgiven",
+          "hps": 401.8
+        },
+        {
+          "name": "Byki",
+          "hps": 401.7
+        },
+        {
+          "name": "Methodlx",
+          "hps": 395.8
+        },
+        {
+          "name": "Вісімрук",
+          "hps": 395
+        },
+        {
+          "name": "Имбатипо",
+          "hps": 394.5
+        },
+        {
+          "name": "Зоря",
+          "hps": 392.7
+        },
+        {
+          "name": "Невдоволена",
+          "hps": 386
+        },
+        {
+          "name": "Чаклунібун",
+          "hps": 382.3
+        },
+        {
+          "name": "Dlgi",
+          "hps": 379.9
+        },
+        {
+          "name": "Відьма",
+          "hps": 379.4
+        },
+        {
+          "name": "Onlyshit",
+          "hps": 374.9
+        },
+        {
+          "name": "Гупаю",
+          "hps": 371.1
+        },
+        {
+          "name": "Maki",
+          "hps": 369
+        },
+        {
+          "name": "Angie",
+          "hps": 366.6
+        },
+        {
+          "name": "Renouncing",
+          "hps": 359.1
+        },
+        {
+          "name": "Fokinland",
+          "hps": 353.8
+        },
+        {
+          "name": "Чоколокомоко",
+          "hps": 351.3
+        },
+        {
+          "name": "Щитщитщит",
+          "hps": 350.8
+        },
+        {
+          "name": "Вовка",
+          "hps": 349.9
+        },
+        {
+          "name": "Дзьобаний",
+          "hps": 331.3
+        },
+        {
+          "name": "Летод",
+          "hps": 329.5
+        },
+        {
+          "name": "Negativka",
+          "hps": 329.4
+        },
+        {
+          "name": "Небрита",
+          "hps": 327
+        },
+        {
+          "name": "Цукерка",
+          "hps": 324.5
+        },
+        {
+          "name": "Джак",
+          "hps": 323.7
+        },
+        {
+          "name": "Sadpriest",
+          "hps": 317
+        },
+        {
+          "name": "Prostoprist",
+          "hps": 309.7
+        },
+        {
+          "name": "Куниметник",
+          "hps": 303.5
+        },
+        {
+          "name": "Yoonko",
+          "hps": 294.9
+        },
+        {
+          "name": "Твоясучка",
+          "hps": 291.2
+        },
+        {
+          "name": "Holywine",
+          "hps": 289.4
+        },
+        {
+          "name": "Босорканя",
+          "hps": 283.3
+        },
+        {
+          "name": "Kiborgg",
+          "hps": 280.6
+        },
+        {
+          "name": "Aspin",
+          "hps": 276
+        },
+        {
+          "name": "Ригаюргер",
+          "hps": 269.1
+        },
+        {
+          "name": "Фарадеи",
+          "hps": 264.8
+        },
+        {
+          "name": "Ах",
+          "hps": 263.5
+        },
+        {
+          "name": "Наора",
+          "hps": 258.5
+        },
+        {
+          "name": "Totowka",
+          "hps": 246.7
+        },
+        {
+          "name": "Svitanok",
+          "hps": 242.8
+        },
+        {
+          "name": "Зуртус",
+          "hps": 238.3
+        },
+        {
+          "name": "Прістовка",
+          "hps": 237.6
+        },
+        {
+          "name": "Sweetest",
+          "hps": 234.8
+        },
+        {
+          "name": "Funnyraven",
+          "hps": 231
+        },
+        {
+          "name": "Психоделік",
+          "hps": 226.5
+        },
+        {
+          "name": "Pristik",
+          "hps": 224.3
+        },
+        {
+          "name": "Прекрасна",
+          "hps": 223.5
+        },
+        {
+          "name": "Ксеноморф",
+          "hps": 223.3
+        },
+        {
+          "name": "Хо'лі",
+          "hps": 222.2
+        },
+        {
+          "name": "Ксена",
+          "hps": 221.3
+        },
+        {
+          "name": "Nogaec",
+          "hps": 219.7
+        },
+        {
+          "name": "Зцицьки",
+          "hps": 215.8
+        },
+        {
+          "name": "Tatkoo",
+          "hps": 212.4
+        },
+        {
+          "name": "Мілс",
+          "hps": 209.6
+        },
+        {
+          "name": "Absorbent",
+          "hps": 205.1
+        },
+        {
+          "name": "Орквоин",
+          "hps": 204.8
+        },
+        {
+          "name": "Мелардель",
+          "hps": 204.4
+        },
+        {
+          "name": "Дівія",
+          "hps": 202.1
+        },
+        {
+          "name": "Plague",
+          "hps": 198.7
+        },
+        {
+          "name": "Lays",
+          "hps": 198.4
+        },
+        {
+          "name": "Дцвовер",
+          "hps": 195.2
+        },
+        {
+          "name": "Ivellios",
+          "hps": 191.1
+        },
+        {
+          "name": "Kiryha",
+          "hps": 190.5
+        },
+        {
+          "name": "Трольдц",
+          "hps": 189.7
+        },
+        {
+          "name": "Imhotep",
+          "hps": 187.9
+        },
+        {
+          "name": "Digl",
+          "hps": 171
+        },
+        {
+          "name": "Дцп'пріст",
+          "hps": 168.7
+        },
+        {
+          "name": "Писюшка",
+          "hps": 167.5
+        },
+        {
+          "name": "Zarinell",
+          "hps": 165.2
+        },
+        {
+          "name": "Shakurio",
+          "hps": 162.2
+        },
+        {
+          "name": "Priestlik",
+          "hps": 156.8
+        },
+        {
+          "name": "Mypzo",
+          "hps": 150.6
+        },
+        {
+          "name": "Шупе",
+          "hps": 150
+        },
+        {
+          "name": "Maotay",
+          "hps": 149.7
+        },
+        {
+          "name": "Taknado",
+          "hps": 149.6
+        },
+        {
+          "name": "Pri",
+          "hps": 147.3
+        },
+        {
+          "name": "Бограч",
+          "hps": 146.1
+        },
+        {
+          "name": "Нашпріст",
+          "hps": 145.1
+        },
+        {
+          "name": "Біфрен",
+          "hps": 142.7
+        },
+        {
+          "name": "Facelesprist",
+          "hps": 142.1
+        },
+        {
+          "name": "Bart",
+          "hps": 141.7
+        },
+        {
+          "name": "Zeddox",
+          "hps": 139.8
+        },
+        {
+          "name": "Кропива",
+          "hps": 125.8
+        },
+        {
+          "name": "Roon",
+          "hps": 117.2
+        },
+        {
+          "name": "Ao",
+          "hps": 100.5
+        },
+        {
+          "name": "Братик",
+          "hps": 99.7
+        },
+        {
+          "name": "Проспиртус",
+          "hps": 82.1
+        },
+        {
+          "name": "Cartwright",
+          "hps": 68.2
+        },
+        {
+          "name": "Децешка",
+          "hps": 49.2
+        },
+        {
+          "name": "Digi",
+          "hps": 32.8
+        },
+        {
+          "name": "Квітка",
+          "hps": 21.1
+        },
+        {
+          "name": "Miumiu",
+          "hps": 19.9
+        }
+      ]
+    },
+    {
+      "class": "Priest",
+      "spec": "Holy",
+      "players": [
+        {
+          "name": "Luxfero",
+          "hps": 23166.2
+        },
+        {
+          "name": "Esotericlife",
+          "hps": 23151.4
+        },
+        {
+          "name": "Монахжебрак",
+          "hps": 22916.8
+        },
+        {
+          "name": "Трудура",
+          "hps": 22435.8
+        },
+        {
+          "name": "Памазатор",
+          "hps": 21121.7
+        },
+        {
+          "name": "Reinhardt",
+          "hps": 20167.9
+        },
+        {
+          "name": "Svitanok",
+          "hps": 18616.6
+        },
+        {
+          "name": "Obliviate",
+          "hps": 18547.6
+        },
+        {
+          "name": "Bubligg",
+          "hps": 18468.4
+        },
+        {
+          "name": "Кейдж",
+          "hps": 17550.9
+        },
+        {
+          "name": "Zmeelove",
+          "hps": 17208.8
+        },
+        {
+          "name": "Памазуюча",
+          "hps": 17049.1
+        },
+        {
+          "name": "Nyanbaka",
+          "hps": 17006.1
+        },
+        {
+          "name": "Tahrin",
+          "hps": 16547.2
+        },
+        {
+          "name": "Tenra",
+          "hps": 15852.7
+        },
+        {
+          "name": "Metrlife",
+          "hps": 15582.4
+        },
+        {
+          "name": "Esjcsa",
+          "hps": 14929.6
+        },
+        {
+          "name": "Luuna",
+          "hps": 14330.2
+        },
+        {
+          "name": "Таколбері",
+          "hps": 14282.3
+        },
+        {
+          "name": "Poviya",
+          "hps": 13835.3
+        },
+        {
+          "name": "Villi",
+          "hps": 13771.5
+        },
+        {
+          "name": "Saver",
+          "hps": 13597.9
+        },
+        {
+          "name": "Neurasthenia",
+          "hps": 13357.9
+        },
+        {
+          "name": "Valsiine",
+          "hps": 13003.8
+        },
+        {
+          "name": "Powwder",
+          "hps": 12903.7
+        },
+        {
+          "name": "Daremyth",
+          "hps": 12856.8
+        },
+        {
+          "name": "Holywine",
+          "hps": 12520.7
+        },
+        {
+          "name": "Лорелайн",
+          "hps": 12396.4
+        },
+        {
+          "name": "Адкромлас",
+          "hps": 12182.1
+        },
+        {
+          "name": "Prostovadim",
+          "hps": 11897
+        },
+        {
+          "name": "Plague",
+          "hps": 11107.4
+        },
+        {
+          "name": "Бб",
+          "hps": 11002.4
+        },
+        {
+          "name": "Luminara",
+          "hps": 10341.5
+        },
+        {
+          "name": "Ісус",
+          "hps": 9511.6
+        },
+        {
+          "name": "Menopausa",
+          "hps": 8849
+        },
+        {
+          "name": "Шдпц",
+          "hps": 8804.6
+        },
+        {
+          "name": "Мефістоффель",
+          "hps": 6924
+        },
+        {
+          "name": "Sunrise",
+          "hps": 6434.1
+        },
+        {
+          "name": "Seventhdemon",
+          "hps": 6166.5
+        },
+        {
+          "name": "Starborn",
+          "hps": 6127.9
+        },
+        {
+          "name": "Дцпрістік",
+          "hps": 4997.3
+        },
+        {
+          "name": "Manamana",
+          "hps": 4028.6
+        },
+        {
+          "name": "Оби",
+          "hps": 3436
+        },
+        {
+          "name": "Dvig",
+          "hps": 2913.3
+        },
+        {
+          "name": "Хо'лі",
+          "hps": 2617.7
+        },
+        {
+          "name": "Annabelle",
+          "hps": 2568.1
+        },
+        {
+          "name": "Roon",
+          "hps": 678
+        },
+        {
+          "name": "Жужель",
+          "hps": 336.4
+        },
+        {
+          "name": "Paradiaz",
+          "hps": 328
+        },
+        {
+          "name": "Phoenixx",
+          "hps": 260.4
+        },
+        {
+          "name": "Virtual",
+          "hps": 221.6
+        }
+      ]
+    },
+    {
+      "class": "Druid",
+      "spec": "Restoration",
+      "players": [
+        {
+          "name": "Valsdru",
+          "hps": 48569.7
+        },
+        {
+          "name": "Дровина",
+          "hps": 33378.6
+        },
+        {
+          "name": "Арау",
+          "hps": 27322.3
+        },
+        {
+          "name": "Deivon",
+          "hps": 26938.4
+        },
+        {
+          "name": "Дерас",
+          "hps": 26093.1
+        },
+        {
+          "name": "Бараболя",
+          "hps": 25707.6
+        },
+        {
+          "name": "Машахентай",
+          "hps": 25673.5
+        },
+        {
+          "name": "Джулс",
+          "hps": 24818.7
+        },
+        {
+          "name": "Стефа",
+          "hps": 24429.3
+        },
+        {
+          "name": "Greedy",
+          "hps": 24376.6
+        },
+        {
+          "name": "Котан",
+          "hps": 24239.3
+        },
+        {
+          "name": "Groot",
+          "hps": 23836.4
+        },
+        {
+          "name": "Iki",
+          "hps": 23499.4
+        },
+        {
+          "name": "Ferox",
+          "hps": 23402.9
+        },
+        {
+          "name": "Soundstorm",
+          "hps": 23232.7
+        },
+        {
+          "name": "Gastrea",
+          "hps": 23199.7
+        },
+        {
+          "name": "Совуня",
+          "hps": 23133.5
+        },
+        {
+          "name": "Otherside",
+          "hps": 23028.5
+        },
+        {
+          "name": "Кукарікрат",
+          "hps": 22998
+        },
+        {
+          "name": "Kawaiibaka",
+          "hps": 22954.2
+        },
+        {
+          "name": "Askor",
+          "hps": 22906
+        },
+        {
+          "name": "Badabu",
+          "hps": 22860.9
+        },
+        {
+          "name": "Ivi",
+          "hps": 22703.3
+        },
+        {
+          "name": "Зорекрила",
+          "hps": 22548.8
+        },
+        {
+          "name": "Breylsford",
+          "hps": 22458
+        },
+        {
+          "name": "Черезраз",
+          "hps": 22085.1
+        },
+        {
+          "name": "Калабаня",
+          "hps": 21993.7
+        },
+        {
+          "name": "Щераз",
+          "hps": 21944.5
+        },
+        {
+          "name": "Verba",
+          "hps": 21731.4
+        },
+        {
+          "name": "Shardik",
+          "hps": 21669.1
+        },
+        {
+          "name": "Здоровбув",
+          "hps": 21658.9
+        },
+        {
+          "name": "Ялинка",
+          "hps": 21123.2
+        },
+        {
+          "name": "Kawaibaka",
+          "hps": 21074.4
+        },
+        {
+          "name": "Дирокол",
+          "hps": 21065.5
+        },
+        {
+          "name": "Сенполия",
+          "hps": 21001
+        },
+        {
+          "name": "Emris",
+          "hps": 20972.5
+        },
+        {
+          "name": "Esquizofrn",
+          "hps": 20927.8
+        },
+        {
+          "name": "Godej",
+          "hps": 20867.9
+        },
+        {
+          "name": "Galadrielle",
+          "hps": 20840.8
+        },
+        {
+          "name": "Rubi",
+          "hps": 20802.6
+        },
+        {
+          "name": "Дремучий",
+          "hps": 20725.9
+        },
+        {
+          "name": "Dzikil",
+          "hps": 20628.6
+        },
+        {
+          "name": "Чешир",
+          "hps": 20614.4
+        },
+        {
+          "name": "Чіта",
+          "hps": 20570.8
+        },
+        {
+          "name": "Ilill",
+          "hps": 20530.9
+        },
+        {
+          "name": "Jekanerab",
+          "hps": 20408.9
+        },
+        {
+          "name": "Винеси",
+          "hps": 20379.9
+        },
+        {
+          "name": "Zeke",
+          "hps": 20330.7
+        },
+        {
+          "name": "Зозуля",
+          "hps": 20320.6
+        },
+        {
+          "name": "Twisterio",
+          "hps": 20314.2
+        },
+        {
+          "name": "Profesional",
+          "hps": 20247
+        },
+        {
+          "name": "Esquizofrna",
+          "hps": 20058.8
+        },
+        {
+          "name": "Kauflinka",
+          "hps": 20006.9
+        },
+        {
+          "name": "Bibiza",
+          "hps": 19996
+        },
+        {
+          "name": "Друидкая",
+          "hps": 19937.7
+        },
+        {
+          "name": "Kredit",
+          "hps": 19872
+        },
+        {
+          "name": "Tuf",
+          "hps": 19720.1
+        },
+        {
+          "name": "Kanzaki",
+          "hps": 19359.5
+        },
+        {
+          "name": "Ельгато",
+          "hps": 19253.1
+        },
+        {
+          "name": "Хардполька",
+          "hps": 19200.6
+        },
+        {
+          "name": "Shavu",
+          "hps": 19108.6
+        },
+        {
+          "name": "Swift",
+          "hps": 19032.2
+        },
+        {
+          "name": "Restart",
+          "hps": 18975.7
+        },
+        {
+          "name": "Battler",
+          "hps": 18950.7
+        },
+        {
+          "name": "Шатайтус",
+          "hps": 18927.2
+        },
+        {
+          "name": "Totoro",
+          "hps": 18918.4
+        },
+        {
+          "name": "Lunarsun",
+          "hps": 18812.4
+        },
+        {
+          "name": "Хиллячка",
+          "hps": 18771
+        },
+        {
+          "name": "Елунар",
+          "hps": 18682.6
+        },
+        {
+          "name": "Ultramusic",
+          "hps": 18674.7
+        },
+        {
+          "name": "Temeria",
+          "hps": 18655.5
+        },
+        {
+          "name": "Kriya",
+          "hps": 18600.4
+        },
+        {
+          "name": "Шошо",
+          "hps": 18389.4
+        },
+        {
+          "name": "Оушен",
+          "hps": 18352.2
+        },
+        {
+          "name": "Розенкранц",
+          "hps": 18342.1
+        },
+        {
+          "name": "Narkwelm",
+          "hps": 18265.2
+        },
+        {
+          "name": "Milkydad",
+          "hps": 18256.9
+        },
+        {
+          "name": "Spirits",
+          "hps": 18193.1
+        },
+        {
+          "name": "Malfurion",
+          "hps": 18163
+        },
+        {
+          "name": "Compttyble",
+          "hps": 18027.4
+        },
+        {
+          "name": "Дияволиця",
+          "hps": 17983
+        },
+        {
+          "name": "Ситник",
+          "hps": 17958.6
+        },
+        {
+          "name": "Renfy",
+          "hps": 17951.7
+        },
+        {
+          "name": "Hyacinth",
+          "hps": 17879.4
+        },
+        {
+          "name": "Санако",
+          "hps": 17680.2
+        },
+        {
+          "name": "Dombro",
+          "hps": 17657.2
+        },
+        {
+          "name": "Bilbo",
+          "hps": 17656.7
+        },
+        {
+          "name": "Погремушка",
+          "hps": 17654
+        },
+        {
+          "name": "Elisande",
+          "hps": 17594.6
+        },
+        {
+          "name": "Чмотя",
+          "hps": 17571.8
+        },
+        {
+          "name": "Друідолька",
+          "hps": 17555.4
+        },
+        {
+          "name": "Borolgin",
+          "hps": 17543.2
+        },
+        {
+          "name": "Малфуріон",
+          "hps": 17540.9
+        },
+        {
+          "name": "Катеринович",
+          "hps": 17439.2
+        },
+        {
+          "name": "Softwear",
+          "hps": 17396.7
+        },
+        {
+          "name": "Suptomymain",
+          "hps": 17355.3
+        },
+        {
+          "name": "Алкоголік",
+          "hps": 17270.8
+        },
+        {
+          "name": "Goldbid",
+          "hps": 17266.3
+        },
+        {
+          "name": "Совагеддон",
+          "hps": 17031
+        },
+        {
+          "name": "Іліданчик",
+          "hps": 17011.7
+        },
+        {
+          "name": "Moonshade",
+          "hps": 17004
+        },
+        {
+          "name": "Ally",
+          "hps": 16964.8
+        },
+        {
+          "name": "Aponia",
+          "hps": 16892.3
+        },
+        {
+          "name": "Одинак",
+          "hps": 16791.2
+        },
+        {
+          "name": "Недовідомий",
+          "hps": 16781
+        },
+        {
+          "name": "Greenu",
+          "hps": 16741.3
+        },
+        {
+          "name": "Kamerunets",
+          "hps": 16646.6
+        },
+        {
+          "name": "Brighid",
+          "hps": 16604.6
+        },
+        {
+          "name": "Byronkamymy",
+          "hps": 16586.4
+        },
+        {
+          "name": "Niyy",
+          "hps": 16544.2
+        },
+        {
+          "name": "Айс",
+          "hps": 16505.1
+        },
+        {
+          "name": "Melris",
+          "hps": 16461.2
+        },
+        {
+          "name": "Twisterioo",
+          "hps": 16413.9
+        },
+        {
+          "name": "Facelessdru",
+          "hps": 16320.2
+        },
+        {
+          "name": "Dinamit",
+          "hps": 16313.2
+        },
+        {
+          "name": "Яловичинна",
+          "hps": 16292.6
+        },
+        {
+          "name": "Megabaro",
+          "hps": 16189.9
+        },
+        {
+          "name": "Deadboy",
+          "hps": 16189.4
+        },
+        {
+          "name": "Таурусс",
+          "hps": 16183.9
+        },
+        {
+          "name": "Dudu",
+          "hps": 16172.4
+        },
+        {
+          "name": "Skyfallion",
+          "hps": 16154.7
+        },
+        {
+          "name": "Bombei",
+          "hps": 16150.7
+        },
+        {
+          "name": "Лайфочка",
+          "hps": 16075.5
+        },
+        {
+          "name": "Ксард",
+          "hps": 16064.2
+        },
+        {
+          "name": "Аптека",
+          "hps": 15965.2
+        },
+        {
+          "name": "Alt",
+          "hps": 15852.8
+        },
+        {
+          "name": "Тетерок",
+          "hps": 15824.9
+        },
+        {
+          "name": "Firtka",
+          "hps": 15763.1
+        },
+        {
+          "name": "Соваой",
+          "hps": 15659.1
+        },
+        {
+          "name": "Пивонеквас",
+          "hps": 15597
+        },
+        {
+          "name": "Akadora",
+          "hps": 15536
+        },
+        {
+          "name": "Bavovna",
+          "hps": 15451.1
+        },
+        {
+          "name": "Khrystal",
+          "hps": 15423.4
+        },
+        {
+          "name": "Dazeroth",
+          "hps": 15334.4
+        },
+        {
+          "name": "Пердячийпар",
+          "hps": 15327.8
+        },
+        {
+          "name": "Чудачка",
+          "hps": 15284.4
+        },
+        {
+          "name": "Бик",
+          "hps": 15269.1
+        },
+        {
+          "name": "Naprnkoli",
+          "hps": 15236.7
+        },
+        {
+          "name": "Razdor",
+          "hps": 15197.7
+        },
+        {
+          "name": "Kebabmaster",
+          "hps": 15138.9
+        },
+        {
+          "name": "Sahelo",
+          "hps": 15055.7
+        },
+        {
+          "name": "Дупокусь",
+          "hps": 15007.2
+        },
+        {
+          "name": "Amaterasuqb",
+          "hps": 14984.7
+        },
+        {
+          "name": "Shanika",
+          "hps": 14667.1
+        },
+        {
+          "name": "Омана",
+          "hps": 14637.5
+        },
+        {
+          "name": "Фаріон",
+          "hps": 14618.1
+        },
+        {
+          "name": "Sanare",
+          "hps": 14609.7
+        },
+        {
+          "name": "Гроза",
+          "hps": 14578.3
+        },
+        {
+          "name": "Хелман",
+          "hps": 14468.4
+        },
+        {
+          "name": "Фармдруїд",
+          "hps": 14467.9
+        },
+        {
+          "name": "Dogmatq",
+          "hps": 14315.4
+        },
+        {
+          "name": "Kitty",
+          "hps": 14196.4
+        },
+        {
+          "name": "Noobalance",
+          "hps": 14185.3
+        },
+        {
+          "name": "Bukla",
+          "hps": 14081.3
+        },
+        {
+          "name": "Desti",
+          "hps": 14023.5
+        },
+        {
+          "name": "Harpagon",
+          "hps": 13924.7
+        },
+        {
+          "name": "Ghostik",
+          "hps": 13924.2
+        },
+        {
+          "name": "Денчік",
+          "hps": 13917.3
+        },
+        {
+          "name": "Домовик",
+          "hps": 13890.6
+        },
+        {
+          "name": "Вирвидуб",
+          "hps": 13883.4
+        },
+        {
+          "name": "Полінце",
+          "hps": 13778.8
+        },
+        {
+          "name": "Мадерака",
+          "hps": 13745.9
+        },
+        {
+          "name": "Chocomoonk",
+          "hps": 13687.9
+        },
+        {
+          "name": "Lilwayne",
+          "hps": 13643
+        },
+        {
+          "name": "Eluriana",
+          "hps": 13491.6
+        },
+        {
+          "name": "Falinrash",
+          "hps": 13420.9
+        },
+        {
+          "name": "Psixopat",
+          "hps": 13330.8
+        },
+        {
+          "name": "Olenkaheart",
+          "hps": 13266
+        },
+        {
+          "name": "Тас",
+          "hps": 13248.4
+        },
+        {
+          "name": "Drumroll",
+          "hps": 13175.3
+        },
+        {
+          "name": "De",
+          "hps": 13082.5
+        },
+        {
+          "name": "Docpo",
+          "hps": 12941.3
+        },
+        {
+          "name": "Кішка",
+          "hps": 12917.9
+        },
+        {
+          "name": "Fokin",
+          "hps": 12914.2
+        },
+        {
+          "name": "Nancy",
+          "hps": 12903.8
+        },
+        {
+          "name": "Alleria",
+          "hps": 12867
+        },
+        {
+          "name": "Кітик",
+          "hps": 12865.9
+        },
+        {
+          "name": "Haisenberg",
+          "hps": 12849.4
+        },
+        {
+          "name": "Котикмяу",
+          "hps": 12831.6
+        },
+        {
+          "name": "Пшеничка",
+          "hps": 12816.6
+        },
+        {
+          "name": "Michelangelo",
+          "hps": 12645.3
+        },
+        {
+          "name": "Zloetelo",
+          "hps": 12583
+        },
+        {
+          "name": "Taknada",
+          "hps": 12447.9
+        },
+        {
+          "name": "Берсекс",
+          "hps": 12447.1
+        },
+        {
+          "name": "Чудодру",
+          "hps": 12389.5
+        },
+        {
+          "name": "Dmytro",
+          "hps": 12362.3
+        },
+        {
+          "name": "Фарміла",
+          "hps": 12286.3
+        },
+        {
+          "name": "Freakbaby",
+          "hps": 12248.9
+        },
+        {
+          "name": "Rabby",
+          "hps": 12236.4
+        },
+        {
+          "name": "Сава",
+          "hps": 12155.1
+        },
+        {
+          "name": "Koffein",
+          "hps": 11861.4
+        },
+        {
+          "name": "Чизкейк",
+          "hps": 11701.9
+        },
+        {
+          "name": "Kiborg",
+          "hps": 11696.2
+        },
+        {
+          "name": "Silvia",
+          "hps": 11682.2
+        },
+        {
+          "name": "Затемнення",
+          "hps": 11674.8
+        },
+        {
+          "name": "Кельт",
+          "hps": 11644.3
+        },
+        {
+          "name": "Полено",
+          "hps": 11568.1
+        },
+        {
+          "name": "Anoxia",
+          "hps": 11524.5
+        },
+        {
+          "name": "Moonskye",
+          "hps": 11508.3
+        },
+        {
+          "name": "Бусенка",
+          "hps": 11421.6
+        },
+        {
+          "name": "Kurumi",
+          "hps": 11334.7
+        },
+        {
+          "name": "Lyubomyr",
+          "hps": 11311.5
+        },
+        {
+          "name": "Правжа",
+          "hps": 11269.6
+        },
+        {
+          "name": "Редовинд",
+          "hps": 11121.3
+        },
+        {
+          "name": "Meralisa",
+          "hps": 11085.8
+        },
+        {
+          "name": "Birmingham",
+          "hps": 10955.5
+        },
+        {
+          "name": "Paradox",
+          "hps": 10798.3
+        },
+        {
+          "name": "Kykladry",
+          "hps": 10335.6
+        },
+        {
+          "name": "Missdru",
+          "hps": 10212.8
+        },
+        {
+          "name": "Совоцераптор",
+          "hps": 9849
+        },
+        {
+          "name": "Kyskys",
+          "hps": 9487.3
+        },
+        {
+          "name": "Karoffka",
+          "hps": 9403.9
+        },
+        {
+          "name": "Kenobi",
+          "hps": 9331.5
+        },
+        {
+          "name": "Druidessa",
+          "hps": 9286
+        },
+        {
+          "name": "Alleviate",
+          "hps": 9165
+        },
+        {
+          "name": "Травиночка",
+          "hps": 9114.2
+        },
+        {
+          "name": "Jm",
+          "hps": 8820
+        },
+        {
+          "name": "Гунт",
+          "hps": 8715.1
+        },
+        {
+          "name": "Дерев'ятко",
+          "hps": 8597.8
+        },
+        {
+          "name": "Igelin",
+          "hps": 8322.4
+        },
+        {
+          "name": "Valsdry",
+          "hps": 8279.2
+        },
+        {
+          "name": "Бортничи",
+          "hps": 8216.7
+        },
+        {
+          "name": "Astaroth",
+          "hps": 8065.6
+        },
+        {
+          "name": "Деревце",
+          "hps": 7918.1
+        },
+        {
+          "name": "Koshenyatko",
+          "hps": 7890.2
+        },
+        {
+          "name": "Softwearka",
+          "hps": 7314.7
+        },
+        {
+          "name": "Feliks",
+          "hps": 7137.3
+        },
+        {
+          "name": "Shroud",
+          "hps": 7086.3
+        },
+        {
+          "name": "Mufasa",
+          "hps": 6896.1
+        },
+        {
+          "name": "Farra",
+          "hps": 5784.6
+        },
+        {
+          "name": "Царапун",
+          "hps": 5158.6
+        },
+        {
+          "name": "Fanatka",
+          "hps": 4904.4
+        },
+        {
+          "name": "Aquila",
+          "hps": 4550.5
+        },
+        {
+          "name": "Bagira",
+          "hps": 4409.3
+        },
+        {
+          "name": "Rostdrul",
+          "hps": 4321.3
+        },
+        {
+          "name": "Це'моє",
+          "hps": 4090.7
+        },
+        {
+          "name": "Eries",
+          "hps": 4035.6
+        },
+        {
+          "name": "Пиньок",
+          "hps": 4016.2
+        },
+        {
+          "name": "Мохнатка",
+          "hps": 3763.1
+        },
+        {
+          "name": "Tityshka",
+          "hps": 3606.5
+        },
+        {
+          "name": "Чорномазий",
+          "hps": 3562.9
+        },
+        {
+          "name": "Chichivik",
+          "hps": 3431
+        },
+        {
+          "name": "Kekulbek",
+          "hps": 3390.2
+        },
+        {
+          "name": "Timondudu",
+          "hps": 3190.4
+        },
+        {
+          "name": "Eaxbeetferal",
+          "hps": 3018.4
+        },
+        {
+          "name": "Dofaminka",
+          "hps": 2955.5
+        },
+        {
+          "name": "Aburaihan",
+          "hps": 2875.7
+        },
+        {
+          "name": "Манхоольм",
+          "hps": 2839.5
+        },
+        {
+          "name": "Romallka",
+          "hps": 2796.1
+        },
+        {
+          "name": "Порноактор",
+          "hps": 2507.2
+        },
+        {
+          "name": "Vidis",
+          "hps": 2489.6
+        },
+        {
+          "name": "Мохнатий",
+          "hps": 2362.7
+        },
+        {
+          "name": "Да",
+          "hps": 2354.5
+        },
+        {
+          "name": "Filbert",
+          "hps": 2201
+        },
+        {
+          "name": "Anatorie",
+          "hps": 2185.2
+        },
+        {
+          "name": "Чокомоколоко",
+          "hps": 2180.8
+        },
+        {
+          "name": "Бурка",
+          "hps": 2060.8
+        },
+        {
+          "name": "Glitchtrap",
+          "hps": 1962.6
+        },
+        {
+          "name": "Bmx",
+          "hps": 1956.2
+        },
+        {
+          "name": "Mazillka",
+          "hps": 1887.1
+        },
+        {
+          "name": "Figo",
+          "hps": 1805.7
+        },
+        {
+          "name": "Takemeout",
+          "hps": 1775.6
+        },
+        {
+          "name": "Alphastrike",
+          "hps": 1769
+        },
+        {
+          "name": "Larilan",
+          "hps": 1607.8
+        },
+        {
+          "name": "Назарик",
+          "hps": 1606.5
+        },
+        {
+          "name": "Rexal",
+          "hps": 1576.7
+        },
+        {
+          "name": "Злагода",
+          "hps": 1556.1
+        },
+        {
+          "name": "Ahullvaldin",
+          "hps": 1528
+        },
+        {
+          "name": "Smuhasty",
+          "hps": 1431.8
+        },
+        {
+          "name": "Milashka",
+          "hps": 1399.9
+        },
+        {
+          "name": "Babamicha",
+          "hps": 1399.4
+        },
+        {
+          "name": "Wilddruid",
+          "hps": 1317
+        },
+        {
+          "name": "Vatsuo",
+          "hps": 1288.4
+        },
+        {
+          "name": "Mavca",
+          "hps": 1251.5
+        },
+        {
+          "name": "Tasim",
+          "hps": 1226.3
+        },
+        {
+          "name": "Бастурма",
+          "hps": 1214.9
+        },
+        {
+          "name": "Делиель",
+          "hps": 1183.2
+        },
+        {
+          "name": "Шурік",
+          "hps": 1176.6
+        },
+        {
+          "name": "Потаповна",
+          "hps": 1122.7
+        },
+        {
+          "name": "Самтидруїд",
+          "hps": 1114.9
+        },
+        {
+          "name": "Жирноекопито",
+          "hps": 1096.8
+        },
+        {
+          "name": "Foorest",
+          "hps": 1074.4
+        },
+        {
+          "name": "Memy",
+          "hps": 1058.4
+        },
+        {
+          "name": "Каное",
+          "hps": 988.5
+        },
+        {
+          "name": "Щясякдам",
+          "hps": 973
+        },
+        {
+          "name": "Nature",
+          "hps": 951.1
+        },
+        {
+          "name": "Ssprint",
+          "hps": 912.3
+        },
+        {
+          "name": "Havroshka",
+          "hps": 873.6
+        },
+        {
+          "name": "Eastwood",
+          "hps": 863
+        },
+        {
+          "name": "Дх",
+          "hps": 767.8
+        },
+        {
+          "name": "Turinthalion",
+          "hps": 676.4
+        },
+        {
+          "name": "Neilko",
+          "hps": 660.8
+        },
+        {
+          "name": "Буй",
+          "hps": 640.8
+        },
+        {
+          "name": "Цицьок",
+          "hps": 606.7
+        },
+        {
+          "name": "Хермес",
+          "hps": 570.7
+        },
+        {
+          "name": "Waterdevice",
+          "hps": 552
+        },
+        {
+          "name": "Starkon",
+          "hps": 525.5
+        },
+        {
+          "name": "Карая",
+          "hps": 520.5
+        },
+        {
+          "name": "Rozetnuj",
+          "hps": 492.9
+        },
+        {
+          "name": "Кожемяко",
+          "hps": 471.9
+        },
+        {
+          "name": "Windfall",
+          "hps": 431.8
+        },
+        {
+          "name": "Azirov",
+          "hps": 428.9
+        },
+        {
+          "name": "Flame",
+          "hps": 390.7
+        },
+        {
+          "name": "Ciroukr",
+          "hps": 389.3
+        },
+        {
+          "name": "Freydis",
+          "hps": 345.5
+        },
+        {
+          "name": "Tanti",
+          "hps": 308.7
+        },
+        {
+          "name": "Мотиватор",
+          "hps": 267.8
+        },
+        {
+          "name": "Popkorn",
+          "hps": 253.4
+        },
+        {
+          "name": "Milana",
+          "hps": 89
+        },
+        {
+          "name": "Джонтриволта",
+          "hps": 14.6
+        }
+      ]
+    },
+    {
+      "class": "Shaman",
+      "spec": "Restoration",
+      "players": [
+        {
+          "name": "Strawberry",
+          "hps": 37182.2
+        },
+        {
+          "name": "Aylon",
+          "hps": 35160.4
+        },
+        {
+          "name": "Колін",
+          "hps": 34873.7
+        },
+        {
+          "name": "Allashayka",
+          "hps": 33432.7
+        },
+        {
+          "name": "Lvb",
+          "hps": 32357.3
+        },
+        {
+          "name": "Вогнедар",
+          "hps": 32338.4
+        },
+        {
+          "name": "Тайтус",
+          "hps": 32174.7
+        },
+        {
+          "name": "Info",
+          "hps": 32118.3
+        },
+        {
+          "name": "Aurum",
+          "hps": 32046.2
+        },
+        {
+          "name": "Шохотьбишо",
+          "hps": 31767
+        },
+        {
+          "name": "Батя",
+          "hps": 31306.1
+        },
+        {
+          "name": "Pickle",
+          "hps": 31147.6
+        },
+        {
+          "name": "Bilderselem",
+          "hps": 30963.9
+        },
+        {
+          "name": "Імбонутий",
+          "hps": 30775.6
+        },
+        {
+          "name": "Thrall",
+          "hps": 30697.8
+        },
+        {
+          "name": "Sempaiibaka",
+          "hps": 30433.8
+        },
+        {
+          "name": "Разельваг",
+          "hps": 30407.8
+        },
+        {
+          "name": "Кабачок",
+          "hps": 30380.8
+        },
+        {
+          "name": "Smetana",
+          "hps": 30288.8
+        },
+        {
+          "name": "Stormspirit",
+          "hps": 30287.5
+        },
+        {
+          "name": "Igorik",
+          "hps": 30287.4
+        },
+        {
+          "name": "Dashka",
+          "hps": 30248.7
+        },
+        {
+          "name": "Поетеса",
+          "hps": 30231.5
+        },
+        {
+          "name": "Мотанка",
+          "hps": 30200.6
+        },
+        {
+          "name": "Marder",
+          "hps": 30093.1
+        },
+        {
+          "name": "Avatarkko",
+          "hps": 29977.5
+        },
+        {
+          "name": "Gengar",
+          "hps": 29899.5
+        },
+        {
+          "name": "Valtyry",
+          "hps": 29888.4
+        },
+        {
+          "name": "Електричка",
+          "hps": 29592
+        },
+        {
+          "name": "Shamlik",
+          "hps": 29525.6
+        },
+        {
+          "name": "Goliafka",
+          "hps": 29365
+        },
+        {
+          "name": "Cobra",
+          "hps": 29227.7
+        },
+        {
+          "name": "Speedy",
+          "hps": 29212.1
+        },
+        {
+          "name": "Хелманич",
+          "hps": 29161.9
+        },
+        {
+          "name": "Буревій",
+          "hps": 28958.5
+        },
+        {
+          "name": "Stormpunch",
+          "hps": 28908.2
+        },
+        {
+          "name": "Бидляк",
+          "hps": 28820.4
+        },
+        {
+          "name": "Janefreakski",
+          "hps": 28790.3
+        },
+        {
+          "name": "Цепуха",
+          "hps": 28773.3
+        },
+        {
+          "name": "Vebstersha",
+          "hps": 28628.2
+        },
+        {
+          "name": "Деметре",
+          "hps": 28624.3
+        },
+        {
+          "name": "Sumplesh",
+          "hps": 28565.3
+        },
+        {
+          "name": "Шомен",
+          "hps": 28478.4
+        },
+        {
+          "name": "Relax",
+          "hps": 28471.3
+        },
+        {
+          "name": "Фантамас",
+          "hps": 28466.1
+        },
+        {
+          "name": "Tititaka",
+          "hps": 28372
+        },
+        {
+          "name": "Tena",
+          "hps": 28339
+        },
+        {
+          "name": "Bunx",
+          "hps": 28277.8
+        },
+        {
+          "name": "Шамстар",
+          "hps": 28194.9
+        },
+        {
+          "name": "Yes",
+          "hps": 28161.3
+        },
+        {
+          "name": "Szch",
+          "hps": 28043.5
+        },
+        {
+          "name": "Кощунство",
+          "hps": 27912.2
+        },
+        {
+          "name": "Boronir",
+          "hps": 27590.6
+        },
+        {
+          "name": "Шарасдал",
+          "hps": 27550.1
+        },
+        {
+          "name": "Ацесо",
+          "hps": 27502.6
+        },
+        {
+          "name": "Красапета",
+          "hps": 27474.6
+        },
+        {
+          "name": "Ninnananna",
+          "hps": 27473.6
+        },
+        {
+          "name": "Marakuya",
+          "hps": 27460.5
+        },
+        {
+          "name": "Брозон",
+          "hps": 27417.2
+        },
+        {
+          "name": "Krixie",
+          "hps": 27298.3
+        },
+        {
+          "name": "Reinhildt",
+          "hps": 27165.1
+        },
+        {
+          "name": "Basslopata",
+          "hps": 27054.9
+        },
+        {
+          "name": "Шафран",
+          "hps": 27011.2
+        },
+        {
+          "name": "Trosh",
+          "hps": 26995.6
+        },
+        {
+          "name": "Rori",
+          "hps": 26961.4
+        },
+        {
+          "name": "Rshamka",
+          "hps": 26914.2
+        },
+        {
+          "name": "Inferngirl",
+          "hps": 26889.3
+        },
+        {
+          "name": "Shavi",
+          "hps": 26840
+        },
+        {
+          "name": "Overlli",
+          "hps": 26694.8
+        },
+        {
+          "name": "Merick",
+          "hps": 26617.8
+        },
+        {
+          "name": "Turisto",
+          "hps": 26546.5
+        },
+        {
+          "name": "Haru",
+          "hps": 26540.8
+        },
+        {
+          "name": "Greenmagic",
+          "hps": 26454.8
+        },
+        {
+          "name": "Мамагаля",
+          "hps": 26452
+        },
+        {
+          "name": "Манекешка",
+          "hps": 26375.1
+        },
+        {
+          "name": "Тотеміс",
+          "hps": 26360.7
+        },
+        {
+          "name": "Сейю",
+          "hps": 26355.1
+        },
+        {
+          "name": "Екобуст",
+          "hps": 26245.2
+        },
+        {
+          "name": "Растение",
+          "hps": 26242.7
+        },
+        {
+          "name": "Bogatur",
+          "hps": 26241
+        },
+        {
+          "name": "Moris",
+          "hps": 26229.7
+        },
+        {
+          "name": "Troshha",
+          "hps": 26195
+        },
+        {
+          "name": "Wildheal",
+          "hps": 26152.4
+        },
+        {
+          "name": "Dezl",
+          "hps": 26077.3
+        },
+        {
+          "name": "Anger",
+          "hps": 25931.9
+        },
+        {
+          "name": "Небокрай",
+          "hps": 25917.6
+        },
+        {
+          "name": "Ihorsham",
+          "hps": 25856.3
+        },
+        {
+          "name": "Non",
+          "hps": 25845.2
+        },
+        {
+          "name": "Старийшам",
+          "hps": 25812.6
+        },
+        {
+          "name": "Harlow",
+          "hps": 25758.7
+        },
+        {
+          "name": "Possibility",
+          "hps": 25699.2
+        },
+        {
+          "name": "Neru",
+          "hps": 25574.1
+        },
+        {
+          "name": "Niy",
+          "hps": 25420.5
+        },
+        {
+          "name": "Lagerta",
+          "hps": 25296.2
+        },
+        {
+          "name": "Blaze",
+          "hps": 25245
+        },
+        {
+          "name": "Електрошокер",
+          "hps": 25220.6
+        },
+        {
+          "name": "Ineedmoney",
+          "hps": 25140.1
+        },
+        {
+          "name": "Андишам",
+          "hps": 25125.4
+        },
+        {
+          "name": "Enma",
+          "hps": 25112.6
+        },
+        {
+          "name": "Бублик",
+          "hps": 25109.5
+        },
+        {
+          "name": "Lidiaanjel",
+          "hps": 25104.4
+        },
+        {
+          "name": "Ravit",
+          "hps": 25068.2
+        },
+        {
+          "name": "Bourbon",
+          "hps": 25067.9
+        },
+        {
+          "name": "Amorfoda",
+          "hps": 25051.2
+        },
+        {
+          "name": "Баребух",
+          "hps": 25045.4
+        },
+        {
+          "name": "Helio",
+          "hps": 25035.2
+        },
+        {
+          "name": "Тібальт",
+          "hps": 25007.2
+        },
+        {
+          "name": "Журбінка",
+          "hps": 24914.3
+        },
+        {
+          "name": "Бабелгам",
+          "hps": 24897.1
+        },
+        {
+          "name": "Podarunok",
+          "hps": 24849.3
+        },
+        {
+          "name": "Shumixa",
+          "hps": 24776.7
+        },
+        {
+          "name": "Картотека",
+          "hps": 24766.2
+        },
+        {
+          "name": "Glonas",
+          "hps": 24765.8
+        },
+        {
+          "name": "Demonashka",
+          "hps": 24728.9
+        },
+        {
+          "name": "Кордур",
+          "hps": 24654.9
+        },
+        {
+          "name": "Цейроз",
+          "hps": 24639.6
+        },
+        {
+          "name": "Факю",
+          "hps": 24593.9
+        },
+        {
+          "name": "Джонн",
+          "hps": 24578.4
+        },
+        {
+          "name": "Troublemaker",
+          "hps": 24493.5
+        },
+        {
+          "name": "Шаманкая",
+          "hps": 24399.1
+        },
+        {
+          "name": "Ханилу",
+          "hps": 24339.4
+        },
+        {
+          "name": "Моква",
+          "hps": 24338.6
+        },
+        {
+          "name": "Сайонара",
+          "hps": 24287.3
+        },
+        {
+          "name": "Лу",
+          "hps": 24139.1
+        },
+        {
+          "name": "Amfitrina",
+          "hps": 24138.2
+        },
+        {
+          "name": "Блохошам",
+          "hps": 24101.9
+        },
+        {
+          "name": "Shampatine",
+          "hps": 24101.8
+        },
+        {
+          "name": "Felis",
+          "hps": 24050.3
+        },
+        {
+          "name": "Fourstumps",
+          "hps": 23975.3
+        },
+        {
+          "name": "Хинна",
+          "hps": 23970
+        },
+        {
+          "name": "Mystify",
+          "hps": 23876.6
+        },
+        {
+          "name": "Xbuw",
+          "hps": 23874.1
+        },
+        {
+          "name": "Манхольм",
+          "hps": 23768.2
+        },
+        {
+          "name": "Говерла",
+          "hps": 23656.8
+        },
+        {
+          "name": "Flegeton",
+          "hps": 23655.1
+        },
+        {
+          "name": "Kolombo",
+          "hps": 23654.4
+        },
+        {
+          "name": "Chovali",
+          "hps": 23643.3
+        },
+        {
+          "name": "Сосокунь",
+          "hps": 23607.7
+        },
+        {
+          "name": "Weriti",
+          "hps": 23532.4
+        },
+        {
+          "name": "Сенджин",
+          "hps": 23477.7
+        },
+        {
+          "name": "Elvis",
+          "hps": 23474.3
+        },
+        {
+          "name": "Вакуум",
+          "hps": 23415.4
+        },
+        {
+          "name": "Mankasho",
+          "hps": 23299.5
+        },
+        {
+          "name": "Phh",
+          "hps": 23296.9
+        },
+        {
+          "name": "Shamen",
+          "hps": 23284.7
+        },
+        {
+          "name": "Kipo",
+          "hps": 23176.2
+        },
+        {
+          "name": "Пяточка",
+          "hps": 23153.2
+        },
+        {
+          "name": "Elementary",
+          "hps": 23026.2
+        },
+        {
+          "name": "Junkpunk",
+          "hps": 22993.4
+        },
+        {
+          "name": "Траволта",
+          "hps": 22932.5
+        },
+        {
+          "name": "Стабик",
+          "hps": 22846.4
+        },
+        {
+          "name": "Oyenestirol",
+          "hps": 22827.7
+        },
+        {
+          "name": "Wiwiwi",
+          "hps": 22737.7
+        },
+        {
+          "name": "Совесть",
+          "hps": 22613.7
+        },
+        {
+          "name": "Vahtang",
+          "hps": 22581.4
+        },
+        {
+          "name": "Kulya",
+          "hps": 22546.4
+        },
+        {
+          "name": "Sexmusic",
+          "hps": 22520.2
+        },
+        {
+          "name": "Zodiac",
+          "hps": 22406.8
+        },
+        {
+          "name": "Емма",
+          "hps": 22222.4
+        },
+        {
+          "name": "Palyanytsya",
+          "hps": 22210.4
+        },
+        {
+          "name": "Trymyskill",
+          "hps": 22121.3
+        },
+        {
+          "name": "Цукорь",
+          "hps": 22084.4
+        },
+        {
+          "name": "Fx",
+          "hps": 22082.5
+        },
+        {
+          "name": "Перепрошую",
+          "hps": 21969.2
+        },
+        {
+          "name": "Sylphi",
+          "hps": 21942.9
+        },
+        {
+          "name": "Lindeman",
+          "hps": 21923.1
+        },
+        {
+          "name": "Toffita",
+          "hps": 21901.8
+        },
+        {
+          "name": "Aliya",
+          "hps": 21836.4
+        },
+        {
+          "name": "Ksahon",
+          "hps": 21833.1
+        },
+        {
+          "name": "Шамокат",
+          "hps": 21805.3
+        },
+        {
+          "name": "Bigi",
+          "hps": 21711.3
+        },
+        {
+          "name": "Memory",
+          "hps": 21710.2
+        },
+        {
+          "name": "Їжвай'ґія",
+          "hps": 21628.5
+        },
+        {
+          "name": "Azov",
+          "hps": 21615.1
+        },
+        {
+          "name": "Окак",
+          "hps": 21485.7
+        },
+        {
+          "name": "Тили",
+          "hps": 21485.4
+        },
+        {
+          "name": "Monsterhil",
+          "hps": 21230.6
+        },
+        {
+          "name": "Stenulf",
+          "hps": 21156.5
+        },
+        {
+          "name": "Шняга",
+          "hps": 21115.4
+        },
+        {
+          "name": "Gamora",
+          "hps": 20988.1
+        },
+        {
+          "name": "Zahilyu",
+          "hps": 20881.8
+        },
+        {
+          "name": "Darsi",
+          "hps": 20813.7
+        },
+        {
+          "name": "Мамця",
+          "hps": 20813.2
+        },
+        {
+          "name": "Sharur",
+          "hps": 20790.4
+        },
+        {
+          "name": "Highvoltage",
+          "hps": 20776.4
+        },
+        {
+          "name": "Elizabetq",
+          "hps": 20731.6
+        },
+        {
+          "name": "Sukub",
+          "hps": 20634.8
+        },
+        {
+          "name": "Doro",
+          "hps": 20544.4
+        },
+        {
+          "name": "Какашка",
+          "hps": 20358.9
+        },
+        {
+          "name": "Harakternik",
+          "hps": 20354.3
+        },
+        {
+          "name": "Shurik",
+          "hps": 20258.1
+        },
+        {
+          "name": "Arimakishou",
+          "hps": 20254.1
+        },
+        {
+          "name": "Бургер",
+          "hps": 20173.8
+        },
+        {
+          "name": "Jinaman",
+          "hps": 20165.4
+        },
+        {
+          "name": "Alexs",
+          "hps": 20164.5
+        },
+        {
+          "name": "Биймолоти",
+          "hps": 20142.3
+        },
+        {
+          "name": "Арт",
+          "hps": 20138.1
+        },
+        {
+          "name": "Чекуня",
+          "hps": 20127
+        },
+        {
+          "name": "Янхана",
+          "hps": 20102.2
+        },
+        {
+          "name": "Nova",
+          "hps": 19989.4
+        },
+        {
+          "name": "Naturalist",
+          "hps": 19874.9
+        },
+        {
+          "name": "Жинкиня",
+          "hps": 19758.1
+        },
+        {
+          "name": "Wellboy",
+          "hps": 19600.9
+        },
+        {
+          "name": "Bastille",
+          "hps": 19598.6
+        },
+        {
+          "name": "Богиня",
+          "hps": 19597.1
+        },
+        {
+          "name": "Masscontrol",
+          "hps": 19578.9
+        },
+        {
+          "name": "Тібальтт",
+          "hps": 19537
+        },
+        {
+          "name": "Anitrium",
+          "hps": 19526.3
+        },
+        {
+          "name": "Шаманський",
+          "hps": 19312.4
+        },
+        {
+          "name": "Пунька",
+          "hps": 19300.7
+        },
+        {
+          "name": "Її",
+          "hps": 19204.6
+        },
+        {
+          "name": "Ganjia",
+          "hps": 19084.3
+        },
+        {
+          "name": "Kharakternyk",
+          "hps": 19048.9
+        },
+        {
+          "name": "Tecc",
+          "hps": 19019
+        },
+        {
+          "name": "Stella",
+          "hps": 18976.9
+        },
+        {
+          "name": "Shiitake",
+          "hps": 18941.5
+        },
+        {
+          "name": "Даззл",
+          "hps": 18879.9
+        },
+        {
+          "name": "Tempest",
+          "hps": 18813.2
+        },
+        {
+          "name": "Сильмарилион",
+          "hps": 18781.4
+        },
+        {
+          "name": "Медова",
+          "hps": 18762.1
+        },
+        {
+          "name": "Navius",
+          "hps": 18751.5
+        },
+        {
+          "name": "Таурус",
+          "hps": 18522.6
+        },
+        {
+          "name": "Dikey",
+          "hps": 18422.6
+        },
+        {
+          "name": "Зул'джін",
+          "hps": 18327.4
+        },
+        {
+          "name": "Джерайла",
+          "hps": 18325.4
+        },
+        {
+          "name": "Cirilla",
+          "hps": 18289
+        },
+        {
+          "name": "Babam",
+          "hps": 18211.5
+        },
+        {
+          "name": "Galiossham",
+          "hps": 18132.4
+        },
+        {
+          "name": "Нойд",
+          "hps": 18080.3
+        },
+        {
+          "name": "Непокірна",
+          "hps": 18039
+        },
+        {
+          "name": "Kostoprav",
+          "hps": 18016.5
+        },
+        {
+          "name": "Бондик",
+          "hps": 17811.3
+        },
+        {
+          "name": "Го'ел",
+          "hps": 17753.9
+        },
+        {
+          "name": "Tero",
+          "hps": 17695.9
+        },
+        {
+          "name": "Auchenai",
+          "hps": 17608.1
+        },
+        {
+          "name": "Hollymolly",
+          "hps": 17592.6
+        },
+        {
+          "name": "Sonicx",
+          "hps": 17565.3
+        },
+        {
+          "name": "Шок",
+          "hps": 17296.9
+        },
+        {
+          "name": "Калліста",
+          "hps": 17194.6
+        },
+        {
+          "name": "Eliza",
+          "hps": 17059.3
+        },
+        {
+          "name": "Шоквейв",
+          "hps": 16740.3
+        },
+        {
+          "name": "Житомирянин",
+          "hps": 16430.7
+        },
+        {
+          "name": "Ichwill",
+          "hps": 16078.1
+        },
+        {
+          "name": "Розчипірка",
+          "hps": 16055.7
+        },
+        {
+          "name": "Енх",
+          "hps": 15973.8
+        },
+        {
+          "name": "Шалупинька",
+          "hps": 15915.2
+        },
+        {
+          "name": "Крейвен",
+          "hps": 15894
+        },
+        {
+          "name": "Shallkan",
+          "hps": 15796.9
+        },
+        {
+          "name": "Maleficenta",
+          "hps": 15741.8
+        },
+        {
+          "name": "Розгібаю",
+          "hps": 15415.4
+        },
+        {
+          "name": "Vkutok",
+          "hps": 15370.6
+        },
+        {
+          "name": "Констан",
+          "hps": 15147.2
+        },
+        {
+          "name": "Farengeit",
+          "hps": 15132.5
+        },
+        {
+          "name": "Derzkiu",
+          "hps": 14887.9
+        },
+        {
+          "name": "Lito",
+          "hps": 14754.8
+        },
+        {
+          "name": "Nemo",
+          "hps": 14503.8
+        },
+        {
+          "name": "Ogi",
+          "hps": 14491.6
+        },
+        {
+          "name": "Дремонд",
+          "hps": 14090.3
+        },
+        {
+          "name": "Kistochka",
+          "hps": 13784.5
+        },
+        {
+          "name": "Tempesta",
+          "hps": 13774.1
+        },
+        {
+          "name": "Alenari",
+          "hps": 13732
+        },
+        {
+          "name": "Форд",
+          "hps": 13480.8
+        },
+        {
+          "name": "Nas",
+          "hps": 13199.2
+        },
+        {
+          "name": "Kimiko",
+          "hps": 13054
+        },
+        {
+          "name": "Radium",
+          "hps": 12714.8
+        },
+        {
+          "name": "Drakka",
+          "hps": 12630.8
+        },
+        {
+          "name": "Vettala",
+          "hps": 12341.8
+        },
+        {
+          "name": "Jerichon",
+          "hps": 12162.3
+        },
+        {
+          "name": "Kilimanjaro",
+          "hps": 12090.2
+        },
+        {
+          "name": "Lazyspirit",
+          "hps": 11737.5
+        },
+        {
+          "name": "Onill",
+          "hps": 11431.3
+        },
+        {
+          "name": "Скорпік",
+          "hps": 10979.5
+        },
+        {
+          "name": "Krakens",
+          "hps": 10507.3
+        },
+        {
+          "name": "Мольфара",
+          "hps": 10400.2
+        },
+        {
+          "name": "Shamanishka",
+          "hps": 8875.1
+        },
+        {
+          "name": "Аарсиль",
+          "hps": 8467.1
+        },
+        {
+          "name": "Azimyt",
+          "hps": 7634.8
+        },
+        {
+          "name": "Славабогу",
+          "hps": 7516
+        },
+        {
+          "name": "Getcontact",
+          "hps": 7248.7
+        },
+        {
+          "name": "Триграмма",
+          "hps": 4491.7
+        },
+        {
+          "name": "Azazzel",
+          "hps": 4047.5
+        },
+        {
+          "name": "Spacekraft",
+          "hps": 3342
+        },
+        {
+          "name": "Bizja",
+          "hps": 2752.8
+        },
+        {
+          "name": "Rusofobb",
+          "hps": 2356
+        },
+        {
+          "name": "Taoruna",
+          "hps": 2243.2
+        },
+        {
+          "name": "Celania",
+          "hps": 2137.4
+        },
+        {
+          "name": "Menson",
+          "hps": 1615.8
+        },
+        {
+          "name": "Shamogon",
+          "hps": 1471.6
+        },
+        {
+          "name": "Mjolnir",
+          "hps": 1297.9
+        }
+      ]
+    }
+  ]
+}
