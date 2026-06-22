@@ -2,6 +2,8 @@ const playerSelect = document.getElementById('playerSelect');
 const player2Select = document.getElementById('player2Select');
 const player1SpecSelect = document.getElementById('player1Spec');
 const player2SpecSelect = document.getElementById('player2Spec');
+const player1RaidCount = document.getElementById('player1RaidCount');
+const player2RaidCount = document.getElementById('player2RaidCount');
 const bossCheckboxes = document.getElementById('bossCheckboxes');
 const selectAllBossesBtn = document.getElementById('selectAllBosses');
 const deselectAllBossesBtn = document.getElementById('deselectAllBosses');
@@ -183,6 +185,29 @@ function populateSpecSelect(selectEl, playerName) {
     });
 }
 
+function countPlayerRaids(playerName, specFilter) {
+  if (!playerName) return 0;
+
+  const raidUrls = new Set();
+  for (const record of personalStats) {
+    const player = (record.players || []).find((p) => p.name === playerName);
+    if (!player) continue;
+    if (specFilter && specKey(player) !== specFilter) continue;
+    raidUrls.add(record.raidUrl);
+  }
+
+  return raidUrls.size;
+}
+
+function renderRaidCount(el, playerName, specFilter) {
+  if (!playerName || !allNames.includes(playerName)) {
+    el.textContent = '';
+    return;
+  }
+
+  el.textContent = `Рейдів: ${countPlayerRaids(playerName, specFilter)}`;
+}
+
 function getSelectedBosses() {
   return [...bossCheckboxes.querySelectorAll('input[type="checkbox"]:checked')].map((el) => el.value);
 }
@@ -352,12 +377,16 @@ async function init() {
     allNames = computeAllNames();
 
     const onPlayer1Change = () => {
-      populateSpecSelect(player1SpecSelect, playerSelect.value.trim());
+      const name = playerSelect.value.trim();
+      populateSpecSelect(player1SpecSelect, name);
+      renderRaidCount(player1RaidCount, name, player1SpecSelect.value);
       render();
     };
 
     const onPlayer2Change = () => {
-      populateSpecSelect(player2SpecSelect, player2Select.value.trim());
+      const name = player2Select.value.trim();
+      populateSpecSelect(player2SpecSelect, name);
+      renderRaidCount(player2RaidCount, name, player2SpecSelect.value);
       render();
     };
 
@@ -383,9 +412,15 @@ async function init() {
   }
 }
 
-player1SpecSelect.addEventListener('change', render);
+player1SpecSelect.addEventListener('change', () => {
+  renderRaidCount(player1RaidCount, playerSelect.value.trim(), player1SpecSelect.value);
+  render();
+});
 
-player2SpecSelect.addEventListener('change', render);
+player2SpecSelect.addEventListener('change', () => {
+  renderRaidCount(player2RaidCount, player2Select.value.trim(), player2SpecSelect.value);
+  render();
+});
 
 bossCheckboxes.addEventListener('change', (event) => {
   if (event.target.matches('input[type="checkbox"]')) {
