@@ -22,9 +22,9 @@
           <a class="nav__link" href="../">Головна</a>
           <a class="nav__link" href="../guild-ranking/">Рейтинг DPS</a>
           <a class="nav__link" href="../potion-stats/">Статистика Potion</a>
-          <a class="nav__link" href="../gallery/">Галерея</a>
           <a class="nav__link" href="../analytics/">Аналітика</a>
           <a class="nav__link nav__link--active" href="../personal-analytics/">Персональна Аналітика</a>
+          <a class="nav__link" href="../gallery/">Галерея</a>
         </nav>
       </div>
     </header>
@@ -33,38 +33,36 @@
 
       <h1>Персональна Аналітика</h1>
 
-      <ul>
-        <li>Обери гравця і боса (можна кілька босів одразу) — побачиш, як змінювався DPS від рейду до рейду.</li>
-        <li>Можна порівняти двох гравців — лінії одного кольору, лінія другого гравця штрихова.</li>
-        <li>Враховуються тільки успішні кіли (режим ЦЛК 25 ХМ), вайпи не рахуються.</li>
-        <li>Боси без чіткого DPS-чека (Валітрія Дрімвокер, Анубарак, Toravon) у списку не показані.</li>
-      </ul>
-
-      <div class="ranking-controls">
-        <label for="playerSelect">Гравець</label>
+      <div class="ranking-controls player-controls-grid">
+        <label for="playerSelect">Гравець 1</label>
         <div class="autocomplete-wrap">
           <input type="text" id="playerSelect" autocomplete="off" placeholder="Почни вводити ім'я...">
+          <button type="button" class="autocomplete-clear" id="playerSelectClear" aria-label="Очистити">&times;</button>
           <div class="autocomplete-list" id="playerSelectList"></div>
         </div>
 
-        <label for="player2Select">Порівняти з</label>
+        <label for="player1Spec">Спек</label>
+        <select id="player1Spec" disabled>
+          <option value="">Усі спеки</option>
+        </select>
+
+        <label for="player2Select">Гравець 2</label>
         <div class="autocomplete-wrap">
           <input type="text" id="player2Select" autocomplete="off" placeholder="Без порівняння (опційно)">
+          <button type="button" class="autocomplete-clear" id="player2SelectClear" aria-label="Очистити">&times;</button>
           <div class="autocomplete-list" id="player2SelectList"></div>
         </div>
+
+        <label for="player2Spec">Спек</label>
+        <select id="player2Spec" disabled>
+          <option value="">Усі спеки</option>
+        </select>
       </div>
 
       <div class="boss-checkboxes-head">
         <span>Боси</span>
         <button type="button" id="selectAllBosses" class="link-button">Обрати всі</button>
         <button type="button" id="deselectAllBosses" class="link-button">Зняти всі</button>
-      </div>
-      <div class="boss-checkboxes" id="bossCheckboxes">
-        <span class="boss-checkboxes-empty">Спочатку обери гравця</span>
-      </div>
-
-      <div class="ranking-status-row">
-        <p id="tableStatus">Завантаження даних...</p>
 
         <div class="spline-select-wrap">
           <label for="splineSelect">Тип лінії</label>
@@ -76,6 +74,9 @@
           </select>
         </div>
       </div>
+      <div class="boss-checkboxes" id="bossCheckboxes"></div>
+
+      <p id="tableStatus"></p>
 
       <div class="personal-analytics-chart-wrap">
         <canvas id="chartPersonalDps"></canvas>

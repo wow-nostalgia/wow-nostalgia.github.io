@@ -1,5 +1,7 @@
 const playerSelect = document.getElementById('playerSelect');
 const player2Select = document.getElementById('player2Select');
+const player1SpecSelect = document.getElementById('player1Spec');
+const player2SpecSelect = document.getElementById('player2Spec');
 const bossCheckboxes = document.getElementById('bossCheckboxes');
 const selectAllBossesBtn = document.getElementById('selectAllBosses');
 const deselectAllBossesBtn = document.getElementById('deselectAllBosses');
@@ -36,7 +38,8 @@ const BOSS_ORDER = [
 const EXCLUDED_BOSSES = new Set([
   'Valithria Dreamwalker',
   "Anub'arak",
-  'Toravon the Ice Watcher'
+  'Toravon the Ice Watcher',
+  'Halion'
 ]);
 
 const BOSS_COLORS = {
@@ -131,47 +134,71 @@ function setupAutocomplete(inputEl, listEl, onSelect) {
   });
 }
 
-function getSelectedPlayers() {
+function specKey(player) {
+  return `${player.class} — ${player.spec}`;
+}
+
+function playerMatchesPair(player, pair) {
+  return player.name === pair.name && (!pair.specFilter || specKey(player) === pair.specFilter);
+}
+
+function getPlayerSpecPairs() {
   const known = new Set(allNames);
-  return [...new Set([playerSelect.value.trim(), player2Select.value.trim()].filter((name) => known.has(name)))];
+  const pairs = [
+    { name: playerSelect.value.trim(), specFilter: player1SpecSelect.value },
+    { name: player2Select.value.trim(), specFilter: player2SpecSelect.value }
+  ].filter((pair) => known.has(pair.name));
+
+  const seenNames = new Set();
+  return pairs.filter((pair) => {
+    if (seenNames.has(pair.name)) return false;
+    seenNames.add(pair.name);
+    return true;
+  });
+}
+
+function populateSpecSelect(selectEl, playerName) {
+  selectEl.innerHTML = '<option value="">Усі спеки</option>';
+
+  const isValidPlayer = playerName && allNames.includes(playerName);
+  selectEl.disabled = !isValidPlayer;
+
+  if (!isValidPlayer) return;
+
+  const counts = new Map();
+  for (const record of personalStats) {
+    const player = (record.players || []).find((p) => p.name === playerName);
+    if (!player) continue;
+    const key = specKey(player);
+    counts.set(key, (counts.get(key) || 0) + 1);
+  }
+
+  [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .forEach(([key]) => {
+      const option = document.createElement('option');
+      option.value = key;
+      option.textContent = key;
+      selectEl.appendChild(option);
+    });
 }
 
 function getSelectedBosses() {
   return [...bossCheckboxes.querySelectorAll('input[type="checkbox"]:checked')].map((el) => el.value);
 }
 
-function populateBossCheckboxes() {
-  const players = getSelectedPlayers();
-
-  if (!players.length) {
-    bossCheckboxes.innerHTML = '<span class="boss-checkboxes-empty">Спочатку обери гравця</span>';
-    setStatus('Оберіть гравця і боса.');
-    return;
-  }
-
-  const bossesWithData = new Set(
-    personalStats
-      .filter((record) => (record.players || []).some((p) => players.includes(p.name)))
-      .map((record) => record.boss)
-  );
-
-  const available = BOSS_ORDER.filter((boss) => !EXCLUDED_BOSSES.has(boss) && bossesWithData.has(boss));
-
-  if (!available.length) {
-    bossCheckboxes.innerHTML = '<span class="boss-checkboxes-empty">Для цього гравця немає даних</span>';
-    setStatus('Для цього гравця немає даних.');
-    return;
-  }
+function renderBossCheckboxes() {
+  const bosses = BOSS_ORDER.filter((boss) => !EXCLUDED_BOSSES.has(boss));
 
   bossCheckboxes.innerHTML = '';
-  available.forEach((boss) => {
+  bosses.forEach((boss, index) => {
     const label = document.createElement('label');
     label.className = 'boss-checkbox';
 
     const input = document.createElement('input');
     input.type = 'checkbox';
     input.value = boss;
-    input.checked = true;
+    input.checked = index === 0;
 
     const swatch = document.createElement('span');
     swatch.className = 'boss-checkbox-swatch';
@@ -184,9 +211,9 @@ function populateBossCheckboxes() {
   });
 }
 
-function buildSeries(playerName, bossName) {
+function buildSeries(playerName, bossName, specFilter) {
   const records = personalStats.filter(
-    (record) => record.boss === bossName && (record.players || []).some((p) => p.name === playerName)
+    (record) => record.boss === bossName && (record.players || []).some((p) => playerMatchesPair(p, { name: playerName, specFilter }))
   );
 
   return records
@@ -204,7 +231,7 @@ function formatDateLabel(isoDate) {
 }
 
 function render() {
-  const players = getSelectedPlayers();
+  const pairs = getPlayerSpecPairs();
   const bosses = getSelectedBosses();
 
   if (chart) {
@@ -212,15 +239,15 @@ function render() {
     chart = null;
   }
 
-  if (!players.length || !bosses.length) {
-    setStatus(players.length ? 'Оберіть хоча б одного боса.' : 'Оберіть гравця і боса.');
+  if (!pairs.length || !bosses.length) {
+    setStatus('');
     return;
   }
 
   const combos = [];
-  for (const player of players) {
+  for (const pair of pairs) {
     for (const boss of bosses) {
-      combos.push({ player, boss, series: buildSeries(player, boss) });
+      combos.push({ player: pair.name, boss, series: buildSeries(pair.name, boss, pair.specFilter) });
     }
   }
 
@@ -233,7 +260,7 @@ function render() {
     return;
   }
 
-  const primaryPlayer = players[0];
+  const primaryPlayer = pairs[0].name;
   const seriesByDataset = [];
 
   const datasets = combos.map((combo) => {
@@ -272,7 +299,21 @@ function render() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { display: true },
+        legend: {
+          display: true,
+          labels: {
+            usePointStyle: true,
+            generateLabels: (chartInstance) => {
+              const items = Chart.defaults.plugins.legend.labels.generateLabels(chartInstance);
+              items.forEach((item) => {
+                const dataset = chartInstance.data.datasets[item.datasetIndex];
+                item.pointStyle = 'line';
+                item.lineDash = dataset.borderDash || [];
+              });
+              return items;
+            }
+          }
+        },
         tooltip: {
           callbacks: {
             label: (ctx) => {
@@ -291,13 +332,15 @@ function render() {
     }
   });
 
-  setStatus(`Ліній на графіку: ${datasets.length}`);
+  setStatus('');
 }
 
 async function init() {
   Chart.defaults.color = cssVar('--color-text');
   Chart.defaults.borderColor = cssVar('--color-border');
   Chart.defaults.font.family = "'Roboto', 'Open Sans', sans-serif";
+
+  renderBossCheckboxes();
 
   try {
     setStatus('Завантаження даних...');
@@ -308,20 +351,41 @@ async function init() {
     personalStats = await personalResponse.json();
     allNames = computeAllNames();
 
-    const onPlayerChange = () => {
-      populateBossCheckboxes();
+    const onPlayer1Change = () => {
+      populateSpecSelect(player1SpecSelect, playerSelect.value.trim());
       render();
     };
 
-    setupAutocomplete(playerSelect, document.getElementById('playerSelectList'), onPlayerChange);
-    setupAutocomplete(player2Select, document.getElementById('player2SelectList'), onPlayerChange);
+    const onPlayer2Change = () => {
+      populateSpecSelect(player2SpecSelect, player2Select.value.trim());
+      render();
+    };
 
-    setStatus('Оберіть гравця і боса.');
+    setupAutocomplete(playerSelect, document.getElementById('playerSelectList'), onPlayer1Change);
+    setupAutocomplete(player2Select, document.getElementById('player2SelectList'), onPlayer2Change);
+
+    document.getElementById('playerSelectClear').addEventListener('click', () => {
+      playerSelect.value = '';
+      onPlayer1Change();
+      playerSelect.focus();
+    });
+
+    document.getElementById('player2SelectClear').addEventListener('click', () => {
+      player2Select.value = '';
+      onPlayer2Change();
+      player2Select.focus();
+    });
+
+    setStatus('');
   } catch (error) {
     console.error(error);
     setStatus('Не вдалося завантажити дані.');
   }
 }
+
+player1SpecSelect.addEventListener('change', render);
+
+player2SpecSelect.addEventListener('change', render);
 
 bossCheckboxes.addEventListener('change', (event) => {
   if (event.target.matches('input[type="checkbox"]')) {

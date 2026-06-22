@@ -8,6 +8,8 @@ const { BOSS_ORDER, CLASSES, sleep } = require('./shared');
 const RAID_LOGS_FILE = path.join(__dirname, '..', 'data', 'raid-logs.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'personal-stats.json');
 
+const SLUG_TO_CLASS = new Map(CLASSES.map((cls) => [cls.toLowerCase().replace(/\s+/g, '-'), cls]));
+
 const MODE = '25H';
 const REQUEST_DELAY_MS = 1800;
 const RETRY_DELAY_MS = 8000;
@@ -99,12 +101,17 @@ function parsePlayerTable($) {
     const name = normalizeText(anchor.text());
     if (!name) return;
 
-    const playerClass = CLASSES.find((cls) => title.endsWith(` ${cls}`));
-    const spec = playerClass ? title.slice(0, title.length - playerClass.length).trim() : null;
+    const slug = (anchor.attr('class') || '').trim();
+    if (!slug) return; // vehicle/transform row (e.g. Putricide's "Mutated Abomination"), not a real player
+
+    const playerClass = SLUG_TO_CLASS.get(slug) || CLASSES.find((cls) => title.endsWith(` ${cls}`)) || 'Unknown';
+    const spec = title.endsWith(` ${playerClass}`)
+      ? title.slice(0, title.length - playerClass.length).trim()
+      : 'Unknown';
 
     const dps = parseDecimalNumber($(row).find('td.useful.per-sec-cell').first().text());
 
-    players.push({ name, class: playerClass || 'Unknown', spec: spec || 'Unknown', dps });
+    players.push({ name, class: playerClass, spec, dps });
   });
 
   return players;
