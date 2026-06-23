@@ -820,10 +820,10 @@ function computeBossAvgOverTime(personalStats, boss) {
   for (const record of personalStats) {
     if (record.error || record.boss !== boss) continue;
 
-    const dpsPlayers = (record.players || []).filter((p) => roleOf(p.spec) === 'DPS');
-    if (!dpsPlayers.length) continue;
+    const players = record.players || [];
+    if (!players.length) continue;
 
-    const value = dpsPlayers.reduce((sum, p) => sum + Number(p.dps || 0), 0) / dpsPlayers.length;
+    const value = players.reduce((sum, p) => sum + Number(p.dps || 0), 0) / players.length;
     points.push({ date: record.date, value });
   }
 
