@@ -320,12 +320,38 @@ function computeRaidAttendance(potionStats) {
     .slice(0, 15);
 }
 
-function computePotionScoreCorrelation(potionStats, rows) {
+function getRaidRolesByPlayer(personalStats) {
+  const rolesByPlayerRaid = new Map();
+
+  for (const record of personalStats || []) {
+    if (record.error) continue;
+
+    for (const player of record.players || []) {
+      if (!rolesByPlayerRaid.has(player.name)) rolesByPlayerRaid.set(player.name, new Map());
+      const raidMap = rolesByPlayerRaid.get(player.name);
+      if (!raidMap.has(record.raidUrl)) raidMap.set(record.raidUrl, new Set());
+      raidMap.get(record.raidUrl).add(roleOf(player.spec));
+    }
+  }
+
+  return rolesByPlayerRaid;
+}
+
+function wasNonDpsInRaid(rolesByPlayerRaid, name, raidUrl) {
+  const roles = rolesByPlayerRaid.get(name)?.get(raidUrl);
+  if (!roles) return false;
+  return roles.has('Tank') || roles.has('Healer');
+}
+
+function computePotionScoreCorrelation(potionStats, rows, personalStats) {
+  const rolesByPlayerRaid = getRaidRolesByPlayer(personalStats);
   const potionTotals = new Map();
   const raidCounts = new Map();
 
   for (const raid of potionStats || []) {
     for (const player of raid.players || []) {
+      if (wasNonDpsInRaid(rolesByPlayerRaid, player.name, raid.raidUrl)) continue;
+
       potionTotals.set(player.name, (potionTotals.get(player.name) || 0) + Number(player.total || 0));
       raidCounts.set(player.name, (raidCounts.get(player.name) || 0) + 1);
     }
@@ -772,8 +798,8 @@ function renderRaidAttendanceChart(potionStats) {
   });
 }
 
-function renderPotionScoreChart(potionStats, rows) {
-  const points = computePotionScoreCorrelation(potionStats, rows);
+function renderPotionScoreChart(potionStats, rows, personalStats) {
+  const points = computePotionScoreCorrelation(potionStats, rows, personalStats);
 
   new Chart(document.getElementById('chartPotionScore'), {
     type: 'scatter',
@@ -1028,7 +1054,7 @@ async function init() {
     const rosterNames = new Set([...guildNames, ...legionNames]);
     renderTopHealersChart(healerRankings, rosterNames);
     renderRaidAttendanceChart(potionStats);
-    renderPotionScoreChart(potionStats, dpsRows);
+    renderPotionScoreChart(potionStats, dpsRows, personalStats);
 
     renderLastUpdated(data);
     setStatus(`Гравців у вибірці: ${rows.length}`);
