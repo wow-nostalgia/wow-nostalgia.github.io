@@ -400,6 +400,32 @@ function render() {
   setStatus('');
 }
 
+function applyUrlParams() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const presetPlayer1 = urlParams.get('player');
+  const presetSpec1 = urlParams.get('spec');
+  const presetPlayer2 = urlParams.get('player2');
+  const presetSpec2 = urlParams.get('spec2');
+
+  if (presetPlayer1 && allNames.includes(presetPlayer1)) {
+    playerSelect.value = presetPlayer1;
+    populateSpecSelect(player1SpecSelect, presetPlayer1);
+    if (presetSpec1 && [...player1SpecSelect.options].some((o) => o.value === presetSpec1)) {
+      player1SpecSelect.value = presetSpec1;
+    }
+    renderRaidCount(player1RaidCount, presetPlayer1, player1SpecSelect.value);
+  }
+
+  if (presetPlayer2 && allNames.includes(presetPlayer2)) {
+    player2Select.value = presetPlayer2;
+    populateSpecSelect(player2SpecSelect, presetPlayer2);
+    if (presetSpec2 && [...player2SpecSelect.options].some((o) => o.value === presetSpec2)) {
+      player2SpecSelect.value = presetSpec2;
+    }
+    renderRaidCount(player2RaidCount, presetPlayer2, player2SpecSelect.value);
+  }
+}
+
 async function init() {
   Chart.defaults.color = cssVar('--color-text');
   Chart.defaults.borderColor = cssVar('--color-border');
@@ -445,7 +471,8 @@ async function init() {
       player2Select.focus();
     });
 
-    setStatus('');
+    applyUrlParams();
+    render();
   } catch (error) {
     console.error(error);
     setStatus('Не вдалося завантажити дані.');

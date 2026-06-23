@@ -4,6 +4,9 @@ const legionnairesCheckbox = document.getElementById('legionnairesCheckbox');
 const tableStatus = document.getElementById('tableStatus');
 const rankingHead = document.getElementById('rankingHead');
 const rankingBody = document.getElementById('rankingBody');
+const compareBtn = document.getElementById('compareBtn');
+
+const selectedPlayers = new Set();
 
 let lastUpdatedText = document.getElementById('lastUpdatedText');
 
@@ -105,8 +108,38 @@ function renderLastUpdated() {
     : '';
 }
 
+function buildPersonalAnalyticsUrl(players) {
+  const specKey = `${classSelect.value} — ${specSelect.value}`;
+  const params = new URLSearchParams();
+  params.set('player', players[0]);
+  params.set('spec', specKey);
+
+  if (players[1]) {
+    params.set('player2', players[1]);
+    params.set('spec2', specKey);
+  }
+
+  return `../personal-analytics/?${params.toString()}`;
+}
+
+function updateCompareButton() {
+  const count = selectedPlayers.size;
+  compareBtn.disabled = count === 0;
+  compareBtn.textContent =
+    count === 2 ? 'Порівняти' : count === 1 ? 'Переглянути' : 'Переглянути/Порівняти';
+}
+
+function updateCheckboxAvailability() {
+  const atLimit = selectedPlayers.size >= 2;
+  rankingBody.querySelectorAll('input.player-row-checkbox').forEach(checkbox => {
+    checkbox.disabled = atLimit && !checkbox.checked;
+  });
+}
+
 function renderTable(className, specName) {
   clearTable();
+  selectedPlayers.clear();
+  updateCompareButton();
 
   if (!className || !specName) {
     setStatus('Оберіть клас і спеціалізацію.');
@@ -129,6 +162,7 @@ function renderTable(className, specName) {
   const bossColumns = getBossColumns(rows);
 
   const columns = [
+    { key: '__checkbox', label: '' },
     { key: '__index', label: 'Guild Rank' },
     { key: 'name', label: 'Player Name' },
     { key: 'overallRank', label: 'Server Rank' },
@@ -143,6 +177,7 @@ function renderTable(className, specName) {
 
   columns.forEach(col => {
     const th = document.createElement('th');
+    if (col.key === '__checkbox') th.classList.add('checkbox-cell');
     const wrap = document.createElement('div');
     wrap.className = 'boss-header';
     wrap.textContent = col.label;
@@ -167,8 +202,21 @@ function renderTable(className, specName) {
       columns.forEach(col => {
         const td = document.createElement('td');
 
-        if (col.key === '__index') {
+        if (col.key === '__checkbox') {
+          td.classList.add('checkbox-cell');
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.className = 'player-row-checkbox';
+          checkbox.dataset.name = row.name;
+          checkbox.setAttribute('aria-label', `Обрати ${row.name}`);
+          td.appendChild(checkbox);
+        } else if (col.key === '__index') {
           td.textContent = idx + 1;
+        } else if (col.key === 'name') {
+          const link = document.createElement('a');
+          link.href = buildPersonalAnalyticsUrl([row.name]);
+          link.textContent = row.name;
+          td.appendChild(link);
         } else if (col.key.startsWith('bosses.')) {
           const boss = col.key.slice(7);
           const val = row.bosses?.[boss];
@@ -234,6 +282,30 @@ specSelect.addEventListener('change', () => {
 
 legionnairesCheckbox.addEventListener('change', () => {
   renderTable(classSelect.value, specSelect.value);
+});
+
+rankingBody.addEventListener('change', event => {
+  if (!event.target.matches('input.player-row-checkbox')) return;
+
+  const name = event.target.dataset.name;
+
+  if (event.target.checked) {
+    if (selectedPlayers.size >= 2) {
+      event.target.checked = false;
+      return;
+    }
+    selectedPlayers.add(name);
+  } else {
+    selectedPlayers.delete(name);
+  }
+
+  updateCompareButton();
+  updateCheckboxAvailability();
+});
+
+compareBtn.addEventListener('click', () => {
+  if (!selectedPlayers.size) return;
+  window.location.href = buildPersonalAnalyticsUrl([...selectedPlayers]);
 });
 
 init();
