@@ -41,7 +41,6 @@
 
       <ul>
         <li>Графіки будуються на основі тих самих даних, що й <a href="../guild-ranking/">Рейтинг DPS</a> (uwu-logs.xyz, режим ЦЛК 25 ХМ).</li>
-        <li>Це знімок поточного стану — історія змін поки не зберігається.</li>
       </ul>
 
       <p id="analyticsStatus">Завантаження даних...</p>
@@ -69,6 +68,48 @@
           <p class="analytics-card-caption">Середній DPS гільдії по кожному боссу ЦЛК (боси без чіткого DPS-чеку — Валітрія, Анубарак, Toravon — не враховані).</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossAvg"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card analytics-card--wide analytics-card--medium">
+          <h2>Середній DPS рейду по боссу в часі</h2>
+          <p class="analytics-card-caption">Середній DPS гільдії (тільки дамаг-спеки) по обраному боссу ЦЛК, по датах рейдів.</p>
+          <div class="ranking-controls">
+            <label for="bossAvgOverTimeSelect">Бос</label>
+            <select id="bossAvgOverTimeSelect"></select>
+
+            <label for="bossAvgOverTimeSplineSelect">Тип лінії</label>
+            <select id="bossAvgOverTimeSplineSelect">
+              <option value="smooth">Плавна</option>
+              <option value="smoothNoPoints" selected>Плавна без точок</option>
+              <option value="linear">Пряма</option>
+              <option value="linearNoPoints">Пряма без точок</option>
+              <option value="trend">Лінія тренду</option>
+            </select>
+          </div>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartBossAvgOverTime"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card analytics-card--wide analytics-card--medium">
+          <h2>Сумарний DPS рейду по боссу в часі</h2>
+          <p class="analytics-card-caption">Сума DPS усіх гравців рейду (дамаг-спеки, танки і хіли) по обраному боссу ЦЛК, по датах рейдів.</p>
+          <div class="ranking-controls">
+            <label for="bossSumOverTimeSelect">Бос</label>
+            <select id="bossSumOverTimeSelect"></select>
+
+            <label for="bossSumOverTimeSplineSelect">Тип лінії</label>
+            <select id="bossSumOverTimeSplineSelect">
+              <option value="smooth">Плавна</option>
+              <option value="smoothNoPoints" selected>Плавна без точок</option>
+              <option value="linear">Пряма</option>
+              <option value="linearNoPoints">Пряма без точок</option>
+              <option value="trend">Лінія тренду</option>
+            </select>
+          </div>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartBossSumOverTime"></canvas>
           </div>
         </div>
 

@@ -1,5 +1,17 @@
 const statusEl = document.getElementById('analyticsStatus');
 const lastUpdatedText = document.getElementById('lastUpdatedText');
+const bossAvgOverTimeSelect = document.getElementById('bossAvgOverTimeSelect');
+const bossAvgOverTimeSplineSelect = document.getElementById('bossAvgOverTimeSplineSelect');
+const bossSumOverTimeSelect = document.getElementById('bossSumOverTimeSelect');
+const bossSumOverTimeSplineSelect = document.getElementById('bossSumOverTimeSplineSelect');
+
+const SPLINE_MODES = {
+  smooth: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
+  smoothNoPoints: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 },
+  linear: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
+  linearNoPoints: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 },
+  trend: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 }
+};
 
 const ROLE_BY_SPEC = {
   Blood: 'Tank',
@@ -796,6 +808,143 @@ function renderPotionScoreChart(potionStats, rows) {
   });
 }
 
+function formatDateLabel(isoDate) {
+  if (!isoDate) return '';
+  const [year, month, day] = isoDate.split('-');
+  return `${day}.${month}.${year.slice(2)}`;
+}
+
+function computeBossAvgOverTime(personalStats, boss) {
+  const points = [];
+
+  for (const record of personalStats) {
+    if (record.error || record.boss !== boss) continue;
+
+    const dpsPlayers = (record.players || []).filter((p) => roleOf(p.spec) === 'DPS');
+    if (!dpsPlayers.length) continue;
+
+    const value = dpsPlayers.reduce((sum, p) => sum + Number(p.dps || 0), 0) / dpsPlayers.length;
+    points.push({ date: record.date, value });
+  }
+
+  return points.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+}
+
+function computeBossSumOverTime(personalStats, boss) {
+  const points = [];
+
+  for (const record of personalStats) {
+    if (record.error || record.boss !== boss) continue;
+
+    const players = record.players || [];
+    if (!players.length) continue;
+
+    const value = players.reduce((sum, p) => sum + Number(p.dps || 0), 0);
+    points.push({ date: record.date, value });
+  }
+
+  return points.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+}
+
+function computeTrendLine(points) {
+  const n = points.length;
+  if (n < 2) return null;
+
+  const meanX = points.reduce((sum, p) => sum + p.x, 0) / n;
+  const meanY = points.reduce((sum, p) => sum + p.y, 0) / n;
+
+  let num = 0;
+  let den = 0;
+  for (const p of points) {
+    num += (p.x - meanX) * (p.y - meanY);
+    den += (p.x - meanX) ** 2;
+  }
+
+  if (den === 0) return { slope: 0, intercept: meanY };
+
+  const slope = num / den;
+  return { slope, intercept: meanY - slope * meanX };
+}
+
+function renderBossMetricOverTimeChart({ canvasId, points, splineMode, datasetLabel, yLabel }) {
+  let seriesPoints = points;
+
+  if (splineMode === 'trend') {
+    const trend = computeTrendLine(points.map((p, idx) => ({ x: idx, y: p.value })));
+    seriesPoints = trend
+      ? points.map((p, idx) => ({ date: p.date, value: trend.slope * idx + trend.intercept, isTrend: true }))
+      : [];
+  }
+
+  const existingChart = Chart.getChart(canvasId);
+  if (existingChart) existingChart.destroy();
+
+  const spline = SPLINE_MODES[splineMode] || SPLINE_MODES.smoothNoPoints;
+
+  new Chart(document.getElementById(canvasId), {
+    type: 'line',
+    data: {
+      labels: seriesPoints.map((p) => formatDateLabel(p.date)),
+      datasets: [
+        {
+          label: datasetLabel,
+          data: seriesPoints.map((p) => Math.round(p.value)),
+          borderColor: cssVar('--color-brand'),
+          backgroundColor: cssVar('--color-brand'),
+          spanGaps: true,
+          tension: spline.tension,
+          cubicInterpolationMode: spline.cubicInterpolationMode,
+          pointRadius: spline.pointRadius,
+          hitRadius: spline.hitRadius,
+          pointHoverRadius: 6
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const point = seriesPoints[ctx.dataIndex];
+              if (!point) return null;
+
+              const suffix = point.isTrend ? ' (тренд)' : '';
+              return `${yLabel}${suffix}: ${Math.round(point.value).toLocaleString('en-US')}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { title: { display: true, text: 'Дата рейду' } },
+        y: { title: { display: true, text: yLabel }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function renderBossAvgOverTimeChart(personalStats, boss) {
+  renderBossMetricOverTimeChart({
+    canvasId: 'chartBossAvgOverTime',
+    points: computeBossAvgOverTime(personalStats, boss),
+    splineMode: bossAvgOverTimeSplineSelect.value,
+    datasetLabel: `Середній DPS — ${boss}`,
+    yLabel: 'Середній DPS'
+  });
+}
+
+function renderBossSumOverTimeChart(personalStats, boss) {
+  renderBossMetricOverTimeChart({
+    canvasId: 'chartBossSumOverTime',
+    points: computeBossSumOverTime(personalStats, boss),
+    splineMode: bossSumOverTimeSplineSelect.value,
+    datasetLabel: `Сумарний DPS — ${boss}`,
+    yLabel: 'Сумарний DPS'
+  });
+}
+
 async function init() {
   Chart.defaults.color = cssVar('--color-text');
   Chart.defaults.borderColor = cssVar('--color-border');
@@ -803,11 +952,12 @@ async function init() {
 
   try {
     setStatus('Завантаження даних...');
-    const [guildResponse, playersResponse, potionResponse, healerResponse] = await Promise.all([
+    const [guildResponse, playersResponse, potionResponse, healerResponse, personalResponse] = await Promise.all([
       fetch('/data/guild-data.json'),
       fetch('/data/players.json'),
       fetch('/data/potion-stats.json'),
-      fetch('/data/healer-rankings.json')
+      fetch('/data/healer-rankings.json'),
+      fetch('/data/personal-stats.json')
     ]);
 
     if (!guildResponse.ok) {
@@ -818,6 +968,7 @@ async function init() {
     const players = playersResponse.ok ? await playersResponse.json() : [];
     const potionStats = potionResponse.ok ? await potionResponse.json() : [];
     const healerRankings = healerResponse.ok ? await healerResponse.json() : { specs: [] };
+    const personalStats = personalResponse.ok ? await personalResponse.json() : [];
     const guildNames = new Set(players.map((p) => p.name));
 
     const rows = (data.rows || []).filter((row) => row.class && row.spec);
@@ -830,6 +981,42 @@ async function init() {
     renderTopRanksChart(dpsRows);
     renderPopularityChart(rows);
     renderBossAveragesChart(dpsRows, data.bossOrder);
+
+    const bossesWithHistory = (data.bossOrder || []).filter((boss) => !EXCLUDED_BOSSES.has(boss) && boss !== 'Halion');
+    const populateBossSelect = (selectEl) => {
+      selectEl.innerHTML = '';
+      bossesWithHistory.forEach((boss) => {
+        const option = document.createElement('option');
+        option.value = boss;
+        option.textContent = boss;
+        selectEl.appendChild(option);
+      });
+    };
+
+    populateBossSelect(bossAvgOverTimeSelect);
+    populateBossSelect(bossSumOverTimeSelect);
+
+    if (bossesWithHistory.length) {
+      renderBossAvgOverTimeChart(personalStats, bossesWithHistory[0]);
+      renderBossSumOverTimeChart(personalStats, bossesWithHistory[0]);
+    }
+
+    bossAvgOverTimeSelect.addEventListener('change', () => {
+      renderBossAvgOverTimeChart(personalStats, bossAvgOverTimeSelect.value);
+    });
+
+    bossAvgOverTimeSplineSelect.addEventListener('change', () => {
+      renderBossAvgOverTimeChart(personalStats, bossAvgOverTimeSelect.value);
+    });
+
+    bossSumOverTimeSelect.addEventListener('change', () => {
+      renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
+    });
+
+    bossSumOverTimeSplineSelect.addEventListener('change', () => {
+      renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
+    });
+
     renderAvgScoreChart(dpsRows);
     renderRolesChart(rows);
     renderGuildVsServerChart(dpsRows);
