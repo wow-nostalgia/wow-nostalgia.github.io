@@ -17,7 +17,8 @@ const SPLINE_MODES = {
   smooth: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
   smoothNoPoints: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 },
   linear: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
-  linearNoPoints: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 }
+  linearNoPoints: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 },
+  trend: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 }
 };
 
 const BOSS_ORDER = [
@@ -255,6 +256,26 @@ function formatDateLabel(isoDate) {
   return `${day}.${month}.${year.slice(2)}`;
 }
 
+function computeTrendLine(points) {
+  const n = points.length;
+  if (n < 2) return null;
+
+  const meanX = points.reduce((sum, p) => sum + p.x, 0) / n;
+  const meanY = points.reduce((sum, p) => sum + p.y, 0) / n;
+
+  let num = 0;
+  let den = 0;
+  for (const p of points) {
+    num += (p.x - meanX) * (p.y - meanY);
+    den += (p.x - meanX) ** 2;
+  }
+
+  if (den === 0) return { slope: 0, intercept: meanY };
+
+  const slope = num / den;
+  return { slope, intercept: meanY - slope * meanX };
+}
+
 function render() {
   const pairs = getPlayerSpecPairs();
   const bosses = getSelectedBosses();
@@ -287,10 +308,28 @@ function render() {
 
   const primaryPlayer = pairs[0].name;
   const seriesByDataset = [];
+  const isTrendMode = splineSelect.value === 'trend';
 
   const datasets = combos.map((combo) => {
     const byDate = new Map(combo.series.map((point) => [point.date, point]));
-    const aligned = labels.map((date) => byDate.get(date) || null);
+    let aligned = labels.map((date) => byDate.get(date) || null);
+
+    if (isTrendMode) {
+      const knownIndices = [];
+      aligned.forEach((point, idx) => {
+        if (point) knownIndices.push(idx);
+      });
+
+      const trend = computeTrendLine(knownIndices.map((idx) => ({ x: idx, y: aligned[idx].dps })));
+      const firstIdx = knownIndices[0];
+      const lastIdx = knownIndices[knownIndices.length - 1];
+
+      aligned = aligned.map((point, idx) => {
+        if (!trend || idx < firstIdx || idx > lastIdx) return null;
+        return { date: labels[idx], dps: trend.slope * idx + trend.intercept, isTrend: true };
+      });
+    }
+
     seriesByDataset.push(aligned);
 
     const isSecondPlayer = combo.player !== primaryPlayer;
@@ -345,7 +384,8 @@ function render() {
               const point = seriesByDataset[ctx.datasetIndex][ctx.dataIndex];
               if (!point) return null;
 
-              return `${ctx.dataset.label}: ${Math.round(point.dps).toLocaleString('en-US')} DPS`;
+              const suffix = point.isTrend ? ' (тренд)' : '';
+              return `${ctx.dataset.label}${suffix}: ${Math.round(point.dps).toLocaleString('en-US')} DPS`;
             }
           }
         }
