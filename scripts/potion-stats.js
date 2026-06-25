@@ -11,6 +11,19 @@ const viewButtons = document.querySelectorAll('.potion-view-btn');
 let honorBoardCache = [];
 let sortState = { column: 'averagePotions', direction: 'desc' };
 
+const MIN_RAID_BOSSES_FOR_POTION_STATS = 10;
+
+function countBossesByRaid(personalStats) {
+  const counts = new Map();
+
+  for (const record of personalStats || []) {
+    if (record.error) continue;
+    counts.set(record.raidUrl, (counts.get(record.raidUrl) || 0) + 1);
+  }
+
+  return counts;
+}
+
 function isSafeUrl(url) {
   try {
     return ['https:', 'http:'].includes(new URL(String(url)).protocol);
@@ -73,9 +86,10 @@ function attachRaidToggles() {
   });
 }
 
-function buildHonorBoard(raids) {
+function buildHonorBoard(raids, raidBossCounts) {
   const playersMap = new Map();
   raids.forEach((raid) => {
+    if ((raidBossCounts.get(raid.raidUrl) || 0) < MIN_RAID_BOSSES_FOR_POTION_STATS) return;
     if (!Array.isArray(raid.players)) return;
     raid.players.forEach((player) => {
       const name = String(player.name || '').trim();
@@ -197,11 +211,17 @@ function attachHonorFilter() {
 async function loadPotionStats() {
   try {
     statusEl.textContent = 'Завантаження даних...';
-    const response = await fetch('/data/potion-stats.json?t=' + Date.now());
+    const [response, personalResponse] = await Promise.all([
+      fetch('/data/potion-stats.json?t=' + Date.now()),
+      fetch('/data/personal-stats.json?t=' + Date.now())
+    ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
     const raids = await response.json();
     if (!Array.isArray(raids)) throw new Error('Невалідний формат даних');
+
+    const personalStats = personalResponse.ok ? await personalResponse.json() : [];
+    const raidBossCounts = countBossesByRaid(personalStats);
 
     const validRaids = raids.filter((raid) => Array.isArray(raid.players) && raid.players.length > 0 && raid.raidUrl);
 
@@ -219,7 +239,7 @@ async function loadPotionStats() {
     raidsEl.innerHTML = sortedRaids.map((raid, index) => createRaidSection(raid, index)).join('');
     attachRaidToggles();
 
-    honorBoardCache = buildHonorBoard(sortedRaids);
+    honorBoardCache = buildHonorBoard(sortedRaids, raidBossCounts);
     renderHonorBoard(honorBoardCache);
     attachTableSorting();
     updateSortIndicators();

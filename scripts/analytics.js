@@ -27,6 +27,8 @@ const EXCLUDED_BOSSES = new Set([
   'Toravon the Ice Watcher'
 ]);
 
+const MIN_RAID_BOSSES_FOR_POTION_STATS = 10;
+
 const RANK_THRESHOLDS = [50, 100, 200, 500];
 const SCORE_THRESHOLDS = [95, 90, 80, 70];
 
@@ -343,12 +345,26 @@ function wasNonDpsInRaid(rolesByPlayerRaid, name, raidUrl) {
   return roles.has('Tank') || roles.has('Healer');
 }
 
+function countBossesByRaid(personalStats) {
+  const counts = new Map();
+
+  for (const record of personalStats || []) {
+    if (record.error) continue;
+    counts.set(record.raidUrl, (counts.get(record.raidUrl) || 0) + 1);
+  }
+
+  return counts;
+}
+
 function computePotionScoreCorrelation(potionStats, rows, personalStats) {
   const rolesByPlayerRaid = getRaidRolesByPlayer(personalStats);
+  const raidBossCounts = countBossesByRaid(personalStats);
   const potionTotals = new Map();
   const raidCounts = new Map();
 
   for (const raid of potionStats || []) {
+    if ((raidBossCounts.get(raid.raidUrl) || 0) < MIN_RAID_BOSSES_FOR_POTION_STATS) continue;
+
     for (const player of raid.players || []) {
       if (wasNonDpsInRaid(rolesByPlayerRaid, player.name, raid.raidUrl)) continue;
 
