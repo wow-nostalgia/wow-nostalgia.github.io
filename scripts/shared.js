@@ -5,6 +5,20 @@ const path = require('node:path');
 
 const RAID_LOG_MERGES_FILE = path.join(__dirname, '..', 'data', 'raid-log-merges.json');
 
+const MIN_RAIDS_FOR_GUILD_MEMBER = 2;
+const MIN_RAIDS_FOR_LEGIONNAIRE = 5;
+
+function countBossesByRaid(personalStats) {
+  const counts = new Map();
+
+  for (const record of personalStats || []) {
+    if (record.error || !record.boss) continue;
+    counts.set(record.raidUrl, (counts.get(record.raidUrl) || 0) + 1);
+  }
+
+  return counts;
+}
+
 async function readRaidLogMerges() {
   try {
     const raw = await fs.readFile(RAID_LOG_MERGES_FILE, 'utf8');
@@ -243,5 +257,8 @@ module.exports = {
   findRaidLogMerges,
   findDuplicateRaidLogs,
   readRaidLogMerges,
-  writeRaidLogMerges
+  writeRaidLogMerges,
+  countBossesByRaid,
+  MIN_RAIDS_FOR_GUILD_MEMBER,
+  MIN_RAIDS_FOR_LEGIONNAIRE
 };

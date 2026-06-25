@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "update:guild": "node scripts/update-guild-data.js",
-    "update:potions": "node scripts/update-potion-stats.js",
+    "update:potions": "node scripts/update-potion-stats.js && node scripts/build-honor-board.js",
     "update:players": "node scripts/update-players.js",
     "update:healers": "node scripts/update-healer-rankings.js",
-    "update:personal": "node scripts/update-personal-stats.js"
+    "update:personal": "node scripts/update-personal-stats.js && node scripts/build-honor-board.js",
+    "build:honor-board": "node scripts/build-honor-board.js"
   },
   "repository": {
     "type": "git",

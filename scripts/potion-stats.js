@@ -11,27 +11,10 @@ const viewButtons = document.querySelectorAll('.potion-view-btn');
 let honorBoardCache = [];
 let sortState = { column: 'averagePotionsPerBoss', direction: 'desc' };
 let guildMemberNames = new Set();
-let legionNames = new Set();
 
 function createPlayerBadgeHtml(name) {
-  if (guildMemberNames.has(name)) {
-    return `<span class="player-badge player-badge--guild" title="${escapeHtml('Ностальгія')}">Н</span>`;
-  }
-  if (legionNames.has(name)) {
-    return `<span class="player-badge player-badge--legion" title="${escapeHtml('Легіонер')}">Л</span>`;
-  }
-  return '';
-}
-
-function countBossesByRaid(personalStats) {
-  const counts = new Map();
-
-  for (const record of personalStats || []) {
-    if (record.error || !record.boss) continue;
-    counts.set(record.raidUrl, (counts.get(record.raidUrl) || 0) + 1);
-  }
-
-  return counts;
+  const isGuild = guildMemberNames.has(name);
+  return `<span class="player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}" title="${escapeHtml(isGuild ? 'Ностальгія' : 'Легіонер')}">${isGuild ? 'Н' : 'Л'}</span>`;
 }
 
 function buildPersonalAnalyticsUrl(name) {
@@ -123,29 +106,6 @@ function attachRaidToggles() {
       }
     });
   });
-}
-
-function buildHonorBoard(raids, raidBossCounts) {
-  const playersMap = new Map();
-  raids.forEach((raid) => {
-    const bossCount = raidBossCounts.get(raid.raidUrl);
-    if (!bossCount) return; // no personal-stats data for this raid, can't weight it
-    if (!Array.isArray(raid.players)) return;
-    raid.players.forEach((player) => {
-      const name = String(player.name || '').trim();
-      if (!name) return;
-      if (!playersMap.has(name)) playersMap.set(name, { name, totalPotions: 0, totalBosses: 0, raidsCount: 0 });
-      const current = playersMap.get(name);
-      current.totalPotions += Number(player.total || 0);
-      current.totalBosses += bossCount;
-      current.raidsCount += 1;
-    });
-  });
-  return Array.from(playersMap.values()).map((player) => ({
-    name: player.name,
-    raidsCount: player.raidsCount,
-    averagePotionsPerBoss: player.totalBosses > 0 ? player.totalPotions / player.totalBosses : 0
-  }));
 }
 
 function sortPlayers(players) {
@@ -252,28 +212,19 @@ function attachHonorFilter() {
 async function loadPotionStats() {
   try {
     statusEl.textContent = 'Завантаження даних...';
-    const [response, personalResponse, playersResponse, guildDataResponse] = await Promise.all([
+    const [response, honorBoardResponse, playersResponse] = await Promise.all([
       fetch('/data/potion-stats.json?t=' + Date.now()),
-      fetch('/data/personal-stats.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now()),
-      fetch('/data/guild-data.json?t=' + Date.now())
+      fetch('/data/honor-board.json?t=' + Date.now()),
+      fetch('/data/players.json?t=' + Date.now())
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
     const raids = await response.json();
     if (!Array.isArray(raids)) throw new Error('Невалідний формат даних');
 
-    const personalStats = personalResponse.ok ? await personalResponse.json() : [];
-    const raidBossCounts = countBossesByRaid(personalStats);
-
     if (playersResponse.ok) {
       const players = await playersResponse.json();
       guildMemberNames = new Set(players.map((p) => p.name));
-    }
-
-    if (guildDataResponse.ok) {
-      const guildData = await guildDataResponse.json();
-      legionNames = new Set((guildData.rows || []).filter((row) => !guildMemberNames.has(row.name)).map((row) => row.name));
     }
 
     const validRaids = raids.filter((raid) => Array.isArray(raid.players) && raid.players.length > 0 && raid.raidUrl);
@@ -292,7 +243,7 @@ async function loadPotionStats() {
     raidsEl.innerHTML = sortedRaids.map((raid, index) => createRaidSection(raid, index)).join('');
     attachRaidToggles();
 
-    honorBoardCache = buildHonorBoard(sortedRaids, raidBossCounts);
+    honorBoardCache = honorBoardResponse.ok ? await honorBoardResponse.json() : [];
     renderHonorBoard(honorBoardCache);
     attachTableSorting();
     updateSortIndicators();

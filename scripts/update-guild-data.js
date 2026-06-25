@@ -2,7 +2,17 @@
 
 const fs = require('node:fs/promises');
 const path = require('path');
-const { BOSS_ORDER, sleep, getClassName, getSpecName, normalizeScore, normalizeBosses, hasAnyBossData } = require('./shared');
+const {
+  BOSS_ORDER,
+  sleep,
+  getClassName,
+  getSpecName,
+  normalizeScore,
+  normalizeBosses,
+  hasAnyBossData,
+  MIN_RAIDS_FOR_GUILD_MEMBER,
+  MIN_RAIDS_FOR_LEGIONNAIRE
+} = require('./shared');
 
 const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
 const POTION_STATS_FILE = path.join(__dirname, '..', 'data', 'potion-stats.json');
@@ -10,8 +20,6 @@ const DATA_FILE = path.join(__dirname, '..', 'data', 'guild-data.json');
 
 const REQUEST_DELAY_MS = 1500;
 const MAX_RETRIES = 3;
-const MIN_RAIDS_FOR_GUILD_MEMBER = 2;
-const MIN_RAIDS_FOR_LEGIONNAIRE = 5;
 
 function isUnknownName(name) {
   return typeof name === 'string' && name.startsWith('Unknown-');
