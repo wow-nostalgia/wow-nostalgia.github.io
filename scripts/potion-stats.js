@@ -10,6 +10,15 @@ const viewButtons = document.querySelectorAll('.potion-view-btn');
 
 let honorBoardCache = [];
 let sortState = { column: 'averagePotionsPerBoss', direction: 'desc' };
+let guildMemberNames = new Set();
+
+function createPlayerBadgeHtml(name) {
+  const isGuild = guildMemberNames.has(name);
+  const cls = isGuild ? 'player-badge--guild' : 'player-badge--legion';
+  const title = isGuild ? 'Ностальгія' : 'Легіонер';
+  const letter = isGuild ? 'Н' : 'Л';
+  return `<span class="player-badge ${cls}" title="${escapeHtml(title)}">${letter}</span>`;
+}
 
 function countBossesByRaid(personalStats) {
   const counts = new Map();
@@ -73,7 +82,7 @@ function getRowClass(player) {
 }
 
 function createPlayerRow(player) {
-  return `<tr class="${getRowClass(player)}"><td>${escapeHtml(player.name)}</td><td>${Number(player.total || 0)}</td><td>${Number(player.potionOfSpeed || 0)}</td><td>${Number(player.potionOfWildMagic || 0)}</td></tr>`;
+  return `<tr class="${getRowClass(player)}"><td>${createPlayerBadgeHtml(player.name)}${escapeHtml(player.name)}</td><td>${Number(player.total || 0)}</td><td>${Number(player.potionOfSpeed || 0)}</td><td>${Number(player.potionOfWildMagic || 0)}</td></tr>`;
 }
 
 function createRaidSection(raid, index) {
@@ -178,7 +187,7 @@ function renderHonorBoard(players) {
   }
 
   honorTableBodyEl.innerHTML = visiblePlayers
-    .map((player, index) => `<tr><td>${index + 1}</td><td><a href="${escapeHtml(buildPersonalAnalyticsUrl(player.name))}">${escapeHtml(player.name)}</a></td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`)
+    .map((player, index) => `<tr><td>${index + 1}</td><td>${createPlayerBadgeHtml(player.name)}<a href="${escapeHtml(buildPersonalAnalyticsUrl(player.name))}">${escapeHtml(player.name)}</a></td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`)
     .join('');
 
   updateSortIndicators();
@@ -229,9 +238,10 @@ function attachHonorFilter() {
 async function loadPotionStats() {
   try {
     statusEl.textContent = 'Завантаження даних...';
-    const [response, personalResponse] = await Promise.all([
+    const [response, personalResponse, playersResponse] = await Promise.all([
       fetch('/data/potion-stats.json?t=' + Date.now()),
-      fetch('/data/personal-stats.json?t=' + Date.now())
+      fetch('/data/personal-stats.json?t=' + Date.now()),
+      fetch('/data/players.json?t=' + Date.now())
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
@@ -240,6 +250,11 @@ async function loadPotionStats() {
 
     const personalStats = personalResponse.ok ? await personalResponse.json() : [];
     const raidBossCounts = countBossesByRaid(personalStats);
+
+    if (playersResponse.ok) {
+      const players = await playersResponse.json();
+      guildMemberNames = new Set(players.map((p) => p.name));
+    }
 
     const validRaids = raids.filter((raid) => Array.isArray(raid.players) && raid.players.length > 0 && raid.raidUrl);
 

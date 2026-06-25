@@ -10,7 +10,7 @@ const DATA_FILE = path.join(__dirname, '..', 'data', 'guild-data.json');
 
 const REQUEST_DELAY_MS = 1500;
 const MAX_RETRIES = 3;
-const MIN_RAIDS_FOR_LEGIONNAIRE = 3;
+const MIN_RAIDS_FOR_LEGIONNAIRE = 5;
 
 function isUnknownName(name) {
   return typeof name === 'string' && name.startsWith('Unknown-');

@@ -72,6 +72,16 @@ function cssVar(name) {
 }
 
 let allNames = [];
+let guildMemberNames = new Set();
+
+function createPlayerBadge(name) {
+  const isGuild = guildMemberNames.has(name);
+  const badge = document.createElement('span');
+  badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
+  badge.title = isGuild ? 'Ностальгія' : 'Легіонер';
+  badge.textContent = isGuild ? 'Н' : 'Л';
+  return badge;
+}
 
 function computeAllNames() {
   const names = new Set();
@@ -107,7 +117,8 @@ function setupAutocomplete(inputEl, listEl, onSelect) {
       matches.forEach((name) => {
         const item = document.createElement('div');
         item.className = 'autocomplete-item';
-        item.textContent = name;
+        item.appendChild(createPlayerBadge(name));
+        item.appendChild(document.createTextNode(name));
         item.addEventListener('mousedown', (event) => {
           event.preventDefault();
           inputEl.value = name;
@@ -435,12 +446,20 @@ async function init() {
 
   try {
     setStatus('Завантаження даних...');
-    const personalResponse = await fetch('/data/personal-stats.json');
+    const [personalResponse, playersResponse] = await Promise.all([
+      fetch('/data/personal-stats.json'),
+      fetch('/data/players.json')
+    ]);
 
     if (!personalResponse.ok) throw new Error(`HTTP ${personalResponse.status}`);
 
     personalStats = await personalResponse.json();
     allNames = computeAllNames();
+
+    if (playersResponse.ok) {
+      const players = await playersResponse.json();
+      guildMemberNames = new Set(players.map((p) => p.name));
+    }
 
     const onPlayer1Change = () => {
       const name = playerSelect.value.trim();

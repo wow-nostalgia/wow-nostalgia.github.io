@@ -66,6 +66,15 @@ function populateSpecs(className) {
   setStatus('Оберіть спеціалізацію.');
 }
 
+function createPlayerBadge(name) {
+  const isGuild = guildMemberNames.has(name);
+  const badge = document.createElement('span');
+  badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
+  badge.title = isGuild ? 'Ностальгія' : 'Легіонер';
+  badge.textContent = isGuild ? 'Н' : 'Л';
+  return badge;
+}
+
 function getBossColumns(rows) {
   const bossOrder = (data.bossOrder || []).filter(bossName => !excludedBosses.has(bossName));
   const bossSet = new Set();
@@ -216,6 +225,7 @@ function renderTable(className, specName) {
           const link = document.createElement('a');
           link.href = buildPersonalAnalyticsUrl([row.name]);
           link.textContent = row.name;
+          td.appendChild(createPlayerBadge(row.name));
           td.appendChild(link);
         } else if (col.key.startsWith('bosses.')) {
           const boss = col.key.slice(7);
