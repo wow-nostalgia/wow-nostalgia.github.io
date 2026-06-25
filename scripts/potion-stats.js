@@ -15,11 +15,15 @@ function countBossesByRaid(personalStats) {
   const counts = new Map();
 
   for (const record of personalStats || []) {
-    if (record.error) continue;
+    if (record.error || !record.boss) continue;
     counts.set(record.raidUrl, (counts.get(record.raidUrl) || 0) + 1);
   }
 
   return counts;
+}
+
+function buildPersonalAnalyticsUrl(name) {
+  return `../personal-analytics/?${new URLSearchParams({ player: name }).toString()}`;
 }
 
 function isSafeUrl(url) {
@@ -174,7 +178,7 @@ function renderHonorBoard(players) {
   }
 
   honorTableBodyEl.innerHTML = visiblePlayers
-    .map((player, index) => `<tr><td>${index + 1}</td><td>${escapeHtml(player.name)}</td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`)
+    .map((player, index) => `<tr><td>${index + 1}</td><td><a href="${escapeHtml(buildPersonalAnalyticsUrl(player.name))}">${escapeHtml(player.name)}</a></td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`)
     .join('');
 
   updateSortIndicators();

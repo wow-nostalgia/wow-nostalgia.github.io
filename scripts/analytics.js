@@ -347,7 +347,7 @@ function countBossesByRaid(personalStats) {
   const counts = new Map();
 
   for (const record of personalStats || []) {
-    if (record.error) continue;
+    if (record.error || !record.boss) continue;
     counts.set(record.raidUrl, (counts.get(record.raidUrl) || 0) + 1);
   }
 
