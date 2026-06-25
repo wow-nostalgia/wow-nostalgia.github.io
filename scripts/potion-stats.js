@@ -11,13 +11,16 @@ const viewButtons = document.querySelectorAll('.potion-view-btn');
 let honorBoardCache = [];
 let sortState = { column: 'averagePotionsPerBoss', direction: 'desc' };
 let guildMemberNames = new Set();
+let legionNames = new Set();
 
 function createPlayerBadgeHtml(name) {
-  const isGuild = guildMemberNames.has(name);
-  const cls = isGuild ? 'player-badge--guild' : 'player-badge--legion';
-  const title = isGuild ? 'Ностальгія' : 'Легіонер';
-  const letter = isGuild ? 'Н' : 'Л';
-  return `<span class="player-badge ${cls}" title="${escapeHtml(title)}">${letter}</span>`;
+  if (guildMemberNames.has(name)) {
+    return `<span class="player-badge player-badge--guild" title="${escapeHtml('Ностальгія')}">Н</span>`;
+  }
+  if (legionNames.has(name)) {
+    return `<span class="player-badge player-badge--legion" title="${escapeHtml('Легіонер')}">Л</span>`;
+  }
+  return '';
 }
 
 function countBossesByRaid(personalStats) {
@@ -238,10 +241,11 @@ function attachHonorFilter() {
 async function loadPotionStats() {
   try {
     statusEl.textContent = 'Завантаження даних...';
-    const [response, personalResponse, playersResponse] = await Promise.all([
+    const [response, personalResponse, playersResponse, guildDataResponse] = await Promise.all([
       fetch('/data/potion-stats.json?t=' + Date.now()),
       fetch('/data/personal-stats.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now())
+      fetch('/data/players.json?t=' + Date.now()),
+      fetch('/data/guild-data.json?t=' + Date.now())
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
@@ -254,6 +258,11 @@ async function loadPotionStats() {
     if (playersResponse.ok) {
       const players = await playersResponse.json();
       guildMemberNames = new Set(players.map((p) => p.name));
+    }
+
+    if (guildDataResponse.ok) {
+      const guildData = await guildDataResponse.json();
+      legionNames = new Set((guildData.rows || []).filter((row) => !guildMemberNames.has(row.name)).map((row) => row.name));
     }
 
     const validRaids = raids.filter((raid) => Array.isArray(raid.players) && raid.players.length > 0 && raid.raidUrl);

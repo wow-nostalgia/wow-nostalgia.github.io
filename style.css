@@ -792,6 +792,11 @@ body.potion-page .honor-table td {
   padding: 0.35rem 0.55rem;
 }
 
+body.potion-page .honor-table th:nth-child(2),
+body.potion-page .honor-table td:nth-child(2) {
+  text-align: left;
+}
+
 body.potion-page #honorStatus {
   margin: 0 0 1rem;
 }
