@@ -27,8 +27,6 @@ const EXCLUDED_BOSSES = new Set([
   'Toravon the Ice Watcher'
 ]);
 
-const MIN_RAID_BOSSES_FOR_POTION_STATS = 10;
-
 const RANK_THRESHOLDS = [50, 100, 200, 500];
 const SCORE_THRESHOLDS = [95, 90, 80, 70];
 
@@ -360,16 +358,17 @@ function computePotionScoreCorrelation(potionStats, rows, personalStats) {
   const rolesByPlayerRaid = getRaidRolesByPlayer(personalStats);
   const raidBossCounts = countBossesByRaid(personalStats);
   const potionTotals = new Map();
-  const raidCounts = new Map();
+  const bossCounts = new Map();
 
   for (const raid of potionStats || []) {
-    if ((raidBossCounts.get(raid.raidUrl) || 0) < MIN_RAID_BOSSES_FOR_POTION_STATS) continue;
+    const bossCount = raidBossCounts.get(raid.raidUrl);
+    if (!bossCount) continue; // no personal-stats data for this raid, can't weight it
 
     for (const player of raid.players || []) {
       if (wasNonDpsInRaid(rolesByPlayerRaid, player.name, raid.raidUrl)) continue;
 
       potionTotals.set(player.name, (potionTotals.get(player.name) || 0) + Number(player.total || 0));
-      raidCounts.set(player.name, (raidCounts.get(player.name) || 0) + 1);
+      bossCounts.set(player.name, (bossCounts.get(player.name) || 0) + bossCount);
     }
   }
 
@@ -379,10 +378,10 @@ function computePotionScoreCorrelation(potionStats, rows, personalStats) {
   for (const [name, totalPotions] of potionTotals.entries()) {
     if (!bestScore.has(name)) continue;
 
-    const raids = raidCounts.get(name) || 1;
+    const bosses = bossCounts.get(name) || 1;
     points.push({
       name,
-      x: Number((totalPotions / raids).toFixed(1)),
+      x: Number((totalPotions / bosses).toFixed(2)),
       y: bestScore.get(name)
     });
   }
@@ -837,13 +836,13 @@ function renderPotionScoreChart(potionStats, rows, personalStats) {
           callbacks: {
             label: (ctx) => {
               const p = points[ctx.dataIndex];
-              return `${p.name}: ${p.x} потів/рейд, Score ${p.y}`;
+              return `${p.name}: ${p.x} потів/боса, Score ${p.y}`;
             }
           }
         }
       },
       scales: {
-        x: { title: { display: true, text: 'Потів за рейд (середнє)' }, beginAtZero: true },
+        x: { title: { display: true, text: 'Потів за боса (середнє)' }, beginAtZero: true },
         y: { title: { display: true, text: 'Score' }, beginAtZero: true }
       }
     }

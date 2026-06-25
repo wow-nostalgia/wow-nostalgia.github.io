@@ -9,9 +9,7 @@ const honorViewEl = document.getElementById('honorView');
 const viewButtons = document.querySelectorAll('.potion-view-btn');
 
 let honorBoardCache = [];
-let sortState = { column: 'averagePotions', direction: 'desc' };
-
-const MIN_RAID_BOSSES_FOR_POTION_STATS = 10;
+let sortState = { column: 'averagePotionsPerBoss', direction: 'desc' };
 
 function countBossesByRaid(personalStats) {
   const counts = new Map();
@@ -103,21 +101,23 @@ function attachRaidToggles() {
 function buildHonorBoard(raids, raidBossCounts) {
   const playersMap = new Map();
   raids.forEach((raid) => {
-    if ((raidBossCounts.get(raid.raidUrl) || 0) < MIN_RAID_BOSSES_FOR_POTION_STATS) return;
+    const bossCount = raidBossCounts.get(raid.raidUrl);
+    if (!bossCount) return; // no personal-stats data for this raid, can't weight it
     if (!Array.isArray(raid.players)) return;
     raid.players.forEach((player) => {
       const name = String(player.name || '').trim();
       if (!name) return;
-      if (!playersMap.has(name)) playersMap.set(name, { name, totalPotions: 0, raidsCount: 0 });
+      if (!playersMap.has(name)) playersMap.set(name, { name, totalPotions: 0, totalBosses: 0, raidsCount: 0 });
       const current = playersMap.get(name);
       current.totalPotions += Number(player.total || 0);
+      current.totalBosses += bossCount;
       current.raidsCount += 1;
     });
   });
   return Array.from(playersMap.values()).map((player) => ({
     name: player.name,
     raidsCount: player.raidsCount,
-    averagePotions: player.raidsCount > 0 ? player.totalPotions / player.raidsCount : 0
+    averagePotionsPerBoss: player.totalBosses > 0 ? player.totalPotions / player.totalBosses : 0
   }));
 }
 
@@ -129,8 +129,8 @@ function sortPlayers(players) {
       return direction === 'asc' ? cmp : -cmp;
     }
 
-    const av = column === 'raidsCount' ? Number(a.raidsCount || 0) : Number(a.averagePotions || 0);
-    const bv = column === 'raidsCount' ? Number(b.raidsCount || 0) : Number(b.averagePotions || 0);
+    const av = column === 'raidsCount' ? Number(a.raidsCount || 0) : Number(a.averagePotionsPerBoss || 0);
+    const bv = column === 'raidsCount' ? Number(b.raidsCount || 0) : Number(b.averagePotionsPerBoss || 0);
 
     if (av < bv) return direction === 'asc' ? -1 : 1;
     if (av > bv) return direction === 'asc' ? 1 : -1;
@@ -155,7 +155,7 @@ function updateSortIndicators() {
 
 function renderHonorBoard(players) {
   const hideZeroPlayers = hideZeroPlayersEl?.checked ?? true;
-  const filtered = hideZeroPlayers ? players.filter((player) => Number(player.averagePotions) > 0) : players;
+  const filtered = hideZeroPlayers ? players.filter((player) => Number(player.averagePotionsPerBoss) > 0) : players;
   const visiblePlayers = sortPlayers(filtered);
 
   if (!players.length) {
@@ -174,7 +174,7 @@ function renderHonorBoard(players) {
   }
 
   honorTableBodyEl.innerHTML = visiblePlayers
-    .map((player, index) => `<tr><td>${index + 1}</td><td>${escapeHtml(player.name)}</td><td>${player.raidsCount}</td><td>${player.averagePotions.toFixed(2)}</td></tr>`)
+    .map((player, index) => `<tr><td>${index + 1}</td><td>${escapeHtml(player.name)}</td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`)
     .join('');
 
   updateSortIndicators();
