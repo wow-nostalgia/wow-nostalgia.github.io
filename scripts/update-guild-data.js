@@ -5,11 +5,12 @@ const path = require('path');
 const { BOSS_ORDER, sleep, getClassName, getSpecName, normalizeScore, normalizeBosses, hasAnyBossData } = require('./shared');
 
 const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
-const LEGIONNAIRES_FILE = path.join(__dirname, '..', 'data', 'legionnaires.json');
+const POTION_STATS_FILE = path.join(__dirname, '..', 'data', 'potion-stats.json');
 const DATA_FILE = path.join(__dirname, '..', 'data', 'guild-data.json');
 
 const REQUEST_DELAY_MS = 1500;
 const MAX_RETRIES = 3;
+const MIN_RAIDS_FOR_LEGIONNAIRE = 3;
 
 function isUnknownName(name) {
   return typeof name === 'string' && name.startsWith('Unknown-');
@@ -24,12 +25,35 @@ async function writeJson(filePath, data) {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
 }
 
+// "Легіонери" — гравці поза гільдією, яких знаходимо автоматично: хто
+// з'являвся в логах рейдів (potion-stats.json) щонайменше
+// MIN_RAIDS_FOR_LEGIONNAIRE разів і кого немає в players.json.
+async function detectLegionnaires(guildNames) {
+  const potionStats = await readJson(POTION_STATS_FILE).catch(() => []);
+  const raidCounts = new Map();
+
+  for (const raid of potionStats) {
+    if (raid.error) continue;
+
+    for (const player of raid.players || []) {
+      const name = String(player.name || '').trim();
+      if (!name || guildNames.has(name)) continue;
+      raidCounts.set(name, (raidCounts.get(name) || 0) + 1);
+    }
+  }
+
+  return [...raidCounts.entries()]
+    .filter(([, count]) => count >= MIN_RAIDS_FOR_LEGIONNAIRE)
+    .map(([name]) => ({ name, server: 'FreedomUA' }));
+}
+
 async function readPlayers() {
   const players = await readJson(PLAYERS_FILE);
   if (!Array.isArray(players)) {
     throw new Error('players.json не містить масив гравців');
   }
-  const legionnaires = await readJson(LEGIONNAIRES_FILE).catch(() => []);
+  const guildNames = new Set(players.map((p) => p.name));
+  const legionnaires = await detectLegionnaires(guildNames);
   return [...players, ...legionnaires];
 }
 
