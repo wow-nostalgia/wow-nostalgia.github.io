@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-06-25T02:42:22.717Z",
+  "updatedAt": "2026-06-25T10:40:13.142Z",
   "specs": [
     {
       "class": "Paladin",
@@ -376,6 +376,10 @@
           "hps": 33458.5
         },
         {
+          "name": "Esquizofrni",
+          "hps": 33340.9
+        },
+        {
           "name": "Anitrum",
           "hps": 33222.7
         },
@@ -398,10 +402,6 @@
         {
           "name": "Purple",
           "hps": 32706.7
-        },
-        {
-          "name": "Esquizofrni",
-          "hps": 32631.8
         },
         {
           "name": "Яворон",
@@ -2714,6 +2714,10 @@
           "hps": 16064.2
         },
         {
+          "name": "Мадерака",
+          "hps": 15996.4
+        },
+        {
           "name": "Аптека",
           "hps": 15965.2
         },
@@ -2860,10 +2864,6 @@
         {
           "name": "Полінце",
           "hps": 13778.8
-        },
-        {
-          "name": "Мадерака",
-          "hps": 13745.9
         },
         {
           "name": "Chocomoonk",
