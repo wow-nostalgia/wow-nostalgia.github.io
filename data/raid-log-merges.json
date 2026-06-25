@@ -1,3 +1,14 @@
 {
-  "https://uwu-logs.xyz/reports/26-06-24--22-51--Boronir--FreedomUA/": "https://uwu-logs.xyz/reports/26-06-24--20-57--Boronir--FreedomUA/"
+  "https://uwu-logs.xyz/reports/25-06-07--20-27--Boro--FreedomUA/": {
+    "primary": "https://uwu-logs.xyz/reports/25-06-07--20-19--Inferndk--FreedomUA/",
+    "type": "duplicate"
+  },
+  "https://uwu-logs.xyz/reports/25-12-27--20-58--Infernlok--FreedomUA": {
+    "primary": "https://uwu-logs.xyz/reports/25-12-27--20-15--Boro--FreedomUA/",
+    "type": "duplicate"
+  },
+  "https://uwu-logs.xyz/reports/26-06-24--22-51--Boronir--FreedomUA/": {
+    "primary": "https://uwu-logs.xyz/reports/26-06-24--20-57--Boronir--FreedomUA/",
+    "type": "split"
+  }
 }

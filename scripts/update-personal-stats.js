@@ -3,7 +3,7 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const cheerio = require('cheerio');
-const { BOSS_ORDER, CLASSES, sleep, findRaidLogMerges, readRaidLogMerges, writeRaidLogMerges } = require('./shared');
+const { BOSS_ORDER, CLASSES, sleep, findRaidLogMerges, findDuplicateRaidLogs, readRaidLogMerges, writeRaidLogMerges } = require('./shared');
 
 const RAID_LOGS_FILE = path.join(__dirname, '..', 'data', 'raid-logs.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'personal-stats.json');
@@ -213,17 +213,31 @@ async function main() {
 
   const refetchedUrls = new Set(toFetch.map(normalizeUrl));
   const keptExisting = existing.filter((r) => !refetchedUrls.has(normalizeUrl(r.raidUrl)));
-  const combined = [...keptExisting, ...newResults];
+  let combined = [...keptExisting, ...newResults];
 
-  const freshMerges = findRaidLogMerges(combined);
+  const freshSplitMerges = findRaidLogMerges(combined);
+  const freshDuplicateMerges = findDuplicateRaidLogs(combined);
+
   for (const record of combined) {
-    if (freshMerges.has(record.raidUrl)) {
-      record.raidUrl = freshMerges.get(record.raidUrl);
+    if (freshSplitMerges.has(record.raidUrl)) {
+      record.raidUrl = freshSplitMerges.get(record.raidUrl);
     }
   }
-  if (freshMerges.size) {
-    console.log(`Merged ${freshMerges.size} split raid report(s) into their main raid (Frozen Throne teleport split).`);
-    await writeRaidLogMerges({ ...knownMerges, ...Object.fromEntries(freshMerges) });
+
+  if (freshDuplicateMerges.size) {
+    // Same raid logged by a second player - the secondary's per-boss records are
+    // full duplicates of the primary's, so they're dropped rather than relabeled.
+    const duplicateSecondaryUrls = new Set([...freshDuplicateMerges.keys()].map(normalizeUrl));
+    combined = combined.filter((r) => !duplicateSecondaryUrls.has(normalizeUrl(r.raidUrl)));
+  }
+
+  if (freshSplitMerges.size || freshDuplicateMerges.size) {
+    console.log(`Merged ${freshSplitMerges.size} split raid report(s) and dropped ${freshDuplicateMerges.size} duplicate raid report(s).`);
+    const newMergeEntries = {
+      ...Object.fromEntries([...freshSplitMerges].map(([secondary, primary]) => [secondary, { primary, type: 'split' }])),
+      ...Object.fromEntries([...freshDuplicateMerges].map(([secondary, primary]) => [secondary, { primary, type: 'duplicate' }]))
+    };
+    await writeRaidLogMerges({ ...knownMerges, ...newMergeEntries });
   }
 
   combined.sort((a, b) => (b.date || '').localeCompare(a.date || ''));

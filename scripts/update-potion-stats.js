@@ -289,20 +289,31 @@ async function main() {
 
   if (mergeEntries.length) {
     const secondaryUrls = new Set();
+    let splitCount = 0;
+    let duplicateCount = 0;
 
-    for (const [secondaryUrl, primaryUrl] of mergeEntries) {
+    for (const [secondaryUrl, { primary: primaryUrl, type }] of mergeEntries) {
       const secondary = combined.find((r) => normalizeUrl(r.raidUrl) === normalizeUrl(secondaryUrl));
       const primary = combined.find((r) => normalizeUrl(r.raidUrl) === normalizeUrl(primaryUrl));
       if (!secondary || !primary) continue;
 
-      primary.players = mergePotionPlayers(primary.players, secondary.players);
-      primary.mergedFrom = [...new Set([...(primary.mergedFrom || []), secondary.raidUrl])];
+      if (type === 'duplicate') {
+        // Same raid recorded by a second player's logger - totals already cover the
+        // full raid, so the secondary report is dropped instead of summed.
+        primary.alternateLogs = [...new Set([...(primary.alternateLogs || []), secondary.raidUrl])];
+        duplicateCount += 1;
+      } else {
+        primary.players = mergePotionPlayers(primary.players, secondary.players);
+        primary.mergedFrom = [...new Set([...(primary.mergedFrom || []), secondary.raidUrl])];
+        splitCount += 1;
+      }
+
       secondaryUrls.add(normalizeUrl(secondaryUrl));
     }
 
     if (secondaryUrls.size) {
       combined = combined.filter((r) => !secondaryUrls.has(normalizeUrl(r.raidUrl)));
-      console.log(`Merged ${secondaryUrls.size} split raid report(s) into their main raid (Frozen Throne teleport split).`);
+      console.log(`Merged ${splitCount} split raid report(s) and dropped ${duplicateCount} duplicate raid report(s).`);
     }
   }
 

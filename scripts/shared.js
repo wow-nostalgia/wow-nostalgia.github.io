@@ -8,7 +8,14 @@ const RAID_LOG_MERGES_FILE = path.join(__dirname, '..', 'data', 'raid-log-merges
 async function readRaidLogMerges() {
   try {
     const raw = await fs.readFile(RAID_LOG_MERGES_FILE, 'utf8');
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    const normalized = {};
+    for (const [secondary, value] of Object.entries(parsed)) {
+      // Legacy entries were a plain "secondary -> primary" string, predating the
+      // split/duplicate distinction; treat those as the original "split" case.
+      normalized[secondary] = typeof value === 'string' ? { primary: value, type: 'split' } : value;
+    }
+    return normalized;
   } catch {
     return {};
   }
@@ -148,6 +155,81 @@ function findRaidLogMerges(personalStats) {
   return merges;
 }
 
+const DUPLICATE_DPS_TOLERANCE = 0.05;
+
+// Some raid nights get logged by two different players running their own combat-log
+// addon; uwu-logs treats each upload as a separate report even though it's the same
+// raid. Detected by: same calendar date + an identical boss-kill set + near-identical
+// per-player DPS on every shared boss (two real duplicate pairs differed by <1.5%;
+// distinct raids would differ far more, so 5% stays a safe margin against false
+// positives while catching logger-to-logger rounding noise).
+function findDuplicateRaidLogs(personalStats) {
+  const bossDpsByRaid = new Map();
+
+  for (const record of personalStats || []) {
+    if (record.error || !record.boss) continue;
+    if (!bossDpsByRaid.has(record.raidUrl)) bossDpsByRaid.set(record.raidUrl, new Map());
+    const playerDps = new Map((record.players || []).map((p) => [p.name, Number(p.dps) || 0]));
+    bossDpsByRaid.get(record.raidUrl).set(record.boss, playerDps);
+  }
+
+  const groups = new Map();
+  for (const raidUrl of bossDpsByRaid.keys()) {
+    const identity = extractRaidIdentity(raidUrl);
+    if (!identity) continue;
+    if (!groups.has(identity.date)) groups.set(identity.date, []);
+    groups.get(identity.date).push(raidUrl);
+  }
+
+  function areDuplicates(urlA, urlB) {
+    const bossesA = bossDpsByRaid.get(urlA);
+    const bossesB = bossDpsByRaid.get(urlB);
+
+    const bossNamesA = [...bossesA.keys()].sort();
+    const bossNamesB = [...bossesB.keys()].sort();
+    if (bossNamesA.length === 0 || bossNamesA.join('|') !== bossNamesB.join('|')) return false;
+
+    for (const boss of bossNamesA) {
+      const playersA = bossesA.get(boss);
+      const playersB = bossesB.get(boss);
+
+      const namesA = [...playersA.keys()].sort();
+      const namesB = [...playersB.keys()].sort();
+      if (namesA.join('|') !== namesB.join('|')) return false;
+
+      for (const name of namesA) {
+        const dpsA = playersA.get(name);
+        const dpsB = playersB.get(name);
+        const denom = Math.max(Math.abs(dpsA), Math.abs(dpsB), 1);
+        if (Math.abs(dpsA - dpsB) / denom > DUPLICATE_DPS_TOLERANCE) return false;
+      }
+    }
+
+    return true;
+  }
+
+  const duplicates = new Map();
+
+  for (const raidUrls of groups.values()) {
+    if (raidUrls.length < 2) continue;
+
+    for (let i = 0; i < raidUrls.length; i += 1) {
+      for (let j = i + 1; j < raidUrls.length; j += 1) {
+        const a = raidUrls[i];
+        const b = raidUrls[j];
+        if (duplicates.has(a) || duplicates.has(b)) continue;
+
+        if (areDuplicates(a, b)) {
+          const [primary, secondary] = [a, b].sort();
+          duplicates.set(secondary, primary);
+        }
+      }
+    }
+  }
+
+  return duplicates;
+}
+
 module.exports = {
   CLASSES,
   SPECS_SELECT_OPTIONS,
@@ -159,6 +241,7 @@ module.exports = {
   normalizeBosses,
   hasAnyBossData,
   findRaidLogMerges,
+  findDuplicateRaidLogs,
   readRaidLogMerges,
   writeRaidLogMerges
 };

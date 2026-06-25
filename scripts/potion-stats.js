@@ -66,18 +66,29 @@ function formatRaidTitle(raid) {
   return `Лог від ${date}. Завантажив ${uploader}`;
 }
 
-function createRaidLinksHtml(raid) {
-  const urls = [raid.raidUrl, ...(raid.mergedFrom || [])];
-
-  if (urls.length <= 1) {
-    return `<p class="potion-raid-link"><a href="${escapeHtml(isSafeUrl(raid.raidUrl) ? raid.raidUrl : '#')}" target="_blank" rel="noopener noreferrer">Відкрити оригінальний лог UwU-Logs</a></p>`;
-  }
-
-  const links = urls
+function createLogLinksList(urls) {
+  return urls
     .map((url, index) => `<a href="${escapeHtml(isSafeUrl(url) ? url : '#')}" target="_blank" rel="noopener noreferrer">Лог ${index + 1}</a>`)
     .join(' · ');
+}
 
-  return `<p class="potion-raid-link">Цей рейд був розділений на кілька звітів UwU-Logs: ${links}</p>`;
+function createRaidLinksHtml(raid) {
+  const splitUrls = [raid.raidUrl, ...(raid.mergedFrom || [])];
+  const alternateUrls = raid.alternateLogs || [];
+
+  const parts = [];
+
+  if (splitUrls.length > 1) {
+    parts.push(`<p class="potion-raid-link">Цей рейд був розділений на кілька звітів UwU-Logs: ${createLogLinksList(splitUrls)}</p>`);
+  } else {
+    parts.push(`<p class="potion-raid-link"><a href="${escapeHtml(isSafeUrl(raid.raidUrl) ? raid.raidUrl : '#')}" target="_blank" rel="noopener noreferrer">Відкрити оригінальний лог UwU-Logs</a></p>`);
+  }
+
+  if (alternateUrls.length > 0) {
+    parts.push(`<p class="potion-raid-link">Цей рейд також записаний іншим гравцем: ${createLogLinksList(alternateUrls)}</p>`);
+  }
+
+  return parts.join('');
 }
 
 function getRowClass(player) {
