@@ -1,5 +1,24 @@
 'use strict';
 
+const fs = require('node:fs/promises');
+const path = require('node:path');
+
+const RAID_LOG_MERGES_FILE = path.join(__dirname, '..', 'data', 'raid-log-merges.json');
+
+async function readRaidLogMerges() {
+  try {
+    const raw = await fs.readFile(RAID_LOG_MERGES_FILE, 'utf8');
+    return JSON.parse(raw);
+  } catch {
+    return {};
+  }
+}
+
+async function writeRaidLogMerges(merges) {
+  const sorted = Object.fromEntries(Object.entries(merges).sort(([a], [b]) => a.localeCompare(b)));
+  await fs.writeFile(RAID_LOG_MERGES_FILE, JSON.stringify(sorted, null, 2), 'utf8');
+}
+
 const CLASSES = [
   'Death Knight',
   'Druid',
@@ -76,6 +95,59 @@ function hasAnyBossData(bosses) {
   return Object.values(bosses || {}).some((value) => Number(value) > 0);
 }
 
+const LK_ONLY_SPLIT_BOSS = 'The Lich King';
+
+function extractRaidIdentity(raidUrl) {
+  const match = String(raidUrl || '').match(/reports\/(\d{2})-(\d{2})-(\d{2})--(\d{2})-(\d{2})--(.+)--FreedomUA/);
+  if (!match) return null;
+  const [, yy, mm, dd, , , leader] = match;
+  return { date: `20${yy}-${mm}-${dd}`, leader };
+}
+
+// uwu-logs splits a raid into a separate report when the group teleports onto
+// the Frozen Throne platform, even if it's a direct continuation of the same
+// raid night (confirmed via raw combat log: no relog/disconnect at the split
+// point). Detect that pattern from already-scraped boss kills: a same-day,
+// same-leader report containing only "The Lich King" is folded into the
+// sibling report that has the rest of the bosses.
+function findRaidLogMerges(personalStats) {
+  const bossesByRaid = new Map();
+
+  for (const record of personalStats || []) {
+    if (record.error || !record.boss) continue;
+    if (!bossesByRaid.has(record.raidUrl)) bossesByRaid.set(record.raidUrl, new Set());
+    bossesByRaid.get(record.raidUrl).add(record.boss);
+  }
+
+  const groups = new Map();
+  for (const raidUrl of bossesByRaid.keys()) {
+    const identity = extractRaidIdentity(raidUrl);
+    if (!identity) continue;
+    const key = `${identity.date}|${identity.leader}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(raidUrl);
+  }
+
+  const merges = new Map();
+
+  for (const raidUrls of groups.values()) {
+    if (raidUrls.length < 2) continue;
+
+    const lkOnly = raidUrls.filter((url) => {
+      const bosses = bossesByRaid.get(url);
+      return bosses.size === 1 && bosses.has(LK_ONLY_SPLIT_BOSS);
+    });
+
+    const main = raidUrls.filter((url) => !bossesByRaid.get(url).has(LK_ONLY_SPLIT_BOSS));
+
+    if (lkOnly.length === 1 && main.length === 1) {
+      merges.set(lkOnly[0], main[0]);
+    }
+  }
+
+  return merges;
+}
+
 module.exports = {
   CLASSES,
   SPECS_SELECT_OPTIONS,
@@ -85,5 +157,8 @@ module.exports = {
   getSpecName,
   normalizeScore,
   normalizeBosses,
-  hasAnyBossData
+  hasAnyBossData,
+  findRaidLogMerges,
+  readRaidLogMerges,
+  writeRaidLogMerges
 };

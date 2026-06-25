@@ -3,7 +3,7 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const cheerio = require('cheerio');
-const { BOSS_ORDER, CLASSES, sleep } = require('./shared');
+const { BOSS_ORDER, CLASSES, sleep, findRaidLogMerges, readRaidLogMerges, writeRaidLogMerges } = require('./shared');
 
 const RAID_LOGS_FILE = path.join(__dirname, '..', 'data', 'raid-logs.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'personal-stats.json');
@@ -154,63 +154,78 @@ async function readExistingStats() {
 async function main() {
   const raidLogs = await readUniqueRaidLogs();
   const existing = await readExistingStats();
+  const knownMerges = await readRaidLogMerges();
 
-  const existingUrls = new Set(existing.filter((r) => !r.error).map((r) => normalizeUrl(r.raidUrl)));
+  const existingUrls = new Set([
+    ...existing.filter((r) => !r.error).map((r) => normalizeUrl(r.raidUrl)),
+    ...Object.keys(knownMerges).map(normalizeUrl)
+  ]);
   const toFetch = raidLogs.filter((url) => !existingUrls.has(normalizeUrl(url)));
 
   console.log(`Total raids: ${raidLogs.length}, already cached: ${raidLogs.length - toFetch.length}, to fetch: ${toFetch.length}`);
 
-  if (toFetch.length === 0) {
-    console.log('Nothing new to fetch.');
-    return;
-  }
-
   const newResults = [];
 
-  for (let i = 0; i < toFetch.length; i += 1) {
-    const raidUrl = toFetch[i];
-    const date = extractRaidDateFromUrl(raidUrl);
+  if (toFetch.length === 0) {
+    console.log('Nothing new to fetch.');
+  } else {
+    for (let i = 0; i < toFetch.length; i += 1) {
+      const raidUrl = toFetch[i];
+      const date = extractRaidDateFromUrl(raidUrl);
 
-    console.log(`Processing raid (${i + 1}/${toFetch.length}): ${raidUrl}`);
+      console.log(`Processing raid (${i + 1}/${toFetch.length}): ${raidUrl}`);
 
-    try {
-      const kills = await fetchRaidKills(raidUrl);
-      console.log(`Found ${kills.length} boss kills`);
-      await sleepBetweenRequests();
+      try {
+        const kills = await fetchRaidKills(raidUrl);
+        console.log(`Found ${kills.length} boss kills`);
+        await sleepBetweenRequests();
 
-      const raidRecords = [];
+        const raidRecords = [];
 
-      for (let k = 0; k < kills.length; k += 1) {
-        const { boss, href } = kills[k];
-        console.log(`  Fetching boss (${k + 1}/${kills.length}): ${boss}`);
+        for (let k = 0; k < kills.length; k += 1) {
+          const { boss, href } = kills[k];
+          console.log(`  Fetching boss (${k + 1}/${kills.length}): ${boss}`);
 
-        const players = await fetchBossPlayers(raidUrl, href);
-        raidRecords.push({ raidUrl, date, boss, players });
+          const players = await fetchBossPlayers(raidUrl, href);
+          raidRecords.push({ raidUrl, date, boss, players });
 
-        if (k < kills.length - 1) {
-          await sleepBetweenRequests();
+          if (k < kills.length - 1) {
+            await sleepBetweenRequests();
+          }
         }
+
+        if (raidRecords.length === 0) {
+          newResults.push({ raidUrl, date, boss: null, players: [] });
+        } else {
+          newResults.push(...raidRecords);
+        }
+        console.log(`OK: ${raidRecords.length} boss records`);
+      } catch (error) {
+        newResults.push({ raidUrl, date, boss: null, players: [], error: error.message });
+        console.error(`FAILED: ${error.message}`);
       }
 
-      if (raidRecords.length === 0) {
-        newResults.push({ raidUrl, date, boss: null, players: [] });
-      } else {
-        newResults.push(...raidRecords);
+      if (i < toFetch.length - 1) {
+        await sleepBetweenRequests();
       }
-      console.log(`OK: ${raidRecords.length} boss records`);
-    } catch (error) {
-      newResults.push({ raidUrl, date, boss: null, players: [], error: error.message });
-      console.error(`FAILED: ${error.message}`);
-    }
-
-    if (i < toFetch.length - 1) {
-      await sleepBetweenRequests();
     }
   }
 
   const refetchedUrls = new Set(toFetch.map(normalizeUrl));
   const keptExisting = existing.filter((r) => !refetchedUrls.has(normalizeUrl(r.raidUrl)));
   const combined = [...keptExisting, ...newResults];
+
+  const freshMerges = findRaidLogMerges(combined);
+  for (const record of combined) {
+    if (freshMerges.has(record.raidUrl)) {
+      record.raidUrl = freshMerges.get(record.raidUrl);
+    }
+  }
+  if (freshMerges.size) {
+    console.log(`Merged ${freshMerges.size} split raid report(s) into their main raid (Frozen Throne teleport split).`);
+    await writeRaidLogMerges({ ...knownMerges, ...Object.fromEntries(freshMerges) });
+  }
+
   combined.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
   await fs.writeFile(OUTPUT_FILE, JSON.stringify(combined, null, 2), 'utf8');

@@ -1,6 +1,7 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const cheerio = require('cheerio');
+const { readRaidLogMerges } = require('./shared');
 
 const RAID_LOGS_FILE = path.join(__dirname, '..', 'data', 'raid-logs.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'potion-stats.json');
@@ -203,66 +204,108 @@ function normalizeUrl(url) {
   return url.endsWith('/') ? url : `${url}/`;
 }
 
+function mergePotionPlayers(playersA, playersB) {
+  const merged = new Map();
+
+  for (const player of [...(playersA || []), ...(playersB || [])]) {
+    if (!merged.has(player.name)) {
+      merged.set(player.name, { name: player.name, total: 0, potionOfSpeed: 0, potionOfWildMagic: 0 });
+    }
+
+    const current = merged.get(player.name);
+    current.total += Number(player.total || 0);
+    current.potionOfSpeed += Number(player.potionOfSpeed || 0);
+    current.potionOfWildMagic += Number(player.potionOfWildMagic || 0);
+  }
+
+  return [...merged.values()].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
+}
+
 async function main() {
   const raidLogs = await readUniqueRaidLogs();
   const existing = await readExistingStats();
+  const knownMerges = await readRaidLogMerges();
 
-  const existingUrls = new Set(existing.filter((r) => !r.error).map((r) => normalizeUrl(r.raidUrl)));
+  const existingUrls = new Set([
+    ...existing.filter((r) => !r.error).map((r) => normalizeUrl(r.raidUrl)),
+    ...Object.keys(knownMerges).map(normalizeUrl)
+  ]);
   const toFetch = raidLogs.filter((url) => !existingUrls.has(normalizeUrl(url)));
 
   console.log(`Total raids: ${raidLogs.length}, already cached: ${existing.length}, to fetch: ${toFetch.length}`);
 
-  if (toFetch.length === 0) {
-    console.log('Nothing new to fetch.');
-    return;
-  }
-
   const newResults = [];
 
-  for (let i = 0; i < toFetch.length; i += 1) {
-    const raidUrl = toFetch[i];
-    const consumablesUrl = buildConsumablesUrl(raidUrl);
+  if (toFetch.length === 0) {
+    console.log('Nothing new to fetch.');
+  } else {
+    for (let i = 0; i < toFetch.length; i += 1) {
+      const raidUrl = toFetch[i];
+      const consumablesUrl = buildConsumablesUrl(raidUrl);
 
-    console.log(`Fetching (${i + 1}/${toFetch.length}): ${consumablesUrl}`);
+      console.log(`Fetching (${i + 1}/${toFetch.length}): ${consumablesUrl}`);
 
-    try {
-      const html = await fetchConsumablesPage(consumablesUrl);
-      const debugPath = await saveDebugHtml(consumablesUrl, html);
-      console.log(`Saved debug HTML: ${debugPath}`);
+      try {
+        const html = await fetchConsumablesPage(consumablesUrl);
+        const debugPath = await saveDebugHtml(consumablesUrl, html);
+        console.log(`Saved debug HTML: ${debugPath}`);
 
-      const players = parseConsumablesTable(html);
+        const players = parseConsumablesTable(html);
 
-      newResults.push({
-        raidUrl,
-        consumablesUrl,
-        date: extractRaidDateFromUrl(raidUrl),
-        title: raidUrl,
-        players
-      });
+        newResults.push({
+          raidUrl,
+          consumablesUrl,
+          date: extractRaidDateFromUrl(raidUrl),
+          title: raidUrl,
+          players
+        });
 
-      console.log(`OK: ${players.length} players`);
-    } catch (error) {
-      newResults.push({
-        raidUrl,
-        consumablesUrl,
-        date: extractRaidDateFromUrl(raidUrl),
-        title: raidUrl,
-        players: [],
-        error: error.message
-      });
+        console.log(`OK: ${players.length} players`);
+      } catch (error) {
+        newResults.push({
+          raidUrl,
+          consumablesUrl,
+          date: extractRaidDateFromUrl(raidUrl),
+          title: raidUrl,
+          players: [],
+          error: error.message
+        });
 
-      console.error(`FAILED: ${error.message}`);
-    }
+        console.error(`FAILED: ${error.message}`);
+      }
 
-    if (i < toFetch.length - 1) {
-      console.log(`Sleeping ${REQUEST_DELAY_MS}ms before next request...`);
-      await sleep(REQUEST_DELAY_MS);
+      if (i < toFetch.length - 1) {
+        console.log(`Sleeping ${REQUEST_DELAY_MS}ms before next request...`);
+        await sleep(REQUEST_DELAY_MS);
+      }
     }
   }
 
   const refetchedUrls = new Set(toFetch.map(normalizeUrl));
   const keptExisting = existing.filter((r) => !refetchedUrls.has(normalizeUrl(r.raidUrl)));
-  const combined = [...keptExisting, ...newResults];
+  let combined = [...keptExisting, ...newResults];
+
+  const mergeEntries = Object.entries(knownMerges);
+
+  if (mergeEntries.length) {
+    const secondaryUrls = new Set();
+
+    for (const [secondaryUrl, primaryUrl] of mergeEntries) {
+      const secondary = combined.find((r) => normalizeUrl(r.raidUrl) === normalizeUrl(secondaryUrl));
+      const primary = combined.find((r) => normalizeUrl(r.raidUrl) === normalizeUrl(primaryUrl));
+      if (!secondary || !primary) continue;
+
+      primary.players = mergePotionPlayers(primary.players, secondary.players);
+      primary.mergedFrom = [...new Set([...(primary.mergedFrom || []), secondary.raidUrl])];
+      secondaryUrls.add(normalizeUrl(secondaryUrl));
+    }
+
+    if (secondaryUrls.size) {
+      combined = combined.filter((r) => !secondaryUrls.has(normalizeUrl(r.raidUrl)));
+      console.log(`Merged ${secondaryUrls.size} split raid report(s) into their main raid (Frozen Throne teleport split).`);
+    }
+  }
+
   combined.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   await fs.writeFile(OUTPUT_FILE, JSON.stringify(combined, null, 2), 'utf8');
 
