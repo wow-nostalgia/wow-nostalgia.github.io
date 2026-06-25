@@ -36,7 +36,7 @@ function clearTable() {
 }
 
 function populateClasses() {
-  classSelect.innerHTML = '<option value="">Оберіть клас</option>';
+  classSelect.innerHTML = '';
 
   (data.classes || []).forEach(cls => {
     const option = document.createElement('option');
@@ -47,13 +47,8 @@ function populateClasses() {
 }
 
 function populateSpecs(className) {
-  specSelect.innerHTML = '<option value="">Оберіть спеціалізацію</option>';
+  specSelect.innerHTML = '';
   clearTable();
-
-  if (!className) {
-    setStatus('Оберіть клас і спеціалізацію.');
-    return;
-  }
 
   const specs = data.specsByClass?.[className] || [];
   specs.forEach(spec => {
@@ -62,8 +57,6 @@ function populateSpecs(className) {
     option.textContent = spec;
     specSelect.appendChild(option);
   });
-
-  setStatus('Оберіть спеціалізацію.');
 }
 
 function createPlayerBadge(name) {
@@ -273,7 +266,19 @@ async function init() {
 
     populateClasses();
     renderLastUpdated();
-    setStatus('Оберіть клас і спеціалізацію.');
+
+    if (data.classes?.length) {
+      classSelect.value = data.classes[0];
+      populateSpecs(classSelect.value);
+
+      const specs = data.specsByClass?.[classSelect.value] || [];
+      if (specs.length) {
+        specSelect.value = specs[0];
+        renderTable(classSelect.value, specSelect.value);
+      }
+    } else {
+      setStatus('Немає доступних класів.');
+    }
   } catch (error) {
     console.error(error);
     setStatus('Не вдалося завантажити дані рейтингу.');
@@ -283,7 +288,12 @@ async function init() {
 
 classSelect.addEventListener('change', () => {
   populateSpecs(classSelect.value);
-  specSelect.value = '';
+
+  const specs = data.specsByClass?.[classSelect.value] || [];
+  if (specs.length) {
+    specSelect.value = specs[0];
+    renderTable(classSelect.value, specSelect.value);
+  }
 });
 
 specSelect.addEventListener('change', () => {
