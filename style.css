@@ -588,24 +588,36 @@ body.potion-page .potion-view-btn.active {
 
 #rankingTable th,
 #rankingTable td {
-  padding: 0.2rem 0.3rem;
+  padding: 0.15rem 0.2rem;
   border-bottom: 1px solid rgba(197, 198, 205, 0.16);
   text-align: left;
 }
 
 #rankingTable th {
   color: #e6eefc;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   font-weight: 500;
 }
 
 #rankingTable td {
   color: #d3d9e5;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
 }
 
 #rankingTable tbody tr:hover {
   background-color: rgba(123, 170, 245, 0.08);
+}
+
+#rankingTable tbody tr.rank-gold td {
+  color: #ffd700;
+}
+
+#rankingTable tbody tr.rank-silver td {
+  color: #c0c0c0;
+}
+
+#rankingTable tbody tr.rank-bronze td {
+  color: #cd7f32;
 }
 
 #rankingTable tbody tr:last-child td {
@@ -639,8 +651,8 @@ body.ranking-page #rankingTable td {
 }
 
 body.ranking-page #rankingTable th {
-  max-width: 42px;
-  padding: 0.3rem 0.15rem 0.9rem;
+  max-width: 32px;
+  padding: 0.25rem 0.1rem 0.7rem;
   line-height: 1;
   vertical-align: bottom;
   word-break: break-word;
@@ -649,8 +661,8 @@ body.ranking-page #rankingTable th {
 
 body.ranking-page #rankingTable th .boss-header {
   display: inline-block;
-  width: 2.2ch;
-  max-width: 2.2ch;
+  width: 1.7ch;
+  max-width: 1.7ch;
   line-height: 1;
   text-align: center;
   white-space: normal;

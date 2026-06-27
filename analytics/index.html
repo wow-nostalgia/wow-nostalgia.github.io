@@ -47,14 +47,24 @@
       <p id="lastUpdatedText" class="last-updated-text"></p>
 
       <div class="analytics-grid">
-        <div class="analytics-card analytics-card--wide">
+        <div class="analytics-card analytics-card--wide analytics-card--medium">
           <div class="analytics-card-header">
             <h2>Топ-50 / Топ-100 / Топ-200 серверу по спеку</h2>
-            <span class="analytics-scope-chip">Всі</span>
           </div>
           <p class="analytics-card-caption">Кількість гравців у топ-50, топ-100 та топ-200 серверу для кожної спеціалізації.</p>
-          <div class="analytics-chart-wrap">
-            <canvas id="chartTopRanks"></canvas>
+          <div class="analytics-split-grid">
+            <div class="analytics-split-col">
+              <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
+              <div class="analytics-chart-wrap">
+                <canvas id="chartTopRanksGuild"></canvas>
+              </div>
+            </div>
+            <div class="analytics-split-col">
+              <span class="analytics-scope-chip analytics-scope-chip--legion">Легіонери</span>
+              <div class="analytics-chart-wrap">
+                <canvas id="chartTopRanksLegion"></canvas>
+              </div>
+            </div>
           </div>
         </div>
 

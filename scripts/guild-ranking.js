@@ -26,6 +26,18 @@ const excludedBosses = new Set([
   "Toravon the Ice Watcher"
 ]);
 
+const RANK_TIERS = [
+  { max: 50, className: 'rank-gold', medal: '🥇' },
+  { max: 100, className: 'rank-silver', medal: '🥈' },
+  { max: 150, className: 'rank-bronze', medal: '🥉' }
+];
+
+function getRankTier(rank) {
+  const num = Number(rank);
+  if (!Number.isFinite(num)) return null;
+  return RANK_TIERS.find(tier => num <= tier.max) || null;
+}
+
 function setStatus(text) {
   tableStatus.textContent = text;
 }
@@ -200,6 +212,8 @@ function renderTable(className, specName) {
     })
     .forEach((row, idx) => {
       const tr = document.createElement('tr');
+      const rankTier = getRankTier(row.overallRank);
+      if (rankTier) tr.classList.add(rankTier.className);
 
       columns.forEach(col => {
         const td = document.createElement('td');
@@ -230,6 +244,10 @@ function renderTable(className, specName) {
               : Math.round(Number(val)).toLocaleString('en-US');
         } else if (col.key === 'overallScore') {
           td.textContent = Number(row[col.key] ?? 0).toFixed(2);
+        } else if (col.key === 'overallRank') {
+          const rank = row.overallRank ?? '';
+          const icon = rankTier ? rankTier.medal : (rank !== '' ? '🤷‍♂️' : '');
+          td.textContent = icon ? `${icon} ${rank}` : rank;
         } else {
           td.textContent = row[col.key] ?? '';
         }

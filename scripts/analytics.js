@@ -375,10 +375,13 @@ function computePotionScoreCorrelation(potionStats, rows, personalStats, guildNa
   return points;
 }
 
-function renderTopRanksChart(rows) {
+function renderTopRanksChart(canvasId, rows) {
   const stats = computeTopRanks(rows);
 
-  new Chart(document.getElementById('chartTopRanks'), {
+  const canvas = document.getElementById(canvasId);
+  canvas.parentElement.style.height = `${Math.max(320, stats.length * 30)}px`;
+
+  new Chart(canvas, {
     type: 'bar',
     data: {
       labels: stats.map((s) => s.key),
@@ -1019,7 +1022,8 @@ async function init() {
     const dpsRows = rows.filter((row) => roleOf(row.spec) === 'DPS');
     const guildDpsRows = dpsRows.filter((row) => guildNames.has(row.name));
 
-    renderTopRanksChart(dpsRows);
+    renderTopRanksChart('chartTopRanksGuild', guildDpsRows);
+    renderTopRanksChart('chartTopRanksLegion', dpsRows.filter((row) => !guildNames.has(row.name)));
     renderPopularityChart('chartSpecPopularityGuild', rows.filter((row) => guildNames.has(row.name)));
     renderPopularityChart('chartSpecPopularityLegion', rows.filter((row) => !guildNames.has(row.name)));
     renderBossAveragesChart(dpsRows, data.bossOrder);
