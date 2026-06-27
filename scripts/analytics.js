@@ -412,10 +412,13 @@ function renderTopRanksChart(rows) {
   });
 }
 
-function renderPopularityChart(rows) {
+function renderPopularityChart(canvasId, rows) {
   const stats = computePopularity(rows);
 
-  new Chart(document.getElementById('chartSpecPopularity'), {
+  const canvas = document.getElementById(canvasId);
+  canvas.parentElement.style.height = `${Math.max(320, stats.length * 26)}px`;
+
+  new Chart(canvas, {
     type: 'bar',
     data: {
       labels: stats.map((s) => s.key),
@@ -613,7 +616,7 @@ function renderGuildVsLegionChart(rows, legionNames, guildRosterSize) {
             Number(stats.guild.top100Pct.toFixed(1)),
             Number(stats.guild.top200Pct.toFixed(1))
           ],
-          backgroundColor: cssVar('--color-brand')
+          backgroundColor: cssVar('--color-success')
         },
         {
           label: 'Легіонери',
@@ -622,7 +625,7 @@ function renderGuildVsLegionChart(rows, legionNames, guildRosterSize) {
             Number(stats.legion.top100Pct.toFixed(1)),
             Number(stats.legion.top200Pct.toFixed(1))
           ],
-          backgroundColor: cssVar('--color-accent-gold')
+          backgroundColor: '#f2994a'
         }
       ]
     },
@@ -1017,7 +1020,8 @@ async function init() {
     const guildDpsRows = dpsRows.filter((row) => guildNames.has(row.name));
 
     renderTopRanksChart(dpsRows);
-    renderPopularityChart(rows);
+    renderPopularityChart('chartSpecPopularityGuild', rows.filter((row) => guildNames.has(row.name)));
+    renderPopularityChart('chartSpecPopularityLegion', rows.filter((row) => !guildNames.has(row.name)));
     renderBossAveragesChart(dpsRows, data.bossOrder);
 
     const bossesWithHistory = (data.bossOrder || []).filter((boss) => !EXCLUDED_BOSSES.has(boss) && boss !== 'Halion');

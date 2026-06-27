@@ -58,14 +58,24 @@
           </div>
         </div>
 
-        <div class="analytics-card analytics-card--wide">
+        <div class="analytics-card analytics-card--wide analytics-card--medium">
           <div class="analytics-card-header">
             <h2>Популярність спеків</h2>
-            <span class="analytics-scope-chip">Всі</span>
           </div>
           <p class="analytics-card-caption">Скільки активних логів (гравець + спек) є по кожній спеціалізації.</p>
-          <div class="analytics-chart-wrap">
-            <canvas id="chartSpecPopularity"></canvas>
+          <div class="analytics-split-grid">
+            <div class="analytics-split-col">
+              <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
+              <div class="analytics-chart-wrap">
+                <canvas id="chartSpecPopularityGuild"></canvas>
+              </div>
+            </div>
+            <div class="analytics-split-col">
+              <span class="analytics-scope-chip analytics-scope-chip--legion">Легіонери</span>
+              <div class="analytics-chart-wrap">
+                <canvas id="chartSpecPopularityLegion"></canvas>
+              </div>
+            </div>
           </div>
         </div>
 
