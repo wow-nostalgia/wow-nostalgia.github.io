@@ -608,18 +608,6 @@ body.potion-page .potion-view-btn.active {
   background-color: rgba(123, 170, 245, 0.08);
 }
 
-#rankingTable tbody tr.rank-gold td {
-  color: #ffd700;
-}
-
-#rankingTable tbody tr.rank-silver td {
-  color: #c0c0c0;
-}
-
-#rankingTable tbody tr.rank-bronze td {
-  color: #cd7f32;
-}
-
 #rankingTable tbody tr:last-child td {
   border-bottom: none;
 }

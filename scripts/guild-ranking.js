@@ -27,9 +27,9 @@ const excludedBosses = new Set([
 ]);
 
 const RANK_TIERS = [
-  { max: 50, className: 'rank-gold', medal: '🥇' },
-  { max: 100, className: 'rank-silver', medal: '🥈' },
-  { max: 150, className: 'rank-bronze', medal: '🥉' }
+  { max: 50, medal: '🥇' },
+  { max: 100, medal: '🥈' },
+  { max: 150, medal: '🥉' }
 ];
 
 function getRankTier(rank) {
@@ -213,7 +213,6 @@ function renderTable(className, specName) {
     .forEach((row, idx) => {
       const tr = document.createElement('tr');
       const rankTier = getRankTier(row.overallRank);
-      if (rankTier) tr.classList.add(rankTier.className);
 
       columns.forEach(col => {
         const td = document.createElement('td');
@@ -245,6 +244,7 @@ function renderTable(className, specName) {
         } else if (col.key === 'overallScore') {
           td.textContent = Number(row[col.key] ?? 0).toFixed(2);
         } else if (col.key === 'overallRank') {
+          td.classList.add('server-rank-cell');
           const rank = row.overallRank ?? '';
           const icon = rankTier ? rankTier.medal : (rank !== '' ? '🤷‍♂️' : '');
           td.textContent = icon ? `${icon} ${rank}` : rank;
