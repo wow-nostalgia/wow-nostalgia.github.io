@@ -48,15 +48,21 @@
 
       <div class="analytics-grid">
         <div class="analytics-card analytics-card--wide">
-          <h2>Топ-50 / Топ-100 / Топ-200 серверу по спеку</h2>
-          <p class="analytics-card-caption">Кількість гравців гільдії в топ-50, топ-100 та топ-200 серверу для кожної спеціалізації.</p>
+          <div class="analytics-card-header">
+            <h2>Топ-50 / Топ-100 / Топ-200 серверу по спеку</h2>
+            <span class="analytics-scope-chip">Всі</span>
+          </div>
+          <p class="analytics-card-caption">Кількість гравців у топ-50, топ-100 та топ-200 серверу для кожної спеціалізації.</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartTopRanks"></canvas>
           </div>
         </div>
 
         <div class="analytics-card analytics-card--wide">
-          <h2>Популярність спеків</h2>
+          <div class="analytics-card-header">
+            <h2>Популярність спеків</h2>
+            <span class="analytics-scope-chip">Всі</span>
+          </div>
           <p class="analytics-card-caption">Скільки активних логів (гравець + спек) є по кожній спеціалізації.</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartSpecPopularity"></canvas>
@@ -64,16 +70,22 @@
         </div>
 
         <div class="analytics-card analytics-card--wide analytics-card--medium">
-          <h2>Слабка ланка по босах</h2>
-          <p class="analytics-card-caption">Середній DPS гільдії по кожному босу ЦЛК (боси без чіткого DPS-чеку — Валітрія, Анубарак, Toravon — не враховані).</p>
+          <div class="analytics-card-header">
+            <h2>Слабка ланка по босах</h2>
+            <span class="analytics-scope-chip">Всі</span>
+          </div>
+          <p class="analytics-card-caption">Середній DPS по кожному босу ЦЛК (боси без чіткого DPS-чеку — Валітрія, Анубарак, Toravon — не враховані).</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossAvg"></canvas>
           </div>
         </div>
 
         <div class="analytics-card analytics-card--wide analytics-card--medium">
-          <h2>Середній DPS рейду по босу в часі</h2>
-          <p class="analytics-card-caption">Середній DPS гільдії (дамаг-спеки, танки і хіли) по обраному босу ЦЛК, по датах рейдів.</p>
+          <div class="analytics-card-header">
+            <h2>Середній DPS рейду по босу в часі</h2>
+            <span class="analytics-scope-chip">Всі</span>
+          </div>
+          <p class="analytics-card-caption">Середній DPS усіх гравців рейду (дамаг-спеки, танки і хіли) по обраному босу ЦЛК, по датах рейдів.</p>
           <div class="ranking-controls">
             <label for="bossAvgOverTimeSelect">Бос</label>
             <select id="bossAvgOverTimeSelect"></select>
@@ -93,7 +105,10 @@
         </div>
 
         <div class="analytics-card analytics-card--wide analytics-card--medium">
-          <h2>Сумарний DPS рейду по босу в часі</h2>
+          <div class="analytics-card-header">
+            <h2>Сумарний DPS рейду по босу в часі</h2>
+            <span class="analytics-scope-chip">Всі</span>
+          </div>
           <p class="analytics-card-caption">Сума DPS усіх гравців рейду (дамаг-спеки, танки і хіли) по обраному босу ЦЛК, по датах рейдів.</p>
           <div class="ranking-controls">
             <label for="bossSumOverTimeSelect">Бос</label>
@@ -113,16 +128,32 @@
           </div>
         </div>
 
-        <div class="analytics-card analytics-card--wide">
-          <h2>Середній Score по спеку</h2>
-          <p class="analytics-card-caption">Середній показник Score серед гравців гільдії на спеку.</p>
-          <div class="analytics-chart-wrap">
-            <canvas id="chartAvgScore"></canvas>
+        <div class="analytics-card analytics-card--wide analytics-card--medium">
+          <div class="analytics-card-header">
+            <h2>Середній Score по спеку</h2>
+          </div>
+          <p class="analytics-card-caption">Середній показник Score серед гравців на спеку.</p>
+          <div class="analytics-split-grid">
+            <div class="analytics-split-col">
+              <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
+              <div class="analytics-chart-wrap">
+                <canvas id="chartAvgScoreGuild"></canvas>
+              </div>
+            </div>
+            <div class="analytics-split-col">
+              <span class="analytics-scope-chip analytics-scope-chip--legion">Легіонери</span>
+              <div class="analytics-chart-wrap">
+                <canvas id="chartAvgScoreLegion"></canvas>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="analytics-card">
-          <h2>Розподіл ролей</h2>
+          <div class="analytics-card-header">
+            <h2>Розподіл ролей</h2>
+            <span class="analytics-scope-chip">Всі</span>
+          </div>
           <p class="analytics-card-caption">За активними логами спеків. Feral Combat зараховано як DPS — дані не розрізняють кет/друїд-танк.</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartRoles"></canvas>
@@ -130,7 +161,10 @@
         </div>
 
         <div class="analytics-card">
-          <h2>Гільдія проти серверу</h2>
+          <div class="analytics-card-header">
+            <h2>Гільдія проти серверу</h2>
+            <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
+          </div>
           <p class="analytics-card-caption">Скільки гравців гільдії потрапляють в топ-50/100/200/500 серверу (за найкращим спеком кожного гравця).</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartGuildVsServer"></canvas>
@@ -138,7 +172,10 @@
         </div>
 
         <div class="analytics-card">
-          <h2>Елітні виконавці</h2>
+          <div class="analytics-card-header">
+            <h2>Елітні виконавці</h2>
+            <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
+          </div>
           <p class="analytics-card-caption">Кількість гравців гільдії з найкращим Score не нижче порогу.</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartElite"></canvas>
@@ -146,7 +183,9 @@
         </div>
 
         <div class="analytics-card">
-          <h2>Гільдія проти легіонерів</h2>
+          <div class="analytics-card-header">
+            <h2>Гільдія проти легіонерів</h2>
+          </div>
           <p class="analytics-card-caption" id="guildVsLegionCaption">Завантаження...</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartGuildVsLegion"></canvas>
@@ -154,48 +193,65 @@
         </div>
 
         <div class="analytics-card">
-          <h2>Середній результат по класу</h2>
-          <p class="analytics-card-caption">Який клас в середньому показує кращий результат (Score) в рейдах.</p>
-          <div class="analytics-chart-wrap">
-            <canvas id="chartScoreByClass"></canvas>
+          <div class="analytics-card-header">
+            <h2>Скільки гравців показують який результат</h2>
+            <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
           </div>
-        </div>
-
-        <div class="analytics-card">
-          <h2>Скільки гравців показують який результат</h2>
-          <p class="analytics-card-caption">Кожен стовпчик — діапазон Score. Висота стовпчика — скільки гравців гільдії в нього потрапили.</p>
+          <p class="analytics-card-caption">Кожен стовпчик — діапазон Score. Висота стовпчика — скільки гравців гільдії у нього потрапили.</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartScoreHistogram"></canvas>
           </div>
         </div>
 
         <div class="analytics-card analytics-card--wide">
-          <h2>Топ-3 ДД кожної спеціалізації</h2>
-          <p class="analytics-card-caption">3 найкращих гравця кожної дамаг-спеки за результатом (Score). Наприклад, Шаман Елементаль і Шаман Підсилення рахуються окремо, а не разом.</p>
+          <div class="analytics-card-header">
+            <h2>Топ-3 ДД кожної спеціалізації</h2>
+            <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
+          </div>
+          <p class="analytics-card-caption">3 найкращих гравця гільдії кожної дамаг-спеки за результатом (Score). Наприклад, Шаман Елементаль і Шаман Підсилення рахуються окремо, а не разом.</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartTopByClassDps"></canvas>
           </div>
         </div>
 
         <div class="analytics-card analytics-card--wide">
-          <h2>Топ-3 хілери кожної спеціалізації</h2>
-          <p class="analytics-card-caption">3 найкращих гравця кожної хіл-спеки за швидкістю хілу (HPS) на Валітрії Дрімвокер — це єдиний бос ЦЛК, де результат залежить саме від хілу, а не від дамагу. Жрець Дисципліна і Жрець Свято рахуються окремо.</p>
+          <div class="analytics-card-header">
+            <h2>Топ-3 хілери кожної спеціалізації</h2>
+            <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
+          </div>
+          <p class="analytics-card-caption">3 найкращих гравця гільдії кожної хіл-спеки за швидкістю хілу (HPS) на Валітрії Дрімвокер — це єдиний бос ЦЛК, де результат залежить саме від хілу, а не від дамагу. Жрець Дисципліна і Жрець Свято рахуються окремо.</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartTopByClassHealer"></canvas>
           </div>
         </div>
 
         <div class="analytics-card analytics-card--wide analytics-card--medium">
-          <h2>Відвідуваність рейдів</h2>
+          <div class="analytics-card-header">
+            <h2>Відвідуваність рейдів</h2>
+          </div>
           <p class="analytics-card-caption">Топ-15 гравців за кількістю рейдів, в яких вони брали участь (за даними логів потів).</p>
-          <div class="analytics-chart-wrap">
-            <canvas id="chartRaidAttendance"></canvas>
+          <div class="analytics-split-grid">
+            <div class="analytics-split-col">
+              <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
+              <div class="analytics-chart-wrap">
+                <canvas id="chartRaidAttendanceGuild"></canvas>
+              </div>
+            </div>
+            <div class="analytics-split-col">
+              <span class="analytics-scope-chip analytics-scope-chip--legion">Легіонери</span>
+              <div class="analytics-chart-wrap">
+                <canvas id="chartRaidAttendanceLegion"></canvas>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="analytics-card analytics-card--wide analytics-card--medium">
-          <h2>Чи допомагають поти показати кращий результат?</h2>
-          <p class="analytics-card-caption">Кожна крапка — один гравець. Праворуч — хто п'є більше потів за боса. Вище — у кого кращий результат (Score). Якщо крапки тягнуться знизу-зліва до верху-справа — поти допомагають.</p>
+          <div class="analytics-card-header">
+            <h2>Чи допомагають поти показати кращий результат?</h2>
+            <span class="analytics-scope-chip">Всі</span>
+          </div>
+          <p class="analytics-card-caption">Кожна крапка — один гравець, колір — гільдія чи легіонер (див. легенду). Праворуч — хто п'є більше потів за боса. Вище — у кого кращий результат (Score). Якщо крапки тягнуться знизу-зліва до верху-справа — поти допомагають.</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartPotionScore"></canvas>
           </div>

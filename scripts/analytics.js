@@ -239,22 +239,6 @@ function computeGuildVsLegion(rows, legionNames) {
   return result;
 }
 
-function computeAvgScoreByClass(rows) {
-  const sums = new Map();
-
-  for (const row of rows) {
-    if (!sums.has(row.class)) sums.set(row.class, { total: 0, count: 0 });
-
-    const sum = sums.get(row.class);
-    sum.total += Number.isFinite(Number(row.overallScore)) ? Number(row.overallScore) : 0;
-    sum.count += 1;
-  }
-
-  return [...sums.entries()]
-    .map(([className, { total, count }]) => ({ className, avg: count ? total / count : 0 }))
-    .sort((a, b) => b.avg - a.avg);
-}
-
 function computeScoreHistogram(rows) {
   const bestScore = bestPerPlayer(rows, 'overallScore', (value, current) => value > current);
   const bins = Array.from({ length: 10 }, (_, i) => ({ label: `${i * 10}-${i * 10 + 10}`, count: 0 }));
@@ -305,11 +289,12 @@ function computeTopPlayersBySpec(rows, role, topN) {
   return flat;
 }
 
-function computeRaidAttendance(potionStats) {
+function computeRaidAttendance(potionStats, isIncluded) {
   const counts = new Map();
 
   for (const raid of potionStats || []) {
     for (const player of raid.players || []) {
+      if (!isIncluded(player.name)) continue;
       counts.set(player.name, (counts.get(player.name) || 0) + 1);
     }
   }
@@ -354,7 +339,7 @@ function countBossesByRaid(personalStats) {
   return counts;
 }
 
-function computePotionScoreCorrelation(potionStats, rows, personalStats) {
+function computePotionScoreCorrelation(potionStats, rows, personalStats, guildNames) {
   const rolesByPlayerRaid = getRaidRolesByPlayer(personalStats);
   const raidBossCounts = countBossesByRaid(personalStats);
   const potionTotals = new Map();
@@ -382,7 +367,8 @@ function computePotionScoreCorrelation(potionStats, rows, personalStats) {
     points.push({
       name,
       x: Number((totalPotions / bosses).toFixed(2)),
-      y: bestScore.get(name)
+      y: bestScore.get(name),
+      isGuild: guildNames.has(name)
     });
   }
 
@@ -454,10 +440,13 @@ function renderPopularityChart(rows) {
   });
 }
 
-function renderAvgScoreChart(rows) {
+function renderAvgScoreChart(canvasId, rows) {
   const stats = computeAvgScore(rows);
 
-  new Chart(document.getElementById('chartAvgScore'), {
+  const canvas = document.getElementById(canvasId);
+  canvas.parentElement.style.height = `${Math.max(320, stats.length * 26)}px`;
+
+  new Chart(canvas, {
     type: 'bar',
     data: {
       labels: stats.map((s) => s.key),
@@ -647,34 +636,6 @@ function renderGuildVsLegionChart(rows, legionNames, guildRosterSize) {
   });
 }
 
-function renderAvgScoreByClassChart(rows) {
-  const stats = computeAvgScoreByClass(rows);
-
-  new Chart(document.getElementById('chartScoreByClass'), {
-    type: 'bar',
-    data: {
-      labels: stats.map((s) => s.className),
-      datasets: [
-        {
-          label: 'Середній Score',
-          data: stats.map((s) => Number(s.avg.toFixed(1))),
-          backgroundColor: stats.map((s) => getClassColor(s.className))
-        }
-      ]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { beginAtZero: true },
-        y: { ticks: { color: classTickColor(stats) } }
-      }
-    }
-  });
-}
-
 function renderScoreHistogramChart(rows) {
   const bins = computeScoreHistogram(rows);
 
@@ -701,14 +662,14 @@ function renderScoreHistogramChart(rows) {
   });
 }
 
-function computeTopHealersByHps(healerRankings, topN, rosterNames) {
+function computeTopHealersByHps(healerRankings, topN, allowedNames) {
   const specs = healerRankings?.specs || [];
 
   const groups = specs.map((spec) => ({
     key: `${spec.class} — ${spec.spec}`,
     className: spec.class,
     top: (spec.players || [])
-      .filter((player) => rosterNames.has(player.name))
+      .filter((player) => allowedNames.has(player.name))
       .slice(0, topN)
   }));
 
@@ -724,8 +685,8 @@ function computeTopHealersByHps(healerRankings, topN, rosterNames) {
   return flat;
 }
 
-function renderTopHealersChart(healerRankings, rosterNames) {
-  const stats = computeTopHealersByHps(healerRankings, 3, rosterNames);
+function renderTopHealersChart(healerRankings, allowedNames) {
+  const stats = computeTopHealersByHps(healerRankings, 3, allowedNames);
 
   const canvas = document.getElementById('chartTopByClassHealer');
   canvas.parentElement.style.height = `${Math.max(320, stats.length * 26)}px`;
@@ -786,10 +747,8 @@ function renderTopByClassChart(rows, role, canvasId) {
   });
 }
 
-function renderRaidAttendanceChart(potionStats) {
-  const stats = computeRaidAttendance(potionStats);
-
-  new Chart(document.getElementById('chartRaidAttendance'), {
+function renderRaidAttendanceChart(canvasId, stats, color) {
+  new Chart(document.getElementById(canvasId), {
     type: 'bar',
     data: {
       labels: stats.map((s) => s.name),
@@ -797,7 +756,7 @@ function renderRaidAttendanceChart(potionStats) {
         {
           label: 'Рейдів',
           data: stats.map((s) => s.count),
-          backgroundColor: cssVar('--color-success')
+          backgroundColor: color
         }
       ]
     },
@@ -813,29 +772,66 @@ function renderRaidAttendanceChart(potionStats) {
   });
 }
 
-function renderPotionScoreChart(potionStats, rows, personalStats) {
-  const points = computePotionScoreCorrelation(potionStats, rows, personalStats);
+function buildPotionScoreTrendDataset(categoryPoints, label, color, maxX) {
+  if (categoryPoints.length < 2) return null;
+
+  const trend = computeTrendLine(categoryPoints);
+  if (!trend) return null;
+
+  return {
+    type: 'line',
+    label,
+    data: [
+      { x: 0, y: trend.intercept },
+      { x: maxX, y: trend.slope * maxX + trend.intercept }
+    ],
+    borderColor: color,
+    backgroundColor: color,
+    borderDash: [6, 4],
+    borderWidth: 2,
+    pointRadius: 0,
+    fill: false,
+    isTrend: true
+  };
+}
+
+function renderPotionScoreChart(potionStats, rows, personalStats, guildNames) {
+  const points = computePotionScoreCorrelation(potionStats, rows, personalStats, guildNames);
+  const guildPoints = points.filter((p) => p.isGuild);
+  const legionPoints = points.filter((p) => !p.isGuild);
+  const maxX = points.length ? Math.max(...points.map((p) => p.x)) : 0;
+
+  const datasets = [
+    {
+      label: 'Гільдія',
+      data: guildPoints,
+      backgroundColor: cssVar('--color-success')
+    },
+    {
+      label: 'Легіонери',
+      data: legionPoints,
+      backgroundColor: '#f2994a'
+    },
+    buildPotionScoreTrendDataset(guildPoints, 'Гільдія — лінія тренду', cssVar('--color-success'), maxX),
+    buildPotionScoreTrendDataset(legionPoints, 'Легіонери — лінія тренду', '#f2994a', maxX)
+  ].filter(Boolean);
 
   new Chart(document.getElementById('chartPotionScore'), {
     type: 'scatter',
-    data: {
-      datasets: [
-        {
-          label: 'Гравець',
-          data: points,
-          backgroundColor: cssVar('--color-success')
-        }
-      ]
-    },
+    data: { datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { display: false },
+        legend: {
+          display: true,
+          labels: { filter: (item, data) => !data.datasets[item.datasetIndex]?.isTrend }
+        },
         tooltip: {
           callbacks: {
             label: (ctx) => {
-              const p = points[ctx.dataIndex];
+              if (ctx.dataset.isTrend) return `${ctx.dataset.label}: Score ${ctx.raw.y.toFixed(1)}`;
+              const p = ctx.raw;
               return `${p.name}: ${p.x} потів/боса, Score ${p.y}`;
             }
           }
@@ -1018,6 +1014,7 @@ async function init() {
     // Танк- і хіл-спеки рахуються по DPS-системі uwu-logs, яка не оцінює їхню реальну роботу
     // (танкування/хіл) — тому DPS-орієнтовані метрики (Score, Rank, середній DPS) рахуються тільки по DPS-спеках.
     const dpsRows = rows.filter((row) => roleOf(row.spec) === 'DPS');
+    const guildDpsRows = dpsRows.filter((row) => guildNames.has(row.name));
 
     renderTopRanksChart(dpsRows);
     renderPopularityChart(rows);
@@ -1058,18 +1055,18 @@ async function init() {
       renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
     });
 
-    renderAvgScoreChart(dpsRows);
+    renderAvgScoreChart('chartAvgScoreGuild', guildDpsRows);
+    renderAvgScoreChart('chartAvgScoreLegion', dpsRows.filter((row) => !guildNames.has(row.name)));
     renderRolesChart(rows);
-    renderGuildVsServerChart(dpsRows);
-    renderEliteChart(dpsRows);
+    renderGuildVsServerChart(guildDpsRows);
+    renderEliteChart(guildDpsRows);
     renderGuildVsLegionChart(dpsRows, legionNames, players.length);
-    renderAvgScoreByClassChart(dpsRows);
-    renderScoreHistogramChart(dpsRows);
-    renderTopByClassChart(dpsRows, 'DPS', 'chartTopByClassDps');
-    const rosterNames = new Set([...guildNames, ...legionNames]);
-    renderTopHealersChart(healerRankings, rosterNames);
-    renderRaidAttendanceChart(potionStats);
-    renderPotionScoreChart(potionStats, dpsRows, personalStats);
+    renderScoreHistogramChart(guildDpsRows);
+    renderTopByClassChart(guildDpsRows, 'DPS', 'chartTopByClassDps');
+    renderTopHealersChart(healerRankings, guildNames);
+    renderRaidAttendanceChart('chartRaidAttendanceGuild', computeRaidAttendance(potionStats, (name) => guildNames.has(name)), cssVar('--color-success'));
+    renderRaidAttendanceChart('chartRaidAttendanceLegion', computeRaidAttendance(potionStats, (name) => !guildNames.has(name)), '#f2994a');
+    renderPotionScoreChart(potionStats, dpsRows, personalStats, guildNames);
 
     renderLastUpdated(data);
     setStatus(`Гравців у вибірці: ${rows.length}`);
