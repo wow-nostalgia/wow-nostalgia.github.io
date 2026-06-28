@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-06-27T20:53:01.599Z",
+  "updatedAt": "2026-06-28T00:42:58.564Z",
   "specs": [
     {
       "class": "Paladin",
@@ -2000,6 +2000,10 @@
         {
           "name": "Miumiu",
           "hps": 19.9
+        },
+        {
+          "name": "Fromhell",
+          "hps": 12.8
         }
       ]
     },
@@ -3326,6 +3330,10 @@
           "hps": 1183.2
         },
         {
+          "name": "Дх",
+          "hps": 1181.6
+        },
+        {
           "name": "Шурік",
           "hps": 1176.6
         },
@@ -3372,10 +3380,6 @@
         {
           "name": "Eastwood",
           "hps": 863
-        },
-        {
-          "name": "Дх",
-          "hps": 767.8
         },
         {
           "name": "Turinthalion",
