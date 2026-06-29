@@ -3,20 +3,37 @@ const loginGateBtn = document.getElementById('loginGateBtn');
 const archiveSection = document.getElementById('archiveSection');
 const archiveStatus = document.getElementById('archiveStatus');
 const archiveBody = document.getElementById('archiveBody');
+const archivePagination = document.getElementById('archivePagination');
+const archivePrevBtn = document.getElementById('archivePrevBtn');
+const archiveNextBtn = document.getElementById('archiveNextBtn');
+const archivePageInfo = document.getElementById('archivePageInfo');
+
+const PAGE_SIZE = 20;
+let currentPage = 0;
 
 function setStatus(text) {
   archiveStatus.textContent = text;
 }
 
-function renderArchiveList(raids) {
+function renderPagination(total) {
+  const totalPages = Math.max(Math.ceil(total / PAGE_SIZE), 1);
+  archivePagination.hidden = totalPages <= 1;
+  archivePageInfo.textContent = `Сторінка ${currentPage + 1} з ${totalPages}`;
+  archivePrevBtn.disabled = currentPage === 0;
+  archiveNextBtn.disabled = currentPage >= totalPages - 1;
+}
+
+function renderArchiveList(raids, total) {
   archiveBody.innerHTML = '';
 
   if (!raids.length) {
-    setStatus('Ще немає створених рейдів.');
+    setStatus(currentPage === 0 ? 'Ще немає створених рейдів.' : '');
+    archivePagination.hidden = true;
     return;
   }
 
-  setStatus(`Усього рейдів: ${raids.length}`);
+  setStatus(`Усього рейдів: ${total}`);
+  renderPagination(total);
 
   raids.forEach((raid) => {
     const tr = document.createElement('tr');
@@ -58,13 +75,25 @@ function renderArchiveList(raids) {
 
 async function loadArchive() {
   try {
-    const raids = await apiCall('GET', '/raids', { token: getSessionToken() });
-    renderArchiveList(raids);
+    const offset = currentPage * PAGE_SIZE;
+    const { raids, total } = await apiCall('GET', `/raids?limit=${PAGE_SIZE}&offset=${offset}`, { token: getSessionToken() });
+    renderArchiveList(raids, total);
   } catch (err) {
     console.error(err);
     setStatus('Не вдалося завантажити архів рейдів.');
   }
 }
+
+archivePrevBtn.addEventListener('click', () => {
+  if (currentPage === 0) return;
+  currentPage -= 1;
+  loadArchive();
+});
+
+archiveNextBtn.addEventListener('click', () => {
+  currentPage += 1;
+  loadArchive();
+});
 
 async function init() {
   loginGateBtn.href = discordLoginUrl();

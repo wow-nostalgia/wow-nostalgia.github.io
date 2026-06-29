@@ -23,17 +23,22 @@ export async function createRaid(db, { id, title, instance, difficulty, softLimi
   return getRaid(db, id);
 }
 
-export async function listRaids(db, limit = 50) {
+export async function listRaids(db, { limit = 20, offset = 0 } = {}) {
   const { results } = await db
     .prepare(
       `SELECT r.id, r.title, r.instance, r.difficulty, r.is_locked, r.status, r.created_at,
               COALESCE(${primaryCharacterSubquery('u')}, u.username) AS leader_display_name
        FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
-       ORDER BY r.created_at DESC LIMIT ?`
+       ORDER BY r.created_at DESC LIMIT ? OFFSET ?`
     )
-    .bind(limit)
+    .bind(limit, offset)
     .all();
   return results;
+}
+
+export async function countRaids(db) {
+  const row = await db.prepare('SELECT COUNT(*) AS count FROM raids').first();
+  return row.count;
 }
 
 export async function getRaid(db, id) {

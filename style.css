@@ -1492,6 +1492,19 @@ body.raid-manager-page .raid-table {
   border-collapse: collapse;
 }
 
+.raid-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.raid-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 body.raid-manager-page .raid-table th,
 body.raid-manager-page .raid-table td {
   padding: 0.3rem 0.4rem;

@@ -2,6 +2,7 @@ import { HttpError, jsonResponse, readJson, generateRaidId } from '../util.js';
 import {
   createRaid,
   listRaids,
+  countRaids,
   getRaid,
   updateRaidSettings,
   setRaidLock,
@@ -59,8 +60,16 @@ export async function handleCreateRaid(request, env, session) {
 }
 
 export async function handleListRaids(request, env) {
-  const raids = await listRaids(env.DB);
-  return jsonResponse(raids);
+  const url = new URL(request.url);
+  const limit = Math.min(Math.max(Number(url.searchParams.get('limit')) || 20, 1), 50);
+  const offset = Math.max(Number(url.searchParams.get('offset')) || 0, 0);
+
+  const [raids, total] = await Promise.all([
+    listRaids(env.DB, { limit, offset }),
+    countRaids(env.DB)
+  ]);
+
+  return jsonResponse({ raids, total });
 }
 
 export async function handleGetRaid(request, env, id) {
