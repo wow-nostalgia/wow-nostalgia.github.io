@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="uk-UA">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Рейд-менеджер</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="raid-manager-page">
+  <div class="container">
+
+    <header class="topbar">
+      <div class="topbar__inner">
+
+        <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Меню">
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+          <span class="nav-toggle__bar"></span>
+        </button>
+
+        <nav class="nav" id="primaryNav">
+          <a class="nav__link" href="../">Головна</a>
+          <a class="nav__link" href="../guild-ranking/">Рейтинг DPS</a>
+          <a class="nav__link" href="../potion-stats/">Статистика Potion</a>
+          <a class="nav__link" href="../analytics/">Аналітика</a>
+          <a class="nav__link" href="../personal-analytics/">Персональна Аналітика</a>
+          <a class="nav__link nav__link--active" href="../raid-manager/">Рейд-менеджер</a>
+          <a class="nav__link" href="../gallery/">Галерея</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container-inner">
+
+      <h1>Рейд-менеджер</h1>
+
+      <ul>
+        <li>Софт-резерв предметів для рейдів — кожен гравець резервує до 3
+          різних предметів на бос-лут перед пулом.</li>
+        <li>Створи рейд, відкрий лінк на сторінці рейду й передай гравцям.</li>
+        <li>Лінк на створення рейду дає права офіцера в цьому браузері —
+          збережи його, якщо потрібно поділитися правами з кимось іншим.</li>
+      </ul>
+
+      <h2>Створити рейд</h2>
+
+      <form id="createRaidForm" class="raid-create-form">
+        <label for="raidTitle">Назва рейду</label>
+        <input type="text" id="raidTitle" required placeholder="Напр. ЦЛК 25 ХМ — 29.06">
+
+        <label for="raidInstance">Інстанс</label>
+        <select id="raidInstance">
+          <option value="ICC">Льодяна Цитадель</option>
+          <option value="RS">Рубіновий Святилище</option>
+        </select>
+
+        <label for="raidDifficulty">Складність</label>
+        <select id="raidDifficulty">
+          <option value="25H">25 ГМ</option>
+          <option value="25N">25 ХМ</option>
+          <option value="10H">10 ГМ</option>
+          <option value="10N">10 ХМ</option>
+        </select>
+
+        <label for="raidSoftLimitTotal">Ліміт ваги софтів</label>
+        <input type="number" id="raidSoftLimitTotal" min="1" max="9" value="3" required>
+
+        <label for="raidSoftLimitItems">Ліміт різних предметів</label>
+        <input type="number" id="raidSoftLimitItems" min="1" max="9" value="3" required>
+
+        <label class="ranking-checkbox-label" for="raidAllowDuplicate">
+          <input type="checkbox" id="raidAllowDuplicate" checked>
+          Дозволити дублі софтів (кілька гравців на один предмет)
+        </label>
+
+        <button type="submit" class="compare-btn">Створити рейд</button>
+      </form>
+
+      <h2>Останні рейди</h2>
+      <p id="raidListStatus">Завантаження...</p>
+      <ul id="raidList" class="raid-list"></ul>
+
+      <footer>
+        <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank" rel="noopener noreferrer">Freedom WoW</a></span>
+      </footer>
+    </div>
+  </div>
+
+  <script src="../scripts/nav.js"></script>
+  <script src="../scripts/raid-manager-shared.js"></script>
+  <script src="../scripts/raid-manager.js"></script>
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+    data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+
+</html>
