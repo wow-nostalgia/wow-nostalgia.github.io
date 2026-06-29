@@ -1,8 +1,7 @@
 // Спільні константи/хелпери для raid-manager.js і raid-manager-detail.js.
 // Підключати тегом <script> ДО них (без бандлера, як і інші клієнтські скрипти).
 
-// ЗАМІНИТИ на реальний URL після деплою Worker'а (wrangler deploy виведе його).
-const API_BASE = 'https://raid-manager-api.YOUR_SUBDOMAIN.workers.dev/api/v1';
+const API_BASE = 'https://raid-manager-api.wow-nostalgia.workers.dev/api/v1';
 
 const INSTANCE_LABELS = { ICC: 'Льодяна Цитадель', RS: 'Рубіновий Святилище' };
 const DIFFICULTY_LABELS = { '10N': '10 ХМ', '10H': '10 ГМ', '25N': '25 ХМ', '25H': '25 ГМ' };
