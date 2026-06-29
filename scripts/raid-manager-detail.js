@@ -125,8 +125,6 @@ function renderBanner() {
     INSTANCE_LABELS[raid.instance] || raid.instance,
     DIFFICULTY_LABELS[raid.difficulty] || raid.difficulty,
     `Ліміт ваги: ${raid.soft_limit_total}`,
-    `Ліміт предметів: ${raid.soft_limit_items}`,
-    raid.allow_duplicate_soft ? 'Дублі дозволені' : 'Без дублів',
     `Лідер: ${raid.leader_display_name || '—'}`
   ];
 

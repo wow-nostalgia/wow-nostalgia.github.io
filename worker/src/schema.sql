@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS raids (
   instance TEXT NOT NULL,               -- 'ICC' | 'RS'
   difficulty TEXT NOT NULL,             -- '10N' | '10H' | '25N' | '25H'
   soft_limit_total INTEGER NOT NULL DEFAULT 3,
-  soft_limit_items INTEGER NOT NULL DEFAULT 3,
-  allow_duplicate_soft INTEGER NOT NULL DEFAULT 1,
+  soft_limit_items INTEGER NOT NULL DEFAULT 3,    -- застаріле, ліміт прибрано
+  allow_duplicate_soft INTEGER NOT NULL DEFAULT 1, -- застаріле, дублі завжди дозволені
   is_locked INTEGER NOT NULL DEFAULT 0,
   status TEXT NOT NULL DEFAULT 'active', -- 'active' | 'completed'
   officer_token TEXT NOT NULL,           -- застаріле, не використовується для авторизації

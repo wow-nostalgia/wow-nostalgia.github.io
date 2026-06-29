@@ -39,11 +39,8 @@ export async function handleCreateRaid(request, env, session) {
   if (!DIFFICULTIES.has(difficulty)) throw new HttpError(400, 'difficulty має бути 10N/10H/25N/25H');
 
   const softLimitTotal = Number(body.softLimitTotal ?? 3);
-  const softLimitItems = Number(body.softLimitItems ?? 3);
-  const allowDuplicateSoft = Boolean(body.allowDuplicateSoft ?? true);
 
   if (!Number.isInteger(softLimitTotal) || softLimitTotal < 1) throw new HttpError(400, 'Невалідний softLimitTotal');
-  if (!Number.isInteger(softLimitItems) || softLimitItems < 1) throw new HttpError(400, 'Невалідний softLimitItems');
 
   const id = generateRaidId();
 
@@ -53,8 +50,6 @@ export async function handleCreateRaid(request, env, session) {
     instance,
     difficulty,
     softLimitTotal,
-    softLimitItems,
-    allowDuplicateSoft,
     leaderDiscordId: session.discordId
   });
 
@@ -82,8 +77,6 @@ export async function handleUpdateRaid(request, env, id, session) {
 
   if (body.title !== undefined) fields.title = String(body.title).trim();
   if (body.softLimitTotal !== undefined) fields.soft_limit_total = Number(body.softLimitTotal);
-  if (body.softLimitItems !== undefined) fields.soft_limit_items = Number(body.softLimitItems);
-  if (body.allowDuplicateSoft !== undefined) fields.allow_duplicate_soft = body.allowDuplicateSoft ? 1 : 0;
 
   const updated = await updateRaidSettings(env.DB, id, fields);
   if (Object.keys(fields).length) {

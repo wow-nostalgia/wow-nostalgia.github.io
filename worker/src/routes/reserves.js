@@ -8,7 +8,6 @@ import {
   deleteAllReservesForPlayer,
   setReserveReceived,
   sumPlayerWeight,
-  getItemReservers,
   createClaim,
   insertAudit
 } from '../db.js';
@@ -46,20 +45,10 @@ export async function handleCreateReserve(request, env, raidId, session) {
     throw new HttpError(423, 'Рейд заблоковано для редагування');
   }
 
-  const { totalWeight, itemCount } = await sumPlayerWeight(env.DB, raidId, playerName);
+  const { totalWeight } = await sumPlayerWeight(env.DB, raidId, playerName);
 
-  if (itemCount + 1 > raid.soft_limit_items) {
-    throw new HttpError(409, `Перевищено ліміт предметів (${raid.soft_limit_items})`);
-  }
   if (totalWeight + weight > raid.soft_limit_total) {
     throw new HttpError(409, `Перевищено ліміт ваги (${raid.soft_limit_total})`);
-  }
-
-  if (!raid.allow_duplicate_soft) {
-    const reservers = await getItemReservers(env.DB, raidId, itemId);
-    if (reservers.some((name) => name !== playerName)) {
-      throw new HttpError(409, 'Цей предмет уже застовплений іншим гравцем');
-    }
   }
 
   if (access.shouldMint) {

@@ -11,14 +11,14 @@ function primaryCharacterSubquery(alias) {
   return `(SELECT character_name FROM user_characters WHERE discord_id = ${alias}.discord_id ORDER BY created_at ASC LIMIT 1)`;
 }
 
-export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, softLimitItems, allowDuplicateSoft, leaderDiscordId }) {
+export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, leaderDiscordId }) {
   const ts = nowIso();
   await db
     .prepare(
-      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, soft_limit_items, allow_duplicate_soft, is_locked, officer_token, leader_discord_id, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?)`
+      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, is_locked, officer_token, leader_discord_id, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?)`
     )
-    .bind(id, title, instance, difficulty, softLimitTotal, softLimitItems, allowDuplicateSoft ? 1 : 0, generateToken(), leaderDiscordId, ts, ts)
+    .bind(id, title, instance, difficulty, softLimitTotal, generateToken(), leaderDiscordId, ts, ts)
     .run();
   return getRaid(db, id);
 }
@@ -110,18 +110,10 @@ export async function setReserveReceived(db, raidId, reserveId, received) {
 
 export async function sumPlayerWeight(db, raidId, playerName) {
   const row = await db
-    .prepare('SELECT COALESCE(SUM(weight), 0) AS total, COUNT(*) AS items FROM soft_reserves WHERE raid_id = ? AND player_name = ?')
+    .prepare('SELECT COALESCE(SUM(weight), 0) AS total FROM soft_reserves WHERE raid_id = ? AND player_name = ?')
     .bind(raidId, playerName)
     .first();
-  return { totalWeight: row.total, itemCount: row.items };
-}
-
-export async function getItemReservers(db, raidId, itemId) {
-  const { results } = await db
-    .prepare('SELECT player_name FROM soft_reserves WHERE raid_id = ? AND item_id = ?')
-    .bind(raidId, itemId)
-    .all();
-  return results.map((r) => r.player_name);
+  return { totalWeight: row.total };
 }
 
 export async function getClaimOwner(db, raidId, playerName) {
