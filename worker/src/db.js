@@ -231,7 +231,8 @@ export async function deleteSession(db, token) {
 export async function listRaidOfficers(db, raidId) {
   const { results } = await db
     .prepare(
-      `SELECT u.discord_id, u.username, u.avatar
+      `SELECT u.discord_id, u.username, u.avatar,
+              COALESCE(${primaryCharacterSubquery('u')}, u.username) AS display_name
        FROM raid_officers ro
        JOIN users u ON u.discord_id = ro.discord_id
        WHERE ro.raid_id = ? ORDER BY ro.added_at ASC`

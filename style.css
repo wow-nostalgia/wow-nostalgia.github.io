@@ -1899,6 +1899,11 @@ body.raid-manager-detail-page .raid-weight-toggle-btn:hover {
   border-color: rgba(123, 170, 245, 0.55);
 }
 
+body.raid-manager-detail-page .raid-weight-toggle-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 body.raid-manager-detail-page .raid-weight-toggle-btn--active {
   background-color: var(--color-accent-gold);
   border-color: var(--color-accent-gold);

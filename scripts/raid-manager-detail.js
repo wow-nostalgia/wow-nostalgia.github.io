@@ -157,6 +157,29 @@ function renderBanner() {
   settingsTab.hidden = !isLeader();
   settingsTitleInput.value = raid.title;
   settingsSoftLimitInput.value = raid.soft_limit_total;
+
+  applyWeightLimits();
+}
+
+// Кнопки x2/x3 вимикаємо, якщо ліміт ваги рейду нижчий — обирати вагу,
+// яка одразу перевищить soft_limit_total, безглуздо.
+function applyWeightLimit(toggleEl, hiddenInput) {
+  const maxWeight = raid.soft_limit_total;
+  const buttons = [...toggleEl.querySelectorAll('.raid-weight-toggle-btn')];
+  buttons.forEach((btn) => {
+    btn.disabled = Number(btn.dataset.weight) > maxWeight;
+  });
+
+  if (Number(hiddenInput.value) > maxWeight) {
+    const fallbackBtn = buttons.filter((b) => !b.disabled).at(-1) || buttons[0];
+    hiddenInput.value = fallbackBtn.dataset.weight;
+    buttons.forEach((b) => b.classList.toggle('raid-weight-toggle-btn--active', b === fallbackBtn));
+  }
+}
+
+function applyWeightLimits() {
+  applyWeightLimit(softWeightToggle, softWeight);
+  applyWeightLimit(assignWeightToggle, assignWeight);
 }
 
 function setGuildMemberNamesSorted(players) {
@@ -279,6 +302,12 @@ function renderOfficersPanel(officers) {
   addOfficerSection.hidden = !isLeader();
   officersList.innerHTML = '';
 
+  const leaderLi = document.createElement('li');
+  leaderLi.className = 'raid-list-item';
+  leaderLi.appendChild(createPlayerBadge(raid.leader_display_name));
+  leaderLi.appendChild(document.createTextNode(`${raid.leader_display_name} (Лідер)`));
+  officersList.appendChild(leaderLi);
+
   if (!officers.length) {
     const li = document.createElement('li');
     li.className = 'raid-list-item';
@@ -290,7 +319,8 @@ function renderOfficersPanel(officers) {
   officers.forEach((officer) => {
     const li = document.createElement('li');
     li.className = 'raid-list-item';
-    li.appendChild(document.createTextNode(officer.username));
+    li.appendChild(createPlayerBadge(officer.display_name));
+    li.appendChild(document.createTextNode(officer.display_name));
 
     if (isLeader()) {
       const removeBtn = document.createElement('button');
