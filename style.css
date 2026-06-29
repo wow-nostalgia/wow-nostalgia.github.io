@@ -1416,29 +1416,17 @@ body.raid-manager-detail-page .raid-soft-form {
 
 body.raid-manager-page .raid-create-form {
   display: grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
-  text-align: center;
-  gap: 0.4rem;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
   max-width: 480px;
   margin: 0.75rem auto 1.5rem;
 }
 
-body.raid-manager-page .raid-create-form select,
-body.raid-manager-page .raid-create-form input[type="text"],
-body.raid-manager-page .raid-create-form input[type="number"] {
-  width: 100%;
-  max-width: 260px;
-}
-
-body.raid-manager-detail-page .raid-soft-form button {
+body.raid-manager-detail-page .raid-soft-form button,
+body.raid-manager-page .raid-create-form button {
   grid-column: 2;
   justify-self: start;
-}
-
-body.raid-manager-page .raid-create-form button {
-  justify-self: center;
-  margin-top: 0.5rem;
 }
 
 body.raid-manager-detail-page .raid-no-characters-hint {
