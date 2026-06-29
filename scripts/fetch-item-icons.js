@@ -35,7 +35,7 @@ async function fetchIcon(itemId) {
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const data = await res.json();
   if (!data.icon) throw new Error('у відповіді немає поля icon');
-  return { icon: data.icon, quality: data.quality };
+  return { icon: data.icon, quality: data.quality, tooltip: data.tooltip || null };
 }
 
 async function main() {

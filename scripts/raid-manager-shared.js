@@ -18,7 +18,7 @@ function bossesForInstance(instance) {
 }
 
 function formatWeight(weight) {
-  return `${weight}x`;
+  return `х${weight}`;
 }
 
 function formatDateTimeKyiv(isoString) {
@@ -64,6 +64,11 @@ function itemIconUrl(itemId, size = 'small') {
 
 function itemRarityClass(itemId) {
   return ITEM_RARITY_CLASS_BY_QUALITY[itemIconData[itemId]?.quality] || 'raid-rarity--rare';
+}
+
+function itemTooltipHtml(itemId) {
+  const html = itemIconData[itemId]?.tooltip || `<b>#${itemId}</b>`;
+  return html.replace(/<div class="whtt-sellprice">[\s\S]*?<\/div>/, '');
 }
 
 function apiUrl(path) {

@@ -87,12 +87,13 @@
                 <div class="raid-item-picker-list" id="softItemList" role="listbox"></div>
               </div>
 
-              <label for="softWeight">Вага</label>
-              <select id="softWeight">
-                <option value="1">1x</option>
-                <option value="2">2x</option>
-                <option value="3">3x</option>
-              </select>
+              <label>Вага</label>
+              <div class="raid-weight-toggle" id="softWeightToggle" role="group" aria-label="Вага">
+                <button type="button" class="raid-weight-toggle-btn raid-weight-toggle-btn--active" data-weight="1">х1</button>
+                <button type="button" class="raid-weight-toggle-btn" data-weight="2">х2</button>
+                <button type="button" class="raid-weight-toggle-btn" data-weight="3">х3</button>
+              </div>
+              <input type="hidden" id="softWeight" value="1">
 
               <button type="submit" class="compare-btn">Засофтити</button>
             </form>
@@ -118,12 +119,13 @@
                 <div class="raid-item-picker-list" id="assignItemList" role="listbox"></div>
               </div>
 
-              <label for="assignWeight">Вага</label>
-              <select id="assignWeight">
-                <option value="1">1x</option>
-                <option value="2">2x</option>
-                <option value="3">3x</option>
-              </select>
+              <label>Вага</label>
+              <div class="raid-weight-toggle" id="assignWeightToggle" role="group" aria-label="Вага">
+                <button type="button" class="raid-weight-toggle-btn raid-weight-toggle-btn--active" data-weight="1">х1</button>
+                <button type="button" class="raid-weight-toggle-btn" data-weight="2">х2</button>
+                <button type="button" class="raid-weight-toggle-btn" data-weight="3">х3</button>
+              </div>
+              <input type="hidden" id="assignWeight" value="1">
 
               <button type="submit" class="compare-btn">Призначити софт гравцю</button>
             </form>
@@ -147,7 +149,6 @@
                   <tr>
                     <th>Гравець</th>
                     <th>Софти</th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody id="raidPlayersBody"></tbody>
@@ -200,6 +201,8 @@
       </footer>
     </div>
   </div>
+
+  <div id="raidItemTooltip" class="raid-item-tooltip" hidden></div>
 
   <script src="../../scripts/nav.js"></script>
   <script src="../../scripts/auth-shared.js"></script>

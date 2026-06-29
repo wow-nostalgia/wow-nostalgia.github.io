@@ -17,6 +17,7 @@ const softItem = document.getElementById('softItem');
 const softItemTrigger = document.getElementById('softItemTrigger');
 const softItemList = document.getElementById('softItemList');
 const softWeight = document.getElementById('softWeight');
+const softWeightToggle = document.getElementById('softWeightToggle');
 
 const officerPanel = document.getElementById('officerPanel');
 const officerAssignForm = document.getElementById('officerAssignForm');
@@ -28,6 +29,7 @@ const assignItem = document.getElementById('assignItem');
 const assignItemTrigger = document.getElementById('assignItemTrigger');
 const assignItemList = document.getElementById('assignItemList');
 const assignWeight = document.getElementById('assignWeight');
+const assignWeightToggle = document.getElementById('assignWeightToggle');
 
 const officersTab = document.getElementById('officersTab');
 const officersList = document.getElementById('officersList');
@@ -49,6 +51,9 @@ const itemsSearchInput = document.getElementById('itemsSearch');
 const itemsBossFilter = document.getElementById('itemsBossFilter');
 const itemsSoftedOnlyCheckbox = document.getElementById('itemsSoftedOnly');
 const raidItemsBody = document.getElementById('raidItemsBody');
+
+const itemTooltipEl = document.getElementById('raidItemTooltip');
+let currentTooltipItemId = null;
 
 let raidId = null;
 let raid = null;
@@ -317,6 +322,7 @@ function createItemIcon(itemId) {
   icon.className = 'raid-item-icon';
   icon.src = itemIconUrl(itemId, 'small');
   icon.alt = '';
+  icon.dataset.itemId = itemId;
   return icon;
 }
 
@@ -333,6 +339,7 @@ function selectItemOption(hiddenInput, triggerBtn, item) {
     return;
   }
 
+  triggerBtn.dataset.itemId = item.id;
   triggerBtn.appendChild(createItemIcon(item.id));
   triggerBtn.appendChild(document.createTextNode(`${item.name} (${item.slot})`));
 }
@@ -343,6 +350,7 @@ function renderItemPickerOptions(listEl, hiddenInput, triggerBtn, items) {
     const opt = document.createElement('div');
     opt.className = 'raid-item-picker-option';
     opt.setAttribute('role', 'option');
+    opt.dataset.itemId = item.id;
     opt.appendChild(createItemIcon(item.id));
 
     const label = document.createElement('span');
@@ -376,6 +384,17 @@ function setupItemPickerToggle(triggerBtn, listEl) {
   });
 }
 
+function setupWeightToggle(toggleEl, hiddenInput) {
+  toggleEl.addEventListener('click', (event) => {
+    const btn = event.target.closest('.raid-weight-toggle-btn');
+    if (!btn) return;
+    hiddenInput.value = btn.dataset.weight;
+    toggleEl.querySelectorAll('.raid-weight-toggle-btn').forEach((b) => {
+      b.classList.toggle('raid-weight-toggle-btn--active', b === btn);
+    });
+  });
+}
+
 document.addEventListener('click', () => {
   document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
 });
@@ -383,6 +402,43 @@ document.addEventListener('click', () => {
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
+  }
+});
+
+function positionItemTooltip(event) {
+  const offset = 16;
+  const rect = itemTooltipEl.getBoundingClientRect();
+  let x = event.clientX + offset;
+  let y = event.clientY + offset;
+  if (x + rect.width > window.innerWidth) x = event.clientX - rect.width - offset;
+  if (y + rect.height > window.innerHeight) y = event.clientY - rect.height - offset;
+  itemTooltipEl.style.left = `${Math.max(0, x)}px`;
+  itemTooltipEl.style.top = `${Math.max(0, y)}px`;
+}
+
+document.addEventListener('mousemove', (event) => {
+  const target = event.target.closest('[data-item-id]');
+  if (!target) {
+    if (currentTooltipItemId !== null) {
+      itemTooltipEl.hidden = true;
+      currentTooltipItemId = null;
+    }
+    return;
+  }
+
+  if (target.dataset.itemId !== currentTooltipItemId) {
+    itemTooltipEl.innerHTML = itemTooltipHtml(target.dataset.itemId);
+    currentTooltipItemId = target.dataset.itemId;
+  }
+
+  itemTooltipEl.hidden = false;
+  positionItemTooltip(event);
+});
+
+document.addEventListener('mouseout', (event) => {
+  if (!event.relatedTarget) {
+    itemTooltipEl.hidden = true;
+    currentTooltipItemId = null;
   }
 });
 
@@ -440,7 +496,7 @@ function renderPlayersTable() {
   if (!names.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 3;
+    td.colSpan = 2;
     td.textContent = 'Ще немає софтів.';
     tr.appendChild(td);
     raidPlayersBody.appendChild(tr);
@@ -461,6 +517,7 @@ function renderPlayersTable() {
     grouped.get(name).forEach((r) => {
       const itemSpan = document.createElement('span');
       itemSpan.className = 'raid-reserve-item';
+      itemSpan.dataset.itemId = r.item_id;
 
       const weightBadge = document.createElement('span');
       weightBadge.className = 'raid-weight-badge';
@@ -475,14 +532,6 @@ function renderPlayersTable() {
       itemSpan.appendChild(nameEl);
 
       if (manageable) {
-        const recvBtn = document.createElement('button');
-        recvBtn.type = 'button';
-        recvBtn.className = 'raid-remove-btn';
-        recvBtn.textContent = r.is_received ? '↺' : '✓';
-        recvBtn.title = r.is_received ? 'Скасувати "отримано"' : 'Позначити отриманим';
-        recvBtn.addEventListener('click', () => toggleReceived(r));
-        itemSpan.appendChild(recvBtn);
-
         const delBtn = document.createElement('button');
         delBtn.type = 'button';
         delBtn.className = 'raid-remove-btn';
@@ -495,17 +544,6 @@ function renderPlayersTable() {
       itemsTd.appendChild(itemSpan);
     });
     tr.appendChild(itemsTd);
-
-    const actionsTd = document.createElement('td');
-    if (manageable) {
-      const clearBtn = document.createElement('button');
-      clearBtn.type = 'button';
-      clearBtn.className = 'link-button-std';
-      clearBtn.textContent = 'Очистити всі';
-      clearBtn.addEventListener('click', () => clearAllForPlayer(name));
-      actionsTd.appendChild(clearBtn);
-    }
-    tr.appendChild(actionsTd);
 
     raidPlayersBody.appendChild(tr);
   });
@@ -542,12 +580,15 @@ function renderItemsTable() {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
-    nameTd.className = 'raid-item-name-cell';
-    nameTd.appendChild(createItemIcon(item.id));
+    const nameWrap = document.createElement('span');
+    nameWrap.className = 'raid-item-name-cell';
+    nameWrap.dataset.itemId = item.id;
+    nameWrap.appendChild(createItemIcon(item.id));
     const nameSpan = document.createElement('span');
     nameSpan.className = itemRarityClass(item.id);
     nameSpan.textContent = item.name;
-    nameTd.appendChild(nameSpan);
+    nameWrap.appendChild(nameSpan);
+    nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
     const slotTd = document.createElement('td');
@@ -567,7 +608,6 @@ function renderItemsTable() {
       reservers.forEach((r) => {
         const span = document.createElement('span');
         span.className = 'raid-reserve-item';
-        span.appendChild(createPlayerBadge(r.player_name));
         span.appendChild(document.createTextNode(`${r.player_name} `));
         const weightBadge = document.createElement('span');
         weightBadge.className = 'raid-weight-badge';
@@ -651,27 +691,6 @@ async function removeReserve(reserve) {
   }
 }
 
-async function toggleReceived(reserve) {
-  try {
-    await apiCall('POST', `/raids/${raidId}/reserves/${reserve.id}/received`, { token: getSessionToken() });
-    await loadReserves();
-    renderPlayersTable();
-  } catch (err) {
-    setStatus(`Помилка: ${err.message}`, 'error');
-  }
-}
-
-async function clearAllForPlayer(name) {
-  try {
-    await apiCall('DELETE', `/raids/${raidId}/players/${encodeURIComponent(name)}/reserves`, { token: getSessionToken() });
-    await loadReserves();
-    renderPlayersTable();
-    renderItemsTable();
-  } catch (err) {
-    setStatus(`Помилка: ${err.message}`, 'error');
-  }
-}
-
 copyLinkBtn.addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(window.location.href);
@@ -715,6 +734,8 @@ softBoss.addEventListener('change', () => populateItemPicker(softItem, softItemT
 assignBoss.addEventListener('change', () => populateItemPicker(assignItem, assignItemTrigger, assignItemList, assignBoss.value));
 setupItemPickerToggle(softItemTrigger, softItemList);
 setupItemPickerToggle(assignItemTrigger, assignItemList);
+setupWeightToggle(softWeightToggle, softWeight);
+setupWeightToggle(assignWeightToggle, assignWeight);
 assignPlayerNameClear.addEventListener('click', () => {
   assignPlayerNameInput.value = '';
   assignPlayerNameInput.focus();
