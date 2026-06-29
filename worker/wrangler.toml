@@ -6,3 +6,7 @@ compatibility_date = "2024-09-01"
 binding = "DB"
 database_name = "raid-manager"
 database_id = "0ac710f2-18e0-4d25-b4ba-f54a8f33c7d8"
+
+[vars]
+DISCORD_CLIENT_ID = "1521132280243032064"
+DISCORD_REDIRECT_URI = "https://wow-nostalgia.github.io/account/callback/"

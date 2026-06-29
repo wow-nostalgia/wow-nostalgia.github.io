@@ -43,6 +43,7 @@
             </div>
           </div>
           <a class="nav__link" href="../gallery/">Галерея</a>
+          <span class="nav__auth-slot" id="authNavSlot"></span>
         </nav>
       </div>
     </header>
@@ -55,16 +56,19 @@
         <li>Софт-резерв предметів для рейдів — кожен гравець резервує до 3
           різних предметів на бос-лут перед пулом.</li>
         <li>Створи рейд, відкрий лінк на сторінці рейду й передай гравцям.</li>
-        <li>Лінк на створення рейду дає права офіцера в цьому браузері —
-          збережи його, якщо потрібно поділитися правами з кимось іншим.</li>
+        <li>Хто створює рейд — той його лідер: може додавати/видаляти
+          офіцерів рейду й керувати налаштуваннями.</li>
       </ul>
 
-      <h2>Створити рейд</h2>
+      <div id="loginGate" hidden>
+        <p>Щоб створити рейд, увійди через Discord.</p>
+        <a class="compare-btn" id="loginGateBtn" href="#">Увійти через Discord</a>
+      </div>
 
-      <form id="createRaidForm" class="raid-create-form">
-        <label for="raidOfficerName">Ваше ім'я (для історії дій)</label>
-        <input type="text" id="raidOfficerName" autocomplete="off" placeholder="Як записати тебе в Raid History">
+      <div id="createRaidSection" hidden>
+        <h2>Створити рейд</h2>
 
+        <form id="createRaidForm" class="raid-create-form">
         <label for="raidTitle">Назва рейду</label>
         <input type="text" id="raidTitle" required placeholder="Напр. ЦЛК 25 ХМ — 29.06">
 
@@ -76,10 +80,10 @@
 
         <label for="raidDifficulty">Складність</label>
         <select id="raidDifficulty">
-          <option value="25H">25 ГМ</option>
-          <option value="25N">25 ХМ</option>
-          <option value="10H">10 ГМ</option>
-          <option value="10N">10 ХМ</option>
+          <option value="25H">25 Героїчний</option>
+          <option value="25N">25 Звичайний</option>
+          <option value="10H">10 Героїчний</option>
+          <option value="10N">10 Звичайний</option>
         </select>
 
         <label for="raidSoftLimitTotal">Ліміт ваги софтів</label>
@@ -94,7 +98,8 @@
         </label>
 
         <button type="submit" class="compare-btn">Створити рейд</button>
-      </form>
+        </form>
+      </div>
 
       <footer>
         <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank" rel="noopener noreferrer">Freedom WoW</a></span>
@@ -103,6 +108,7 @@
   </div>
 
   <script src="../scripts/nav.js"></script>
+  <script src="../scripts/auth-shared.js"></script>
   <script src="../scripts/raid-manager-shared.js"></script>
   <script src="../scripts/raid-manager.js"></script>
   <!-- Cloudflare Web Analytics -->

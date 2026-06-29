@@ -4,7 +4,7 @@
 const API_BASE = 'https://raid-manager-api.wow-nostalgia.workers.dev/api/v1';
 
 const INSTANCE_LABELS = { ICC: 'Льодяна Цитадель', RS: 'Рубінове Святилище' };
-const DIFFICULTY_LABELS = { '10N': '10 ХМ', '10H': '10 ГМ', '25N': '25 ХМ', '25H': '25 ГМ' };
+const DIFFICULTY_LABELS = { '10N': '10 Звичайний', '10H': '10 Героїчний', '25N': '25 Звичайний', '25H': '25 Героїчний' };
 
 const ICC_BOSSES = [
   'Lord Marrowgar', 'Lady Deathwhisper', 'Gunship Battle', 'Deathbringer Saurfang',
@@ -93,42 +93,3 @@ async function apiCall(method, path, { token, body } = {}) {
   return data;
 }
 
-function officerTokenKey(raidId) {
-  return `officerToken:${raidId}`;
-}
-
-function claimTokenKey(raidId, playerName) {
-  return `claimToken:${raidId}:${playerName}`;
-}
-
-function getOfficerToken(raidId) {
-  return localStorage.getItem(officerTokenKey(raidId));
-}
-
-function setOfficerToken(raidId, token) {
-  localStorage.setItem(officerTokenKey(raidId), token);
-}
-
-function clearOfficerToken(raidId) {
-  localStorage.removeItem(officerTokenKey(raidId));
-}
-
-function officerNameKey(raidId) {
-  return `officerName:${raidId}`;
-}
-
-function getOfficerName(raidId) {
-  return localStorage.getItem(officerNameKey(raidId)) || '';
-}
-
-function setOfficerName(raidId, name) {
-  localStorage.setItem(officerNameKey(raidId), name);
-}
-
-function getClaimToken(raidId, playerName) {
-  return localStorage.getItem(claimTokenKey(raidId, playerName));
-}
-
-function setClaimToken(raidId, playerName, token) {
-  localStorage.setItem(claimTokenKey(raidId, playerName), token);
-}

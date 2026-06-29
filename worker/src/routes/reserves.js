@@ -1,4 +1,4 @@
-import { HttpError, jsonResponse, readJson, readJsonSafe, generateToken, extractOfficerName } from '../util.js';
+import { HttpError, jsonResponse, readJson } from '../util.js';
 import {
   getRaid,
   listReserves,
@@ -9,10 +9,10 @@ import {
   setReserveReceived,
   sumPlayerWeight,
   getItemReservers,
-  createClaimToken,
+  createClaim,
   insertAudit
 } from '../db.js';
-import { isOfficer, checkPlayerAccess } from '../auth.js';
+import { checkPlayerAccess, requireRaidOfficer } from '../auth.js';
 
 async function loadRaidOr404(env, raidId) {
   const raid = await getRaid(env.DB, raidId);
@@ -26,7 +26,7 @@ export async function handleListReserves(request, env, raidId) {
   return jsonResponse(reserves);
 }
 
-export async function handleCreateReserve(request, env, raidId) {
+export async function handleCreateReserve(request, env, raidId, session) {
   const raid = await loadRaidOr404(env, raidId);
   const body = await readJson(request);
 
@@ -40,7 +40,7 @@ export async function handleCreateReserve(request, env, raidId) {
   if (!Number.isInteger(itemId)) throw new HttpError(400, 'Невалідний itemId');
   if (![1, 2, 3].includes(weight)) throw new HttpError(400, 'weight має бути 1, 2 або 3');
 
-  const access = await checkPlayerAccess(env.DB, request, raid, playerName, { allowMint: true });
+  const access = await checkPlayerAccess(env.DB, raidId, raid, session, playerName, { allowMint: true });
 
   if (raid.is_locked && !access.officer) {
     throw new HttpError(423, 'Рейд заблоковано для редагування');
@@ -62,10 +62,8 @@ export async function handleCreateReserve(request, env, raidId) {
     }
   }
 
-  let claimToken;
   if (access.shouldMint) {
-    claimToken = generateToken();
-    await createClaimToken(env.DB, raidId, playerName, claimToken);
+    await createClaim(env.DB, raidId, playerName, session.discordId);
   }
 
   let reserve;
@@ -76,7 +74,8 @@ export async function handleCreateReserve(request, env, raidId) {
       itemId,
       boss,
       weight,
-      assignedByOfficer: access.officer
+      assignedByOfficer: access.officer,
+      discordId: session.discordId
     });
   } catch (err) {
     if (String(err.message).includes('UNIQUE')) {
@@ -85,25 +84,24 @@ export async function handleCreateReserve(request, env, raidId) {
     throw err;
   }
 
-  await insertAudit(env.DB, raidId, playerName, 'soft_add', { itemId, boss, weight });
+  await insertAudit(env.DB, raidId, access.officer ? session.username : playerName, 'soft_add', { itemId, boss, weight });
 
-  return jsonResponse(claimToken ? { ...reserve, claimToken } : reserve, 201);
+  return jsonResponse(reserve, 201);
 }
 
-export async function handleDeleteReserve(request, env, raidId, reserveId) {
+export async function handleDeleteReserve(request, env, raidId, reserveId, session) {
   const raid = await loadRaidOr404(env, raidId);
   const reserve = await getReserveById(env.DB, raidId, reserveId);
   if (!reserve) throw new HttpError(404, 'Софт не знайдено');
 
-  const access = await checkPlayerAccess(env.DB, request, raid, reserve.player_name);
-  const body = await readJsonSafe(request);
+  const access = await checkPlayerAccess(env.DB, raidId, raid, session, reserve.player_name);
 
   if (raid.is_locked && !access.officer) {
     throw new HttpError(423, 'Рейд заблоковано для редагування');
   }
 
   await deleteReserveById(env.DB, raidId, reserveId);
-  await insertAudit(env.DB, raidId, access.officer ? extractOfficerName(body) : reserve.player_name, 'soft_remove', {
+  await insertAudit(env.DB, raidId, access.officer ? session.username : reserve.player_name, 'soft_remove', {
     itemId: reserve.item_id,
     boss: reserve.boss
   });
@@ -111,27 +109,26 @@ export async function handleDeleteReserve(request, env, raidId, reserveId) {
   return jsonResponse({ ok: true });
 }
 
-export async function handleDeleteAllForPlayer(request, env, raidId, playerName) {
+export async function handleDeleteAllForPlayer(request, env, raidId, playerName, session) {
   const raid = await loadRaidOr404(env, raidId);
-  const access = await checkPlayerAccess(env.DB, request, raid, playerName);
-  const body = await readJsonSafe(request);
+  const access = await checkPlayerAccess(env.DB, raidId, raid, session, playerName);
 
   if (raid.is_locked && !access.officer) {
     throw new HttpError(423, 'Рейд заблоковано для редагування');
   }
 
   await deleteAllReservesForPlayer(env.DB, raidId, playerName);
-  await insertAudit(env.DB, raidId, access.officer ? extractOfficerName(body) : playerName, 'soft_remove_all', { playerName });
+  await insertAudit(env.DB, raidId, access.officer ? session.username : playerName, 'soft_remove_all', { playerName });
 
   return jsonResponse({ ok: true });
 }
 
-export async function handleToggleReceived(request, env, raidId, reserveId) {
+export async function handleToggleReceived(request, env, raidId, reserveId, session) {
   const raid = await loadRaidOr404(env, raidId);
   const reserve = await getReserveById(env.DB, raidId, reserveId);
   if (!reserve) throw new HttpError(404, 'Софт не знайдено');
 
-  await checkPlayerAccess(env.DB, request, raid, reserve.player_name);
+  await checkPlayerAccess(env.DB, raidId, raid, session, reserve.player_name);
 
   const updated = await setReserveReceived(env.DB, raidId, reserveId, !reserve.is_received);
   await insertAudit(env.DB, raidId, reserve.player_name, 'item_received', {
@@ -142,12 +139,9 @@ export async function handleToggleReceived(request, env, raidId, reserveId) {
   return jsonResponse(updated);
 }
 
-export async function handleOfficerAssign(request, env, raidId) {
+export async function handleOfficerAssign(request, env, raidId, session) {
   const raid = await loadRaidOr404(env, raidId);
-
-  if (!isOfficer(request, raid)) {
-    throw new HttpError(403, 'Потрібен officer token');
-  }
+  await requireRaidOfficer(env.DB, raidId, raid, session);
 
   const body = await readJson(request);
   const playerName = String(body.playerName || '').trim();
@@ -168,7 +162,8 @@ export async function handleOfficerAssign(request, env, raidId) {
       itemId,
       boss,
       weight,
-      assignedByOfficer: true
+      assignedByOfficer: true,
+      discordId: null
     });
   } catch (err) {
     if (String(err.message).includes('UNIQUE')) {
@@ -177,7 +172,7 @@ export async function handleOfficerAssign(request, env, raidId) {
     throw err;
   }
 
-  await insertAudit(env.DB, raidId, extractOfficerName(body), 'officer_assign', { playerName, itemId, boss, weight });
+  await insertAudit(env.DB, raidId, session.username, 'officer_assign', { playerName, itemId, boss, weight });
 
   return jsonResponse(reserve, 201);
 }

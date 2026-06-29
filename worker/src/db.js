@@ -1,15 +1,24 @@
+import { generateToken } from './util.js';
+
 function nowIso() {
   return new Date().toISOString();
 }
 
-export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, softLimitItems, allowDuplicateSoft, officerToken }) {
+// Першого збереженого альта (за датою додавання) показуємо як "ім'я для
+// атрибуції" замість users.character_name (тепер vestigial — альти
+// зберігаються в user_characters, користувач може мати кілька).
+function primaryCharacterSubquery(alias) {
+  return `(SELECT character_name FROM user_characters WHERE discord_id = ${alias}.discord_id ORDER BY created_at ASC LIMIT 1)`;
+}
+
+export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, softLimitItems, allowDuplicateSoft, leaderDiscordId }) {
   const ts = nowIso();
   await db
     .prepare(
-      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, soft_limit_items, allow_duplicate_soft, is_locked, officer_token, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)`
+      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, soft_limit_items, allow_duplicate_soft, is_locked, officer_token, leader_discord_id, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?)`
     )
-    .bind(id, title, instance, difficulty, softLimitTotal, softLimitItems, allowDuplicateSoft ? 1 : 0, officerToken, ts, ts)
+    .bind(id, title, instance, difficulty, softLimitTotal, softLimitItems, allowDuplicateSoft ? 1 : 0, generateToken(), leaderDiscordId, ts, ts)
     .run();
   return getRaid(db, id);
 }
@@ -23,7 +32,15 @@ export async function listRaids(db, limit = 50) {
 }
 
 export async function getRaid(db, id) {
-  return db.prepare('SELECT * FROM raids WHERE id = ?').bind(id).first();
+  return db
+    .prepare(
+      `SELECT r.*, u.username AS leader_username, u.avatar AS leader_avatar,
+              COALESCE(${primaryCharacterSubquery('u')}, u.username) AS leader_display_name
+       FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
+       WHERE r.id = ?`
+    )
+    .bind(id)
+    .first();
 }
 
 export async function updateRaidSettings(db, id, fields) {
@@ -63,14 +80,14 @@ export async function getReserveById(db, raidId, reserveId) {
   return db.prepare('SELECT * FROM soft_reserves WHERE raid_id = ? AND id = ?').bind(raidId, reserveId).first();
 }
 
-export async function createReserve(db, { raidId, playerName, itemId, boss, weight, assignedByOfficer }) {
+export async function createReserve(db, { raidId, playerName, itemId, boss, weight, assignedByOfficer, discordId }) {
   const ts = nowIso();
   const result = await db
     .prepare(
-      `INSERT INTO soft_reserves (raid_id, player_name, item_id, boss, weight, is_received, assigned_by_officer, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?)`
+      `INSERT INTO soft_reserves (raid_id, player_name, item_id, boss, weight, is_received, assigned_by_officer, discord_id, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?)`
     )
-    .bind(raidId, playerName, itemId, boss, weight, assignedByOfficer ? 1 : 0, ts, ts)
+    .bind(raidId, playerName, itemId, boss, weight, assignedByOfficer ? 1 : 0, discordId || null, ts, ts)
     .run();
   return getReserveById(db, raidId, result.meta.last_row_id);
 }
@@ -107,14 +124,14 @@ export async function getItemReservers(db, raidId, itemId) {
   return results.map((r) => r.player_name);
 }
 
-export async function getClaimToken(db, raidId, playerName) {
+export async function getClaimOwner(db, raidId, playerName) {
   return db.prepare('SELECT * FROM claim_tokens WHERE raid_id = ? AND player_name = ?').bind(raidId, playerName).first();
 }
 
-export async function createClaimToken(db, raidId, playerName, token) {
+export async function createClaim(db, raidId, playerName, discordId) {
   await db
-    .prepare('INSERT INTO claim_tokens (raid_id, player_name, token, created_at) VALUES (?, ?, ?, ?)')
-    .bind(raidId, playerName, token, nowIso())
+    .prepare('INSERT INTO claim_tokens (raid_id, player_name, discord_id, created_at) VALUES (?, ?, ?, ?)')
+    .bind(raidId, playerName, discordId, nowIso())
     .run();
 }
 
@@ -131,4 +148,108 @@ export async function listAudit(db, raidId, limit = 250) {
     .bind(raidId, limit)
     .all();
   return results;
+}
+
+export async function getUserByDiscordId(db, discordId) {
+  return db.prepare('SELECT * FROM users WHERE discord_id = ?').bind(discordId).first();
+}
+
+export async function upsertUser(db, { discordId, username, avatar }) {
+  const ts = nowIso();
+  const existing = await getUserByDiscordId(db, discordId);
+
+  if (existing) {
+    await db
+      .prepare('UPDATE users SET username = ?, avatar = ?, updated_at = ? WHERE discord_id = ?')
+      .bind(username, avatar, ts, discordId)
+      .run();
+  } else {
+    await db
+      .prepare('INSERT INTO users (discord_id, username, avatar, character_name, created_at, updated_at) VALUES (?, ?, ?, NULL, ?, ?)')
+      .bind(discordId, username, avatar, ts, ts)
+      .run();
+  }
+
+  return getUserByDiscordId(db, discordId);
+}
+
+export async function listUserCharacters(db, discordId) {
+  const { results } = await db
+    .prepare('SELECT character_name FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC')
+    .bind(discordId)
+    .all();
+  return results.map((r) => r.character_name);
+}
+
+export async function addUserCharacter(db, discordId, characterName) {
+  await db
+    .prepare('INSERT OR IGNORE INTO user_characters (discord_id, character_name, created_at) VALUES (?, ?, ?)')
+    .bind(discordId, characterName, nowIso())
+    .run();
+  return listUserCharacters(db, discordId);
+}
+
+export async function removeUserCharacter(db, discordId, characterName) {
+  await db.prepare('DELETE FROM user_characters WHERE discord_id = ? AND character_name = ?').bind(discordId, characterName).run();
+  return listUserCharacters(db, discordId);
+}
+
+export async function getPrimaryCharacterName(db, discordId) {
+  const row = await db
+    .prepare('SELECT character_name FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC LIMIT 1')
+    .bind(discordId)
+    .first();
+  return row?.character_name || null;
+}
+
+// Пошук для призначення офіцера — свідомо лише по Discord-ніку (не по
+// імені альта): офіцерський статус прив'язаний до discord_id, тож будь-який
+// твін цього акаунта вже вважається офіцером — пошук по нікнейму прибирає
+// плутанину "кого саме я призначаю".
+export async function searchUsers(db, query, limit = 20) {
+  const { results } = await db
+    .prepare('SELECT discord_id, username, avatar FROM users WHERE username LIKE ? ORDER BY username COLLATE NOCASE LIMIT ?')
+    .bind(`%${query}%`, limit)
+    .all();
+  return results;
+}
+
+export async function createSession(db, token, discordId, expiresAt) {
+  await db.prepare('INSERT INTO sessions (token, discord_id, expires_at) VALUES (?, ?, ?)').bind(token, discordId, expiresAt).run();
+}
+
+export async function getSessionByToken(db, token) {
+  return db.prepare('SELECT * FROM sessions WHERE token = ?').bind(token).first();
+}
+
+export async function deleteSession(db, token) {
+  await db.prepare('DELETE FROM sessions WHERE token = ?').bind(token).run();
+}
+
+export async function listRaidOfficers(db, raidId) {
+  const { results } = await db
+    .prepare(
+      `SELECT u.discord_id, u.username, u.avatar
+       FROM raid_officers ro
+       JOIN users u ON u.discord_id = ro.discord_id
+       WHERE ro.raid_id = ? ORDER BY ro.added_at ASC`
+    )
+    .bind(raidId)
+    .all();
+  return results;
+}
+
+export async function isRaidOfficerRow(db, raidId, discordId) {
+  return db.prepare('SELECT 1 FROM raid_officers WHERE raid_id = ? AND discord_id = ?').bind(raidId, discordId).first();
+}
+
+export async function addRaidOfficer(db, raidId, discordId) {
+  await db
+    .prepare('INSERT OR IGNORE INTO raid_officers (raid_id, discord_id, added_at) VALUES (?, ?, ?)')
+    .bind(raidId, discordId, nowIso())
+    .run();
+}
+
+export async function removeRaidOfficer(db, raidId, discordId) {
+  await db.prepare('DELETE FROM raid_officers WHERE raid_id = ? AND discord_id = ?').bind(raidId, discordId).run();
 }

@@ -214,6 +214,10 @@ h1 {
   flex-wrap: wrap;
 }
 
+.nav__auth-slot {
+  margin-left: auto;
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -1413,6 +1417,13 @@ body.raid-manager-detail-page .raid-soft-form button {
   justify-self: start;
 }
 
+body.raid-manager-detail-page .raid-no-characters-hint {
+  grid-column: 2;
+  margin: -0.25rem 0 0;
+  font-size: 0.8rem;
+  color: var(--color-text-faint);
+}
+
 body.raid-manager-page .raid-create-form select,
 body.raid-manager-page .raid-create-form input[type="text"],
 body.raid-manager-page .raid-create-form input[type="number"],
@@ -1452,20 +1463,42 @@ body.raid-manager-detail-page .raid-item-picker-trigger:focus {
   box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
 }
 
-body.raid-manager-page .raid-list {
+body.raid-manager-page .raid-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+body.raid-manager-page .raid-table th,
+body.raid-manager-page .raid-table td {
+  padding: 0.3rem 0.4rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  font-size: 0.82rem;
+  vertical-align: top;
+}
+
+body.raid-manager-page .raid-table th {
+  color: var(--color-text-strong);
+  font-weight: 500;
+}
+
+body.raid-manager-page .raid-table tbody tr:hover {
+  background-color: var(--color-hover);
+}
+
+body.raid-manager-detail-page .raid-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-body.raid-manager-page .raid-list-item {
+body.raid-manager-detail-page .raid-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   padding: 0.3rem 0;
   border-bottom: 1px solid var(--color-border);
-}
-
-body.raid-manager-page .raid-list-item-meta {
-  color: var(--color-text-faint);
-  font-size: 0.85rem;
 }
 
 body.raid-manager-detail-page .raid-settings-banner {
@@ -1525,23 +1558,15 @@ body.raid-manager-detail-page .raid-status-chip--success {
   background-color: rgba(99, 212, 113, 0.12);
 }
 
-body.raid-manager-detail-page .raid-banner-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 0.75rem;
-}
-
 body.raid-manager-detail-page .raid-banner-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
+  margin-bottom: 0.75rem;
 }
 
 body.raid-manager-detail-page #raidStatus {
-  margin: 0;
+  margin: 0 0 0 auto;
 }
 
 body.raid-manager-detail-page .link-button-std {
@@ -1717,6 +1742,8 @@ body.raid-manager-detail-page .raid-item-name-cell {
 
 body.raid-manager-detail-page .raid-tabs {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin: 1rem 0 0.75rem;
   border-bottom: 1px solid var(--color-border);
@@ -2197,6 +2224,84 @@ body.raid-manager-detail-page .raid-audit-time {
     min-width: 140px;
     justify-content: center;
   }
+}
+
+body.account-page .account-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0 1.5rem;
+}
+
+body.account-page .account-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-mid);
+}
+
+body.account-page .account-username {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-strong);
+}
+
+body.account-page .account-form {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+  max-width: 480px;
+}
+
+body.account-page .account-form button {
+  grid-column: 2;
+  justify-self: start;
+}
+
+body.account-page .account-form input[type="text"] {
+  padding: 0.45rem 0.65rem;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.88);
+  color: var(--color-text-strong);
+  font-size: 0.95rem;
+  outline: none;
+}
+
+body.account-page .account-form input[type="text"]:focus {
+  border-color: var(--color-link);
+  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+}
+
+body.account-page .raid-list {
+  list-style: none;
+  margin: 0.5rem 0 1.5rem;
+  padding: 0;
+  max-width: 480px;
+}
+
+body.account-page .raid-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+body.account-page .link-button-std {
+  background: none;
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-md);
+  padding: 0.25rem 0.6rem;
+  color: var(--color-link);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+body.account-page .link-button-std:hover {
+  background-color: var(--color-hover);
 }
 
 @media (max-width: 640px) {

@@ -46,7 +46,3 @@ export function bearerToken(request) {
   const match = header.match(/^Bearer\s+(.+)$/i);
   return match ? match[1].trim() : null;
 }
-
-export function extractOfficerName(body) {
-  return String(body?.officerName || '').trim() || 'Officer';
-}

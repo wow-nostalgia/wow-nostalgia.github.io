@@ -1,3 +1,6 @@
+const loginGate = document.getElementById('loginGate');
+const loginGateBtn = document.getElementById('loginGateBtn');
+const createRaidSection = document.getElementById('createRaidSection');
 const createForm = document.getElementById('createRaidForm');
 
 createForm.addEventListener('submit', async (event) => {
@@ -7,9 +10,7 @@ createForm.addEventListener('submit', async (event) => {
   submitBtn.disabled = true;
 
   try {
-    const officerName = document.getElementById('raidOfficerName').value.trim();
     const body = {
-      officerName,
       title: document.getElementById('raidTitle').value.trim(),
       instance: document.getElementById('raidInstance').value,
       difficulty: document.getElementById('raidDifficulty').value,
@@ -18,9 +19,7 @@ createForm.addEventListener('submit', async (event) => {
       allowDuplicateSoft: document.getElementById('raidAllowDuplicate').checked
     };
 
-    const raid = await apiCall('POST', '/raids', { body });
-    setOfficerToken(raid.id, raid.officerToken);
-    if (officerName) setOfficerName(raid.id, officerName);
+    const raid = await apiCall('POST', '/raids', { token: getSessionToken(), body });
     window.location.href = `raid/?id=${encodeURIComponent(raid.id)}`;
   } catch (err) {
     console.error(err);
@@ -28,3 +27,17 @@ createForm.addEventListener('submit', async (event) => {
     submitBtn.disabled = false;
   }
 });
+
+async function init() {
+  loginGateBtn.href = discordLoginUrl();
+
+  const user = await fetchCurrentUser();
+  if (!user) {
+    loginGate.hidden = false;
+    return;
+  }
+
+  createRaidSection.hidden = false;
+}
+
+init();

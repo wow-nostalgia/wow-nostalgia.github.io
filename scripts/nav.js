@@ -10,29 +10,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const dropdowns = document.querySelectorAll('.nav__dropdown');
-
+  // Делегування на document, а не статичний NodeList — щоб дропдауни,
+  // додані в DOM пізніше (напр. auth-shared.js рендерить логін-дропдаун
+  // асинхронно), теж відкривались/закривались без окремого коду.
   function closeAllDropdowns() {
-    dropdowns.forEach((dropdown) => {
+    document.querySelectorAll('.nav__dropdown.is-open').forEach((dropdown) => {
       dropdown.classList.remove('is-open');
       dropdown.querySelector('.nav__dropdown-trigger')?.setAttribute('aria-expanded', 'false');
     });
   }
 
-  dropdowns.forEach((dropdown) => {
-    const trigger = dropdown.querySelector('.nav__dropdown-trigger');
-    if (!trigger) return;
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('.nav__dropdown-trigger');
 
-    trigger.addEventListener('click', (event) => {
+    if (trigger) {
       event.stopPropagation();
+      const dropdown = trigger.closest('.nav__dropdown');
       const willOpen = !dropdown.classList.contains('is-open');
       closeAllDropdowns();
       dropdown.classList.toggle('is-open', willOpen);
       trigger.setAttribute('aria-expanded', String(willOpen));
-    });
-  });
+      return;
+    }
 
-  document.addEventListener('click', (event) => {
     if (!event.target.closest('.nav__dropdown')) closeAllDropdowns();
   });
 

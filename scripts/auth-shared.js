@@ -1,0 +1,117 @@
+// Discord-логін, спільний для всіх сторінок (підключати тегом <script>
+// разом з nav.js — рендерить стан логіну в navbar через #authNavSlot).
+// Дропдаун-toggle для аватара обробляється делегуванням у nav.js, тут
+// лише будуємо DOM.
+
+const AUTH_API_BASE = 'https://raid-manager-api.wow-nostalgia.workers.dev/api/v1';
+const DISCORD_CLIENT_ID = '1521132280243032064';
+
+// Рахуємо від поточного origin (а не фіксований URL), щоб логін працював
+// і на проді, і локально через http-server — обидва зареєстровані в Discord
+// як дозволені redirect_uri. Бекенд звіряє це значення зі своїм allowlist.
+function accountCallbackUrl() {
+  return `${window.location.origin}/account/callback/`;
+}
+
+function getSessionToken() {
+  return localStorage.getItem('sessionToken');
+}
+
+function setSessionToken(token) {
+  localStorage.setItem('sessionToken', token);
+}
+
+function clearSessionToken() {
+  localStorage.removeItem('sessionToken');
+}
+
+function discordLoginUrl(returnTo) {
+  const state = encodeURIComponent(returnTo || (window.location.pathname + window.location.search));
+  const params = new URLSearchParams({
+    client_id: DISCORD_CLIENT_ID,
+    redirect_uri: accountCallbackUrl(),
+    response_type: 'code',
+    scope: 'identify',
+    state
+  });
+  return `https://discord.com/oauth2/authorize?${params.toString()}`;
+}
+
+async function fetchCurrentUser() {
+  const token = getSessionToken();
+  if (!token) return null;
+
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok) {
+      clearSessionToken();
+      return null;
+    }
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+async function logoutCurrentUser() {
+  const token = getSessionToken();
+  if (token) {
+    try {
+      await fetch(`${AUTH_API_BASE}/auth/logout`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
+    } catch { /* мовчки, токен все одно чистимо локально */ }
+  }
+  clearSessionToken();
+}
+
+function renderAuthNav(user) {
+  const slot = document.getElementById('authNavSlot');
+  if (!slot) return;
+  slot.innerHTML = '';
+
+  if (!user) {
+    const link = document.createElement('a');
+    link.className = 'nav__link';
+    link.href = discordLoginUrl();
+    link.textContent = 'Увійти через Discord';
+    slot.appendChild(link);
+    return;
+  }
+
+  const dropdown = document.createElement('div');
+  dropdown.className = 'nav__dropdown';
+
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'nav__link nav__dropdown-trigger';
+  trigger.setAttribute('aria-haspopup', 'true');
+  trigger.setAttribute('aria-expanded', 'false');
+  trigger.textContent = user.username;
+  dropdown.appendChild(trigger);
+
+  const menu = document.createElement('div');
+  menu.className = 'nav__dropdown-menu';
+
+  const accountLink = document.createElement('a');
+  accountLink.className = 'nav__link';
+  accountLink.href = '/account/';
+  accountLink.textContent = 'Кабінет';
+  menu.appendChild(accountLink);
+
+  const logoutBtn = document.createElement('button');
+  logoutBtn.type = 'button';
+  logoutBtn.className = 'nav__link';
+  logoutBtn.addEventListener('click', async () => {
+    await logoutCurrentUser();
+    window.location.reload();
+  });
+  logoutBtn.textContent = 'Вийти';
+  menu.appendChild(logoutBtn);
+
+  dropdown.appendChild(menu);
+  slot.appendChild(dropdown);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = await fetchCurrentUser();
+  renderAuthNav(user);
+});

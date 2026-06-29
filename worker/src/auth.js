@@ -1,36 +1,70 @@
 import { HttpError, bearerToken } from './util.js';
-import { getClaimToken } from './db.js';
+import { getSessionByToken, getUserByDiscordId, deleteSession, getClaimOwner, isRaidOfficerRow, getPrimaryCharacterName } from './db.js';
 
-export function isOfficer(request, raid) {
+export async function requireSession(db, request) {
   const token = bearerToken(request);
-  return Boolean(token) && token === raid.officer_token;
+  if (!token) throw new HttpError(401, 'Потрібен логін через Discord');
+
+  const session = await getSessionByToken(db, token);
+  if (!session) throw new HttpError(401, 'Сесія недійсна, увійдіть знову');
+
+  if (new Date(session.expires_at).getTime() < Date.now()) {
+    await deleteSession(db, token);
+    throw new HttpError(401, 'Сесія застаріла, увійдіть знову');
+  }
+
+  const user = await getUserByDiscordId(db, session.discord_id);
+  if (!user) throw new HttpError(401, 'Користувача не знайдено');
+
+  const primaryCharacter = await getPrimaryCharacterName(db, user.discord_id);
+
+  // username тут — ім'я для атрибуції в чіпсах/аудиті (перший збережений
+  // альт, якщо є; інакше Discord-нік як фолбек).
+  return {
+    discordId: user.discord_id,
+    username: primaryCharacter || user.username,
+    avatar: user.avatar,
+    primaryCharacter
+  };
 }
 
-export function requireOfficer(request, raid) {
-  if (!isOfficer(request, raid)) {
-    throw new HttpError(403, 'Потрібен officer token');
+export async function isRaidOfficer(db, raidId, raid, discordId) {
+  if (!discordId) return false;
+  if (raid.leader_discord_id === discordId) return true;
+  return Boolean(await isRaidOfficerRow(db, raidId, discordId));
+}
+
+export async function requireRaidOfficer(db, raidId, raid, session) {
+  if (!(await isRaidOfficer(db, raidId, raid, session.discordId))) {
+    throw new HttpError(403, 'Потрібні права лідера/офіцера рейду');
   }
 }
 
-// Для self-дій гравця: дозволяє, якщо officer, або якщо claim token збігається
-// з уже застовпленим іменем. allowMint=true — для першого софту під новим
-// ім'ям (де claim ще не існує) дозволяємо пройти далі, щоб роут сам видав
-// новий токен. allowMint=false (видалення/тогл існуючого резерву) — без
-// підтвердженого claim і без officer-токена доступу нема.
-export async function checkPlayerAccess(db, request, raid, playerName, { allowMint = false } = {}) {
-  if (isOfficer(request, raid)) return { officer: true, claim: null, shouldMint: false };
+export function requireLeader(raid, session) {
+  if (raid.leader_discord_id !== session.discordId) {
+    throw new HttpError(403, 'Лише лідер рейду може керувати офіцерами');
+  }
+}
 
-  const token = bearerToken(request);
-  const claim = await getClaimToken(db, raid.id, playerName);
+// Для self-дій гравця: дозволяє, якщо лідер/офіцер рейду, або якщо ім'я вже
+// застовплене цим самим Discord-акаунтом. allowMint=true — для першого софту
+// під новим іменем (де claim ще не існує) дозволяємо пройти далі, щоб роут
+// сам застовпив ім'я за цим акаунтом.
+export async function checkPlayerAccess(db, raidId, raid, session, playerName, { allowMint = false } = {}) {
+  if (await isRaidOfficer(db, raidId, raid, session.discordId)) {
+    return { officer: true, shouldMint: false };
+  }
+
+  const claim = await getClaimOwner(db, raidId, playerName);
 
   if (!claim) {
-    if (allowMint) return { officer: false, claim: null, shouldMint: true };
+    if (allowMint) return { officer: false, shouldMint: true };
     throw new HttpError(403, `Немає прав на дії гравця "${playerName}"`);
   }
 
-  if (!token || token !== claim.token) {
-    throw new HttpError(403, `Ім'я "${playerName}" вже застовплене в цьому рейді іншим браузером`);
+  if (claim.discord_id !== session.discordId) {
+    throw new HttpError(403, `Ім'я "${playerName}" вже застовплене іншим гравцем у цьому рейді`);
   }
 
-  return { officer: false, claim, shouldMint: false };
+  return { officer: false, shouldMint: false };
 }

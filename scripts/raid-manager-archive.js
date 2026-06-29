@@ -1,12 +1,15 @@
+const loginGate = document.getElementById('loginGate');
+const loginGateBtn = document.getElementById('loginGateBtn');
+const archiveSection = document.getElementById('archiveSection');
 const archiveStatus = document.getElementById('archiveStatus');
-const archiveList = document.getElementById('archiveList');
+const archiveBody = document.getElementById('archiveBody');
 
 function setStatus(text) {
   archiveStatus.textContent = text;
 }
 
 function renderArchiveList(raids) {
-  archiveList.innerHTML = '';
+  archiveBody.innerHTML = '';
 
   if (!raids.length) {
     setStatus('Ще немає створених рейдів.');
@@ -16,33 +19,42 @@ function renderArchiveList(raids) {
   setStatus(`Усього рейдів: ${raids.length}`);
 
   raids.forEach((raid) => {
-    const li = document.createElement('li');
-    li.className = 'raid-list-item';
+    const tr = document.createElement('tr');
 
+    const titleTd = document.createElement('td');
     const link = document.createElement('a');
     link.href = `../raid/?id=${encodeURIComponent(raid.id)}`;
     link.textContent = raid.title;
-    li.appendChild(link);
+    titleTd.appendChild(link);
+    tr.appendChild(titleTd);
 
-    const statusChip = document.createElement('span');
+    const statusTd = document.createElement('td');
     const isCompleted = raid.status === 'completed';
+    const statusChip = document.createElement('span');
     statusChip.className = `raid-chip raid-chip--${isCompleted ? 'completed' : 'active'}`;
     statusChip.textContent = isCompleted ? 'Завершений' : 'Активний';
-    statusChip.style.marginLeft = '0.5rem';
-    li.appendChild(statusChip);
+    statusTd.appendChild(statusChip);
+    tr.appendChild(statusTd);
 
-    const meta = document.createElement('span');
-    meta.className = 'raid-list-item-meta';
-    meta.textContent = ` — ${INSTANCE_LABELS[raid.instance] || raid.instance} · ${DIFFICULTY_LABELS[raid.difficulty] || raid.difficulty} · створено ${formatDateTimeKyiv(raid.created_at)}`;
-    li.appendChild(meta);
+    const instanceTd = document.createElement('td');
+    instanceTd.textContent = INSTANCE_LABELS[raid.instance] || raid.instance;
+    tr.appendChild(instanceTd);
 
-    archiveList.appendChild(li);
+    const difficultyTd = document.createElement('td');
+    difficultyTd.textContent = DIFFICULTY_LABELS[raid.difficulty] || raid.difficulty;
+    tr.appendChild(difficultyTd);
+
+    const createdTd = document.createElement('td');
+    createdTd.textContent = formatDateTimeKyiv(raid.created_at);
+    tr.appendChild(createdTd);
+
+    archiveBody.appendChild(tr);
   });
 }
 
 async function loadArchive() {
   try {
-    const raids = await apiCall('GET', '/raids');
+    const raids = await apiCall('GET', '/raids', { token: getSessionToken() });
     renderArchiveList(raids);
   } catch (err) {
     console.error(err);
@@ -50,4 +62,17 @@ async function loadArchive() {
   }
 }
 
-loadArchive();
+async function init() {
+  loginGateBtn.href = discordLoginUrl();
+
+  const user = await fetchCurrentUser();
+  if (!user) {
+    loginGate.hidden = false;
+    return;
+  }
+
+  archiveSection.hidden = false;
+  await loadArchive();
+}
+
+init();

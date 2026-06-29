@@ -43,6 +43,7 @@
             </div>
           </div>
           <a class="nav__link" href="../../gallery/">Галерея</a>
+          <span class="nav__auth-slot" id="authNavSlot"></span>
         </nav>
       </div>
     </header>
@@ -53,15 +54,15 @@
 
       <div id="raidSettingsBanner" class="raid-settings-banner"></div>
 
-      <div class="raid-banner-actions">
-        <div class="raid-banner-buttons">
-          <button type="button" id="copyLinkBtn" class="link-button-std">Скопіювати лінк</button>
-          <button type="button" id="officerAccessBtn" class="link-button-std">Ввести токен офіцера</button>
-          <button type="button" id="officerNameBtn" class="link-button-std" hidden>Я: ...</button>
-          <button type="button" id="lockToggleBtn" class="link-button-std" hidden>Заблокувати рейд</button>
-          <button type="button" id="statusToggleBtn" class="link-button-std" hidden>Завершити рейд</button>
-        </div>
-        <p id="raidStatus">Завантаження...</p>
+      <div class="raid-banner-buttons">
+        <button type="button" id="copyLinkBtn" class="link-button-std">Скопіювати лінк</button>
+        <button type="button" id="lockToggleBtn" class="link-button-std" hidden>Заблокувати рейд</button>
+        <button type="button" id="statusToggleBtn" class="link-button-std" hidden>Завершити рейд</button>
+      </div>
+
+      <div id="loginGate" hidden>
+        <p>Щоб переглянути цей рейд і брати участь у софт-резерві, увійди через Discord.</p>
+        <a class="compare-btn" id="loginGateBtn" href="#">Увійти через Discord</a>
       </div>
 
       <div id="raidContent" hidden>
@@ -71,7 +72,10 @@
             <h2>Мій софт</h2>
             <form id="softForm" class="raid-soft-form">
               <label for="softPlayerName">Моє ім'я</label>
-              <input type="text" id="softPlayerName" required autocomplete="off" placeholder="Твій персонаж">
+              <select id="softPlayerName" required></select>
+              <p id="noCharactersHint" class="raid-no-characters-hint" hidden>
+                Немає збережених персонажів — додай у <a href="../../account/">кабінеті</a>.
+              </p>
 
               <label for="softBoss">Бос</label>
               <select id="softBoss"></select>
@@ -90,7 +94,7 @@
                 <option value="3">3x</option>
               </select>
 
-              <button type="submit" class="compare-btn">Софтнути</button>
+              <button type="submit" class="compare-btn">Засофтити</button>
             </form>
           </div>
 
@@ -121,7 +125,7 @@
                 <option value="3">3x</option>
               </select>
 
-              <button type="submit" class="compare-btn">Призначити софт</button>
+              <button type="submit" class="compare-btn">Призначити софт гравцю</button>
             </form>
           </div>
         </div>
@@ -130,6 +134,8 @@
           <button type="button" class="raid-tab raid-tab--active" data-tab="players">Гравці</button>
           <button type="button" class="raid-tab" data-tab="items">Предмети</button>
           <button type="button" class="raid-tab" data-tab="audit">Raid History</button>
+          <button type="button" class="raid-tab" data-tab="officers" id="officersTab" hidden>Офіцери</button>
+          <p id="raidStatus">Завантаження...</p>
         </div>
 
         <div class="raid-tables-grid">
@@ -178,6 +184,14 @@
           <div id="auditPane" hidden>
             <div id="auditList" class="raid-audit-list"></div>
           </div>
+
+          <div id="officersPane" hidden>
+            <ul id="officersList" class="raid-list"></ul>
+            <div id="addOfficerSection" class="raid-input-wrap" hidden>
+              <input type="text" id="addOfficerInput" autocomplete="off" placeholder="Пошук за Discord-ніком...">
+              <div class="raid-autocomplete-list" id="addOfficerList"></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -188,6 +202,7 @@
   </div>
 
   <script src="../../scripts/nav.js"></script>
+  <script src="../../scripts/auth-shared.js"></script>
   <script src="../../scripts/raid-manager-shared.js"></script>
   <script src="../../scripts/raid-manager-detail.js"></script>
   <!-- Cloudflare Web Analytics -->
