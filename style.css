@@ -212,6 +212,7 @@ h1 {
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
+  flex: 1;
 }
 
 .nav__auth-slot {
@@ -276,14 +277,12 @@ h1 {
 
 .nav__link:hover {
   background: var(--color-hover);
-  border-color: var(--color-border-accent);
   color: #ffffff;
   text-decoration: none;
 }
 
 .nav__link--active {
   background: var(--color-brand-dark);
-  border-color: rgba(132, 170, 255, 0.35);
   color: #ffffff;
 }
 
@@ -1730,6 +1729,13 @@ body.raid-manager-detail-page .raid-item-name-cell {
   gap: 0.4rem;
 }
 
+body.raid-manager-detail-page .raid-player-name-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
 .raid-item-icon {
   width: 18px;
   height: 18px;
@@ -2261,6 +2267,7 @@ body.raid-manager-detail-page .raid-audit-time {
   .nav {
     display: none;
     width: 100%;
+    flex: 0 1 auto;
     gap: 8px;
     margin-top: 10px;
   }

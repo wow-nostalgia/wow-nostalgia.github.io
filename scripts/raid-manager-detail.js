@@ -507,8 +507,11 @@ function renderPlayersTable() {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
-    nameTd.appendChild(createPlayerBadge(name));
-    nameTd.appendChild(document.createTextNode(name));
+    const nameWrap = document.createElement('span');
+    nameWrap.className = 'raid-player-name-cell';
+    nameWrap.appendChild(createPlayerBadge(name));
+    nameWrap.appendChild(document.createTextNode(name));
+    nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
     const itemsTd = document.createElement('td');
