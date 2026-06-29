@@ -532,15 +532,19 @@ function renderPlayersTable() {
   if (!names.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 2;
+    td.colSpan = 3;
     td.textContent = 'Ще немає софтів.';
     tr.appendChild(td);
     raidPlayersBody.appendChild(tr);
     return;
   }
 
-  names.forEach((name) => {
+  names.forEach((name, index) => {
     const tr = document.createElement('tr');
+
+    const numTd = document.createElement('td');
+    numTd.textContent = index + 1;
+    tr.appendChild(numTd);
 
     const nameTd = document.createElement('td');
     const nameWrap = document.createElement('span');
