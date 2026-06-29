@@ -1,4 +1,4 @@
-import { HttpError, jsonResponse, readJson } from '../util.js';
+import { HttpError, jsonResponse, readJson, capitalizeName } from '../util.js';
 import {
   getRaid,
   listReserves,
@@ -29,7 +29,7 @@ export async function handleCreateReserve(request, env, raidId, session) {
   const raid = await loadRaidOr404(env, raidId);
   const body = await readJson(request);
 
-  const playerName = String(body.playerName || '').trim();
+  const playerName = capitalizeName(String(body.playerName || '').trim());
   const itemId = Number(body.itemId);
   const boss = String(body.boss || '').trim();
   const weight = Number(body.weight);
@@ -133,7 +133,7 @@ export async function handleOfficerAssign(request, env, raidId, session) {
   await requireRaidOfficer(env.DB, raidId, raid, session);
 
   const body = await readJson(request);
-  const playerName = String(body.playerName || '').trim();
+  const playerName = capitalizeName(String(body.playerName || '').trim());
   const itemId = Number(body.itemId);
   const boss = String(body.boss || '').trim();
   const weight = Number(body.weight);

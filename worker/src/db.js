@@ -208,12 +208,16 @@ export async function getPrimaryCharacterName(db, discordId) {
 // імені альта): офіцерський статус прив'язаний до discord_id, тож будь-який
 // твін цього акаунта вже вважається офіцером — пошук по нікнейму прибирає
 // плутанину "кого саме я призначаю".
+// Фільтруємо в JS, а не через SQL LIKE/NOCASE — SQLite нечутливий до регістру
+// лише для ASCII, кириличні "Борис"/"борис" через LIKE не збігаються.
 export async function searchUsers(db, query, limit = 50) {
   const { results } = await db
-    .prepare('SELECT discord_id, username, avatar FROM users WHERE username LIKE ? ORDER BY username COLLATE NOCASE LIMIT ?')
-    .bind(`%${query}%`, limit)
+    .prepare('SELECT discord_id, username, avatar FROM users ORDER BY username COLLATE NOCASE')
     .all();
-  return results;
+
+  const q = query.toLocaleLowerCase('uk');
+  const matches = q ? results.filter((u) => u.username.toLocaleLowerCase('uk').includes(q)) : results;
+  return matches.slice(0, limit);
 }
 
 export async function createSession(db, token, discordId, expiresAt) {

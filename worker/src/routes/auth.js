@@ -1,4 +1,4 @@
-import { HttpError, jsonResponse, readJson, generateToken, bearerToken } from '../util.js';
+import { HttpError, jsonResponse, readJson, generateToken, bearerToken, capitalizeName } from '../util.js';
 import {
   upsertUser,
   createSession,
@@ -95,7 +95,7 @@ export async function handleListCharacters(request, env) {
 export async function handleAddCharacter(request, env) {
   const session = await requireSession(env.DB, request);
   const body = await readJson(request);
-  const characterName = String(body.characterName || '').trim();
+  const characterName = capitalizeName(String(body.characterName || '').trim());
   if (!characterName) throw new HttpError(400, "Потрібне ім'я персонажа");
 
   return jsonResponse(await addUserCharacter(env.DB, session.discordId, characterName), 201);

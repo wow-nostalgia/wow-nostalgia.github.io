@@ -46,3 +46,9 @@ export function bearerToken(request) {
   const match = header.match(/^Bearer\s+(.+)$/i);
   return match ? match[1].trim() : null;
 }
+
+// Імена гравців завжди з великої літери, незалежно від того, як ввів сам
+// гравець — впливає на однаковість відображення й на UNIQUE-збіги в БД.
+export function capitalizeName(name) {
+  return name.charAt(0).toUpperCase() + name.slice(1);
+}
