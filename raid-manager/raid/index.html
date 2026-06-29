@@ -137,6 +137,7 @@
           <button type="button" class="raid-tab" data-tab="items">Предмети</button>
           <button type="button" class="raid-tab" data-tab="audit">Raid History</button>
           <button type="button" class="raid-tab" data-tab="officers" id="officersTab" hidden>Офіцери</button>
+          <button type="button" class="raid-tab" data-tab="settings" id="settingsTab" hidden>Налаштування</button>
           <p id="raidStatus">Завантаження...</p>
         </div>
 
@@ -192,6 +193,18 @@
               <input type="text" id="addOfficerInput" autocomplete="off" placeholder="Пошук за Discord-ніком...">
               <div class="raid-autocomplete-list" id="addOfficerList"></div>
             </div>
+          </div>
+
+          <div id="settingsPane" hidden>
+            <form id="settingsForm" class="raid-soft-form">
+              <label for="settingsTitleInput">Назва рейду</label>
+              <input type="text" id="settingsTitleInput" required>
+
+              <label for="settingsSoftLimitInput">Ліміт ваги софтів</label>
+              <input type="number" id="settingsSoftLimitInput" min="1" max="9" required>
+
+              <button type="submit" class="compare-btn">Зберегти</button>
+            </form>
           </div>
         </div>
       </div>

@@ -25,7 +25,12 @@ export async function createRaid(db, { id, title, instance, difficulty, softLimi
 
 export async function listRaids(db, limit = 50) {
   const { results } = await db
-    .prepare('SELECT id, title, instance, difficulty, is_locked, status, created_at FROM raids ORDER BY created_at DESC LIMIT ?')
+    .prepare(
+      `SELECT r.id, r.title, r.instance, r.difficulty, r.is_locked, r.status, r.created_at,
+              COALESCE(${primaryCharacterSubquery('u')}, u.username) AS leader_display_name
+       FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
+       ORDER BY r.created_at DESC LIMIT ?`
+    )
     .bind(limit)
     .all();
   return results;

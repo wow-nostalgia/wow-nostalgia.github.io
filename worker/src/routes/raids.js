@@ -70,7 +70,7 @@ export async function handleGetRaid(request, env, id) {
 
 export async function handleUpdateRaid(request, env, id, session) {
   const raid = await loadRaidOr404(env, id);
-  await requireRaidOfficer(env.DB, id, raid, session);
+  requireLeader(raid, session);
 
   const body = await readJson(request);
   const fields = {};

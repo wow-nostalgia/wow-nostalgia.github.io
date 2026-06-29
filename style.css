@@ -219,6 +219,11 @@ h1 {
   margin-left: auto;
 }
 
+.nav__auth-slot .nav__dropdown-menu {
+  left: auto;
+  right: 0;
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -1400,7 +1405,6 @@ body.raid-manager-detail-page .raid-forms-grid {
   align-items: start;
 }
 
-body.raid-manager-page .raid-create-form,
 body.raid-manager-detail-page .raid-soft-form {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -1410,10 +1414,31 @@ body.raid-manager-detail-page .raid-soft-form {
   margin: 0.75rem 0 1.5rem;
 }
 
-body.raid-manager-page .raid-create-form button,
+body.raid-manager-page .raid-create-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+  gap: 0.4rem;
+  max-width: 480px;
+  margin: 0.75rem auto 1.5rem;
+}
+
+body.raid-manager-page .raid-create-form select,
+body.raid-manager-page .raid-create-form input[type="text"],
+body.raid-manager-page .raid-create-form input[type="number"] {
+  width: 100%;
+  max-width: 260px;
+}
+
 body.raid-manager-detail-page .raid-soft-form button {
   grid-column: 2;
   justify-self: start;
+}
+
+body.raid-manager-page .raid-create-form button {
+  justify-self: center;
+  margin-top: 0.5rem;
 }
 
 body.raid-manager-detail-page .raid-no-characters-hint {

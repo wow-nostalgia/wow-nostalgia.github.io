@@ -46,6 +46,12 @@ const auditListEl = document.getElementById('auditList');
 
 const officersPane = document.getElementById('officersPane');
 
+const settingsTab = document.getElementById('settingsTab');
+const settingsPane = document.getElementById('settingsPane');
+const settingsForm = document.getElementById('settingsForm');
+const settingsTitleInput = document.getElementById('settingsTitleInput');
+const settingsSoftLimitInput = document.getElementById('settingsSoftLimitInput');
+
 const itemsPane = document.getElementById('itemsPane');
 const itemsSearchInput = document.getElementById('itemsSearch');
 const itemsBossFilter = document.getElementById('itemsBossFilter');
@@ -147,6 +153,10 @@ function renderBanner() {
 
   statusToggleBtn.hidden = !isOfficerMode();
   statusToggleBtn.textContent = isCompleted ? '↩ Реактивувати рейд' : '✅ Завершити рейд';
+
+  settingsTab.hidden = !isLeader();
+  settingsTitleInput.value = raid.title;
+  settingsSoftLimitInput.value = raid.soft_limit_total;
 }
 
 function setGuildMemberNamesSorted(players) {
@@ -720,7 +730,7 @@ statusToggleBtn.addEventListener('click', async () => {
   }
 });
 
-const TAB_PANES = { players: playersPane, items: itemsPane, audit: auditPane, officers: officersPane };
+const TAB_PANES = { players: playersPane, items: itemsPane, audit: auditPane, officers: officersPane, settings: settingsPane };
 
 async function setActiveTab(tab) {
   activeTab = tab;
@@ -786,6 +796,24 @@ officerAssignForm.addEventListener('submit', async (event) => {
     renderPlayersTable();
     renderItemsTable();
     setStatus(`Софт призначено гравцю ${playerName}.`, 'success');
+  } catch (err) {
+    setStatus(`Помилка: ${err.message}`, 'error');
+  }
+});
+
+settingsForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const title = settingsTitleInput.value.trim();
+  const softLimitTotal = Number(settingsSoftLimitInput.value);
+  if (!title || !Number.isInteger(softLimitTotal) || softLimitTotal < 1) return;
+
+  try {
+    raid = await apiCall('PATCH', `/raids/${raidId}`, { token: getSessionToken(), body: { title, softLimitTotal } });
+    raidTitleHeading.textContent = raid.title;
+    document.title = `${raid.title} — Рейд-менеджер`;
+    renderBanner();
+    setStatus('Налаштування збережено.', 'success');
   } catch (err) {
     setStatus(`Помилка: ${err.message}`, 'error');
   }

@@ -44,6 +44,10 @@ function renderArchiveList(raids) {
     difficultyTd.textContent = DIFFICULTY_LABELS[raid.difficulty] || raid.difficulty;
     tr.appendChild(difficultyTd);
 
+    const leaderTd = document.createElement('td');
+    leaderTd.textContent = raid.leader_display_name || '—';
+    tr.appendChild(leaderTd);
+
     const createdTd = document.createElement('td');
     createdTd.textContent = formatDateTimeKyiv(raid.created_at);
     tr.appendChild(createdTd);
