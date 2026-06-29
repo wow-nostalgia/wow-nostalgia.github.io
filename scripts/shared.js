@@ -116,8 +116,6 @@ function hasAnyBossData(bosses) {
   return Object.values(bosses || {}).some((value) => Number(value) > 0);
 }
 
-const LK_ONLY_SPLIT_BOSS = 'The Lich King';
-
 function extractRaidIdentity(raidUrl) {
   const match = String(raidUrl || '').match(/reports\/(\d{2})-(\d{2})-(\d{2})--(\d{2})-(\d{2})--(.+)--FreedomUA/);
   if (!match) return null;
@@ -125,12 +123,11 @@ function extractRaidIdentity(raidUrl) {
   return { date: `20${yy}-${mm}-${dd}`, leader };
 }
 
-// uwu-logs splits a raid into a separate report when the group teleports onto
-// the Frozen Throne platform, even if it's a direct continuation of the same
-// raid night (confirmed via raw combat log: no relog/disconnect at the split
-// point). Detect that pattern from already-scraped boss kills: a same-day,
-// same-leader report containing only "The Lich King" is folded into the
-// sibling report that has the rest of the bosses.
+// uwu-logs sometimes splits one raid night into two reports - e.g. a Frozen
+// Throne teleport, or the logging addon restarting after a relog/disconnect
+// partway through. Detect that pattern from already-scraped boss kills: a
+// same-day, same-leader pair of reports whose boss kills don't overlap at all
+// is folded into a single raid (the report with more bosses becomes primary).
 function findRaidLogMerges(personalStats) {
   const bossesByRaid = new Map();
 
@@ -152,18 +149,17 @@ function findRaidLogMerges(personalStats) {
   const merges = new Map();
 
   for (const raidUrls of groups.values()) {
-    if (raidUrls.length < 2) continue;
+    if (raidUrls.length !== 2) continue;
 
-    const lkOnly = raidUrls.filter((url) => {
-      const bosses = bossesByRaid.get(url);
-      return bosses.size === 1 && bosses.has(LK_ONLY_SPLIT_BOSS);
-    });
+    const [urlA, urlB] = raidUrls;
+    const bossesA = bossesByRaid.get(urlA);
+    const bossesB = bossesByRaid.get(urlB);
 
-    const main = raidUrls.filter((url) => !bossesByRaid.get(url).has(LK_ONLY_SPLIT_BOSS));
+    const overlaps = [...bossesA].some((boss) => bossesB.has(boss));
+    if (overlaps) continue;
 
-    if (lkOnly.length === 1 && main.length === 1) {
-      merges.set(lkOnly[0], main[0]);
-    }
+    const [primary, secondary] = bossesA.size >= bossesB.size ? [urlA, urlB] : [urlB, urlA];
+    merges.set(secondary, primary);
   }
 
   return merges;
