@@ -211,7 +211,8 @@ function setupNameAutocomplete(inputEl, listEl) {
 }
 
 // Автокомпліт пошуку зареєстрованих (раніше залогінених) користувачів —
-// для "додати офіцера". Б'є в /auth/users?q= з невеликим дебаунсом.
+// для "додати офіцера". Б'є в /auth/users?q= — порожній запит повертає
+// весь список (як готовий дропдаун), типобраний текст лише звужує його.
 function setupUserSearchAutocomplete(inputEl, listEl, onPick) {
   let debounceTimer = null;
 
@@ -222,10 +223,6 @@ function setupUserSearchAutocomplete(inputEl, listEl, onPick) {
 
   async function search() {
     const query = inputEl.value.trim();
-    if (query.length < 2) {
-      closeList();
-      return;
-    }
 
     let users;
     try {
@@ -260,6 +257,7 @@ function setupUserSearchAutocomplete(inputEl, listEl, onPick) {
     listEl.classList.add('is-open');
   }
 
+  inputEl.addEventListener('focus', search);
   inputEl.addEventListener('input', () => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(search, 250);

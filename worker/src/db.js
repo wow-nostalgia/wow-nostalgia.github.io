@@ -208,7 +208,7 @@ export async function getPrimaryCharacterName(db, discordId) {
 // імені альта): офіцерський статус прив'язаний до discord_id, тож будь-який
 // твін цього акаунта вже вважається офіцером — пошук по нікнейму прибирає
 // плутанину "кого саме я призначаю".
-export async function searchUsers(db, query, limit = 20) {
+export async function searchUsers(db, query, limit = 50) {
   const { results } = await db
     .prepare('SELECT discord_id, username, avatar FROM users WHERE username LIKE ? ORDER BY username COLLATE NOCASE LIMIT ?')
     .bind(`%${query}%`, limit)

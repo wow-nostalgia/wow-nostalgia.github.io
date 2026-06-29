@@ -71,7 +71,7 @@
           <div class="raid-form-col">
             <h2>Мій софт</h2>
             <form id="softForm" class="raid-soft-form">
-              <label for="softPlayerName">Моє ім'я</label>
+              <label for="softPlayerName">Мій персонаж</label>
               <select id="softPlayerName" required></select>
               <p id="noCharactersHint" class="raid-no-characters-hint" hidden>
                 Немає збережених персонажів — додай у <a href="../../account/">кабінеті</a>.
@@ -135,7 +135,7 @@
         <div class="raid-tabs" role="tablist">
           <button type="button" class="raid-tab raid-tab--active" data-tab="players">Гравці</button>
           <button type="button" class="raid-tab" data-tab="items">Предмети</button>
-          <button type="button" class="raid-tab" data-tab="audit">Raid History</button>
+          <button type="button" class="raid-tab" data-tab="audit">Історія рейду</button>
           <button type="button" class="raid-tab" data-tab="officers" id="officersTab" hidden>Офіцери</button>
           <button type="button" class="raid-tab" data-tab="settings" id="settingsTab" hidden>Налаштування</button>
           <p id="raidStatus">Завантаження...</p>
@@ -190,7 +190,7 @@
           <div id="officersPane" hidden>
             <ul id="officersList" class="raid-list"></ul>
             <div id="addOfficerSection" class="raid-input-wrap" hidden>
-              <input type="text" id="addOfficerInput" autocomplete="off" placeholder="Пошук за Discord-ніком...">
+              <input type="text" id="addOfficerInput" autocomplete="off" placeholder="Виберіть гравця...">
               <div class="raid-autocomplete-list" id="addOfficerList"></div>
             </div>
           </div>

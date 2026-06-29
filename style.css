@@ -1441,6 +1441,7 @@ body.raid-manager-page .raid-create-form input[type="text"],
 body.raid-manager-page .raid-create-form input[type="number"],
 body.raid-manager-detail-page .raid-soft-form select,
 body.raid-manager-detail-page .raid-soft-form input[type="text"],
+body.raid-manager-detail-page .raid-soft-form input[type="number"],
 body.raid-manager-detail-page .raid-input-wrap input[type="text"],
 body.raid-manager-detail-page .raid-items-filters select,
 body.raid-manager-detail-page .raid-item-picker-trigger {

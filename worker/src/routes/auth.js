@@ -111,7 +111,6 @@ export async function handleSearchUsers(request, env) {
 
   const url = new URL(request.url);
   const q = (url.searchParams.get('q') || '').trim();
-  if (q.length < 2) return jsonResponse([]);
 
   const users = await searchUsers(env.DB, q);
   return jsonResponse(users.map((u) => ({ discordId: u.discord_id, username: u.username, avatar: u.avatar })));
