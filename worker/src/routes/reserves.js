@@ -1,4 +1,4 @@
-import { HttpError, jsonResponse, readJson, generateToken } from '../util.js';
+import { HttpError, jsonResponse, readJson, readJsonSafe, generateToken, extractOfficerName } from '../util.js';
 import {
   getRaid,
   listReserves,
@@ -96,13 +96,14 @@ export async function handleDeleteReserve(request, env, raidId, reserveId) {
   if (!reserve) throw new HttpError(404, 'Софт не знайдено');
 
   const access = await checkPlayerAccess(env.DB, request, raid, reserve.player_name);
+  const body = await readJsonSafe(request);
 
   if (raid.is_locked && !access.officer) {
     throw new HttpError(423, 'Рейд заблоковано для редагування');
   }
 
   await deleteReserveById(env.DB, raidId, reserveId);
-  await insertAudit(env.DB, raidId, access.officer ? 'officer' : reserve.player_name, 'soft_remove', {
+  await insertAudit(env.DB, raidId, access.officer ? extractOfficerName(body) : reserve.player_name, 'soft_remove', {
     itemId: reserve.item_id,
     boss: reserve.boss
   });
@@ -113,13 +114,14 @@ export async function handleDeleteReserve(request, env, raidId, reserveId) {
 export async function handleDeleteAllForPlayer(request, env, raidId, playerName) {
   const raid = await loadRaidOr404(env, raidId);
   const access = await checkPlayerAccess(env.DB, request, raid, playerName);
+  const body = await readJsonSafe(request);
 
   if (raid.is_locked && !access.officer) {
     throw new HttpError(423, 'Рейд заблоковано для редагування');
   }
 
   await deleteAllReservesForPlayer(env.DB, raidId, playerName);
-  await insertAudit(env.DB, raidId, access.officer ? 'officer' : playerName, 'soft_remove_all', { playerName });
+  await insertAudit(env.DB, raidId, access.officer ? extractOfficerName(body) : playerName, 'soft_remove_all', { playerName });
 
   return jsonResponse({ ok: true });
 }
@@ -175,7 +177,7 @@ export async function handleOfficerAssign(request, env, raidId) {
     throw err;
   }
 
-  await insertAudit(env.DB, raidId, 'officer', 'officer_assign', { playerName, itemId, boss, weight });
+  await insertAudit(env.DB, raidId, extractOfficerName(body), 'officer_assign', { playerName, itemId, boss, weight });
 
   return jsonResponse(reserve, 201);
 }

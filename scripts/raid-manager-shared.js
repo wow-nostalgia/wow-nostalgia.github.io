@@ -84,6 +84,18 @@ function clearOfficerToken(raidId) {
   localStorage.removeItem(officerTokenKey(raidId));
 }
 
+function officerNameKey(raidId) {
+  return `officerName:${raidId}`;
+}
+
+function getOfficerName(raidId) {
+  return localStorage.getItem(officerNameKey(raidId)) || '';
+}
+
+function setOfficerName(raidId, name) {
+  localStorage.setItem(officerNameKey(raidId), name);
+}
+
 function getClaimToken(raidId, playerName) {
   return localStorage.getItem(claimTokenKey(raidId, playerName));
 }

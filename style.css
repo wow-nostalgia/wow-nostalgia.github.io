@@ -1337,6 +1337,13 @@ body.personal-analytics-page .boss-checkbox-swatch {
    RAID MANAGER
    ========================= */
 
+body.raid-manager-detail-page .raid-forms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+
 body.raid-manager-page .raid-create-form,
 body.raid-manager-detail-page .raid-soft-form {
   display: grid;
@@ -1387,6 +1394,29 @@ body.raid-manager-detail-page .raid-chip {
   background-color: var(--color-surface-soft);
 }
 
+body.raid-manager-detail-page .raid-status-chip {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid var(--color-border-mid);
+  color: var(--color-text-faint);
+  background-color: var(--color-surface-soft);
+}
+
+body.raid-manager-detail-page .raid-status-chip--error {
+  color: var(--color-danger);
+  border-color: rgba(255, 107, 107, 0.4);
+  background-color: rgba(255, 107, 107, 0.12);
+}
+
+body.raid-manager-detail-page .raid-status-chip--success {
+  color: var(--color-success);
+  border-color: rgba(99, 212, 113, 0.4);
+  background-color: rgba(99, 212, 113, 0.12);
+}
+
 body.raid-manager-detail-page .raid-lock-banner {
   padding: 0.4rem 0.7rem;
   margin-bottom: 0.5rem;
@@ -1400,8 +1430,20 @@ body.raid-manager-detail-page .raid-lock-banner {
 body.raid-manager-detail-page .raid-banner-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
   gap: 0.6rem;
   margin-bottom: 0.75rem;
+}
+
+body.raid-manager-detail-page .raid-banner-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+body.raid-manager-detail-page #raidStatus {
+  margin: 0;
 }
 
 body.raid-manager-detail-page .link-button-std {
@@ -1426,11 +1468,67 @@ body.raid-manager-detail-page .raid-officer-panel {
   background-color: var(--color-surface-soft);
 }
 
-body.raid-manager-detail-page .raid-tables-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: 1.5rem;
-  align-items: start;
+body.raid-manager-detail-page .raid-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+body.raid-manager-detail-page .raid-input-wrap input[type="text"] {
+  width: 100%;
+  padding-right: 1.9rem;
+}
+
+body.raid-manager-detail-page .raid-input-clear {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  width: 1.2rem;
+  height: 1.2rem;
+  line-height: 1;
+  font-size: 1.15rem;
+  color: var(--color-text-faint);
+  cursor: pointer;
+}
+
+body.raid-manager-detail-page .raid-input-clear:hover {
+  color: var(--color-text-strong);
+}
+
+body.raid-manager-detail-page .raid-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+body.raid-manager-detail-page .raid-tab {
+  background: none;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-faint);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+body.raid-manager-detail-page .raid-tab:hover {
+  color: var(--color-text-strong);
+}
+
+body.raid-manager-detail-page .raid-tab--active {
+  color: var(--color-text-strong);
+  border-bottom-color: var(--color-link);
+}
+
+body.raid-manager-detail-page .raid-tables-grid .ranking-table-wrap {
+  width: 100%;
+  overflow-x: auto;
 }
 
 body.raid-manager-detail-page .raid-search-input {
@@ -1449,6 +1547,15 @@ body.raid-manager-detail-page .raid-items-filters {
   flex-wrap: wrap;
   gap: 0.6rem;
   align-items: center;
+}
+
+body.raid-manager-detail-page .raid-filter-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
 }
 
 body.raid-manager-detail-page .raid-table {
@@ -1540,11 +1647,6 @@ body.raid-manager-detail-page .raid-audit-time {
   margin-right: 0.4rem;
 }
 
-@media (max-width: 768px) {
-  body.raid-manager-detail-page .raid-tables-grid {
-    grid-template-columns: 1fr;
-  }
-}
 
 
 /* =========================

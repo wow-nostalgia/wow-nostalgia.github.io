@@ -51,7 +51,9 @@ createForm.addEventListener('submit', async (event) => {
   submitBtn.disabled = true;
 
   try {
+    const officerName = document.getElementById('raidOfficerName').value.trim();
     const body = {
+      officerName,
       title: document.getElementById('raidTitle').value.trim(),
       instance: document.getElementById('raidInstance').value,
       difficulty: document.getElementById('raidDifficulty').value,
@@ -62,6 +64,7 @@ createForm.addEventListener('submit', async (event) => {
 
     const raid = await apiCall('POST', '/raids', { body });
     setOfficerToken(raid.id, raid.officerToken);
+    if (officerName) setOfficerName(raid.id, officerName);
     window.location.href = `raid/?id=${encodeURIComponent(raid.id)}`;
   } catch (err) {
     console.error(err);

@@ -3,9 +3,10 @@ const raidLockBanner = document.getElementById('raidLockBanner');
 const raidSettingsBanner = document.getElementById('raidSettingsBanner');
 const copyLinkBtn = document.getElementById('copyLinkBtn');
 const officerAccessBtn = document.getElementById('officerAccessBtn');
+const officerNameBtn = document.getElementById('officerNameBtn');
 const lockToggleBtn = document.getElementById('lockToggleBtn');
-const auditToggleBtn = document.getElementById('auditToggleBtn');
 const raidStatus = document.getElementById('raidStatus');
+const raidTabs = document.querySelectorAll('.raid-tab');
 const raidContent = document.getElementById('raidContent');
 
 const softForm = document.getElementById('softForm');
@@ -17,6 +18,7 @@ const softWeight = document.getElementById('softWeight');
 const officerPanel = document.getElementById('officerPanel');
 const officerAssignForm = document.getElementById('officerAssignForm');
 const assignPlayerNameInput = document.getElementById('assignPlayerName');
+const assignPlayerNameClear = document.getElementById('assignPlayerNameClear');
 const assignBoss = document.getElementById('assignBoss');
 const assignItem = document.getElementById('assignItem');
 const assignWeight = document.getElementById('assignWeight');
@@ -28,8 +30,10 @@ const raidPlayersBody = document.getElementById('raidPlayersBody');
 const auditPane = document.getElementById('auditPane');
 const auditListEl = document.getElementById('auditList');
 
+const itemsPane = document.getElementById('itemsPane');
 const itemsSearchInput = document.getElementById('itemsSearch');
 const itemsBossFilter = document.getElementById('itemsBossFilter');
+const itemsSoftedOnlyCheckbox = document.getElementById('itemsSoftedOnly');
 const raidItemsBody = document.getElementById('raidItemsBody');
 
 let raidId = null;
@@ -38,10 +42,16 @@ let itemsCatalog = {};
 let guildMemberNames = new Set();
 let reserves = [];
 let auditEntries = [];
-let showAudit = false;
+let activeTab = 'players';
 
-function setStatus(text) {
-  raidStatus.textContent = text;
+function setStatus(text, type = 'info') {
+  raidStatus.innerHTML = '';
+  if (!text) return;
+
+  const chip = document.createElement('span');
+  chip.className = `raid-status-chip raid-status-chip--${type}`;
+  chip.textContent = text;
+  raidStatus.appendChild(chip);
 }
 
 function isOfficerMode() {
@@ -104,6 +114,16 @@ function renderBanner() {
 
 function updateOfficerButton() {
   officerAccessBtn.textContent = isOfficerMode() ? 'Скопіювати токен офіцера' : 'Ввести токен офіцера';
+  officerNameBtn.hidden = !isOfficerMode();
+  officerNameBtn.textContent = `Я: ${getOfficerName(raidId) || '(вказати ім\'я)'}`;
+}
+
+function promptOfficerName() {
+  const current = getOfficerName(raidId);
+  const name = window.prompt("Як тебе записати в Raid History?", current);
+  if (name === null) return;
+  setOfficerName(raidId, name.trim());
+  updateOfficerButton();
 }
 
 function populateBossSelect(selectEl) {
@@ -231,8 +251,11 @@ function renderItemsTable() {
   const bossFilter = itemsBossFilter.value;
   raidItemsBody.innerHTML = '';
 
+  const softedOnly = itemsSoftedOnlyCheckbox.checked;
+
   const flat = buildFlatItemList().filter((item) => {
     if (bossFilter && item.boss !== bossFilter) return false;
+    if (softedOnly && !reserves.some((r) => r.item_id === item.id)) return false;
     if (search) {
       const haystack = `${item.name} ${item.boss}`.toLocaleLowerCase('uk');
       if (!haystack.includes(search)) return false;
@@ -346,13 +369,14 @@ async function loadAudit() {
 
 async function removeReserve(reserve) {
   const token = isOfficerMode() ? getOfficerToken(raidId) : getClaimToken(raidId, reserve.player_name);
+  const body = isOfficerMode() ? { officerName: getOfficerName(raidId) } : undefined;
   try {
-    await apiCall('DELETE', `/raids/${raidId}/reserves/${reserve.id}`, { token });
+    await apiCall('DELETE', `/raids/${raidId}/reserves/${reserve.id}`, { token, body });
     await loadReserves();
     renderPlayersTable();
     renderItemsTable();
   } catch (err) {
-    setStatus(`Помилка: ${err.message}`);
+    setStatus(`Помилка: ${err.message}`, 'error');
   }
 }
 
@@ -363,19 +387,20 @@ async function toggleReceived(reserve) {
     await loadReserves();
     renderPlayersTable();
   } catch (err) {
-    setStatus(`Помилка: ${err.message}`);
+    setStatus(`Помилка: ${err.message}`, 'error');
   }
 }
 
 async function clearAllForPlayer(name) {
   const token = isOfficerMode() ? getOfficerToken(raidId) : getClaimToken(raidId, name);
+  const body = isOfficerMode() ? { officerName: getOfficerName(raidId) } : undefined;
   try {
-    await apiCall('DELETE', `/raids/${raidId}/players/${encodeURIComponent(name)}/reserves`, { token });
+    await apiCall('DELETE', `/raids/${raidId}/players/${encodeURIComponent(name)}/reserves`, { token, body });
     await loadReserves();
     renderPlayersTable();
     renderItemsTable();
   } catch (err) {
-    setStatus(`Помилка: ${err.message}`);
+    setStatus(`Помилка: ${err.message}`, 'error');
   }
 }
 
@@ -412,34 +437,48 @@ officerAccessBtn.addEventListener('click', async () => {
     populateBossSelect(assignBoss);
     populateItemSelect(assignItem, assignBoss.value);
     renderPlayersTable();
+    if (!getOfficerName(raidId)) promptOfficerName();
   } catch (err) {
     alert(`Невірний токен: ${err.message}`);
   }
 });
 
+officerNameBtn.addEventListener('click', promptOfficerName);
+
 lockToggleBtn.addEventListener('click', async () => {
   const token = getOfficerToken(raidId);
   try {
-    raid = await apiCall('POST', `/raids/${raidId}/${raid.is_locked ? 'unlock' : 'lock'}`, { token });
+    raid = await apiCall('POST', `/raids/${raidId}/${raid.is_locked ? 'unlock' : 'lock'}`, {
+      token,
+      body: { officerName: getOfficerName(raidId) }
+    });
     renderBanner();
   } catch (err) {
     alert(err.message);
   }
 });
 
-auditToggleBtn.addEventListener('click', async () => {
-  showAudit = !showAudit;
-  auditToggleBtn.textContent = showAudit ? 'Показати гравців' : 'Показати Raid Audit';
-  playersPane.hidden = showAudit;
-  auditPane.hidden = !showAudit;
-  if (showAudit) await loadAudit();
-});
+const TAB_PANES = { players: playersPane, items: itemsPane, audit: auditPane };
+
+async function setActiveTab(tab) {
+  activeTab = tab;
+  raidTabs.forEach((btn) => btn.classList.toggle('raid-tab--active', btn.dataset.tab === tab));
+  Object.entries(TAB_PANES).forEach(([key, el]) => { el.hidden = key !== tab; });
+  if (tab === 'audit') await loadAudit();
+}
+
+raidTabs.forEach((btn) => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)));
 
 softBoss.addEventListener('change', () => populateItemSelect(softItem, softBoss.value));
 assignBoss.addEventListener('change', () => populateItemSelect(assignItem, assignBoss.value));
+assignPlayerNameClear.addEventListener('click', () => {
+  assignPlayerNameInput.value = '';
+  assignPlayerNameInput.focus();
+});
 playersSearchInput.addEventListener('input', renderPlayersTable);
 itemsSearchInput.addEventListener('input', renderItemsTable);
 itemsBossFilter.addEventListener('change', renderItemsTable);
+itemsSoftedOnlyCheckbox.addEventListener('change', renderItemsTable);
 
 softForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -459,9 +498,9 @@ softForm.addEventListener('submit', async (event) => {
     await loadReserves();
     renderPlayersTable();
     renderItemsTable();
-    setStatus('Софт додано.');
+    setStatus('Софт додано.', 'success');
   } catch (err) {
-    setStatus(`Помилка: ${err.message}`);
+    setStatus(`Помилка: ${err.message}`, 'error');
   }
 });
 
@@ -474,25 +513,26 @@ officerAssignForm.addEventListener('submit', async (event) => {
   const weight = Number(assignWeight.value);
   if (!playerName || !boss || !itemId) return;
 
+  const officerName = getOfficerName(raidId);
+
   try {
     await apiCall('POST', `/raids/${raidId}/officer/assign`, {
       token: getOfficerToken(raidId),
-      body: { playerName, itemId, boss, weight }
+      body: { playerName, itemId, boss, weight, officerName }
     });
     await loadReserves();
     renderPlayersTable();
     renderItemsTable();
-    assignPlayerNameInput.value = '';
-    setStatus('Софт призначено офіцером.');
+    setStatus(`Софт призначено офіцером${officerName ? ' ' + officerName : ''}.`, 'success');
   } catch (err) {
-    setStatus(`Помилка: ${err.message}`);
+    setStatus(`Помилка: ${err.message}`, 'error');
   }
 });
 
 async function init() {
   raidId = new URLSearchParams(window.location.search).get('id');
   if (!raidId) {
-    setStatus('Не вказано id рейду.');
+    setStatus('Не вказано id рейду.', 'error');
     return;
   }
 
@@ -509,7 +549,7 @@ async function init() {
   try {
     await loadRaid();
   } catch (err) {
-    setStatus(`Рейд не знайдено: ${err.message}`);
+    setStatus(`Рейд не знайдено: ${err.message}`, 'error');
     return;
   }
 
@@ -541,7 +581,7 @@ async function init() {
       await loadReserves();
       renderPlayersTable();
       renderItemsTable();
-      if (showAudit) await loadAudit();
+      if (activeTab === 'audit') await loadAudit();
     } catch (err) {
       console.error(err);
     }

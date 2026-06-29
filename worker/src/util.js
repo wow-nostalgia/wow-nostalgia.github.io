@@ -31,8 +31,22 @@ export async function readJson(request) {
   }
 }
 
+// Для ендпоінтів, де тіло не обов'язкове (lock/unlock/delete) — порожнє/відсутнє
+// тіло не повинно валити запит, лише officerName із нього опційний.
+export async function readJsonSafe(request) {
+  try {
+    return await request.json();
+  } catch {
+    return {};
+  }
+}
+
 export function bearerToken(request) {
   const header = request.headers.get('Authorization') || '';
   const match = header.match(/^Bearer\s+(.+)$/i);
   return match ? match[1].trim() : null;
+}
+
+export function extractOfficerName(body) {
+  return String(body?.officerName || '').trim() || 'Officer';
 }

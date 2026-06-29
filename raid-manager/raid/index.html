@@ -45,63 +45,76 @@
       <div id="raidSettingsBanner" class="raid-settings-banner"></div>
 
       <div class="raid-banner-actions">
-        <button type="button" id="copyLinkBtn" class="link-button-std">Скопіювати лінк</button>
-        <button type="button" id="officerAccessBtn" class="link-button-std">Ввести токен офіцера</button>
-        <button type="button" id="lockToggleBtn" class="link-button-std" hidden>Заблокувати рейд</button>
-        <button type="button" id="auditToggleBtn" class="link-button-std">Показати Raid Audit</button>
+        <div class="raid-banner-buttons">
+          <button type="button" id="copyLinkBtn" class="link-button-std">Скопіювати лінк</button>
+          <button type="button" id="officerAccessBtn" class="link-button-std">Ввести токен офіцера</button>
+          <button type="button" id="officerNameBtn" class="link-button-std" hidden>Я: ...</button>
+          <button type="button" id="lockToggleBtn" class="link-button-std" hidden>Заблокувати рейд</button>
+        </div>
+        <p id="raidStatus">Завантаження...</p>
       </div>
-
-      <p id="raidStatus">Завантаження...</p>
 
       <div id="raidContent" hidden>
 
-        <h2>Софтнути предмет</h2>
-        <form id="softForm" class="raid-soft-form">
-          <label for="softPlayerName">Ім'я персонажа</label>
-          <input type="text" id="softPlayerName" required autocomplete="off" placeholder="Твій персонаж">
+        <div class="raid-forms-grid">
+          <div class="raid-form-col">
+            <h2>Мій софт</h2>
+            <form id="softForm" class="raid-soft-form">
+              <label for="softPlayerName">Моє ім'я</label>
+              <input type="text" id="softPlayerName" required autocomplete="off" placeholder="Твій персонаж">
 
-          <label for="softBoss">Бос</label>
-          <select id="softBoss"></select>
+              <label for="softBoss">Бос</label>
+              <select id="softBoss"></select>
 
-          <label for="softItem">Предмет</label>
-          <select id="softItem"></select>
+              <label for="softItem">Предмет</label>
+              <select id="softItem"></select>
 
-          <label for="softWeight">Вага</label>
-          <select id="softWeight">
-            <option value="1">1x</option>
-            <option value="2">2x</option>
-            <option value="3">3x</option>
-          </select>
+              <label for="softWeight">Вага</label>
+              <select id="softWeight">
+                <option value="1">1x</option>
+                <option value="2">2x</option>
+                <option value="3">3x</option>
+              </select>
 
-          <button type="submit" class="compare-btn">Софтнути</button>
-        </form>
+              <button type="submit" class="compare-btn">Софтнути</button>
+            </form>
+          </div>
 
-        <div id="officerPanel" class="raid-officer-panel" hidden>
-          <h2>Офіцерська панель</h2>
-          <form id="officerAssignForm" class="raid-soft-form">
-            <label for="assignPlayerName">Ім'я персонажа</label>
-            <input type="text" id="assignPlayerName" required autocomplete="off">
+          <div id="officerPanel" class="raid-officer-panel raid-form-col" hidden>
+            <h2>Офіцерська панель</h2>
+            <form id="officerAssignForm" class="raid-soft-form">
+              <label for="assignPlayerName">Учасник</label>
+              <div class="raid-input-wrap">
+                <input type="text" id="assignPlayerName" required autocomplete="off">
+                <button type="button" class="raid-input-clear" id="assignPlayerNameClear" aria-label="Очистити">&times;</button>
+              </div>
 
-            <label for="assignBoss">Бос</label>
-            <select id="assignBoss"></select>
+              <label for="assignBoss">Бос</label>
+              <select id="assignBoss"></select>
 
-            <label for="assignItem">Предмет</label>
-            <select id="assignItem"></select>
+              <label for="assignItem">Предмет</label>
+              <select id="assignItem"></select>
 
-            <label for="assignWeight">Вага</label>
-            <select id="assignWeight">
-              <option value="1">1x</option>
-              <option value="2">2x</option>
-              <option value="3">3x</option>
-            </select>
+              <label for="assignWeight">Вага</label>
+              <select id="assignWeight">
+                <option value="1">1x</option>
+                <option value="2">2x</option>
+                <option value="3">3x</option>
+              </select>
 
-            <button type="submit" class="compare-btn">Призначити софт</button>
-          </form>
+              <button type="submit" class="compare-btn">Призначити софт</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="raid-tabs" role="tablist">
+          <button type="button" class="raid-tab raid-tab--active" data-tab="players">Гравці</button>
+          <button type="button" class="raid-tab" data-tab="items">Предмети</button>
+          <button type="button" class="raid-tab" data-tab="audit">Raid History</button>
         </div>
 
         <div class="raid-tables-grid">
           <div id="playersPane">
-            <h2>Гравці</h2>
             <input type="text" id="playersSearch" placeholder="Пошук гравця..." class="raid-search-input">
             <div class="ranking-table-wrap">
               <table id="raidPlayersTable" class="raid-table">
@@ -117,18 +130,16 @@
             </div>
           </div>
 
-          <div id="auditPane" hidden>
-            <h2>Raid Audit</h2>
-            <div id="auditList" class="raid-audit-list"></div>
-          </div>
-
-          <div id="itemsPane">
-            <h2>Предмети</h2>
+          <div id="itemsPane" hidden>
             <div class="raid-items-filters">
               <input type="text" id="itemsSearch" placeholder="Пошук предмета..." class="raid-search-input">
               <select id="itemsBossFilter">
                 <option value="">Усі боси</option>
               </select>
+              <label class="raid-filter-checkbox" for="itemsSoftedOnly">
+                <input type="checkbox" id="itemsSoftedOnly" checked>
+                Тільки засофчені
+              </label>
             </div>
             <div class="ranking-table-wrap">
               <table id="raidItemsTable" class="raid-table">
@@ -143,6 +154,10 @@
                 <tbody id="raidItemsBody"></tbody>
               </table>
             </div>
+          </div>
+
+          <div id="auditPane" hidden>
+            <div id="auditList" class="raid-audit-list"></div>
           </div>
         </div>
       </div>

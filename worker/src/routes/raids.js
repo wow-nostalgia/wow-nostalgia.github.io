@@ -1,4 +1,4 @@
-import { HttpError, jsonResponse, readJson, generateRaidId, generateToken } from '../util.js';
+import { HttpError, jsonResponse, readJson, readJsonSafe, generateRaidId, generateToken, extractOfficerName } from '../util.js';
 import { createRaid, listRaids, getRaid, updateRaidSettings, setRaidLock, insertAudit } from '../db.js';
 import { requireOfficer } from '../auth.js';
 
@@ -41,7 +41,7 @@ export async function handleCreateRaid(request, env) {
     officerToken
   });
 
-  await insertAudit(env.DB, id, 'officer', 'raid_create', { title, instance, difficulty });
+  await insertAudit(env.DB, id, extractOfficerName(body), 'raid_create', { title, instance, difficulty });
 
   return jsonResponse({ ...publicRaid(raid), officerToken }, 201);
 }
@@ -72,7 +72,7 @@ export async function handleUpdateRaid(request, env, id) {
 
   const updated = await updateRaidSettings(env.DB, id, fields);
   if (Object.keys(fields).length) {
-    await insertAudit(env.DB, id, 'officer', 'settings_change', fields);
+    await insertAudit(env.DB, id, extractOfficerName(body), 'settings_change', fields);
   }
 
   return jsonResponse(publicRaid(updated));
@@ -83,8 +83,9 @@ export async function handleLock(request, env, id, locked) {
   if (!raid) throw new HttpError(404, 'Рейд не знайдено');
   requireOfficer(request, raid);
 
+  const body = await readJsonSafe(request);
   const updated = await setRaidLock(env.DB, id, locked);
-  await insertAudit(env.DB, id, 'officer', locked ? 'lock' : 'unlock', {});
+  await insertAudit(env.DB, id, extractOfficerName(body), locked ? 'lock' : 'unlock', {});
 
   return jsonResponse(publicRaid(updated));
 }
