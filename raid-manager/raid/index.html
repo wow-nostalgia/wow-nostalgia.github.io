@@ -76,8 +76,12 @@
               <label for="softBoss">Бос</label>
               <select id="softBoss"></select>
 
-              <label for="softItem">Предмет</label>
-              <select id="softItem"></select>
+              <label for="softItemTrigger">Предмет</label>
+              <div class="raid-item-picker" id="softItemPicker">
+                <button type="button" class="raid-item-picker-trigger" id="softItemTrigger" aria-haspopup="listbox" aria-expanded="false"></button>
+                <input type="hidden" id="softItem">
+                <div class="raid-item-picker-list" id="softItemList" role="listbox"></div>
+              </div>
 
               <label for="softWeight">Вага</label>
               <select id="softWeight">
@@ -103,8 +107,12 @@
               <label for="assignBoss">Бос</label>
               <select id="assignBoss"></select>
 
-              <label for="assignItem">Предмет</label>
-              <select id="assignItem"></select>
+              <label for="assignItemTrigger">Предмет</label>
+              <div class="raid-item-picker" id="assignItemPicker">
+                <button type="button" class="raid-item-picker-trigger" id="assignItemTrigger" aria-haspopup="listbox" aria-expanded="false"></button>
+                <input type="hidden" id="assignItem">
+                <div class="raid-item-picker-list" id="assignItemList" role="listbox"></div>
+              </div>
 
               <label for="assignWeight">Вага</label>
               <select id="assignWeight">

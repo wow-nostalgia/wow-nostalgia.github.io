@@ -1419,7 +1419,8 @@ body.raid-manager-page .raid-create-form input[type="number"],
 body.raid-manager-detail-page .raid-soft-form select,
 body.raid-manager-detail-page .raid-soft-form input[type="text"],
 body.raid-manager-detail-page .raid-input-wrap input[type="text"],
-body.raid-manager-detail-page .raid-items-filters select {
+body.raid-manager-detail-page .raid-items-filters select,
+body.raid-manager-detail-page .raid-item-picker-trigger {
   padding: 0.45rem 0.65rem;
   border: 1px solid rgba(197, 198, 205, 0.35);
   border-radius: var(--radius-sm);
@@ -1435,7 +1436,8 @@ body.raid-manager-page .raid-create-form input:hover,
 body.raid-manager-detail-page .raid-soft-form select:hover,
 body.raid-manager-detail-page .raid-soft-form input:hover,
 body.raid-manager-detail-page .raid-input-wrap input[type="text"]:hover,
-body.raid-manager-detail-page .raid-items-filters select:hover {
+body.raid-manager-detail-page .raid-items-filters select:hover,
+body.raid-manager-detail-page .raid-item-picker-trigger:hover {
   border-color: rgba(123, 170, 245, 0.55);
 }
 
@@ -1444,7 +1446,8 @@ body.raid-manager-page .raid-create-form input:focus,
 body.raid-manager-detail-page .raid-soft-form select:focus,
 body.raid-manager-detail-page .raid-soft-form input:focus,
 body.raid-manager-detail-page .raid-input-wrap input[type="text"]:focus,
-body.raid-manager-detail-page .raid-items-filters select:focus {
+body.raid-manager-detail-page .raid-items-filters select:focus,
+body.raid-manager-detail-page .raid-item-picker-trigger:focus {
   border-color: var(--color-link);
   box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
 }
@@ -1638,6 +1641,78 @@ body.raid-manager-detail-page .raid-autocomplete-empty {
   padding: 0.3rem 0.65rem;
   font-size: 0.85rem;
   color: var(--color-text-faint);
+}
+
+body.raid-manager-detail-page .raid-item-picker {
+  position: relative;
+  width: 100%;
+}
+
+body.raid-manager-detail-page .raid-item-picker-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+body.raid-manager-detail-page .raid-item-picker-trigger::after {
+  content: '▾';
+  margin-left: auto;
+  font-size: 0.7rem;
+  color: var(--color-text-faint);
+}
+
+body.raid-manager-detail-page .raid-item-picker-list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin-top: 0.25rem;
+  max-height: 18.75rem;
+  overflow-y: auto;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.97);
+  box-shadow: var(--shadow-sm);
+}
+
+body.raid-manager-detail-page .raid-item-picker-list.is-open {
+  display: block;
+}
+
+body.raid-manager-detail-page .raid-item-picker-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.85rem;
+  color: var(--color-text-strong);
+  cursor: pointer;
+}
+
+body.raid-manager-detail-page .raid-item-picker-option:hover {
+  background-color: rgba(123, 170, 245, 0.18);
+}
+
+body.raid-manager-detail-page .raid-item-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.raid-item-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  border: 1px solid var(--color-border-mid);
+  object-fit: cover;
+  flex-shrink: 0;
+  vertical-align: middle;
 }
 
 body.raid-manager-detail-page .raid-tabs {

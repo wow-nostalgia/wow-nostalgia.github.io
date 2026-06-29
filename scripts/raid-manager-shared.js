@@ -3,7 +3,7 @@
 
 const API_BASE = 'https://raid-manager-api.wow-nostalgia.workers.dev/api/v1';
 
-const INSTANCE_LABELS = { ICC: 'Льодяна Цитадель', RS: 'Рубіновий Святилище' };
+const INSTANCE_LABELS = { ICC: 'Льодяна Цитадель', RS: 'Рубінове Святилище' };
 const DIFFICULTY_LABELS = { '10N': '10 ХМ', '10H': '10 ГМ', '25N': '25 ХМ', '25H': '25 ГМ' };
 
 const ICC_BOSSES = [
@@ -35,6 +35,35 @@ function formatDateTimeKyiv(isoString) {
     minute: '2-digit',
     hourCycle: 'h23'
   }).format(date);
+}
+
+const ITEM_RARITY_CLASS_BY_QUALITY = {
+  0: 'raid-rarity--common',
+  1: 'raid-rarity--common',
+  2: 'raid-rarity--uncommon',
+  3: 'raid-rarity--rare',
+  4: 'raid-rarity--epic',
+  5: 'raid-rarity--epic'
+};
+
+let itemIconData = {};
+
+async function loadItemIconData() {
+  try {
+    const res = await fetch('/data/item-icons.json');
+    itemIconData = await res.json();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function itemIconUrl(itemId, size = 'small') {
+  const icon = itemIconData[itemId]?.icon || 'inv_misc_questionmark';
+  return `https://wow.zamimg.com/images/wow/icons/${size}/${icon}.jpg`;
+}
+
+function itemRarityClass(itemId) {
+  return ITEM_RARITY_CLASS_BY_QUALITY[itemIconData[itemId]?.quality] || 'raid-rarity--rare';
 }
 
 function apiUrl(path) {

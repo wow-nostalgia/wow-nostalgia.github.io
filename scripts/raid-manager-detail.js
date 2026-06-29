@@ -13,6 +13,8 @@ const softForm = document.getElementById('softForm');
 const softPlayerNameInput = document.getElementById('softPlayerName');
 const softBoss = document.getElementById('softBoss');
 const softItem = document.getElementById('softItem');
+const softItemTrigger = document.getElementById('softItemTrigger');
+const softItemList = document.getElementById('softItemList');
 const softWeight = document.getElementById('softWeight');
 
 const officerPanel = document.getElementById('officerPanel');
@@ -22,6 +24,8 @@ const assignPlayerNameClear = document.getElementById('assignPlayerNameClear');
 const assignPlayerNameList = document.getElementById('assignPlayerNameList');
 const assignBoss = document.getElementById('assignBoss');
 const assignItem = document.getElementById('assignItem');
+const assignItemTrigger = document.getElementById('assignItemTrigger');
+const assignItemList = document.getElementById('assignItemList');
 const assignWeight = document.getElementById('assignWeight');
 
 const playersPane = document.getElementById('playersPane');
@@ -198,15 +202,78 @@ function populateBossSelect(selectEl) {
   });
 }
 
-function populateItemSelect(selectEl, boss) {
-  selectEl.innerHTML = '';
-  const items = (itemsCatalog[boss] || {})[raid.difficulty] || [];
+function createItemIcon(itemId) {
+  const icon = document.createElement('img');
+  icon.className = 'raid-item-icon';
+  icon.src = itemIconUrl(itemId, 'small');
+  icon.alt = '';
+  return icon;
+}
+
+function closeItemPicker(listEl) {
+  listEl.classList.remove('is-open');
+}
+
+function selectItemOption(hiddenInput, triggerBtn, item) {
+  hiddenInput.value = item ? item.id : '';
+  triggerBtn.innerHTML = '';
+
+  if (!item) {
+    triggerBtn.appendChild(document.createTextNode('Немає предметів'));
+    return;
+  }
+
+  triggerBtn.appendChild(createItemIcon(item.id));
+  triggerBtn.appendChild(document.createTextNode(`${item.name} (${item.slot})`));
+}
+
+function renderItemPickerOptions(listEl, hiddenInput, triggerBtn, items) {
+  listEl.innerHTML = '';
   items.forEach((item) => {
-    const opt = document.createElement('option');
-    opt.value = item.id;
-    opt.textContent = `${item.name} (${item.slot})`;
-    selectEl.appendChild(opt);
+    const opt = document.createElement('div');
+    opt.className = 'raid-item-picker-option';
+    opt.setAttribute('role', 'option');
+    opt.appendChild(createItemIcon(item.id));
+
+    const label = document.createElement('span');
+    label.className = itemRarityClass(item.id);
+    label.textContent = `${item.name} (${item.slot})`;
+    opt.appendChild(label);
+
+    opt.addEventListener('mousedown', (event) => {
+      event.preventDefault();
+      selectItemOption(hiddenInput, triggerBtn, item);
+      closeItemPicker(listEl);
+    });
+
+    listEl.appendChild(opt);
   });
+}
+
+function setupItemPickerToggle(triggerBtn, listEl) {
+  triggerBtn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const willOpen = !listEl.classList.contains('is-open');
+    document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
+    listEl.classList.toggle('is-open', willOpen);
+  });
+}
+
+document.addEventListener('click', () => {
+  document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
+  }
+});
+
+function populateItemPicker(hiddenInput, triggerBtn, listEl, boss) {
+  const items = (itemsCatalog[boss] || {})[raid.difficulty] || [];
+  renderItemPickerOptions(listEl, hiddenInput, triggerBtn, items);
+  selectItemOption(hiddenInput, triggerBtn, items[0]);
+  closeItemPicker(listEl);
 }
 
 function renderItemsBossFilterOptions() {
@@ -266,8 +333,9 @@ function renderPlayersTable() {
       itemSpan.appendChild(weightBadge);
 
       const itemInfo = findItemInfo(r.item_id, r.boss);
+      itemSpan.appendChild(createItemIcon(r.item_id));
       const nameEl = document.createElement('span');
-      nameEl.className = `raid-rarity--rare${r.is_received ? ' raid-item-received' : ''}`;
+      nameEl.className = `${itemRarityClass(r.item_id)}${r.is_received ? ' raid-item-received' : ''}`;
       nameEl.textContent = ` ${itemInfo ? itemInfo.name : `#${r.item_id}`}`;
       itemSpan.appendChild(nameEl);
 
@@ -339,8 +407,12 @@ function renderItemsTable() {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
-    nameTd.className = 'raid-rarity--rare';
-    nameTd.textContent = item.name;
+    nameTd.className = 'raid-item-name-cell';
+    nameTd.appendChild(createItemIcon(item.id));
+    const nameSpan = document.createElement('span');
+    nameSpan.className = itemRarityClass(item.id);
+    nameSpan.textContent = item.name;
+    nameTd.appendChild(nameSpan);
     tr.appendChild(nameTd);
 
     const slotTd = document.createElement('td');
@@ -497,7 +569,7 @@ officerAccessBtn.addEventListener('click', async () => {
     updateOfficerButton();
     officerPanel.hidden = !isOfficerMode();
     populateBossSelect(assignBoss);
-    populateItemSelect(assignItem, assignBoss.value);
+    populateItemPicker(assignItem, assignItemTrigger, assignItemList, assignBoss.value);
     renderPlayersTable();
     if (!getOfficerName(raidId)) promptOfficerName();
   } catch (err) {
@@ -545,8 +617,10 @@ async function setActiveTab(tab) {
 
 raidTabs.forEach((btn) => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)));
 
-softBoss.addEventListener('change', () => populateItemSelect(softItem, softBoss.value));
-assignBoss.addEventListener('change', () => populateItemSelect(assignItem, assignBoss.value));
+softBoss.addEventListener('change', () => populateItemPicker(softItem, softItemTrigger, softItemList, softBoss.value));
+assignBoss.addEventListener('change', () => populateItemPicker(assignItem, assignItemTrigger, assignItemList, assignBoss.value));
+setupItemPickerToggle(softItemTrigger, softItemList);
+setupItemPickerToggle(assignItemTrigger, assignItemList);
 assignPlayerNameClear.addEventListener('click', () => {
   assignPlayerNameInput.value = '';
   assignPlayerNameInput.focus();
@@ -614,7 +688,11 @@ async function init() {
   }
 
   try {
-    const [itemsRes, playersRes] = await Promise.all([fetch('/data/raid-items.json'), fetch('/data/players.json')]);
+    const [itemsRes, playersRes] = await Promise.all([
+      fetch('/data/raid-items.json'),
+      fetch('/data/players.json'),
+      loadItemIconData()
+    ]);
     itemsCatalog = await itemsRes.json();
     if (playersRes.ok) {
       const players = await playersRes.json();
@@ -640,9 +718,9 @@ async function init() {
   officerPanel.hidden = !isOfficerMode();
 
   populateBossSelect(softBoss);
-  populateItemSelect(softItem, softBoss.value);
+  populateItemPicker(softItem, softItemTrigger, softItemList, softBoss.value);
   populateBossSelect(assignBoss);
-  populateItemSelect(assignItem, assignBoss.value);
+  populateItemPicker(assignItem, assignItemTrigger, assignItemList, assignBoss.value);
   renderItemsBossFilterOptions();
 
   const lastName = localStorage.getItem('lastPlayerName');
