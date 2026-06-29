@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS raids (
   soft_limit_items INTEGER NOT NULL DEFAULT 3,
   allow_duplicate_soft INTEGER NOT NULL DEFAULT 1,
   is_locked INTEGER NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'active', -- 'active' | 'completed'
   officer_token TEXT NOT NULL,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL

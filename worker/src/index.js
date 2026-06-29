@@ -1,5 +1,5 @@
 import { HttpError, jsonResponse } from './util.js';
-import { handleCreateRaid, handleListRaids, handleGetRaid, handleUpdateRaid, handleLock } from './routes/raids.js';
+import { handleCreateRaid, handleListRaids, handleGetRaid, handleUpdateRaid, handleLock, handleSetStatus } from './routes/raids.js';
 import {
   handleListReserves,
   handleCreateReserve,
@@ -60,6 +60,8 @@ async function route(request, env) {
 
   if (sub === 'lock' && method === 'POST') return handleLock(request, env, raidId, true);
   if (sub === 'unlock' && method === 'POST') return handleLock(request, env, raidId, false);
+  if (sub === 'complete' && method === 'POST') return handleSetStatus(request, env, raidId, 'completed');
+  if (sub === 'reactivate' && method === 'POST') return handleSetStatus(request, env, raidId, 'active');
   if (sub === 'audit' && method === 'GET') return handleListAudit(request, env, raidId);
 
   if (sub === 'reserves') {

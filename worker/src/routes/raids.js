@@ -1,5 +1,5 @@
 import { HttpError, jsonResponse, readJson, readJsonSafe, generateRaidId, generateToken, extractOfficerName } from '../util.js';
-import { createRaid, listRaids, getRaid, updateRaidSettings, setRaidLock, insertAudit } from '../db.js';
+import { createRaid, listRaids, getRaid, updateRaidSettings, setRaidLock, setRaidStatus, insertAudit } from '../db.js';
 import { requireOfficer } from '../auth.js';
 
 const INSTANCES = new Set(['ICC', 'RS']);
@@ -86,6 +86,18 @@ export async function handleLock(request, env, id, locked) {
   const body = await readJsonSafe(request);
   const updated = await setRaidLock(env.DB, id, locked);
   await insertAudit(env.DB, id, extractOfficerName(body), locked ? 'lock' : 'unlock', {});
+
+  return jsonResponse(publicRaid(updated));
+}
+
+export async function handleSetStatus(request, env, id, status) {
+  const raid = await getRaid(env.DB, id);
+  if (!raid) throw new HttpError(404, 'Рейд не знайдено');
+  requireOfficer(request, raid);
+
+  const body = await readJsonSafe(request);
+  const updated = await setRaidStatus(env.DB, id, status);
+  await insertAudit(env.DB, id, extractOfficerName(body), status === 'completed' ? 'complete' : 'reactivate', {});
 
   return jsonResponse(publicRaid(updated));
 }

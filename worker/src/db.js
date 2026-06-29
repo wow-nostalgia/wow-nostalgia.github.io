@@ -16,7 +16,7 @@ export async function createRaid(db, { id, title, instance, difficulty, softLimi
 
 export async function listRaids(db, limit = 50) {
   const { results } = await db
-    .prepare('SELECT id, title, instance, difficulty, is_locked, created_at FROM raids ORDER BY created_at DESC LIMIT ?')
+    .prepare('SELECT id, title, instance, difficulty, is_locked, status, created_at FROM raids ORDER BY created_at DESC LIMIT ?')
     .bind(limit)
     .all();
   return results;
@@ -43,6 +43,11 @@ export async function updateRaidSettings(db, id, fields) {
 
 export async function setRaidLock(db, id, locked) {
   await db.prepare('UPDATE raids SET is_locked = ?, updated_at = ? WHERE id = ?').bind(locked ? 1 : 0, nowIso(), id).run();
+  return getRaid(db, id);
+}
+
+export async function setRaidStatus(db, id, status) {
+  await db.prepare('UPDATE raids SET status = ?, updated_at = ? WHERE id = ?').bind(status, nowIso(), id).run();
   return getRaid(db, id);
 }
 

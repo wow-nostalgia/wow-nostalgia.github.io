@@ -1,10 +1,10 @@
 const raidTitleHeading = document.getElementById('raidTitleHeading');
-const raidLockBanner = document.getElementById('raidLockBanner');
 const raidSettingsBanner = document.getElementById('raidSettingsBanner');
 const copyLinkBtn = document.getElementById('copyLinkBtn');
 const officerAccessBtn = document.getElementById('officerAccessBtn');
 const officerNameBtn = document.getElementById('officerNameBtn');
 const lockToggleBtn = document.getElementById('lockToggleBtn');
+const statusToggleBtn = document.getElementById('statusToggleBtn');
 const raidStatus = document.getElementById('raidStatus');
 const raidTabs = document.querySelectorAll('.raid-tab');
 const raidContent = document.getElementById('raidContent');
@@ -19,6 +19,7 @@ const officerPanel = document.getElementById('officerPanel');
 const officerAssignForm = document.getElementById('officerAssignForm');
 const assignPlayerNameInput = document.getElementById('assignPlayerName');
 const assignPlayerNameClear = document.getElementById('assignPlayerNameClear');
+const assignPlayerNameList = document.getElementById('assignPlayerNameList');
 const assignBoss = document.getElementById('assignBoss');
 const assignItem = document.getElementById('assignItem');
 const assignWeight = document.getElementById('assignWeight');
@@ -40,6 +41,7 @@ let raidId = null;
 let raid = null;
 let itemsCatalog = {};
 let guildMemberNames = new Set();
+let guildMemberNamesSorted = [];
 let reserves = [];
 let auditEntries = [];
 let activeTab = 'players';
@@ -107,9 +109,18 @@ function renderBanner() {
     raidSettingsBanner.appendChild(span);
   });
 
-  raidLockBanner.hidden = !raid.is_locked;
+  const isCompleted = raid.status === 'completed';
+  const statusChip = document.createElement('span');
+  statusChip.className = `raid-chip raid-chip--${isCompleted ? 'completed' : 'active'}`;
+  statusChip.textContent = isCompleted ? 'Завершений' : 'Активний';
+  raidSettingsBanner.appendChild(statusChip);
+
   lockToggleBtn.hidden = !isOfficerMode();
-  lockToggleBtn.textContent = raid.is_locked ? 'Розблокувати рейд' : 'Заблокувати рейд';
+  lockToggleBtn.textContent = raid.is_locked ? '🔒 Розблокувати рейд' : '🔓 Заблокувати рейд';
+  lockToggleBtn.classList.toggle('link-button-std--danger', raid.is_locked);
+
+  statusToggleBtn.hidden = !isOfficerMode();
+  statusToggleBtn.textContent = isCompleted ? '↩ Повернути в активні' : '✅ Завершити рейд';
 }
 
 function updateOfficerButton() {
@@ -124,6 +135,57 @@ function promptOfficerName() {
   if (name === null) return;
   setOfficerName(raidId, name.trim());
   updateOfficerButton();
+}
+
+function setGuildMemberNamesSorted(players) {
+  guildMemberNamesSorted = players.map((p) => p.name).sort((a, b) => a.localeCompare(b, 'uk'));
+}
+
+// Той самий патерн, що в personal-analytics.js: підказки гільдії, але вільний
+// текст лишається доступним (легіонера можна вписати вручну, він не в списку).
+function setupNameAutocomplete(inputEl, listEl) {
+  function closeList() {
+    listEl.classList.remove('is-open');
+    listEl.innerHTML = '';
+  }
+
+  function openList() {
+    const query = inputEl.value.trim().toLocaleLowerCase('uk');
+    const matches = query
+      ? guildMemberNamesSorted.filter((name) => name.toLocaleLowerCase('uk').includes(query))
+      : guildMemberNamesSorted;
+
+    listEl.innerHTML = '';
+
+    if (!matches.length) {
+      const empty = document.createElement('div');
+      empty.className = 'raid-autocomplete-empty';
+      empty.textContent = 'Гравця гільдії не знайдено — можна вписати легіонера вручну';
+      listEl.appendChild(empty);
+    } else {
+      matches.forEach((name) => {
+        const item = document.createElement('div');
+        item.className = 'raid-autocomplete-item';
+        item.appendChild(createPlayerBadge(name));
+        item.appendChild(document.createTextNode(name));
+        item.addEventListener('mousedown', (event) => {
+          event.preventDefault();
+          inputEl.value = name;
+          closeList();
+        });
+        listEl.appendChild(item);
+      });
+    }
+
+    listEl.classList.add('is-open');
+  }
+
+  inputEl.addEventListener('input', openList);
+  inputEl.addEventListener('focus', openList);
+  inputEl.addEventListener('blur', () => setTimeout(closeList, 100));
+  inputEl.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeList();
+  });
 }
 
 function populateBossSelect(selectEl) {
@@ -458,6 +520,20 @@ lockToggleBtn.addEventListener('click', async () => {
   }
 });
 
+statusToggleBtn.addEventListener('click', async () => {
+  const token = getOfficerToken(raidId);
+  const action = raid.status === 'completed' ? 'reactivate' : 'complete';
+  try {
+    raid = await apiCall('POST', `/raids/${raidId}/${action}`, {
+      token,
+      body: { officerName: getOfficerName(raidId) }
+    });
+    renderBanner();
+  } catch (err) {
+    alert(err.message);
+  }
+});
+
 const TAB_PANES = { players: playersPane, items: itemsPane, audit: auditPane };
 
 async function setActiveTab(tab) {
@@ -475,6 +551,7 @@ assignPlayerNameClear.addEventListener('click', () => {
   assignPlayerNameInput.value = '';
   assignPlayerNameInput.focus();
 });
+setupNameAutocomplete(assignPlayerNameInput, assignPlayerNameList);
 playersSearchInput.addEventListener('input', renderPlayersTable);
 itemsSearchInput.addEventListener('input', renderItemsTable);
 itemsBossFilter.addEventListener('change', renderItemsTable);
@@ -540,7 +617,9 @@ async function init() {
     const [itemsRes, playersRes] = await Promise.all([fetch('/data/raid-items.json'), fetch('/data/players.json')]);
     itemsCatalog = await itemsRes.json();
     if (playersRes.ok) {
-      guildMemberNames = new Set((await playersRes.json()).map((p) => p.name));
+      const players = await playersRes.json();
+      guildMemberNames = new Set(players.map((p) => p.name));
+      setGuildMemberNamesSorted(players);
     }
   } catch (err) {
     console.error(err);
