@@ -38,7 +38,6 @@ const addOfficerInput = document.getElementById('addOfficerInput');
 const addOfficerList = document.getElementById('addOfficerList');
 
 const playersPane = document.getElementById('playersPane');
-const playersSearchInput = document.getElementById('playersSearch');
 const raidPlayersBody = document.getElementById('raidPlayersBody');
 
 const auditPane = document.getElementById('auditPane');
@@ -521,13 +520,10 @@ function groupReservesByPlayer(list) {
 }
 
 function renderPlayersTable() {
-  const search = playersSearchInput.value.trim().toLocaleLowerCase('uk');
   raidPlayersBody.innerHTML = '';
 
   const grouped = groupReservesByPlayer(reserves);
-  const names = [...grouped.keys()]
-    .filter((n) => !search || n.toLocaleLowerCase('uk').includes(search))
-    .sort((a, b) => a.localeCompare(b, 'uk'));
+  const names = [...grouped.keys()].sort((a, b) => a.localeCompare(b, 'uk'));
 
   if (!names.length) {
     const tr = document.createElement('tr');
@@ -785,7 +781,6 @@ assignPlayerNameClear.addEventListener('click', () => {
 });
 setupNameAutocomplete(assignPlayerNameInput, assignPlayerNameList);
 setupUserSearchAutocomplete(addOfficerInput, addOfficerList, addOfficer);
-playersSearchInput.addEventListener('input', renderPlayersTable);
 itemsSearchInput.addEventListener('input', renderItemsTable);
 itemsBossFilter.addEventListener('change', renderItemsTable);
 itemsSoftedOnlyCheckbox.addEventListener('change', renderItemsTable);

@@ -4,11 +4,11 @@ function nowIso() {
   return new Date().toISOString();
 }
 
-// Першого збереженого альта (за датою додавання) показуємо як "ім'я для
-// атрибуції" замість users.character_name (тепер vestigial — альти
-// зберігаються в user_characters, користувач може мати кілька).
+// Останнього доданого альта показуємо як "ім'я для атрибуції" замість
+// users.character_name (тепер vestigial) — додав новий персонаж = змінив
+// активного, без потреби видаляти попередній.
 function primaryCharacterSubquery(alias) {
-  return `(SELECT character_name FROM user_characters WHERE discord_id = ${alias}.discord_id ORDER BY created_at ASC LIMIT 1)`;
+  return `(SELECT character_name FROM user_characters WHERE discord_id = ${alias}.discord_id ORDER BY created_at DESC LIMIT 1)`;
 }
 
 export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, leaderDiscordId }) {
@@ -198,7 +198,7 @@ export async function removeUserCharacter(db, discordId, characterName) {
 
 export async function getPrimaryCharacterName(db, discordId) {
   const row = await db
-    .prepare('SELECT character_name FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC LIMIT 1')
+    .prepare('SELECT character_name FROM user_characters WHERE discord_id = ? ORDER BY created_at DESC LIMIT 1')
     .bind(discordId)
     .first();
   return row?.character_name || null;
