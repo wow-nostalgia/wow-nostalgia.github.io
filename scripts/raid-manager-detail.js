@@ -303,8 +303,11 @@ function renderOfficersPanel(officers) {
 
   const leaderLi = document.createElement('li');
   leaderLi.className = 'raid-list-item';
-  leaderLi.appendChild(createPlayerBadge(raid.leader_display_name));
-  leaderLi.appendChild(document.createTextNode(`${raid.leader_display_name} (Лідер)`));
+  const leaderNameWrap = document.createElement('span');
+  leaderNameWrap.className = 'raid-list-item-name';
+  leaderNameWrap.appendChild(createPlayerBadge(raid.leader_display_name));
+  leaderNameWrap.appendChild(document.createTextNode(`${raid.leader_display_name} (Лідер)`));
+  leaderLi.appendChild(leaderNameWrap);
   officersList.appendChild(leaderLi);
 
   if (!officers.length) {
@@ -318,8 +321,11 @@ function renderOfficersPanel(officers) {
   officers.forEach((officer) => {
     const li = document.createElement('li');
     li.className = 'raid-list-item';
-    li.appendChild(createPlayerBadge(officer.display_name));
-    li.appendChild(document.createTextNode(officer.display_name));
+    const nameWrap = document.createElement('span');
+    nameWrap.className = 'raid-list-item-name';
+    nameWrap.appendChild(createPlayerBadge(officer.display_name));
+    nameWrap.appendChild(document.createTextNode(officer.display_name));
+    li.appendChild(nameWrap);
 
     if (isLeader()) {
       const removeBtn = document.createElement('button');

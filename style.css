@@ -1527,6 +1527,12 @@ body.raid-manager-detail-page .raid-list-item {
   border-bottom: 1px solid var(--color-border);
 }
 
+body.raid-manager-detail-page .raid-list-item-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
 body.raid-manager-detail-page .raid-settings-banner {
   display: flex;
   flex-wrap: wrap;

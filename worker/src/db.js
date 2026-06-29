@@ -11,6 +11,18 @@ function primaryCharacterSubquery(alias) {
   return `(SELECT character_name FROM user_characters WHERE discord_id = ${alias}.discord_id ORDER BY created_at DESC LIMIT 1)`;
 }
 
+// Ім'я для атрибуції В МЕЖАХ КОНКРЕТНОГО РЕЙДУ — персонаж, яким лідер/офіцер
+// сам собі софтнув предмет у цьому ж рейді (а не довільний "останній альт"
+// з акаунту загалом). Якщо в цьому рейді ще нічого не софтнув — фолбек на
+// primaryCharacterSubquery, потім на username.
+function raidDisplayNameSubquery(raidIdExpr, alias) {
+  return `COALESCE(
+    (SELECT player_name FROM soft_reserves WHERE raid_id = ${raidIdExpr} AND discord_id = ${alias}.discord_id ORDER BY created_at DESC LIMIT 1),
+    ${primaryCharacterSubquery(alias)},
+    ${alias}.username
+  )`;
+}
+
 export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, leaderDiscordId }) {
   const ts = nowIso();
   await db
@@ -27,7 +39,7 @@ export async function listRaids(db, { limit = 20, offset = 0 } = {}) {
   const { results } = await db
     .prepare(
       `SELECT r.id, r.title, r.instance, r.difficulty, r.is_locked, r.status, r.created_at,
-              COALESCE(${primaryCharacterSubquery('u')}, u.username) AS leader_display_name
+              ${raidDisplayNameSubquery('r.id', 'u')} AS leader_display_name
        FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
        ORDER BY r.created_at DESC LIMIT ? OFFSET ?`
     )
@@ -45,7 +57,7 @@ export async function getRaid(db, id) {
   return db
     .prepare(
       `SELECT r.*, u.username AS leader_username, u.avatar AS leader_avatar,
-              COALESCE(${primaryCharacterSubquery('u')}, u.username) AS leader_display_name
+              ${raidDisplayNameSubquery('r.id', 'u')} AS leader_display_name
        FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
        WHERE r.id = ?`
     )
@@ -236,7 +248,7 @@ export async function listRaidOfficers(db, raidId) {
   const { results } = await db
     .prepare(
       `SELECT u.discord_id, u.username, u.avatar,
-              COALESCE(${primaryCharacterSubquery('u')}, u.username) AS display_name
+              ${raidDisplayNameSubquery('ro.raid_id', 'u')} AS display_name
        FROM raid_officers ro
        JOIN users u ON u.discord_id = ro.discord_id
        WHERE ro.raid_id = ? ORDER BY ro.added_at ASC`
