@@ -26,16 +26,16 @@ const excludedBosses = new Set([
   "Toravon the Ice Watcher"
 ]);
 
-const RANK_TIERS = [
-  { max: 50, medal: '🥇' },
-  { max: 100, medal: '🥈' },
-  { max: 150, medal: '🥉' }
+const SCORE_TIERS = [
+  { min: 90, medal: '🥇' },
+  { min: 80, medal: '🥈' },
+  { min: 70, medal: '🥉' }
 ];
 
-function getRankTier(rank) {
-  const num = Number(rank);
+function getScoreTier(score) {
+  const num = Number(score);
   if (!Number.isFinite(num)) return null;
-  return RANK_TIERS.find(tier => num <= tier.max) || null;
+  return SCORE_TIERS.find(tier => num > tier.min) || null;
 }
 
 function setStatus(text) {
@@ -212,7 +212,7 @@ function renderTable(className, specName) {
     })
     .forEach((row, idx) => {
       const tr = document.createElement('tr');
-      const rankTier = getRankTier(row.overallRank);
+      const scoreTier = getScoreTier(row.overallScore);
 
       columns.forEach(col => {
         const td = document.createElement('td');
@@ -242,12 +242,11 @@ function renderTable(className, specName) {
               ? '—'
               : Math.round(Number(val)).toLocaleString('en-US');
         } else if (col.key === 'overallScore') {
-          td.textContent = Number(row[col.key] ?? 0).toFixed(2);
+          const score = Number(row[col.key] ?? 0);
+          const icon = scoreTier ? scoreTier.medal : '🤷‍♂️';
+          td.textContent = `${icon} ${score.toFixed(2)}`;
         } else if (col.key === 'overallRank') {
-          td.classList.add('server-rank-cell');
-          const rank = row.overallRank ?? '';
-          const icon = rankTier ? rankTier.medal : (rank !== '' ? '🤷‍♂️' : '');
-          td.textContent = icon ? `${icon} ${rank}` : rank;
+          td.textContent = row.overallRank ?? '';
         } else {
           td.textContent = row[col.key] ?? '';
         }
