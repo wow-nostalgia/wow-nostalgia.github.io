@@ -120,7 +120,7 @@ function renderBanner() {
   lockToggleBtn.classList.toggle('link-button-std--danger', raid.is_locked);
 
   statusToggleBtn.hidden = !isOfficerMode();
-  statusToggleBtn.textContent = isCompleted ? '↩ Повернути в активні' : '✅ Завершити рейд';
+  statusToggleBtn.textContent = isCompleted ? '↩ Реактивувати рейд' : '✅ Завершити рейд';
 }
 
 function updateOfficerButton() {

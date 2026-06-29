@@ -291,6 +291,48 @@ h1 {
   display: block;
 }
 
+.nav__dropdown {
+  position: relative;
+}
+
+.nav__dropdown-trigger {
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.nav__dropdown-trigger::after {
+  content: '▾';
+  margin-left: 5px;
+  font-size: 10px;
+}
+
+.nav__dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+  padding: 6px;
+  min-width: 210px;
+  background-color: var(--color-surface-overlay);
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  z-index: 1001;
+}
+
+.nav__dropdown.is-open .nav__dropdown-menu {
+  display: flex;
+}
+
+.nav__dropdown-menu .nav__link {
+  justify-content: flex-start;
+  width: 100%;
+}
+
 
 /* =========================
    COLLAPSIBLE
@@ -2052,6 +2094,34 @@ body.raid-manager-detail-page .raid-audit-time {
     flex: 1 1 calc(50% - 8px);
     min-width: 140px;
   }
+
+  .nav__dropdown {
+    flex: 1 1 100%;
+  }
+
+  .nav__dropdown-trigger {
+    display: none;
+  }
+
+  .nav__dropdown-menu {
+    display: flex;
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+    min-width: 0;
+  }
+
+  .nav__dropdown-menu .nav__link {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 140px;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 640px) {
@@ -2112,6 +2182,10 @@ body.raid-manager-detail-page .raid-audit-time {
   }
 
   .nav__link {
+    flex: 1 1 100%;
+  }
+
+  .nav__dropdown-menu .nav__link {
     flex: 1 1 100%;
   }
 
