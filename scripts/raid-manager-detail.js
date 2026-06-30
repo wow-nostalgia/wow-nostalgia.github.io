@@ -1,6 +1,7 @@
 const raidTitleHeading = document.getElementById('raidTitleHeading');
 const raidSettingsBanner = document.getElementById('raidSettingsBanner');
 const copyLinkBtn = document.getElementById('copyLinkBtn');
+const copyLinkTooltip = document.getElementById('copyLinkTooltip');
 const lockToggleBtn = document.getElementById('lockToggleBtn');
 const statusToggleBtn = document.getElementById('statusToggleBtn');
 const raidStatus = document.getElementById('raidStatus');
@@ -753,12 +754,21 @@ async function removeReserve(reserve) {
   }
 }
 
+let copyLinkTooltipTimeout = null;
+
+function showCopyLinkTooltip(text) {
+  copyLinkTooltip.textContent = text;
+  copyLinkTooltip.classList.add('is-visible');
+  clearTimeout(copyLinkTooltipTimeout);
+  copyLinkTooltipTimeout = setTimeout(() => copyLinkTooltip.classList.remove('is-visible'), 1800);
+}
+
 copyLinkBtn.addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(window.location.href);
-    alert('Лінк скопійовано.');
+    showCopyLinkTooltip('Скопійовано!');
   } catch {
-    alert(window.location.href);
+    showCopyLinkTooltip('Не вдалося скопіювати');
   }
 });
 

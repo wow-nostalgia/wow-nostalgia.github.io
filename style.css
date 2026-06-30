@@ -1427,7 +1427,7 @@ body.raid-manager-detail-page .raid-soft-form {
 }
 
 body.raid-manager-page .raid-form-panel {
-  max-width: 480px;
+  max-width: 640px;
   margin: 0.75rem auto 1.5rem;
   padding: 0.75rem;
   border: 1px solid var(--color-border-accent);
@@ -1444,7 +1444,6 @@ body.raid-manager-page .raid-create-form {
 
 body.raid-manager-page .raid-toggle-group {
   display: flex;
-  flex-wrap: wrap;
   gap: 0.4rem;
 }
 
@@ -1456,6 +1455,7 @@ body.raid-manager-page .raid-toggle-btn {
   color: var(--color-text-strong);
   font-size: 0.85rem;
   font-weight: 600;
+  white-space: nowrap;
   cursor: pointer;
   transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
 }
@@ -1592,11 +1592,22 @@ body.raid-manager-detail-page .raid-list-item-name {
   gap: 0.35rem;
 }
 
+body.raid-manager-detail-page .raid-banner-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+}
+
 body.raid-manager-detail-page .raid-settings-banner {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin: 0.5rem 0;
+}
+
+body.raid-manager-detail-page .raid-copy-link-wrap {
+  margin-left: auto;
 }
 
 body.raid-manager-detail-page .raid-chip,
@@ -1656,8 +1667,37 @@ body.raid-manager-detail-page .raid-banner-buttons {
   margin-bottom: 0.75rem;
 }
 
+body.raid-manager-detail-page .raid-tooltip-anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+body.raid-manager-detail-page .raid-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-mid);
+  background-color: var(--color-surface-overlay);
+  color: var(--color-text-strong);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -4px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  z-index: 5;
+}
+
+body.raid-manager-detail-page .raid-tooltip.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
 body.raid-manager-detail-page #raidStatus {
-  margin: 0 0 0 auto;
+  margin: 0.75rem 0 0;
 }
 
 body.raid-manager-detail-page .link-button-std {

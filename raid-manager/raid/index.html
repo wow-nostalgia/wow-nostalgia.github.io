@@ -52,12 +52,13 @@
 
       <h1 id="raidTitleHeading">Рейд</h1>
 
-      <div id="raidSettingsBanner" class="raid-settings-banner"></div>
+      <div class="raid-banner-row">
+        <div id="raidSettingsBanner" class="raid-settings-banner"></div>
 
-      <div class="raid-banner-buttons">
-        <button type="button" id="copyLinkBtn" class="link-button-std">Скопіювати лінк</button>
-        <button type="button" id="lockToggleBtn" class="link-button-std" hidden>Заблокувати рейд</button>
-        <button type="button" id="statusToggleBtn" class="link-button-std" hidden>Завершити рейд</button>
+        <span class="raid-tooltip-anchor raid-copy-link-wrap">
+          <button type="button" id="copyLinkBtn" class="link-button-std">Скопіювати лінк</button>
+          <span id="copyLinkTooltip" class="raid-tooltip" role="status" aria-live="polite"></span>
+        </span>
       </div>
 
       <div id="loginGate" hidden>
@@ -97,10 +98,15 @@
 
               <button type="submit" class="compare-btn">Засофтити</button>
             </form>
+            <p id="raidStatus">Завантаження...</p>
           </div>
 
           <div id="officerPanel" class="raid-officer-panel raid-form-col" hidden>
             <h2>Офіцерська панель</h2>
+            <div class="raid-banner-buttons">
+              <button type="button" id="lockToggleBtn" class="link-button-std" hidden>Заблокувати рейд</button>
+              <button type="button" id="statusToggleBtn" class="link-button-std" hidden>Завершити рейд</button>
+            </div>
             <form id="officerAssignForm" class="raid-soft-form">
               <label for="assignPlayerName">Учасник</label>
               <div class="raid-input-wrap">
@@ -138,7 +144,6 @@
           <button type="button" class="raid-tab" data-tab="audit">Історія рейду</button>
           <button type="button" class="raid-tab" data-tab="officers" id="officersTab" hidden>Офіцери</button>
           <button type="button" class="raid-tab" data-tab="settings" id="settingsTab" hidden>Налаштування</button>
-          <p id="raidStatus">Завантаження...</p>
         </div>
 
         <div class="raid-tables-grid">
@@ -220,7 +225,7 @@
   <script src="../../scripts/nav.js?v=1"></script>
   <script src="../../scripts/auth-shared.js?v=2"></script>
   <script src="../../scripts/raid-manager-shared.js?v=1"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=1"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=2"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
