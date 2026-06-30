@@ -96,7 +96,7 @@ function renderAuthNav(user) {
   const accountLink = document.createElement('a');
   accountLink.className = 'nav__link';
   accountLink.href = '/account/';
-  accountLink.textContent = 'Кабінет';
+  accountLink.textContent = 'Профіль';
   menu.appendChild(accountLink);
 
   const logoutBtn = document.createElement('button');
