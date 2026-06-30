@@ -66,17 +66,16 @@
       </div>
 
       <div id="createRaidSection" hidden>
-        <h2>Створити рейд</h2>
-
         <form id="createRaidForm" class="raid-create-form">
         <label for="raidTitle">Назва рейду</label>
         <input type="text" id="raidTitle" required placeholder="Напр. ЦЛК 25 ХМ — 29.06">
 
-        <label for="raidInstance">Інстанс</label>
-        <select id="raidInstance">
-          <option value="ICC">Льодяна Цитадель</option>
-          <option value="RS">Рубінове Святилище</option>
-        </select>
+        <label>Інстанс</label>
+        <div class="raid-toggle-group" id="raidInstanceToggle" role="group" aria-label="Інстанс">
+          <button type="button" class="raid-toggle-btn raid-toggle-btn--active" data-instance="ICC">Льодяна Цитадель</button>
+          <button type="button" class="raid-toggle-btn" data-instance="RS">Рубінове Святилище</button>
+        </div>
+        <input type="hidden" id="raidInstance" value="ICC">
 
         <label for="raidDifficulty">Складність</label>
         <select id="raidDifficulty">
@@ -86,8 +85,19 @@
           <option value="10N">10 Звичайний</option>
         </select>
 
-        <label for="raidSoftLimitTotal">Ліміт ваги софтів</label>
-        <input type="number" id="raidSoftLimitTotal" min="1" max="9" value="3" required>
+        <label>Кількість софтів</label>
+        <div class="raid-toggle-group" id="raidSoftLimitToggle" role="group" aria-label="Кількість софтів">
+          <button type="button" class="raid-toggle-btn" data-value="1">1</button>
+          <button type="button" class="raid-toggle-btn" data-value="2">2</button>
+          <button type="button" class="raid-toggle-btn raid-toggle-btn--active" data-value="3">3</button>
+          <button type="button" class="raid-toggle-btn" data-value="4">4</button>
+          <button type="button" class="raid-toggle-btn" data-value="5">5</button>
+          <button type="button" class="raid-toggle-btn" data-value="6">6</button>
+          <button type="button" class="raid-toggle-btn" data-value="7">7</button>
+          <button type="button" class="raid-toggle-btn" data-value="8">8</button>
+          <button type="button" class="raid-toggle-btn" data-value="9">9</button>
+        </div>
+        <input type="hidden" id="raidSoftLimitTotal" value="3">
 
         <button type="submit" class="compare-btn">Створити рейд</button>
         </form>
@@ -102,7 +112,7 @@
   <script src="../scripts/nav.js?v=1"></script>
   <script src="../scripts/auth-shared.js?v=2"></script>
   <script src="../scripts/raid-manager-shared.js?v=1"></script>
-  <script src="../scripts/raid-manager.js?v=1"></script>
+  <script src="../scripts/raid-manager.js?v=3"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

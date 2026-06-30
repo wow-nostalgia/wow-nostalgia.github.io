@@ -458,8 +458,7 @@ footer span {
   margin-top: 24px;
 }
 
-.ranking-link-btn,
-body.potion-page .potion-view-btn {
+.ranking-link-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -480,22 +479,15 @@ body.potion-page .potion-view-btn {
     box-shadow var(--transition-fast);
 }
 
-.ranking-link-btn:hover,
-body.potion-page .potion-view-btn:hover {
+.ranking-link-btn:hover {
   background: var(--color-surface-soft-hover);
   border-color: rgba(255, 255, 255, 0.45);
   transform: translateY(-1px);
   text-decoration: none;
 }
 
-.ranking-link-btn:active,
-body.potion-page .potion-view-btn:active {
+.ranking-link-btn:active {
   transform: translateY(0);
-}
-
-body.potion-page .potion-view-btn.active {
-  background: var(--color-surface-soft-hover);
-  border-color: rgba(255, 255, 255, 0.45);
 }
 
 
@@ -737,22 +729,38 @@ body.potion-page #potionStatus {
   font-size: 1rem;
 }
 
-body.potion-page .potion-top-actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 1.25rem;
-}
-
 body.potion-page .potion-view-switch {
   display: flex;
-  justify-content: center;
   align-items: center;
-  flex-wrap: nowrap;
-  gap: 0.75rem;
-  width: auto;
-  margin: 0 auto;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+body.potion-page .potion-view-btn {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-faint);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+body.potion-page .potion-view-btn:hover {
+  color: var(--color-text-strong);
+}
+
+body.potion-page .potion-view-btn.active {
+  color: var(--color-text-strong);
+  border-bottom-color: var(--color-link);
 }
 
 body.potion-page .potion-raids {
@@ -1427,8 +1435,36 @@ body.raid-manager-page .raid-create-form {
   margin: 0.75rem auto 1.5rem;
 }
 
-body.raid-manager-detail-page .raid-soft-form button,
-body.raid-manager-page .raid-create-form button {
+body.raid-manager-page .raid-toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+body.raid-manager-page .raid-toggle-btn {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.88);
+  color: var(--color-text-strong);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+}
+
+body.raid-manager-page .raid-toggle-btn:hover {
+  border-color: rgba(123, 170, 245, 0.55);
+}
+
+body.raid-manager-page .raid-toggle-btn--active {
+  background-color: var(--color-accent-gold);
+  border-color: var(--color-accent-gold);
+  color: #1d2636;
+}
+
+body.raid-manager-detail-page .raid-soft-form button[type="submit"],
+body.raid-manager-page .raid-create-form button[type="submit"] {
   grid-column: 2;
   justify-self: start;
 }
@@ -2173,25 +2209,6 @@ body.raid-manager-detail-page .raid-audit-time {
     min-width: 100%;
   }
 
-  body.potion-page .potion-top-actions {
-    justify-content: center;
-    align-items: center;
-  }
-
-  body.potion-page .potion-view-switch {
-    width: auto;
-    max-width: 100%;
-    flex-wrap: nowrap;
-    justify-content: center;
-    gap: 0.75rem;
-  }
-
-  body.potion-page .potion-view-btn {
-    width: 180px;
-    min-width: 180px;
-    max-width: 180px;
-  }
-
   body.potion-page .potion-raid-toggle {
     flex-direction: column;
     align-items: flex-start;
@@ -2512,15 +2529,6 @@ body.account-page .link-button-std:hover {
 
   .nav__dropdown-menu .nav__link {
     flex: 1 1 100%;
-  }
-
-  body.potion-page .potion-view-btn {
-    flex: 1;
-    width: auto;
-    min-width: 0;
-    max-width: none;
-    font-size: 1rem;
-    padding: 10px 8px;
   }
 }
 

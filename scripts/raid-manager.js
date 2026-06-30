@@ -2,6 +2,24 @@ const loginGate = document.getElementById('loginGate');
 const loginGateBtn = document.getElementById('loginGateBtn');
 const createRaidSection = document.getElementById('createRaidSection');
 const createForm = document.getElementById('createRaidForm');
+const raidInstanceToggle = document.getElementById('raidInstanceToggle');
+const raidInstanceInput = document.getElementById('raidInstance');
+const raidSoftLimitToggle = document.getElementById('raidSoftLimitToggle');
+const raidSoftLimitInput = document.getElementById('raidSoftLimitTotal');
+
+function setupToggleGroup(toggleEl, hiddenInput, datasetKey) {
+  toggleEl.addEventListener('click', (event) => {
+    const btn = event.target.closest('.raid-toggle-btn');
+    if (!btn) return;
+    hiddenInput.value = btn.dataset[datasetKey];
+    toggleEl.querySelectorAll('.raid-toggle-btn').forEach((b) => {
+      b.classList.toggle('raid-toggle-btn--active', b === btn);
+    });
+  });
+}
+
+setupToggleGroup(raidInstanceToggle, raidInstanceInput, 'instance');
+setupToggleGroup(raidSoftLimitToggle, raidSoftLimitInput, 'value');
 
 createForm.addEventListener('submit', async (event) => {
   event.preventDefault();
