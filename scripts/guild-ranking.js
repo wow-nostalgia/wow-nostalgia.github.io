@@ -184,7 +184,7 @@ function renderTable(className, specName) {
     { key: 'overallScore', label: 'Score' },
     ...bossColumns.map(bossName => ({
       key: `bosses.${bossName}`,
-      label: bossName
+      label: translateBoss(bossName)
     }))
   ];
 

@@ -576,7 +576,7 @@ function renderBossAveragesChart(rows, bossOrder) {
   new Chart(document.getElementById('chartBossAvg'), {
     type: 'bar',
     data: {
-      labels: stats.map((s) => s.boss),
+      labels: stats.map((s) => translateBoss(s.boss)),
       datasets: [
         {
           label: 'Середній DPS',
@@ -973,7 +973,7 @@ function renderBossAvgOverTimeChart(personalStats, boss) {
     canvasId: 'chartBossAvgOverTime',
     points: computeBossAvgOverTime(personalStats, boss),
     splineMode: bossAvgOverTimeSplineSelect.value,
-    datasetLabel: `Середній DPS — ${boss}`,
+    datasetLabel: `Середній DPS — ${translateBoss(boss)}`,
     yLabel: 'Середній DPS'
   });
 }
@@ -983,7 +983,7 @@ function renderBossSumOverTimeChart(personalStats, boss) {
     canvasId: 'chartBossSumOverTime',
     points: computeBossSumOverTime(personalStats, boss),
     splineMode: bossSumOverTimeSplineSelect.value,
-    datasetLabel: `Сумарний DPS — ${boss}`,
+    datasetLabel: `Сумарний DPS — ${translateBoss(boss)}`,
     yLabel: 'Сумарний DPS'
   });
 }
@@ -1034,7 +1034,7 @@ async function init() {
       bossesWithHistory.forEach((boss) => {
         const option = document.createElement('option');
         option.value = boss;
-        option.textContent = boss;
+        option.textContent = translateBoss(boss);
         selectEl.appendChild(option);
       });
     };

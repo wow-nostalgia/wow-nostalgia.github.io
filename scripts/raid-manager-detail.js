@@ -134,8 +134,8 @@ function renderBanner() {
   raidSettingsBanner.innerHTML = '';
 
   const chips = [
-    INSTANCE_LABELS[raid.instance] || raid.instance,
-    DIFFICULTY_LABELS[raid.difficulty] || raid.difficulty,
+    translateInstance(raid.instance, INSTANCE_LABELS),
+    translateDifficulty(raid.difficulty, DIFFICULTY_LABELS),
     `Ліміт ваги: ${raid.soft_limit_total}`,
     `Лідер: ${raid.leader_display_name || '—'}`
   ];
@@ -443,7 +443,7 @@ function selectItemOption(hiddenInput, triggerBtn, item) {
 
   triggerBtn.dataset.itemId = item.id;
   triggerBtn.appendChild(createItemIcon(item.id));
-  triggerBtn.appendChild(document.createTextNode(`${item.name} (${item.slot})`));
+  triggerBtn.appendChild(document.createTextNode(`${translateItem(item.name)} (${item.slot})`));
 }
 
 function renderItemPickerOptions(listEl, hiddenInput, triggerBtn, items) {
@@ -457,7 +457,7 @@ function renderItemPickerOptions(listEl, hiddenInput, triggerBtn, items) {
 
     const label = document.createElement('span');
     label.className = itemRarityClass(item.id);
-    label.textContent = `${item.name} (${item.slot})`;
+    label.textContent = `${translateItem(item.name)} (${item.slot})`;
     opt.appendChild(label);
 
     opt.addEventListener('mousedown', (event) => {
@@ -563,7 +563,7 @@ function populateBossSelect(selectEl) {
   bossesWithCatalog().forEach((boss) => {
     const opt = document.createElement('option');
     opt.value = boss;
-    opt.textContent = boss;
+    opt.textContent = translateBoss(boss);
     selectEl.appendChild(opt);
   });
 }
@@ -573,7 +573,7 @@ function renderItemsBossFilterOptions() {
   bossesWithCatalog().forEach((boss) => {
     const opt = document.createElement('option');
     opt.value = boss;
-    opt.textContent = boss;
+    opt.textContent = translateBoss(boss);
     itemsBossFilter.appendChild(opt);
   });
 }
@@ -646,7 +646,7 @@ function renderPlayersTable() {
       itemSpan.appendChild(createItemIcon(r.item_id));
       const nameEl = document.createElement('span');
       nameEl.className = `${itemRarityClass(r.item_id)}${r.is_received ? ' raid-item-received' : ''}`;
-      nameEl.textContent = ` ${itemInfo ? itemInfo.name : `#${r.item_id}`}`;
+      nameEl.textContent = ` ${itemInfo ? translateItem(itemInfo.name) : `#${r.item_id}`}`;
       itemSpan.appendChild(nameEl);
 
       if (manageable) {
@@ -714,7 +714,7 @@ function renderItemsTable() {
     if (bossFilter && item.boss !== bossFilter) return false;
     if (softedOnly && !reserves.some((r) => r.item_id === item.id)) return false;
     if (search) {
-      const haystack = `${item.name} ${item.boss}`.toLocaleLowerCase('uk');
+      const haystack = `${item.name} ${translateItem(item.name)} ${item.boss} ${translateBoss(item.boss)}`.toLocaleLowerCase('uk');
       if (!haystack.includes(search)) return false;
     }
     return true;
@@ -740,13 +740,13 @@ function renderItemsTable() {
     nameWrap.appendChild(createItemIcon(item.id));
     const nameSpan = document.createElement('span');
     nameSpan.className = itemRarityClass(item.id);
-    nameSpan.textContent = item.name;
+    nameSpan.textContent = translateItem(item.name);
     nameWrap.appendChild(nameSpan);
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
     const bossTd = document.createElement('td');
-    bossTd.textContent = item.boss;
+    bossTd.textContent = translateBoss(item.boss);
     tr.appendChild(bossTd);
 
     const reserversTd = document.createElement('td');
@@ -767,10 +767,10 @@ function describeAuditAction(entry) {
   const d = entry.detail || {};
   switch (entry.action) {
     case 'raid_create': return 'створив рейд';
-    case 'soft_add': return `софтнув ${d.boss} (${formatWeight(d.weight)})`;
-    case 'soft_remove': return `видалив софт ${d.boss || ''}`.trim();
+    case 'soft_add': return `софтнув ${translateBoss(d.boss)} (${formatWeight(d.weight)})`;
+    case 'soft_remove': return `видалив софт ${d.boss ? translateBoss(d.boss) : ''}`.trim();
     case 'soft_remove_all': return 'очистив усі свої софти';
-    case 'officer_assign': return `призначив софт гравцю ${d.playerName} (${d.boss})`;
+    case 'officer_assign': return `призначив софт гравцю ${d.playerName} (${translateBoss(d.boss)})`;
     case 'lock': return 'заблокував рейд';
     case 'unlock': return 'розблокував рейд';
     case 'settings_change': return 'змінив налаштування рейду';

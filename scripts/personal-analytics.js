@@ -243,7 +243,7 @@ function renderBossCheckboxes() {
 
     label.appendChild(input);
     label.appendChild(swatch);
-    label.appendChild(document.createTextNode(boss));
+    label.appendChild(document.createTextNode(translateBoss(boss)));
     bossCheckboxes.appendChild(label);
   });
 }
@@ -348,7 +348,7 @@ function render() {
     const spline = SPLINE_MODES[splineSelect.value] || SPLINE_MODES.smoothNoPoints;
 
     return {
-      label: `${combo.boss} — ${combo.player}`,
+      label: `${translateBoss(combo.boss)} — ${combo.player}`,
       data: aligned.map((point) => (point ? point.dps : null)),
       borderColor: color,
       backgroundColor: color,

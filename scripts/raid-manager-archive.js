@@ -54,11 +54,11 @@ function renderArchiveList(raids, total) {
     tr.appendChild(statusTd);
 
     const instanceTd = document.createElement('td');
-    instanceTd.textContent = INSTANCE_LABELS[raid.instance] || raid.instance;
+    instanceTd.textContent = translateInstance(raid.instance, INSTANCE_LABELS);
     tr.appendChild(instanceTd);
 
     const difficultyTd = document.createElement('td');
-    difficultyTd.textContent = DIFFICULTY_LABELS[raid.difficulty] || raid.difficulty;
+    difficultyTd.textContent = translateDifficulty(raid.difficulty, DIFFICULTY_LABELS);
     tr.appendChild(difficultyTd);
 
     const leaderTd = document.createElement('td');

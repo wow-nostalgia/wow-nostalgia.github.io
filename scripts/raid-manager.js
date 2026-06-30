@@ -21,6 +21,15 @@ function setupToggleGroup(toggleEl, hiddenInput, datasetKey) {
 setupToggleGroup(raidInstanceToggle, raidInstanceInput, 'instance');
 setupToggleGroup(raidSoftLimitToggle, raidSoftLimitInput, 'value');
 
+function applyNameLanguageToCreateForm() {
+  raidInstanceToggle.querySelectorAll('.raid-toggle-btn').forEach((btn) => {
+    btn.textContent = translateInstance(btn.dataset.instance, INSTANCE_LABELS);
+  });
+  document.getElementById('raidDifficulty').querySelectorAll('option').forEach((opt) => {
+    opt.textContent = translateDifficulty(opt.value, DIFFICULTY_LABELS);
+  });
+}
+
 createForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
@@ -45,6 +54,7 @@ createForm.addEventListener('submit', async (event) => {
 });
 
 async function init() {
+  applyNameLanguageToCreateForm();
   loginGateBtn.href = discordLoginUrl();
 
   const user = await fetchCurrentUser();

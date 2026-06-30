@@ -2595,6 +2595,35 @@ body.account-page .account-primary-badge {
   background-color: rgba(99, 212, 113, 0.12);
 }
 
+body.account-page .account-lang-toggle {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+}
+
+body.account-page .account-lang-toggle-btn {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.88);
+  color: var(--color-text-strong);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+}
+
+body.account-page .account-lang-toggle-btn:hover {
+  border-color: rgba(123, 170, 245, 0.55);
+}
+
+body.account-page .account-lang-toggle-btn--active {
+  background-color: var(--color-accent-gold);
+  border-color: var(--color-accent-gold);
+  color: #1d2636;
+}
+
 body.account-page .account-admin-tools {
   margin-top: 1.5rem;
   padding-top: 1rem;
