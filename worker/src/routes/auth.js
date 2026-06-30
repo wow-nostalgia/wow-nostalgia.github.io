@@ -7,7 +7,8 @@ import {
   searchUsers,
   listUserCharacters,
   addUserCharacter,
-  removeUserCharacter
+  removeUserCharacter,
+  setPrimaryCharacter
 } from '../db.js';
 import { requireSession } from '../auth.js';
 
@@ -104,6 +105,11 @@ export async function handleAddCharacter(request, env) {
 export async function handleRemoveCharacter(request, env, characterName) {
   const session = await requireSession(env.DB, request);
   return jsonResponse(await removeUserCharacter(env.DB, session.discordId, characterName));
+}
+
+export async function handleSetPrimaryCharacter(request, env, characterName) {
+  const session = await requireSession(env.DB, request);
+  return jsonResponse(await setPrimaryCharacter(env.DB, session.discordId, characterName));
 }
 
 export async function handleSearchUsers(request, env) {

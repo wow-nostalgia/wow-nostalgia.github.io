@@ -537,7 +537,7 @@ function populateMyCharacters() {
   softPlayerNameInput.innerHTML = '';
   noCharactersHint.hidden = myCharacters.length > 0;
 
-  myCharacters.forEach((name) => {
+  myCharacters.forEach(({ characterName: name }) => {
     const opt = document.createElement('option');
     opt.value = name;
     opt.textContent = name;

@@ -18,8 +18,8 @@ export async function requireSession(db, request) {
 
   const primaryCharacter = await getPrimaryCharacterName(db, user.discord_id);
 
-  // username тут — ім'я для атрибуції в чіпсах/аудиті (перший збережений
-  // альт, якщо є; інакше Discord-нік як фолбек).
+  // username тут — ім'я для атрибуції в чіпсах/аудиті (персонаж, позначений
+  // основним у профілі, якщо є; інакше Discord-нік як фолбек).
   return {
     discordId: user.discord_id,
     username: primaryCharacter || user.username,

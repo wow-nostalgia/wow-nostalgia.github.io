@@ -4,23 +4,14 @@ function nowIso() {
   return new Date().toISOString();
 }
 
-// Останнього доданого альта показуємо як "ім'я для атрибуції" замість
-// users.character_name (тепер vestigial) — додав новий персонаж = змінив
-// активного, без потреби видаляти попередній.
+// Персонаж, явно позначений як "Основний" у профілі (user_characters.is_primary).
+// Якщо такого нема — фолбек на username.
 function primaryCharacterSubquery(alias) {
-  return `(SELECT character_name FROM user_characters WHERE discord_id = ${alias}.discord_id ORDER BY created_at DESC LIMIT 1)`;
+  return `(SELECT character_name FROM user_characters WHERE discord_id = ${alias}.discord_id AND is_primary = 1 LIMIT 1)`;
 }
 
-// Ім'я для атрибуції В МЕЖАХ КОНКРЕТНОГО РЕЙДУ — персонаж, яким лідер/офіцер
-// сам собі софтнув предмет у цьому ж рейді (а не довільний "останній альт"
-// з акаунту загалом). Якщо в цьому рейді ще нічого не софтнув — фолбек на
-// primaryCharacterSubquery, потім на username.
-function raidDisplayNameSubquery(raidIdExpr, alias) {
-  return `COALESCE(
-    (SELECT player_name FROM soft_reserves WHERE raid_id = ${raidIdExpr} AND discord_id = ${alias}.discord_id ORDER BY created_at DESC LIMIT 1),
-    ${primaryCharacterSubquery(alias)},
-    ${alias}.username
-  )`;
+function displayNameSubquery(alias) {
+  return `COALESCE(${primaryCharacterSubquery(alias)}, ${alias}.username)`;
 }
 
 export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, leaderDiscordId }) {
@@ -39,7 +30,7 @@ export async function listRaids(db, { limit = 20, offset = 0 } = {}) {
   const { results } = await db
     .prepare(
       `SELECT r.id, r.title, r.instance, r.difficulty, r.is_locked, r.status, r.created_at,
-              ${raidDisplayNameSubquery('r.id', 'u')} AS leader_display_name
+              ${displayNameSubquery('u')} AS leader_display_name
        FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
        ORDER BY r.created_at DESC LIMIT ? OFFSET ?`
     )
@@ -57,7 +48,7 @@ export async function getRaid(db, id) {
   return db
     .prepare(
       `SELECT r.*, u.username AS leader_username, u.avatar AS leader_avatar,
-              ${raidDisplayNameSubquery('r.id', 'u')} AS leader_display_name
+              ${displayNameSubquery('u')} AS leader_display_name
        FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
        WHERE r.id = ?`
     )
@@ -189,10 +180,10 @@ export async function upsertUser(db, { discordId, username, avatar }) {
 
 export async function listUserCharacters(db, discordId) {
   const { results } = await db
-    .prepare('SELECT character_name FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC')
+    .prepare('SELECT character_name, is_primary FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC')
     .bind(discordId)
     .all();
-  return results.map((r) => r.character_name);
+  return results.map((r) => ({ characterName: r.character_name, isPrimary: Boolean(r.is_primary) }));
 }
 
 export async function addUserCharacter(db, discordId, characterName) {
@@ -208,9 +199,21 @@ export async function removeUserCharacter(db, discordId, characterName) {
   return listUserCharacters(db, discordId);
 }
 
+// Позначає персонажа як "Основний" (для атрибуції лідера/офіцера на сторінці
+// рейду) — знімає прапорець з усіх інших персонажів акаунту, бо основний
+// може бути лише один.
+export async function setPrimaryCharacter(db, discordId, characterName) {
+  await db.prepare('UPDATE user_characters SET is_primary = 0 WHERE discord_id = ?').bind(discordId).run();
+  await db
+    .prepare('UPDATE user_characters SET is_primary = 1 WHERE discord_id = ? AND character_name = ?')
+    .bind(discordId, characterName)
+    .run();
+  return listUserCharacters(db, discordId);
+}
+
 export async function getPrimaryCharacterName(db, discordId) {
   const row = await db
-    .prepare('SELECT character_name FROM user_characters WHERE discord_id = ? ORDER BY created_at DESC LIMIT 1')
+    .prepare('SELECT character_name FROM user_characters WHERE discord_id = ? AND is_primary = 1 LIMIT 1')
     .bind(discordId)
     .first();
   return row?.character_name || null;
@@ -248,7 +251,7 @@ export async function listRaidOfficers(db, raidId) {
   const { results } = await db
     .prepare(
       `SELECT u.discord_id, u.username, u.avatar,
-              ${raidDisplayNameSubquery('ro.raid_id', 'u')} AS display_name
+              ${displayNameSubquery('u')} AS display_name
        FROM raid_officers ro
        JOIN users u ON u.discord_id = ro.discord_id
        WHERE ro.raid_id = ? ORDER BY ro.added_at ASC`

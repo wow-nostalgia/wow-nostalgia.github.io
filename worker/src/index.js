@@ -27,7 +27,8 @@ import {
   handleSearchUsers,
   handleListCharacters,
   handleAddCharacter,
-  handleRemoveCharacter
+  handleRemoveCharacter,
+  handleSetPrimaryCharacter
 } from './routes/auth.js';
 
 const ALLOWED_ORIGINS = ['https://wow-nostalgia.github.io', 'http://localhost:8080'];
@@ -54,7 +55,7 @@ function withCors(response, request) {
 
 async function routeAuth(request, env, parts) {
   const method = request.method;
-  const [sub, sub2, sub3] = parts;
+  const [sub, sub2, sub3, sub4] = parts;
 
   if (sub === 'discord' && sub2 === 'callback' && method === 'POST') return handleDiscordCallback(request, env);
   if (sub === 'me' && !sub2 && method === 'GET') return handleGetMe(request, env);
@@ -65,7 +66,10 @@ async function routeAuth(request, env, parts) {
       if (method === 'POST') return handleAddCharacter(request, env);
       throw new HttpError(405, 'Метод не підтримується');
     }
-    if (method === 'DELETE') return handleRemoveCharacter(request, env, decodeURIComponent(sub3));
+    if (sub4 === 'primary' && method === 'POST') {
+      return handleSetPrimaryCharacter(request, env, decodeURIComponent(sub3));
+    }
+    if (!sub4 && method === 'DELETE') return handleRemoveCharacter(request, env, decodeURIComponent(sub3));
     throw new HttpError(405, 'Метод не підтримується');
   }
 

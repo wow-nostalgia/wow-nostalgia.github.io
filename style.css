@@ -2515,6 +2515,23 @@ body.account-page .raid-list-item {
   border-bottom: 1px solid var(--color-border);
 }
 
+body.account-page .account-character-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+body.account-page .account-primary-badge {
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-success);
+  border: 1px solid rgba(99, 212, 113, 0.4);
+  background-color: rgba(99, 212, 113, 0.12);
+}
+
 body.account-page .link-button-std {
   background: none;
   border: 1px solid var(--color-border-mid);

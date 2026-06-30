@@ -25,10 +25,44 @@ function renderCharactersList(characters) {
     return;
   }
 
-  characters.forEach((name) => {
+  characters.forEach(({ characterName: name, isPrimary }) => {
     const li = document.createElement('li');
     li.className = 'raid-list-item';
-    li.appendChild(document.createTextNode(name));
+
+    const nameWrap = document.createElement('span');
+    nameWrap.className = 'raid-list-item-name';
+    nameWrap.appendChild(document.createTextNode(name));
+    if (isPrimary) {
+      const badge = document.createElement('span');
+      badge.className = 'account-primary-badge';
+      badge.textContent = 'Основний';
+      nameWrap.appendChild(badge);
+    }
+    li.appendChild(nameWrap);
+
+    const actions = document.createElement('span');
+    actions.className = 'account-character-actions';
+
+    if (!isPrimary) {
+      const primaryBtn = document.createElement('button');
+      primaryBtn.type = 'button';
+      primaryBtn.className = 'link-button-std';
+      primaryBtn.textContent = 'Зробити основним';
+      primaryBtn.addEventListener('click', async () => {
+        try {
+          const token = getSessionToken();
+          const res = await fetch(`${AUTH_API_BASE}/auth/me/characters/${encodeURIComponent(name)}/primary`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          renderCharactersList(await res.json());
+        } catch (err) {
+          setAccountStatus(`Помилка: ${err.message}`);
+        }
+      });
+      actions.appendChild(primaryBtn);
+    }
 
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
@@ -47,8 +81,9 @@ function renderCharactersList(characters) {
         setAccountStatus(`Помилка: ${err.message}`);
       }
     });
-    li.appendChild(removeBtn);
+    actions.appendChild(removeBtn);
 
+    li.appendChild(actions);
     charactersList.appendChild(li);
   });
 }
