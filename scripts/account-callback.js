@@ -3,7 +3,10 @@ async function init() {
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
   const state = params.get('state');
-  const returnTo = state ? decodeURIComponent(state) : '/account/';
+  const decodedState = state ? decodeURIComponent(state) : '';
+  // Лише відносний шлях того ж origin — інакше state можна підмінити на
+  // зовнішній URL і відкрити open-redirect одразу після легітимного логіну.
+  const returnTo = /^\/(?!\/)/.test(decodedState) ? decodedState : '/account/';
 
   if (!code) {
     status.textContent = 'Discord не повернув код авторизації.';

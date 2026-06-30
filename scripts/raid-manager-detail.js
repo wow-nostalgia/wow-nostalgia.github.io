@@ -70,6 +70,7 @@ let itemsCatalog = {};
 let guildMemberNames = new Set();
 let guildMemberNamesSorted = [];
 let characterOwnerNames = new Map();
+let personalAnalyticsNames = new Set();
 let reserves = [];
 let auditEntries = [];
 let activeTab = 'players';
@@ -604,7 +605,16 @@ function renderPlayersTable() {
     const nameWrap = document.createElement('span');
     nameWrap.className = 'raid-player-name-cell';
     nameWrap.appendChild(createPlayerBadge(name));
-    nameWrap.appendChild(document.createTextNode(name));
+
+    if (personalAnalyticsNames.has(name)) {
+      const link = document.createElement('a');
+      link.href = `../../personal-analytics/?${new URLSearchParams({ player: name }).toString()}`;
+      link.textContent = name;
+      nameWrap.appendChild(link);
+    } else {
+      nameWrap.appendChild(document.createTextNode(name));
+    }
+
     const ownerName = characterOwnerNames.get(name);
     if (ownerName) nameWrap.title = ownerName;
     nameTd.appendChild(nameWrap);
@@ -934,10 +944,11 @@ async function init() {
   }
 
   try {
-    const [itemsRes, playersRes, ownersRes] = await Promise.all([
+    const [itemsRes, playersRes, ownersRes, personalStatsRes] = await Promise.all([
       fetch('/data/raid-items.json'),
       fetch('/data/players.json'),
       fetch(apiUrl('/characters/owners')).catch(() => null),
+      fetch('/data/personal-stats.json').catch(() => null),
       loadItemIconData()
     ]);
     itemsCatalog = await itemsRes.json();
@@ -948,6 +959,14 @@ async function init() {
     }
     if (ownersRes?.ok) {
       characterOwnerNames = new Map(Object.entries(await ownersRes.json()));
+    }
+    if (personalStatsRes?.ok) {
+      const personalStats = await personalStatsRes.json();
+      for (const record of personalStats) {
+        for (const player of record.players || []) {
+          personalAnalyticsNames.add(player.name);
+        }
+      }
     }
   } catch (err) {
     console.error(err);
