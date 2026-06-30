@@ -1,10 +1,12 @@
-// Переклад назв босів і предметів ICC/RS українською — джерело: офіційна
-// російська локалізація Blizzard (єдина існуюча non-EN локалізація 3.3.5a,
-// витягнута з AzerothCore world DB locales_item.sql / creature_template_locale.sql),
-// адаптована на українську вручну. Офіційного українського клієнта WoW не
-// існує. Це чернетка — можливі неточності, з часом виправляються вручну.
-// Ключі/дані для зіставлення з data/*.json завжди лишаються англійською —
-// переклад застосовується лише на рівні відображення.
+// Переклад назв босів, предметів, класів і спеціалізацій ICC/RS українською —
+// джерело: офіційна російська локалізація Blizzard (єдина існуюча non-EN
+// локалізація 3.3.5a; боси/предмети витягнуті з AzerothCore world DB
+// locales_item.sql / creature_template_locale.sql, класи/спеки — усталена
+// термінологія), адаптована на українську вручну. Офіційного українського
+// клієнта WoW не існує. Це чернетка — можливі неточності, з часом
+// виправляються вручну. Ключі/дані для зіставлення з data/*.json і URL-
+// параметрами завжди лишаються англійською — переклад застосовується лише
+// на рівні відображення.
 
 const BOSS_NAMES_UK = {
   "Lord Marrowgar": "Лорд Ребрад",
@@ -18,7 +20,7 @@ const BOSS_NAMES_UK = {
   "Blood-Queen Lana'thel": "Кривава королева Лана'тель",
   "Valithria Dreamwalker": "Валітрія Сновида",
   "Sindragosa": "Синдрагоса",
-  "The Lich King": "Король-лич",
+  "The Lich King": "Король-ліч",
   "Halion": "Халіон"
 };
 
@@ -333,6 +335,48 @@ const ITEM_NAMES_UK = {
   "Glowing Twilight Scale": "Світна сутінкова луска"
 };
 
+const CLASS_NAMES_UK = {
+  "Death Knight": "Лицар смерті",
+  "Druid": "Друїд",
+  "Hunter": "Мисливець",
+  "Mage": "Маг",
+  "Paladin": "Паладин",
+  "Priest": "Жрець",
+  "Rogue": "Розбійник",
+  "Shaman": "Шаман",
+  "Warlock": "Чорнокнижник",
+  "Warrior": "Воїн"
+};
+
+const SPEC_NAMES_UK = {
+  "Blood": "Кров",
+  "Frost": "Лід",
+  "Unholy": "Нечестивість",
+  "Balance": "Баланс",
+  "Feral Combat": "Сила звіра",
+  "Restoration": "Зцілення",
+  "Beast Mastery": "Повелитель звірів",
+  "Marksmanship": "Стрільба",
+  "Survival": "Виживання",
+  "Arcane": "Таємна магія",
+  "Fire": "Вогонь",
+  "Holy": "Світло",
+  "Protection": "Захист",
+  "Retribution": "Відплата",
+  "Discipline": "Покора",
+  "Shadow": "Тьма",
+  "Assassination": "Вбивство",
+  "Combat": "Бій",
+  "Subtlety": "Потаємність",
+  "Elemental": "Стихії",
+  "Enhancement": "Вдосконалення",
+  "Affliction": "Чаклунство",
+  "Demonology": "Демонологія",
+  "Destruction": "Руйнування",
+  "Arms": "Зброя",
+  "Fury": "Лють"
+};
+
 const INSTANCE_LABELS_EN = { ICC: "Icecrown Citadel", RS: "Ruby Sanctum" };
 const DIFFICULTY_LABELS_EN = { "10N": "10 Normal", "10H": "10 Heroic", "25N": "25 Normal", "25H": "25 Heroic" };
 
@@ -350,6 +394,24 @@ function translateBoss(name) {
 
 function translateItem(name) {
   return getNameLanguage() === "uk" ? (ITEM_NAMES_UK[name] || name) : name;
+}
+
+function translateClass(name) {
+  return getNameLanguage() === "uk" ? (CLASS_NAMES_UK[name] || name) : name;
+}
+
+function translateSpec(name) {
+  return getNameLanguage() === "uk" ? (SPEC_NAMES_UK[name] || name) : name;
+}
+
+// Перекладає рядок "Клас — Спек" (формат specKey() у guild-ranking.js/
+// analytics.js/personal-analytics.js) для відображення — сам ключ для
+// зіставлення з даними/URL-параметрами лишається англійським.
+function translateSpecKey(key) {
+  const sep = " — ";
+  const idx = key.indexOf(sep);
+  if (idx === -1) return key;
+  return `${translateClass(key.slice(0, idx))}${sep}${translateSpec(key.slice(idx + sep.length))}`;
 }
 
 // instanceLabelsUk/difficultyLabelsUk — існуючі INSTANCE_LABELS/DIFFICULTY_LABELS

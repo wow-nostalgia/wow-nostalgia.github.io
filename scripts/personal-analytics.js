@@ -192,7 +192,7 @@ function populateSpecSelect(selectEl, playerName) {
     .forEach(([key]) => {
       const option = document.createElement('option');
       option.value = key;
-      option.textContent = key;
+      option.textContent = translateSpecKey(key);
       selectEl.appendChild(option);
     });
 }

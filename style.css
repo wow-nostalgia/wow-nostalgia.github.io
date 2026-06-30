@@ -303,6 +303,14 @@ h1 {
   margin-right: 6px;
 }
 
+.nav__icon--avatar {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .nav__dropdown {
   position: relative;
 }

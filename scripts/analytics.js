@@ -384,7 +384,7 @@ function renderTopRanksChart(canvasId, rows) {
   new Chart(canvas, {
     type: 'bar',
     data: {
-      labels: stats.map((s) => s.key),
+      labels: stats.map((s) => translateSpecKey(s.key)),
       datasets: [
         {
           label: 'Топ-200',
@@ -424,7 +424,7 @@ function renderPopularityChart(canvasId, rows) {
   new Chart(canvas, {
     type: 'bar',
     data: {
-      labels: stats.map((s) => s.key),
+      labels: stats.map((s) => translateSpecKey(s.key)),
       datasets: [
         {
           label: 'Гравців',
@@ -455,7 +455,7 @@ function renderAvgScoreChart(canvasId, rows) {
   new Chart(canvas, {
     type: 'bar',
     data: {
-      labels: stats.map((s) => s.key),
+      labels: stats.map((s) => translateSpecKey(s.key)),
       datasets: [
         {
           label: 'Середній Score',
@@ -700,7 +700,7 @@ function renderTopHealersChart(healerRankings, allowedNames) {
   new Chart(canvas, {
     type: 'bar',
     data: {
-      labels: stats.map((s) => `${s.key} #${s.rank} — ${s.name}`),
+      labels: stats.map((s) => `${translateSpecKey(s.key)} #${s.rank} — ${s.name}`),
       datasets: [
         {
           label: 'HPS',
@@ -731,7 +731,7 @@ function renderTopByClassChart(rows, role, canvasId) {
   new Chart(canvas, {
     type: 'bar',
     data: {
-      labels: stats.map((s) => `${s.key} #${s.rank} — ${s.name}`),
+      labels: stats.map((s) => `${translateSpecKey(s.key)} #${s.rank} — ${s.name}`),
       datasets: [
         {
           label: 'Score',

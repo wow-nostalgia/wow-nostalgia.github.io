@@ -54,7 +54,7 @@ function populateClasses() {
   (data.classes || []).forEach(cls => {
     const option = document.createElement('option');
     option.value = cls;
-    option.textContent = cls;
+    option.textContent = translateClass(cls);
     classSelect.appendChild(option);
   });
 }
@@ -67,7 +67,7 @@ function populateSpecs(className) {
   specs.forEach(spec => {
     const option = document.createElement('option');
     option.value = spec;
-    option.textContent = spec;
+    option.textContent = translateSpec(spec);
     specSelect.appendChild(option);
   });
 }

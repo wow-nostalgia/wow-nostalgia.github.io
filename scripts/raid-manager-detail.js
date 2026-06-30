@@ -443,7 +443,7 @@ function selectItemOption(hiddenInput, triggerBtn, item) {
 
   triggerBtn.dataset.itemId = item.id;
   triggerBtn.appendChild(createItemIcon(item.id));
-  triggerBtn.appendChild(document.createTextNode(`${translateItem(item.name)} (${item.slot})`));
+  triggerBtn.appendChild(document.createTextNode(translateItem(item.name)));
 }
 
 function renderItemPickerOptions(listEl, hiddenInput, triggerBtn, items) {
@@ -457,7 +457,7 @@ function renderItemPickerOptions(listEl, hiddenInput, triggerBtn, items) {
 
     const label = document.createElement('span');
     label.className = itemRarityClass(item.id);
-    label.textContent = `${translateItem(item.name)} (${item.slot})`;
+    label.textContent = translateItem(item.name);
     opt.appendChild(label);
 
     opt.addEventListener('mousedown', (event) => {
