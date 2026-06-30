@@ -76,7 +76,17 @@
           <button type="submit" class="compare-btn">Додати</button>
         </form>
 
-        <ul id="charactersList" class="raid-list"></ul>
+        <div class="ranking-table-wrap account-characters-table-wrap">
+          <table class="account-characters-table">
+            <thead>
+              <tr>
+                <th>Персонаж</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="charactersList"></tbody>
+          </table>
+        </div>
 
         <p id="accountStatus"></p>
 
@@ -102,7 +112,7 @@
 
   <script src="../scripts/nav.js?v=1"></script>
   <script src="../scripts/auth-shared.js?v=3"></script>
-  <script src="../scripts/account.js?v=4"></script>
+  <script src="../scripts/account.js?v=6"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

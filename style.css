@@ -2499,31 +2499,48 @@ body.account-page .account-form input[type="text"]:focus {
   box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
 }
 
-body.account-page .raid-list {
-  list-style: none;
-  margin: 0.5rem 0 1.5rem;
-  padding: 0;
+body.account-page .account-characters-table-wrap {
+  width: 100%;
   max-width: 480px;
+  margin: 0.5rem 0 1.5rem;
 }
 
-body.account-page .raid-list-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  padding: 0.4rem 0;
+body.account-page .account-characters-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+body.account-page .account-characters-table th,
+body.account-page .account-characters-table td {
+  padding: 0.4rem 0.6rem;
   border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  font-size: 0.85rem;
+  vertical-align: middle;
 }
 
-body.account-page .raid-list-item-top {
-  display: flex;
+body.account-page .account-characters-table th {
+  color: var(--color-text-strong);
+  font-weight: 500;
+  font-size: 0.78rem;
+}
+
+body.account-page .account-characters-table tbody tr:hover {
+  background-color: var(--color-hover);
+}
+
+body.account-page .account-character-name-cell {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  font-weight: 500;
+  color: var(--color-text-strong);
 }
 
 body.account-page .account-character-actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.4rem;
 }
 
@@ -2535,30 +2552,6 @@ body.account-page .account-primary-badge {
   color: var(--color-success);
   border: 1px solid rgba(99, 212, 113, 0.4);
   background-color: rgba(99, 212, 113, 0.12);
-}
-
-body.account-page .account-stats-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  padding-left: 0.1rem;
-}
-
-body.account-page .account-stat-chip {
-  padding: 0.1rem 0.5rem;
-  border-radius: var(--radius-pill);
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--color-text-faint);
-  border: 1px solid var(--color-border-mid);
-  background-color: var(--color-surface-soft);
-}
-
-body.account-page .account-stat-hint {
-  font-size: 0.75rem;
-  color: var(--color-text-faint);
-  font-style: italic;
 }
 
 body.account-page .account-admin-tools {
