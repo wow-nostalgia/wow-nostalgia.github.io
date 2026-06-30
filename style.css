@@ -2004,6 +2004,24 @@ body.raid-manager-detail-page .raid-reserve-item {
   white-space: nowrap;
 }
 
+body.raid-manager-detail-page .raid-reserve-weight-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+body.raid-manager-detail-page .raid-reserve-weight-row + .raid-reserve-weight-row {
+  margin-top: 0.2rem;
+}
+
+body.raid-manager-detail-page .raid-reserve-weight-row .raid-weight-badge {
+  flex-shrink: 0;
+}
+
+body.raid-manager-detail-page .raid-reserve-weight-names {
+  white-space: normal;
+}
+
 body.raid-manager-detail-page .raid-weight-toggle {
   display: flex;
   gap: 0.4rem;

@@ -668,6 +668,41 @@ function renderPlayersTable() {
   });
 }
 
+// Групує резерви по вазі — окремий рядок на кожну вагу, щоб не плодити
+// купу однакових чіпсів "x1" поряд з кожним іменем.
+function buildReservesByWeight(reservers) {
+  const wrap = document.createElement('div');
+  wrap.className = 'raid-reserve-weight-list';
+
+  const namesByWeight = new Map();
+  reservers.forEach((r) => {
+    if (!namesByWeight.has(r.weight)) namesByWeight.set(r.weight, []);
+    namesByWeight.get(r.weight).push(r.player_name);
+  });
+
+  [1, 2, 3].forEach((weight) => {
+    const names = namesByWeight.get(weight);
+    if (!names || !names.length) return;
+
+    const row = document.createElement('div');
+    row.className = 'raid-reserve-weight-row';
+
+    const weightBadge = document.createElement('span');
+    weightBadge.className = 'raid-weight-badge';
+    weightBadge.textContent = formatWeight(weight);
+    row.appendChild(weightBadge);
+
+    const namesSpan = document.createElement('span');
+    namesSpan.className = 'raid-reserve-weight-names';
+    namesSpan.textContent = names.join(', ');
+    row.appendChild(namesSpan);
+
+    wrap.appendChild(row);
+  });
+
+  return wrap;
+}
+
 function renderItemsTable() {
   const search = itemsSearchInput.value.trim().toLocaleLowerCase('uk');
   const bossFilter = itemsBossFilter.value;
@@ -688,7 +723,7 @@ function renderItemsTable() {
   if (!flat.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 4;
+    td.colSpan = 3;
     td.textContent = 'Нічого не знайдено.';
     tr.appendChild(td);
     raidItemsBody.appendChild(tr);
@@ -710,10 +745,6 @@ function renderItemsTable() {
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
-    const slotTd = document.createElement('td');
-    slotTd.textContent = item.slot;
-    tr.appendChild(slotTd);
-
     const bossTd = document.createElement('td');
     bossTd.textContent = item.boss;
     tr.appendChild(bossTd);
@@ -724,16 +755,7 @@ function renderItemsTable() {
     if (!reservers.length) {
       reserversTd.textContent = '—';
     } else {
-      reservers.forEach((r) => {
-        const span = document.createElement('span');
-        span.className = 'raid-reserve-item';
-        span.appendChild(document.createTextNode(`${r.player_name} `));
-        const weightBadge = document.createElement('span');
-        weightBadge.className = 'raid-weight-badge';
-        weightBadge.textContent = formatWeight(r.weight);
-        span.appendChild(weightBadge);
-        reserversTd.appendChild(span);
-      });
+      reserversTd.appendChild(buildReservesByWeight(reservers));
     }
     tr.appendChild(reserversTd);
 
