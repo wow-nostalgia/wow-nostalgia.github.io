@@ -347,6 +347,13 @@ async function loadOfficers() {
   renderOfficersPanel(officers);
 }
 
+// username і display_name збігаються, якщо основний персонаж не позначено
+// (display_name тоді — фолбек на username) — без цього рядок дублюється:
+// "Boro - Boro".
+function usernameWithDisplayName(username, displayName) {
+  return username === displayName ? username : `${username} - ${displayName}`;
+}
+
 function renderOfficersPanel(officers) {
   addOfficerSection.hidden = !isLeader();
   addOfficerInput.disabled = isRaidCompleted();
@@ -357,7 +364,9 @@ function renderOfficersPanel(officers) {
   const leaderNameWrap = document.createElement('span');
   leaderNameWrap.className = 'raid-list-item-name';
   leaderNameWrap.appendChild(createPlayerBadge(raid.leader_display_name));
-  leaderNameWrap.appendChild(document.createTextNode(`${raid.leader_username} - ${raid.leader_display_name} (Лідер)`));
+  leaderNameWrap.appendChild(
+    document.createTextNode(`${usernameWithDisplayName(raid.leader_username, raid.leader_display_name)} (Лідер)`)
+  );
   leaderLi.appendChild(leaderNameWrap);
   officersList.appendChild(leaderLi);
 
@@ -375,7 +384,7 @@ function renderOfficersPanel(officers) {
     const nameWrap = document.createElement('span');
     nameWrap.className = 'raid-list-item-name';
     nameWrap.appendChild(createPlayerBadge(officer.display_name));
-    nameWrap.appendChild(document.createTextNode(`${officer.username} - ${officer.display_name}`));
+    nameWrap.appendChild(document.createTextNode(usernameWithDisplayName(officer.username, officer.display_name)));
     li.appendChild(nameWrap);
 
     if (isLeader()) {
