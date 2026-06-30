@@ -178,6 +178,21 @@ export async function upsertUser(db, { discordId, username, avatar }) {
   return getUserByDiscordId(db, discordId);
 }
 
+// Публічна мапа "застовплений персонаж -> ім'я для тултіпа" (основний
+// персонаж власника, або username, якщо основного не позначено) — для
+// тултіпів у статичній аналітиці/таблиці гравців рейду. Без авторизації:
+// видає лише публічний display name, не discord_id чи інші дані акаунту.
+export async function listCharacterOwnerNames(db) {
+  const { results } = await db
+    .prepare(
+      `SELECT uc.character_name AS owned_name, ${displayNameSubquery('u')} AS display_name
+       FROM user_characters uc
+       JOIN users u ON u.discord_id = uc.discord_id`
+    )
+    .all();
+  return results;
+}
+
 export async function listUserCharacters(db, discordId) {
   const { results } = await db
     .prepare('SELECT character_name, is_primary FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC')

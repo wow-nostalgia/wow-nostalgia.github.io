@@ -10,7 +10,8 @@ import {
   removeUserCharacter,
   setPrimaryCharacter,
   findCharacterOwner,
-  removeCharacterByAnyOwner
+  removeCharacterByAnyOwner,
+  listCharacterOwnerNames
 } from '../db.js';
 import { requireSession } from '../auth.js';
 
@@ -122,6 +123,16 @@ export async function handleSetPrimaryCharacter(request, env, characterName) {
 export async function handleAdminRemoveCharacter(request, env, characterName, session) {
   const removedFromDiscordId = await removeCharacterByAnyOwner(env.DB, characterName);
   return jsonResponse({ removedFromDiscordId });
+}
+
+// Публічно (без логіну) — для тултіпів "це альт когось" у статичній
+// аналітиці/таблиці гравців рейду. Видає лише ім'я для атрибуції, не сам
+// discord_id чи інші дані акаунту.
+export async function handleListCharacterOwners(request, env) {
+  const rows = await listCharacterOwnerNames(env.DB);
+  const map = {};
+  for (const row of rows) map[row.owned_name] = row.display_name;
+  return jsonResponse(map);
 }
 
 export async function handleSearchUsers(request, env) {

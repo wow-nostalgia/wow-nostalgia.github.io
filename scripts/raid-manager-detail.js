@@ -69,6 +69,7 @@ let raidOfficerIds = new Set();
 let itemsCatalog = {};
 let guildMemberNames = new Set();
 let guildMemberNamesSorted = [];
+let characterOwnerNames = new Map();
 let reserves = [];
 let auditEntries = [];
 let activeTab = 'players';
@@ -604,6 +605,8 @@ function renderPlayersTable() {
     nameWrap.className = 'raid-player-name-cell';
     nameWrap.appendChild(createPlayerBadge(name));
     nameWrap.appendChild(document.createTextNode(name));
+    const ownerName = characterOwnerNames.get(name);
+    if (ownerName) nameWrap.title = ownerName;
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
@@ -931,9 +934,10 @@ async function init() {
   }
 
   try {
-    const [itemsRes, playersRes] = await Promise.all([
+    const [itemsRes, playersRes, ownersRes] = await Promise.all([
       fetch('/data/raid-items.json'),
       fetch('/data/players.json'),
+      fetch(apiUrl('/characters/owners')).catch(() => null),
       loadItemIconData()
     ]);
     itemsCatalog = await itemsRes.json();
@@ -941,6 +945,9 @@ async function init() {
       const players = await playersRes.json();
       guildMemberNames = new Set(players.map((p) => p.name));
       setGuildMemberNamesSorted(players);
+    }
+    if (ownersRes?.ok) {
+      characterOwnerNames = new Map(Object.entries(await ownersRes.json()));
     }
   } catch (err) {
     console.error(err);

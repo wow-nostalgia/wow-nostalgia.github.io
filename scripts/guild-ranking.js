@@ -19,6 +19,7 @@ if (!lastUpdatedText && tableStatus) {
 
 let data = null;
 let guildMemberNames = new Set();
+let characterOwnerNames = new Map();
 
 const excludedBosses = new Set([
   "Valithria Dreamwalker",
@@ -231,6 +232,8 @@ function renderTable(className, specName) {
           const link = document.createElement('a');
           link.href = buildPersonalAnalyticsUrl([row.name]);
           link.textContent = row.name;
+          const ownerName = characterOwnerNames.get(row.name);
+          if (ownerName) link.title = ownerName;
           td.appendChild(createPlayerBadge(row.name));
           td.appendChild(link);
         } else if (col.key.startsWith('bosses.')) {
@@ -265,9 +268,10 @@ function renderTable(className, specName) {
 async function init() {
   try {
     setStatus('Завантаження даних...');
-    const [rankingResponse, playersResponse] = await Promise.all([
+    const [rankingResponse, playersResponse, ownersResponse] = await Promise.all([
       fetch('/data/guild-data.json'),
-      fetch('/data/players.json')
+      fetch('/data/players.json'),
+      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null)
     ]);
 
     if (!rankingResponse.ok) {
@@ -279,6 +283,10 @@ async function init() {
     if (playersResponse.ok) {
       const players = await playersResponse.json();
       guildMemberNames = new Set(players.map(player => player.name));
+    }
+
+    if (ownersResponse?.ok) {
+      characterOwnerNames = new Map(Object.entries(await ownersResponse.json()));
     }
 
     populateClasses();

@@ -29,7 +29,8 @@ import {
   handleAddCharacter,
   handleRemoveCharacter,
   handleSetPrimaryCharacter,
-  handleAdminRemoveCharacter
+  handleAdminRemoveCharacter,
+  handleListCharacterOwners
 } from './routes/auth.js';
 
 const ALLOWED_ORIGINS = ['https://wow-nostalgia.github.io', 'http://localhost:8080'];
@@ -174,6 +175,12 @@ async function route(request, env) {
   }
 
   if (parts[2] === 'auth') return routeAuth(request, env, parts.slice(3));
+
+  // Публічний (без логіну) — для тултіпів "ім'я основного персонажа/акаунту"
+  // у статичній аналітиці й таблиці гравців рейду.
+  if (parts[2] === 'characters' && parts[3] === 'owners' && request.method === 'GET') {
+    return handleListCharacterOwners(request, env);
+  }
 
   if (parts[2] === 'raids') {
     const session = await requireSession(env.DB, request);

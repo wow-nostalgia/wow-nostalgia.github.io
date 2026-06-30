@@ -1437,9 +1437,17 @@ body.raid-manager-page .raid-form-panel {
 
 body.raid-manager-page .raid-create-form {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto auto;
   gap: 0.5rem 0.75rem;
   align-items: center;
+}
+
+/* Колонка полів звужується до найширшого елемента (зараз — тогл
+   "Інстанс"), а текстове поле/дропдаун тягнуться на всю цю ширину —
+   так усі праві краї вирівнюються по тому ж краю, що й тогли. */
+body.raid-manager-page .raid-create-form select,
+body.raid-manager-page .raid-create-form input[type="text"] {
+  width: 100%;
 }
 
 body.raid-manager-page .raid-toggle-group {
@@ -2542,6 +2550,14 @@ body.account-page .account-character-actions {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.4rem;
+}
+
+/* Бейдж "Основний" і кнопка "Зробити основним" займають той самий слот —
+   фіксована ширина, щоб "Видалити" завжди починалась в одному місці. */
+body.account-page .account-character-actions > :first-child {
+  display: inline-flex;
+  justify-content: center;
+  min-width: 9.5rem;
 }
 
 body.account-page .account-primary-badge {
