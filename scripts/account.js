@@ -4,6 +4,7 @@ const accountLoading = document.getElementById('accountLoading');
 const loginBtn = document.getElementById('loginBtn');
 const profileAvatar = document.getElementById('profileAvatar');
 const profileUsername = document.getElementById('profileUsername');
+const profileDiscordId = document.getElementById('profileDiscordId');
 const charactersList = document.getElementById('charactersList');
 const addCharacterForm = document.getElementById('addCharacterForm');
 const characterNameInput = document.getElementById('characterNameInput');
@@ -86,6 +87,7 @@ async function init() {
 
   loggedInView.hidden = false;
   profileUsername.textContent = user.username;
+  profileDiscordId.textContent = `Discord ID: ${user.discordId}`;
   if (user.avatar) {
     profileAvatar.src = user.avatar;
     profileAvatar.hidden = false;

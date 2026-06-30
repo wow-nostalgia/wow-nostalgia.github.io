@@ -158,6 +158,22 @@ function renderBanner() {
   settingsSoftLimitInput.value = raid.soft_limit_total;
 
   applyWeightLimits();
+  applySoftFormLockState();
+}
+
+// Лок блокує самософт лише для звичайних гравців — офіцери/лідер обходять
+// лок на бекенді (reserves.js), тож для них форму не вимикаємо.
+function applySoftFormLockState() {
+  const locked = raid.is_locked && !isOfficerMode();
+
+  softPlayerNameInput.disabled = locked || !myCharacters.length;
+  softBoss.disabled = locked;
+  softItemTrigger.disabled = locked;
+  softForm.querySelector('button[type="submit"]').disabled = locked;
+
+  softWeightToggle.querySelectorAll('.raid-weight-toggle-btn').forEach((btn) => {
+    btn.disabled = locked || Number(btn.dataset.weight) > raid.soft_limit_total;
+  });
 }
 
 // Кнопки x2/x3 вимикаємо, якщо ліміт ваги рейду нижчий — обирати вагу,
@@ -486,7 +502,6 @@ document.addEventListener('mouseout', (event) => {
 function populateMyCharacters() {
   softPlayerNameInput.innerHTML = '';
   noCharactersHint.hidden = myCharacters.length > 0;
-  softPlayerNameInput.disabled = !myCharacters.length;
 
   myCharacters.forEach((name) => {
     const opt = document.createElement('option');
@@ -494,6 +509,8 @@ function populateMyCharacters() {
     opt.textContent = name;
     softPlayerNameInput.appendChild(opt);
   });
+
+  applySoftFormLockState();
 }
 
 function populateBossSelect(selectEl) {

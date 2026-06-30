@@ -299,6 +299,10 @@ h1 {
   display: block;
 }
 
+.nav__icon--profile {
+  margin-right: 6px;
+}
+
 .nav__dropdown {
   position: relative;
 }
@@ -1476,6 +1480,18 @@ body.raid-manager-detail-page .raid-item-picker-trigger:focus {
   box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
 }
 
+body.raid-manager-detail-page .raid-soft-form select:disabled,
+body.raid-manager-detail-page .raid-soft-form input:disabled,
+body.raid-manager-detail-page .raid-item-picker-trigger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+body.raid-manager-page .ranking-table-wrap {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 body.raid-manager-page .raid-table {
   width: 100%;
   border-collapse: collapse;
@@ -2363,23 +2379,29 @@ body.account-page .account-avatar {
   border: 1px solid var(--color-border-mid);
 }
 
+body.account-page .account-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
 body.account-page .account-username {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--color-text-strong);
 }
 
+body.account-page .account-discord-id {
+  font-size: 0.8rem;
+  color: var(--color-text-faint);
+}
+
 body.account-page .account-form {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto;
   gap: 0.5rem 0.75rem;
   align-items: center;
   max-width: 480px;
-}
-
-body.account-page .account-form button {
-  grid-column: 2;
-  justify-self: start;
 }
 
 body.account-page .account-form input[type="text"] {
