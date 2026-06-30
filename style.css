@@ -2508,11 +2508,17 @@ body.account-page .raid-list {
 
 body.account-page .raid-list-item {
   display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+body.account-page .raid-list-item-top {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.3rem 0;
-  border-bottom: 1px solid var(--color-border);
 }
 
 body.account-page .account-character-actions {
@@ -2522,7 +2528,6 @@ body.account-page .account-character-actions {
 }
 
 body.account-page .account-primary-badge {
-  margin-left: 0.5rem;
   padding: 0.1rem 0.5rem;
   border-radius: var(--radius-pill);
   font-size: 0.7rem;
@@ -2530,6 +2535,42 @@ body.account-page .account-primary-badge {
   color: var(--color-success);
   border: 1px solid rgba(99, 212, 113, 0.4);
   background-color: rgba(99, 212, 113, 0.12);
+}
+
+body.account-page .account-stats-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding-left: 0.1rem;
+}
+
+body.account-page .account-stat-chip {
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-text-faint);
+  border: 1px solid var(--color-border-mid);
+  background-color: var(--color-surface-soft);
+}
+
+body.account-page .account-stat-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-faint);
+  font-style: italic;
+}
+
+body.account-page .account-admin-tools {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+body.account-page .account-admin-hint {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--color-text-faint);
 }
 
 body.account-page .link-button-std {

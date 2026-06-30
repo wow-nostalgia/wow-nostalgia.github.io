@@ -28,7 +28,8 @@ import {
   handleListCharacters,
   handleAddCharacter,
   handleRemoveCharacter,
-  handleSetPrimaryCharacter
+  handleSetPrimaryCharacter,
+  handleAdminRemoveCharacter
 } from './routes/auth.js';
 
 const ALLOWED_ORIGINS = ['https://wow-nostalgia.github.io', 'http://localhost:8080'];
@@ -147,6 +148,23 @@ async function routeRaids(request, env, parts, session) {
   throw new HttpError(404, 'Невідомий шлях');
 }
 
+// Один хардкодований Discord ID власника сайту (env var, не секрет) —
+// без повноцінної системи ролей. Дає змогу примусово звільнити персонажа,
+// якщо хтось помилково застовпив чужого (унікальність — first-come, без
+// підтверджень, тож конфлікти можливі й мають мати ручний вихід).
+async function routeAdmin(request, env, parts, session) {
+  if (session.discordId !== env.ADMIN_DISCORD_ID) throw new HttpError(403, 'Лише адміністратор сайту');
+
+  const method = request.method;
+  const [sub, sub2] = parts;
+
+  if (sub === 'characters' && sub2 && method === 'DELETE') {
+    return handleAdminRemoveCharacter(request, env, decodeURIComponent(sub2), session);
+  }
+
+  throw new HttpError(404, 'Невідомий шлях');
+}
+
 async function route(request, env) {
   const url = new URL(request.url);
   const parts = url.pathname.replace(/^\/+|\/+$/g, '').split('/');
@@ -160,6 +178,11 @@ async function route(request, env) {
   if (parts[2] === 'raids') {
     const session = await requireSession(env.DB, request);
     return routeRaids(request, env, parts.slice(3), session);
+  }
+
+  if (parts[2] === 'admin') {
+    const session = await requireSession(env.DB, request);
+    return routeAdmin(request, env, parts.slice(3), session);
   }
 
   throw new HttpError(404, 'Невідомий шлях');

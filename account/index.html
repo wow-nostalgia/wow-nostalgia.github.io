@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
-  <title>Кабінет — Рейд-менеджер</title>
+  <title>Профіль — Рейд-менеджер</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -50,15 +50,15 @@
 
     <div class="container-inner">
 
-      <h1>Кабінет</h1>
+      <h1>Профіль</h1>
 
       <div id="loggedOutView" hidden>
-        <p>Щоб скористатись кабінетом, увійди через Discord.</p>
+        <p>Щоб скористатись профілем, увійди через Discord.</p>
         <a class="compare-btn" id="loginBtn" href="#">Увійти через Discord</a>
       </div>
 
       <div id="loggedInView" hidden>
-        <h2>Акаунт</h2>
+        <h2>Акаунт Discord</h2>
 
         <div class="account-profile">
           <img id="profileAvatar" class="account-avatar" alt="" hidden>
@@ -79,6 +79,17 @@
         <ul id="charactersList" class="raid-list"></ul>
 
         <p id="accountStatus"></p>
+
+        <div id="adminCharacterTools" class="account-admin-tools" hidden>
+          <h2>Адмін: звільнити персонажа</h2>
+          <p class="account-admin-hint">Примусово прибирає персонажа з чужого акаунту (виправлення помилкового застовплення).</p>
+          <form id="adminRemoveCharacterForm" class="account-form">
+            <label for="adminCharacterNameInput">Ім'я персонажа</label>
+            <input type="text" id="adminCharacterNameInput" autocomplete="off" placeholder="Ім'я персонажа">
+            <button type="submit" class="compare-btn">Звільнити</button>
+          </form>
+          <p id="adminCharacterStatus"></p>
+        </div>
       </div>
 
       <p id="accountLoading">Завантаження...</p>
@@ -91,7 +102,7 @@
 
   <script src="../scripts/nav.js?v=1"></script>
   <script src="../scripts/auth-shared.js?v=3"></script>
-  <script src="../scripts/account.js?v=3"></script>
+  <script src="../scripts/account.js?v=4"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

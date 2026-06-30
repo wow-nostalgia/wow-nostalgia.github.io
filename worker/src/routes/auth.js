@@ -8,7 +8,9 @@ import {
   listUserCharacters,
   addUserCharacter,
   removeUserCharacter,
-  setPrimaryCharacter
+  setPrimaryCharacter,
+  findCharacterOwner,
+  removeCharacterByAnyOwner
 } from '../db.js';
 import { requireSession } from '../auth.js';
 
@@ -79,7 +81,7 @@ export async function handleDiscordCallback(request, env) {
 export async function handleGetMe(request, env) {
   const session = await requireSession(env.DB, request);
   const user = await getUserByDiscordId(env.DB, session.discordId);
-  return jsonResponse(publicUser(user));
+  return jsonResponse({ ...publicUser(user), isAdmin: session.discordId === env.ADMIN_DISCORD_ID });
 }
 
 export async function handleLogout(request, env) {
@@ -99,6 +101,11 @@ export async function handleAddCharacter(request, env) {
   const characterName = capitalizeName(String(body.characterName || '').trim());
   if (!characterName) throw new HttpError(400, "Потрібне ім'я персонажа");
 
+  const ownerId = await findCharacterOwner(env.DB, characterName);
+  if (ownerId && ownerId !== session.discordId) {
+    throw new HttpError(409, `Персонажа "${characterName}" вже застовпив інший акаунт`);
+  }
+
   return jsonResponse(await addUserCharacter(env.DB, session.discordId, characterName), 201);
 }
 
@@ -110,6 +117,11 @@ export async function handleRemoveCharacter(request, env, characterName) {
 export async function handleSetPrimaryCharacter(request, env, characterName) {
   const session = await requireSession(env.DB, request);
   return jsonResponse(await setPrimaryCharacter(env.DB, session.discordId, characterName));
+}
+
+export async function handleAdminRemoveCharacter(request, env, characterName, session) {
+  const removedFromDiscordId = await removeCharacterByAnyOwner(env.DB, characterName);
+  return jsonResponse({ removedFromDiscordId });
 }
 
 export async function handleSearchUsers(request, env) {

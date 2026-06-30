@@ -199,6 +199,35 @@ export async function removeUserCharacter(db, discordId, characterName) {
   return listUserCharacters(db, discordId);
 }
 
+// Глобальна унікальність персонажа (across усіх акаунтів) — на рівні
+// застосунку, а не DB UNIQUE/COLLATE NOCASE: SQLite кейсфолдить лише ASCII,
+// кириличні "борис"/"Борис" через DB-рівень не зловити (як і в searchUsers).
+// Повертає рядок зі збереженим написанням імені (потрібне для точного
+// DELETE — введений запит може відрізнятись регістром від збереженого).
+async function findCharacterClaim(db, characterName) {
+  const { results } = await db.prepare('SELECT discord_id, character_name FROM user_characters').all();
+  const q = characterName.toLocaleLowerCase('uk');
+  const match = results.find((r) => r.character_name.toLocaleLowerCase('uk') === q);
+  return match ? { discordId: match.discord_id, characterName: match.character_name } : null;
+}
+
+export async function findCharacterOwner(db, characterName) {
+  const claim = await findCharacterClaim(db, characterName);
+  return claim?.discordId || null;
+}
+
+// Адмінське форс-видалення — виправлення помилкового застовплення чужого
+// персонажа, без перевірки фактичного власника.
+export async function removeCharacterByAnyOwner(db, characterName) {
+  const claim = await findCharacterClaim(db, characterName);
+  if (!claim) return null;
+  await db
+    .prepare('DELETE FROM user_characters WHERE discord_id = ? AND character_name = ?')
+    .bind(claim.discordId, claim.characterName)
+    .run();
+  return claim.discordId;
+}
+
 // Позначає персонажа як "Основний" (для атрибуції лідера/офіцера на сторінці
 // рейду) — знімає прапорець з усіх інших персонажів акаунту, бо основний
 // може бути лише один.

@@ -10,3 +10,6 @@ database_id = "0ac710f2-18e0-4d25-b4ba-f54a8f33c7d8"
 [vars]
 DISCORD_CLIENT_ID = "1521132280243032064"
 DISCORD_REDIRECT_URI = "https://wow-nostalgia.github.io/account/callback/"
+# Discord ID власника сайту — дає доступ до адмінського форс-видалення
+# чужого застовпленого персонажа (worker/src/index.js: routeAdmin).
+ADMIN_DISCORD_ID = "1163881988772610200"
