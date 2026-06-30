@@ -1525,6 +1525,7 @@ body.raid-manager-detail-page .raid-item-picker-trigger:focus {
 
 body.raid-manager-detail-page .raid-soft-form select:disabled,
 body.raid-manager-detail-page .raid-soft-form input:disabled,
+body.raid-manager-detail-page .raid-input-wrap input[type="text"]:disabled,
 body.raid-manager-detail-page .raid-item-picker-trigger:disabled {
   opacity: 0.45;
   cursor: not-allowed;
@@ -1714,6 +1715,11 @@ body.raid-manager-detail-page .link-button-std:hover {
   background-color: var(--color-hover);
 }
 
+body.raid-manager-detail-page .link-button-std:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 body.raid-manager-detail-page .link-button-std--danger {
   color: var(--color-danger);
   border-color: rgba(255, 107, 107, 0.4);
@@ -1760,6 +1766,11 @@ body.raid-manager-detail-page .raid-input-clear {
 
 body.raid-manager-detail-page .raid-input-clear:hover {
   color: var(--color-text-strong);
+}
+
+body.raid-manager-detail-page .raid-input-clear:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 body.raid-manager-detail-page .raid-autocomplete-list {
@@ -2087,6 +2098,11 @@ body.raid-manager-detail-page .raid-remove-btn {
 
 body.raid-manager-detail-page .raid-remove-btn:hover {
   color: var(--color-link-hover);
+}
+
+body.raid-manager-detail-page .raid-remove-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 body.raid-manager-detail-page .raid-item-received {

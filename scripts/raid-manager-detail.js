@@ -91,6 +91,10 @@ function isOfficerMode() {
   return Boolean(currentUser) && (isLeader() || raidOfficerIds.has(currentUser.discordId));
 }
 
+function isRaidCompleted() {
+  return raid.status === 'completed';
+}
+
 function canManage(playerName) {
   if (isOfficerMode()) return true;
   if (!currentUser) return false;
@@ -160,12 +164,15 @@ function renderBanner() {
 
   applyWeightLimits();
   applySoftFormLockState();
+  applyOfficerFormLockState();
+  applySettingsFormLockState();
 }
 
 // Лок блокує самософт лише для звичайних гравців — офіцери/лідер обходять
-// лок на бекенді (reserves.js), тож для них форму не вимикаємо.
+// лок на бекенді (reserves.js). Завершення рейду (isRaidCompleted) блокує
+// форму для всіх без винятку, включно з лідером/офіцерами.
 function applySoftFormLockState() {
-  const locked = raid.is_locked && !isOfficerMode();
+  const locked = isRaidCompleted() || (raid.is_locked && !isOfficerMode());
 
   softPlayerNameInput.disabled = locked || !myCharacters.length;
   softBoss.disabled = locked;
@@ -175,6 +182,30 @@ function applySoftFormLockState() {
   softWeightToggle.querySelectorAll('.raid-weight-toggle-btn').forEach((btn) => {
     btn.disabled = locked || Number(btn.dataset.weight) > raid.soft_limit_total;
   });
+}
+
+// Офіцерська панель і налаштування рейду — завершення блокує їх для всіх,
+// на відміну від is_locked (той обходять офіцери/лідер).
+function applyOfficerFormLockState() {
+  const locked = isRaidCompleted();
+
+  assignPlayerNameInput.disabled = locked;
+  assignPlayerNameClear.disabled = locked;
+  assignBoss.disabled = locked;
+  assignItemTrigger.disabled = locked;
+  officerAssignForm.querySelector('button[type="submit"]').disabled = locked;
+
+  assignWeightToggle.querySelectorAll('.raid-weight-toggle-btn').forEach((btn) => {
+    btn.disabled = locked || Number(btn.dataset.weight) > raid.soft_limit_total;
+  });
+}
+
+function applySettingsFormLockState() {
+  const locked = isRaidCompleted();
+
+  settingsTitleInput.disabled = locked;
+  settingsSoftLimitInput.disabled = locked;
+  settingsForm.querySelector('button[type="submit"]').disabled = locked;
 }
 
 // Кнопки x2/x3 вимикаємо, якщо ліміт ваги рейду нижчий — обирати вагу,
@@ -316,6 +347,7 @@ async function loadOfficers() {
 
 function renderOfficersPanel(officers) {
   addOfficerSection.hidden = !isLeader();
+  addOfficerInput.disabled = isRaidCompleted();
   officersList.innerHTML = '';
 
   const leaderLi = document.createElement('li');
@@ -323,7 +355,7 @@ function renderOfficersPanel(officers) {
   const leaderNameWrap = document.createElement('span');
   leaderNameWrap.className = 'raid-list-item-name';
   leaderNameWrap.appendChild(createPlayerBadge(raid.leader_display_name));
-  leaderNameWrap.appendChild(document.createTextNode(`${raid.leader_display_name} (Лідер)`));
+  leaderNameWrap.appendChild(document.createTextNode(`${raid.leader_username} - ${raid.leader_display_name} (Лідер)`));
   leaderLi.appendChild(leaderNameWrap);
   officersList.appendChild(leaderLi);
 
@@ -341,7 +373,7 @@ function renderOfficersPanel(officers) {
     const nameWrap = document.createElement('span');
     nameWrap.className = 'raid-list-item-name';
     nameWrap.appendChild(createPlayerBadge(officer.display_name));
-    nameWrap.appendChild(document.createTextNode(officer.display_name));
+    nameWrap.appendChild(document.createTextNode(`${officer.username} - ${officer.display_name}`));
     li.appendChild(nameWrap);
 
     if (isLeader()) {
@@ -349,6 +381,7 @@ function renderOfficersPanel(officers) {
       removeBtn.type = 'button';
       removeBtn.className = 'link-button-std';
       removeBtn.textContent = 'Видалити';
+      removeBtn.disabled = isRaidCompleted();
       removeBtn.addEventListener('click', async () => {
         try {
           await apiCall('DELETE', `/raids/${raidId}/officers/${encodeURIComponent(officer.discord_id)}`, { token: getSessionToken() });
@@ -600,6 +633,7 @@ function renderPlayersTable() {
         delBtn.className = 'raid-remove-btn';
         delBtn.textContent = '✕';
         delBtn.title = 'Видалити цей софт';
+        delBtn.disabled = isRaidCompleted();
         delBtn.addEventListener('click', () => removeReserve(r));
         itemSpan.appendChild(delBtn);
       }
@@ -786,6 +820,8 @@ statusToggleBtn.addEventListener('click', async () => {
   try {
     raid = await apiCall('POST', `/raids/${raidId}/${action}`, { token: getSessionToken() });
     renderBanner();
+    await loadOfficers();
+    renderPlayersTable();
   } catch (err) {
     alert(err.message);
   }
