@@ -74,7 +74,14 @@ function renderAuthNav(user) {
   langBtn.className = 'nav__link nav__lang-btn';
   langBtn.title = 'Назви босів, предметів, класів і спеків';
   langBtn.setAttribute('aria-label', lang === 'uk' ? 'Мова: Українська' : 'Language: English');
-  langBtn.textContent = lang === 'uk' ? '🇺🇦' : '🇺🇸';
+  const flagImg = document.createElement('img');
+  flagImg.className = 'nav__lang-flag';
+  flagImg.alt = lang === 'uk' ? '🇺🇦' : '🇺🇸';
+  // Twemoji SVG: 🇺🇦 = 1f1fa-1f1e6, 🇺🇸 = 1f1fa-1f1f8
+  flagImg.src = lang === 'uk'
+    ? 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1fa-1f1e6.svg'
+    : 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f1fa-1f1f8.svg';
+  langBtn.appendChild(flagImg);
   langBtn.addEventListener('click', () => {
     localStorage.setItem('nameLanguage', lang === 'uk' ? 'en' : 'uk');
     location.reload();
