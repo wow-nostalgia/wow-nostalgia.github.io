@@ -300,6 +300,8 @@ h1 {
 .nav__lang-btn {
   padding: 0 8px;
   line-height: 1;
+  background: transparent;
+  cursor: pointer;
 }
 
 .nav__lang-flag {
