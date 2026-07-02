@@ -196,6 +196,7 @@ function applySoftFormLockState() {
 function applyOfficerFormLockState() {
   const locked = isRaidCompleted();
 
+  hiddenReservesToggle.disabled = locked;
   assignPlayerNameInput.disabled = locked;
   assignPlayerNameClear.disabled = locked;
   assignBoss.disabled = locked;

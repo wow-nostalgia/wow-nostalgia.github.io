@@ -216,6 +216,8 @@ h1 {
 }
 
 .nav__auth-slot {
+  display: flex;
+  align-items: center;
   margin-left: auto;
 }
 
