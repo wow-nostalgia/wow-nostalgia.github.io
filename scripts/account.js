@@ -78,12 +78,14 @@ function renderCharactersList(characters) {
   if (!characters.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 2;
+    td.colSpan = 3;
     td.textContent = 'Ще не додано жодного персонажа.';
     tr.appendChild(td);
     charactersList.appendChild(tr);
     return;
   }
+
+  const hasPrimary = characters.some((c) => c.isPrimary);
 
   characters.forEach(({ characterName: name, isPrimary }) => {
     const tr = document.createElement('tr');
@@ -96,40 +98,39 @@ function renderCharactersList(characters) {
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
+    const checkboxTd = document.createElement('td');
+    checkboxTd.className = 'account-primary-checkbox-td';
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = isPrimary;
+    checkbox.disabled = hasPrimary;
+    checkbox.addEventListener('change', async () => {
+      if (!checkbox.checked) return;
+      checkbox.disabled = true;
+      try {
+        const token = getSessionToken();
+        const res = await fetch(`${AUTH_API_BASE}/auth/me/characters/${encodeURIComponent(name)}/primary`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error(await readErrorMessage(res));
+        renderCharactersList(await res.json());
+      } catch (err) {
+        checkbox.checked = false;
+        checkbox.disabled = false;
+        setAccountStatus(`Помилка: ${err.message}`);
+      }
+    });
+    checkboxTd.appendChild(checkbox);
+    tr.appendChild(checkboxTd);
+
     const actionsTd = document.createElement('td');
-    const actions = document.createElement('span');
-    actions.className = 'account-character-actions';
-
-    if (isPrimary) {
-      const badge = document.createElement('span');
-      badge.className = 'account-primary-badge';
-      badge.textContent = 'Основний';
-      actions.appendChild(badge);
-    } else {
-      const primaryBtn = document.createElement('button');
-      primaryBtn.type = 'button';
-      primaryBtn.className = 'link-button-std';
-      primaryBtn.textContent = 'Зробити основним';
-      primaryBtn.addEventListener('click', async () => {
-        try {
-          const token = getSessionToken();
-          const res = await fetch(`${AUTH_API_BASE}/auth/me/characters/${encodeURIComponent(name)}/primary`, {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          if (!res.ok) throw new Error(await readErrorMessage(res));
-          renderCharactersList(await res.json());
-        } catch (err) {
-          setAccountStatus(`Помилка: ${err.message}`);
-        }
-      });
-      actions.appendChild(primaryBtn);
-    }
-
+    actionsTd.className = 'account-delete-td';
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
-    removeBtn.className = 'link-button-std';
-    removeBtn.textContent = 'Видалити';
+    removeBtn.className = 'account-delete-btn';
+    removeBtn.setAttribute('aria-label', "Видалити персонажа");
+    removeBtn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
     removeBtn.addEventListener('click', async () => {
       try {
         const token = getSessionToken();
@@ -143,9 +144,7 @@ function renderCharactersList(characters) {
         setAccountStatus(`Помилка: ${err.message}`);
       }
     });
-    actions.appendChild(removeBtn);
-
-    actionsTd.appendChild(actions);
+    actionsTd.appendChild(removeBtn);
     tr.appendChild(actionsTd);
 
     charactersList.appendChild(tr);

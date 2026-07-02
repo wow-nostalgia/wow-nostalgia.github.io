@@ -2583,7 +2583,7 @@ body.account-page .account-chars-layout {
 
 body.account-page .account-characters-table-wrap {
   width: 100%;
-  max-width: 480px;
+  max-width: 320px;
   margin: 0;
 }
 
@@ -2634,22 +2634,32 @@ body.account-page .account-character-actions {
   gap: 0.4rem;
 }
 
-/* Бейдж "Основний" і кнопка "Зробити основним" займають той самий слот —
-   фіксована ширина, щоб "Видалити" завжди починалась в одному місці. */
-body.account-page .account-character-actions > :first-child {
-  display: inline-flex;
-  justify-content: center;
-  min-width: 9.5rem;
+body.account-page .account-primary-col,
+body.account-page .account-primary-checkbox-td {
+  text-align: center;
+  width: 5rem;
 }
 
-body.account-page .account-primary-badge {
-  padding: 0.1rem 0.5rem;
-  border-radius: var(--radius-pill);
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--color-success);
-  border: 1px solid rgba(99, 212, 113, 0.4);
-  background-color: rgba(99, 212, 113, 0.12);
+body.account-page .account-delete-col,
+body.account-page .account-delete-td {
+  width: 2.25rem;
+  text-align: center;
+}
+
+body.account-page .account-delete-btn {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  color: var(--color-text-faint);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+}
+
+body.account-page .account-delete-btn:hover {
+  color: var(--color-danger);
+  background-color: rgba(255, 107, 107, 0.12);
 }
 
 body.account-page .account-lang-toggle {
