@@ -13,21 +13,6 @@ const adminCharacterTools = document.getElementById('adminCharacterTools');
 const adminRemoveCharacterForm = document.getElementById('adminRemoveCharacterForm');
 const adminCharacterNameInput = document.getElementById('adminCharacterNameInput');
 const adminCharacterStatus = document.getElementById('adminCharacterStatus');
-const nameLanguageToggle = document.getElementById('nameLanguageToggle');
-
-function renderNameLanguageToggle() {
-  const current = getNameLanguage();
-  nameLanguageToggle.querySelectorAll('.account-lang-toggle-btn').forEach((btn) => {
-    btn.classList.toggle('account-lang-toggle-btn--active', btn.dataset.lang === current);
-  });
-}
-
-nameLanguageToggle.addEventListener('click', (event) => {
-  const btn = event.target.closest('.account-lang-toggle-btn');
-  if (!btn) return;
-  setNameLanguage(btn.dataset.lang);
-  renderNameLanguageToggle();
-});
 
 function setAccountStatus(text) {
   accountStatus.textContent = text || '';
@@ -211,7 +196,6 @@ adminRemoveCharacterForm.addEventListener('submit', async (event) => {
 });
 
 async function init() {
-  renderNameLanguageToggle();
   loginBtn.href = discordLoginUrl('/account/');
 
   const user = await fetchCurrentUser();

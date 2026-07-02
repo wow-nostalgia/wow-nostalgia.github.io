@@ -68,6 +68,19 @@ function renderAuthNav(user) {
   if (!slot) return;
   slot.innerHTML = '';
 
+  const lang = localStorage.getItem('nameLanguage') || 'uk';
+  const langBtn = document.createElement('button');
+  langBtn.type = 'button';
+  langBtn.className = 'nav__link nav__lang-btn';
+  langBtn.title = 'Назви босів, предметів, класів і спеків';
+  langBtn.setAttribute('aria-label', lang === 'uk' ? 'Мова: Українська' : 'Language: English');
+  langBtn.textContent = lang === 'uk' ? '🇺🇦' : '🇺🇸';
+  langBtn.addEventListener('click', () => {
+    localStorage.setItem('nameLanguage', lang === 'uk' ? 'en' : 'uk');
+    location.reload();
+  });
+  slot.appendChild(langBtn);
+
   if (!user) {
     const link = document.createElement('a');
     link.className = 'nav__link';
