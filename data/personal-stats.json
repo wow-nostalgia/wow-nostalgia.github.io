@@ -1,5 +1,1575 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "date": "2026-07-01",
+    "boss": "Lord Marrowgar",
+    "players": [
+      {
+        "name": "Gloo",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 23041
+      },
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 22170.3
+      },
+      {
+        "name": "Асунна",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 20421.4
+      },
+      {
+        "name": "Diosa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 19314.3
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18925.7
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 18568.7
+      },
+      {
+        "name": "Zibrow",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 18430.9
+      },
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 17991.6
+      },
+      {
+        "name": "Itstrolltime",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 17979.6
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 16763.3
+      },
+      {
+        "name": "Аменадиил",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 16683.2
+      },
+      {
+        "name": "Пакатак",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 15387.8
+      },
+      {
+        "name": "Pristik",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13892
+      },
+      {
+        "name": "Чітко",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13756
+      },
+      {
+        "name": "Selya",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 12236.4
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12168.9
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 11550.5
+      },
+      {
+        "name": "Белазхант",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 10281.8
+      },
+      {
+        "name": "Ronnychsigma",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 8157.1
+      },
+      {
+        "name": "September",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2889.6
+      },
+      {
+        "name": "Trashpollka",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2497.2
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 247.6
+      },
+      {
+        "name": "Красапета",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 14.3
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0.6
+      },
+      {
+        "name": "Iki",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "date": "2026-07-01",
+    "boss": "Lady Deathwhisper",
+    "players": [
+      {
+        "name": "Асунна",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18008
+      },
+      {
+        "name": "Zibrow",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 14959.5
+      },
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 14310.4
+      },
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 13901.7
+      },
+      {
+        "name": "Пакатак",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 13837.6
+      },
+      {
+        "name": "Itstrolltime",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 13673.2
+      },
+      {
+        "name": "Pristik",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13395.4
+      },
+      {
+        "name": "Gloo",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 13359.3
+      },
+      {
+        "name": "Белазхант",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 12582.2
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 11950.4
+      },
+      {
+        "name": "Diosa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 11572.2
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 11396.6
+      },
+      {
+        "name": "Чітко",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 10778
+      },
+      {
+        "name": "Selya",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 8318.2
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 7826.7
+      },
+      {
+        "name": "Ronnychsigma",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 7478.9
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 6693.2
+      },
+      {
+        "name": "Аменадиил",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 6644.6
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 3807.2
+      },
+      {
+        "name": "September",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3027.5
+      },
+      {
+        "name": "Trashpollka",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 1856.2
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 257.1
+      },
+      {
+        "name": "Красапета",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0.2
+      },
+      {
+        "name": "Iki",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0.2
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "date": "2026-07-01",
+    "boss": "Deathbringer Saurfang",
+    "players": [
+      {
+        "name": "Асунна",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 26436.6
+      },
+      {
+        "name": "Gloo",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 26258.4
+      },
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 24425.4
+      },
+      {
+        "name": "Diosa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 21243.7
+      },
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 20305
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 19964.3
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19867.5
+      },
+      {
+        "name": "Itstrolltime",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 18990.4
+      },
+      {
+        "name": "Pristik",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 18809.3
+      },
+      {
+        "name": "Аменадиил",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 18543.4
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 17705.5
+      },
+      {
+        "name": "Zibrow",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 17497.4
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 17180
+      },
+      {
+        "name": "Чітко",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 16642.4
+      },
+      {
+        "name": "Пакатак",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 16453.2
+      },
+      {
+        "name": "Selya",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 16387.9
+      },
+      {
+        "name": "Белазхант",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 16226.9
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15847.5
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 14587.6
+      },
+      {
+        "name": "Ronnychsigma",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9901.4
+      },
+      {
+        "name": "September",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 4085.1
+      },
+      {
+        "name": "Trashpollka",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3321.2
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 309.4
+      },
+      {
+        "name": "Iki",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Красапета",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "date": "2026-07-01",
+    "boss": "Blood Prince Council",
+    "players": [
+      {
+        "name": "Асунна",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18046.5
+      },
+      {
+        "name": "Gloo",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17848
+      },
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15926.2
+      },
+      {
+        "name": "Pristik",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 14715.5
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 14562.4
+      },
+      {
+        "name": "Diosa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 14078.5
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 13632.3
+      },
+      {
+        "name": "Itstrolltime",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 13386.9
+      },
+      {
+        "name": "Аменадиил",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 12179.6
+      },
+      {
+        "name": "Чітко",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 11534.8
+      },
+      {
+        "name": "Zibrow",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 11470.6
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 10178.3
+      },
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9970.1
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 9264.7
+      },
+      {
+        "name": "Пакатак",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 8081.5
+      },
+      {
+        "name": "Selya",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 7816.5
+      },
+      {
+        "name": "Ronnychsigma",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 4987.2
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 2851.2
+      },
+      {
+        "name": "Белазхант",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 2660.1
+      },
+      {
+        "name": "Trashpollka",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2476.4
+      },
+      {
+        "name": "September",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 632.2
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 117.4
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Красапета",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Iki",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "date": "2026-07-01",
+    "boss": "Blood-Queen Lana'thel",
+    "players": [
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 31596.1
+      },
+      {
+        "name": "Асунна",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 27224.9
+      },
+      {
+        "name": "Gloo",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 25353.3
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19633.5
+      },
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 16206
+      },
+      {
+        "name": "Аменадиил",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 15674.3
+      },
+      {
+        "name": "Pristik",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15582.7
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 15487.1
+      },
+      {
+        "name": "Zibrow",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 15149.6
+      },
+      {
+        "name": "Белазхант",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 14715.5
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 14588.2
+      },
+      {
+        "name": "Selya",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 14414.6
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 14371.3
+      },
+      {
+        "name": "Itstrolltime",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 13632.4
+      },
+      {
+        "name": "Чітко",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13378.5
+      },
+      {
+        "name": "Пакатак",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 12866.5
+      },
+      {
+        "name": "Diosa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 12304.8
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 10840.1
+      },
+      {
+        "name": "Ronnychsigma",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 8928.3
+      },
+      {
+        "name": "Trashpollka",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 4410.4
+      },
+      {
+        "name": "September",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2711.2
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 304.6
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Iki",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Красапета",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "date": "2026-07-01",
+    "boss": "Rotface",
+    "players": [
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 20931.1
+      },
+      {
+        "name": "Асунна",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 20388.2
+      },
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19437.2
+      },
+      {
+        "name": "Itstrolltime",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 19384.5
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 18866.6
+      },
+      {
+        "name": "Аменадиил",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 18076.1
+      },
+      {
+        "name": "Diosa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 17828.4
+      },
+      {
+        "name": "Zibrow",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 17013.5
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 16812.5
+      },
+      {
+        "name": "Пакатак",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 15272.9
+      },
+      {
+        "name": "Pristik",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 14950.3
+      },
+      {
+        "name": "Selya",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 13936.9
+      },
+      {
+        "name": "Чітко",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13922.4
+      },
+      {
+        "name": "Белазхант",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 13341.1
+      },
+      {
+        "name": "Gloo",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 12411.4
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 12372.5
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 11986.9
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 11189.2
+      },
+      {
+        "name": "Ronnychsigma",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9071.2
+      },
+      {
+        "name": "September",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3504.9
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 227.1
+      },
+      {
+        "name": "Trashpollka",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 36.2
+      },
+      {
+        "name": "Красапета",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Iki",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "date": "2026-07-01",
+    "boss": "Festergut",
+    "players": [
+      {
+        "name": "Gloo",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 21352.2
+      },
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19524.7
+      },
+      {
+        "name": "Diosa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 17479.6
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 17479
+      },
+      {
+        "name": "Itstrolltime",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 17176.4
+      },
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 16811.2
+      },
+      {
+        "name": "Аменадиил",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 16495.8
+      },
+      {
+        "name": "Пакатак",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 16140.2
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15914.3
+      },
+      {
+        "name": "Асунна",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15536.4
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 15032
+      },
+      {
+        "name": "Чітко",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 14652.2
+      },
+      {
+        "name": "Zibrow",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 14569.3
+      },
+      {
+        "name": "Pristik",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 14476
+      },
+      {
+        "name": "Белазхант",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 13853.5
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12609.5
+      },
+      {
+        "name": "Selya",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 11856.5
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 11386.2
+      },
+      {
+        "name": "Ronnychsigma",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 8117.3
+      },
+      {
+        "name": "September",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 4135.5
+      },
+      {
+        "name": "Trashpollka",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2364.5
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 268.2
+      },
+      {
+        "name": "Красапета",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Iki",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "date": "2026-07-01",
+    "boss": "Professor Putricide",
+    "players": [
+      {
+        "name": "Асунна",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 16444.4
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 14699
+      },
+      {
+        "name": "Diosa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 14327.8
+      },
+      {
+        "name": "Pristik",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13513.7
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 13252.1
+      },
+      {
+        "name": "Пакатак",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 13114.4
+      },
+      {
+        "name": "Gloo",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 12689.3
+      },
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12388.1
+      },
+      {
+        "name": "Аменадиил",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 12159.1
+      },
+      {
+        "name": "Zibrow",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 11465.3
+      },
+      {
+        "name": "Чітко",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 11399.8
+      },
+      {
+        "name": "Itstrolltime",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 10735.7
+      },
+      {
+        "name": "Белазхант",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 10089.1
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 10040.9
+      },
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 8825.2
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8807.2
+      },
+      {
+        "name": "Selya",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 7972.1
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 7800.4
+      },
+      {
+        "name": "Ronnychsigma",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 5194
+      },
+      {
+        "name": "September",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3047.2
+      },
+      {
+        "name": "Trashpollka",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 515.7
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 301.2
+      },
+      {
+        "name": "Красапета",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Iki",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "date": "2026-07-01",
+    "boss": "Valithria Dreamwalker",
+    "players": [
+      {
+        "name": "Zibrow",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9623
+      },
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 7272.9
+      },
+      {
+        "name": "Pristik",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 5915.6
+      },
+      {
+        "name": "Gloo",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 5475
+      },
+      {
+        "name": "Асунна",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 5427.6
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 5291.3
+      },
+      {
+        "name": "Аменадиил",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 5201.4
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 4874.2
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 4684.2
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 4286.5
+      },
+      {
+        "name": "Itstrolltime",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 4080.3
+      },
+      {
+        "name": "Selya",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 3641.3
+      },
+      {
+        "name": "Белазхант",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 3451.6
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 2986.9
+      },
+      {
+        "name": "Пакатак",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 2710.5
+      },
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 2280.5
+      },
+      {
+        "name": "Trashpollka",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2003.3
+      },
+      {
+        "name": "September",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 1715.6
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 966.7
+      },
+      {
+        "name": "Diosa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 381.7
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 92.8
+      },
+      {
+        "name": "Чітко",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 23.8
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      },
+      {
+        "name": "Iki",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Красапета",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "date": "2026-07-01",
+    "boss": "Sindragosa",
+    "players": [
+      {
+        "name": "Diosa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 14978.5
+      },
+      {
+        "name": "Асунна",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 13004.1
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 12006.8
+      },
+      {
+        "name": "Пакатак",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 11596.9
+      },
+      {
+        "name": "Аменадиил",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 10819.1
+      },
+      {
+        "name": "Pristik",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 10737.9
+      },
+      {
+        "name": "Itstrolltime",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 9679.1
+      },
+      {
+        "name": "Gloo",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 9432.7
+      },
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9213.7
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 9092.6
+      },
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 8608.8
+      },
+      {
+        "name": "Zibrow",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 8583.7
+      },
+      {
+        "name": "Белазхант",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 8443.6
+      },
+      {
+        "name": "Чітко",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 7880.3
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 7714.1
+      },
+      {
+        "name": "Selya",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 7172.7
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 6146.3
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 5931.4
+      },
+      {
+        "name": "September",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2565.7
+      },
+      {
+        "name": "Trashpollka",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 1225
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 251.2
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 24.5
+      },
+      {
+        "name": "Красапета",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 19.5
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Iki",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-06-28--20-51--Boroheal--FreedomUA/",
     "date": "2026-06-28",
     "boss": "Lady Deathwhisper",
