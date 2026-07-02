@@ -761,7 +761,10 @@ function renderItemsTable() {
     tr.appendChild(bossTd);
 
     const reserversTd = document.createElement('td');
-    const reservers = reserves.filter((r) => r.item_id === item.id);
+    let reservers = reserves.filter((r) => r.item_id === item.id);
+    if (raid.hidden_reserves && !isOfficerMode()) {
+      reservers = reservers.filter((r) => r.player_name !== null);
+    }
 
     if (!reservers.length) {
       reserversTd.textContent = '—';
