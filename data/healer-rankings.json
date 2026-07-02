@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-01T01:57:52.574Z",
+  "updatedAt": "2026-07-02T01:52:42.822Z",
   "specs": [
     {
       "class": "Paladin",
@@ -1310,6 +1310,10 @@
           "hps": 1612.4
         },
         {
+          "name": "Чітко",
+          "hps": 1591.2
+        },
+        {
           "name": "Loraly",
           "hps": 1527
         },
@@ -1492,10 +1496,6 @@
         {
           "name": "Oppenheimer",
           "hps": 552
-        },
-        {
-          "name": "Чітко",
-          "hps": 541.8
         },
         {
           "name": "Шотигалава",
@@ -2540,6 +2540,10 @@
         {
           "name": "Kriya",
           "hps": 18600.4
+        },
+        {
+          "name": "Kaboomkin",
+          "hps": 18546.1
         },
         {
           "name": "Шошо",
@@ -4264,6 +4268,10 @@
           "hps": 20813.2
         },
         {
+          "name": "Wellboy",
+          "hps": 20793.3
+        },
+        {
           "name": "Sharur",
           "hps": 20790.4
         },
@@ -4338,10 +4346,6 @@
         {
           "name": "Жинкиня",
           "hps": 19758.1
-        },
-        {
-          "name": "Wellboy",
-          "hps": 19600.9
         },
         {
           "name": "Bastille",
