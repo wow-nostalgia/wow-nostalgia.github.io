@@ -1,0 +1,1 @@
+ALTER TABLE raids ADD COLUMN hidden_reserves INTEGER NOT NULL DEFAULT 0;

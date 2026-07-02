@@ -1492,6 +1492,16 @@ body.raid-manager-page .raid-create-form button[type="submit"] {
   justify-self: start;
 }
 
+body.raid-manager-page .raid-filter-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  grid-column: 2;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
 body.raid-manager-detail-page .raid-no-characters-hint {
   grid-column: 2;
   margin: -0.25rem 0 0;
@@ -1979,6 +1989,14 @@ body.raid-manager-detail-page .raid-filter-checkbox {
   color: var(--color-text-muted);
   font-size: 0.85rem;
   cursor: pointer;
+}
+
+body.raid-manager-detail-page .raid-hidden-notice {
+  margin: 0.5rem 0 0.75rem;
+  padding: 0.4rem 0.8rem;
+  border-left: 3px solid var(--color-warning, #f0ad4e);
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
 }
 
 body.raid-manager-detail-page .raid-table {

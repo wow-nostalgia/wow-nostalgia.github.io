@@ -43,6 +43,8 @@ export async function handleCreateRaid(request, env, session) {
 
   if (!Number.isInteger(softLimitTotal) || softLimitTotal < 1) throw new HttpError(400, 'Невалідний softLimitTotal');
 
+  const hiddenReserves = body.hiddenReserves !== false;
+
   const id = generateRaidId();
 
   const raid = await createRaid(env.DB, {
@@ -51,6 +53,7 @@ export async function handleCreateRaid(request, env, session) {
     instance,
     difficulty,
     softLimitTotal,
+    hiddenReserves,
     leaderDiscordId: session.discordId
   });
 
@@ -146,6 +149,17 @@ export async function handleRemoveOfficer(request, env, id, discordId, session) 
   await insertAudit(env.DB, id, session.username, 'officer_remove', { discordId });
 
   return jsonResponse({ ok: true });
+}
+
+export async function handleToggleHiddenReserves(request, env, id, session) {
+  const raid = await loadRaidOr404(env, id);
+  await requireRaidOfficer(env.DB, id, raid, session);
+
+  const newValue = raid.hidden_reserves ? 0 : 1;
+  const updated = await updateRaidSettings(env.DB, id, { hidden_reserves: newValue });
+  await insertAudit(env.DB, id, session.username, newValue ? 'hide_reserves' : 'show_reserves', {});
+
+  return jsonResponse(publicRaid(updated));
 }
 
 export { publicRaid };

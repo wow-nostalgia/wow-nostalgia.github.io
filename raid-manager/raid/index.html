@@ -107,6 +107,10 @@
               <button type="button" id="lockToggleBtn" class="link-button-std" hidden>Заблокувати рейд</button>
               <button type="button" id="statusToggleBtn" class="link-button-std" hidden>Завершити рейд</button>
             </div>
+            <label class="raid-filter-checkbox" for="hiddenReservesToggle">
+              <input type="checkbox" id="hiddenReservesToggle">
+              Приховати резерви від гравців
+            </label>
             <form id="officerAssignForm" class="raid-soft-form">
               <label for="assignPlayerName">Учасник</label>
               <div class="raid-input-wrap">
@@ -137,6 +141,8 @@
             </form>
           </div>
         </div>
+
+        <p id="hiddenReservesNotice" class="raid-hidden-notice" hidden>🔒 Режим прихованих резервів — ви бачите тільки свої</p>
 
         <div class="raid-tabs" role="tablist">
           <button type="button" class="raid-tab raid-tab--active" data-tab="players">Гравці</button>
@@ -225,7 +231,7 @@
   <script src="../../scripts/auth-shared.js?v=4"></script>
   <script src="../../scripts/raid-manager-shared.js?v=1"></script>
   <script src="../../scripts/name-translations.js?v=1"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=7"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=8"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

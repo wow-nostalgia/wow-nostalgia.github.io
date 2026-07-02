@@ -21,6 +21,8 @@ const softWeight = document.getElementById('softWeight');
 const softWeightToggle = document.getElementById('softWeightToggle');
 
 const officerPanel = document.getElementById('officerPanel');
+const hiddenReservesToggle = document.getElementById('hiddenReservesToggle');
+const hiddenReservesNotice = document.getElementById('hiddenReservesNotice');
 const officerAssignForm = document.getElementById('officerAssignForm');
 const assignPlayerNameInput = document.getElementById('assignPlayerName');
 const assignPlayerNameClear = document.getElementById('assignPlayerNameClear');
@@ -159,6 +161,9 @@ function renderBanner() {
 
   statusToggleBtn.hidden = !isOfficerMode();
   statusToggleBtn.textContent = isCompleted ? '↩ Реактивувати рейд' : '✅ Завершити рейд';
+
+  hiddenReservesToggle.checked = Boolean(raid.hidden_reserves);
+  hiddenReservesNotice.hidden = !(raid.hidden_reserves && !isOfficerMode());
 
   settingsTab.hidden = !isLeader();
   settingsTitleInput.value = raid.title;
@@ -581,6 +586,7 @@ function renderItemsBossFilterOptions() {
 function groupReservesByPlayer(list) {
   const map = new Map();
   list.forEach((r) => {
+    if (r.player_name === null) return; // приховано сервером (режим hidden_reserves)
     if (!map.has(r.player_name)) map.set(r.player_name, []);
     map.get(r.player_name).push(r);
   });
@@ -674,15 +680,16 @@ function buildReservesByWeight(reservers) {
   const wrap = document.createElement('div');
   wrap.className = 'raid-reserve-weight-list';
 
-  const namesByWeight = new Map();
+  const byWeight = new Map();
   reservers.forEach((r) => {
-    if (!namesByWeight.has(r.weight)) namesByWeight.set(r.weight, []);
-    namesByWeight.get(r.weight).push(r.player_name);
+    if (!byWeight.has(r.weight)) byWeight.set(r.weight, { visible: [], hidden: 0 });
+    if (r.player_name !== null) byWeight.get(r.weight).visible.push(r.player_name);
+    else byWeight.get(r.weight).hidden++;
   });
 
   [1, 2, 3].forEach((weight) => {
-    const names = namesByWeight.get(weight);
-    if (!names || !names.length) return;
+    const entry = byWeight.get(weight);
+    if (!entry) return;
 
     const row = document.createElement('div');
     row.className = 'raid-reserve-weight-row';
@@ -694,7 +701,10 @@ function buildReservesByWeight(reservers) {
 
     const namesSpan = document.createElement('span');
     namesSpan.className = 'raid-reserve-weight-names';
-    namesSpan.textContent = names.join(', ');
+    const parts = [];
+    if (entry.visible.length) parts.push(entry.visible.join(', '));
+    if (entry.hidden) parts.push(`+${entry.hidden} гравців`);
+    namesSpan.textContent = parts.join(', ');
     row.appendChild(namesSpan);
 
     wrap.appendChild(row);
@@ -775,6 +785,8 @@ function describeAuditAction(entry) {
     case 'unlock': return 'розблокував рейд';
     case 'settings_change': return 'змінив налаштування рейду';
     case 'item_received': return d.received ? 'позначив предмет отриманим' : 'скасував "отримано"';
+    case 'hide_reserves': return 'увімкнув режим прихованих резервів';
+    case 'show_reserves': return 'вимкнув режим прихованих резервів';
     case 'complete': return 'завершив рейд';
     case 'reactivate': return 'реактивував рейд';
     case 'officer_add': return `додав офіцера ${d.username || d.discordId}`;
@@ -867,6 +879,19 @@ statusToggleBtn.addEventListener('click', async () => {
     await loadOfficers();
     renderPlayersTable();
   } catch (err) {
+    alert(err.message);
+  }
+});
+
+hiddenReservesToggle.addEventListener('change', async () => {
+  try {
+    raid = await apiCall('POST', `/raids/${raidId}/toggle-hidden`, { token: getSessionToken() });
+    renderBanner();
+    await loadReserves();
+    renderPlayersTable();
+    renderItemsTable();
+  } catch (err) {
+    hiddenReservesToggle.checked = !hiddenReservesToggle.checked; // rollback
     alert(err.message);
   }
 });

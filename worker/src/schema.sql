@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS raids (
   soft_limit_items INTEGER NOT NULL DEFAULT 3,    -- застаріле, ліміт прибрано
   allow_duplicate_soft INTEGER NOT NULL DEFAULT 1, -- застаріле, дублі завжди дозволені
   is_locked INTEGER NOT NULL DEFAULT 0,
+  hidden_reserves INTEGER NOT NULL DEFAULT 0,
   status TEXT NOT NULL DEFAULT 'active', -- 'active' | 'completed'
   officer_token TEXT NOT NULL,           -- застаріле, не використовується для авторизації
   leader_discord_id TEXT REFERENCES users(discord_id),

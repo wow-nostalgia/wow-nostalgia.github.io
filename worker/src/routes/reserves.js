@@ -9,9 +9,10 @@ import {
   setReserveReceived,
   sumPlayerWeight,
   createClaim,
-  insertAudit
+  insertAudit,
+  getClaimedPlayerNames
 } from '../db.js';
-import { checkPlayerAccess, requireRaidOfficer } from '../auth.js';
+import { checkPlayerAccess, requireRaidOfficer, isRaidOfficer } from '../auth.js';
 
 async function loadRaidOr404(env, raidId) {
   const raid = await getRaid(env.DB, raidId);
@@ -19,10 +20,18 @@ async function loadRaidOr404(env, raidId) {
   return raid;
 }
 
-export async function handleListReserves(request, env, raidId) {
-  await loadRaidOr404(env, raidId);
+export async function handleListReserves(request, env, raidId, session) {
+  const raid = await loadRaidOr404(env, raidId);
   const reserves = await listReserves(env.DB, raidId);
-  return jsonResponse(reserves);
+
+  if (!raid.hidden_reserves) return jsonResponse(reserves);
+
+  if (await isRaidOfficer(env.DB, raidId, raid, session.discordId)) return jsonResponse(reserves);
+
+  // Приховуємо імена чужих гравців: своє ім'я залишається, чужі → player_name: null
+  const ownNames = await getClaimedPlayerNames(env.DB, raidId, session.discordId);
+  const filtered = reserves.map((r) => (ownNames.has(r.player_name) ? r : { ...r, player_name: null }));
+  return jsonResponse(filtered);
 }
 
 export async function handleCreateReserve(request, env, raidId, session) {

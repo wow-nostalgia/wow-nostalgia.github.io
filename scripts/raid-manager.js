@@ -41,7 +41,8 @@ createForm.addEventListener('submit', async (event) => {
       title: document.getElementById('raidTitle').value.trim(),
       instance: document.getElementById('raidInstance').value,
       difficulty: document.getElementById('raidDifficulty').value,
-      softLimitTotal: Number(document.getElementById('raidSoftLimitTotal').value)
+      softLimitTotal: Number(document.getElementById('raidSoftLimitTotal').value),
+      hiddenReserves: document.getElementById('raidHiddenReserves').checked
     };
 
     const raid = await apiCall('POST', '/raids', { token: getSessionToken(), body });

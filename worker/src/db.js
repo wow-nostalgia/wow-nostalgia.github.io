@@ -14,14 +14,14 @@ function displayNameSubquery(alias) {
   return `COALESCE(${primaryCharacterSubquery(alias)}, ${alias}.username)`;
 }
 
-export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, leaderDiscordId }) {
+export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, hiddenReserves, leaderDiscordId }) {
   const ts = nowIso();
   await db
     .prepare(
-      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, is_locked, officer_token, leader_discord_id, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?)`
+      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, is_locked, hidden_reserves, officer_token, leader_discord_id, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?)`
     )
-    .bind(id, title, instance, difficulty, softLimitTotal, generateToken(), leaderDiscordId, ts, ts)
+    .bind(id, title, instance, difficulty, softLimitTotal, hiddenReserves ? 1 : 0, generateToken(), leaderDiscordId, ts, ts)
     .run();
   return getRaid(db, id);
 }
@@ -127,6 +127,14 @@ export async function sumPlayerWeight(db, raidId, playerName) {
     .bind(raidId, playerName)
     .first();
   return { totalWeight: row.total };
+}
+
+export async function getClaimedPlayerNames(db, raidId, discordId) {
+  const { results } = await db
+    .prepare('SELECT player_name FROM claim_tokens WHERE raid_id = ? AND discord_id = ?')
+    .bind(raidId, discordId)
+    .all();
+  return new Set(results.map((r) => r.player_name));
 }
 
 export async function getClaimOwner(db, raidId, playerName) {
