@@ -761,12 +761,11 @@ function renderItemsTable() {
     tr.appendChild(bossTd);
 
     const reserversTd = document.createElement('td');
-    let reservers = reserves.filter((r) => r.item_id === item.id);
-    if (raid.hidden_reserves && !isOfficerMode()) {
-      reservers = reservers.filter((r) => r.player_name !== null);
-    }
+    const reservers = reserves.filter((r) => r.item_id === item.id);
 
-    if (!reservers.length) {
+    if (raid.hidden_reserves && !isOfficerMode()) {
+      reserversTd.textContent = '';
+    } else if (!reservers.length) {
       reserversTd.textContent = '—';
     } else {
       reserversTd.appendChild(buildReservesByWeight(reservers));
