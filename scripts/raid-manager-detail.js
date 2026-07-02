@@ -779,12 +779,13 @@ function renderItemsTable() {
 
 function describeAuditAction(entry) {
   const d = entry.detail || {};
+  const hideSoftDetails = raid.hidden_reserves && !isOfficerMode();
   switch (entry.action) {
     case 'raid_create': return 'створив рейд';
-    case 'soft_add': return `софтнув ${translateBoss(d.boss)} (${formatWeight(d.weight)})`;
-    case 'soft_remove': return `видалив софт ${d.boss ? translateBoss(d.boss) : ''}`.trim();
+    case 'soft_add': return hideSoftDetails ? 'софтнув' : `софтнув ${translateBoss(d.boss)} (${formatWeight(d.weight)})`;
+    case 'soft_remove': return hideSoftDetails ? 'видалив софт' : `видалив софт ${d.boss ? translateBoss(d.boss) : ''}`.trim();
     case 'soft_remove_all': return 'очистив усі свої софти';
-    case 'officer_assign': return `призначив софт гравцю ${d.playerName} (${translateBoss(d.boss)})`;
+    case 'officer_assign': return hideSoftDetails ? 'призначив софт гравцю' : `призначив софт гравцю ${d.playerName} (${translateBoss(d.boss)})`;
     case 'lock': return 'заблокував рейд';
     case 'unlock': return 'розблокував рейд';
     case 'settings_change': return 'змінив налаштування рейду';
