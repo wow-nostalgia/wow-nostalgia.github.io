@@ -789,8 +789,8 @@ function describeAuditAction(entry) {
     case 'unlock': return 'розблокував рейд';
     case 'settings_change': return 'змінив налаштування рейду';
     case 'item_received': return d.received ? 'позначив предмет отриманим' : 'скасував "отримано"';
-    case 'hide_reserves': return 'увімкнув режим прихованих резервів';
-    case 'show_reserves': return 'вимкнув режим прихованих резервів';
+    case 'hide_reserves': return "увімкнув режим прихованих софтів";
+    case 'show_reserves': return "вимкнув режим прихованих софтів";
     case 'complete': return 'завершив рейд';
     case 'reactivate': return 'реактивував рейд';
     case 'officer_add': return `додав офіцера ${d.username || d.discordId}`;
