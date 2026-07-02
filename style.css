@@ -2574,10 +2574,25 @@ body.account-page .account-form input[type="text"]:focus {
   box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
 }
 
+body.account-page .account-chars-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin: 0.5rem 0 1.5rem;
+}
+
 body.account-page .account-characters-table-wrap {
   width: 100%;
   max-width: 480px;
-  margin: 0.5rem 0 1.5rem;
+  margin: 0;
+}
+
+body.account-page .account-chars-hint {
+  font-size: 13px;
+  color: var(--color-text-faint);
+  line-height: 1.6;
+  max-width: 200px;
+  padding-top: 0.25rem;
 }
 
 body.account-page .account-characters-table {
