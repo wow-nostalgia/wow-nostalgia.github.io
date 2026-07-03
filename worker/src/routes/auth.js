@@ -9,6 +9,7 @@ import {
   addUserCharacter,
   removeUserCharacter,
   setPrimaryCharacter,
+  clearPrimaryCharacter,
   findCharacterOwner,
   removeCharacterByAnyOwner,
   listCharacterOwnerNames
@@ -118,6 +119,11 @@ export async function handleRemoveCharacter(request, env, characterName) {
 export async function handleSetPrimaryCharacter(request, env, characterName) {
   const session = await requireSession(env.DB, request);
   return jsonResponse(await setPrimaryCharacter(env.DB, session.discordId, characterName));
+}
+
+export async function handleClearPrimaryCharacter(request, env) {
+  const session = await requireSession(env.DB, request);
+  return jsonResponse(await clearPrimaryCharacter(env.DB, session.discordId));
 }
 
 export async function handleAdminRemoveCharacter(request, env, characterName, session) {

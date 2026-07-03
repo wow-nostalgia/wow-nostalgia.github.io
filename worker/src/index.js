@@ -30,6 +30,7 @@ import {
   handleAddCharacter,
   handleRemoveCharacter,
   handleSetPrimaryCharacter,
+  handleClearPrimaryCharacter,
   handleAdminRemoveCharacter,
   handleListCharacterOwners
 } from './routes/auth.js';
@@ -71,6 +72,9 @@ async function routeAuth(request, env, parts) {
     }
     if (sub4 === 'primary' && method === 'POST') {
       return handleSetPrimaryCharacter(request, env, decodeURIComponent(sub3));
+    }
+    if (sub4 === 'primary' && method === 'DELETE') {
+      return handleClearPrimaryCharacter(request, env);
     }
     if (!sub4 && method === 'DELETE') return handleRemoveCharacter(request, env, decodeURIComponent(sub3));
     throw new HttpError(405, 'Метод не підтримується');

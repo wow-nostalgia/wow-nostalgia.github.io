@@ -263,6 +263,11 @@ export async function setPrimaryCharacter(db, discordId, characterName) {
   return listUserCharacters(db, discordId);
 }
 
+export async function clearPrimaryCharacter(db, discordId) {
+  await db.prepare('UPDATE user_characters SET is_primary = 0 WHERE discord_id = ?').bind(discordId).run();
+  return listUserCharacters(db, discordId);
+}
+
 export async function getPrimaryCharacterName(db, discordId) {
   const row = await db
     .prepare('SELECT character_name FROM user_characters WHERE discord_id = ? AND is_primary = 1 LIMIT 1')

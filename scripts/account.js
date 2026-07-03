@@ -103,20 +103,20 @@ function renderCharactersList(characters) {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = isPrimary;
-    checkbox.disabled = hasPrimary;
+    checkbox.disabled = !isPrimary && hasPrimary;
     checkbox.addEventListener('change', async () => {
-      if (!checkbox.checked) return;
       checkbox.disabled = true;
+      const method = checkbox.checked ? 'POST' : 'DELETE';
       try {
         const token = getSessionToken();
         const res = await fetch(`${AUTH_API_BASE}/auth/me/characters/${encodeURIComponent(name)}/primary`, {
-          method: 'POST',
+          method,
           headers: { Authorization: `Bearer ${token}` }
         });
         if (!res.ok) throw new Error(await readErrorMessage(res));
         renderCharactersList(await res.json());
       } catch (err) {
-        checkbox.checked = false;
+        checkbox.checked = !checkbox.checked;
         checkbox.disabled = false;
         setAccountStatus(`Помилка: ${err.message}`);
       }
