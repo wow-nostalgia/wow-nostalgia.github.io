@@ -67,9 +67,6 @@
 
       <div id="createRaidSection" class="raid-form-panel" hidden>
         <form id="createRaidForm" class="raid-create-form">
-        <label for="raidTitle">Назва рейду</label>
-        <input type="text" id="raidTitle" required placeholder="Напр. ЦЛК 25 ХМ — 29.06">
-
         <label>Інстанс</label>
         <div class="raid-toggle-group" id="raidInstanceToggle" role="group" aria-label="Інстанс">
           <button type="button" class="raid-toggle-btn raid-toggle-btn--active" data-instance="ICC">Льодяна Цитадель</button>
@@ -93,6 +90,9 @@
         </div>
         <input type="hidden" id="raidSoftLimitTotal" value="3">
 
+        <label for="raidTitle">Назва рейду</label>
+        <input type="text" id="raidTitle" required placeholder="Напр. ЦЛК 25 ХМ — 29.06">
+
         <label class="raid-filter-checkbox" for="raidHiddenReserves">
           <input type="checkbox" id="raidHiddenReserves" checked>
           Приховати софти
@@ -112,7 +112,7 @@
   <script src="../scripts/auth-shared.js?v=6"></script>
   <script src="../scripts/raid-manager-shared.js?v=1"></script>
   <script src="../scripts/name-translations.js?v=1"></script>
-  <script src="../scripts/raid-manager.js?v=5"></script>
+  <script src="../scripts/raid-manager.js?v=6"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

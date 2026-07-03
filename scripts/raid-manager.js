@@ -6,8 +6,30 @@ const raidInstanceToggle = document.getElementById('raidInstanceToggle');
 const raidInstanceInput = document.getElementById('raidInstance');
 const raidSoftLimitToggle = document.getElementById('raidSoftLimitToggle');
 const raidSoftLimitInput = document.getElementById('raidSoftLimitTotal');
+const raidTitleInput = document.getElementById('raidTitle');
 
-function setupToggleGroup(toggleEl, hiddenInput, datasetKey) {
+const TITLE_INSTANCE_ABBR_UK = { ICC: "ЦЛК", RS: "РС" };
+const TITLE_DIFFICULTY_ABBR_UK = { "25H": "25ХМ", "25N": "25Н", "10H": "10ХМ", "10N": "10Н" };
+
+let titleAutoFilled = true;
+
+function generateTitle() {
+  const instance = raidInstanceInput.value;
+  const difficulty = document.getElementById('raidDifficulty').value;
+  const now = new Date();
+  const dd = String(now.getDate()).padStart(2, '0');
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const isUk = getNameLanguage() === 'uk';
+  const inst = isUk ? (TITLE_INSTANCE_ABBR_UK[instance] || instance) : instance;
+  const diff = isUk ? (TITLE_DIFFICULTY_ABBR_UK[difficulty] || difficulty) : difficulty;
+  return `${inst} ${diff}-${dd}.${mm}`;
+}
+
+function updateTitleIfAuto() {
+  if (titleAutoFilled) raidTitleInput.value = generateTitle();
+}
+
+function setupToggleGroup(toggleEl, hiddenInput, datasetKey, onChange) {
   toggleEl.addEventListener('click', (event) => {
     const btn = event.target.closest('.raid-toggle-btn');
     if (!btn) return;
@@ -15,11 +37,15 @@ function setupToggleGroup(toggleEl, hiddenInput, datasetKey) {
     toggleEl.querySelectorAll('.raid-toggle-btn').forEach((b) => {
       b.classList.toggle('raid-toggle-btn--active', b === btn);
     });
+    if (onChange) onChange();
   });
 }
 
-setupToggleGroup(raidInstanceToggle, raidInstanceInput, 'instance');
+setupToggleGroup(raidInstanceToggle, raidInstanceInput, 'instance', updateTitleIfAuto);
 setupToggleGroup(raidSoftLimitToggle, raidSoftLimitInput, 'value');
+
+document.getElementById('raidDifficulty').addEventListener('change', updateTitleIfAuto);
+raidTitleInput.addEventListener('input', () => { titleAutoFilled = false; });
 
 function applyNameLanguageToCreateForm() {
   raidInstanceToggle.querySelectorAll('.raid-toggle-btn').forEach((btn) => {
@@ -64,6 +90,7 @@ async function init() {
     return;
   }
 
+  updateTitleIfAuto();
   createRaidSection.hidden = false;
 }
 
