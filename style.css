@@ -2642,14 +2642,14 @@ body.account-page .account-primary-checkbox-td {
 
 body.account-page .account-delete-col,
 body.account-page .account-delete-td {
-  width: 2.25rem;
+  width: 2.75rem;
   text-align: center;
 }
 
 body.account-page .account-delete-btn {
   background: none;
   border: none;
-  padding: 0.25rem;
+  padding: 0.4rem;
   color: var(--color-text-faint);
   cursor: pointer;
   border-radius: var(--radius-md);
