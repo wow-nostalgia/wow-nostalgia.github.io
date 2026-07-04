@@ -106,6 +106,54 @@ transition: border-color, background-color, color — var(--transition-fast);
 
 ---
 
+## Пагінація
+
+Єдиний паттерн для всіх сторінок — клас `.raid-pagination` (глобальний, не page-scoped).
+
+### HTML
+```html
+<div id="myPagination" class="raid-pagination" hidden>
+  <button type="button" id="prevBtn" class="link-button-std">← Попередня</button>
+  <span id="pageInfo"></span>
+  <button type="button" id="nextBtn" class="link-button-std">Наступна →</button>
+</div>
+```
+
+### CSS (вже в `style.css`)
+```css
+.raid-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+.raid-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+```
+
+> **Увага:** `.raid-pagination { display: flex; }` перекриває атрибут `[hidden]`. Якщо треба коректний show/hide через `element.hidden`, використовуй патерн:
+> ```css
+> .raid-pagination { display: none; }
+> .raid-pagination:not([hidden]) { display: flex; align-items: center; justify-content: center; gap: 1rem; }
+> ```
+
+### JS — типовий патерн
+```js
+function renderPagination(totalPages) {
+  paginationEl.hidden = totalPages <= 1;
+  pageInfoEl.textContent = `Сторінка ${currentPage} з ${totalPages}`;
+  prevBtn.disabled = currentPage <= 1;
+  nextBtn.disabled = currentPage >= totalPages;
+}
+```
+
+Кнопки — `.link-button-std` (маленькі, без фону, колір `var(--color-link)`). Текст сторінки — звичайний `<span>` без класу.
+
+---
+
 ## Поля вводу та `<select>`
 
 Єдиний паттерн для всіх текстових полів і дропдаунів:
