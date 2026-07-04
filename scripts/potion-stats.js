@@ -16,6 +16,11 @@ const addLogUrl2 = document.getElementById('addLogUrl2');
 const addLogStatusEl = document.getElementById('addLogStatus');
 const addLogSubmitBtn = document.getElementById('addLogSubmitBtn');
 const addLogCancelBtn = document.getElementById('addLogCancelBtn');
+const raidsPaginationEl = document.getElementById('raidsPagination');
+
+const PAGE_SIZE = 10;
+let sortedRaidsCache = [];
+let currentPage = 1;
 
 let honorBoardCache = [];
 let sortState = { column: 'averagePotionsPerBoss', direction: 'desc' };
@@ -260,8 +265,9 @@ async function loadPotionStats() {
     const sortedRaids = [...validRaids].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
     statusEl.textContent = `Знайдено рейдів: ${sortedRaids.length}`;
-    raidsEl.innerHTML = sortedRaids.map((raid, index) => createRaidSection(raid, index)).join('');
-    attachRaidToggles();
+    sortedRaidsCache = sortedRaids;
+    currentPage = 1;
+    renderRaidsPage(1);
 
     honorBoardCache = honorBoardResponse.ok ? await honorBoardResponse.json() : [];
     renderHonorBoard(honorBoardCache);
@@ -274,6 +280,36 @@ async function loadPotionStats() {
     honorStatusEl.textContent = 'Помилка завантаження.';
     honorTableBodyEl.innerHTML = '<tr><td colspan="4">Помилка завантаження</td></tr>';
   }
+}
+
+function renderRaidsPage(page) {
+  const totalPages = Math.ceil(sortedRaidsCache.length / PAGE_SIZE);
+  currentPage = Math.max(1, Math.min(page, totalPages || 1));
+
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageRaids = sortedRaidsCache.slice(start, start + PAGE_SIZE);
+
+  raidsEl.innerHTML = pageRaids.map((raid, i) => createRaidSection(raid, start + i)).join('');
+  attachRaidToggles();
+
+  if (totalPages <= 1) {
+    raidsPaginationEl.hidden = true;
+    return;
+  }
+
+  raidsPaginationEl.hidden = false;
+  raidsPaginationEl.innerHTML = `
+    <button class="compare-btn raids-page-btn" ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">← Попередня</button>
+    <span class="raids-page-info">Сторінка ${currentPage} з ${totalPages}</span>
+    <button class="compare-btn raids-page-btn" ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">Наступна →</button>
+  `;
+
+  raidsPaginationEl.querySelectorAll('.raids-page-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      renderRaidsPage(Number(btn.dataset.page));
+      raidsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 }
 
 function openAddLogDialog() {

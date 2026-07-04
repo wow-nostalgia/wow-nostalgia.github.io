@@ -950,6 +950,25 @@ body.potion-page .add-log-btn-wrap {
   padding-top: 0.15rem;
 }
 
+body.potion-page .raids-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+body.potion-page .raids-pagination:not([hidden]) {
+  display: flex;
+}
+
+body.potion-page .raids-page-info {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  min-width: 10ch;
+  text-align: center;
+}
+
 body.potion-page .add-log-overlay {
   display: none;
   position: fixed;
