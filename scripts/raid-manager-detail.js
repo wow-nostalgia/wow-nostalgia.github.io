@@ -564,7 +564,7 @@ function populateMyCharacters() {
     opt.value = name;
     opt.textContent = name;
     const color = classColorMap.get(name);
-    if (color) opt.style.color = color;
+    opt.style.color = color || '#888888';
     softPlayerNameInput.appendChild(opt);
   });
 
