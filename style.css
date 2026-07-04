@@ -2796,6 +2796,22 @@ body.account-page .link-button-std:hover {
 
 /* ── Штрафи (вкладка penalties) ──────────────────────────────────────── */
 
+body.raid-manager-detail-page #raidPenaltiesTable {
+  table-layout: fixed;
+  width: 100%;
+}
+
+body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(1),
+body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(1) { width: 20%; }
+
+body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(2),
+body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(2) { width: 10%; }
+
+body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(3),
+body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(3) { width: 10%; }
+
+/* 4-та колонка (Причини) — решта 60% */
+
 body.raid-manager-detail-page .penalty-input {
   width: 5rem;
   padding: 0.25rem 0.375rem;
