@@ -1536,7 +1536,8 @@ body.personal-analytics-page .boss-checkbox-swatch {
 .intro-text {
   font-size: 0.8rem;
   line-height: 1.65;
-  max-width: 64ch;
+  width: max-content;
+  max-width: 100%;
   margin-inline: auto;
   text-align: center;
   color: var(--color-text-muted);
