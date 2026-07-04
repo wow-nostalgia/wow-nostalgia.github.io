@@ -26,23 +26,46 @@ async function readErrorMessage(res) {
   return `HTTP ${res.status}`;
 }
 
+const WOW_CLASS_COLORS = {
+  'Death Knight': '#C41F3B',
+  'Druid': '#FF7D0A',
+  'Hunter': '#ABD473',
+  'Mage': '#69CCF0',
+  'Paladin': '#F58CBA',
+  'Priest': '#F0EDE0',
+  'Rogue': '#FFF569',
+  'Shaman': '#0070DE',
+  'Warlock': '#9482C9',
+  'Warrior': '#C79C6E'
+};
+
 // Зв'язок персонажів профілю зі статичною аналітикою (data/*.json) —
 // той самий патерн фетчингу/зіставлення по точному імені, що вже є в
 // guild-ranking.js/personal-analytics.js. Без бекенд-змін, чисто фронтенд.
 let guildMemberNames = new Set();
 let personalAnalyticsNames = new Set();
+let classColorMap = new Map();
 
 async function loadCharacterStatsSources() {
   try {
-    const [players, personalStats] = await Promise.all([
+    const [players, personalStats, guildDataRes] = await Promise.all([
       fetch('/data/players.json').then((r) => r.json()),
-      fetch('/data/personal-stats.json').then((r) => r.json())
+      fetch('/data/personal-stats.json').then((r) => r.json()),
+      fetch('/data/guild-data.json').catch(() => null)
     ]);
     guildMemberNames = new Set(players.map((p) => p.name));
     personalAnalyticsNames = new Set();
     for (const record of personalStats) {
       for (const player of record.players || []) {
         personalAnalyticsNames.add(player.name);
+      }
+    }
+    if (guildDataRes?.ok) {
+      const guildData = await guildDataRes.json();
+      for (const row of (guildData.rows || [])) {
+        if (!classColorMap.has(row.name) && WOW_CLASS_COLORS[row.class]) {
+          classColorMap.set(row.name, WOW_CLASS_COLORS[row.class]);
+        }
       }
     }
   } catch (err) {
@@ -63,12 +86,18 @@ function createPlayerBadge(name) {
 // персонажа (?player=...), лише якщо для нього взагалі є дані в логах.
 // Інакше — звичайний текст, лінк в нікуди був би плутаниною.
 function characterNameNode(name) {
+  const color = classColorMap.get(name);
   if (!personalAnalyticsNames.has(name)) {
-    return document.createTextNode(name);
+    if (!color) return document.createTextNode(name);
+    const span = document.createElement('span');
+    span.textContent = name;
+    span.style.color = color;
+    return span;
   }
   const link = document.createElement('a');
   link.href = `../personal-analytics/?player=${encodeURIComponent(name)}`;
   link.textContent = name;
+  if (color) link.style.color = color;
   return link;
 }
 

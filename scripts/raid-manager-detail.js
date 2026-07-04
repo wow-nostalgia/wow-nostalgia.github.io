@@ -78,6 +78,7 @@ let characterOwnerNames = new Map();
 let personalAnalyticsNames = new Set();
 let reserves = [];
 let penaltiesList = [];
+let classColorMap = new Map();
 let auditEntries = [];
 let activeTab = 'players';
 
@@ -562,6 +563,8 @@ function populateMyCharacters() {
     const opt = document.createElement('option');
     opt.value = name;
     opt.textContent = name;
+    const color = classColorMap.get(name);
+    if (color) opt.style.color = color;
     softPlayerNameInput.appendChild(opt);
   });
 
@@ -1114,11 +1117,12 @@ async function init() {
   }
 
   try {
-    const [itemsRes, playersRes, ownersRes, personalStatsRes] = await Promise.all([
+    const [itemsRes, playersRes, ownersRes, personalStatsRes, guildDataRes] = await Promise.all([
       fetch('/data/raid-items.json'),
       fetch('/data/players.json'),
       fetch(apiUrl('/characters/owners')).catch(() => null),
       fetch('/data/personal-stats.json').catch(() => null),
+      fetch('/data/guild-data.json').catch(() => null),
       loadItemIconData()
     ]);
     itemsCatalog = await itemsRes.json();
@@ -1137,6 +1141,10 @@ async function init() {
           personalAnalyticsNames.add(player.name);
         }
       }
+    }
+    if (guildDataRes?.ok) {
+      const guildData = await guildDataRes.json();
+      classColorMap = buildClassColorMap(guildData.rows || []);
     }
   } catch (err) {
     console.error(err);
