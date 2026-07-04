@@ -73,8 +73,10 @@
 
         <p id="potionStatus">Завантаження даних...</p>
 
-        <div id="potionRaids" class="potion-raids"></div>
-        <div id="raidsPagination" class="raids-pagination" hidden></div>
+        <div class="potion-logs-layout">
+          <div id="potionSidebar" class="potion-logs-sidebar"></div>
+          <div id="potionContent" class="potion-logs-content"></div>
+        </div>
       </section>
 
       <section id="honorView" role="tabpanel" hidden>
@@ -139,7 +141,7 @@
 
   <script src="../scripts/nav.js"></script>
   <script src="../scripts/auth-shared.js?v=6"></script>
-  <script src="../scripts/potion-stats.js?v=6"></script>
+  <script src="../scripts/potion-stats.js?v=7"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

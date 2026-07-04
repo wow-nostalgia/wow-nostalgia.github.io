@@ -1,5 +1,4 @@
 const statusEl = document.getElementById('potionStatus');
-const raidsEl = document.getElementById('potionRaids');
 const honorStatusEl = document.getElementById('honorStatus');
 const honorTableBodyEl = document.getElementById('honorTableBody');
 const hideZeroPlayersEl = document.getElementById('hideZeroPlayers');
@@ -16,11 +15,8 @@ const addLogUrl2 = document.getElementById('addLogUrl2');
 const addLogStatusEl = document.getElementById('addLogStatus');
 const addLogSubmitBtn = document.getElementById('addLogSubmitBtn');
 const addLogCancelBtn = document.getElementById('addLogCancelBtn');
-const raidsPaginationEl = document.getElementById('raidsPagination');
-
-const PAGE_SIZE = 10;
-let sortedRaidsCache = [];
-let currentPage = 1;
+const potionSidebarEl = document.getElementById('potionSidebar');
+const potionContentEl = document.getElementById('potionContent');
 
 let honorBoardCache = [];
 let sortState = { column: 'averagePotionsPerBoss', direction: 'desc' };
@@ -102,29 +98,31 @@ function createPlayerRow(player) {
   return `<tr class="${getRowClass(player)}"><td>${createPlayerBadgeHtml(player.name)}<span${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</span></td><td>${Number(player.total || 0)}</td><td>${Number(player.potionOfSpeed || 0)}</td><td>${Number(player.potionOfWildMagic || 0)}</td></tr>`;
 }
 
-function createRaidSection(raid, index) {
-  if (!Array.isArray(raid.players) || raid.players.length === 0) return `<div class="potion-raid-block empty"><p>Немає даних гравців</p></div>`;
+function createRaidContent(raid) {
+  if (!Array.isArray(raid.players) || raid.players.length === 0) return `<p>Немає даних гравців</p>`;
   const rowsHtml = raid.players.map(createPlayerRow).join('');
-  return `<div class="potion-raid-block"><button class="potion-raid-toggle" type="button" data-target="potion-raid-${index}" aria-expanded="false" aria-controls="potion-raid-${index}"><span class="potion-raid-title">${escapeHtml(formatRaidTitle(raid))}</span></button><div class="potion-raid-content" id="potion-raid-${index}" hidden><div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}</div></div>`;
+  return `<div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}`;
 }
 
-function attachRaidToggles() {
-  document.querySelectorAll('.potion-raid-toggle').forEach((button) => {
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      const content = document.getElementById(button.getAttribute('data-target'));
-      if (!content) return;
-      const isHidden = content.hasAttribute('hidden');
-      if (isHidden) {
-        content.removeAttribute('hidden');
-        button.classList.add('open');
-        button.setAttribute('aria-expanded', 'true');
-      } else {
-        content.setAttribute('hidden', '');
-        button.classList.remove('open');
-        button.setAttribute('aria-expanded', 'false');
-      }
-    });
+function showRaid(raids, index) {
+  potionSidebarEl.querySelectorAll('.potion-log-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === index);
+  });
+  potionContentEl.innerHTML = createRaidContent(raids[index]);
+}
+
+function renderSidebar(raids) {
+  potionSidebarEl.innerHTML = raids.map((raid, i) => {
+    const date = raid.date || 'Невідома дата';
+    const uploader = extractUploaderName(raid.raidUrl || '');
+    return `<button type="button" class="potion-log-btn${i === 0 ? ' active' : ''}" data-index="${i}">` +
+      `<span class="potion-log-date">Лог від ${escapeHtml(date)}</span>` +
+      `<span class="potion-log-uploader">Завантажив ${escapeHtml(uploader)}</span>` +
+      `</button>`;
+  }).join('');
+
+  potionSidebarEl.querySelectorAll('.potion-log-btn').forEach((btn, i) => {
+    btn.addEventListener('click', () => showRaid(raids, i));
   });
 }
 
@@ -256,7 +254,7 @@ async function loadPotionStats() {
 
     if (!validRaids.length) {
       statusEl.textContent = 'Немає валідних рейдів з даними гравців.';
-      raidsEl.innerHTML = '<p class="no-data">Немає даних для відображення.</p>';
+      potionContentEl.innerHTML = '<p class="no-data">Немає даних для відображення.</p>';
       honorStatusEl.textContent = 'Немає даних.';
       honorTableBodyEl.innerHTML = '<tr><td colspan="4">Немає даних</td></tr>';
       return;
@@ -265,9 +263,8 @@ async function loadPotionStats() {
     const sortedRaids = [...validRaids].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
     statusEl.textContent = `Знайдено рейдів: ${sortedRaids.length}`;
-    sortedRaidsCache = sortedRaids;
-    currentPage = 1;
-    renderRaidsPage(1);
+    renderSidebar(sortedRaids);
+    showRaid(sortedRaids, 0);
 
     honorBoardCache = honorBoardResponse.ok ? await honorBoardResponse.json() : [];
     renderHonorBoard(honorBoardCache);
@@ -276,41 +273,12 @@ async function loadPotionStats() {
   } catch (error) {
     console.error('Помилка завантаження:', error);
     statusEl.textContent = `Помилка: ${error.message}`;
-    raidsEl.innerHTML = '<p class="error">Не вдалося завантажити дані. Перевірте data/potion-stats.json</p>';
+    potionContentEl.innerHTML = '<p class="error">Не вдалося завантажити дані. Перевірте data/potion-stats.json</p>';
     honorStatusEl.textContent = 'Помилка завантаження.';
     honorTableBodyEl.innerHTML = '<tr><td colspan="4">Помилка завантаження</td></tr>';
   }
 }
 
-function renderRaidsPage(page) {
-  const totalPages = Math.ceil(sortedRaidsCache.length / PAGE_SIZE);
-  currentPage = Math.max(1, Math.min(page, totalPages || 1));
-
-  const start = (currentPage - 1) * PAGE_SIZE;
-  const pageRaids = sortedRaidsCache.slice(start, start + PAGE_SIZE);
-
-  raidsEl.innerHTML = pageRaids.map((raid, i) => createRaidSection(raid, start + i)).join('');
-  attachRaidToggles();
-
-  if (totalPages <= 1) {
-    raidsPaginationEl.hidden = true;
-    return;
-  }
-
-  raidsPaginationEl.hidden = false;
-  raidsPaginationEl.innerHTML = `
-    <button class="link-button-std raids-page-btn" ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">← Попередня</button>
-    <span>Сторінка ${currentPage} з ${totalPages}</span>
-    <button class="link-button-std raids-page-btn" ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">Наступна →</button>
-  `;
-
-  raidsPaginationEl.querySelectorAll('.raids-page-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      renderRaidsPage(Number(btn.dataset.page));
-      raidsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-}
 
 function openAddLogDialog() {
   addLogUrl1.value = '';
