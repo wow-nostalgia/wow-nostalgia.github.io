@@ -139,15 +139,6 @@ function roleOf(spec) {
   return ROLE_BY_SPEC[spec] || 'DPS';
 }
 
-function computeRoles(rows) {
-  const counts = { Tank: 0, Healer: 0, DPS: 0 };
-
-  for (const row of rows) {
-    counts[roleOf(row.spec)] += 1;
-  }
-
-  return counts;
-}
 
 function bestPerPlayer(rows, field, isBetter) {
   const best = new Map();
@@ -471,27 +462,6 @@ function renderAvgScoreChart(canvasId, rows) {
         x: { beginAtZero: true },
         y: { ticks: { color: classTickColor(stats) } }
       }
-    }
-  });
-}
-
-function renderRolesChart(rows) {
-  const counts = computeRoles(rows);
-
-  new Chart(document.getElementById('chartRoles'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Tank', 'Healer', 'DPS'],
-      datasets: [
-        {
-          data: [counts.Tank, counts.Healer, counts.DPS],
-          backgroundColor: [cssVar('--color-brand'), cssVar('--color-success'), cssVar('--color-danger')]
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false
     }
   });
 }
@@ -1027,7 +997,6 @@ async function init() {
 
     renderAvgScoreChart('chartAvgScoreGuild', guildDpsRows);
     renderAvgScoreChart('chartAvgScoreLegion', dpsRows.filter((row) => !guildNames.has(row.name)));
-    renderRolesChart(rows);
     renderGuildVsServerChart(guildDpsRows);
     renderEliteChart(guildDpsRows);
     renderGuildVsLegionChart(dpsRows, legionNames, players.length);
