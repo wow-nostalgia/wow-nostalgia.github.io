@@ -709,10 +709,30 @@ function buildReservesByWeight(reservers) {
 
     const namesSpan = document.createElement('span');
     namesSpan.className = 'raid-reserve-weight-names';
-    const parts = [];
-    if (entry.visible.length) parts.push(entry.visible.join(', '));
-    if (entry.hidden) parts.push(`+${entry.hidden} гравців`);
-    namesSpan.textContent = parts.join(', ');
+    const visibleNames = entry.visible;
+    visibleNames.forEach((name, i) => {
+      const p = penaltiesList.find((x) => x.player_name === name);
+      if (p && p.soft_penalty > 0) {
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'penalty-value--active';
+        nameSpan.textContent = name;
+        namesSpan.appendChild(nameSpan);
+      } else {
+        namesSpan.appendChild(document.createTextNode(name));
+      }
+      if (p && p.roll_penalty > 0) {
+        const penSpan = document.createElement('span');
+        penSpan.className = 'penalty-value--active';
+        penSpan.textContent = ` (-${p.roll_penalty})`;
+        namesSpan.appendChild(penSpan);
+      }
+      const isLast = i === visibleNames.length - 1 && !entry.hidden;
+      if (!isLast) namesSpan.appendChild(document.createTextNode(', '));
+    });
+    if (entry.hidden) {
+      if (visibleNames.length) namesSpan.appendChild(document.createTextNode(', '));
+      namesSpan.appendChild(document.createTextNode(`+${entry.hidden} гравців`));
+    }
     row.appendChild(namesSpan);
 
     wrap.appendChild(row);
@@ -1017,6 +1037,7 @@ async function savePenalty(playerName, rollPenalty, softPenalty) {
       body: { rollPenalty, softPenalty }
     });
     renderPenaltiesTable();
+    renderItemsTable();
   } catch (err) {
     setStatus(`Помилка: ${err.message}`, 'error');
   }
