@@ -21,6 +21,19 @@ let data = null;
 let guildMemberNames = new Set();
 let characterOwnerNames = new Map();
 
+const WOW_CLASS_COLORS = {
+  'Death Knight': '#C41F3B',
+  'Druid': '#FF7D0A',
+  'Hunter': '#ABD473',
+  'Mage': '#69CCF0',
+  'Paladin': '#F58CBA',
+  'Priest': '#F0EDE0',
+  'Rogue': '#FFF569',
+  'Shaman': '#0070DE',
+  'Warlock': '#9482C9',
+  'Warrior': '#C79C6E'
+};
+
 const excludedBosses = new Set([
   "Valithria Dreamwalker",
   "Anub'arak",
@@ -55,6 +68,7 @@ function populateClasses() {
     const option = document.createElement('option');
     option.value = cls;
     option.textContent = translateClass(cls);
+    if (WOW_CLASS_COLORS[cls]) option.style.color = WOW_CLASS_COLORS[cls];
     classSelect.appendChild(option);
   });
 }
