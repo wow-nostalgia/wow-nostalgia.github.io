@@ -22,7 +22,8 @@ export async function handleUpsertPenalty(request, env, raidId, playerName, sess
   const body = await readJson(request);
   const rollPenalty = Math.max(0, Math.floor(Number(body.rollPenalty) || 0));
   const softPenalty = Math.max(0, Math.min(raid.soft_limit_total, Math.floor(Number(body.softPenalty) || 0)));
+  const reason = String(body.reason || '').trim().slice(0, 500);
 
-  await upsertRaidPenalty(env.DB, raidId, playerName, rollPenalty, softPenalty);
+  await upsertRaidPenalty(env.DB, raidId, playerName, rollPenalty, softPenalty, reason);
   return jsonResponse(await getRaidParticipantsWithPenalties(env.DB, raidId));
 }

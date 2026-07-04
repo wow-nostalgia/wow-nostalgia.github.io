@@ -105,7 +105,8 @@ export async function getRaidParticipantsWithPenalties(db, raidId) {
     .prepare(
       `SELECT rp.player_name,
               COALESCE(pen.roll_penalty, 0) AS roll_penalty,
-              COALESCE(pen.soft_penalty, 0) AS soft_penalty
+              COALESCE(pen.soft_penalty, 0) AS soft_penalty,
+              COALESCE(pen.reason, '') AS reason
        FROM raid_participants rp
        LEFT JOIN raid_penalties pen
          ON pen.raid_id = rp.raid_id AND pen.player_name = rp.player_name
@@ -117,16 +118,17 @@ export async function getRaidParticipantsWithPenalties(db, raidId) {
   return results;
 }
 
-export async function upsertRaidPenalty(db, raidId, playerName, rollPenalty, softPenalty) {
+export async function upsertRaidPenalty(db, raidId, playerName, rollPenalty, softPenalty, reason) {
   await db
     .prepare(
-      `INSERT INTO raid_penalties (raid_id, player_name, roll_penalty, soft_penalty)
-       VALUES (?, ?, ?, ?)
+      `INSERT INTO raid_penalties (raid_id, player_name, roll_penalty, soft_penalty, reason)
+       VALUES (?, ?, ?, ?, ?)
        ON CONFLICT(raid_id, player_name) DO UPDATE SET
          roll_penalty = excluded.roll_penalty,
-         soft_penalty = excluded.soft_penalty`
+         soft_penalty = excluded.soft_penalty,
+         reason = excluded.reason`
     )
-    .bind(raidId, playerName, rollPenalty, softPenalty)
+    .bind(raidId, playerName, rollPenalty, softPenalty, reason)
     .run();
 }
 

@@ -1030,11 +1030,11 @@ async function loadAndRenderPenalties() {
   renderPenaltiesTable();
 }
 
-async function savePenalty(playerName, rollPenalty, softPenalty) {
+async function savePenalty(playerName, rollPenalty, softPenalty, reason) {
   try {
     penaltiesList = await apiCall('PUT', `/raids/${raidId}/penalties/${encodeURIComponent(playerName)}`, {
       token: getSessionToken(),
-      body: { rollPenalty, softPenalty }
+      body: { rollPenalty, softPenalty, reason }
     });
     renderPenaltiesTable();
     renderItemsTable();
@@ -1049,8 +1049,8 @@ function renderPenaltiesTable() {
   if (!penaltiesList.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 3;
-    td.textContent = 'Ще немає учасників рейду.';
+    td.colSpan = 4;
+    td.textContent = "Ще немає учасників рейду.";
     tr.appendChild(td);
     raidPenaltiesBody.appendChild(tr);
     return;
@@ -1058,7 +1058,7 @@ function renderPenaltiesTable() {
 
   const officerMode = isOfficerMode() && !isRaidCompleted();
 
-  for (const { player_name, roll_penalty, soft_penalty } of penaltiesList) {
+  for (const { player_name, roll_penalty, soft_penalty, reason } of penaltiesList) {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
@@ -1085,16 +1085,27 @@ function renderPenaltiesTable() {
       softInput.value = String(soft_penalty);
       softInput.className = 'penalty-input';
 
-      const save = () => savePenalty(player_name, Number(rollInput.value), Number(softInput.value));
+      const reasonInput = document.createElement('input');
+      reasonInput.type = 'text';
+      reasonInput.value = reason || '';
+      reasonInput.className = 'penalty-reason-input';
+      reasonInput.maxLength = 500;
+      reasonInput.placeholder = 'Причина...';
+
+      const save = () => savePenalty(player_name, Number(rollInput.value), Number(softInput.value), reasonInput.value);
       rollInput.addEventListener('change', save);
       softInput.addEventListener('change', save);
+      reasonInput.addEventListener('change', save);
 
       const rollTd = document.createElement('td');
       rollTd.appendChild(rollInput);
       const softTd = document.createElement('td');
       softTd.appendChild(softInput);
+      const reasonTd = document.createElement('td');
+      reasonTd.appendChild(reasonInput);
       tr.appendChild(rollTd);
       tr.appendChild(softTd);
+      tr.appendChild(reasonTd);
     } else {
       const rollTd = document.createElement('td');
       if (roll_penalty > 0) {
@@ -1114,8 +1125,13 @@ function renderPenaltiesTable() {
         softTd.className = 'penalty-value--none';
       }
 
+      const reasonTd = document.createElement('td');
+      reasonTd.textContent = reason || '';
+      reasonTd.className = 'penalty-reason-text';
+
       tr.appendChild(rollTd);
       tr.appendChild(softTd);
+      tr.appendChild(reasonTd);
     }
 
     raidPenaltiesBody.appendChild(tr);
