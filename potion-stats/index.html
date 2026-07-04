@@ -61,11 +61,14 @@
       </div>
 
       <section id="logsView" role="tabpanel">
-        <p>Лог містить танків і хілів, котрим не обов'язково пити поти.</p>
-        <p>Лог може містити гравців котрих логер wow помилково додає в статистику рейду.</p>
-
-        <div id="addLogBtnWrap" class="add-log-btn-wrap" hidden>
-          <button type="button" id="addLogOpenBtn" class="link-button-std">+ Додати лог рейду</button>
+        <div class="logs-header">
+          <div>
+            <p>Лог містить танків і хілів, котрим не обов'язково пити поти.</p>
+            <p>Лог може містити гравців котрих логер wow помилково додає в статистику рейду.</p>
+          </div>
+          <div id="addLogBtnWrap" class="add-log-btn-wrap" hidden>
+            <button type="button" id="addLogOpenBtn" class="compare-btn">+ Додати лог рейду</button>
+          </div>
         </div>
 
         <p id="potionStatus">Завантаження даних...</p>
@@ -128,14 +131,14 @@
       <p id="addLogStatus" class="add-log-status"></p>
       <div class="add-log-actions">
         <button type="button" id="addLogSubmitBtn" class="compare-btn">Додати</button>
-        <button type="button" id="addLogCancelBtn" class="link-button-std">Скасувати</button>
+        <button type="button" id="addLogCancelBtn" class="compare-btn">Скасувати</button>
       </div>
     </div>
   </div>
 
   <script src="../scripts/nav.js"></script>
   <script src="../scripts/auth-shared.js?v=6"></script>
-  <script src="../scripts/potion-stats.js?v=2"></script>
+  <script src="../scripts/potion-stats.js?v=3"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

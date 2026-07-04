@@ -929,8 +929,25 @@ body.potion-page .potion-table tbody tr.potion-bad>td {
   color: var(--color-danger) !important;
 }
 
+body.potion-page .logs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+body.potion-page .logs-header > div:first-child {
+  min-width: 0;
+}
+
+body.potion-page .logs-header > div:first-child p {
+  margin: 0 0 0.25rem;
+}
+
 body.potion-page .add-log-btn-wrap {
-  margin-bottom: 1rem;
+  flex-shrink: 0;
+  padding-top: 0.15rem;
 }
 
 body.potion-page .add-log-overlay {
