@@ -1933,7 +1933,8 @@ body.raid-manager-detail-page .raid-player-name-cell {
   vertical-align: middle;
 }
 
-body.raid-manager-detail-page .raid-tabs {
+body.raid-manager-detail-page .raid-tabs,
+body.account-page .raid-tabs {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -1942,7 +1943,8 @@ body.raid-manager-detail-page .raid-tabs {
   border-bottom: 1px solid var(--color-border);
 }
 
-body.raid-manager-detail-page .raid-tab {
+body.raid-manager-detail-page .raid-tab,
+body.account-page .raid-tab {
   background: none;
   border: none;
   padding: 0.5rem 0.9rem;
@@ -1954,11 +1956,13 @@ body.raid-manager-detail-page .raid-tab {
   cursor: pointer;
 }
 
-body.raid-manager-detail-page .raid-tab:hover {
+body.raid-manager-detail-page .raid-tab:hover,
+body.account-page .raid-tab:hover {
   color: var(--color-text-strong);
 }
 
-body.raid-manager-detail-page .raid-tab--active {
+body.raid-manager-detail-page .raid-tab--active,
+body.account-page .raid-tab--active {
   color: var(--color-text-strong);
   border-bottom-color: var(--color-link);
 }
