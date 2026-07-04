@@ -1532,6 +1532,7 @@ body.raid-manager-detail-page .raid-soft-form select,
 body.raid-manager-detail-page .raid-soft-form input[type="text"],
 body.raid-manager-detail-page .raid-soft-form input[type="number"],
 body.raid-manager-detail-page .raid-input-wrap input[type="text"],
+body.account-page .raid-input-wrap input[type="text"],
 body.raid-manager-detail-page .raid-items-filters select,
 body.raid-manager-detail-page .raid-item-picker-trigger {
   padding: 0.45rem 0.65rem;
@@ -1549,6 +1550,7 @@ body.raid-manager-page .raid-create-form input:hover,
 body.raid-manager-detail-page .raid-soft-form select:hover,
 body.raid-manager-detail-page .raid-soft-form input:hover,
 body.raid-manager-detail-page .raid-input-wrap input[type="text"]:hover,
+body.account-page .raid-input-wrap input[type="text"]:hover,
 body.raid-manager-detail-page .raid-items-filters select:hover,
 body.raid-manager-detail-page .raid-item-picker-trigger:hover {
   border-color: rgba(123, 170, 245, 0.55);
@@ -1559,6 +1561,7 @@ body.raid-manager-page .raid-create-form input:focus,
 body.raid-manager-detail-page .raid-soft-form select:focus,
 body.raid-manager-detail-page .raid-soft-form input:focus,
 body.raid-manager-detail-page .raid-input-wrap input[type="text"]:focus,
+body.account-page .raid-input-wrap input[type="text"]:focus,
 body.raid-manager-detail-page .raid-items-filters select:focus,
 body.raid-manager-detail-page .raid-item-picker-trigger:focus {
   border-color: var(--color-link);
@@ -1782,12 +1785,14 @@ body.raid-manager-detail-page .raid-officer-panel {
   background-color: var(--color-surface-soft);
 }
 
-body.raid-manager-detail-page .raid-input-wrap {
+body.raid-manager-detail-page .raid-input-wrap,
+body.account-page .raid-input-wrap {
   position: relative;
   width: 100%;
 }
 
-body.raid-manager-detail-page .raid-input-wrap input[type="text"] {
+body.raid-manager-detail-page .raid-input-wrap input[type="text"],
+body.account-page .raid-input-wrap input[type="text"] {
   width: 100%;
   padding-right: 1.9rem;
 }
@@ -1817,7 +1822,8 @@ body.raid-manager-detail-page .raid-input-clear:disabled {
   cursor: not-allowed;
 }
 
-body.raid-manager-detail-page .raid-autocomplete-list {
+body.raid-manager-detail-page .raid-autocomplete-list,
+body.account-page .raid-autocomplete-list {
   display: none;
   position: absolute;
   top: 100%;
@@ -1833,22 +1839,26 @@ body.raid-manager-detail-page .raid-autocomplete-list {
   box-shadow: var(--shadow-sm);
 }
 
-body.raid-manager-detail-page .raid-autocomplete-list.is-open {
+body.raid-manager-detail-page .raid-autocomplete-list.is-open,
+body.account-page .raid-autocomplete-list.is-open {
   display: block;
 }
 
-body.raid-manager-detail-page .raid-autocomplete-item {
+body.raid-manager-detail-page .raid-autocomplete-item,
+body.account-page .raid-autocomplete-item {
   padding: 0.3rem 0.65rem;
   font-size: 0.85rem;
   color: var(--color-text-strong);
   cursor: pointer;
 }
 
-body.raid-manager-detail-page .raid-autocomplete-item:hover {
+body.raid-manager-detail-page .raid-autocomplete-item:hover,
+body.account-page .raid-autocomplete-item:hover {
   background-color: rgba(123, 170, 245, 0.18);
 }
 
-body.raid-manager-detail-page .raid-autocomplete-empty {
+body.raid-manager-detail-page .raid-autocomplete-empty,
+body.account-page .raid-autocomplete-empty {
   padding: 0.3rem 0.65rem;
   font-size: 0.85rem;
   color: var(--color-text-faint);
@@ -2701,6 +2711,9 @@ body.account-page .account-lang-toggle-btn--active {
 
 body.account-page .account-admin-tools {
   margin-top: 1.5rem;
+}
+
+body.account-page .account-admin-tools + .account-admin-tools {
   padding-top: 1rem;
   border-top: 1px solid var(--color-border);
 }

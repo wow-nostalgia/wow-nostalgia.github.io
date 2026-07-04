@@ -273,7 +273,7 @@ function initDefaultOfficersAutocomplete() {
 
   function closeList() {
     defaultOfficerList.innerHTML = '';
-    defaultOfficerList.hidden = true;
+    defaultOfficerList.classList.remove('is-open');
   }
 
   function selectUser(discordId, username) {
@@ -304,7 +304,7 @@ function initDefaultOfficersAutocomplete() {
           item.addEventListener('mousedown', (e) => { e.preventDefault(); selectUser(u.discordId, u.username); });
           defaultOfficerList.appendChild(item);
         });
-        defaultOfficerList.hidden = false;
+        defaultOfficerList.classList.add('is-open');
       } catch { closeList(); }
     }, 200);
   });
