@@ -1,27 +1,132 @@
 [
   {
-    "raidUrl": "https://uwu-logs.xyz/reports/26-07-02--19-04--Diosa--FreedomUA/",
-    "consumablesUrl": "https://uwu-logs.xyz/reports/26-07-02--19-04--Diosa--FreedomUA/consumables/",
-    "date": "2026-07-02",
-    "title": "https://uwu-logs.xyz/reports/26-07-02--19-04--Diosa--FreedomUA/",
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "consumablesUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/consumables/",
+    "date": "2026-07-01",
+    "title": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
+    "mergedFrom": [
+      "https://uwu-logs.xyz/reports/26-07-02--19-04--Diosa--FreedomUA/"
+    ],
     "players": [
       {
-        "name": "Буренка",
-        "total": 3,
-        "potionOfSpeed": 3,
+        "name": "Асунна",
+        "total": 28,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 28
+      },
+      {
+        "name": "Чикса",
+        "total": 27,
+        "potionOfSpeed": 27,
         "potionOfWildMagic": 0
       },
       {
         "name": "Совуня",
-        "total": 3,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 1
+        "total": 25,
+        "potionOfSpeed": 17,
+        "potionOfWildMagic": 8
+      },
+      {
+        "name": "Ветала",
+        "total": 23,
+        "potionOfSpeed": 23,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Пакатак",
+        "total": 23,
+        "potionOfSpeed": 23,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Gloo",
+        "total": 22,
+        "potionOfSpeed": 19,
+        "potionOfWildMagic": 3
+      },
+      {
+        "name": "Буренка",
+        "total": 20,
+        "potionOfSpeed": 20,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Раздва",
+        "total": 20,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 20
+      },
+      {
+        "name": "Selya",
+        "total": 20,
+        "potionOfSpeed": 20,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Аменадиил",
+        "total": 19,
+        "potionOfSpeed": 19,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Itstrolltime",
+        "total": 19,
+        "potionOfSpeed": 19,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Pristik",
+        "total": 19,
+        "potionOfSpeed": 19,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Белазхант",
+        "total": 17,
+        "potionOfSpeed": 17,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Чітко",
+        "total": 14,
+        "potionOfSpeed": 14,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Zibrow",
+        "total": 14,
+        "potionOfSpeed": 14,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Dolia",
+        "total": 12,
+        "potionOfSpeed": 12,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Kohaiibaka",
+        "total": 11,
+        "potionOfSpeed": 9,
+        "potionOfWildMagic": 2
+      },
+      {
+        "name": "Diosa",
+        "total": 10,
+        "potionOfSpeed": 10,
+        "potionOfWildMagic": 0
       },
       {
         "name": "Квадробер",
-        "total": 2,
-        "potionOfSpeed": 2,
+        "total": 6,
+        "potionOfSpeed": 6,
         "potionOfWildMagic": 0
+      },
+      {
+        "name": "Майорр",
+        "total": 5,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 5
       },
       {
         "name": "Отчєнаш",
@@ -30,43 +135,13 @@
         "potionOfWildMagic": 0
       },
       {
-        "name": "Пакатак",
-        "total": 2,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Раздва",
-        "total": 2,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 2
-      },
-      {
         "name": "Серандпс",
         "total": 2,
         "potionOfSpeed": 2,
         "potionOfWildMagic": 0
       },
       {
-        "name": "Чикса",
-        "total": 2,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 0
-      },
-      {
         "name": "Esquizofrn",
-        "total": 2,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Itstrolltime",
-        "total": 2,
-        "potionOfSpeed": 2,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Selya",
         "total": 2,
         "potionOfSpeed": 2,
         "potionOfWildMagic": 0
@@ -84,237 +159,19 @@
         "potionOfWildMagic": 0
       },
       {
-        "name": "Чітко",
-        "total": 1,
-        "potionOfSpeed": 1,
-        "potionOfWildMagic": 0
-      },
-      {
         "name": "Alldie",
         "total": 1,
         "potionOfSpeed": 1,
         "potionOfWildMagic": 0
       },
       {
-        "name": "Diosa",
-        "total": 1,
-        "potionOfSpeed": 1,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Zloetelo",
+        "name": "Iki",
         "total": 1,
         "potionOfSpeed": 0,
         "potionOfWildMagic": 1
       },
       {
-        "name": "Аменадиил",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Мелісера",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Трахер",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Чоко'фіні",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Boronir",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Dofaminka",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Iki",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Kohaiibaka",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Kubita",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Pristik",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Rwa",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "September",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Smyzik",
-        "total": 0,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 0
-      }
-    ]
-  },
-  {
-    "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
-    "consumablesUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/consumables/",
-    "date": "2026-07-01",
-    "title": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
-    "players": [
-      {
-        "name": "Асунна",
-        "total": 28,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 28
-      },
-      {
-        "name": "Чикса",
-        "total": 25,
-        "potionOfSpeed": 25,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Ветала",
-        "total": 23,
-        "potionOfSpeed": 23,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Совуня",
-        "total": 22,
-        "potionOfSpeed": 15,
-        "potionOfWildMagic": 7
-      },
-      {
-        "name": "Gloo",
-        "total": 22,
-        "potionOfSpeed": 19,
-        "potionOfWildMagic": 3
-      },
-      {
-        "name": "Пакатак",
-        "total": 21,
-        "potionOfSpeed": 21,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Аменадиил",
-        "total": 19,
-        "potionOfSpeed": 19,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Pristik",
-        "total": 19,
-        "potionOfSpeed": 19,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Раздва",
-        "total": 18,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 18
-      },
-      {
-        "name": "Selya",
-        "total": 18,
-        "potionOfSpeed": 18,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Белазхант",
-        "total": 17,
-        "potionOfSpeed": 17,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Буренка",
-        "total": 17,
-        "potionOfSpeed": 17,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Itstrolltime",
-        "total": 17,
-        "potionOfSpeed": 17,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Zibrow",
-        "total": 14,
-        "potionOfSpeed": 14,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Чітко",
-        "total": 13,
-        "potionOfSpeed": 13,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Dolia",
-        "total": 12,
-        "potionOfSpeed": 12,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Kohaiibaka",
-        "total": 11,
-        "potionOfSpeed": 9,
-        "potionOfWildMagic": 2
-      },
-      {
-        "name": "Diosa",
-        "total": 9,
-        "potionOfSpeed": 9,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Майорр",
-        "total": 5,
-        "potionOfSpeed": 0,
-        "potionOfWildMagic": 5
-      },
-      {
-        "name": "Квадробер",
-        "total": 4,
-        "potionOfSpeed": 4,
-        "potionOfWildMagic": 0
-      },
-      {
-        "name": "Iki",
+        "name": "Zloetelo",
         "total": 1,
         "potionOfSpeed": 0,
         "potionOfWildMagic": 1
@@ -350,7 +207,25 @@
         "potionOfWildMagic": 0
       },
       {
+        "name": "Чоко'фіні",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Boronir",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
         "name": "Claude",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Dofaminka",
         "total": 0,
         "potionOfSpeed": 0,
         "potionOfWildMagic": 0
@@ -368,6 +243,12 @@
         "potionOfWildMagic": 0
       },
       {
+        "name": "Kubita",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
         "name": "Orbit",
         "total": 0,
         "potionOfSpeed": 0,
@@ -380,7 +261,19 @@
         "potionOfWildMagic": 0
       },
       {
+        "name": "Rwa",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
         "name": "September",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0
+      },
+      {
+        "name": "Smyzik",
         "total": 0,
         "potionOfSpeed": 0,
         "potionOfWildMagic": 0
