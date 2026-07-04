@@ -93,6 +93,43 @@ export async function getReserveById(db, raidId, reserveId) {
   return db.prepare('SELECT * FROM soft_reserves WHERE raid_id = ? AND id = ?').bind(raidId, reserveId).first();
 }
 
+export async function addRaidParticipant(db, raidId, playerName) {
+  await db
+    .prepare('INSERT OR IGNORE INTO raid_participants (raid_id, player_name, joined_at) VALUES (?, ?, ?)')
+    .bind(raidId, playerName, nowIso())
+    .run();
+}
+
+export async function getRaidParticipantsWithPenalties(db, raidId) {
+  const { results } = await db
+    .prepare(
+      `SELECT rp.player_name,
+              COALESCE(pen.roll_penalty, 0) AS roll_penalty,
+              COALESCE(pen.soft_penalty, 0) AS soft_penalty
+       FROM raid_participants rp
+       LEFT JOIN raid_penalties pen
+         ON pen.raid_id = rp.raid_id AND pen.player_name = rp.player_name
+       WHERE rp.raid_id = ?
+       ORDER BY rp.joined_at ASC`
+    )
+    .bind(raidId)
+    .all();
+  return results;
+}
+
+export async function upsertRaidPenalty(db, raidId, playerName, rollPenalty, softPenalty) {
+  await db
+    .prepare(
+      `INSERT INTO raid_penalties (raid_id, player_name, roll_penalty, soft_penalty)
+       VALUES (?, ?, ?, ?)
+       ON CONFLICT(raid_id, player_name) DO UPDATE SET
+         roll_penalty = excluded.roll_penalty,
+         soft_penalty = excluded.soft_penalty`
+    )
+    .bind(raidId, playerName, rollPenalty, softPenalty)
+    .run();
+}
+
 export async function createReserve(db, { raidId, playerName, itemId, boss, weight, assignedByOfficer, discordId }) {
   const ts = nowIso();
   const result = await db
@@ -102,6 +139,7 @@ export async function createReserve(db, { raidId, playerName, itemId, boss, weig
     )
     .bind(raidId, playerName, itemId, boss, weight, assignedByOfficer ? 1 : 0, discordId || null, ts, ts)
     .run();
+  await addRaidParticipant(db, raidId, playerName);
   return getReserveById(db, raidId, result.meta.last_row_id);
 }
 

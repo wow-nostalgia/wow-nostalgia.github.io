@@ -21,6 +21,7 @@ import {
   handleOfficerAssign
 } from './routes/reserves.js';
 import { handleListAudit } from './routes/audit.js';
+import { handleListPenalties, handleUpsertPenalty } from './routes/penalties.js';
 import {
   handleDiscordCallback,
   handleGetMe,
@@ -150,6 +151,13 @@ async function routeRaids(request, env, parts, session) {
 
   if (sub === 'officer' && parts[2] === 'assign' && method === 'POST') {
     return handleOfficerAssign(request, env, raidId, session);
+  }
+
+  if (sub === 'penalties') {
+    const playerName = parts[2] ? decodeURIComponent(parts[2]) : null;
+    if (!playerName && method === 'GET') return handleListPenalties(request, env, raidId);
+    if (playerName && method === 'PUT') return handleUpsertPenalty(request, env, raidId, playerName, session);
+    throw new HttpError(405, 'Метод не підтримується');
   }
 
   throw new HttpError(404, 'Невідомий шлях');

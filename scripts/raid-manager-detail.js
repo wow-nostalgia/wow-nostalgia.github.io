@@ -60,6 +60,9 @@ const itemsBossFilter = document.getElementById('itemsBossFilter');
 const itemsSoftedOnlyCheckbox = document.getElementById('itemsSoftedOnly');
 const raidItemsBody = document.getElementById('raidItemsBody');
 
+const penaltiesPane = document.getElementById('penaltiesPane');
+const raidPenaltiesBody = document.getElementById('raidPenaltiesBody');
+
 const itemTooltipEl = document.getElementById('raidItemTooltip');
 let currentTooltipItemId = null;
 
@@ -74,6 +77,7 @@ let guildMemberNamesSorted = [];
 let characterOwnerNames = new Map();
 let personalAnalyticsNames = new Set();
 let reserves = [];
+let penaltiesList = [];
 let auditEntries = [];
 let activeTab = 'players';
 
@@ -900,13 +904,14 @@ hiddenReservesToggle.addEventListener('change', async () => {
   }
 });
 
-const TAB_PANES = { players: playersPane, items: itemsPane, audit: auditPane, officers: officersPane, settings: settingsPane };
+const TAB_PANES = { players: playersPane, items: itemsPane, audit: auditPane, penalties: penaltiesPane, officers: officersPane, settings: settingsPane };
 
 async function setActiveTab(tab) {
   activeTab = tab;
   raidTabs.forEach((btn) => btn.classList.toggle('raid-tab--active', btn.dataset.tab === tab));
   Object.entries(TAB_PANES).forEach(([key, el]) => { el.hidden = key !== tab; });
   if (tab === 'audit') await loadAudit();
+  if (tab === 'penalties') await loadAndRenderPenalties();
 }
 
 raidTabs.forEach((btn) => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)));
@@ -988,6 +993,111 @@ settingsForm.addEventListener('submit', async (event) => {
   }
 });
 
+async function loadPenalties() {
+  try {
+    penaltiesList = await apiCall('GET', `/raids/${raidId}/penalties`, { token: getSessionToken() });
+  } catch (err) {
+    console.error(err);
+    penaltiesList = [];
+  }
+}
+
+async function loadAndRenderPenalties() {
+  await loadPenalties();
+  renderPenaltiesTable();
+}
+
+async function savePenalty(playerName, rollPenalty, softPenalty) {
+  try {
+    penaltiesList = await apiCall('PUT', `/raids/${raidId}/penalties/${encodeURIComponent(playerName)}`, {
+      token: getSessionToken(),
+      body: { rollPenalty, softPenalty }
+    });
+    renderPenaltiesTable();
+  } catch (err) {
+    setStatus(`Помилка: ${err.message}`, 'error');
+  }
+}
+
+function renderPenaltiesTable() {
+  raidPenaltiesBody.innerHTML = '';
+
+  if (!penaltiesList.length) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 3;
+    td.textContent = 'Ще немає учасників рейду.';
+    tr.appendChild(td);
+    raidPenaltiesBody.appendChild(tr);
+    return;
+  }
+
+  const officerMode = isOfficerMode();
+
+  for (const { player_name, roll_penalty, soft_penalty } of penaltiesList) {
+    const tr = document.createElement('tr');
+
+    const nameTd = document.createElement('td');
+    const nameWrap = document.createElement('span');
+    nameWrap.className = 'raid-player-name-cell';
+    nameWrap.appendChild(createPlayerBadge(player_name));
+    nameWrap.appendChild(document.createTextNode(player_name));
+    nameTd.appendChild(nameWrap);
+    tr.appendChild(nameTd);
+
+    if (officerMode) {
+      const rollInput = document.createElement('input');
+      rollInput.type = 'number';
+      rollInput.min = '0';
+      rollInput.step = '5';
+      rollInput.value = String(roll_penalty);
+      rollInput.className = 'penalty-input';
+
+      const softInput = document.createElement('input');
+      softInput.type = 'number';
+      softInput.min = '0';
+      softInput.max = String(raid.soft_limit_total);
+      softInput.step = '1';
+      softInput.value = String(soft_penalty);
+      softInput.className = 'penalty-input';
+
+      const save = () => savePenalty(player_name, Number(rollInput.value), Number(softInput.value));
+      rollInput.addEventListener('change', save);
+      softInput.addEventListener('change', save);
+
+      const rollTd = document.createElement('td');
+      rollTd.appendChild(rollInput);
+      const softTd = document.createElement('td');
+      softTd.appendChild(softInput);
+      tr.appendChild(rollTd);
+      tr.appendChild(softTd);
+    } else {
+      const rollTd = document.createElement('td');
+      if (roll_penalty > 0) {
+        rollTd.textContent = `-${roll_penalty}`;
+        rollTd.className = 'penalty-value--active';
+      } else {
+        rollTd.textContent = '—';
+        rollTd.className = 'penalty-value--none';
+      }
+
+      const softTd = document.createElement('td');
+      if (soft_penalty > 0) {
+        softTd.textContent = `-${soft_penalty}`;
+        softTd.className = 'penalty-value--active';
+      } else {
+        softTd.textContent = '—';
+        softTd.className = 'penalty-value--none';
+      }
+
+      tr.appendChild(rollTd);
+      tr.appendChild(softTd);
+    }
+
+    raidPenaltiesBody.appendChild(tr);
+  }
+}
+
 async function init() {
   raidId = new URLSearchParams(window.location.search).get('id');
   if (!raidId) {
@@ -1060,6 +1170,7 @@ async function init() {
   populateMyCharacters();
 
   await loadReserves();
+  await loadPenalties();
   renderPlayersTable();
   renderItemsTable();
 

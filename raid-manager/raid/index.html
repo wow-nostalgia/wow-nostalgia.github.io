@@ -148,6 +148,7 @@
           <button type="button" class="raid-tab raid-tab--active" data-tab="players">Гравці</button>
           <button type="button" class="raid-tab" data-tab="items">Предмети</button>
           <button type="button" class="raid-tab" data-tab="audit">Історія рейду</button>
+          <button type="button" class="raid-tab" data-tab="penalties">Штрафи</button>
           <button type="button" class="raid-tab" data-tab="officers" id="officersTab" hidden>Офіцери</button>
           <button type="button" class="raid-tab" data-tab="settings" id="settingsTab" hidden>Налаштування</button>
         </div>
@@ -197,6 +198,21 @@
             <div id="auditList" class="raid-audit-list"></div>
           </div>
 
+          <div id="penaltiesPane" hidden>
+            <div class="ranking-table-wrap">
+              <table id="raidPenaltiesTable" class="raid-table">
+                <thead>
+                  <tr>
+                    <th>Гравець</th>
+                    <th>Мінус до ролу</th>
+                    <th>Мінус до софту</th>
+                  </tr>
+                </thead>
+                <tbody id="raidPenaltiesBody"></tbody>
+              </table>
+            </div>
+          </div>
+
           <div id="officersPane" hidden>
             <ul id="officersList" class="raid-list"></ul>
             <div id="addOfficerSection" class="raid-input-wrap" hidden>
@@ -231,7 +247,7 @@
   <script src="../../scripts/auth-shared.js?v=6"></script>
   <script src="../../scripts/raid-manager-shared.js?v=1"></script>
   <script src="../../scripts/name-translations.js?v=1"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=13"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=14"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
