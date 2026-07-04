@@ -101,8 +101,22 @@
         </div>
 
         <div id="adminTabPane" hidden>
-          <div id="adminCharacterTools" class="account-admin-tools">
-            <h2>Адмін: звільнити персонажа</h2>
+          <div class="account-admin-tools">
+            <h2>Офіцери за замовчуванням</h2>
+            <p class="account-admin-hint">Ці гравці автоматично отримують права офіцера в кожному новому рейді.</p>
+            <div class="account-default-officers-add">
+              <div class="raid-input-wrap">
+                <input type="text" id="defaultOfficerInput" autocomplete="off" placeholder="Пошук по Discord-ніку...">
+                <div class="raid-autocomplete-list" id="defaultOfficerList"></div>
+              </div>
+              <button type="button" id="defaultOfficerAddBtn" class="compare-btn" disabled>Додати</button>
+            </div>
+            <ul id="defaultOfficersList" class="account-default-officers-list"></ul>
+            <p id="defaultOfficersStatus"></p>
+          </div>
+
+          <div class="account-admin-tools">
+            <h2>Звільнити персонажа</h2>
             <p class="account-admin-hint">Примусово прибирає персонажа з чужого акаунту (виправлення помилкового застовплення).</p>
             <form id="adminRemoveCharacterForm" class="account-form">
               <input type="text" id="adminCharacterNameInput" autocomplete="off" placeholder="Ім'я персонажа">
@@ -123,7 +137,7 @@
 
   <script src="../scripts/nav.js?v=1"></script>
   <script src="../scripts/auth-shared.js?v=6"></script>
-  <script src="../scripts/account.js?v=11"></script>
+  <script src="../scripts/account.js?v=12"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

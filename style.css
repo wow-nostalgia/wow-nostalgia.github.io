@@ -2707,6 +2707,41 @@ body.account-page .account-admin-hint {
   color: var(--color-text-faint);
 }
 
+body.account-page .account-default-officers-add {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  max-width: 400px;
+  margin-bottom: 0.75rem;
+}
+
+body.account-page .account-default-officers-add .raid-input-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+body.account-page .account-default-officers-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+  max-width: 400px;
+}
+
+body.account-page .account-default-officer-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.9rem;
+}
+
+body.account-page .account-default-officers-empty {
+  font-size: 0.85rem;
+  color: var(--color-text-faint);
+  padding: 0.35rem 0;
+}
+
 body.account-page .link-button-std {
   background: none;
   border: 1px solid var(--color-border-mid);

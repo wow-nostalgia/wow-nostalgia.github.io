@@ -1,4 +1,4 @@
-import { HttpError, jsonResponse } from './util.js';
+import { HttpError, jsonResponse, readJson } from './util.js';
 import { requireSession } from './auth.js';
 import {
   handleCreateRaid,
@@ -35,6 +35,12 @@ import {
   handleAdminRemoveCharacter,
   handleListCharacterOwners
 } from './routes/auth.js';
+import {
+  listDefaultOfficers,
+  addDefaultOfficer,
+  removeDefaultOfficer,
+  getUserByDiscordId
+} from './db.js';
 
 const ALLOWED_ORIGINS = ['https://wow-nostalgia.github.io', 'http://localhost:8080'];
 
@@ -175,6 +181,23 @@ async function routeAdmin(request, env, parts, session) {
 
   if (sub === 'characters' && sub2 && method === 'DELETE') {
     return handleAdminRemoveCharacter(request, env, decodeURIComponent(sub2), session);
+  }
+
+  if (sub === 'default-officers') {
+    if (!sub2) {
+      if (method === 'GET') return jsonResponse(await listDefaultOfficers(env.DB));
+      if (method === 'POST') {
+        const body = await readJson(request);
+        const discordId = String(body.discordId || '').trim();
+        if (!discordId) throw new HttpError(400, 'Потрібен discordId');
+        const user = await getUserByDiscordId(env.DB, discordId);
+        if (!user) throw new HttpError(404, 'Користувача не знайдено');
+        return jsonResponse(await addDefaultOfficer(env.DB, discordId), 201);
+      }
+    }
+    if (sub2 && method === 'DELETE') {
+      return jsonResponse(await removeDefaultOfficer(env.DB, decodeURIComponent(sub2)));
+    }
   }
 
   throw new HttpError(404, 'Невідомий шлях');

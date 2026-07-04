@@ -15,6 +15,11 @@ const adminTabPane = document.getElementById('adminTabPane');
 const adminRemoveCharacterForm = document.getElementById('adminRemoveCharacterForm');
 const adminCharacterNameInput = document.getElementById('adminCharacterNameInput');
 const adminCharacterStatus = document.getElementById('adminCharacterStatus');
+const defaultOfficerInput = document.getElementById('defaultOfficerInput');
+const defaultOfficerList = document.getElementById('defaultOfficerList');
+const defaultOfficerAddBtn = document.getElementById('defaultOfficerAddBtn');
+const defaultOfficersList = document.getElementById('defaultOfficersList');
+const defaultOfficersStatus = document.getElementById('defaultOfficersStatus');
 
 function setAccountStatus(text) {
   accountStatus.textContent = text || '';
@@ -225,6 +230,120 @@ adminRemoveCharacterForm.addEventListener('submit', async (event) => {
   }
 });
 
+function renderDefaultOfficers(officers) {
+  defaultOfficersList.innerHTML = '';
+  if (!officers.length) {
+    const li = document.createElement('li');
+    li.className = 'account-default-officers-empty';
+    li.textContent = 'Список порожній.';
+    defaultOfficersList.appendChild(li);
+    return;
+  }
+  officers.forEach(({ discord_id, display_name }) => {
+    const li = document.createElement('li');
+    li.className = 'account-default-officer-item';
+    const name = document.createElement('span');
+    name.textContent = display_name;
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'account-delete-btn';
+    removeBtn.setAttribute('aria-label', "Видалити");
+    removeBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
+    removeBtn.addEventListener('click', async () => {
+      try {
+        const res = await fetch(`${AUTH_API_BASE}/admin/default-officers/${encodeURIComponent(discord_id)}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${getSessionToken()}` }
+        });
+        if (!res.ok) throw new Error(await readErrorMessage(res));
+        renderDefaultOfficers(await res.json());
+      } catch (err) {
+        defaultOfficersStatus.textContent = `Помилка: ${err.message}`;
+      }
+    });
+    li.appendChild(name);
+    li.appendChild(removeBtn);
+    defaultOfficersList.appendChild(li);
+  });
+}
+
+function initDefaultOfficersAutocomplete() {
+  let selectedDiscordId = null;
+  let debounceTimer = null;
+
+  function closeList() {
+    defaultOfficerList.innerHTML = '';
+    defaultOfficerList.hidden = true;
+  }
+
+  function selectUser(discordId, username) {
+    selectedDiscordId = discordId;
+    defaultOfficerInput.value = username;
+    defaultOfficerAddBtn.disabled = false;
+    closeList();
+  }
+
+  defaultOfficerInput.addEventListener('input', () => {
+    selectedDiscordId = null;
+    defaultOfficerAddBtn.disabled = true;
+    clearTimeout(debounceTimer);
+    const q = defaultOfficerInput.value.trim();
+    if (!q) { closeList(); return; }
+    debounceTimer = setTimeout(async () => {
+      try {
+        const res = await fetch(`${AUTH_API_BASE}/auth/users?q=${encodeURIComponent(q)}`, {
+          headers: { Authorization: `Bearer ${getSessionToken()}` }
+        });
+        const users = await res.json();
+        defaultOfficerList.innerHTML = '';
+        if (!users.length) { closeList(); return; }
+        users.slice(0, 8).forEach((u) => {
+          const item = document.createElement('div');
+          item.className = 'raid-autocomplete-item';
+          item.textContent = u.username;
+          item.addEventListener('mousedown', (e) => { e.preventDefault(); selectUser(u.discordId, u.username); });
+          defaultOfficerList.appendChild(item);
+        });
+        defaultOfficerList.hidden = false;
+      } catch { closeList(); }
+    }, 200);
+  });
+
+  defaultOfficerInput.addEventListener('blur', () => setTimeout(closeList, 150));
+
+  defaultOfficerAddBtn.addEventListener('click', async () => {
+    if (!selectedDiscordId) return;
+    defaultOfficerAddBtn.disabled = true;
+    try {
+      const res = await fetch(`${AUTH_API_BASE}/admin/default-officers`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getSessionToken()}` },
+        body: JSON.stringify({ discordId: selectedDiscordId })
+      });
+      if (!res.ok) throw new Error(await readErrorMessage(res));
+      renderDefaultOfficers(await res.json());
+      defaultOfficerInput.value = '';
+      selectedDiscordId = null;
+      defaultOfficersStatus.textContent = '';
+    } catch (err) {
+      defaultOfficersStatus.textContent = `Помилка: ${err.message}`;
+      defaultOfficerAddBtn.disabled = false;
+    }
+  });
+}
+
+async function loadDefaultOfficers() {
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/admin/default-officers`, {
+      headers: { Authorization: `Bearer ${getSessionToken()}` }
+    });
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    renderDefaultOfficers(await res.json());
+  } catch (err) {
+    defaultOfficersStatus.textContent = `Помилка завантаження: ${err.message}`;
+  }
+}
+
 async function init() {
   loginBtn.href = discordLoginUrl('/account/');
 
@@ -245,6 +364,8 @@ async function init() {
   }
   if (user.isAdmin) {
     accountTabs.hidden = false;
+    initDefaultOfficersAutocomplete();
+    let defaultOfficersLoaded = false;
     accountTabs.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-tab]');
       if (!btn) return;
@@ -253,6 +374,10 @@ async function init() {
       const tab = btn.dataset.tab;
       accountTabPane.hidden = tab !== 'account';
       adminTabPane.hidden = tab !== 'admin';
+      if (tab === 'admin' && !defaultOfficersLoaded) {
+        defaultOfficersLoaded = true;
+        loadDefaultOfficers();
+      }
     });
   }
 

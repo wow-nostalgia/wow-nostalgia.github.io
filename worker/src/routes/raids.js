@@ -11,7 +11,8 @@ import {
   listRaidOfficers,
   addRaidOfficer,
   removeRaidOfficer,
-  getUserByDiscordId
+  getUserByDiscordId,
+  listDefaultOfficers
 } from '../db.js';
 import { requireRaidOfficer, requireLeader } from '../auth.js';
 
@@ -58,6 +59,9 @@ export async function handleCreateRaid(request, env, session) {
   });
 
   await insertAudit(env.DB, id, session.username, 'raid_create', { title, instance, difficulty });
+
+  const defaultOfficers = await listDefaultOfficers(env.DB);
+  await Promise.all(defaultOfficers.map((o) => addRaidOfficer(env.DB, id, o.discord_id)));
 
   return jsonResponse(publicRaid(raid), 201);
 }

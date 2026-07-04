@@ -372,3 +372,28 @@ export async function addRaidOfficer(db, raidId, discordId) {
 export async function removeRaidOfficer(db, raidId, discordId) {
   await db.prepare('DELETE FROM raid_officers WHERE raid_id = ? AND discord_id = ?').bind(raidId, discordId).run();
 }
+
+export async function listDefaultOfficers(db) {
+  const { results } = await db
+    .prepare(
+      `SELECT do.discord_id, ${displayNameSubquery('u')} AS display_name, u.username
+       FROM default_officers do
+       JOIN users u ON u.discord_id = do.discord_id
+       ORDER BY do.added_at ASC`
+    )
+    .all();
+  return results;
+}
+
+export async function addDefaultOfficer(db, discordId) {
+  await db
+    .prepare('INSERT OR IGNORE INTO default_officers (discord_id, added_at) VALUES (?, ?)')
+    .bind(discordId, nowIso())
+    .run();
+  return listDefaultOfficers(db);
+}
+
+export async function removeDefaultOfficer(db, discordId) {
+  await db.prepare('DELETE FROM default_officers WHERE discord_id = ?').bind(discordId).run();
+  return listDefaultOfficers(db);
+}
