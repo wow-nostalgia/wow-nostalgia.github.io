@@ -1,5 +1,19 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-04--20-22--Boro--FreedomUA/",
+    "date": "2026-07-04",
+    "boss": null,
+    "players": [],
+    "error": "Request failed with status 404"
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-02--19-04--Diosa--FreedomUA/",
+    "date": "2026-07-02",
+    "boss": null,
+    "players": [],
+    "error": "Request failed with status 404"
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-07-01--21-27--Diosa--FreedomUA/",
     "date": "2026-07-01",
     "boss": "Lord Marrowgar",
@@ -6586,7 +6600,7 @@
     "date": "2026-06-21",
     "boss": null,
     "players": [],
-    "error": "No fights-container found (corrupted or empty report)"
+    "error": "Request failed with status 404"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-06-20--20-29--Boro--FreedomUA/",
@@ -20077,7 +20091,7 @@
     "date": "2026-05-09",
     "boss": null,
     "players": [],
-    "error": "No fights-container found (corrupted or empty report)"
+    "error": "Request failed with status 404"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-05-03--20-31--Boro--FreedomUA/",
