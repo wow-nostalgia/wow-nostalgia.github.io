@@ -69,7 +69,7 @@ cursor: pointer;
 ### Іконка-видалення: `.account-delete-btn` / `.archive-delete-btn`
 ```css
 background: none; border: none; padding: 0.4rem;
-color: var(--color-text-faint); cursor: pointer;
+color: var(--color-text-muted); cursor: pointer;
 border-radius: var(--radius-md); display: inline-flex; align-items: center;
 /* :hover */ color: var(--color-danger); background-color: rgba(255,107,107,0.12);
 ```
