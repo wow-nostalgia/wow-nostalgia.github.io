@@ -929,6 +929,97 @@ body.potion-page .potion-table tbody tr.potion-bad>td {
   color: var(--color-danger) !important;
 }
 
+body.potion-page .add-log-btn-wrap {
+  margin-bottom: 1rem;
+}
+
+body.potion-page .add-log-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.65);
+  align-items: center;
+  justify-content: center;
+}
+
+body.potion-page .add-log-overlay:not([hidden]) {
+  display: flex;
+}
+
+body.potion-page .add-log-dialog {
+  background: var(--color-surface-overlay);
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 2rem;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+}
+
+body.potion-page .add-log-title {
+  margin: 0 0 1.25rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--color-text-strong);
+}
+
+body.potion-page .add-log-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.85rem;
+}
+
+body.potion-page .add-log-label {
+  font-size: 0.82rem;
+  color: var(--color-text-soft);
+}
+
+body.potion-page .add-log-label span {
+  color: var(--color-text-faint);
+  font-size: 0.78rem;
+}
+
+body.potion-page .add-log-input {
+  padding: 0.45rem 0.65rem;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.88);
+  color: var(--color-text-strong);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body.potion-page .add-log-input:focus {
+  border-color: var(--color-link);
+  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+}
+
+body.potion-page .add-log-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+body.potion-page .add-log-status {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+  min-height: 1.2em;
+}
+
+body.potion-page .add-log-status.error {
+  color: var(--color-danger);
+}
+
+body.potion-page .add-log-status.success {
+  color: var(--color-success);
+}
+
 
 /* =========================
    GALLERY PAGE

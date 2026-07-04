@@ -64,6 +64,10 @@
         <p>Лог містить танків і хілів, котрим не обов'язково пити поти.</p>
         <p>Лог може містити гравців котрих логер wow помилково додає в статистику рейду.</p>
 
+        <div id="addLogBtnWrap" class="add-log-btn-wrap" hidden>
+          <button type="button" id="addLogOpenBtn" class="link-button-std">+ Додати лог рейду</button>
+        </div>
+
         <p id="potionStatus">Завантаження даних...</p>
 
         <div id="potionRaids" class="potion-raids"></div>
@@ -110,9 +114,28 @@
 
   </div>
 
+  <div id="addLogOverlay" class="add-log-overlay" hidden>
+    <div class="add-log-dialog">
+      <p class="add-log-title">Додати лог рейду</p>
+      <div class="add-log-field">
+        <label class="add-log-label" for="addLogUrl1">Посилання на лог <span>(обов'язкове)</span></label>
+        <input type="url" id="addLogUrl1" class="add-log-input" placeholder="https://uwu-logs.xyz/reports/..." />
+      </div>
+      <div class="add-log-field">
+        <label class="add-log-label" for="addLogUrl2">Другий лог того самого рейду <span>(якщо рейд розбитий на два звіти)</span></label>
+        <input type="url" id="addLogUrl2" class="add-log-input" placeholder="https://uwu-logs.xyz/reports/..." />
+      </div>
+      <p id="addLogStatus" class="add-log-status"></p>
+      <div class="add-log-actions">
+        <button type="button" id="addLogSubmitBtn" class="compare-btn">Додати</button>
+        <button type="button" id="addLogCancelBtn" class="link-button-std">Скасувати</button>
+      </div>
+    </div>
+  </div>
+
   <script src="../scripts/nav.js"></script>
   <script src="../scripts/auth-shared.js?v=6"></script>
-  <script src="../scripts/potion-stats.js"></script>
+  <script src="../scripts/potion-stats.js?v=2"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

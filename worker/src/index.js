@@ -1,5 +1,6 @@
 import { HttpError, jsonResponse, readJson } from './util.js';
 import { requireSession } from './auth.js';
+import { handleAddLogs } from './routes/logs.js';
 import {
   handleCreateRaid,
   handleListRaids,
@@ -186,6 +187,10 @@ async function routeAdmin(request, env, parts, session) {
 
   if (sub === 'raids' && sub2 && method === 'DELETE') {
     return handleDeleteRaid(request, env, decodeURIComponent(sub2), session);
+  }
+
+  if (sub === 'logs' && !sub2 && method === 'POST') {
+    return handleAddLogs(request, env);
   }
 
   if (sub === 'default-officers') {
