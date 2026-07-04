@@ -100,7 +100,7 @@ function createPlayerRow(player) {
 function createRaidSection(raid, index) {
   if (!Array.isArray(raid.players) || raid.players.length === 0) return `<div class="potion-raid-block empty"><p>Немає даних гравців</p></div>`;
   const rowsHtml = raid.players.map(createPlayerRow).join('');
-  return `<div class="potion-raid-block"><button class="potion-raid-toggle" type="button" data-target="potion-raid-${index}" aria-expanded="false" aria-controls="potion-raid-${index}"><span class="potion-raid-title">${escapeHtml(formatRaidTitle(raid))}</span><span class="potion-raid-meta">${raid.players.length} гравці(в)</span></button><div class="potion-raid-content" id="potion-raid-${index}" hidden><div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}</div></div>`;
+  return `<div class="potion-raid-block"><button class="potion-raid-toggle" type="button" data-target="potion-raid-${index}" aria-expanded="false" aria-controls="potion-raid-${index}"><span class="potion-raid-title">${escapeHtml(formatRaidTitle(raid))}</span></button><div class="potion-raid-content" id="potion-raid-${index}" hidden><div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}</div></div>`;
 }
 
 function attachRaidToggles() {
