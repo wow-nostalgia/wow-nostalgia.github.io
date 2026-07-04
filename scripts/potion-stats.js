@@ -104,11 +104,28 @@ function createRaidContent(raid) {
   return `<div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}`;
 }
 
+function isMobileLayout() {
+  return window.matchMedia('(max-width: 768px)').matches;
+}
+
 function showRaid(raids, index) {
   potionSidebarEl.querySelectorAll('.potion-log-btn').forEach((btn, i) => {
     btn.classList.toggle('active', i === index);
   });
-  potionContentEl.innerHTML = createRaidContent(raids[index]);
+
+  if (isMobileLayout()) {
+    potionSidebarEl.querySelectorAll('.potion-inline-content').forEach((el) => el.remove());
+    const activeBtn = potionSidebarEl.querySelectorAll('.potion-log-btn')[index];
+    if (activeBtn) {
+      const inlineEl = document.createElement('div');
+      inlineEl.className = 'potion-inline-content';
+      inlineEl.innerHTML = createRaidContent(raids[index]);
+      activeBtn.after(inlineEl);
+      inlineEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } else {
+    potionContentEl.innerHTML = createRaidContent(raids[index]);
+  }
 }
 
 function renderSidebar(raids) {
