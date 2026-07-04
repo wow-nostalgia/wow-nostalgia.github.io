@@ -951,22 +951,34 @@ body.potion-page .add-log-btn-wrap {
 }
 
 body.potion-page .raids-pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
   gap: 1rem;
   margin-top: 1.25rem;
 }
 
 body.potion-page .raids-pagination:not([hidden]) {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-body.potion-page .raids-page-info {
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  min-width: 10ch;
-  text-align: center;
+body.potion-page .link-button-std {
+  background: none;
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-md);
+  padding: 0.25rem 0.6rem;
+  color: var(--color-link);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+body.potion-page .link-button-std:hover {
+  background-color: var(--color-hover);
+}
+
+body.potion-page .link-button-std:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 body.potion-page .add-log-overlay {

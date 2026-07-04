@@ -299,9 +299,9 @@ function renderRaidsPage(page) {
 
   raidsPaginationEl.hidden = false;
   raidsPaginationEl.innerHTML = `
-    <button class="compare-btn raids-page-btn" ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">← Попередня</button>
-    <span class="raids-page-info">Сторінка ${currentPage} з ${totalPages}</span>
-    <button class="compare-btn raids-page-btn" ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">Наступна →</button>
+    <button class="link-button-std raids-page-btn" ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">← Попередня</button>
+    <span>Сторінка ${currentPage} з ${totalPages}</span>
+    <button class="link-button-std raids-page-btn" ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">Наступна →</button>
   `;
 
   raidsPaginationEl.querySelectorAll('.raids-page-btn').forEach((btn) => {
