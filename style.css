@@ -1800,6 +1800,7 @@ body.raid-manager-page .archive-delete-td {
   width: 1px;
   white-space: nowrap;
   text-align: right;
+  padding: 0;
 }
 
 body.raid-manager-detail-page .raid-status-chip {
@@ -2780,10 +2781,15 @@ body.account-page .account-primary-checkbox-td {
   width: 5rem;
 }
 
-body.account-page .account-delete-col,
+body.account-page .account-delete-col {
+  width: 2.75rem;
+  text-align: center;
+}
+
 body.account-page .account-delete-td {
   width: 2.75rem;
   text-align: center;
+  padding: 0;
 }
 
 body.account-page .account-delete-btn {

@@ -66,13 +66,29 @@ cursor: pointer;
 /* --danger modifier */ color: --color-danger; border-color: rgba(255,107,107,0.4); bg: rgba(255,107,107,0.12);
 ```
 
-### Іконка-видалення: `.account-delete-btn`
+### Іконка-видалення: `.account-delete-btn` / `.archive-delete-btn`
 ```css
 background: none; border: none; padding: 0.4rem;
 color: var(--color-text-faint); cursor: pointer;
 border-radius: var(--radius-md); display: inline-flex; align-items: center;
 /* :hover */ color: var(--color-danger); background-color: rgba(255,107,107,0.12);
 ```
+SVG-іконка: `width="16" height="16"`, кошик (polyline 3 6 5 6 21 6 + paths).
+
+**Обов'язково:** `aria-label="Видалити"` на кнопці — браузер показує його як тултіп при наведенні, і це доступність (screen reader). Без видимого тексту на кнопці — `aria-label` є єдиним підписом.
+
+```html
+<button type="button" class="account-delete-btn" aria-label="Видалити">
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <polyline points="3 6 5 6 21 6"/>
+    <path d="M19 6l-1 14H6L5 6"/>
+    <path d="M10 11v6"/><path d="M14 11v6"/>
+    <path d="M9 6V4h6v2"/>
+  </svg>
+</button>
+```
+> Клас `account-delete-btn` — scoped до `body.account-page`; для інших сторінок створюй аналогічний page-scoped клас (напр. `archive-delete-btn` для `body.raid-manager-page`).
 
 ### Тогл-кнопки: `.raid-toggle-btn` / `.raid-weight-toggle-btn`
 ```css
