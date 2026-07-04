@@ -447,8 +447,8 @@ async function init() {
   try {
     setStatus('Завантаження даних...');
     const [personalResponse, playersResponse] = await Promise.all([
-      fetch('/data/personal-stats.json'),
-      fetch('/data/players.json')
+      fetch('/data/personal-stats.json?t=' + Date.now()),
+      fetch('/data/players.json?t=' + Date.now())
     ]);
 
     if (!personalResponse.ok) throw new Error(`HTTP ${personalResponse.status}`);

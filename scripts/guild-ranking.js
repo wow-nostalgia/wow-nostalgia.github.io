@@ -283,8 +283,8 @@ async function init() {
   try {
     setStatus('Завантаження даних...');
     const [rankingResponse, playersResponse, ownersResponse] = await Promise.all([
-      fetch('/data/guild-data.json'),
-      fetch('/data/players.json'),
+      fetch('/data/guild-data.json?t=' + Date.now()),
+      fetch('/data/players.json?t=' + Date.now()),
       fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null)
     ]);
 

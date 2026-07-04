@@ -1155,11 +1155,11 @@ async function init() {
 
   try {
     const [itemsRes, playersRes, ownersRes, personalStatsRes, guildDataRes] = await Promise.all([
-      fetch('/data/raid-items.json'),
-      fetch('/data/players.json'),
+      fetch('/data/raid-items.json?t=' + Date.now()),
+      fetch('/data/players.json?t=' + Date.now()),
       fetch(apiUrl('/characters/owners')).catch(() => null),
-      fetch('/data/personal-stats.json').catch(() => null),
-      fetch('/data/guild-data.json').catch(() => null),
+      fetch('/data/personal-stats.json?t=' + Date.now()).catch(() => null),
+      fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
       loadItemIconData()
     ]);
     itemsCatalog = await itemsRes.json();

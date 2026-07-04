@@ -56,9 +56,9 @@ let classColorMap = new Map();
 async function loadCharacterStatsSources() {
   try {
     const [players, personalStats, guildDataRes] = await Promise.all([
-      fetch('/data/players.json').then((r) => r.json()),
-      fetch('/data/personal-stats.json').then((r) => r.json()),
-      fetch('/data/guild-data.json').catch(() => null)
+      fetch('/data/players.json?t=' + Date.now()).then((r) => r.json()),
+      fetch('/data/personal-stats.json?t=' + Date.now()).then((r) => r.json()),
+      fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null)
     ]);
     guildMemberNames = new Set(players.map((p) => p.name));
     personalAnalyticsNames = new Set();

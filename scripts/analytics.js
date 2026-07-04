@@ -996,11 +996,11 @@ async function init() {
   try {
     setStatus('Завантаження даних...');
     const [guildResponse, playersResponse, potionResponse, healerResponse, personalResponse] = await Promise.all([
-      fetch('/data/guild-data.json'),
-      fetch('/data/players.json'),
-      fetch('/data/potion-stats.json'),
-      fetch('/data/healer-rankings.json'),
-      fetch('/data/personal-stats.json')
+      fetch('/data/guild-data.json?t=' + Date.now()),
+      fetch('/data/players.json?t=' + Date.now()),
+      fetch('/data/potion-stats.json?t=' + Date.now()),
+      fetch('/data/healer-rankings.json?t=' + Date.now()),
+      fetch('/data/personal-stats.json?t=' + Date.now())
     ]);
 
     if (!guildResponse.ok) {
