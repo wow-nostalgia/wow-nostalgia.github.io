@@ -87,11 +87,22 @@
     </div>
   </div>
 
+  <div id="deleteRaidOverlay" class="archive-confirm-overlay" hidden>
+    <div class="archive-confirm-dialog">
+      <p class="archive-confirm-text">Видалити рейд?</p>
+      <p id="deleteRaidTitle" class="archive-confirm-raid-title"></p>
+      <div class="archive-confirm-actions">
+        <button type="button" id="deleteRaidConfirmBtn" class="link-button-std link-button-std--danger">Так, видалити</button>
+        <button type="button" id="deleteRaidCancelBtn" class="link-button-std">Ні, скасувати</button>
+      </div>
+    </div>
+  </div>
+
   <script src="../../scripts/nav.js?v=1"></script>
   <script src="../../scripts/auth-shared.js?v=6"></script>
   <script src="../../scripts/raid-manager-shared.js?v=2"></script>
   <script src="../../scripts/name-translations.js?v=1"></script>
-  <script src="../../scripts/raid-manager-archive.js?v=2"></script>
+  <script src="../../scripts/raid-manager-archive.js?v=3"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

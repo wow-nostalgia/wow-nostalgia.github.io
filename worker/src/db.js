@@ -397,3 +397,7 @@ export async function removeDefaultOfficer(db, discordId) {
   await db.prepare('DELETE FROM default_officers WHERE discord_id = ?').bind(discordId).run();
   return listDefaultOfficers(db);
 }
+
+export async function deleteRaid(db, raidId) {
+  await db.prepare('DELETE FROM raids WHERE id = ?').bind(raidId).run();
+}

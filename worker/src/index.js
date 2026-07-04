@@ -10,7 +10,8 @@ import {
   handleListOfficers,
   handleAddOfficer,
   handleRemoveOfficer,
-  handleToggleHiddenReserves
+  handleToggleHiddenReserves,
+  handleDeleteRaid
 } from './routes/raids.js';
 import {
   handleListReserves,
@@ -181,6 +182,10 @@ async function routeAdmin(request, env, parts, session) {
 
   if (sub === 'characters' && sub2 && method === 'DELETE') {
     return handleAdminRemoveCharacter(request, env, decodeURIComponent(sub2), session);
+  }
+
+  if (sub === 'raids' && sub2 && method === 'DELETE') {
+    return handleDeleteRaid(request, env, decodeURIComponent(sub2), session);
   }
 
   if (sub === 'default-officers') {

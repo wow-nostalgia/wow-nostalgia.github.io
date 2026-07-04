@@ -12,7 +12,8 @@ import {
   addRaidOfficer,
   removeRaidOfficer,
   getUserByDiscordId,
-  listDefaultOfficers
+  listDefaultOfficers,
+  deleteRaid
 } from '../db.js';
 import { requireRaidOfficer, requireLeader } from '../auth.js';
 
@@ -164,6 +165,14 @@ export async function handleToggleHiddenReserves(request, env, id, session) {
   await insertAudit(env.DB, id, session.username, newValue ? 'hide_reserves' : 'show_reserves', {});
 
   return jsonResponse(publicRaid(updated));
+}
+
+export async function handleDeleteRaid(request, env, id, session) {
+  if (session.discordId !== env.ADMIN_DISCORD_ID) throw new HttpError(403, "Лише адміністратор сайту");
+  const raid = await loadRaidOr404(env, id);
+  await insertAudit(env.DB, id, session.username, 'raid_delete', { title: raid.title });
+  await deleteRaid(env.DB, id);
+  return jsonResponse({ ok: true });
 }
 
 export { publicRaid };
