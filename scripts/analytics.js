@@ -1,7 +1,5 @@
 const statusEl = document.getElementById('analyticsStatus');
 const lastUpdatedText = document.getElementById('lastUpdatedText');
-const bossAvgOverTimeSelect = document.getElementById('bossAvgOverTimeSelect');
-const bossAvgOverTimeSplineSelect = document.getElementById('bossAvgOverTimeSplineSelect');
 const bossSumOverTimeSelect = document.getElementById('bossSumOverTimeSelect');
 const bossSumOverTimeSplineSelect = document.getElementById('bossSumOverTimeSplineSelect');
 
@@ -857,22 +855,6 @@ function formatDateLabel(isoDate) {
   return `${day}.${month}.${year.slice(2)}`;
 }
 
-function computeBossAvgOverTime(personalStats, boss) {
-  const points = [];
-
-  for (const record of personalStats) {
-    if (record.error || record.boss !== boss) continue;
-
-    const players = record.players || [];
-    if (!players.length) continue;
-
-    const value = players.reduce((sum, p) => sum + Number(p.dps || 0), 0) / players.length;
-    points.push({ date: record.date, value });
-  }
-
-  return points.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
-}
-
 function computeBossSumOverTime(personalStats, boss) {
   const points = [];
 
@@ -968,16 +950,6 @@ function renderBossMetricOverTimeChart({ canvasId, points, splineMode, datasetLa
   });
 }
 
-function renderBossAvgOverTimeChart(personalStats, boss) {
-  renderBossMetricOverTimeChart({
-    canvasId: 'chartBossAvgOverTime',
-    points: computeBossAvgOverTime(personalStats, boss),
-    splineMode: bossAvgOverTimeSplineSelect.value,
-    datasetLabel: `Середній DPS — ${translateBoss(boss)}`,
-    yLabel: 'Середній DPS'
-  });
-}
-
 function renderBossSumOverTimeChart(personalStats, boss) {
   renderBossMetricOverTimeChart({
     canvasId: 'chartBossSumOverTime',
@@ -1039,21 +1011,11 @@ async function init() {
       });
     };
 
-    populateBossSelect(bossAvgOverTimeSelect);
     populateBossSelect(bossSumOverTimeSelect);
 
     if (bossesWithHistory.length) {
-      renderBossAvgOverTimeChart(personalStats, bossesWithHistory[0]);
       renderBossSumOverTimeChart(personalStats, bossesWithHistory[0]);
     }
-
-    bossAvgOverTimeSelect.addEventListener('change', () => {
-      renderBossAvgOverTimeChart(personalStats, bossAvgOverTimeSelect.value);
-    });
-
-    bossAvgOverTimeSplineSelect.addEventListener('change', () => {
-      renderBossAvgOverTimeChart(personalStats, bossAvgOverTimeSelect.value);
-    });
 
     bossSumOverTimeSelect.addEventListener('change', () => {
       renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
