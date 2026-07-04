@@ -17,6 +17,8 @@ export async function handleUpsertPenalty(request, env, raidId, playerName, sess
   const raid = await loadRaidOr404(env, raidId);
   await requireRaidOfficer(env.DB, raidId, raid, session);
 
+  if (raid.status === 'completed') throw new HttpError(423, 'Рейд завершено — штрафи більше не редагуються');
+
   const body = await readJson(request);
   const rollPenalty = Math.max(0, Math.floor(Number(body.rollPenalty) || 0));
   const softPenalty = Math.max(0, Math.min(raid.soft_limit_total, Math.floor(Number(body.softPenalty) || 0)));

@@ -1032,7 +1032,7 @@ function renderPenaltiesTable() {
     return;
   }
 
-  const officerMode = isOfficerMode();
+  const officerMode = isOfficerMode() && !isRaidCompleted();
 
   for (const { player_name, roll_penalty, soft_penalty } of penaltiesList) {
     const tr = document.createElement('tr');
