@@ -564,6 +564,15 @@ footer span {
   box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
 }
 
+.ranking-controls select {
+  appearance: none;
+  padding-right: 2rem;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 0.65rem;
+}
+
 .ranking-status-row {
   display: flex;
   align-items: center;
@@ -1309,13 +1318,19 @@ body.personal-analytics-page .spline-select-wrap label {
 }
 
 body.personal-analytics-page .spline-select-wrap select {
+  appearance: none;
   padding: 0.35rem 0.55rem;
+  padding-right: 2rem;
   border: 1px solid rgba(197, 198, 205, 0.35);
   border-radius: var(--radius-sm);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
   font-size: 0.85rem;
   outline: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.55rem center;
+  background-size: 0.65rem;
 }
 
 body.personal-analytics-page .spline-select-wrap select:hover {
@@ -1574,6 +1589,17 @@ body.raid-manager-detail-page .raid-input-wrap input[type="text"]:disabled,
 body.raid-manager-detail-page .raid-item-picker-trigger:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+body.raid-manager-page .raid-create-form select,
+body.raid-manager-detail-page .raid-soft-form select,
+body.raid-manager-detail-page .raid-items-filters select {
+  appearance: none;
+  padding-right: 2rem;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 0.65rem;
 }
 
 body.raid-manager-page .ranking-table-wrap {
@@ -1880,10 +1906,15 @@ body.raid-manager-detail-page .raid-item-picker-trigger {
 }
 
 body.raid-manager-detail-page .raid-item-picker-trigger::after {
-  content: '▾';
+  content: '';
+  flex-shrink: 0;
   margin-left: auto;
-  font-size: 0.7rem;
-  color: var(--color-text-faint);
+  width: 0.65rem;
+  height: 0.65rem;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
 body.raid-manager-detail-page .raid-item-picker-list {
