@@ -1968,6 +1968,10 @@ body.raid-manager-detail-page .raid-tables-grid .ranking-table-wrap {
   overflow-x: auto;
 }
 
+body.raid-manager-detail-page #penaltiesPane .ranking-table-wrap {
+  overflow-x: visible;
+}
+
 body.raid-manager-detail-page .raid-search-input {
   width: 100%;
   max-width: 260px;
@@ -2856,6 +2860,8 @@ body.raid-manager-detail-page .penalty-reason-input:focus {
 body.raid-manager-detail-page .penalty-reason-text {
   color: var(--color-text-muted);
   font-size: 0.875rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 @media (prefers-reduced-motion: reduce) {
