@@ -9,7 +9,9 @@ const charactersList = document.getElementById('charactersList');
 const addCharacterForm = document.getElementById('addCharacterForm');
 const characterNameInput = document.getElementById('characterNameInput');
 const accountStatus = document.getElementById('accountStatus');
-const adminCharacterTools = document.getElementById('adminCharacterTools');
+const accountTabs = document.getElementById('accountTabs');
+const accountTabPane = document.getElementById('accountTabPane');
+const adminTabPane = document.getElementById('adminTabPane');
 const adminRemoveCharacterForm = document.getElementById('adminRemoveCharacterForm');
 const adminCharacterNameInput = document.getElementById('adminCharacterNameInput');
 const adminCharacterStatus = document.getElementById('adminCharacterStatus');
@@ -241,7 +243,18 @@ async function init() {
     profileAvatar.src = user.avatar;
     profileAvatar.hidden = false;
   }
-  adminCharacterTools.hidden = !user.isAdmin;
+  if (user.isAdmin) {
+    accountTabs.hidden = false;
+    accountTabs.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-tab]');
+      if (!btn) return;
+      accountTabs.querySelectorAll('.raid-tab').forEach((t) => t.classList.remove('raid-tab--active'));
+      btn.classList.add('raid-tab--active');
+      const tab = btn.dataset.tab;
+      accountTabPane.hidden = tab !== 'account';
+      adminTabPane.hidden = tab !== 'admin';
+    });
+  }
 
   await loadCharacterStatsSources();
 

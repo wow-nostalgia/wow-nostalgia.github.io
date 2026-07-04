@@ -68,41 +68,48 @@
           </div>
         </div>
 
-        <h2>Мої персонажі</h2>
-
-        <form id="addCharacterForm" class="account-form">
-          <label for="characterNameInput">Додати персонажа</label>
-          <input type="text" id="characterNameInput" autocomplete="off" placeholder="Ім'я персонажа">
-          <button type="submit" class="compare-btn">Додати</button>
-        </form>
-
-        <div class="account-chars-layout">
-          <div class="ranking-table-wrap account-characters-table-wrap">
-            <table class="account-characters-table">
-              <thead>
-                <tr>
-                  <th>Персонаж</th>
-                  <th class="account-primary-col">Основний</th>
-                  <th class="account-delete-col"></th>
-                </tr>
-              </thead>
-              <tbody id="charactersList"></tbody>
-            </table>
-          </div>
-          <p class="account-chars-hint">Ім'я основного персонажа відображається у підказці при наведенні на твіна гравця. Якщо не обрано — показується нік Discord. Це допомагає зрозуміти чий перс.</p>
+        <div id="accountTabs" class="raid-tabs" role="tablist" hidden>
+          <button type="button" class="raid-tab raid-tab--active" data-tab="account">Акаунт</button>
+          <button type="button" class="raid-tab" data-tab="admin">Адмін-панель</button>
         </div>
 
-        <p id="accountStatus"></p>
+        <div id="accountTabPane">
+          <h2>Мої персонажі</h2>
 
-        <div id="adminCharacterTools" class="account-admin-tools" hidden>
-          <h2>Адмін: звільнити персонажа</h2>
-          <p class="account-admin-hint">Примусово прибирає персонажа з чужого акаунту (виправлення помилкового застовплення).</p>
-          <form id="adminRemoveCharacterForm" class="account-form">
-            <label for="adminCharacterNameInput">Ім'я персонажа</label>
-            <input type="text" id="adminCharacterNameInput" autocomplete="off" placeholder="Ім'я персонажа">
-            <button type="submit" class="compare-btn">Звільнити</button>
+          <form id="addCharacterForm" class="account-form">
+            <input type="text" id="characterNameInput" autocomplete="off" placeholder="Ім'я персонажа">
+            <button type="submit" class="compare-btn">Додати</button>
           </form>
-          <p id="adminCharacterStatus"></p>
+
+          <div class="account-chars-layout">
+            <div class="ranking-table-wrap account-characters-table-wrap">
+              <table class="account-characters-table">
+                <thead>
+                  <tr>
+                    <th>Персонаж</th>
+                    <th class="account-primary-col">Основний</th>
+                    <th class="account-delete-col"></th>
+                  </tr>
+                </thead>
+                <tbody id="charactersList"></tbody>
+              </table>
+            </div>
+            <p class="account-chars-hint">Ім'я основного персонажа відображається у підказці при наведенні на твіна гравця. Якщо не обрано — показується нік Discord. Це допомагає зрозуміти чий перс.</p>
+          </div>
+
+          <p id="accountStatus"></p>
+        </div>
+
+        <div id="adminTabPane" hidden>
+          <div id="adminCharacterTools" class="account-admin-tools">
+            <h2>Адмін: звільнити персонажа</h2>
+            <p class="account-admin-hint">Примусово прибирає персонажа з чужого акаунту (виправлення помилкового застовплення).</p>
+            <form id="adminRemoveCharacterForm" class="account-form">
+              <input type="text" id="adminCharacterNameInput" autocomplete="off" placeholder="Ім'я персонажа">
+              <button type="submit" class="compare-btn">Звільнити</button>
+            </form>
+            <p id="adminCharacterStatus"></p>
+          </div>
         </div>
       </div>
 
@@ -116,7 +123,7 @@
 
   <script src="../scripts/nav.js?v=1"></script>
   <script src="../scripts/auth-shared.js?v=6"></script>
-  <script src="../scripts/account.js?v=10"></script>
+  <script src="../scripts/account.js?v=11"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
