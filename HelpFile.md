@@ -9,7 +9,7 @@
 
    Скрипт сам пам'ятає, які рейди вже обробив — щодня запускати на всі рейди не треба, обробиться лише новододаний лог (секунди). Лише першого разу повний прохід по всіх рейдах займає ~30-40 хвилин.
 
-Рейтинг гравців оновлюється автоматично кожен ранок. Є спеціальний Action: <https://github.com/wow-nostalgia/wow-nostalgia.github.io/actions/workflows/update-guild-data.yml>
+Рейтинг гравців оновлюється автоматично кожен ранок. Є спеціальний Action: <https://github.com/wow-nostalgia/wow-nostalgia.github.io/actions/workflows/update-guild-data.yml> або локально `npm run update:guild`
 
 Єдине, що список согільдійців треба заливати (оновлювати вручну). Для цього є спеціальний аддон для експорту списку гравців гільдії. Він лежить в папці `Addon-to-export-guild-members`. Читай `ReadMe` всередині аддону.
 
