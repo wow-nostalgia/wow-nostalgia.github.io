@@ -72,7 +72,7 @@ function createRaidLinksHtml(raid) {
   if (splitUrls.length > 1) {
     parts.push(`<p class="potion-raid-link">Цей рейд був розділений на кілька звітів UwU-Logs: ${createLogLinksList(splitUrls)}</p>`);
   } else {
-    parts.push(`<p class="potion-raid-link"><a href="${escapeHtml(isSafeUrl(raid.raidUrl) ? raid.raidUrl : '#')}" target="_blank" rel="noopener noreferrer">Відкрити оригінальний лог UwU-Logs</a></p>`);
+    parts.push(`<p class="potion-raid-link"><a href="${escapeHtml(isSafeUrl(raid.raidUrl) ? raid.raidUrl : '#')}" target="_blank" rel="noopener noreferrer">Оригінальний лог UwU-Logs</a></p>`);
   }
 
   if (alternateUrls.length > 0) {
