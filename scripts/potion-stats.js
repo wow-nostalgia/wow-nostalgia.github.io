@@ -15,6 +15,7 @@ const addLogUrl2 = document.getElementById('addLogUrl2');
 const addLogStatusEl = document.getElementById('addLogStatus');
 const addLogSubmitBtn = document.getElementById('addLogSubmitBtn');
 const addLogCancelBtn = document.getElementById('addLogCancelBtn');
+const addLogCloseBtn = document.getElementById('addLogCloseBtn');
 const potionSidebarEl = document.getElementById('potionSidebar');
 const potionContentEl = document.getElementById('potionContent');
 
@@ -303,6 +304,9 @@ function openAddLogDialog() {
   addLogStatusEl.textContent = '';
   addLogStatusEl.className = 'add-log-status';
   addLogSubmitBtn.disabled = false;
+  addLogSubmitBtn.hidden = false;
+  addLogCancelBtn.hidden = false;
+  addLogCloseBtn.hidden = true;
   addLogOverlay.hidden = false;
   addLogUrl1.focus();
 }
@@ -314,6 +318,7 @@ function closeAddLogDialog() {
 function attachAddLogPopup() {
   addLogOpenBtn.addEventListener('click', openAddLogDialog);
   addLogCancelBtn.addEventListener('click', closeAddLogDialog);
+  addLogCloseBtn.addEventListener('click', closeAddLogDialog);
 
   addLogOverlay.addEventListener('click', (e) => {
     if (e.target === addLogOverlay) closeAddLogDialog();
@@ -348,7 +353,9 @@ function attachAddLogPopup() {
       }
       addLogStatusEl.textContent = "Лог додано. Статистика оновиться за кілька хвилин.";
       addLogStatusEl.className = 'add-log-status success';
-      addLogSubmitBtn.disabled = false;
+      addLogSubmitBtn.hidden = true;
+      addLogCancelBtn.hidden = true;
+      addLogCloseBtn.hidden = false;
     } catch (err) {
       addLogStatusEl.textContent = `Помилка: ${err.message}`;
       addLogStatusEl.className = 'add-log-status error';
