@@ -75,7 +75,6 @@ const transferCancelModalBtn = document.getElementById('transferCancelModalBtn')
 const transferNotice = document.getElementById('transferNotice');
 const bonusPoolBanner = document.getElementById('bonusPoolBanner');
 const transferWeightLimitInput = document.getElementById('transferWeightLimitInput');
-const transferWeightLimitSaveBtn = document.getElementById('transferWeightLimitSaveBtn');
 let currentTooltipItemId = null;
 
 let raidId = null;
@@ -247,8 +246,6 @@ function applyOfficerFormLockState() {
   const locked = isRaidCompleted();
 
   hiddenReservesToggle.disabled = locked;
-  transferWeightLimitInput.disabled = locked;
-  transferWeightLimitSaveBtn.disabled = locked;
   assignPlayerNameInput.disabled = locked;
   assignPlayerNameClear.disabled = locked;
   assignBoss.disabled = locked;
@@ -265,6 +262,7 @@ function applySettingsFormLockState() {
 
   settingsTitleInput.disabled = locked;
   settingsSoftLimitInput.disabled = locked;
+  transferWeightLimitInput.disabled = locked;
   settingsForm.querySelector('button[type="submit"]').disabled = locked;
 }
 
@@ -1234,8 +1232,18 @@ settingsForm.addEventListener('submit', async (event) => {
   const softLimitTotal = Number(settingsSoftLimitInput.value);
   if (!title || !Number.isInteger(softLimitTotal) || softLimitTotal < 1) return;
 
+  const twlRaw = transferWeightLimitInput.value.trim();
+  const transferWeightLimit = twlRaw === '' ? null : Number(twlRaw);
+  if (transferWeightLimit !== null && (!Number.isInteger(transferWeightLimit) || transferWeightLimit < 0)) {
+    setStatus('Ліміт переданої ваги: ціле число від 0 або порожнє поле (авто)', 'error');
+    return;
+  }
+
   try {
-    raid = await apiCall('PATCH', `/raids/${raidId}`, { token: getSessionToken(), body: { title, softLimitTotal } });
+    raid = await apiCall('PATCH', `/raids/${raidId}`, {
+      token: getSessionToken(),
+      body: { title, softLimitTotal, transferWeightLimit }
+    });
     raidTitleHeading.textContent = raid.title;
     document.title = `${raid.title} — Рейд-менеджер`;
     renderBanner();
@@ -1396,24 +1404,6 @@ transferConfirmBtn.addEventListener('click', async () => {
 transferCancelModalBtn.addEventListener('click', () => { transferModal.hidden = true; });
 transferModalBackdrop.addEventListener('click', () => { transferModal.hidden = true; });
 
-transferWeightLimitSaveBtn.addEventListener('click', async () => {
-  const raw = transferWeightLimitInput.value.trim();
-  const numericVal = raw === '' ? null : Number(raw);
-  if (numericVal !== null && (!Number.isInteger(numericVal) || numericVal < 0)) {
-    alert('Введіть ціле число від 0, або залиште порожнім (авто)');
-    return;
-  }
-  try {
-    raid = await apiCall('PATCH', `/raids/${raidId}`, {
-      token: getSessionToken(),
-      body: { transferWeightLimit: numericVal }
-    });
-    renderBanner();
-    setStatus('Ліміт передачі збережено.', 'success');
-  } catch (err) {
-    setStatus(`Помилка: ${err.message}`, 'error');
-  }
-});
 
 async function init() {
   raidId = new URLSearchParams(window.location.search).get('id');

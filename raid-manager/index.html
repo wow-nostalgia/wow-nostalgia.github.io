@@ -99,6 +99,10 @@
           Приховати софти
         </label>
 
+        <label for="raidTransferWeightLimit">Ліміт переданої ваги</label>
+        <input type="number" id="raidTransferWeightLimit" min="0" max="9" placeholder="авто">
+        <small class="raid-transfer-limit-hint">0 = вимкнено, порожньо = ліміт рейду</small>
+
         <button type="submit" class="compare-btn">➕ Створити рейд</button>
         </form>
       </div>
@@ -113,7 +117,7 @@
   <script src="../scripts/auth-shared.js?v=6"></script>
   <script src="../scripts/raid-manager-shared.js?v=2"></script>
   <script src="../scripts/name-translations.js?v=1"></script>
-  <script src="../scripts/raid-manager.js?v=6"></script>
+  <script src="../scripts/raid-manager.js?v=7"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

@@ -114,12 +114,6 @@
               <input type="checkbox" id="hiddenReservesToggle">
               Приховати софти
             </label>
-            <div class="raid-transfer-limit-row">
-              <label for="transferWeightLimitInput">Ліміт переданої ваги</label>
-              <input type="number" id="transferWeightLimitInput" min="0" max="9" placeholder="авто">
-              <button type="button" id="transferWeightLimitSaveBtn" class="link-button-std">Зберегти</button>
-              <small class="raid-transfer-limit-hint">0 = вимкнено, порожньо = ліміт рейду</small>
-            </div>
             <form id="officerAssignForm" class="raid-soft-form">
               <label for="assignPlayerName">Учасник</label>
               <div class="raid-input-wrap">
@@ -242,6 +236,10 @@
               <label for="settingsSoftLimitInput">Ліміт ваги софтів</label>
               <input type="number" id="settingsSoftLimitInput" min="1" max="9" required>
 
+              <label for="transferWeightLimitInput">Ліміт переданої ваги</label>
+              <input type="number" id="transferWeightLimitInput" min="0" max="9" placeholder="авто">
+              <small class="raid-transfer-limit-hint">0 = вимкнено, порожньо = ліміт рейду</small>
+
               <button type="submit" class="compare-btn">Зберегти</button>
             </form>
           </div>
@@ -276,7 +274,7 @@
   <script src="../../scripts/auth-shared.js?v=6"></script>
   <script src="../../scripts/raid-manager-shared.js?v=2"></script>
   <script src="../../scripts/name-translations.js?v=1"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=22"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=23"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

@@ -47,6 +47,13 @@ export async function handleCreateRaid(request, env, session) {
 
   const hiddenReserves = body.hiddenReserves !== false;
 
+  const transferWeightLimit = body.transferWeightLimit !== undefined && body.transferWeightLimit !== null
+    ? Number(body.transferWeightLimit)
+    : null;
+  if (transferWeightLimit !== null && (!Number.isInteger(transferWeightLimit) || transferWeightLimit < 0)) {
+    throw new HttpError(400, 'Невалідний transferWeightLimit');
+  }
+
   const id = generateRaidId();
 
   const raid = await createRaid(env.DB, {
@@ -56,7 +63,8 @@ export async function handleCreateRaid(request, env, session) {
     difficulty,
     softLimitTotal,
     hiddenReserves,
-    leaderDiscordId: session.discordId
+    leaderDiscordId: session.discordId,
+    transferWeightLimit
   });
 
   await insertAudit(env.DB, id, session.username, 'raid_create', { title, instance, difficulty });

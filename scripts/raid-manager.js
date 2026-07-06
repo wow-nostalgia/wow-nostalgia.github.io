@@ -63,12 +63,14 @@ createForm.addEventListener('submit', async (event) => {
   submitBtn.disabled = true;
 
   try {
+    const twlRaw = document.getElementById('raidTransferWeightLimit').value.trim();
     const body = {
       title: document.getElementById('raidTitle').value.trim(),
       instance: document.getElementById('raidInstance').value,
       difficulty: document.getElementById('raidDifficulty').value,
       softLimitTotal: Number(document.getElementById('raidSoftLimitTotal').value),
-      hiddenReserves: document.getElementById('raidHiddenReserves').checked
+      hiddenReserves: document.getElementById('raidHiddenReserves').checked,
+      transferWeightLimit: twlRaw === '' ? null : Number(twlRaw)
     };
 
     const raid = await apiCall('POST', '/raids', { token: getSessionToken(), body });
