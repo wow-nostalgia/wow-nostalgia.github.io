@@ -1595,7 +1595,7 @@ body.raid-manager-detail-page .raid-soft-form {
   gap: 0.5rem 0.75rem;
   align-items: center;
   max-width: 480px;
-  margin: 0.75rem 0 1.5rem;
+  margin: 0.75rem 0 0.5rem;
 }
 
 body.raid-manager-page .raid-form-panel {
@@ -2038,7 +2038,6 @@ body.raid-manager-detail-page .link-button-std--danger:hover {
 }
 
 body.raid-manager-detail-page .raid-officer-panel {
-  margin-bottom: 1.5rem;
   padding: 0.75rem;
   border: 1px solid var(--color-border-accent);
   border-radius: var(--radius-md);
@@ -2214,7 +2213,7 @@ body.account-page .raid-tabs {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin: 1rem 0 0.75rem;
+  margin: 0.5rem 0 0.75rem;
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -2249,6 +2248,15 @@ body.raid-manager-detail-page .raid-tables-grid .ranking-table-wrap {
 
 body.raid-manager-detail-page #penaltiesPane .ranking-table-wrap {
   overflow-x: visible;
+  overflow-y: auto;
+  max-height: 660px;
+}
+
+body.raid-manager-detail-page #penaltiesPane .raid-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-surface-solid);
 }
 
 body.raid-manager-detail-page .raid-search-input {
