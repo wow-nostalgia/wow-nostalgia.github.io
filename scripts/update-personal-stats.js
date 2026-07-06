@@ -41,7 +41,12 @@ function normalizeText(value) {
 
 async function fetchWithRetry(url, attempt = 1) {
   const response = await fetch(url, {
-    headers: { 'user-agent': 'wow-nostalgia-personal-stats/1.0' }
+    headers: {
+      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'accept-language': 'uk-UA,uk;q=0.9,en;q=0.8',
+      'referer': 'https://uwu-logs.xyz/'
+    }
   });
 
   if (response.status === 429) {
