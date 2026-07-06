@@ -10034,7 +10034,7 @@
     "date": "2026-06-21",
     "boss": null,
     "players": [],
-    "error": "No fights-container found (corrupted or empty report)"
+    "error": "Request failed with status 404"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-06-20--20-29--Boro--FreedomUA/",
@@ -23525,7 +23525,7 @@
     "date": "2026-05-09",
     "boss": null,
     "players": [],
-    "error": "No fights-container found (corrupted or empty report)"
+    "error": "Request failed with status 404"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-05-03--20-31--Boro--FreedomUA/",
@@ -63664,6 +63664,13 @@
         "dps": 0
       }
     ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-02-27--19-42--Boro--FreedomUA/",
+    "date": "2026-02-27",
+    "boss": null,
+    "players": [],
+    "error": "Request failed with status 404"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-02-22--20-55--Astaroth--FreedomUA/",
