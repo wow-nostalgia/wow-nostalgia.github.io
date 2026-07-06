@@ -237,8 +237,12 @@
               <input type="number" id="settingsSoftLimitInput" min="1" max="9" required>
 
               <label for="transferWeightLimitInput">Ліміт переданої ваги</label>
-              <input type="number" id="transferWeightLimitInput" min="0" max="9" placeholder="авто">
-              <small class="raid-transfer-limit-hint">0 = вимкнено, порожньо = ліміт рейду</small>
+              <select id="transferWeightLimitInput">
+                <option value="0">Заборонено передавати</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
 
               <button type="submit" class="compare-btn">Зберегти</button>
             </form>
@@ -274,7 +278,7 @@
   <script src="../../scripts/auth-shared.js?v=6"></script>
   <script src="../../scripts/raid-manager-shared.js?v=2"></script>
   <script src="../../scripts/name-translations.js?v=1"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=23"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=24"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

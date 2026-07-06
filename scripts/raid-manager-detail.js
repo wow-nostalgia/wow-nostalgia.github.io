@@ -187,8 +187,7 @@ function renderBanner() {
   settingsSoftLimitInput.value = raid.soft_limit_total;
 
   const tl = raid.transfer_weight_limit;
-  transferWeightLimitInput.value = (tl === null || tl === undefined) ? '' : String(tl);
-  transferWeightLimitInput.max = String(raid.soft_limit_total);
+  transferWeightLimitInput.value = (tl === null || tl === undefined || tl > 3) ? '0' : String(tl);
 
   applyWeightLimits();
   applySoftFormLockState();
@@ -1232,12 +1231,7 @@ settingsForm.addEventListener('submit', async (event) => {
   const softLimitTotal = Number(settingsSoftLimitInput.value);
   if (!title || !Number.isInteger(softLimitTotal) || softLimitTotal < 1) return;
 
-  const twlRaw = transferWeightLimitInput.value.trim();
-  const transferWeightLimit = twlRaw === '' ? null : Number(twlRaw);
-  if (transferWeightLimit !== null && (!Number.isInteger(transferWeightLimit) || transferWeightLimit < 0)) {
-    setStatus('Ліміт переданої ваги: ціле число від 0 або порожнє поле (авто)', 'error');
-    return;
-  }
+  const transferWeightLimit = Number(transferWeightLimitInput.value);
 
   try {
     raid = await apiCall('PATCH', `/raids/${raidId}`, {
