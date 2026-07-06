@@ -192,10 +192,10 @@ function renderTable(className, specName) {
 
   const columns = [
     { key: '__checkbox', label: '' },
-    { key: '__index', label: 'Guild Rank' },
-    { key: 'name', label: 'Player Name' },
-    { key: 'overallRank', label: 'Server Rank' },
-    { key: 'overallScore', label: 'Score' },
+    { key: '__index', label: 'Рейтинг гільдії' },
+    { key: 'name', label: "Ім'я гравця" },
+    { key: 'overallRank', label: 'Рейтинг сервера' },
+    { key: 'overallScore', label: 'Очки' },
     ...bossColumns.map(bossName => ({
       key: `bosses.${bossName}`,
       label: translateBoss(bossName)
