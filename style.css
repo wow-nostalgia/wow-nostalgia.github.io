@@ -2351,7 +2351,6 @@ body.raid-manager-detail-page .raid-weight-row {
 body.raid-manager-detail-page .raid-soft-actions {
   display: flex;
   gap: 0.5rem;
-  flex-wrap: wrap;
 }
 
 body.raid-manager-detail-page .raid-weight-toggle {
