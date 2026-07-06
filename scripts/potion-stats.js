@@ -7,15 +7,6 @@ const logsViewEl = document.getElementById('logsView');
 const honorViewEl = document.getElementById('honorView');
 const viewButtons = document.querySelectorAll('.potion-view-btn');
 
-const addLogBtnWrap = document.getElementById('addLogBtnWrap');
-const addLogOpenBtn = document.getElementById('addLogOpenBtn');
-const addLogOverlay = document.getElementById('addLogOverlay');
-const addLogUrl1 = document.getElementById('addLogUrl1');
-const addLogUrl2 = document.getElementById('addLogUrl2');
-const addLogStatusEl = document.getElementById('addLogStatus');
-const addLogSubmitBtn = document.getElementById('addLogSubmitBtn');
-const addLogCancelBtn = document.getElementById('addLogCancelBtn');
-const addLogCloseBtn = document.getElementById('addLogCloseBtn');
 const potionSidebarEl = document.getElementById('potionSidebar');
 const potionContentEl = document.getElementById('potionContent');
 
@@ -298,81 +289,9 @@ async function loadPotionStats() {
 }
 
 
-function openAddLogDialog() {
-  addLogUrl1.value = '';
-  addLogUrl2.value = '';
-  addLogStatusEl.textContent = '';
-  addLogStatusEl.className = 'add-log-status';
-  addLogSubmitBtn.disabled = false;
-  addLogSubmitBtn.hidden = false;
-  addLogCancelBtn.hidden = false;
-  addLogCloseBtn.hidden = true;
-  addLogOverlay.hidden = false;
-  addLogUrl1.focus();
-}
-
-function closeAddLogDialog() {
-  addLogOverlay.hidden = true;
-}
-
-function attachAddLogPopup() {
-  addLogOpenBtn.addEventListener('click', openAddLogDialog);
-  addLogCancelBtn.addEventListener('click', closeAddLogDialog);
-  addLogCloseBtn.addEventListener('click', closeAddLogDialog);
-
-  addLogOverlay.addEventListener('click', (e) => {
-    if (e.target === addLogOverlay) closeAddLogDialog();
-  });
-
-  addLogSubmitBtn.addEventListener('click', async () => {
-    const url1 = addLogUrl1.value.trim();
-    const url2 = addLogUrl2.value.trim();
-
-    if (!url1) {
-      addLogStatusEl.textContent = "Введіть посилання на лог.";
-      addLogStatusEl.className = 'add-log-status error';
-      return;
-    }
-
-    addLogSubmitBtn.disabled = true;
-    addLogStatusEl.textContent = 'Збереження...';
-    addLogStatusEl.className = 'add-log-status';
-
-    try {
-      const res = await fetch(`${AUTH_API_BASE}/admin/logs`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getSessionToken()}`
-        },
-        body: JSON.stringify({ url1, ...(url2 ? { url2 } : {}) })
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || `HTTP ${res.status}`);
-      }
-      addLogStatusEl.textContent = "Лог додано. Статистика оновиться за кілька хвилин.";
-      addLogStatusEl.className = 'add-log-status success';
-      addLogSubmitBtn.hidden = true;
-      addLogCancelBtn.hidden = true;
-      addLogCloseBtn.hidden = false;
-    } catch (err) {
-      addLogStatusEl.textContent = `Помилка: ${err.message}`;
-      addLogStatusEl.className = 'add-log-status error';
-      addLogSubmitBtn.disabled = false;
-    }
-  });
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   attachViewSwitch();
   attachHonorFilter();
   switchView('logs');
   loadPotionStats();
-
-  const user = await fetchCurrentUser();
-  if (user?.isAdmin) {
-    addLogBtnWrap.hidden = false;
-    attachAddLogPopup();
-  }
 });

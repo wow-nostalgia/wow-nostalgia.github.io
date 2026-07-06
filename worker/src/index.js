@@ -1,7 +1,5 @@
 import { HttpError, jsonResponse, readJson } from './util.js';
 import { requireSession } from './auth.js';
-import { handleAddLogs } from './routes/logs.js';
-import { handleProxy } from './routes/proxy.js';
 import {
   handleCreateRaid,
   handleListRaids,
@@ -190,10 +188,6 @@ async function routeAdmin(request, env, parts, session) {
     return handleDeleteRaid(request, env, decodeURIComponent(sub2), session);
   }
 
-  if (sub === 'logs' && !sub2 && method === 'POST') {
-    return handleAddLogs(request, env);
-  }
-
   if (sub === 'default-officers') {
     if (!sub2) {
       if (method === 'GET') return jsonResponse(await listDefaultOfficers(env.DB));
@@ -221,8 +215,6 @@ async function route(request, env) {
   if (parts[0] !== 'api' || parts[1] !== 'v1') {
     throw new HttpError(404, 'Невідомий шлях');
   }
-
-  if (parts[2] === 'proxy' && request.method === 'GET') return handleProxy(request, env);
 
   if (parts[2] === 'auth') return routeAuth(request, env, parts.slice(3));
 
