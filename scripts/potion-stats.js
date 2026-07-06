@@ -1,4 +1,4 @@
-const statusEl = document.getElementById('potionStatus');
+﻿const statusEl = document.getElementById('potionStatus');
 const honorStatusEl = document.getElementById('honorStatus');
 const honorTableBodyEl = document.getElementById('honorTableBody');
 const hideZeroPlayersEl = document.getElementById('hideZeroPlayers');
@@ -17,7 +17,7 @@ let characterOwnerNames = new Map();
 
 function createPlayerBadgeHtml(name) {
   const isGuild = guildMemberNames.has(name);
-  return `<span class="player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}" title="${escapeHtml(isGuild ? 'Ностальгія' : 'Легіонер')}">${isGuild ? 'Н' : 'Л'}</span>`;
+  return `<span class="player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}" title="${escapeHtml(isGuild ? 'Ностальгія' : 'Легіонер')}">${isGuild ? 'N' : 'L'}</span>`;
 }
 
 function ownerTooltipAttr(name) {

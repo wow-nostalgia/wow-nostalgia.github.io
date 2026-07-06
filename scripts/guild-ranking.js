@@ -1,4 +1,4 @@
-const classSelect = document.getElementById('classSelect');
+﻿const classSelect = document.getElementById('classSelect');
 const specSelect = document.getElementById('specSelect');
 const legionnairesCheckbox = document.getElementById('legionnairesCheckbox');
 const tableStatus = document.getElementById('tableStatus');
@@ -91,7 +91,7 @@ function createPlayerBadge(name) {
   const badge = document.createElement('span');
   badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
   badge.title = isGuild ? 'Ностальгія' : 'Легіонер';
-  badge.textContent = isGuild ? 'Н' : 'Л';
+  badge.textContent = isGuild ? 'N' : 'L';
   return badge;
 }
 

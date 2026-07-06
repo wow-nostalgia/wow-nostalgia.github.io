@@ -1,4 +1,4 @@
-const loggedOutView = document.getElementById('loggedOutView');
+﻿const loggedOutView = document.getElementById('loggedOutView');
 const loggedInView = document.getElementById('loggedInView');
 const accountLoading = document.getElementById('accountLoading');
 const loginBtn = document.getElementById('loginBtn');
@@ -85,7 +85,7 @@ function createPlayerBadge(name) {
   const badge = document.createElement('span');
   badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
   badge.title = isGuild ? 'Ностальгія' : 'Легіонер';
-  badge.textContent = isGuild ? 'Н' : 'Л';
+  badge.textContent = isGuild ? 'N' : 'L';
   return badge;
 }
 

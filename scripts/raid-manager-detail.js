@@ -1,4 +1,4 @@
-const raidTitleHeading = document.getElementById('raidTitleHeading');
+﻿const raidTitleHeading = document.getElementById('raidTitleHeading');
 const raidSettingsBanner = document.getElementById('raidSettingsBanner');
 const copyLinkBtn = document.getElementById('copyLinkBtn');
 const copyLinkTooltip = document.getElementById('copyLinkTooltip');
@@ -115,7 +115,7 @@ function createPlayerBadge(name) {
   const badge = document.createElement('span');
   badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
   badge.title = isGuild ? 'Ностальгія' : 'Легіонер';
-  badge.textContent = isGuild ? 'Н' : 'Л';
+  badge.textContent = isGuild ? 'N' : 'L';
   return badge;
 }
 
