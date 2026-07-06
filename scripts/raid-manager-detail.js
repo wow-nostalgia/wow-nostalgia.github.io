@@ -648,6 +648,9 @@ function groupReservesByPlayer(list) {
 function renderPlayersTable() {
   raidPlayersBody.innerHTML = '';
 
+  const transfersDisabled = (raid.transfer_weight_limit ?? 0) === 0;
+  raidPlayersBody.closest('table').classList.toggle('raid-transfers-disabled', transfersDisabled);
+
   const grouped = groupReservesByPlayer(reserves);
 
   // Гравці з трансферами (можуть мати 0 власних софтів) теж повинні з'являтись
@@ -670,7 +673,6 @@ function renderPlayersTable() {
 
   const myNames = myCharNames();
   const myTransfer = getMyTransfer();
-  const transfersDisabled = raid.transfer_weight_limit === 0;
 
   names.forEach((name, index) => {
     const tr = document.createElement('tr');

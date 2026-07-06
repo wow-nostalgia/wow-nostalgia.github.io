@@ -3225,6 +3225,11 @@ body.raid-manager-detail-page .penalty-reason-text {
   vertical-align: middle;
 }
 
+.raid-transfers-disabled .raid-transfer-th,
+.raid-transfers-disabled .raid-transfer-col {
+  display: none;
+}
+
 .raid-transfer-btn {
   display: inline-flex;
   align-items: center;
