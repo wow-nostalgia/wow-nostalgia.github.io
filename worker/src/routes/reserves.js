@@ -10,7 +10,9 @@ import {
   sumPlayerWeight,
   createClaim,
   insertAudit,
-  getClaimedPlayerNames
+  getClaimedPlayerNames,
+  getWeightTransferByFrom,
+  getWeightTransferByTo
 } from '../db.js';
 import { checkPlayerAccess, requireRaidOfficer, isRaidOfficer } from '../auth.js';
 
@@ -54,10 +56,23 @@ export async function handleCreateReserve(request, env, raidId, session) {
     throw new HttpError(423, 'Рейд заблоковано для редагування');
   }
 
+  // Гравець, що передав вагу іншому, не може більше нічого засофтити
+  const ownTransfer = await getWeightTransferByFrom(env.DB, raidId, playerName);
+  if (ownTransfer) {
+    throw new HttpError(409, `${playerName} передав вагу гравцю ${ownTransfer.to_player} і не може засофтити предмети`);
+  }
+
   const { totalWeight } = await sumPlayerWeight(env.DB, raidId, playerName);
 
-  if (totalWeight + weight > raid.soft_limit_total) {
-    throw new HttpError(409, `Перевищено ліміт ваги (${raid.soft_limit_total})`);
+  // Гравець, що отримав вагу, має розширений ліміт
+  const receivedTransfer = await getWeightTransferByTo(env.DB, raidId, playerName);
+  const transferBonus = receivedTransfer
+    ? (raid.transfer_weight_limit ?? raid.soft_limit_total)
+    : 0;
+  const effectiveLimit = raid.soft_limit_total + transferBonus;
+
+  if (totalWeight + weight > effectiveLimit) {
+    throw new HttpError(409, `Перевищено ліміт ваги (${effectiveLimit})`);
   }
 
   if (access.shouldMint) {
@@ -152,9 +167,20 @@ export async function handleOfficerAssign(request, env, raidId, session) {
   if (!Number.isInteger(itemId)) throw new HttpError(400, 'Невалідний itemId');
   if (![1, 2, 3].includes(weight)) throw new HttpError(400, 'weight має бути 1, 2 або 3');
 
+  const ownTransferOfficer = await getWeightTransferByFrom(env.DB, raidId, playerName);
+  if (ownTransferOfficer) {
+    throw new HttpError(409, `${playerName} передав вагу гравцю ${ownTransferOfficer.to_player} і не може отримувати нові softs`);
+  }
+
   const { totalWeight } = await sumPlayerWeight(env.DB, raidId, playerName);
-  if (totalWeight + weight > raid.soft_limit_total) {
-    throw new HttpError(409, `Перевищено ліміт ваги (${raid.soft_limit_total})`);
+  const receivedTransferOfficer = await getWeightTransferByTo(env.DB, raidId, playerName);
+  const transferBonusOfficer = receivedTransferOfficer
+    ? (raid.transfer_weight_limit ?? raid.soft_limit_total)
+    : 0;
+  const effectiveLimitOfficer = raid.soft_limit_total + transferBonusOfficer;
+
+  if (totalWeight + weight > effectiveLimitOfficer) {
+    throw new HttpError(409, `Перевищено ліміт ваги (${effectiveLimitOfficer})`);
   }
 
   let reserve;

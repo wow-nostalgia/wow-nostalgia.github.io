@@ -401,3 +401,39 @@ export async function removeDefaultOfficer(db, discordId) {
 export async function deleteRaid(db, raidId) {
   await db.prepare('DELETE FROM raids WHERE id = ?').bind(raidId).run();
 }
+
+export async function listWeightTransfers(db, raidId) {
+  const { results } = await db
+    .prepare('SELECT from_player, to_player, created_at FROM raid_weight_transfers WHERE raid_id = ? ORDER BY created_at ASC')
+    .bind(raidId)
+    .all();
+  return results;
+}
+
+export async function getWeightTransferByFrom(db, raidId, fromPlayer) {
+  return db
+    .prepare('SELECT from_player, to_player FROM raid_weight_transfers WHERE raid_id = ? AND from_player = ?')
+    .bind(raidId, fromPlayer)
+    .first();
+}
+
+export async function getWeightTransferByTo(db, raidId, toPlayer) {
+  return db
+    .prepare('SELECT from_player, to_player FROM raid_weight_transfers WHERE raid_id = ? AND to_player = ?')
+    .bind(raidId, toPlayer)
+    .first();
+}
+
+export async function createWeightTransfer(db, raidId, fromPlayer, toPlayer) {
+  await db
+    .prepare('INSERT INTO raid_weight_transfers (raid_id, from_player, to_player, created_at) VALUES (?, ?, ?, ?)')
+    .bind(raidId, fromPlayer, toPlayer, nowIso())
+    .run();
+}
+
+export async function deleteWeightTransfer(db, raidId, fromPlayer) {
+  await db
+    .prepare('DELETE FROM raid_weight_transfers WHERE raid_id = ? AND from_player = ?')
+    .bind(raidId, fromPlayer)
+    .run();
+}

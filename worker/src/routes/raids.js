@@ -94,6 +94,11 @@ export async function handleUpdateRaid(request, env, id, session) {
 
   if (body.title !== undefined) fields.title = String(body.title).trim();
   if (body.softLimitTotal !== undefined) fields.soft_limit_total = Number(body.softLimitTotal);
+  if (body.transferWeightLimit !== undefined) {
+    const v = body.transferWeightLimit === null ? null : Number(body.transferWeightLimit);
+    if (v !== null && (!Number.isInteger(v) || v < 0)) throw new HttpError(400, 'Невалідний transferWeightLimit');
+    fields.transfer_weight_limit = v;
+  }
 
   const updated = await updateRaidSettings(env.DB, id, fields);
   if (Object.keys(fields).length) {

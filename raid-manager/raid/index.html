@@ -72,6 +72,7 @@
         <div class="raid-forms-grid">
           <div class="raid-form-col">
             <h2>Мій софт</h2>
+            <p id="transferNotice" class="raid-transfer-notice" hidden></p>
             <form id="softForm" class="raid-soft-form">
               <label for="softPlayerName">Мій персонаж</label>
               <select id="softPlayerName" required></select>
@@ -113,6 +114,12 @@
               <input type="checkbox" id="hiddenReservesToggle">
               Приховати софти
             </label>
+            <div class="raid-transfer-limit-row">
+              <label for="transferWeightLimitInput">Ліміт переданої ваги</label>
+              <input type="number" id="transferWeightLimitInput" min="0" max="9" placeholder="авто">
+              <button type="button" id="transferWeightLimitSaveBtn" class="link-button-std">Зберегти</button>
+              <small class="raid-transfer-limit-hint">0 = вимкнено, порожньо = ліміт рейду</small>
+            </div>
             <form id="officerAssignForm" class="raid-soft-form">
               <label for="assignPlayerName">Учасник</label>
               <div class="raid-input-wrap">
@@ -164,6 +171,7 @@
                   <tr>
                     <th>#</th>
                     <th>Гравець</th>
+                    <th class="raid-transfer-th">Передати</th>
                     <th>Софти</th>
                   </tr>
                 </thead>
@@ -247,11 +255,27 @@
 
   <div id="raidItemTooltip" class="raid-item-tooltip" hidden></div>
 
+  <div id="transferModal" class="raid-modal" hidden>
+    <div class="raid-modal-backdrop" id="transferModalBackdrop"></div>
+    <div class="raid-modal-box">
+      <h3 class="raid-modal-title">Передати вагу</h3>
+      <p id="transferModalText" class="raid-modal-text"></p>
+      <div id="transferFromCharRow" class="raid-modal-field" hidden>
+        <label for="transferFromCharSelect">Мій персонаж</label>
+        <select id="transferFromCharSelect"></select>
+      </div>
+      <div class="raid-modal-actions">
+        <button type="button" id="transferConfirmBtn" class="compare-btn">Передати</button>
+        <button type="button" id="transferCancelModalBtn" class="link-button-std">Скасувати</button>
+      </div>
+    </div>
+  </div>
+
   <script src="../../scripts/nav.js?v=1"></script>
   <script src="../../scripts/auth-shared.js?v=6"></script>
   <script src="../../scripts/raid-manager-shared.js?v=2"></script>
   <script src="../../scripts/name-translations.js?v=1"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=20"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=21"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

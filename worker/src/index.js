@@ -22,6 +22,7 @@ import {
   handleOfficerAssign
 } from './routes/reserves.js';
 import { handleListAudit } from './routes/audit.js';
+import { handleListTransfers, handleCreateTransfer, handleDeleteTransfer } from './routes/transfers.js';
 import { handleListPenalties, handleUpsertPenalty } from './routes/penalties.js';
 import {
   handleDiscordCallback,
@@ -164,6 +165,14 @@ async function routeRaids(request, env, parts, session) {
     const playerName = parts[2] ? decodeURIComponent(parts[2]) : null;
     if (!playerName && method === 'GET') return handleListPenalties(request, env, raidId);
     if (playerName && method === 'PUT') return handleUpsertPenalty(request, env, raidId, playerName, session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
+
+  if (sub === 'transfers') {
+    const fromPlayer = parts[2] ? decodeURIComponent(parts[2]) : null;
+    if (!fromPlayer && method === 'GET') return handleListTransfers(request, env, raidId);
+    if (!fromPlayer && method === 'POST') return handleCreateTransfer(request, env, raidId, session);
+    if (fromPlayer && method === 'DELETE') return handleDeleteTransfer(request, env, raidId, fromPlayer, session);
     throw new HttpError(405, 'Метод не підтримується');
   }
 

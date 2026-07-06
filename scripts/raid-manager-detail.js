@@ -64,6 +64,17 @@ const penaltiesPane = document.getElementById('penaltiesPane');
 const raidPenaltiesBody = document.getElementById('raidPenaltiesBody');
 
 const itemTooltipEl = document.getElementById('raidItemTooltip');
+
+const transferModal = document.getElementById('transferModal');
+const transferModalBackdrop = document.getElementById('transferModalBackdrop');
+const transferModalText = document.getElementById('transferModalText');
+const transferFromCharRow = document.getElementById('transferFromCharRow');
+const transferFromCharSelect = document.getElementById('transferFromCharSelect');
+const transferConfirmBtn = document.getElementById('transferConfirmBtn');
+const transferCancelModalBtn = document.getElementById('transferCancelModalBtn');
+const transferNotice = document.getElementById('transferNotice');
+const transferWeightLimitInput = document.getElementById('transferWeightLimitInput');
+const transferWeightLimitSaveBtn = document.getElementById('transferWeightLimitSaveBtn');
 let currentTooltipItemId = null;
 
 let raidId = null;
@@ -77,6 +88,7 @@ let guildMemberNamesSorted = [];
 let characterOwnerNames = new Map();
 let personalAnalyticsNames = new Set();
 let reserves = [];
+let weightTransfers = [];
 let penaltiesList = [];
 let classColorMap = new Map();
 let auditEntries = [];
@@ -174,17 +186,31 @@ function renderBanner() {
   settingsTitleInput.value = raid.title;
   settingsSoftLimitInput.value = raid.soft_limit_total;
 
+  const tl = raid.transfer_weight_limit;
+  transferWeightLimitInput.value = (tl === null || tl === undefined) ? '' : String(tl);
+  transferWeightLimitInput.max = String(raid.soft_limit_total);
+
   applyWeightLimits();
   applySoftFormLockState();
   applyOfficerFormLockState();
   applySettingsFormLockState();
 }
 
+function myCharNames() {
+  return myCharacters.map((c) => c.characterName);
+}
+
+function getMyTransfer() {
+  const names = myCharNames();
+  return weightTransfers.find((t) => names.includes(t.from_player)) || null;
+}
+
 // Лок блокує самософт лише для звичайних гравців — офіцери/лідер обходять
 // лок на бекенді (reserves.js). Завершення рейду (isRaidCompleted) блокує
 // форму для всіх без винятку, включно з лідером/офіцерами.
 function applySoftFormLockState() {
-  const locked = isRaidCompleted() || (raid.is_locked && !isOfficerMode());
+  const myTransfer = getMyTransfer();
+  const locked = isRaidCompleted() || (raid.is_locked && !isOfficerMode()) || Boolean(myTransfer);
 
   softPlayerNameInput.disabled = locked || !myCharacters.length;
   softBoss.disabled = locked;
@@ -194,6 +220,13 @@ function applySoftFormLockState() {
   softWeightToggle.querySelectorAll('.raid-weight-toggle-btn').forEach((btn) => {
     btn.disabled = locked || Number(btn.dataset.weight) > raid.soft_limit_total;
   });
+
+  if (myTransfer) {
+    transferNotice.hidden = false;
+    transferNotice.textContent = `Вагу передано гравцю ${myTransfer.to_player}. Додавати власні софти неможливо.`;
+  } else {
+    transferNotice.hidden = true;
+  }
 }
 
 // Офіцерська панель і налаштування рейду — завершення блокує їх для всіх,
@@ -202,6 +235,8 @@ function applyOfficerFormLockState() {
   const locked = isRaidCompleted();
 
   hiddenReservesToggle.disabled = locked;
+  transferWeightLimitInput.disabled = locked;
+  transferWeightLimitSaveBtn.disabled = locked;
   assignPlayerNameInput.disabled = locked;
   assignPlayerNameClear.disabled = locked;
   assignBoss.disabled = locked;
@@ -605,17 +640,28 @@ function renderPlayersTable() {
   raidPlayersBody.innerHTML = '';
 
   const grouped = groupReservesByPlayer(reserves);
+
+  // Гравці з трансферами (можуть мати 0 власних софтів) теж повинні з'являтись
+  weightTransfers.forEach((t) => {
+    if (!grouped.has(t.from_player)) grouped.set(t.from_player, []);
+    if (!grouped.has(t.to_player)) grouped.set(t.to_player, []);
+  });
+
   const names = [...grouped.keys()].sort((a, b) => a.localeCompare(b, 'uk'));
 
   if (!names.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 3;
+    td.colSpan = 4;
     td.textContent = 'Ще немає софтів.';
     tr.appendChild(td);
     raidPlayersBody.appendChild(tr);
     return;
   }
+
+  const myNames = myCharNames();
+  const myTransfer = getMyTransfer();
+  const transfersDisabled = raid.transfer_weight_limit === 0;
 
   names.forEach((name, index) => {
     const tr = document.createElement('tr');
@@ -642,6 +688,53 @@ function renderPlayersTable() {
     if (ownerName) nameWrap.title = ownerName;
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
+
+    // --- Колонка "Передати" ---
+    const transferTd = document.createElement('td');
+    transferTd.className = 'raid-transfer-col';
+
+    const fromTransfer = weightTransfers.find((t) => t.from_player === name);
+    const toTransfer = weightTransfers.find((t) => t.to_player === name);
+
+    if (fromTransfer) {
+      const indicator = document.createElement('span');
+      indicator.className = 'raid-transfer-indicator raid-transfer-indicator--from';
+      indicator.textContent = `→ ${fromTransfer.to_player}`;
+      transferTd.appendChild(indicator);
+
+      const canCancel = isOfficerMode() || myNames.includes(name);
+      if (canCancel && !isRaidCompleted()) {
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'raid-remove-btn';
+        cancelBtn.title = 'Скасувати передачу ваги';
+        cancelBtn.textContent = '✕';
+        cancelBtn.addEventListener('click', () => deleteTransfer(name));
+        transferTd.appendChild(cancelBtn);
+      }
+    } else if (toTransfer) {
+      const indicator = document.createElement('span');
+      indicator.className = 'raid-transfer-indicator raid-transfer-indicator--to';
+      indicator.title = `Отримує вагу від ${toTransfer.from_player}`;
+      indicator.textContent = `+${toTransfer.from_player}`;
+      transferTd.appendChild(indicator);
+    } else if (currentUser && !isRaidCompleted() && !transfersDisabled) {
+      const isMyChar = myNames.includes(name);
+      const targetAlreadyHasDonor = weightTransfers.some((t) => t.to_player === name);
+      const canTransfer = !isMyChar && !myTransfer && !targetAlreadyHasDonor;
+
+      if (canTransfer) {
+        const plusBtn = document.createElement('button');
+        plusBtn.type = 'button';
+        plusBtn.className = 'raid-transfer-btn';
+        plusBtn.textContent = '+';
+        plusBtn.title = "Передати свою вагу цьому гравцю";
+        plusBtn.addEventListener('click', () => showTransferModal(name));
+        transferTd.appendChild(plusBtn);
+      }
+    }
+
+    tr.appendChild(transferTd);
 
     const itemsTd = document.createElement('td');
     const manageable = canManage(name);
@@ -824,6 +917,8 @@ function describeAuditAction(entry) {
     case 'reactivate': return 'реактивував рейд';
     case 'officer_add': return `додав офіцера ${d.username || d.discordId}`;
     case 'officer_remove': return `видалив офіцера ${d.discordId}`;
+    case 'weight_transfer': return `передав вагу гравцю ${d.toPlayer}`;
+    case 'weight_transfer_cancel': return `скасував передачу ваги від ${d.fromPlayer} до ${d.toPlayer}`;
     default: return entry.action;
   }
 }
@@ -859,6 +954,55 @@ async function loadRaid() {
 
 async function loadReserves() {
   reserves = await apiCall('GET', `/raids/${raidId}/reserves`, { token: getSessionToken() });
+}
+
+async function loadTransfers() {
+  try {
+    weightTransfers = await apiCall('GET', `/raids/${raidId}/transfers`, { token: getSessionToken() });
+  } catch {
+    weightTransfers = [];
+  }
+}
+
+function showTransferModal(toPlayer) {
+  const names = myCharNames();
+  if (!names.length) return;
+
+  // Пробуємо знайти персонажа, під яким вже клеймується цей гравець
+  const claimedName = reserves.find((r) => r.discord_id === currentUser?.discordId)?.player_name;
+  const defaultName = claimedName && names.includes(claimedName) ? claimedName : names[0];
+
+  if (names.length > 1) {
+    transferFromCharRow.hidden = false;
+    transferFromCharSelect.innerHTML = '';
+    names.forEach((n) => {
+      const opt = document.createElement('option');
+      opt.value = n;
+      opt.textContent = n;
+      opt.selected = n === defaultName;
+      transferFromCharSelect.appendChild(opt);
+    });
+  } else {
+    transferFromCharRow.hidden = true;
+  }
+
+  transferModalText.textContent = `Передати всю вагу персонажа ${defaultName} гравцю ${toPlayer}? Наявні м'які резерви ${defaultName} будуть видалені, і ви не зможете нічого засофтити собі.`;
+  transferModal.dataset.toPlayer = toPlayer;
+  transferModal.hidden = false;
+}
+
+async function deleteTransfer(fromPlayer) {
+  if (!confirm(`Скасувати передачу ваги від ${fromPlayer}?`)) return;
+  try {
+    await apiCall('DELETE', `/raids/${raidId}/transfers/${encodeURIComponent(fromPlayer)}`, { token: getSessionToken() });
+    await loadTransfers();
+    await loadReserves();
+    renderPlayersTable();
+    renderItemsTable();
+    applySoftFormLockState();
+  } catch (err) {
+    alert(err.message);
+  }
 }
 
 async function loadAudit() {
@@ -1140,6 +1284,54 @@ function renderPenaltiesTable() {
   }
 }
 
+transferConfirmBtn.addEventListener('click', async () => {
+  const toPlayer = transferModal.dataset.toPlayer;
+  const fromPlayer = transferFromCharRow.hidden
+    ? myCharacters[0]?.characterName
+    : transferFromCharSelect.value;
+  if (!fromPlayer || !toPlayer) return;
+
+  transferConfirmBtn.disabled = true;
+  try {
+    await apiCall('POST', `/raids/${raidId}/transfers`, {
+      token: getSessionToken(),
+      body: { fromPlayer, toPlayer }
+    });
+    transferModal.hidden = true;
+    await loadTransfers();
+    await loadReserves();
+    renderPlayersTable();
+    renderItemsTable();
+    applySoftFormLockState();
+  } catch (err) {
+    alert(err.message);
+  } finally {
+    transferConfirmBtn.disabled = false;
+  }
+});
+
+transferCancelModalBtn.addEventListener('click', () => { transferModal.hidden = true; });
+transferModalBackdrop.addEventListener('click', () => { transferModal.hidden = true; });
+
+transferWeightLimitSaveBtn.addEventListener('click', async () => {
+  const raw = transferWeightLimitInput.value.trim();
+  const numericVal = raw === '' ? null : Number(raw);
+  if (numericVal !== null && (!Number.isInteger(numericVal) || numericVal < 0)) {
+    alert('Введіть ціле число від 0, або залиште порожнім (авто)');
+    return;
+  }
+  try {
+    raid = await apiCall('PATCH', `/raids/${raidId}`, {
+      token: getSessionToken(),
+      body: { transferWeightLimit: numericVal }
+    });
+    renderBanner();
+    setStatus('Ліміт передачі збережено.', 'success');
+  } catch (err) {
+    setStatus(`Помилка: ${err.message}`, 'error');
+  }
+});
+
 async function init() {
   raidId = new URLSearchParams(window.location.search).get('id');
   if (!raidId) {
@@ -1217,6 +1409,7 @@ async function init() {
   populateMyCharacters();
 
   await loadReserves();
+  await loadTransfers();
   await loadPenalties();
   renderPlayersTable();
   renderItemsTable();
@@ -1227,8 +1420,10 @@ async function init() {
   setInterval(async () => {
     try {
       await loadReserves();
+      await loadTransfers();
       renderPlayersTable();
       renderItemsTable();
+      applySoftFormLockState();
       if (activeTab === 'audit') await loadAudit();
     } catch (err) {
       console.error(err);
