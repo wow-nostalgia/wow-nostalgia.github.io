@@ -68,10 +68,13 @@ const itemTooltipEl = document.getElementById('raidItemTooltip');
 const transferModal = document.getElementById('transferModal');
 const transferModalBackdrop = document.getElementById('transferModalBackdrop');
 const transferModalText = document.getElementById('transferModalText');
+const transferToPlayerRow = document.getElementById('transferToPlayerRow');
+const transferToPlayerSelect = document.getElementById('transferToPlayerSelect');
 const transferFromCharRow = document.getElementById('transferFromCharRow');
 const transferFromCharSelect = document.getElementById('transferFromCharSelect');
 const transferConfirmBtn = document.getElementById('transferConfirmBtn');
 const transferCancelModalBtn = document.getElementById('transferCancelModalBtn');
+const transferWeightBtn = document.getElementById('transferWeightBtn');
 const transferNotice = document.getElementById('transferNotice');
 const bonusPoolBanner = document.getElementById('bonusPoolBanner');
 const transferWeightLimitInput = document.getElementById('transferWeightLimitInput');
@@ -224,6 +227,10 @@ function applySoftFormLockState() {
   softWeightToggle.querySelectorAll('.raid-weight-toggle-btn').forEach((btn) => {
     btn.disabled = locked || Number(btn.dataset.weight) > raid.soft_limit_total;
   });
+
+  const transfersEnabled = (raid.transfer_weight_limit ?? 0) !== 0;
+  const canShowTransferBtn = currentUser && transfersEnabled && !isRaidCompleted() && !myTransfer && myCharNames().length > 0;
+  transferWeightBtn.hidden = !canShowTransferBtn;
 
   if (myTransfer) {
     transferNotice.hidden = false;
@@ -729,20 +736,6 @@ function renderPlayersTable() {
       indicator.title = `Отримує вагу від ${toTransfer.from_player}`;
       indicator.textContent = `+${toTransfer.from_player}`;
       transferTd.appendChild(indicator);
-    } else if (currentUser && !isRaidCompleted() && !transfersDisabled) {
-      const isMyChar = myNames.includes(name);
-      const targetAlreadyHasDonor = weightTransfers.some((t) => t.to_player === name);
-      const canTransfer = !isMyChar && !myTransfer && !targetAlreadyHasDonor;
-
-      if (canTransfer) {
-        const plusBtn = document.createElement('button');
-        plusBtn.type = 'button';
-        plusBtn.className = 'raid-transfer-btn';
-        plusBtn.textContent = '+';
-        plusBtn.title = "Передати свою вагу цьому гравцю";
-        plusBtn.addEventListener('click', () => showTransferModal(name));
-        transferTd.appendChild(plusBtn);
-      }
     }
 
     tr.appendChild(transferTd);
@@ -1032,11 +1025,28 @@ async function loadTransfers() {
   }
 }
 
-function showTransferModal(toPlayer) {
+function showTransferModal() {
   const names = myCharNames();
   if (!names.length) return;
 
-  // Пробуємо знайти персонажа, під яким вже клеймується цей гравець
+  const myNamesLower = new Set(names.map((n) => n.toLowerCase()));
+  const takenLower = new Set([
+    ...weightTransfers.map((t) => t.from_player.toLowerCase()),
+    ...weightTransfers.map((t) => t.to_player.toLowerCase()),
+  ]);
+  const eligible = [...new Set(reserves.map((r) => r.player_name))]
+    .filter((n) => !myNamesLower.has(n.toLowerCase()) && !takenLower.has(n.toLowerCase()))
+    .sort((a, b) => a.localeCompare(b, 'uk'));
+
+  transferToPlayerSelect.innerHTML = '';
+  eligible.forEach((n) => {
+    const opt = document.createElement('option');
+    opt.value = n;
+    opt.textContent = n;
+    transferToPlayerSelect.appendChild(opt);
+  });
+  transferToPlayerRow.hidden = eligible.length === 0;
+
   const claimedName = reserves.find((r) => r.discord_id === currentUser?.discordId)?.player_name;
   const defaultName = claimedName && names.includes(claimedName) ? claimedName : names[0];
 
@@ -1054,8 +1064,7 @@ function showTransferModal(toPlayer) {
     transferFromCharRow.hidden = true;
   }
 
-  transferModalText.textContent = `Передати всю вагу персонажа ${defaultName} гравцю ${toPlayer}? Наявні м'які резерви ${defaultName} будуть видалені, і ви не зможете нічого засофтити собі.`;
-  transferModal.dataset.toPlayer = toPlayer;
+  transferModalText.textContent = "Передати всю вагу цьому гравцю? Наявні м'які резерви будуть видалені, і ви не зможете нічого засофтити собі.";
   transferModal.hidden = false;
 }
 
@@ -1372,7 +1381,7 @@ function renderPenaltiesTable() {
 }
 
 transferConfirmBtn.addEventListener('click', async () => {
-  const toPlayer = transferModal.dataset.toPlayer;
+  const toPlayer = transferToPlayerSelect.value;
   const fromPlayer = transferFromCharRow.hidden
     ? myCharacters[0]?.characterName
     : transferFromCharSelect.value;
@@ -1399,6 +1408,7 @@ transferConfirmBtn.addEventListener('click', async () => {
 
 transferCancelModalBtn.addEventListener('click', () => { transferModal.hidden = true; });
 transferModalBackdrop.addEventListener('click', () => { transferModal.hidden = true; });
+transferWeightBtn.addEventListener('click', () => showTransferModal());
 
 
 async function init() {

@@ -2348,6 +2348,12 @@ body.raid-manager-detail-page .raid-weight-row {
   gap: 0.75rem;
 }
 
+body.raid-manager-detail-page .raid-soft-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 body.raid-manager-detail-page .raid-weight-toggle {
   display: flex;
   gap: 0.4rem;

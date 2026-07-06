@@ -72,7 +72,6 @@
         <div class="raid-forms-grid">
           <div class="raid-form-col">
             <h2>Мій софт</h2>
-            <p id="transferNotice" class="raid-transfer-notice" hidden></p>
             <form id="softForm" class="raid-soft-form">
               <label for="softPlayerName">Мій персонаж</label>
               <select id="softPlayerName" required></select>
@@ -91,15 +90,17 @@
               </div>
 
               <label>Вага</label>
-              <div class="raid-weight-row">
-                <div class="raid-weight-toggle" id="softWeightToggle" role="group" aria-label="Вага">
-                  <button type="button" class="raid-weight-toggle-btn raid-weight-toggle-btn--active" data-weight="1">х1</button>
-                  <button type="button" class="raid-weight-toggle-btn" data-weight="2">х2</button>
-                  <button type="button" class="raid-weight-toggle-btn" data-weight="3">х3</button>
-                </div>
-                <input type="hidden" id="softWeight" value="1">
-                <button type="submit" class="compare-btn">Засофтити</button>
+              <div class="raid-weight-toggle" id="softWeightToggle" role="group" aria-label="Вага">
+                <button type="button" class="raid-weight-toggle-btn raid-weight-toggle-btn--active" data-weight="1">х1</button>
+                <button type="button" class="raid-weight-toggle-btn" data-weight="2">х2</button>
+                <button type="button" class="raid-weight-toggle-btn" data-weight="3">х3</button>
               </div>
+              <input type="hidden" id="softWeight" value="1">
+              <div class="raid-soft-actions">
+                <button type="submit" class="compare-btn">Засофтити</button>
+                <button type="button" id="transferWeightBtn" class="compare-btn" hidden>Передати софт</button>
+              </div>
+              <p id="transferNotice" class="raid-transfer-notice" hidden></p>
             </form>
             <p id="raidStatus">Завантаження...</p>
           </div>
@@ -261,8 +262,12 @@
   <div id="transferModal" class="raid-modal" hidden>
     <div class="raid-modal-backdrop" id="transferModalBackdrop"></div>
     <div class="raid-modal-box">
-      <h3 class="raid-modal-title">Передати вагу</h3>
+      <h3 class="raid-modal-title">Передати софт</h3>
       <p id="transferModalText" class="raid-modal-text"></p>
+      <div id="transferToPlayerRow" class="raid-modal-field">
+        <label for="transferToPlayerSelect">Кому передати</label>
+        <select id="transferToPlayerSelect"></select>
+      </div>
       <div id="transferFromCharRow" class="raid-modal-field" hidden>
         <label for="transferFromCharSelect">Мій персонаж</label>
         <select id="transferFromCharSelect"></select>
@@ -278,7 +283,7 @@
   <script src="../../scripts/auth-shared.js?v=6"></script>
   <script src="../../scripts/raid-manager-shared.js?v=2"></script>
   <script src="../../scripts/name-translations.js?v=1"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=25"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=26"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
