@@ -17,12 +17,24 @@ export async function handleProxy(request, env) {
   }
   if (parsed.hostname !== ALLOWED_HOST) throw new HttpError(403, `Only ${ALLOWED_HOST} URLs allowed`);
 
+  const browserHeaders = {
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'accept-language': 'uk-UA,uk;q=0.9,en;q=0.8',
+    'referer': 'https://uwu-logs.xyz/'
+  };
+
+  // Visit main page first to acquire any session cookies
+  const mainPage = await fetch('https://uwu-logs.xyz/', { headers: browserHeaders });
+  const cookies = [];
+  for (const [name, value] of mainPage.headers.entries()) {
+    if (name.toLowerCase() === 'set-cookie') cookies.push(value.split(';')[0].trim());
+  }
+
   const upstream = await fetch(targetUrl, {
     headers: {
-      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      'accept-language': 'uk-UA,uk;q=0.9,en;q=0.8',
-      'referer': 'https://uwu-logs.xyz/'
+      ...browserHeaders,
+      ...(cookies.length ? { cookie: cookies.join('; ') } : {})
     }
   });
 
