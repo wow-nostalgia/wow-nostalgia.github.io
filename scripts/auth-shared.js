@@ -92,7 +92,7 @@ function renderAuthNav(user) {
     const link = document.createElement('a');
     link.className = 'nav__link';
     link.href = discordLoginUrl();
-    link.textContent = 'Увійти через Discord';
+    link.textContent = 'Увійти';
     slot.appendChild(link);
     return;
   }
