@@ -750,7 +750,9 @@ function renderItemsTable() {
 
   const flat = buildFlatItemList().filter((item) => {
     if (bossFilter && item.boss !== bossFilter) return false;
-    if (softedOnly && !reserves.some((r) => r.item_id === item.id)) return false;
+    if (raid.hidden_reserves && !isOfficerMode()) {
+      if (!reserves.some((r) => r.item_id === item.id && r.discord_id === currentUser?.discordId)) return false;
+    } else if (softedOnly && !reserves.some((r) => r.item_id === item.id)) return false;
     if (search) {
       const haystack = `${item.name} ${translateItem(item.name)} ${item.boss} ${translateBoss(item.boss)}`.toLocaleLowerCase('uk');
       if (!haystack.includes(search)) return false;
