@@ -152,6 +152,11 @@ export async function handleOfficerAssign(request, env, raidId, session) {
   if (!Number.isInteger(itemId)) throw new HttpError(400, 'Невалідний itemId');
   if (![1, 2, 3].includes(weight)) throw new HttpError(400, 'weight має бути 1, 2 або 3');
 
+  const { totalWeight } = await sumPlayerWeight(env.DB, raidId, playerName);
+  if (totalWeight + weight > raid.soft_limit_total) {
+    throw new HttpError(409, `Перевищено ліміт ваги (${raid.soft_limit_total})`);
+  }
+
   let reserve;
   try {
     reserve = await createReserve(env.DB, {
