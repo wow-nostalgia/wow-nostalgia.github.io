@@ -73,6 +73,7 @@ const transferFromCharSelect = document.getElementById('transferFromCharSelect')
 const transferConfirmBtn = document.getElementById('transferConfirmBtn');
 const transferCancelModalBtn = document.getElementById('transferCancelModalBtn');
 const transferNotice = document.getElementById('transferNotice');
+const bonusPoolBanner = document.getElementById('bonusPoolBanner');
 const transferWeightLimitInput = document.getElementById('transferWeightLimitInput');
 const transferWeightLimitSaveBtn = document.getElementById('transferWeightLimitSaveBtn');
 let currentTooltipItemId = null;
@@ -205,6 +206,11 @@ function getMyTransfer() {
   return weightTransfers.find((t) => names.includes(t.from_player)) || null;
 }
 
+function getMyReceivedTransfer() {
+  const names = myCharNames();
+  return weightTransfers.find((t) => names.includes(t.to_player)) || null;
+}
+
 // Лок блокує самософт лише для звичайних гравців — офіцери/лідер обходять
 // лок на бекенді (reserves.js). Завершення рейду (isRaidCompleted) блокує
 // форму для всіх без винятку, включно з лідером/офіцерами.
@@ -225,7 +231,13 @@ function applySoftFormLockState() {
     transferNotice.hidden = false;
     transferNotice.textContent = `Вагу передано гравцю ${myTransfer.to_player}. Додавати власні софти неможливо.`;
   } else {
-    transferNotice.hidden = true;
+    const myReceived = getMyReceivedTransfer();
+    if (myReceived) {
+      transferNotice.hidden = false;
+      transferNotice.textContent = `Ти отримав бонусну вагу від ${myReceived.from_player}. Розподіли її на вкладці «Предмети».`;
+    } else {
+      transferNotice.hidden = true;
+    }
   }
 }
 
@@ -746,7 +758,7 @@ function renderPlayersTable() {
 
       const weightBadge = document.createElement('span');
       weightBadge.className = 'raid-weight-badge';
-      weightBadge.textContent = formatWeight(r.weight);
+      weightBadge.textContent = formatWeight((r.weight || 0) + (r.bonus_weight || 0));
       itemSpan.appendChild(weightBadge);
 
       const itemInfo = findItemInfo(r.item_id, r.boss);
@@ -783,9 +795,10 @@ function buildReservesByWeight(reservers) {
 
   const byWeight = new Map();
   reservers.forEach((r) => {
-    if (!byWeight.has(r.weight)) byWeight.set(r.weight, { visible: [], hidden: 0 });
-    if (r.player_name !== null) byWeight.get(r.weight).visible.push(r.player_name);
-    else byWeight.get(r.weight).hidden++;
+    const effectiveWeight = (r.weight || 0) + (r.bonus_weight || 0);
+    if (!byWeight.has(effectiveWeight)) byWeight.set(effectiveWeight, { visible: [], hidden: 0 });
+    if (r.player_name !== null) byWeight.get(effectiveWeight).visible.push(r.player_name);
+    else byWeight.get(effectiveWeight).hidden++;
   });
 
   [1, 2, 3].forEach((weight) => {
@@ -838,6 +851,21 @@ function renderItemsTable() {
   const search = itemsSearchInput.value.trim().toLocaleLowerCase('uk');
   const bossFilter = itemsBossFilter.value;
   raidItemsBody.innerHTML = '';
+
+  const myReceivedForItems = getMyReceivedTransfer();
+  const myNamesForItems = myCharNames();
+  let bonusPoolForItems = 0;
+  let usedBonusForItems = 0;
+  if (myReceivedForItems && currentUser) {
+    bonusPoolForItems = raid.transfer_weight_limit ?? raid.soft_limit_total;
+    usedBonusForItems = reserves
+      .filter((r) => myNamesForItems.includes(r.player_name))
+      .reduce((s, r) => s + (r.bonus_weight || 0), 0);
+    bonusPoolBanner.hidden = false;
+    bonusPoolBanner.textContent = `Бонусна вага від ${myReceivedForItems.from_player}: ${usedBonusForItems}/${bonusPoolForItems} використано.`;
+  } else {
+    bonusPoolBanner.hidden = true;
+  }
 
   const softedOnly = itemsSoftedOnlyCheckbox.checked;
 
@@ -892,6 +920,47 @@ function renderItemsTable() {
     } else {
       reserversTd.appendChild(buildReservesByWeight(reservers));
     }
+
+    if (myReceivedForItems && currentUser && !isRaidCompleted()) {
+      const myReserveForItem = reservers.find((r) => myNamesForItems.includes(r.player_name));
+      if (myReserveForItem) {
+        const canAdd = usedBonusForItems < bonusPoolForItems &&
+          (myReserveForItem.weight + (myReserveForItem.bonus_weight || 0)) < 3;
+        const canRemove = (myReserveForItem.bonus_weight || 0) > 0;
+
+        const bonusDiv = document.createElement('div');
+        bonusDiv.className = 'raid-bonus-controls';
+
+        if (myReserveForItem.bonus_weight > 0) {
+          const chip = document.createElement('span');
+          chip.className = 'raid-bonus-chip';
+          chip.textContent = `+${myReserveForItem.bonus_weight}`;
+          bonusDiv.appendChild(chip);
+        }
+
+        const addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.className = 'raid-transfer-btn';
+        addBtn.textContent = '+';
+        addBtn.title = "Додати бонусну вагу";
+        addBtn.disabled = !canAdd;
+        addBtn.addEventListener('click', () => changeBonusWeight(myReserveForItem.id, 1));
+        bonusDiv.appendChild(addBtn);
+
+        if (canRemove) {
+          const removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'raid-remove-btn';
+          removeBtn.textContent = '−';
+          removeBtn.title = "Прибрати бонусну вагу";
+          removeBtn.addEventListener('click', () => changeBonusWeight(myReserveForItem.id, -1));
+          bonusDiv.appendChild(removeBtn);
+        }
+
+        reserversTd.appendChild(bonusDiv);
+      }
+    }
+
     tr.appendChild(reserversTd);
 
     raidItemsBody.appendChild(tr);
@@ -1008,6 +1077,20 @@ async function deleteTransfer(fromPlayer) {
 async function loadAudit() {
   auditEntries = await apiCall('GET', `/raids/${raidId}/audit`, { token: getSessionToken() });
   renderAuditList();
+}
+
+async function changeBonusWeight(reserveId, delta) {
+  try {
+    await apiCall('PATCH', `/raids/${raidId}/reserves/${reserveId}/bonus`, {
+      token: getSessionToken(),
+      body: { delta }
+    });
+    await loadReserves();
+    renderPlayersTable();
+    renderItemsTable();
+  } catch (err) {
+    setStatus(`Помилка: ${err.message}`, 'error');
+  }
 }
 
 async function removeReserve(reserve) {

@@ -1,0 +1,1 @@
+ALTER TABLE soft_reserves ADD COLUMN bonus_weight INTEGER NOT NULL DEFAULT 0;
