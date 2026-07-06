@@ -7,6 +7,9 @@ const RAID_LOGS_FILE = path.join(__dirname, '..', 'data', 'raid-logs.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'potion-stats.json');
 const DEBUG_DIR = path.join(__dirname, '..', 'data', 'debug-consumables');
 
+const PROXY_URL = process.env.WORKER_URL ? `${process.env.WORKER_URL}/api/v1/proxy` : null;
+const PROXY_SECRET = process.env.PROXY_SECRET || '';
+
 const POTION_SPEED = 'Potion of Speed';
 const POTION_WILD_MAGIC = 'Potion of Wild Magic';
 
@@ -157,14 +160,20 @@ function parseConsumablesTable(html) {
 }
 
 async function fetchConsumablesPage(url, attempt = 1) {
-  const response = await fetch(url, {
-    headers: {
-      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      'accept-language': 'uk-UA,uk;q=0.9,en;q=0.8',
-      'referer': 'https://uwu-logs.xyz/'
-    }
-  });
+  let fetchUrl = url;
+  const headers = {};
+
+  if (PROXY_URL) {
+    fetchUrl = `${PROXY_URL}?url=${encodeURIComponent(url)}`;
+    headers['x-proxy-secret'] = PROXY_SECRET;
+  } else {
+    headers['user-agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36';
+    headers['accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8';
+    headers['accept-language'] = 'uk-UA,uk;q=0.9,en;q=0.8';
+    headers['referer'] = 'https://uwu-logs.xyz/';
+  }
+
+  const response = await fetch(fetchUrl, { headers });
 
   if (response.status === 429) {
     if (attempt > MAX_RETRIES) {
@@ -177,8 +186,6 @@ async function fetchConsumablesPage(url, attempt = 1) {
   }
 
   if (!response.ok) {
-    const body = await response.text().catch(() => '');
-    console.error(`Response body (first 500 chars): ${body.slice(0, 500)}`);
     throw new Error(`Request failed with status ${response.status}`);
   }
 

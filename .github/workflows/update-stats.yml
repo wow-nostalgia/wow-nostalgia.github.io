@@ -26,8 +26,14 @@ jobs:
       - run: npm ci
 
       - run: npm run update:potions
+        env:
+          WORKER_URL: https://raid-manager-api.wow-nostalgia.workers.dev
+          PROXY_SECRET: ${{ secrets.PROXY_SECRET }}
 
       - run: npm run update:personal
+        env:
+          WORKER_URL: https://raid-manager-api.wow-nostalgia.workers.dev
+          PROXY_SECRET: ${{ secrets.PROXY_SECRET }}
 
       - name: Commit updated stats
         run: |

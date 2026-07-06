@@ -1,6 +1,7 @@
 import { HttpError, jsonResponse, readJson } from './util.js';
 import { requireSession } from './auth.js';
 import { handleAddLogs } from './routes/logs.js';
+import { handleProxy } from './routes/proxy.js';
 import {
   handleCreateRaid,
   handleListRaids,
@@ -220,6 +221,8 @@ async function route(request, env) {
   if (parts[0] !== 'api' || parts[1] !== 'v1') {
     throw new HttpError(404, 'Невідомий шлях');
   }
+
+  if (parts[2] === 'proxy' && request.method === 'GET') return handleProxy(request, env);
 
   if (parts[2] === 'auth') return routeAuth(request, env, parts.slice(3));
 
