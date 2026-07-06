@@ -2246,18 +2246,6 @@ body.raid-manager-detail-page .raid-tables-grid .ranking-table-wrap {
   overflow-x: auto;
 }
 
-body.raid-manager-detail-page #penaltiesPane .ranking-table-wrap {
-  overflow-x: visible;
-  overflow-y: auto;
-  max-height: 660px;
-}
-
-body.raid-manager-detail-page #penaltiesPane .raid-table thead th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background: var(--color-surface-solid);
-}
 
 body.raid-manager-detail-page .raid-search-input {
   width: 100%;
