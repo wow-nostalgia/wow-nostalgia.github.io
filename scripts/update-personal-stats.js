@@ -60,6 +60,8 @@ async function fetchWithRetry(url, attempt = 1) {
   }
 
   if (!response.ok) {
+    const body = await response.text().catch(() => '');
+    console.error(`Response body (first 500 chars): ${body.slice(0, 500)}`);
     throw new Error(`Request failed with status ${response.status}`);
   }
 
