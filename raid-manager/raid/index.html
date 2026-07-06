@@ -89,14 +89,15 @@
               </div>
 
               <label>Вага</label>
-              <div class="raid-weight-toggle" id="softWeightToggle" role="group" aria-label="Вага">
-                <button type="button" class="raid-weight-toggle-btn raid-weight-toggle-btn--active" data-weight="1">х1</button>
-                <button type="button" class="raid-weight-toggle-btn" data-weight="2">х2</button>
-                <button type="button" class="raid-weight-toggle-btn" data-weight="3">х3</button>
+              <div class="raid-weight-row">
+                <div class="raid-weight-toggle" id="softWeightToggle" role="group" aria-label="Вага">
+                  <button type="button" class="raid-weight-toggle-btn raid-weight-toggle-btn--active" data-weight="1">х1</button>
+                  <button type="button" class="raid-weight-toggle-btn" data-weight="2">х2</button>
+                  <button type="button" class="raid-weight-toggle-btn" data-weight="3">х3</button>
+                </div>
+                <input type="hidden" id="softWeight" value="1">
+                <button type="submit" class="compare-btn">Засофтити</button>
               </div>
-              <input type="hidden" id="softWeight" value="1">
-
-              <button type="submit" class="compare-btn">Засофтити</button>
             </form>
             <p id="raidStatus">Завантаження...</p>
           </div>
@@ -130,14 +131,15 @@
               </div>
 
               <label>Вага</label>
-              <div class="raid-weight-toggle" id="assignWeightToggle" role="group" aria-label="Вага">
-                <button type="button" class="raid-weight-toggle-btn raid-weight-toggle-btn--active" data-weight="1">х1</button>
-                <button type="button" class="raid-weight-toggle-btn" data-weight="2">х2</button>
-                <button type="button" class="raid-weight-toggle-btn" data-weight="3">х3</button>
+              <div class="raid-weight-row">
+                <div class="raid-weight-toggle" id="assignWeightToggle" role="group" aria-label="Вага">
+                  <button type="button" class="raid-weight-toggle-btn raid-weight-toggle-btn--active" data-weight="1">х1</button>
+                  <button type="button" class="raid-weight-toggle-btn" data-weight="2">х2</button>
+                  <button type="button" class="raid-weight-toggle-btn" data-weight="3">х3</button>
+                </div>
+                <input type="hidden" id="assignWeight" value="1">
+                <button type="submit" class="compare-btn">Призначити софт</button>
               </div>
-              <input type="hidden" id="assignWeight" value="1">
-
-              <button type="submit" class="compare-btn">Призначити софт</button>
             </form>
           </div>
         </div>
