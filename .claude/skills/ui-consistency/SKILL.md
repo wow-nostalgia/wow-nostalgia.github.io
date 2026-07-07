@@ -90,6 +90,24 @@ SVG-іконка: `width="16" height="16"`, кошик (polyline 3 6 5 6 21 6 + 
 ```
 > Клас `account-delete-btn` — scoped до `body.account-page`; для інших сторінок створюй аналогічний page-scoped клас (напр. `archive-delete-btn` для `body.raid-manager-page`).
 
+### Primary submit (зелена): `.compare-btn` у контексті `.raid-soft-form`
+
+Кнопка підтвердження дії (наприклад "Засофтити", "Призначити софт") — зелена, суцільна, виділяється серед нейтральних кнопок. Застосовується через page-scoped override поверх базового `.compare-btn`:
+
+```css
+body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn {
+  background: #3a9e4a;
+  border-color: #3a9e4a;
+  color: #ffffff;
+}
+body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:hover:not(:disabled) {
+  background: #2f8a3e;
+  border-color: #2f8a3e;
+}
+```
+
+> Колір `#3a9e4a` — затемнена версія `--color-success` (#63d471), підібрана так, щоб суцільний фон кнопки виглядав так само як `--color-success` у ролі тексту на темному тлі (перцепційне вирівнювання). Не заміняй на `var(--color-success)` — як фон він буде занадто яскравим.
+
 ### Тогл-кнопки: `.raid-toggle-btn` / `.raid-weight-toggle-btn`
 ```css
 padding: 0.35rem 0.7rem;
