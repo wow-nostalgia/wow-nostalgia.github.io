@@ -1646,8 +1646,8 @@ body.raid-manager-page .raid-toggle-btn:hover {
 }
 
 body.raid-manager-page .raid-toggle-btn--active {
-  background-color: var(--color-accent-gold);
-  border-color: var(--color-accent-gold);
+  background-color: var(--color-link);
+  border-color: var(--color-link);
   color: #1d2636;
 }
 
@@ -2422,8 +2422,8 @@ body.raid-manager-detail-page .raid-weight-toggle-btn:disabled {
 }
 
 body.raid-manager-detail-page .raid-weight-toggle-btn--active {
-  background-color: var(--color-accent-gold);
-  border-color: var(--color-accent-gold);
+  background-color: var(--color-link);
+  border-color: var(--color-link);
   color: #1d2636;
 }
 
@@ -2433,7 +2433,7 @@ body.raid-manager-detail-page .raid-weight-badge {
   font-size: 0.7rem;
   font-weight: 600;
   color: #1d2636;
-  background-color: var(--color-accent-gold);
+  background-color: var(--color-link);
 }
 
 body.raid-manager-detail-page #raidItemTooltip {
