@@ -13,7 +13,9 @@ import {
   removeRaidOfficer,
   getUserByDiscordId,
   listDefaultOfficers,
-  deleteRaid
+  deleteRaid,
+  deleteAllTransfersForRaid,
+  resetAllBonusWeightsForRaid
 } from '../db.js';
 import { requireRaidOfficer, requireLeader } from '../auth.js';
 
@@ -111,6 +113,11 @@ export async function handleUpdateRaid(request, env, id, session) {
   const updated = await updateRaidSettings(env.DB, id, fields);
   if (Object.keys(fields).length) {
     await insertAudit(env.DB, id, session.username, 'settings_change', fields);
+  }
+
+  if (fields.transfer_weight_limit === 0) {
+    await deleteAllTransfersForRaid(env.DB, id);
+    await resetAllBonusWeightsForRaid(env.DB, id);
   }
 
   return jsonResponse(publicRaid(updated));

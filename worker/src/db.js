@@ -439,6 +439,20 @@ export async function deleteWeightTransfer(db, raidId, fromPlayer) {
     .run();
 }
 
+export async function deleteAllTransfersForRaid(db, raidId) {
+  await db
+    .prepare('DELETE FROM raid_weight_transfers WHERE raid_id = ?')
+    .bind(raidId)
+    .run();
+}
+
+export async function resetAllBonusWeightsForRaid(db, raidId) {
+  await db
+    .prepare('UPDATE soft_reserves SET bonus_weight = 0 WHERE raid_id = ?')
+    .bind(raidId)
+    .run();
+}
+
 export async function sumBonusWeight(db, raidId, playerName) {
   const row = await db
     .prepare('SELECT COALESCE(SUM(bonus_weight), 0) AS total FROM soft_reserves WHERE raid_id = ? AND player_name = ?')
