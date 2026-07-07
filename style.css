@@ -2517,6 +2517,22 @@ body.raid-manager-detail-page .raid-remove-btn:disabled {
   cursor: not-allowed;
 }
 
+body.raid-manager-detail-page .raid-transfer-cancel-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-link);
+  font-size: inherit;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+body.raid-manager-detail-page .raid-transfer-cancel-link:hover {
+  color: var(--color-link-hover);
+}
+
 body.raid-manager-detail-page .raid-item-received {
   text-decoration: line-through;
   opacity: 0.6;

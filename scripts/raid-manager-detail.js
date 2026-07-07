@@ -236,7 +236,15 @@ function applySoftFormLockState() {
 
   if (myTransfer) {
     transferNotice.hidden = false;
-    transferNotice.textContent = `Софти передано гравцю ${myTransfer.to_player}. Додавати власні софти неможливо.`;
+    transferNotice.textContent = `Софти передано гравцю ${myTransfer.to_player}. Додавати власні софти неможливо. `;
+    if (!isRaidCompleted()) {
+      const cancelLink = document.createElement('button');
+      cancelLink.type = 'button';
+      cancelLink.className = 'raid-transfer-cancel-link';
+      cancelLink.textContent = 'Скасувати';
+      cancelLink.addEventListener('click', () => deleteTransfer(myTransfer.from_player));
+      transferNotice.appendChild(cancelLink);
+    }
   } else {
     const myReceived = getMyReceivedTransfer();
     if (myReceived) {
@@ -727,7 +735,7 @@ function renderPlayersTable() {
         const cancelBtn = document.createElement('button');
         cancelBtn.type = 'button';
         cancelBtn.className = 'raid-remove-btn';
-        cancelBtn.title = 'Скасувати передачу ваги';
+        cancelBtn.title = 'Скасувати передачу софту';
         cancelBtn.textContent = '✕';
         cancelBtn.addEventListener('click', () => deleteTransfer(name));
         transferTd.appendChild(cancelBtn);
@@ -1049,7 +1057,7 @@ function showTransferModal() {
 }
 
 function deleteTransfer(fromPlayer) {
-  cancelTransferModalText.textContent = `Скасувати передачу ваги від ${fromPlayer}?`;
+  cancelTransferModalText.textContent = `Скасувати передачу софту від ${fromPlayer}?`;
   cancelTransferModal._fromPlayer = fromPlayer;
   cancelTransferModal.hidden = false;
 }
