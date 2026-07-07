@@ -579,6 +579,44 @@ footer span {
   background-size: 0.65rem;
 }
 
+.analytics-day-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.analytics-day-check {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.88);
+  color: var(--color-text-soft);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.analytics-day-check:hover {
+  border-color: rgba(123, 170, 245, 0.55);
+  color: var(--color-text-strong);
+}
+
+.analytics-day-check:has(input:checked) {
+  background-color: var(--color-accent-gold);
+  border-color: var(--color-accent-gold);
+  color: #1d2636;
+}
+
+.analytics-day-check input[type="checkbox"] {
+  display: none;
+}
+
 .ranking-status-row {
   display: flex;
   align-items: center;

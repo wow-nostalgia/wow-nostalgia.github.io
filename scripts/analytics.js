@@ -2,6 +2,7 @@ const statusEl = document.getElementById('analyticsStatus');
 const lastUpdatedText = document.getElementById('lastUpdatedText');
 const bossSumOverTimeSelect = document.getElementById('bossSumOverTimeSelect');
 const bossSumOverTimeSplineSelect = document.getElementById('bossSumOverTimeSplineSelect');
+const bossSumDayFilter = document.getElementById('bossSumDayFilter');
 
 const SPLINE_MODES = {
   smooth: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
@@ -825,6 +826,18 @@ function formatDateLabel(isoDate) {
   return `${day}.${month}.${year.slice(2)}`;
 }
 
+const DAY_LABELS = ['НД', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
+const DAY_COLORS = ['#f48cba', '#7baaf5', '#63d471', '#ffd700', '#ff7c0a', '#c41e3a', '#9382c9'];
+
+function dayOfWeek(isoDate) {
+  const [y, m, d] = isoDate.split('-').map(Number);
+  return new Date(y, m - 1, d).getDay();
+}
+
+function getSelectedDays() {
+  return [...bossSumDayFilter.querySelectorAll('input:checked')].map((cb) => Number(cb.value));
+}
+
 function computeBossSumOverTime(personalStats, boss) {
   const points = [];
 
@@ -839,6 +852,27 @@ function computeBossSumOverTime(personalStats, boss) {
   }
 
   return points.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+}
+
+function computeBossSumByDay(personalStats, boss) {
+  const byDay = new Map();
+
+  for (const record of personalStats) {
+    if (record.error || record.boss !== boss) continue;
+    const players = record.players || [];
+    if (!players.length) continue;
+
+    const value = players.reduce((sum, p) => sum + Number(p.dps || 0), 0);
+    const dow = dayOfWeek(record.date);
+    if (!byDay.has(dow)) byDay.set(dow, []);
+    byDay.get(dow).push({ date: record.date, value });
+  }
+
+  for (const points of byDay.values()) {
+    points.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  }
+
+  return byDay;
 }
 
 function computeTrendLine(points) {
@@ -920,14 +954,92 @@ function renderBossMetricOverTimeChart({ canvasId, points, splineMode, datasetLa
   });
 }
 
-function renderBossSumOverTimeChart(personalStats, boss) {
-  renderBossMetricOverTimeChart({
-    canvasId: 'chartBossSumOverTime',
-    points: computeBossSumOverTime(personalStats, boss),
-    splineMode: bossSumOverTimeSplineSelect.value,
-    datasetLabel: `Сумарний DPS — ${translateBoss(boss)}`,
-    yLabel: 'Сумарний DPS'
+function renderBossSumMultiDayChart(personalStats, boss, selectedDays) {
+  const byDay = computeBossSumByDay(personalStats, boss);
+  const splineMode = bossSumOverTimeSplineSelect.value;
+  const spline = SPLINE_MODES[splineMode] || SPLINE_MODES.smoothNoPoints;
+
+  const datasets = selectedDays.map((dow) => {
+    const rawPoints = byDay.get(dow) || [];
+    const color = DAY_COLORS[dow];
+
+    let seriesPoints = rawPoints;
+    if (splineMode === 'trend') {
+      const trend = computeTrendLine(rawPoints.map((p, idx) => ({ x: idx, y: p.value })));
+      seriesPoints = trend
+        ? rawPoints.map((p, idx) => ({ date: p.date, value: trend.slope * idx + trend.intercept, isTrend: true }))
+        : [];
+    }
+
+    return {
+      label: DAY_LABELS[dow],
+      data: seriesPoints.map((p, idx) => ({ x: idx + 1, y: Math.round(p.value), date: p.date })),
+      borderColor: color,
+      backgroundColor: color,
+      spanGaps: true,
+      tension: spline.tension,
+      cubicInterpolationMode: spline.cubicInterpolationMode,
+      pointRadius: spline.pointRadius,
+      hitRadius: spline.hitRadius,
+      pointHoverRadius: 6,
+      fill: false
+    };
   });
+
+  const existingChart = Chart.getChart('chartBossSumOverTime');
+  if (existingChart) existingChart.destroy();
+
+  new Chart(document.getElementById('chartBossSumOverTime'), {
+    type: 'line',
+    data: { datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true },
+        tooltip: {
+          callbacks: {
+            title: (items) => `Рейд #${items[0].parsed.x}`,
+            label: (ctx) => {
+              const dateStr = ctx.raw?.date ? ` (${formatDateLabel(ctx.raw.date)})` : '';
+              return `${ctx.dataset.label}${dateStr}: ${ctx.parsed.y?.toLocaleString('en-US')}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          type: 'linear',
+          title: { display: true, text: "Рейд (порядковий)" },
+          ticks: { precision: 0, stepSize: 1 }
+        },
+        y: { title: { display: true, text: 'Сумарний DPS' }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function renderBossSumOverTimeChart(personalStats, boss) {
+  const selectedDays = getSelectedDays();
+
+  if (selectedDays.length <= 1) {
+    let points;
+    if (selectedDays.length === 0) {
+      points = computeBossSumOverTime(personalStats, boss);
+    } else {
+      const byDay = computeBossSumByDay(personalStats, boss);
+      points = byDay.get(selectedDays[0]) || [];
+    }
+    renderBossMetricOverTimeChart({
+      canvasId: 'chartBossSumOverTime',
+      points,
+      splineMode: bossSumOverTimeSplineSelect.value,
+      datasetLabel: `Сумарний DPS — ${translateBoss(boss)}`,
+      yLabel: 'Сумарний DPS'
+    });
+  } else {
+    renderBossSumMultiDayChart(personalStats, boss, selectedDays);
+  }
 }
 
 async function init() {
@@ -992,6 +1104,10 @@ async function init() {
     });
 
     bossSumOverTimeSplineSelect.addEventListener('change', () => {
+      renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
+    });
+
+    bossSumDayFilter.addEventListener('change', () => {
       renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
     });
 

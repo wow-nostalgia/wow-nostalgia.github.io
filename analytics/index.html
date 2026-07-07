@@ -132,6 +132,17 @@
               <option value="linearNoPoints">Пряма без точок</option>
               <option value="trend">Лінія тренду</option>
             </select>
+
+            <label>День тижня</label>
+            <div class="analytics-day-filter" id="bossSumDayFilter">
+              <label class="analytics-day-check"><input type="checkbox" value="1"><span>ПН</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="2"><span>ВТ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="3"><span>СР</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="4"><span>ЧТ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="5"><span>ПТ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="6"><span>СБ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="0"><span>НД</span></label>
+            </div>
           </div>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossSumOverTime"></canvas>
@@ -267,7 +278,7 @@
   <script src="../scripts/nav.js"></script>
   <script src="../scripts/auth-shared.js?v=6"></script>
   <script src="../scripts/name-translations.js"></script>
-  <script src="../scripts/analytics.js"></script>
+  <script src="../scripts/analytics.js?v=2"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
