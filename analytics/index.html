@@ -63,6 +63,40 @@
       <div class="analytics-grid">
         <div class="analytics-card analytics-card--wide analytics-card--medium">
           <div class="analytics-card-header">
+            <h2>Сумарний DPS рейду по босу в часі</h2>
+            <span class="analytics-scope-chip">Всі</span>
+          </div>
+          <p class="analytics-card-caption">Сума DPS усіх гравців рейду (дамаг-спеки, танки і хіли) по обраному босу ЦЛК, по датах рейдів.</p>
+          <div class="ranking-controls">
+            <label for="bossSumOverTimeSelect">Бос</label>
+            <select id="bossSumOverTimeSelect"></select>
+
+            <label for="bossSumOverTimeSplineSelect">Тип лінії</label>
+            <select id="bossSumOverTimeSplineSelect">
+              <option value="smooth">Плавна</option>
+              <option value="smoothNoPoints" selected>Плавна без точок</option>
+              <option value="linear">Пряма</option>
+              <option value="linearNoPoints">Пряма без точок</option>
+              <option value="trend">Лінія тренду</option>
+            </select>
+
+            <div class="analytics-day-filter" id="bossSumDayFilter">
+              <label class="analytics-day-check"><input type="checkbox" value="1"><span>ПН</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="2"><span>ВТ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="3"><span>СР</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="4"><span>ЧТ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="5"><span>ПТ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="6"><span>СБ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="0"><span>НД</span></label>
+            </div>
+          </div>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartBossSumOverTime"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card analytics-card--wide analytics-card--medium">
+          <div class="analytics-card-header">
             <h2>Топ-50 / Топ-100 / Топ-200 серверу по спеку</h2>
           </div>
           <p class="analytics-card-caption">Кількість гравців у топ-50, топ-100 та топ-200 серверу для кожної спеціалізації.</p>
@@ -111,40 +145,6 @@
           <p class="analytics-card-caption">Середній DPS по кожному босу ЦЛК (боси без чіткого DPS-чеку — Валітрія, Анубарак, Toravon — не враховані).</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossAvg"></canvas>
-          </div>
-        </div>
-
-        <div class="analytics-card analytics-card--wide analytics-card--medium">
-          <div class="analytics-card-header">
-            <h2>Сумарний DPS рейду по босу в часі</h2>
-            <span class="analytics-scope-chip">Всі</span>
-          </div>
-          <p class="analytics-card-caption">Сума DPS усіх гравців рейду (дамаг-спеки, танки і хіли) по обраному босу ЦЛК, по датах рейдів.</p>
-          <div class="ranking-controls">
-            <label for="bossSumOverTimeSelect">Бос</label>
-            <select id="bossSumOverTimeSelect"></select>
-
-            <label for="bossSumOverTimeSplineSelect">Тип лінії</label>
-            <select id="bossSumOverTimeSplineSelect">
-              <option value="smooth">Плавна</option>
-              <option value="smoothNoPoints" selected>Плавна без точок</option>
-              <option value="linear">Пряма</option>
-              <option value="linearNoPoints">Пряма без точок</option>
-              <option value="trend">Лінія тренду</option>
-            </select>
-
-            <div class="analytics-day-filter" id="bossSumDayFilter">
-              <label class="analytics-day-check"><input type="checkbox" value="1"><span>ПН</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="2"><span>ВТ</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="3"><span>СР</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="4"><span>ЧТ</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="5"><span>ПТ</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="6"><span>СБ</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="0"><span>НД</span></label>
-            </div>
-          </div>
-          <div class="analytics-chart-wrap">
-            <canvas id="chartBossSumOverTime"></canvas>
           </div>
         </div>
 
