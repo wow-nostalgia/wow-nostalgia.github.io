@@ -2369,6 +2369,19 @@ body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:
   border-color: #2f8a3e;
 }
 
+body.raid-manager-page .raid-create-form button[type="submit"].compare-btn,
+body.ranking-page #compareBtn.compare-btn {
+  background: #3a9e4a;
+  border-color: #3a9e4a;
+  color: #ffffff;
+}
+
+body.raid-manager-page .raid-create-form button[type="submit"].compare-btn:hover:not(:disabled),
+body.ranking-page #compareBtn.compare-btn:hover:not(:disabled) {
+  background: #2f8a3e;
+  border-color: #2f8a3e;
+}
+
 body.raid-manager-detail-page .raid-weight-toggle {
   display: flex;
   gap: 0.4rem;
