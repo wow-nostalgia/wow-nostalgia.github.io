@@ -608,8 +608,8 @@ footer span {
 }
 
 .analytics-day-check:has(input:checked) {
-  background-color: var(--color-accent-gold);
-  border-color: var(--color-accent-gold);
+  background-color: var(--color-link);
+  border-color: var(--color-link);
   color: #1d2636;
 }
 
