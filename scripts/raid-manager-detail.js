@@ -616,6 +616,8 @@ document.addEventListener('mouseout', (event) => {
   }
 });
 
+const LS_CHAR_KEY = 'rm_selected_character';
+
 function updateSoftPlayerNameColor() {
   const color = classColorMap.get(softPlayerNameInput.value);
   softPlayerNameInput.style.color = color || '';
@@ -634,6 +636,10 @@ function populateMyCharacters() {
     softPlayerNameInput.appendChild(opt);
   });
 
+  const saved = localStorage.getItem(LS_CHAR_KEY);
+  if (saved && softPlayerNameInput.querySelector(`option[value="${CSS.escape(saved)}"]`)) {
+    softPlayerNameInput.value = saved;
+  }
   updateSoftPlayerNameColor();
   applySoftFormLockState();
 }
@@ -1183,7 +1189,10 @@ async function setActiveTab(tab) {
 
 raidTabs.forEach((btn) => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)));
 
-softPlayerNameInput.addEventListener('change', updateSoftPlayerNameColor);
+softPlayerNameInput.addEventListener('change', () => {
+  localStorage.setItem(LS_CHAR_KEY, softPlayerNameInput.value);
+  updateSoftPlayerNameColor();
+});
 softBoss.addEventListener('change', () => populateItemPicker(softItem, softItemTrigger, softItemList, softBoss.value));
 assignBoss.addEventListener('change', () => populateItemPicker(assignItem, assignItemTrigger, assignItemList, assignBoss.value));
 setupItemPickerToggle(softItemTrigger, softItemList);
