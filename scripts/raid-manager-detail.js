@@ -70,8 +70,6 @@ const transferModalBackdrop = document.getElementById('transferModalBackdrop');
 const transferModalText = document.getElementById('transferModalText');
 const transferToPlayerRow = document.getElementById('transferToPlayerRow');
 const transferToPlayerSelect = document.getElementById('transferToPlayerSelect');
-const transferFromCharRow = document.getElementById('transferFromCharRow');
-const transferFromCharSelect = document.getElementById('transferFromCharSelect');
 const transferConfirmBtn = document.getElementById('transferConfirmBtn');
 const transferCancelModalBtn = document.getElementById('transferCancelModalBtn');
 const transferWeightBtn = document.getElementById('transferWeightBtn');
@@ -1047,24 +1045,7 @@ function showTransferModal() {
   });
   transferToPlayerRow.hidden = eligible.length === 0;
 
-  const claimedName = reserves.find((r) => r.discord_id === currentUser?.discordId)?.player_name;
-  const defaultName = claimedName && names.includes(claimedName) ? claimedName : names[0];
-
-  if (names.length > 1) {
-    transferFromCharRow.hidden = false;
-    transferFromCharSelect.innerHTML = '';
-    names.forEach((n) => {
-      const opt = document.createElement('option');
-      opt.value = n;
-      opt.textContent = n;
-      opt.selected = n === defaultName;
-      transferFromCharSelect.appendChild(opt);
-    });
-  } else {
-    transferFromCharRow.hidden = true;
-  }
-
-  transferModalText.textContent = "Передати всю вагу цьому гравцю? Наявні м'які резерви будуть видалені, і ви не зможете нічого засофтити собі.";
+  transferModalText.textContent = "Обери кому ти хочеш передати свої софти - відповідний гравець отримає сповіщення";
   transferModal.hidden = false;
 }
 
@@ -1382,9 +1363,7 @@ function renderPenaltiesTable() {
 
 transferConfirmBtn.addEventListener('click', async () => {
   const toPlayer = transferToPlayerSelect.value;
-  const fromPlayer = transferFromCharRow.hidden
-    ? myCharacters[0]?.characterName
-    : transferFromCharSelect.value;
+  const fromPlayer = softPlayerNameInput.value;
   if (!fromPlayer || !toPlayer) return;
 
   transferConfirmBtn.disabled = true;
