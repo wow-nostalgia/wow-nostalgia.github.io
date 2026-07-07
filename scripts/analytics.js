@@ -959,21 +959,32 @@ function renderBossSumMultiDayChart(personalStats, boss, selectedDays) {
   const splineMode = bossSumOverTimeSplineSelect.value;
   const spline = SPLINE_MODES[splineMode] || SPLINE_MODES.smoothNoPoints;
 
+  const allDates = [...new Set(
+    selectedDays.flatMap((dow) => (byDay.get(dow) || []).map((p) => p.date))
+  )].sort();
+
   const datasets = selectedDays.map((dow) => {
     const rawPoints = byDay.get(dow) || [];
+    const dateValueMap = new Map(rawPoints.map((p) => [p.date, p.value]));
     const color = DAY_COLORS[dow];
 
-    let seriesPoints = rawPoints;
+    let values;
     if (splineMode === 'trend') {
       const trend = computeTrendLine(rawPoints.map((p, idx) => ({ x: idx, y: p.value })));
-      seriesPoints = trend
-        ? rawPoints.map((p, idx) => ({ date: p.date, value: trend.slope * idx + trend.intercept, isTrend: true }))
-        : [];
+      values = allDates.map((date) => {
+        const idx = rawPoints.findIndex((p) => p.date === date);
+        return idx >= 0 && trend ? Math.round(trend.slope * idx + trend.intercept) : null;
+      });
+    } else {
+      values = allDates.map((date) => {
+        const val = dateValueMap.get(date);
+        return val !== undefined ? Math.round(val) : null;
+      });
     }
 
     return {
       label: DAY_LABELS[dow],
-      data: seriesPoints.map((p, idx) => ({ x: idx + 1, y: Math.round(p.value), date: p.date })),
+      data: values,
       borderColor: color,
       backgroundColor: color,
       spanGaps: true,
@@ -991,7 +1002,7 @@ function renderBossSumMultiDayChart(personalStats, boss, selectedDays) {
 
   new Chart(document.getElementById('chartBossSumOverTime'), {
     type: 'line',
-    data: { datasets },
+    data: { labels: allDates.map(formatDateLabel), datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -999,20 +1010,15 @@ function renderBossSumMultiDayChart(personalStats, boss, selectedDays) {
         legend: { display: true },
         tooltip: {
           callbacks: {
-            title: (items) => `Рейд #${items[0].parsed.x}`,
             label: (ctx) => {
-              const dateStr = ctx.raw?.date ? ` (${formatDateLabel(ctx.raw.date)})` : '';
-              return `${ctx.dataset.label}${dateStr}: ${ctx.parsed.y?.toLocaleString('en-US')}`;
+              if (ctx.parsed.y === null) return null;
+              return `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString('en-US')}`;
             }
           }
         }
       },
       scales: {
-        x: {
-          type: 'linear',
-          title: { display: true, text: "Рейд (порядковий)" },
-          ticks: { precision: 0, stepSize: 1 }
-        },
+        x: { title: { display: true, text: 'Дата рейду' } },
         y: { title: { display: true, text: 'Сумарний DPS' }, beginAtZero: true }
       }
     }
