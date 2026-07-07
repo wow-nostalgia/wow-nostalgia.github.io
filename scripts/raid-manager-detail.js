@@ -815,7 +815,7 @@ function buildReservesByWeight(reservers) {
     else byWeight.get(effectiveWeight).hidden++;
   });
 
-  [1, 2, 3].forEach((weight) => {
+  [...byWeight.keys()].sort((a, b) => a - b).forEach((weight) => {
     const entry = byWeight.get(weight);
     if (!entry) return;
 
@@ -933,8 +933,7 @@ function renderItemsTable() {
     if (myReceivedForItems && currentUser && !isRaidCompleted()) {
       const myReserveForItem = reservers.find((r) => myNamesForItems.includes(r.player_name));
       if (myReserveForItem) {
-        const canAdd = usedBonusForItems < bonusPoolForItems &&
-          (myReserveForItem.weight + (myReserveForItem.bonus_weight || 0)) < 3;
+        const canAdd = usedBonusForItems < bonusPoolForItems;
         const canRemove = (myReserveForItem.bonus_weight || 0) > 0;
 
         const bonusDiv = document.createElement('div');

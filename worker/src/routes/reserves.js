@@ -220,9 +220,6 @@ export async function handleUpdateBonusWeight(request, env, raidId, reserveId, s
     if (totalBonus + 1 > transferBonus) {
       throw new HttpError(409, `Перевищено бонусний ліміт (${transferBonus})`);
     }
-    if (reserve.weight + reserve.bonus_weight + 1 > 3) {
-      throw new HttpError(409, "Максимальна вага предмету 3");
-    }
   } else {
     if (reserve.bonus_weight < 1) throw new HttpError(409, "Бонусна вага вже 0");
   }
