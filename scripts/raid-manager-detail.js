@@ -237,7 +237,7 @@ function applySoftFormLockState() {
 
   if (myTransfer) {
     transferNotice.hidden = false;
-    transferNotice.textContent = `Вагу передано гравцю ${myTransfer.to_player}. Додавати власні софти неможливо.`;
+    transferNotice.textContent = `Софти передано гравцю ${myTransfer.to_player}. Додавати власні софти неможливо.`;
   } else {
     const myReceived = getMyReceivedTransfer();
     if (myReceived) {

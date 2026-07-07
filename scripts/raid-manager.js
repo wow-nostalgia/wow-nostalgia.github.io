@@ -19,9 +19,8 @@ function generateTitle() {
   const now = new Date();
   const dd = String(now.getDate()).padStart(2, '0');
   const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const isUk = getNameLanguage() === 'uk';
-  const inst = isUk ? (TITLE_INSTANCE_ABBR_UK[instance] || instance) : instance;
-  const diff = isUk ? (TITLE_DIFFICULTY_ABBR_UK[difficulty] || difficulty) : difficulty;
+  const inst = TITLE_INSTANCE_ABBR_UK[instance] || instance;
+  const diff = TITLE_DIFFICULTY_ABBR_UK[difficulty] || difficulty;
   return `${inst} ${diff}-${dd}.${mm}`;
 }
 
