@@ -2384,6 +2384,17 @@ body.raid-manager-detail-page #transferConfirmBtn.compare-btn:hover:not(:disable
   border-color: #2f8a3e;
 }
 
+body.raid-manager-detail-page #cancelTransferConfirmBtn.compare-btn {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  color: #ffffff;
+}
+
+body.raid-manager-detail-page #cancelTransferConfirmBtn.compare-btn:hover:not(:disabled) {
+  background: #e05252;
+  border-color: #e05252;
+}
+
 body.raid-manager-detail-page .raid-weight-toggle {
   display: flex;
   gap: 0.4rem;

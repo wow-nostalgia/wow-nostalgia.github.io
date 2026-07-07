@@ -73,6 +73,11 @@ const transferToPlayerSelect = document.getElementById('transferToPlayerSelect')
 const transferConfirmBtn = document.getElementById('transferConfirmBtn');
 const transferCancelModalBtn = document.getElementById('transferCancelModalBtn');
 const transferWeightBtn = document.getElementById('transferWeightBtn');
+const cancelTransferModal = document.getElementById('cancelTransferModal');
+const cancelTransferModalBackdrop = document.getElementById('cancelTransferModalBackdrop');
+const cancelTransferModalText = document.getElementById('cancelTransferModalText');
+const cancelTransferConfirmBtn = document.getElementById('cancelTransferConfirmBtn');
+const cancelTransferCancelBtn = document.getElementById('cancelTransferCancelBtn');
 const transferNotice = document.getElementById('transferNotice');
 const bonusPoolBanner = document.getElementById('bonusPoolBanner');
 const transferWeightLimitInput = document.getElementById('transferWeightLimitInput');
@@ -1049,10 +1054,18 @@ function showTransferModal() {
   transferModal.hidden = false;
 }
 
-async function deleteTransfer(fromPlayer) {
-  if (!confirm(`Скасувати передачу ваги від ${fromPlayer}?`)) return;
+function deleteTransfer(fromPlayer) {
+  cancelTransferModalText.textContent = `Скасувати передачу ваги від ${fromPlayer}?`;
+  cancelTransferModal._fromPlayer = fromPlayer;
+  cancelTransferModal.hidden = false;
+}
+
+cancelTransferConfirmBtn.addEventListener('click', async () => {
+  const fromPlayer = cancelTransferModal._fromPlayer;
+  cancelTransferConfirmBtn.disabled = true;
   try {
     await apiCall('DELETE', `/raids/${raidId}/transfers/${encodeURIComponent(fromPlayer)}`, { token: getSessionToken() });
+    cancelTransferModal.hidden = true;
     await loadTransfers();
     await loadReserves();
     renderPlayersTable();
@@ -1060,8 +1073,13 @@ async function deleteTransfer(fromPlayer) {
     applySoftFormLockState();
   } catch (err) {
     alert(err.message);
+  } finally {
+    cancelTransferConfirmBtn.disabled = false;
   }
-}
+});
+
+cancelTransferCancelBtn.addEventListener('click', () => { cancelTransferModal.hidden = true; });
+cancelTransferModalBackdrop.addEventListener('click', () => { cancelTransferModal.hidden = true; });
 
 async function loadAudit() {
   auditEntries = await apiCall('GET', `/raids/${raidId}/audit`, { token: getSessionToken() });
