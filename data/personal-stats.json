@@ -1,5 +1,162 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-07--20-31--Boroheal--FreedomUA/",
+    "date": "2026-07-07",
+    "boss": "The Lich King",
+    "players": [
+      {
+        "name": "Кумбабах",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 12945.3
+      },
+      {
+        "name": "Kawaiibaka",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12280.8
+      },
+      {
+        "name": "Metallheadxm",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 12022.3
+      },
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 11956.4
+      },
+      {
+        "name": "Lazylemon",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 11946.6
+      },
+      {
+        "name": "Єва",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 11359.6
+      },
+      {
+        "name": "Чіта",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 11026.9
+      },
+      {
+        "name": "Белазище",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 10998.3
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 10825.5
+      },
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 10781.9
+      },
+      {
+        "name": "Chucknorris",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 10758.3
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 10623.9
+      },
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 10553
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 10139.8
+      },
+      {
+        "name": "Amffitaminka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 9397.8
+      },
+      {
+        "name": "Deser",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 9383.8
+      },
+      {
+        "name": "Likee",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 9153.5
+      },
+      {
+        "name": "Selya",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 8996.1
+      },
+      {
+        "name": "Pitzkur",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2550.3
+      },
+      {
+        "name": "Kubita",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2312.2
+      },
+      {
+        "name": "Staruy",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 149.7
+      },
+      {
+        "name": "Кабачок",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 9.6
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Onlyshit",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-07-05--20-45--Boroheal--FreedomUA/",
     "date": "2026-07-05",
     "boss": "Lord Marrowgar",
@@ -10034,7 +10191,7 @@
     "date": "2026-06-21",
     "boss": null,
     "players": [],
-    "error": "Request failed with status 404"
+    "error": "No fights-container found (corrupted or empty report)"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-06-20--20-29--Boro--FreedomUA/",
@@ -23525,7 +23682,7 @@
     "date": "2026-05-09",
     "boss": null,
     "players": [],
-    "error": "Request failed with status 404"
+    "error": "Request failed with status 502"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-05-03--20-31--Boro--FreedomUA/",
