@@ -2896,6 +2896,12 @@ body.account-page .account-characters-table-wrap {
   margin: 0;
 }
 
+body.account-page .account-chars-hints {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 body.account-page .account-chars-hint {
   font-size: 13px;
   color: var(--color-text-faint);
