@@ -2361,7 +2361,7 @@ body.raid-manager-detail-page .raid-soft-form .raid-transfer-notice {
 body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn {
   background: var(--color-success);
   border-color: var(--color-success);
-  color: #1a2e1c;
+  color: #ffffff;
 }
 
 body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:hover:not(:disabled) {
