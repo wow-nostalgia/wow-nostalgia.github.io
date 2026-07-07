@@ -231,7 +231,8 @@ function applySoftFormLockState() {
   });
 
   const transfersEnabled = (raid.transfer_weight_limit ?? 0) !== 0;
-  const canShowTransferBtn = currentUser && transfersEnabled && !isRaidCompleted() && !myTransfer && myCharNames().length > 0;
+  const myReceived = getMyReceivedTransfer();
+  const canShowTransferBtn = currentUser && transfersEnabled && !isRaidCompleted() && !myTransfer && !myReceived && myCharNames().length > 0;
   transferWeightBtn.hidden = !canShowTransferBtn;
 
   if (myTransfer) {
@@ -246,7 +247,6 @@ function applySoftFormLockState() {
       transferNotice.appendChild(cancelLink);
     }
   } else {
-    const myReceived = getMyReceivedTransfer();
     if (myReceived) {
       transferNotice.hidden = false;
       transferNotice.textContent = `Ти отримав софт від ${myReceived.from_player}. Розподіли його на вкладці «Предмети».`;
