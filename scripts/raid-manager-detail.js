@@ -736,7 +736,7 @@ function renderPlayersTable() {
     } else if (toTransfer) {
       const indicator = document.createElement('span');
       indicator.className = 'raid-transfer-indicator raid-transfer-indicator--to';
-      indicator.title = `Отримує вагу від ${toTransfer.from_player}`;
+      indicator.title = `Отримує софти від ${toTransfer.from_player}`;
       indicator.textContent = `+${toTransfer.from_player}`;
       transferTd.appendChild(indicator);
     }

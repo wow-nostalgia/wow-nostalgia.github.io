@@ -282,6 +282,12 @@ h1 {
     transform var(--transition-fast);
 }
 
+button.nav__link {
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 .nav__link:hover {
   background: var(--color-hover);
   color: #ffffff;
