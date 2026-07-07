@@ -3356,9 +3356,9 @@ body.raid-manager-detail-page .penalty-reason-text {
 
 .raid-modal-text {
   margin: 0 0 1rem;
-  font-size: 0.875rem;
-  color: var(--color-text-soft);
-  line-height: 1.5;
+  font-size: 13px;
+  color: var(--color-text-faint);
+  line-height: 1.6;
 }
 
 .raid-modal-field {
