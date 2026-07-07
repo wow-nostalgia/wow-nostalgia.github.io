@@ -2358,6 +2358,17 @@ body.raid-manager-detail-page .raid-soft-form .raid-transfer-notice {
   grid-column: 2;
 }
 
+body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn {
+  background: rgba(99, 212, 113, 0.15);
+  border-color: rgba(99, 212, 113, 0.4);
+  color: var(--color-success);
+}
+
+body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:hover:not(:disabled) {
+  background: rgba(99, 212, 113, 0.25);
+  border-color: rgba(99, 212, 113, 0.6);
+}
+
 body.raid-manager-detail-page .raid-weight-toggle {
   display: flex;
   gap: 0.4rem;
