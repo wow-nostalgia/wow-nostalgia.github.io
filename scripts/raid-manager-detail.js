@@ -241,7 +241,7 @@ function applySoftFormLockState() {
     const myReceived = getMyReceivedTransfer();
     if (myReceived) {
       transferNotice.hidden = false;
-      transferNotice.textContent = `Ти отримав бонусну вагу від ${myReceived.from_player}. Розподіли її на вкладці «Предмети».`;
+      transferNotice.textContent = `Ти отримав софт від ${myReceived.from_player}. Розподіли його на вкладці «Предмети».`;
     } else {
       transferNotice.hidden = true;
     }
