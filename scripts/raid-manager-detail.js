@@ -55,7 +55,6 @@ const settingsTitleInput = document.getElementById('settingsTitleInput');
 const settingsSoftLimitInput = document.getElementById('settingsSoftLimitInput');
 
 const itemsPane = document.getElementById('itemsPane');
-const itemsSearchInput = document.getElementById('itemsSearch');
 const itemsBossFilter = document.getElementById('itemsBossFilter');
 const itemsSoftedOnlyCheckbox = document.getElementById('itemsSoftedOnly');
 const raidItemsBody = document.getElementById('raidItemsBody');
@@ -843,7 +842,6 @@ function buildReservesByWeight(reservers) {
 }
 
 function renderItemsTable() {
-  const search = itemsSearchInput.value.trim().toLocaleLowerCase('uk');
   const bossFilter = itemsBossFilter.value;
   raidItemsBody.innerHTML = '';
 
@@ -869,10 +867,6 @@ function renderItemsTable() {
     if (raid.hidden_reserves && !isOfficerMode()) {
       if (!reserves.some((r) => r.item_id === item.id && r.discord_id === currentUser?.discordId)) return false;
     } else if (softedOnly && !reserves.some((r) => r.item_id === item.id)) return false;
-    if (search) {
-      const haystack = `${item.name} ${translateItem(item.name)} ${item.boss} ${translateBoss(item.boss)}`.toLocaleLowerCase('uk');
-      if (!haystack.includes(search)) return false;
-    }
     return true;
   });
 
@@ -1187,7 +1181,6 @@ assignPlayerNameClear.addEventListener('click', () => {
 });
 setupNameAutocomplete(assignPlayerNameInput, assignPlayerNameList);
 setupUserSearchAutocomplete(addOfficerInput, addOfficerList, addOfficer);
-itemsSearchInput.addEventListener('input', renderItemsTable);
 itemsBossFilter.addEventListener('change', renderItemsTable);
 itemsSoftedOnlyCheckbox.addEventListener('change', renderItemsTable);
 

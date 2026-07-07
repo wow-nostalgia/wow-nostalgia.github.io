@@ -2364,6 +2364,11 @@ body.raid-manager-detail-page .raid-soft-form .raid-transfer-notice {
   grid-column: 2;
 }
 
+body.raid-manager-detail-page #settingsForm button[type="submit"] {
+  grid-column: 2;
+  justify-self: start;
+}
+
 body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn {
   background: #3a9e4a;
   border-color: #3a9e4a;
