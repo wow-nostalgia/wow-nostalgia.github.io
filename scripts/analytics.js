@@ -897,6 +897,7 @@ function computeTrendLine(points) {
 
 function renderBossMetricOverTimeChart({ canvasId, points, splineMode, datasetLabel, yLabel }) {
   let seriesPoints = points;
+  const minValue = points.length ? Math.min(...points.map((p) => p.value)) : 0;
 
   if (splineMode === 'trend') {
     const trend = computeTrendLine(points.map((p, idx) => ({ x: idx, y: p.value })));
@@ -948,7 +949,7 @@ function renderBossMetricOverTimeChart({ canvasId, points, splineMode, datasetLa
       },
       scales: {
         x: { title: { display: true, text: 'Дата рейду' } },
-        y: { title: { display: true, text: yLabel }, beginAtZero: true }
+        y: { title: { display: true, text: yLabel }, min: Math.max(0, Math.floor((minValue - 50000) / 10000) * 10000) }
       }
     }
   });
@@ -997,6 +998,9 @@ function renderBossSumMultiDayChart(personalStats, boss, selectedDays) {
     };
   });
 
+  const allValues = datasets.flatMap((ds) => ds.data.filter((v) => v !== null));
+  const multiMinValue = allValues.length ? Math.min(...allValues) : 0;
+
   const existingChart = Chart.getChart('chartBossSumOverTime');
   if (existingChart) existingChart.destroy();
 
@@ -1019,7 +1023,7 @@ function renderBossSumMultiDayChart(personalStats, boss, selectedDays) {
       },
       scales: {
         x: { title: { display: true, text: 'Дата рейду' } },
-        y: { title: { display: true, text: 'Сумарний DPS' }, beginAtZero: true }
+        y: { title: { display: true, text: 'Сумарний DPS' }, min: Math.max(0, Math.floor((multiMinValue - 50000) / 10000) * 10000) }
       }
     }
   });
