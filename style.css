@@ -1396,7 +1396,7 @@ body.personal-analytics-page .personal-analytics-chart-wrap canvas {
 
 body.personal-analytics-page .player-controls-grid {
   display: grid;
-  grid-template-columns: max-content minmax(220px, 320px) max-content max-content max-content;
+  grid-template-columns: max-content minmax(220px, 320px) max-content max-content max-content max-content;
   align-items: center;
   justify-content: start;
   gap: 0.6rem 1rem;
@@ -1407,6 +1407,12 @@ body.personal-analytics-page .player-controls-grid select {
 }
 
 body.personal-analytics-page .player-raid-count {
+  color: var(--color-text-faint);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+body.personal-analytics-page .player-potion-stat {
   color: var(--color-text-faint);
   font-size: 0.85rem;
   white-space: nowrap;

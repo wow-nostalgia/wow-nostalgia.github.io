@@ -4,6 +4,8 @@ const player1SpecSelect = document.getElementById('player1Spec');
 const player2SpecSelect = document.getElementById('player2Spec');
 const player1RaidCount = document.getElementById('player1RaidCount');
 const player2RaidCount = document.getElementById('player2RaidCount');
+const player1PotionStat = document.getElementById('player1PotionStat');
+const player2PotionStat = document.getElementById('player2PotionStat');
 const bossCheckboxes = document.getElementById('bossCheckboxes');
 const selectAllBossesBtn = document.getElementById('selectAllBosses');
 const deselectAllBossesBtn = document.getElementById('deselectAllBosses');
@@ -11,6 +13,7 @@ const tableStatus = document.getElementById('tableStatus');
 const splineSelect = document.getElementById('splineSelect');
 
 let personalStats = [];
+let honorBoard = [];
 let chart = null;
 
 const SPLINE_MODES = {
@@ -220,6 +223,13 @@ function renderRaidCount(el, playerName, specFilter) {
   el.textContent = `Рейдів: ${countPlayerRaids(playerName, specFilter)}`;
 }
 
+function renderPotionStat(el, playerName) {
+  if (!playerName) { el.textContent = ''; return; }
+  const entry = honorBoard.find((r) => r.name === playerName);
+  if (!entry) { el.textContent = ''; return; }
+  el.textContent = `${entry.averagePotionsPerBoss.toFixed(2)} потів/бос`;
+}
+
 function getSelectedBosses() {
   return [...bossCheckboxes.querySelectorAll('input[type="checkbox"]:checked')].map((el) => el.value);
 }
@@ -425,6 +435,7 @@ function applyUrlParams() {
       player1SpecSelect.value = presetSpec1;
     }
     renderRaidCount(player1RaidCount, presetPlayer1, player1SpecSelect.value);
+    renderPotionStat(player1PotionStat, presetPlayer1);
   }
 
   if (presetPlayer2 && allNames.includes(presetPlayer2)) {
@@ -434,6 +445,7 @@ function applyUrlParams() {
       player2SpecSelect.value = presetSpec2;
     }
     renderRaidCount(player2RaidCount, presetPlayer2, player2SpecSelect.value);
+    renderPotionStat(player2PotionStat, presetPlayer2);
   }
 }
 
@@ -446,9 +458,10 @@ async function init() {
 
   try {
     setStatus('Завантаження даних...');
-    const [personalResponse, playersResponse] = await Promise.all([
+    const [personalResponse, playersResponse, honorResponse] = await Promise.all([
       fetch('/data/personal-stats.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now())
+      fetch('/data/players.json?t=' + Date.now()),
+      fetch('/data/honor-board.json?t=' + Date.now())
     ]);
 
     if (!personalResponse.ok) throw new Error(`HTTP ${personalResponse.status}`);
@@ -461,10 +474,15 @@ async function init() {
       guildMemberNames = new Set(players.map((p) => p.name));
     }
 
+    if (honorResponse.ok) {
+      honorBoard = await honorResponse.json();
+    }
+
     const onPlayer1Change = () => {
       const name = playerSelect.value.trim();
       populateSpecSelect(player1SpecSelect, name);
       renderRaidCount(player1RaidCount, name, player1SpecSelect.value);
+      renderPotionStat(player1PotionStat, name);
       render();
     };
 
@@ -472,6 +490,7 @@ async function init() {
       const name = player2Select.value.trim();
       populateSpecSelect(player2SpecSelect, name);
       renderRaidCount(player2RaidCount, name, player2SpecSelect.value);
+      renderPotionStat(player2PotionStat, name);
       render();
     };
 
@@ -500,11 +519,13 @@ async function init() {
 
 player1SpecSelect.addEventListener('change', () => {
   renderRaidCount(player1RaidCount, playerSelect.value.trim(), player1SpecSelect.value);
+  renderPotionStat(player1PotionStat, playerSelect.value.trim());
   render();
 });
 
 player2SpecSelect.addEventListener('change', () => {
   renderRaidCount(player2RaidCount, player2Select.value.trim(), player2SpecSelect.value);
+  renderPotionStat(player2PotionStat, player2Select.value.trim());
   render();
 });
 
