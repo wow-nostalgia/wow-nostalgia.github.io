@@ -3297,6 +3297,11 @@ body.raid-manager-detail-page .penalty-value--none {
   color: var(--color-text-faint);
 }
 
+body.raid-manager-detail-page .penalty-input--nonzero {
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
 body.raid-manager-detail-page .penalty-reason-input {
   width: 100%;
   min-width: 8rem;

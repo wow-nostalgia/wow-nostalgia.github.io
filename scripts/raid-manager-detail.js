@@ -1332,7 +1332,7 @@ function renderPenaltiesTable() {
       rollInput.min = '0';
       rollInput.step = '5';
       rollInput.value = String(roll_penalty);
-      rollInput.className = 'penalty-input';
+      rollInput.className = 'penalty-input' + (roll_penalty > 0 ? ' penalty-input--nonzero' : '');
 
       const softInput = document.createElement('input');
       softInput.type = 'number';
@@ -1340,7 +1340,7 @@ function renderPenaltiesTable() {
       softInput.max = String(raid.soft_limit_total);
       softInput.step = '1';
       softInput.value = String(soft_penalty);
-      softInput.className = 'penalty-input';
+      softInput.className = 'penalty-input' + (soft_penalty > 0 ? ' penalty-input--nonzero' : '');
 
       const reasonInput = document.createElement('input');
       reasonInput.type = 'text';
@@ -1349,7 +1349,11 @@ function renderPenaltiesTable() {
       reasonInput.maxLength = 500;
       reasonInput.placeholder = 'Причина...';
 
-      const save = () => savePenalty(player_name, Number(rollInput.value), Number(softInput.value), reasonInput.value);
+      const save = () => {
+        rollInput.classList.toggle('penalty-input--nonzero', Number(rollInput.value) > 0);
+        softInput.classList.toggle('penalty-input--nonzero', Number(softInput.value) > 0);
+        savePenalty(player_name, Number(rollInput.value), Number(softInput.value), reasonInput.value);
+      };
       rollInput.addEventListener('change', save);
       softInput.addEventListener('change', save);
       reasonInput.addEventListener('change', save);
