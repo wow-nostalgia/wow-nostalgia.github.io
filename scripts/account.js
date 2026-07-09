@@ -63,15 +63,6 @@ async function loadCharacterStatsSources() {
   }
 }
 
-function createPlayerBadge(name) {
-  const isGuild = guildMemberNames.has(name);
-  const badge = document.createElement('span');
-  badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
-  badge.title = isGuild ? 'Ностальгія' : 'Легіонер';
-  badge.textContent = isGuild ? 'N' : 'L';
-  return badge;
-}
-
 // Ім'я персонажа — лінк на "Персональну аналітику" з префілом цього
 // персонажа (?player=...), лише якщо для нього взагалі є дані в логах.
 // Інакше — звичайний текст, лінк в нікуди був би плутаниною.

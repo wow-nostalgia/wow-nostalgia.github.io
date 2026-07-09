@@ -4,14 +4,6 @@ const bossSumOverTimeSelect = document.getElementById('bossSumOverTimeSelect');
 const bossSumOverTimeSplineSelect = document.getElementById('bossSumOverTimeSplineSelect');
 const bossSumDayFilter = document.getElementById('bossSumDayFilter');
 
-const SPLINE_MODES = {
-  smooth: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
-  smoothNoPoints: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 },
-  linear: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
-  linearNoPoints: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 },
-  trend: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 }
-};
-
 const ROLE_BY_SPEC = {
   Blood: 'Tank',
   Protection: 'Tank',
@@ -41,33 +33,8 @@ function setStatus(text) {
   statusEl.textContent = text;
 }
 
-function specKey(row) {
-  return `${row.class} — ${row.spec}`;
-}
-
-function cssVar(name) {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-}
-
-function formatLastUpdatedKyiv(isoString) {
-  if (!isoString) return '';
-
-  const date = new Date(isoString);
-  if (Number.isNaN(date.getTime())) return '';
-
-  return new Intl.DateTimeFormat('uk-UA', {
-    timeZone: 'Europe/Kyiv',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hourCycle: 'h23'
-  }).format(date);
-}
-
 function renderLastUpdated(data) {
-  const formatted = formatLastUpdatedKyiv(data?.lastUpdated);
+  const formatted = formatDateTimeKyiv(data?.lastUpdated);
   lastUpdatedText.textContent = formatted ? `Останнє оновлення: ${formatted}` : '';
 }
 

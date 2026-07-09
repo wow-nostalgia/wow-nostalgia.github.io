@@ -27,18 +27,6 @@ const excludedBosses = new Set([
   "Toravon the Ice Watcher"
 ]);
 
-const SCORE_TIERS = [
-  { min: 90, medal: '🥇' },
-  { min: 80, medal: '🥈' },
-  { min: 70, medal: '🥉' }
-];
-
-function getScoreTier(score) {
-  const num = Number(score);
-  if (!Number.isFinite(num)) return null;
-  return SCORE_TIERS.find(tier => num > tier.min) || null;
-}
-
 function setStatus(text) {
   tableStatus.textContent = text;
 }
@@ -73,15 +61,6 @@ function populateSpecs(className) {
   });
 }
 
-function createPlayerBadge(name) {
-  const isGuild = guildMemberNames.has(name);
-  const badge = document.createElement('span');
-  badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
-  badge.title = isGuild ? 'Ностальгія' : 'Легіонер';
-  badge.textContent = isGuild ? 'N' : 'L';
-  return badge;
-}
-
 function getBossColumns(rows) {
   const bossOrder = (data.bossOrder || []).filter(bossName => !excludedBosses.has(bossName));
   const bossSet = new Set();
@@ -97,27 +76,11 @@ function getBossColumns(rows) {
   return bossOrder.filter(bossName => bossSet.has(bossName));
 }
 
-function formatLastUpdatedKyiv(isoString) {
-  if (!isoString) return '';
-
-  const date = new Date(isoString);
-  if (Number.isNaN(date.getTime())) return '';
-
-  return new Intl.DateTimeFormat('uk-UA', {
-    timeZone: 'Europe/Kyiv',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hourCycle: 'h23'
-  }).format(date);
-}
 
 function renderLastUpdated() {
   if (!lastUpdatedText) return;
 
-  const formatted = formatLastUpdatedKyiv(data?.lastUpdated);
+  const formatted = formatDateTimeKyiv(data?.lastUpdated);
 
   lastUpdatedText.textContent = formatted
     ? `Останнє оновлення: ${formatted}`

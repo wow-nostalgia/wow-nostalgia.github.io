@@ -130,15 +130,6 @@ function canManage(playerName) {
   return reserves.some((r) => r.player_name === playerName && r.discord_id === currentUser.discordId);
 }
 
-function createPlayerBadge(name) {
-  const isGuild = guildMemberNames.has(name);
-  const badge = document.createElement('span');
-  badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
-  badge.title = isGuild ? 'Ностальгія' : 'Легіонер';
-  badge.textContent = isGuild ? 'N' : 'L';
-  return badge;
-}
-
 function findItemInfo(itemId, boss) {
   const modes = itemsCatalog[boss]?.[raid.difficulty] || [];
   return modes.find((i) => i.id === itemId);

@@ -31,14 +31,6 @@ let characterOwners = {};
 let primaryCharacterNames = new Set();
 let chart = null;
 
-const SPLINE_MODES = {
-  smooth: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
-  smoothNoPoints: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 },
-  linear: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
-  linearNoPoints: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 },
-  trend: { tension: 0, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 }
-};
-
 const BOSS_ORDER = [
   'Lord Marrowgar',
   'Lady Deathwhisper',
@@ -63,18 +55,6 @@ const EXCLUDED_BOSSES = new Set([
   'Halion'
 ]);
 
-const SCORE_TIERS = [
-  { min: 90, medal: '🥇' },
-  { min: 80, medal: '🥈' },
-  { min: 70, medal: '🥉' }
-];
-
-function getScoreTier(score) {
-  const num = Number(score);
-  if (!Number.isFinite(num)) return null;
-  return SCORE_TIERS.find((tier) => num > tier.min) || null;
-}
-
 const BOSS_COLORS = {
   'Lord Marrowgar': '#4e79a7',
   'Lady Deathwhisper': '#f28e2b',
@@ -97,21 +77,8 @@ function setStatus(text) {
   tableStatus.textContent = text;
 }
 
-function cssVar(name) {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-}
-
 let allNames = [];
 let guildMemberNames = new Set();
-
-function createPlayerBadge(name) {
-  const isGuild = guildMemberNames.has(name);
-  const badge = document.createElement('span');
-  badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
-  badge.title = isGuild ? 'Ностальгія' : 'Легіонер';
-  badge.textContent = isGuild ? 'N' : 'L';
-  return badge;
-}
 
 function computeAllNames() {
   const names = new Set();
@@ -176,10 +143,6 @@ function setupAutocomplete(inputEl, listEl, onSelect) {
   inputEl.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeList();
   });
-}
-
-function specKey(player) {
-  return `${player.class} — ${player.spec}`;
 }
 
 function playerMatchesPair(player, pair) {

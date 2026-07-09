@@ -15,11 +15,6 @@ let sortState = { column: 'averagePotionsPerBoss', direction: 'desc' };
 let guildMemberNames = new Set();
 let characterOwnerNames = new Map();
 
-function createPlayerBadgeHtml(name) {
-  const isGuild = guildMemberNames.has(name);
-  return `<span class="player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}" title="${escapeHtml(isGuild ? 'Ностальгія' : 'Легіонер')}">${isGuild ? 'N' : 'L'}</span>`;
-}
-
 function ownerTooltipAttr(name) {
   const ownerName = characterOwnerNames.get(name);
   return ownerName ? ` title="${escapeHtml(ownerName)}"` : '';
