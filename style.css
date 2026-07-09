@@ -975,18 +975,21 @@ body.potion-page #honorStatus {
   margin: 0 0 1rem;
 }
 
-body.potion-page .sortable {
+body.potion-page .sortable,
+body.personal-analytics-page .sortable {
   cursor: pointer;
   user-select: none;
 }
 
-body.potion-page .sortable .sort-indicator {
+body.potion-page .sortable .sort-indicator,
+body.personal-analytics-page .sortable .sort-indicator {
   margin-left: 0.35rem;
   font-size: 0.9em;
   opacity: 0.85;
 }
 
-body.potion-page .sortable.active {
+body.potion-page .sortable.active,
+body.personal-analytics-page .sortable.active {
   background: var(--color-active);
 }
 

@@ -515,40 +515,71 @@ function buildCharacterLink(name, guildRow) {
   return link;
 }
 
-function renderPlayerSiblings(characterName) {
+let siblingSortState = { column: 'name', direction: 'asc' };
+let currentSiblingRows = [];
+
+function siblingPotions(row) {
+  const entry = honorBoard.find((e) => e.name === row.name);
+  return entry ? entry.averagePotionsPerBoss : -1;
+}
+
+function sortSiblingRows(rows) {
+  const { column, direction } = siblingSortState;
+  return [...rows].sort((a, b) => {
+    let av;
+    let bv;
+    switch (column) {
+      case 'spec':
+        av = translateSpecKey(`${a.class} — ${a.spec}`);
+        bv = translateSpecKey(`${b.class} — ${b.spec}`);
+        break;
+      case 'overallRank':
+        av = Number(a.overallRank ?? Infinity);
+        bv = Number(b.overallRank ?? Infinity);
+        break;
+      case 'overallScore':
+        av = Number(a.overallScore ?? 0);
+        bv = Number(b.overallScore ?? 0);
+        break;
+      case 'potions':
+        av = siblingPotions(a);
+        bv = siblingPotions(b);
+        break;
+      default:
+        av = a.name;
+        bv = b.name;
+    }
+
+    if (typeof av === 'string') {
+      const cmp = av.localeCompare(bv, 'uk');
+      return direction === 'asc' ? cmp : -cmp;
+    }
+
+    if (av < bv) return direction === 'asc' ? -1 : 1;
+    if (av > bv) return direction === 'asc' ? 1 : -1;
+    return a.name.localeCompare(b.name, 'uk');
+  });
+}
+
+function updateSiblingSortIndicators() {
+  document.querySelectorAll('#playerSiblingsTable .sortable').forEach((th) => {
+    th.classList.remove('active');
+    const indicator = th.querySelector('.sort-indicator');
+    if (indicator) indicator.textContent = '';
+  });
+
+  const active = document.querySelector(`#playerSiblingsTable .sortable[data-sort="${siblingSortState.column}"]`);
+  if (active) {
+    active.classList.add('active');
+    const indicator = active.querySelector('.sort-indicator');
+    if (indicator) indicator.textContent = siblingSortState.direction === 'asc' ? '↑' : '↓';
+  }
+}
+
+function renderSiblingRows() {
   playerSiblingsBody.innerHTML = '';
 
-  if (!characterName) {
-    playerViewStatus.textContent = '';
-    playerSiblingsTableWrap.hidden = true;
-    return;
-  }
-
-  const ownerDisplayName = characterOwners[characterName];
-  if (!ownerDisplayName) {
-    playerViewStatus.textContent = 'Цей персонаж не прив’язаний до жодного профілю.';
-    playerSiblingsTableWrap.hidden = true;
-    return;
-  }
-
-  const siblingNames = Object.entries(characterOwners)
-    .filter(([, displayName]) => displayName === ownerDisplayName)
-    .map(([name]) => name);
-
-  const rows = siblingNames
-    .flatMap((name) => guildDataRows.filter((row) => row.name === name))
-    .sort((a, b) => a.name.localeCompare(b.name, 'uk'));
-
-  if (!rows.length) {
-    playerViewStatus.textContent = 'Для персонажів цього профілю немає даних рейтингу.';
-    playerSiblingsTableWrap.hidden = true;
-    return;
-  }
-
-  playerViewStatus.textContent = '';
-  playerSiblingsTableWrap.hidden = false;
-
-  rows.forEach((row) => {
+  sortSiblingRows(currentSiblingRows).forEach((row) => {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
@@ -572,12 +603,67 @@ function renderPlayerSiblings(characterName) {
     tr.appendChild(scoreTd);
 
     const potionTd = document.createElement('td');
-    const honorEntry = honorBoard.find((entry) => entry.name === row.name);
-    potionTd.textContent = honorEntry ? honorEntry.averagePotionsPerBoss.toFixed(2) : '—';
+    const potions = siblingPotions(row);
+    potionTd.textContent = potions >= 0 ? potions.toFixed(2) : '—';
     tr.appendChild(potionTd);
 
     playerSiblingsBody.appendChild(tr);
   });
+
+  updateSiblingSortIndicators();
+}
+
+function attachSiblingTableSorting() {
+  document.querySelectorAll('#playerSiblingsTable .sortable').forEach((th) => {
+    th.addEventListener('click', () => {
+      const column = th.dataset.sort;
+      if (!column) return;
+
+      if (siblingSortState.column === column) {
+        siblingSortState.direction = siblingSortState.direction === 'desc' ? 'asc' : 'desc';
+      } else {
+        siblingSortState.column = column;
+        siblingSortState.direction = th.dataset.direction || 'asc';
+      }
+
+      renderSiblingRows();
+    });
+  });
+}
+
+function renderPlayerSiblings(characterName) {
+  playerSiblingsBody.innerHTML = '';
+  currentSiblingRows = [];
+
+  if (!characterName) {
+    playerViewStatus.textContent = '';
+    playerSiblingsTableWrap.hidden = true;
+    return;
+  }
+
+  const ownerDisplayName = characterOwners[characterName];
+  if (!ownerDisplayName) {
+    playerViewStatus.textContent = 'Цей персонаж не прив’язаний до жодного профілю.';
+    playerSiblingsTableWrap.hidden = true;
+    return;
+  }
+
+  const siblingNames = Object.entries(characterOwners)
+    .filter(([, displayName]) => displayName === ownerDisplayName)
+    .map(([name]) => name);
+
+  const rows = siblingNames.flatMap((name) => guildDataRows.filter((row) => row.name === name));
+
+  if (!rows.length) {
+    playerViewStatus.textContent = 'Для персонажів цього профілю немає даних рейтингу.';
+    playerSiblingsTableWrap.hidden = true;
+    return;
+  }
+
+  playerViewStatus.textContent = '';
+  playerSiblingsTableWrap.hidden = false;
+  currentSiblingRows = rows;
+  renderSiblingRows();
 }
 
 async function init() {
@@ -707,4 +793,5 @@ deselectAllBossesBtn.addEventListener('click', () => {
 splineSelect.addEventListener('change', render);
 
 attachViewSwitch();
+attachSiblingTableSorting();
 init();
