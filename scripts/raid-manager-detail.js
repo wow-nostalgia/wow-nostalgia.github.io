@@ -98,6 +98,7 @@ let penaltiesList = [];
 let classColorMap = new Map();
 let auditEntries = [];
 let activeTab = 'players';
+let honorBoard = [];
 
 function setStatus(text, type = 'info') {
   raidStatus.innerHTML = '';
@@ -1331,7 +1332,7 @@ function renderPenaltiesTable() {
   if (!penaltiesList.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 4;
+    td.colSpan = 5;
     td.textContent = "Ще немає учасників рейду.";
     tr.appendChild(td);
     raidPenaltiesBody.appendChild(tr);
@@ -1350,6 +1351,12 @@ function renderPenaltiesTable() {
     nameWrap.appendChild(document.createTextNode(player_name));
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
+
+    const potionTd = document.createElement('td');
+    const hbEntry = honorBoard.find((r) => r.name === player_name);
+    potionTd.textContent = hbEntry ? hbEntry.averagePotionsPerBoss.toFixed(2) : '—';
+    potionTd.className = 'penalty-potion-stat';
+    tr.appendChild(potionTd);
 
     if (officerMode) {
       const rollInput = document.createElement('input');
@@ -1469,12 +1476,13 @@ async function init() {
   }
 
   try {
-    const [itemsRes, playersRes, ownersRes, personalStatsRes, guildDataRes] = await Promise.all([
+    const [itemsRes, playersRes, ownersRes, personalStatsRes, guildDataRes, honorBoardRes] = await Promise.all([
       fetch('/data/raid-items.json?t=' + Date.now()),
       fetch('/data/players.json?t=' + Date.now()),
       fetch(apiUrl('/characters/owners')).catch(() => null),
       fetch('/data/personal-stats.json?t=' + Date.now()).catch(() => null),
       fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
+      fetch('/data/honor-board.json?t=' + Date.now()).catch(() => null),
       loadItemIconData()
     ]);
     itemsCatalog = await itemsRes.json();
@@ -1497,6 +1505,9 @@ async function init() {
     if (guildDataRes?.ok) {
       const guildData = await guildDataRes.json();
       classColorMap = buildClassColorMap(guildData.rows || []);
+    }
+    if (honorBoardRes?.ok) {
+      honorBoard = await honorBoardRes.json();
     }
   } catch (err) {
     console.error(err);
