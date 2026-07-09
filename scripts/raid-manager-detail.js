@@ -795,6 +795,17 @@ function renderPlayersTable() {
 
       itemsTd.appendChild(itemSpan);
     });
+
+    const penalty = penaltiesList.find((p) => p.player_name === name);
+    const softPenalty = penalty?.soft_penalty ?? 0;
+    if (softPenalty > 0) {
+      const items = itemsTd.querySelectorAll('.raid-reserve-item');
+      const total = items.length;
+      for (let i = Math.max(0, total - softPenalty); i < total; i++) {
+        items[i].classList.add('raid-reserve-item--penalized');
+      }
+    }
+
     tr.appendChild(itemsTd);
 
     raidPlayersBody.appendChild(tr);

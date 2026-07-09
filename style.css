@@ -2374,6 +2374,11 @@ body.raid-manager-detail-page .raid-reserve-item {
   white-space: nowrap;
 }
 
+body.raid-manager-detail-page .raid-reserve-item--penalized {
+  opacity: 0.35;
+  filter: grayscale(1);
+}
+
 body.raid-manager-detail-page .raid-reserve-weight-row {
   display: flex;
   align-items: baseline;
