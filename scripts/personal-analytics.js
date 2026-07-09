@@ -20,6 +20,9 @@ const playerViewCharacterSelectClear = document.getElementById('playerViewCharac
 const playerViewStatus = document.getElementById('playerViewStatus');
 const playerSiblingsTableWrap = document.getElementById('playerSiblingsTableWrap');
 const playerSiblingsBody = document.getElementById('playerSiblingsBody');
+const hideHealSpecsCheckbox = document.getElementById('hideHealSpecs');
+
+const HEAL_SPECS = new Set(['Holy', 'Discipline', 'Restoration']);
 
 let personalStats = [];
 let honorBoard = [];
@@ -576,10 +579,33 @@ function updateSiblingSortIndicators() {
   }
 }
 
+function getVisibleSiblingRows() {
+  const hideHeal = hideHealSpecsCheckbox.checked;
+  return hideHeal ? currentSiblingRows.filter((row) => !HEAL_SPECS.has(row.spec)) : currentSiblingRows;
+}
+
 function renderSiblingRows() {
   playerSiblingsBody.innerHTML = '';
 
-  sortSiblingRows(currentSiblingRows).forEach((row) => {
+  if (!currentSiblingRows.length) {
+    playerSiblingsTableWrap.hidden = true;
+    updateSiblingSortIndicators();
+    return;
+  }
+
+  const visibleRows = getVisibleSiblingRows();
+
+  if (!visibleRows.length) {
+    playerViewStatus.textContent = 'Усі персонажі цього профілю — хіли, приховано фільтром.';
+    playerSiblingsTableWrap.hidden = true;
+    updateSiblingSortIndicators();
+    return;
+  }
+
+  playerViewStatus.textContent = '';
+  playerSiblingsTableWrap.hidden = false;
+
+  sortSiblingRows(visibleRows).forEach((row) => {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
@@ -660,8 +686,6 @@ function renderPlayerSiblings(characterName) {
     return;
   }
 
-  playerViewStatus.textContent = '';
-  playerSiblingsTableWrap.hidden = false;
   currentSiblingRows = rows;
   renderSiblingRows();
 }
@@ -791,6 +815,8 @@ deselectAllBossesBtn.addEventListener('click', () => {
 });
 
 splineSelect.addEventListener('change', render);
+
+hideHealSpecsCheckbox.addEventListener('change', renderSiblingRows);
 
 attachViewSwitch();
 attachSiblingTableSorting();
