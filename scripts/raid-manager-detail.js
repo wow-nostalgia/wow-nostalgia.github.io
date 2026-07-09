@@ -35,6 +35,7 @@ const assignWeight = document.getElementById('assignWeight');
 const assignWeightToggle = document.getElementById('assignWeightToggle');
 
 const officersTab = document.getElementById('officersTab');
+const penaltiesTab = document.getElementById('penaltiesTab');
 const officersList = document.getElementById('officersList');
 const addOfficerSection = document.getElementById('addOfficerSection');
 const addOfficerInput = document.getElementById('addOfficerInput');
@@ -189,6 +190,7 @@ function renderBanner() {
   hiddenReservesNotice.hidden = !(raid.hidden_reserves && !isOfficerMode());
 
   settingsTab.hidden = !isLeader();
+  penaltiesTab.hidden = !isOfficerMode();
   settingsTitleInput.value = raid.title;
   settingsSoftLimitInput.value = raid.soft_limit_total;
 
