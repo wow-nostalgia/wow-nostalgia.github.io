@@ -59,6 +59,19 @@ const EXCLUDED_BOSSES = new Set([
   'Halion'
 ]);
 
+const WOW_CLASS_COLORS = {
+  'Death Knight': '#C41F3B',
+  'Druid': '#FF7D0A',
+  'Hunter': '#ABD473',
+  'Mage': '#69CCF0',
+  'Paladin': '#F58CBA',
+  'Priest': '#F0EDE0',
+  'Rogue': '#FFF569',
+  'Shaman': '#0070DE',
+  'Warlock': '#9482C9',
+  'Warrior': '#C79C6E'
+};
+
 const BOSS_COLORS = {
   'Lord Marrowgar': '#4e79a7',
   'Lady Deathwhisper': '#f28e2b',
@@ -532,6 +545,7 @@ function renderPlayerSiblings(characterName) {
 
     const specTd = document.createElement('td');
     specTd.textContent = translateSpecKey(`${row.class} — ${row.spec}`);
+    if (WOW_CLASS_COLORS[row.class]) specTd.style.color = WOW_CLASS_COLORS[row.class];
     tr.appendChild(specTd);
 
     const rankTd = document.createElement('td');
