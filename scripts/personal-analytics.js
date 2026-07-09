@@ -14,9 +14,17 @@ const splineSelect = document.getElementById('splineSelect');
 const characterViewEl = document.getElementById('characterView');
 const playerViewEl = document.getElementById('playerView');
 const viewButtons = document.querySelectorAll('.potion-view-btn');
+const playerViewCharacterSelect = document.getElementById('playerViewCharacterSelect');
+const playerViewCharacterSelectList = document.getElementById('playerViewCharacterSelectList');
+const playerViewCharacterSelectClear = document.getElementById('playerViewCharacterSelectClear');
+const playerViewStatus = document.getElementById('playerViewStatus');
+const playerSiblingsTableWrap = document.getElementById('playerSiblingsTableWrap');
+const playerSiblingsBody = document.getElementById('playerSiblingsBody');
 
 let personalStats = [];
 let honorBoard = [];
+let guildDataRows = [];
+let characterOwners = {};
 let chart = null;
 
 const SPLINE_MODES = {
@@ -472,6 +480,72 @@ function applyUrlParams() {
   }
 }
 
+function buildCharacterLink(name, guildRow) {
+  const link = document.createElement('a');
+  const params = new URLSearchParams({ player: name });
+  if (guildRow) params.set('spec', `${guildRow.class} — ${guildRow.spec}`);
+  link.href = `?${params.toString()}`;
+  link.appendChild(createPlayerBadge(name));
+  link.appendChild(document.createTextNode(name));
+  return link;
+}
+
+function renderPlayerSiblings(characterName) {
+  playerSiblingsBody.innerHTML = '';
+
+  if (!characterName) {
+    playerViewStatus.textContent = '';
+    playerSiblingsTableWrap.hidden = true;
+    return;
+  }
+
+  const ownerDisplayName = characterOwners[characterName];
+  if (!ownerDisplayName) {
+    playerViewStatus.textContent = 'Цей персонаж не прив’язаний до жодного профілю.';
+    playerSiblingsTableWrap.hidden = true;
+    return;
+  }
+
+  const siblingNames = Object.entries(characterOwners)
+    .filter(([, displayName]) => displayName === ownerDisplayName)
+    .map(([name]) => name);
+
+  const rows = siblingNames
+    .flatMap((name) => guildDataRows.filter((row) => row.name === name))
+    .sort((a, b) => (a.overallRank ?? Infinity) - (b.overallRank ?? Infinity));
+
+  if (!rows.length) {
+    playerViewStatus.textContent = 'Для персонажів цього профілю немає даних рейтингу.';
+    playerSiblingsTableWrap.hidden = true;
+    return;
+  }
+
+  playerViewStatus.textContent = '';
+  playerSiblingsTableWrap.hidden = false;
+
+  rows.forEach((row) => {
+    const tr = document.createElement('tr');
+
+    const nameTd = document.createElement('td');
+    nameTd.appendChild(buildCharacterLink(row.name, row));
+    tr.appendChild(nameTd);
+
+    const specTd = document.createElement('td');
+    specTd.textContent = translateSpecKey(`${row.class} — ${row.spec}`);
+    tr.appendChild(specTd);
+
+    const rankTd = document.createElement('td');
+    rankTd.textContent = row.overallRank ?? '';
+    tr.appendChild(rankTd);
+
+    const scoreTd = document.createElement('td');
+    scoreTd.textContent = Number(row.overallScore ?? 0).toFixed(2);
+    tr.appendChild(scoreTd);
+
+    playerSiblingsBody.appendChild(tr);
+  });
+}
+
 async function init() {
   Chart.defaults.color = cssVar('--color-text');
   Chart.defaults.borderColor = cssVar('--color-border');
@@ -481,10 +555,12 @@ async function init() {
 
   try {
     setStatus('Завантаження даних...');
-    const [personalResponse, playersResponse, honorResponse] = await Promise.all([
+    const [personalResponse, playersResponse, honorResponse, guildDataResponse, ownersResponse] = await Promise.all([
       fetch('/data/personal-stats.json?t=' + Date.now()),
       fetch('/data/players.json?t=' + Date.now()),
-      fetch('/data/honor-board.json?t=' + Date.now())
+      fetch('/data/honor-board.json?t=' + Date.now()),
+      fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
+      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null)
     ]);
 
     if (!personalResponse.ok) throw new Error(`HTTP ${personalResponse.status}`);
@@ -499,6 +575,15 @@ async function init() {
 
     if (honorResponse.ok) {
       honorBoard = await honorResponse.json();
+    }
+
+    if (guildDataResponse?.ok) {
+      const guildData = await guildDataResponse.json();
+      guildDataRows = guildData.rows || [];
+    }
+
+    if (ownersResponse?.ok) {
+      characterOwners = await ownersResponse.json();
     }
 
     const onPlayer1Change = () => {
@@ -530,6 +615,19 @@ async function init() {
       player2Select.value = '';
       onPlayer2Change();
       player2Select.focus();
+    });
+
+    const onPlayerViewChange = () => {
+      const name = playerViewCharacterSelect.value.trim();
+      renderPlayerSiblings(allNames.includes(name) ? name : '');
+    };
+
+    setupAutocomplete(playerViewCharacterSelect, playerViewCharacterSelectList, onPlayerViewChange);
+
+    playerViewCharacterSelectClear.addEventListener('click', () => {
+      playerViewCharacterSelect.value = '';
+      onPlayerViewChange();
+      playerViewCharacterSelect.focus();
     });
 
     applyUrlParams();

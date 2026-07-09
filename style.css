@@ -1422,6 +1422,38 @@ body.personal-analytics-page .player-potion-stat {
   white-space: nowrap;
 }
 
+body.personal-analytics-page .player-siblings-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+body.personal-analytics-page .player-siblings-table th,
+body.personal-analytics-page .player-siblings-table td {
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+body.personal-analytics-page .player-siblings-table th {
+  color: var(--color-text-strong);
+  font-weight: 500;
+}
+
+body.personal-analytics-page .player-siblings-table tbody tr:hover {
+  background-color: var(--color-hover);
+}
+
+body.personal-analytics-page .player-siblings-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+body.personal-analytics-page .player-siblings-table a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
 body.personal-analytics-page .autocomplete-wrap {
   position: relative;
   width: 100%;
