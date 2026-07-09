@@ -242,6 +242,14 @@ export async function listCharacterOwnerNames(db) {
   return results;
 }
 
+// Публічний список імен персонажів, позначених основними у профілі —
+// для бейджа "Основний" у статичній аналітиці. Без авторизації: лише
+// character_name, без discord_id чи інших даних акаунту.
+export async function listPrimaryCharacterNames(db) {
+  const { results } = await db.prepare('SELECT character_name FROM user_characters WHERE is_primary = 1').all();
+  return results.map((r) => r.character_name);
+}
+
 export async function listUserCharacters(db, discordId) {
   const { results } = await db
     .prepare('SELECT character_name, is_primary FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC')

@@ -1471,6 +1471,12 @@ body.personal-analytics-page .player-siblings-table a {
   gap: 0.35rem;
 }
 
+body.personal-analytics-page .player-siblings-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 body.personal-analytics-page .autocomplete-wrap {
   position: relative;
   width: 100%;
@@ -1678,6 +1684,15 @@ body.personal-analytics-page .boss-checkbox-swatch {
 .player-badge--legion {
   background: var(--color-accent-purple);
   color: #1d2636;
+}
+
+.primary-character-badge {
+  padding: 0.05rem 0.35rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #1d2636;
+  background-color: var(--color-link);
 }
 
 

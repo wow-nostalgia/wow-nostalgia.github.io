@@ -28,6 +28,7 @@ let personalStats = [];
 let honorBoard = [];
 let guildDataRows = [];
 let characterOwners = {};
+let primaryCharacterNames = new Set();
 let chart = null;
 
 const SPLINE_MODES = {
@@ -609,7 +610,14 @@ function renderSiblingRows() {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
+    nameTd.className = 'player-siblings-name-cell';
     nameTd.appendChild(buildCharacterLink(row.name, row));
+    if (primaryCharacterNames.has(row.name)) {
+      const primaryBadge = document.createElement('span');
+      primaryBadge.className = 'primary-character-badge';
+      primaryBadge.textContent = 'Основний';
+      nameTd.appendChild(primaryBadge);
+    }
     tr.appendChild(nameTd);
 
     const specTd = document.createElement('td');
@@ -699,12 +707,13 @@ async function init() {
 
   try {
     setStatus('Завантаження даних...');
-    const [personalResponse, playersResponse, honorResponse, guildDataResponse, ownersResponse] = await Promise.all([
+    const [personalResponse, playersResponse, honorResponse, guildDataResponse, ownersResponse, primaryResponse] = await Promise.all([
       fetch('/data/personal-stats.json?t=' + Date.now()),
       fetch('/data/players.json?t=' + Date.now()),
       fetch('/data/honor-board.json?t=' + Date.now()),
       fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
-      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null)
+      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null),
+      fetch(`${AUTH_API_BASE}/characters/primary`).catch(() => null)
     ]);
 
     if (!personalResponse.ok) throw new Error(`HTTP ${personalResponse.status}`);
@@ -728,6 +737,10 @@ async function init() {
 
     if (ownersResponse?.ok) {
       characterOwners = await ownersResponse.json();
+    }
+
+    if (primaryResponse?.ok) {
+      primaryCharacterNames = new Set(await primaryResponse.json());
     }
 
     const onPlayer1Change = () => {

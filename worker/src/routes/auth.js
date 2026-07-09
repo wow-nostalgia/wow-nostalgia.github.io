@@ -12,7 +12,8 @@ import {
   clearPrimaryCharacter,
   findCharacterOwner,
   removeCharacterByAnyOwner,
-  listCharacterOwnerNames
+  listCharacterOwnerNames,
+  listPrimaryCharacterNames
 } from '../db.js';
 import { requireSession } from '../auth.js';
 
@@ -139,6 +140,12 @@ export async function handleListCharacterOwners(request, env) {
   const map = {};
   for (const row of rows) map[row.owned_name] = row.display_name;
   return jsonResponse(map);
+}
+
+// Публічно (без логіну) — для бейджа "Основний" у статичній аналітиці.
+// Видає лише character_name, без discord_id чи інших даних акаунту.
+export async function handleListPrimaryCharacters(request, env) {
+  return jsonResponse(await listPrimaryCharacterNames(env.DB));
 }
 
 export async function handleSearchUsers(request, env) {

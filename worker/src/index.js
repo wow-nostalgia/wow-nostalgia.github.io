@@ -36,7 +36,8 @@ import {
   handleSetPrimaryCharacter,
   handleClearPrimaryCharacter,
   handleAdminRemoveCharacter,
-  handleListCharacterOwners
+  handleListCharacterOwners,
+  handleListPrimaryCharacters
 } from './routes/auth.js';
 import {
   listDefaultOfficers,
@@ -235,6 +236,11 @@ async function route(request, env) {
   // у статичній аналітиці й таблиці гравців рейду.
   if (parts[2] === 'characters' && parts[3] === 'owners' && request.method === 'GET') {
     return handleListCharacterOwners(request, env);
+  }
+
+  // Публічний (без логіну) — для бейджа "Основний" у статичній аналітиці.
+  if (parts[2] === 'characters' && parts[3] === 'primary' && request.method === 'GET') {
+    return handleListPrimaryCharacters(request, env);
   }
 
   if (parts[2] === 'raids') {
