@@ -241,6 +241,16 @@ function renderBenchmarkPanel() {
     ul.appendChild(li);
   });
   benchmarkPanel.appendChild(ul);
+
+  const note = document.createElement('p');
+  note.className = 'raid-benchmark-note';
+  note.textContent = 'З детальними правилами наших рейдів можна ознайомитись ';
+  const link = document.createElement('a');
+  link.href = '../../index.html#rules25hero';
+  link.textContent = 'тут';
+  note.appendChild(link);
+  note.appendChild(document.createTextNode('.'));
+  benchmarkPanel.appendChild(note);
 }
 
 function myCharNames() {

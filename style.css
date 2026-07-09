@@ -2107,6 +2107,12 @@ body.raid-manager-detail-page .raid-benchmark-list {
   line-height: 1.55;
 }
 
+body.raid-manager-detail-page .raid-benchmark-note {
+  margin: 0.6rem 0 0;
+  color: var(--color-text);
+  line-height: 1.55;
+}
+
 body.raid-manager-detail-page .raid-input-wrap,
 body.account-page .raid-input-wrap {
   position: relative;
