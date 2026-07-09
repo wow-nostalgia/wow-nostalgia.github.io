@@ -29,21 +29,8 @@ const EXCLUDED_BOSSES = new Set([
 const RANK_THRESHOLDS = [50, 100, 200, 500];
 const SCORE_THRESHOLDS = [95, 90, 80, 70];
 
-const CLASS_COLORS = {
-  Warrior: '#c69b6d',
-  Paladin: '#f48cba',
-  Hunter: '#aad372',
-  Rogue: '#fff468',
-  Priest: '#f0ebe0',
-  'Death Knight': '#c41e3a',
-  Shaman: '#0070dd',
-  Mage: '#68ccef',
-  Warlock: '#9382c9',
-  Druid: '#ff7c0a'
-};
-
 function getClassColor(className) {
-  return CLASS_COLORS[className] || '#999999';
+  return WOW_CLASS_COLORS[className] || '#999999';
 }
 
 function classTickColor(stats) {

@@ -33,19 +33,6 @@ async function readErrorMessage(res) {
   return `HTTP ${res.status}`;
 }
 
-const WOW_CLASS_COLORS = {
-  'Death Knight': '#C41F3B',
-  'Druid': '#FF7D0A',
-  'Hunter': '#ABD473',
-  'Mage': '#69CCF0',
-  'Paladin': '#F58CBA',
-  'Priest': '#F0EDE0',
-  'Rogue': '#FFF569',
-  'Shaman': '#0070DE',
-  'Warlock': '#9482C9',
-  'Warrior': '#C79C6E'
-};
-
 // Зв'язок персонажів профілю зі статичною аналітикою (data/*.json) —
 // той самий патерн фетчингу/зіставлення по точному імені, що вже є в
 // guild-ranking.js/personal-analytics.js. Без бекенд-змін, чисто фронтенд.
@@ -69,11 +56,7 @@ async function loadCharacterStatsSources() {
     }
     if (guildDataRes?.ok) {
       const guildData = await guildDataRes.json();
-      for (const row of (guildData.rows || [])) {
-        if (!classColorMap.has(row.name) && WOW_CLASS_COLORS[row.class]) {
-          classColorMap.set(row.name, WOW_CLASS_COLORS[row.class]);
-        }
-      }
+      classColorMap = buildClassColorMap(guildData.rows || []);
     }
   } catch (err) {
     console.error(err);
