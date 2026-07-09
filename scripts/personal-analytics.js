@@ -72,6 +72,18 @@ const WOW_CLASS_COLORS = {
   'Warrior': '#C79C6E'
 };
 
+const SCORE_TIERS = [
+  { min: 90, medal: '🥇' },
+  { min: 80, medal: '🥈' },
+  { min: 70, medal: '🥉' }
+];
+
+function getScoreTier(score) {
+  const num = Number(score);
+  if (!Number.isFinite(num)) return null;
+  return SCORE_TIERS.find((tier) => num > tier.min) || null;
+}
+
 const BOSS_COLORS = {
   'Lord Marrowgar': '#4e79a7',
   'Lady Deathwhisper': '#f28e2b',
@@ -553,7 +565,10 @@ function renderPlayerSiblings(characterName) {
     tr.appendChild(rankTd);
 
     const scoreTd = document.createElement('td');
-    scoreTd.textContent = Number(row.overallScore ?? 0).toFixed(2);
+    const score = Number(row.overallScore ?? 0);
+    const scoreTier = getScoreTier(score);
+    const scoreIcon = scoreTier ? scoreTier.medal : '🤷‍♂️';
+    scoreTd.textContent = `${scoreIcon} ${score.toFixed(2)}`;
     tr.appendChild(scoreTd);
 
     const potionTd = document.createElement('td');
