@@ -341,6 +341,12 @@ button.nav__link {
   object-fit: cover;
 }
 
+.nav__icon--inline {
+  margin-right: 6px;
+  flex-shrink: 0;
+  vertical-align: -4px;
+}
+
 .nav__dropdown {
   position: relative;
 }
