@@ -805,7 +805,8 @@ body.potion-page #potionStatus {
   font-size: 1rem;
 }
 
-body.potion-page .potion-view-switch {
+body.potion-page .potion-view-switch,
+body.personal-analytics-page .potion-view-switch {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -814,7 +815,8 @@ body.potion-page .potion-view-switch {
   border-bottom: 1px solid var(--color-border);
 }
 
-body.potion-page .potion-view-btn {
+body.potion-page .potion-view-btn,
+body.personal-analytics-page .potion-view-btn {
   display: inline-flex;
   align-items: center;
   background: none;
@@ -830,11 +832,13 @@ body.potion-page .potion-view-btn {
   cursor: pointer;
 }
 
-body.potion-page .potion-view-btn:hover {
+body.potion-page .potion-view-btn:hover,
+body.personal-analytics-page .potion-view-btn:hover {
   color: var(--color-text-strong);
 }
 
-body.potion-page .potion-view-btn.active {
+body.potion-page .potion-view-btn.active,
+body.personal-analytics-page .potion-view-btn.active {
   color: var(--color-text-strong);
   border-bottom-color: var(--color-link);
 }

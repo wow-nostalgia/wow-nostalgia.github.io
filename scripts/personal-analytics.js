@@ -11,6 +11,9 @@ const selectAllBossesBtn = document.getElementById('selectAllBosses');
 const deselectAllBossesBtn = document.getElementById('deselectAllBosses');
 const tableStatus = document.getElementById('tableStatus');
 const splineSelect = document.getElementById('splineSelect');
+const characterViewEl = document.getElementById('characterView');
+const playerViewEl = document.getElementById('playerView');
+const viewButtons = document.querySelectorAll('.potion-view-btn');
 
 let personalStats = [];
 let honorBoard = [];
@@ -421,6 +424,26 @@ function render() {
   setStatus('');
 }
 
+function switchView(viewName) {
+  characterViewEl.hidden = viewName !== 'character';
+  playerViewEl.hidden = viewName !== 'player';
+
+  viewButtons.forEach((button) => {
+    const isActive = button.dataset.view === viewName;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-selected', isActive.toString());
+  });
+}
+
+function attachViewSwitch() {
+  viewButtons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchView(button.dataset.view);
+    });
+  });
+}
+
 function applyUrlParams() {
   const urlParams = new URLSearchParams(window.location.search);
   const presetPlayer1 = urlParams.get('player');
@@ -551,4 +574,5 @@ deselectAllBossesBtn.addEventListener('click', () => {
 
 splineSelect.addEventListener('change', render);
 
+attachViewSwitch();
 init();
