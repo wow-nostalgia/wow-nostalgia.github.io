@@ -12,7 +12,7 @@ import {
   createClaim,
   getClaimOwner
 } from '../db.js';
-import { isRaidOfficer } from '../auth.js';
+import { isRaidOfficer, requireOwnCharacter } from '../auth.js';
 
 async function loadRaidOr404(env, raidId) {
   const raid = await getRaid(env.DB, raidId);
@@ -47,7 +47,9 @@ export async function handleCreateTransfer(request, env, raidId, session) {
   if (!officerMode) {
     const claim = await getClaimOwner(env.DB, raidId, fromPlayer);
     if (!claim) {
-      // Перший раз — дозволяємо і карбуємо claim
+      // Перший раз — дозволяємо і карбуємо claim, але лише під іменем
+      // персонажа з власного профілю (той самий принцип, що для софту).
+      await requireOwnCharacter(env.DB, session.discordId, fromPlayer);
       await createClaim(env.DB, raidId, fromPlayer, session.discordId);
     } else if (claim.discord_id !== session.discordId) {
       throw new HttpError(403, `Ім'я "${fromPlayer}" застовплене іншим гравцем`);

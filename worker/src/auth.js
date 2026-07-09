@@ -1,5 +1,13 @@
 import { HttpError, bearerToken } from './util.js';
-import { getSessionByToken, getUserByDiscordId, deleteSession, getClaimOwner, isRaidOfficerRow, getPrimaryCharacterName } from './db.js';
+import {
+  getSessionByToken,
+  getUserByDiscordId,
+  deleteSession,
+  getClaimOwner,
+  isRaidOfficerRow,
+  getPrimaryCharacterName,
+  listUserCharacters
+} from './db.js';
 
 export async function requireSession(db, request) {
   const token = bearerToken(request);
@@ -46,10 +54,23 @@ export function requireLeader(raid, session) {
   }
 }
 
+// Не-офіцер може застовпити (мінтити) claim лише під іменем персонажа зі
+// свого профілю ("Мої персонажі") — без цього API дозволяв би засофтити під
+// будь-яким довільним іменем в обхід select'а на фронтенді, який лише
+// візуально обмежує вибір профільними персонажами.
+export async function requireOwnCharacter(db, discordId, characterName) {
+  const characters = await listUserCharacters(db, discordId);
+  const owns = characters.some((c) => c.characterName.toLocaleLowerCase('uk') === characterName.toLocaleLowerCase('uk'));
+  if (!owns) {
+    throw new HttpError(403, `Персонажа "${characterName}" немає у твоєму профілі — додай його на сторінці "Акаунт"`);
+  }
+}
+
 // Для self-дій гравця: дозволяє, якщо лідер/офіцер рейду, або якщо ім'я вже
 // застовплене цим самим Discord-акаунтом. allowMint=true — для першого софту
 // під новим іменем (де claim ще не існує) дозволяємо пройти далі, щоб роут
-// сам застовпив ім'я за цим акаунтом.
+// сам застовпив ім'я за цим акаунтом — але лише якщо це ім'я є в профілі
+// заявника (requireOwnCharacter), інакше застовплення анонімних імен.
 export async function checkPlayerAccess(db, raidId, raid, session, playerName, { allowMint = false } = {}) {
   if (await isRaidOfficer(db, raidId, raid, session.discordId)) {
     return { officer: true, shouldMint: false };
@@ -58,7 +79,10 @@ export async function checkPlayerAccess(db, raidId, raid, session, playerName, {
   const claim = await getClaimOwner(db, raidId, playerName);
 
   if (!claim) {
-    if (allowMint) return { officer: false, shouldMint: true };
+    if (allowMint) {
+      await requireOwnCharacter(db, session.discordId, playerName);
+      return { officer: false, shouldMint: true };
+    }
     throw new HttpError(403, `Немає прав на дії гравця "${playerName}"`);
   }
 
