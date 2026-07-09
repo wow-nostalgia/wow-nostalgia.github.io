@@ -66,11 +66,18 @@
   --space-8: 1.5rem;
   --space-9: 2rem;
 
-  --transition-fast: 0.1s ease;
+  --transition-fast: 80ms cubic-bezier(0.33, 1, 0.68, 1);
   --container-width: 900px;
   --header-width: 1280px;
 
   color-scheme: dark;
+}
+
+@keyframes primer-dropdown-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
 }
 
 
@@ -542,9 +549,9 @@ footer span {
 .ranking-controls select,
 .ranking-controls input[type="text"] {
   min-width: 180px;
-  padding: 0.45rem 0.65rem;
+  padding: 5px 12px;
   border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
   font-size: 0.95rem;
@@ -569,16 +576,16 @@ footer span {
 .ranking-controls select:focus,
 .ranking-controls input[type="text"]:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 .ranking-controls select {
   appearance: none;
-  padding-right: 2rem;
+  padding-right: 2.5rem;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 0.65rem center;
-  background-size: 0.65rem;
+  background-position: right 0.5rem center;
+  background-size: 1rem;
 }
 
 .analytics-day-filter {
@@ -1073,9 +1080,9 @@ body.potion-page .add-log-label span {
 }
 
 body.potion-page .add-log-input {
-  padding: 0.45rem 0.65rem;
+  padding: 5px 12px;
   border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
   font-size: 0.9rem;
@@ -1087,7 +1094,7 @@ body.potion-page .add-log-input {
 
 body.potion-page .add-log-input:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 body.potion-page .add-log-actions {
@@ -1520,13 +1527,14 @@ body.personal-analytics-page .autocomplete-list {
   max-height: 28.2rem;
   overflow-y: auto;
   border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   background-color: rgba(12, 21, 33, 0.97);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 body.personal-analytics-page .autocomplete-list.is-open {
   display: block;
+  animation: primer-dropdown-in 0.12s cubic-bezier(0, 0.1, 0.1, 1) backwards;
 }
 
 body.personal-analytics-page .autocomplete-item {
@@ -1562,7 +1570,7 @@ body.personal-analytics-page .spline-select-wrap select {
   padding: 0.35rem 0.55rem;
   padding-right: 2rem;
   border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
   font-size: 0.85rem;
@@ -1579,7 +1587,7 @@ body.personal-analytics-page .spline-select-wrap select:hover {
 
 body.personal-analytics-page .spline-select-wrap select:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 body.personal-analytics-page .boss-checkboxes-head {
@@ -1630,6 +1638,10 @@ body.personal-analytics-page .boss-checkbox {
   white-space: nowrap;
   color: var(--color-text-strong);
   cursor: pointer;
+}
+
+body.personal-analytics-page .boss-checkbox input[type="checkbox"] {
+  accent-color: var(--color-link);
 }
 
 body.personal-analytics-page .boss-checkbox-swatch {
@@ -1803,9 +1815,9 @@ body.raid-manager-detail-page .raid-input-wrap input[type="text"],
 body.account-page .raid-input-wrap input[type="text"],
 body.raid-manager-detail-page .raid-items-filters select,
 body.raid-manager-detail-page .raid-item-picker-trigger {
-  padding: 0.45rem 0.65rem;
+  padding: 5px 12px;
   border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
   font-size: 0.95rem;
@@ -1833,7 +1845,7 @@ body.account-page .raid-input-wrap input[type="text"]:focus,
 body.raid-manager-detail-page .raid-items-filters select:focus,
 body.raid-manager-detail-page .raid-item-picker-trigger:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 body.raid-manager-detail-page .raid-soft-form select:disabled,
@@ -1848,11 +1860,11 @@ body.raid-manager-page .raid-create-form select,
 body.raid-manager-detail-page .raid-soft-form select,
 body.raid-manager-detail-page .raid-items-filters select {
   appearance: none;
-  padding-right: 2rem;
+  padding-right: 2.5rem;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 0.65rem center;
-  background-size: 0.65rem;
+  background-position: right 0.5rem center;
+  background-size: 1rem;
 }
 
 body.raid-manager-page .ranking-table-wrap {
@@ -2243,14 +2255,15 @@ body.account-page .raid-autocomplete-list {
   max-height: 18.75rem;
   overflow-y: auto;
   border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   background-color: rgba(12, 21, 33, 0.97);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 body.raid-manager-detail-page .raid-autocomplete-list.is-open,
 body.account-page .raid-autocomplete-list.is-open {
   display: block;
+  animation: primer-dropdown-in 0.12s cubic-bezier(0, 0.1, 0.1, 1) backwards;
 }
 
 body.raid-manager-detail-page .raid-autocomplete-item,
@@ -2311,13 +2324,14 @@ body.raid-manager-detail-page .raid-item-picker-list {
   max-height: 18.75rem;
   overflow-y: auto;
   border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   background-color: rgba(12, 21, 33, 0.97);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 body.raid-manager-detail-page .raid-item-picker-list.is-open {
   display: block;
+  animation: primer-dropdown-in 0.12s cubic-bezier(0, 0.1, 0.1, 1) backwards;
 }
 
 body.raid-manager-detail-page .raid-item-picker-option {
@@ -2401,8 +2415,8 @@ body.raid-manager-detail-page .raid-search-input {
   width: 100%;
   max-width: 260px;
   margin: 0.4rem 0;
-  padding: 0.45rem 0.65rem;
-  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  border-radius: var(--radius-md);
   border: 1px solid rgba(197, 198, 205, 0.35);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
@@ -2417,7 +2431,7 @@ body.raid-manager-detail-page .raid-search-input:hover {
 
 body.raid-manager-detail-page .raid-search-input:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 body.raid-manager-detail-page .raid-items-filters {
@@ -2434,6 +2448,11 @@ body.raid-manager-detail-page .raid-filter-checkbox {
   color: var(--color-text-muted);
   font-size: 0.85rem;
   cursor: pointer;
+}
+
+body.raid-manager-page .raid-filter-checkbox input[type="checkbox"],
+body.raid-manager-detail-page .raid-filter-checkbox input[type="checkbox"] {
+  accent-color: var(--color-link);
 }
 
 body.raid-manager-detail-page .raid-hidden-notice {
@@ -3099,9 +3118,9 @@ body.account-page .account-form {
 }
 
 body.account-page .account-form input[type="text"] {
-  padding: 0.45rem 0.65rem;
+  padding: 5px 12px;
   border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
   font-size: 0.95rem;
@@ -3110,7 +3129,7 @@ body.account-page .account-form input[type="text"] {
 
 body.account-page .account-form input[type="text"]:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 body.account-page .account-chars-layout {
@@ -3183,6 +3202,10 @@ body.account-page .account-primary-col,
 body.account-page .account-primary-checkbox-td {
   text-align: center;
   width: 5rem;
+}
+
+body.account-page .account-primary-checkbox-td input[type="checkbox"] {
+  accent-color: var(--color-link);
 }
 
 body.account-page .account-delete-col {
