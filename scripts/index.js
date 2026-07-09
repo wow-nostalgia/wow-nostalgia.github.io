@@ -25,8 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const targetBlock = blocks.find((b) => b.id === window.location.hash.slice(1));
   if (targetBlock) {
     activateBlock(targetBlock);
-    const heading = targetBlock.querySelector('.heading');
-    if (heading) heading.scrollIntoView({ block: 'start' });
   } else if (blocks[0]) {
     activateBlock(blocks[0]);
   }
