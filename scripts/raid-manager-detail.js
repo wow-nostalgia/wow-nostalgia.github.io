@@ -814,7 +814,7 @@ function renderPlayersTable() {
 
 // Групує резерви по вазі — окремий рядок на кожну вагу, щоб не плодити
 // купу однакових чіпсів "x1" поряд з кожним іменем.
-function buildReservesByWeight(reservers) {
+function buildReservesByWeight(reservers, penalizedIds) {
   const wrap = document.createElement('div');
   wrap.className = 'raid-reserve-weight-list';
 
@@ -822,7 +822,7 @@ function buildReservesByWeight(reservers) {
   reservers.forEach((r) => {
     const effectiveWeight = (r.weight || 0) + (r.bonus_weight || 0);
     if (!byWeight.has(effectiveWeight)) byWeight.set(effectiveWeight, { visible: [], hidden: 0 });
-    if (r.player_name !== null) byWeight.get(effectiveWeight).visible.push(r.player_name);
+    if (r.player_name !== null) byWeight.get(effectiveWeight).visible.push({ name: r.player_name, id: r.id });
     else byWeight.get(effectiveWeight).hidden++;
   });
 
@@ -841,11 +841,12 @@ function buildReservesByWeight(reservers) {
     const namesSpan = document.createElement('span');
     namesSpan.className = 'raid-reserve-weight-names';
     const visibleNames = entry.visible;
-    visibleNames.forEach((name, i) => {
+    visibleNames.forEach(({ name, id }, i) => {
       const p = penaltiesList.find((x) => x.player_name === name);
-      if (p && p.soft_penalty > 0) {
+      const isPenalized = penalizedIds.has(id);
+      if (isPenalized) {
         const nameSpan = document.createElement('span');
-        nameSpan.className = 'penalty-value--active';
+        nameSpan.className = 'raid-reserve-item--penalized';
         nameSpan.textContent = name;
         namesSpan.appendChild(nameSpan);
       } else {
@@ -911,6 +912,19 @@ function renderItemsTable() {
     return;
   }
 
+  const penalizedIds = new Set();
+  const groupedForPenalty = groupReservesByPlayer(reserves);
+  for (const [pName, pReserves] of groupedForPenalty) {
+    const penalty = penaltiesList.find((p) => p.player_name === pName);
+    const softPenalty = penalty?.soft_penalty ?? 0;
+    if (softPenalty > 0) {
+      const total = pReserves.length;
+      for (let i = Math.max(0, total - softPenalty); i < total; i++) {
+        penalizedIds.add(pReserves[i].id);
+      }
+    }
+  }
+
   flat.forEach((item) => {
     const tr = document.createElement('tr');
 
@@ -938,7 +952,7 @@ function renderItemsTable() {
     } else if (!reservers.length) {
       reserversTd.textContent = '—';
     } else {
-      reserversTd.appendChild(buildReservesByWeight(reservers));
+      reserversTd.appendChild(buildReservesByWeight(reservers, penalizedIds));
     }
 
     if (myReceivedForItems && currentUser && !isRaidCompleted()) {
