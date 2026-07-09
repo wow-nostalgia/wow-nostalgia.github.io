@@ -673,7 +673,7 @@ const LS_CHAR_KEY = 'rm_selected_character';
 
 function updateSoftPlayerNameColor() {
   const color = classColorMap.get(softPlayerNameInput.value);
-  softPlayerNameInput.style.color = color || '';
+  softPlayerNameInput.style.color = color || 'var(--color-text-faint)';
 }
 
 function populateMyCharacters() {
@@ -685,7 +685,7 @@ function populateMyCharacters() {
     opt.value = name;
     opt.textContent = name;
     const color = classColorMap.get(name);
-    opt.style.color = color || '';
+    opt.style.color = color || 'var(--color-text-faint)';
     softPlayerNameInput.appendChild(opt);
   });
 
