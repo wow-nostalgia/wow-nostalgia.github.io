@@ -21,6 +21,7 @@ const softWeight = document.getElementById('softWeight');
 const softWeightToggle = document.getElementById('softWeightToggle');
 
 const officerPanel = document.getElementById('officerPanel');
+const benchmarkPanel = document.getElementById('benchmarkPanel');
 const hiddenReservesToggle = document.getElementById('hiddenReservesToggle');
 const hiddenReservesNotice = document.getElementById('hiddenReservesNotice');
 const officerAssignForm = document.getElementById('officerAssignForm');
@@ -201,6 +202,46 @@ function renderBanner() {
   applySoftFormLockState();
   applyOfficerFormLockState();
   applySettingsFormLockState();
+}
+
+const BENCHMARK_CONTENT = {
+  ICC: {
+    title: "Планка ЦЛК25ХМ (замір на Орку):",
+    items: [
+      "Для ролу тринек і пухи з ліча на замірі треба дати загально 16к+ DPS (100к мінімум в треш, окрім фмагів та котів). Для демона -1к. Для кота +1к.",
+      "Меньше 12к - софт 1 шмотка (перша з прописаних)"
+    ]
+  },
+  RS: {
+    title: "Планка РС25ХМ (замір на генералі):",
+    items: [
+      "Для ролу тринек на замірі на генералі треба дати 11к+. Для демона, сови, ретріка: 10к. Для кота: 12к.",
+      "Недобір дпс на замірі можна перекрити дпс-ом на Халіоні, якщо дати дпс більше планки (цифри по планці div. вище). Остаточне рішення приймає РЛ",
+      "Меньше 8к - без шмоту, йдете за льодом"
+    ]
+  }
+};
+
+function renderBenchmarkPanel() {
+  const data = BENCHMARK_CONTENT[raid.instance];
+  const show = !isOfficerMode() && raid.difficulty === '25H' && data;
+  benchmarkPanel.hidden = !show;
+  if (!show) return;
+
+  benchmarkPanel.innerHTML = '';
+  const title = document.createElement('p');
+  title.className = 'raid-benchmark-title';
+  title.textContent = data.title;
+  benchmarkPanel.appendChild(title);
+
+  const ul = document.createElement('ul');
+  ul.className = 'raid-benchmark-list';
+  data.items.forEach((text) => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    ul.appendChild(li);
+  });
+  benchmarkPanel.appendChild(ul);
 }
 
 function myCharNames() {
@@ -1528,6 +1569,7 @@ async function init() {
   await loadOfficers();
   renderBanner();
   officerPanel.hidden = !isOfficerMode();
+  renderBenchmarkPanel();
 
   populateBossSelect(softBoss);
   populateItemPicker(softItem, softItemTrigger, softItemList, softBoss.value);
