@@ -20,9 +20,9 @@ const playerViewCharacterSelectClear = document.getElementById('playerViewCharac
 const playerViewStatus = document.getElementById('playerViewStatus');
 const playerSiblingsTableWrap = document.getElementById('playerSiblingsTableWrap');
 const playerSiblingsBody = document.getElementById('playerSiblingsBody');
-const hideHealSpecsCheckbox = document.getElementById('hideHealSpecs');
+const hideHealTankSpecsCheckbox = document.getElementById('hideHealTankSpecs');
 
-const HEAL_SPECS = new Set(['Holy', 'Discipline', 'Restoration']);
+const HEAL_TANK_SPECS = new Set(['Holy', 'Discipline', 'Restoration', 'Blood', 'Protection']);
 
 let personalStats = [];
 let honorBoard = [];
@@ -580,8 +580,8 @@ function updateSiblingSortIndicators() {
 }
 
 function getVisibleSiblingRows() {
-  const hideHeal = hideHealSpecsCheckbox.checked;
-  return hideHeal ? currentSiblingRows.filter((row) => !HEAL_SPECS.has(row.spec)) : currentSiblingRows;
+  const hideHealTank = hideHealTankSpecsCheckbox.checked;
+  return hideHealTank ? currentSiblingRows.filter((row) => !HEAL_TANK_SPECS.has(row.spec)) : currentSiblingRows;
 }
 
 function renderSiblingRows() {
@@ -596,7 +596,7 @@ function renderSiblingRows() {
   const visibleRows = getVisibleSiblingRows();
 
   if (!visibleRows.length) {
-    playerViewStatus.textContent = 'Усі персонажі цього профілю — хіли, приховано фільтром.';
+    playerViewStatus.textContent = 'Усі персонажі цього профілю — хіли/танки, приховано фільтром.';
     playerSiblingsTableWrap.hidden = true;
     updateSiblingSortIndicators();
     return;
@@ -816,7 +816,7 @@ deselectAllBossesBtn.addEventListener('click', () => {
 
 splineSelect.addEventListener('change', render);
 
-hideHealSpecsCheckbox.addEventListener('change', renderSiblingRows);
+hideHealTankSpecsCheckbox.addEventListener('change', renderSiblingRows);
 
 attachViewSwitch();
 attachSiblingTableSorting();
