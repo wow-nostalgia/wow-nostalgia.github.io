@@ -229,8 +229,7 @@ function renderBenchmarkPanel() {
   if (!show) return;
 
   benchmarkPanel.innerHTML = '';
-  const title = document.createElement('p');
-  title.className = 'raid-benchmark-title';
+  const title = document.createElement('h2');
   title.textContent = data.title;
   benchmarkPanel.appendChild(title);
 

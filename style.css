@@ -2094,21 +2094,14 @@ body.raid-manager-detail-page .raid-officer-panel {
 }
 
 body.raid-manager-detail-page .raid-benchmark-panel {
-  padding: 0.75rem 0.75rem 0.5rem;
+  padding: 0.75rem;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
   background-color: var(--color-surface-soft);
-  font-size: 0.9rem;
-}
-
-body.raid-manager-detail-page .raid-benchmark-title {
-  font-weight: 600;
-  margin: 0 0 0.35rem;
-  color: var(--color-text-strong);
 }
 
 body.raid-manager-detail-page .raid-benchmark-list {
-  margin: 0;
+  margin: 0.35rem 0 0;
   padding-left: 1.25rem;
   color: var(--color-text);
   line-height: 1.55;
