@@ -542,6 +542,11 @@ function renderPlayerSiblings(characterName) {
     scoreTd.textContent = Number(row.overallScore ?? 0).toFixed(2);
     tr.appendChild(scoreTd);
 
+    const potionTd = document.createElement('td');
+    const honorEntry = honorBoard.find((entry) => entry.name === row.name);
+    potionTd.textContent = honorEntry ? honorEntry.averagePotionsPerBoss.toFixed(2) : '—';
+    tr.appendChild(potionTd);
+
     playerSiblingsBody.appendChild(tr);
   });
 }
