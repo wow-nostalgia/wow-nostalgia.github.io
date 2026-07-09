@@ -2785,6 +2785,22 @@ body.raid-manager-detail-page .raid-audit-time {
     grid-template-columns: 1fr;
   }
 
+  body.personal-analytics-page .player-search-layout {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  body.personal-analytics-page .ranking-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  body.personal-analytics-page .player-siblings-table {
+    width: max-content;
+    min-width: 100%;
+  }
+
   body.personal-analytics-page .boss-checkboxes {
     grid-template-columns: repeat(2, 1fr);
   }
