@@ -2103,14 +2103,16 @@ body.raid-manager-detail-page .raid-benchmark-panel {
 body.raid-manager-detail-page .raid-benchmark-list {
   margin: 0.35rem 0 0;
   padding-left: 1.25rem;
-  color: var(--color-text);
-  line-height: 1.55;
+  color: var(--color-link);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 body.raid-manager-detail-page .raid-benchmark-note {
   margin: 0.6rem 0 0;
-  color: var(--color-text);
-  line-height: 1.55;
+  color: var(--color-link);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 body.raid-manager-detail-page .raid-input-wrap,
