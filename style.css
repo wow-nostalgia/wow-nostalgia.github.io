@@ -2100,6 +2100,15 @@ body.raid-manager-detail-page .raid-benchmark-panel {
   background-color: var(--color-surface-soft);
 }
 
+body.raid-manager-detail-page .raid-benchmark-panel h2 {
+  font-size: 0.75rem;
+  color: var(--color-link);
+}
+
+body.raid-manager-detail-page .raid-benchmark-note a {
+  text-decoration: underline;
+}
+
 body.raid-manager-detail-page .raid-benchmark-list {
   margin: 0.35rem 0 0;
   padding-left: 1.25rem;
