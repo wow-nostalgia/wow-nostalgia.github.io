@@ -1422,6 +1422,20 @@ body.personal-analytics-page .player-potion-stat {
   white-space: nowrap;
 }
 
+body.personal-analytics-page .player-search-layout {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+body.personal-analytics-page .player-search-hint {
+  font-size: 13px;
+  color: var(--color-text-faint);
+  line-height: 1.6;
+  max-width: 280px;
+  margin: 0;
+}
+
 body.personal-analytics-page .player-siblings-table {
   width: 100%;
   border-collapse: collapse;

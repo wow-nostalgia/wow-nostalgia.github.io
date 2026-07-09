@@ -119,13 +119,16 @@
       </section>
 
       <section id="playerView" role="tabpanel" hidden>
-        <div class="ranking-controls player-controls-grid">
-          <label for="playerViewCharacterSelect">Персонаж</label>
-          <div class="autocomplete-wrap">
-            <input type="text" id="playerViewCharacterSelect" autocomplete="off" placeholder="Почни вводити ім'я...">
-            <button type="button" class="autocomplete-clear" id="playerViewCharacterSelectClear" aria-label="Очистити">&times;</button>
-            <div class="autocomplete-list" id="playerViewCharacterSelectList"></div>
+        <div class="player-search-layout">
+          <div class="ranking-controls player-controls-grid">
+            <label for="playerViewCharacterSelect">Персонаж</label>
+            <div class="autocomplete-wrap">
+              <input type="text" id="playerViewCharacterSelect" autocomplete="off" placeholder="Почни вводити ім'я...">
+              <button type="button" class="autocomplete-clear" id="playerViewCharacterSelectClear" aria-label="Очистити">&times;</button>
+              <div class="autocomplete-list" id="playerViewCharacterSelectList"></div>
+            </div>
           </div>
+          <p class="player-search-hint">Знайди одного персонажа, щоб переглянути аналітику по всім персонажам гравця</p>
         </div>
 
         <p id="playerViewStatus"></p>
