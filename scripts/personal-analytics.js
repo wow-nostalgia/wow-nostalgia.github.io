@@ -525,7 +525,7 @@ function renderPlayerSiblings(characterName) {
 
   const rows = siblingNames
     .flatMap((name) => guildDataRows.filter((row) => row.name === name))
-    .sort((a, b) => (a.overallRank ?? Infinity) - (b.overallRank ?? Infinity));
+    .sort((a, b) => a.name.localeCompare(b.name, 'uk'));
 
   if (!rows.length) {
     playerViewStatus.textContent = 'Для персонажів цього профілю немає даних рейтингу.';
