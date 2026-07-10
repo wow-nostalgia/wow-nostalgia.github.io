@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-09T00:45:59.710Z",
+  "updatedAt": "2026-07-10T00:46:03.321Z",
   "specs": [
     {
       "class": "Paladin",
@@ -3110,6 +3110,10 @@
           "hps": 10798.3
         },
         {
+          "name": "Shroud",
+          "hps": 10443.7
+        },
+        {
           "name": "Kykladry",
           "hps": 10335.6
         },
@@ -3196,10 +3200,6 @@
         {
           "name": "Feliks",
           "hps": 7137.3
-        },
-        {
-          "name": "Shroud",
-          "hps": 7086.3
         },
         {
           "name": "Mufasa",
@@ -3588,6 +3588,10 @@
           "hps": 31147.6
         },
         {
+          "name": "Janefreakski",
+          "hps": 31064.2
+        },
+        {
           "name": "Bilderselem",
           "hps": 30963.9
         },
@@ -3690,10 +3694,6 @@
         {
           "name": "Бидляк",
           "hps": 28820.4
-        },
-        {
-          "name": "Janefreakski",
-          "hps": 28790.3
         },
         {
           "name": "Цепуха",
@@ -4468,6 +4468,10 @@
           "hps": 18132.4
         },
         {
+          "name": "Tero",
+          "hps": 18112.9
+        },
+        {
           "name": "Нойд",
           "hps": 18080.3
         },
@@ -4486,10 +4490,6 @@
         {
           "name": "Го'ел",
           "hps": 17753.9
-        },
-        {
-          "name": "Tero",
-          "hps": 17695.9
         },
         {
           "name": "Auchenai",
