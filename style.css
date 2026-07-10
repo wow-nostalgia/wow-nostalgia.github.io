@@ -190,10 +190,7 @@ h1 {
   font-size: var(--font-title-md);
   line-height: var(--line-height-tight);
   text-align: center;
-  background: linear-gradient(45deg, var(--color-brand), var(--color-brand-gradient-end));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--color-text-strong);
 }
 
 
