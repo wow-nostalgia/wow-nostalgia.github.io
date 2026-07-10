@@ -199,6 +199,8 @@ h1 {
    ========================= */
 
 .container {
+  display: flex;
+  flex-direction: column;
   max-width: var(--container-width);
   min-height: 100vh;
   min-height: 100dvh;
@@ -207,7 +209,8 @@ h1 {
 }
 
 .container-inner {
-  padding: 1rem 1rem 4.5rem;
+  flex: 1 0 auto;
+  padding: 1rem;
 }
 
 
@@ -219,10 +222,7 @@ h1 {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  background: var(--color-surface);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface-solid);
 }
 
 .topbar__inner {
@@ -508,17 +508,11 @@ button.nav__link {
    ========================= */
 
 footer {
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
   width: 100%;
-  max-width: var(--container-width);
   padding: 0.75rem 1rem;
   background-color: var(--color-surface-solid);
   border-top: 1px solid var(--color-border-soft);
   text-align: center;
-  z-index: var(--z-footer);
 }
 
 footer span {
@@ -811,6 +805,8 @@ footer span {
 }
 
 body.ranking-page .container {
+  display: flex;
+  flex-direction: column;
   max-width: var(--container-width);
   min-height: 100vh;
   min-height: 100dvh;
@@ -818,7 +814,8 @@ body.ranking-page .container {
 }
 
 body.ranking-page .container-inner {
-  padding: 1rem 1rem 4.5rem;
+  flex: 1 0 auto;
+  padding: 1rem;
 }
 
 body.ranking-page .ranking-table-wrap {
@@ -1200,10 +1197,6 @@ body.potion-page .add-log-status.success {
 /* =========================
    GALLERY PAGE
    ========================= */
-
-body.gallery-page .container-inner {
-  padding-bottom: 6rem;
-}
 
 body.gallery-page .potion-top-actions {
   display: flex;
@@ -2887,7 +2880,7 @@ body.raid-manager-detail-page .raid-audit-time {
   }
 
   .container-inner {
-    padding: 1rem 0.875rem 5rem;
+    padding: 1rem 0.875rem;
   }
 
   .collapsible .heading {
@@ -3009,10 +3002,6 @@ body.raid-manager-detail-page .raid-audit-time {
     overflow-x: auto;
   }
 
-  body.gallery-page .container-inner {
-    padding-bottom: 5.5rem;
-  }
-
   body.gallery-page .potion-top-actions {
     justify-content: stretch;
   }
@@ -3059,7 +3048,7 @@ body.raid-manager-detail-page .raid-audit-time {
   }
 
   body:not(.ranking-page):not(.potion-page) .container-inner {
-    padding: 1rem 0.875rem 5rem;
+    padding: 1rem 0.875rem;
   }
 
   body:not(.ranking-page):not(.potion-page) .collapsible .heading {
