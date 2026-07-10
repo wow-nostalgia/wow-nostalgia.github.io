@@ -75,6 +75,15 @@
   --container-width: 900px;
   --header-width: 1280px;
 
+  /* Typography scale ported from @primer/primitives text-body/title/display tiers */
+  --font-size-sm: 0.75rem;
+  --font-size-base: 0.875rem;
+  --font-size-lg: 1rem;
+  --font-title-sm: 0.875rem;
+  --font-title-md: 1.25rem;
+  --font-title-lg: 1.5rem;
+  --font-size-display-sm: 2rem;
+
   color-scheme: dark;
 }
 
@@ -112,7 +121,7 @@ body {
   background-attachment: fixed;
   color: var(--color-text);
   line-height: 1.5;
-  font-size: 1rem;
+  font-size: var(--font-size-lg);
   font-weight: 300;
 }
 
@@ -157,7 +166,7 @@ select:focus-visible {
 
 h1 {
   margin: 0.5rem 0 0.75rem;
-  font-size: 1.4rem;
+  font-size: var(--font-title-md);
   line-height: 1.25;
   text-align: center;
   background: linear-gradient(45deg, var(--color-brand), var(--color-brand-gradient-end));
@@ -212,7 +221,7 @@ h1 {
   color: var(--color-accent-gold);
   text-decoration: none;
   font-weight: 700;
-  font-size: 20px;
+  font-size: var(--font-title-md);
   white-space: nowrap;
 }
 
@@ -285,7 +294,7 @@ h1 {
   border: 1px solid transparent;
   border-radius: var(--radius-lg);
   color: var(--color-text-strong);
-  font-size: 13px;
+  font-size: var(--font-size-base);
   font-weight: 600;
   white-space: nowrap;
   text-decoration: none;
@@ -429,7 +438,7 @@ button.nav__link {
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.03);
   color: var(--color-text-soft);
-  font-size: 1rem;
+  font-size: var(--font-title-sm);
   font-weight: 500;
   line-height: 1.3;
   cursor: pointer;
@@ -493,7 +502,7 @@ footer {
 }
 
 footer span {
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
 }
 
 
@@ -517,7 +526,7 @@ footer span {
   border-radius: var(--radius-md);
   background: var(--color-surface-soft);
   color: var(--color-text-strong);
-  font-size: 20px;
+  font-size: var(--font-size-lg);
   font-weight: 500;
   text-align: center;
   text-decoration: none;
@@ -565,7 +574,7 @@ footer span {
   border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -615,7 +624,7 @@ footer span {
   border-radius: var(--radius-sm);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-soft);
-  font-size: 0.82rem;
+  font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
   user-select: none;
@@ -686,7 +695,7 @@ footer span {
   border-radius: var(--radius-md);
   background: var(--color-surface-soft);
   color: var(--color-text-strong);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
   transition: background var(--transition-fast), border-color var(--transition-fast);
@@ -748,13 +757,13 @@ footer span {
 
 #rankingTable th {
   color: #e6eefc;
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   font-weight: 500;
 }
 
 #rankingTable td {
   color: #d3d9e5;
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
 }
 
 #rankingTable tbody tr:hover {
@@ -822,7 +831,7 @@ body.ranking-page #rankingTable th .boss-header {
 
 body.potion-page #potionStatus {
   margin: 1rem 0 1.25rem;
-  font-size: 1rem;
+  font-size: var(--font-size-lg);
 }
 
 body.potion-page .potion-view-switch,
@@ -845,7 +854,7 @@ body.personal-analytics-page .potion-view-btn {
   margin-bottom: -1px;
   border-bottom: 2px solid transparent;
   color: var(--color-text-faint);
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
   font-weight: 500;
   text-align: center;
   text-decoration: none;
@@ -913,13 +922,13 @@ body.potion-page .potion-log-btn.active {
 }
 
 body.potion-page .potion-log-date {
-  font-size: 1rem;
+  font-size: var(--font-size-lg);
   font-weight: 500;
   line-height: 1.3;
 }
 
 body.potion-page .potion-log-uploader {
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-muted);
   margin-top: 0.2rem;
 }
@@ -1068,7 +1077,7 @@ body.potion-page .add-log-dialog {
 
 body.potion-page .add-log-title {
   margin: 0 0 1.25rem;
-  font-size: 1.05rem;
+  font-size: var(--font-title-sm);
   font-weight: 500;
   color: var(--color-text-strong);
 }
@@ -1081,13 +1090,13 @@ body.potion-page .add-log-field {
 }
 
 body.potion-page .add-log-label {
-  font-size: 0.82rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-soft);
 }
 
 body.potion-page .add-log-label span {
   color: var(--color-text-faint);
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
 }
 
 body.potion-page .add-log-input {
@@ -1096,7 +1105,7 @@ body.potion-page .add-log-input {
   border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   width: 100%;
@@ -1116,7 +1125,7 @@ body.potion-page .add-log-actions {
 
 body.potion-page .add-log-status {
   margin-top: 0.75rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-soft);
   min-height: 1.2em;
 }
@@ -1273,7 +1282,7 @@ body.gallery-page .gallery-lightbox-close {
   right: 0.625rem;
   width: 44px;
   height: 44px;
-  font-size: 1.9rem;
+  font-size: var(--font-size-display-sm);
   line-height: 1;
 }
 
@@ -1304,7 +1313,7 @@ body.gallery-page #lightboxCaption {
   margin: 0.75rem 0 0;
   color: var(--color-text-soft);
   text-align: center;
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
 }
 
 
@@ -1341,7 +1350,7 @@ body.analytics-page .analytics-card-header {
 
 body.analytics-page .analytics-card h2 {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: var(--font-title-sm);
   color: var(--color-text-strong);
 }
 
@@ -1349,7 +1358,7 @@ body.analytics-page .analytics-scope-chip {
   flex-shrink: 0;
   padding: 0.15rem 0.55rem;
   border-radius: var(--radius-pill);
-  font-size: 0.7rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   white-space: nowrap;
   border: 1px solid var(--color-border-mid);
@@ -1383,7 +1392,7 @@ body.analytics-page .analytics-split-col .analytics-scope-chip {
 body.analytics-page .analytics-card-caption {
   margin: 0 0 0.8rem;
   color: var(--color-text-faint);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   font-style: italic;
 }
 
@@ -1435,13 +1444,13 @@ body.personal-analytics-page .player-controls-grid select {
 
 body.personal-analytics-page .player-raid-count {
   color: var(--color-text-faint);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   white-space: nowrap;
 }
 
 body.personal-analytics-page .player-potion-stat {
   color: var(--color-text-faint);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   white-space: nowrap;
 }
 
@@ -1452,7 +1461,7 @@ body.personal-analytics-page .player-search-layout {
 }
 
 body.personal-analytics-page .player-search-hint {
-  font-size: 13px;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
   line-height: 1.6;
   max-width: 280px;
@@ -1469,7 +1478,7 @@ body.personal-analytics-page .player-siblings-table td {
   padding: 0.4rem 0.6rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
 }
 
 body.personal-analytics-page .player-siblings-table th {
@@ -1518,7 +1527,7 @@ body.personal-analytics-page .autocomplete-clear {
   width: 1.2rem;
   height: 1.2rem;
   line-height: 1;
-  font-size: 1.15rem;
+  font-size: var(--font-size-lg);
   color: var(--color-text-faint);
   cursor: pointer;
 }
@@ -1550,7 +1559,7 @@ body.personal-analytics-page .autocomplete-list.is-open {
 
 body.personal-analytics-page .autocomplete-item {
   padding: 0.3rem 0.65rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-strong);
   cursor: pointer;
 }
@@ -1561,7 +1570,7 @@ body.personal-analytics-page .autocomplete-item:hover {
 
 body.personal-analytics-page .autocomplete-empty {
   padding: 0.3rem 0.65rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
@@ -1573,7 +1582,7 @@ body.personal-analytics-page .spline-select-wrap {
 
 body.personal-analytics-page .spline-select-wrap label {
   color: var(--color-text-soft);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
 }
 
 body.personal-analytics-page .spline-select-wrap select {
@@ -1584,7 +1593,7 @@ body.personal-analytics-page .spline-select-wrap select {
   border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   outline: none;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
@@ -1618,7 +1627,7 @@ body.personal-analytics-page .link-button {
   border: none;
   padding: 0;
   color: var(--color-link);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 
@@ -1638,14 +1647,14 @@ body.personal-analytics-page .boss-checkboxes {
 
 body.personal-analytics-page .boss-checkboxes-empty {
   color: var(--color-text-faint);
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
 }
 
 body.personal-analytics-page .boss-checkbox {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
   white-space: nowrap;
   color: var(--color-text-strong);
   cursor: pointer;
@@ -1668,7 +1677,7 @@ body.personal-analytics-page .boss-checkbox-swatch {
    ========================= */
 
 .intro-text {
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
   line-height: 1.65;
   width: max-content;
   max-width: 100%;
@@ -1680,7 +1689,7 @@ body.personal-analytics-page .boss-checkbox-swatch {
 .last-updated-text {
   margin-top: 0.15rem;
   color: var(--color-text-faint);
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
   font-style: italic;
   line-height: 1.35;
 }
@@ -1693,7 +1702,7 @@ body.personal-analytics-page .boss-checkbox-swatch {
   height: 18px;
   margin-right: 0.35rem;
   border-radius: 50%;
-  font-size: 0.65rem;
+  font-size: var(--font-size-sm);
   font-weight: 700;
   line-height: 1;
   flex-shrink: 0;
@@ -1714,7 +1723,7 @@ body.personal-analytics-page .boss-checkbox-swatch {
 .primary-character-badge {
   padding: 0 7px;
   border-radius: var(--radius-pill);
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   font-weight: 600;
   line-height: 18px;
   color: #1d2636;
@@ -1778,7 +1787,7 @@ body.raid-manager-page .raid-toggle-btn {
   border-radius: var(--radius-sm);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
@@ -1806,14 +1815,14 @@ body.raid-manager-page .raid-filter-checkbox {
   gap: 0.3rem;
   grid-column: 2;
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 
 body.raid-manager-detail-page .raid-no-characters-hint {
   grid-column: 2;
   margin: -0.25rem 0 0;
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
@@ -1832,7 +1841,7 @@ body.raid-manager-detail-page .raid-item-picker-trigger {
   border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -1909,7 +1918,7 @@ body.raid-manager-page .raid-table td {
   padding: 0.3rem 0.4rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
-  font-size: 0.82rem;
+  font-size: var(--font-size-base);
   vertical-align: top;
 }
 
@@ -1965,7 +1974,7 @@ body.raid-manager-detail-page .raid-chip,
 body.raid-manager-page .raid-chip {
   padding: 0 7px;
   border-radius: var(--radius-pill);
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   line-height: 18px;
   white-space: nowrap;
@@ -1995,7 +2004,7 @@ body.raid-manager-page .link-button-std {
   border-radius: var(--radius-md);
   padding: 0.25rem 0.6rem;
   color: var(--color-link);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 
@@ -2045,14 +2054,14 @@ body.raid-manager-page .archive-confirm-dialog {
 
 body.raid-manager-page .archive-confirm-text {
   margin: 0 0 0.25rem;
-  font-size: 1.05rem;
+  font-size: var(--font-size-lg);
   font-weight: 500;
   color: var(--color-text-strong);
 }
 
 body.raid-manager-page .archive-confirm-raid-title {
   margin: 0 0 1.25rem;
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-soft);
 }
 
@@ -2093,7 +2102,7 @@ body.raid-manager-detail-page .raid-status-chip {
   display: inline-block;
   padding: 0.2rem 0.65rem;
   border-radius: var(--radius-pill);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   font-weight: 500;
   border: 1px solid var(--color-border-mid);
   color: var(--color-text-faint);
@@ -2134,7 +2143,7 @@ body.raid-manager-detail-page .raid-tooltip {
   border: 1px solid var(--color-border-mid);
   background-color: var(--color-surface-overlay);
   color: var(--color-text-strong);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
@@ -2158,7 +2167,7 @@ body.raid-manager-detail-page .link-button-std {
   border-radius: var(--radius-md);
   padding: 0.25rem 0.6rem;
   color: var(--color-link);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 
@@ -2196,7 +2205,7 @@ body.raid-manager-detail-page .raid-benchmark-panel {
 }
 
 body.raid-manager-detail-page .raid-benchmark-panel h2 {
-  font-size: 0.75rem;
+  font-size: var(--font-title-sm);
   color: var(--color-link);
 }
 
@@ -2208,14 +2217,14 @@ body.raid-manager-detail-page .raid-benchmark-list {
   margin: 0.35rem 0 0;
   padding-left: 1.25rem;
   color: var(--color-link);
-  font-size: 13px;
+  font-size: var(--font-size-base);
   line-height: 1.6;
 }
 
 body.raid-manager-detail-page .raid-benchmark-note {
   margin: 0.6rem 0 0;
   color: var(--color-link);
-  font-size: 13px;
+  font-size: var(--font-size-base);
   line-height: 1.6;
 }
 
@@ -2242,7 +2251,7 @@ body.raid-manager-detail-page .raid-input-clear {
   width: 1.2rem;
   height: 1.2rem;
   line-height: 1;
-  font-size: 1.15rem;
+  font-size: var(--font-size-lg);
   color: var(--color-text-faint);
   cursor: pointer;
 }
@@ -2282,7 +2291,7 @@ body.account-page .raid-autocomplete-list.is-open {
 body.raid-manager-detail-page .raid-autocomplete-item,
 body.account-page .raid-autocomplete-item {
   padding: 0.3rem 0.65rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-strong);
   cursor: pointer;
 }
@@ -2295,7 +2304,7 @@ body.account-page .raid-autocomplete-item:hover {
 body.raid-manager-detail-page .raid-autocomplete-empty,
 body.account-page .raid-autocomplete-empty {
   padding: 0.3rem 0.65rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
@@ -2352,7 +2361,7 @@ body.raid-manager-detail-page .raid-item-picker-option {
   align-items: center;
   gap: 0.4rem;
   padding: 0.3rem 0.65rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-strong);
   cursor: pointer;
 }
@@ -2402,7 +2411,7 @@ body.account-page .raid-tab {
   margin-bottom: -1px;
   border-bottom: 2px solid transparent;
   color: var(--color-text-faint);
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
 }
@@ -2433,7 +2442,7 @@ body.raid-manager-detail-page .raid-search-input {
   border: 1px solid var(--color-border-input);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -2459,7 +2468,7 @@ body.raid-manager-detail-page .raid-filter-checkbox {
   align-items: center;
   gap: 0.3rem;
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 
@@ -2473,7 +2482,7 @@ body.raid-manager-detail-page .raid-hidden-notice {
   padding: 0.4rem 0.8rem;
   border-left: 3px solid var(--color-warning, #f0ad4e);
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
 }
 
 body.raid-manager-detail-page .raid-table {
@@ -2486,7 +2495,7 @@ body.raid-manager-detail-page .raid-table td {
   padding: 0.3rem 0.4rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
-  font-size: 0.82rem;
+  font-size: var(--font-size-base);
   vertical-align: top;
 }
 
@@ -2599,7 +2608,7 @@ body.raid-manager-detail-page .raid-weight-toggle-btn {
   border-radius: var(--radius-sm);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
   cursor: pointer;
   transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
@@ -2623,7 +2632,7 @@ body.raid-manager-detail-page .raid-weight-toggle-btn--active {
 body.raid-manager-detail-page .raid-weight-badge {
   padding: 0 7px;
   border-radius: var(--radius-pill);
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   font-weight: 600;
   line-height: 18px;
   color: #1d2636;
@@ -2640,7 +2649,7 @@ body.raid-manager-detail-page #raidItemTooltip {
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-tooltip);
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   line-height: 1.4;
   color: #ffffff;
   pointer-events: none;
@@ -2674,7 +2683,7 @@ body.raid-manager-detail-page #raidItemTooltip .whtt-sellprice,
 body.raid-manager-detail-page #raidItemTooltip .whtt-droppedby,
 body.raid-manager-detail-page #raidItemTooltip .whtt-dropchance {
   color: var(--color-text-faint);
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
 }
 
 body.raid-manager-detail-page #raidItemTooltip .moneygold { color: #ffd700; }
@@ -2686,7 +2695,7 @@ body.raid-manager-detail-page .raid-remove-btn {
   border: none;
   cursor: pointer;
   color: var(--color-text-faint);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   padding: 0 0.1rem;
   line-height: 1;
 }
@@ -2738,7 +2747,7 @@ body.raid-manager-detail-page .raid-audit-list {
 body.raid-manager-detail-page .raid-audit-row {
   padding: 0.25rem 0;
   border-bottom: 1px solid var(--color-border);
-  font-size: 0.82rem;
+  font-size: var(--font-size-base);
 }
 
 body.raid-manager-detail-page .raid-audit-row:last-child {
@@ -2747,7 +2756,7 @@ body.raid-manager-detail-page .raid-audit-row:last-child {
 
 body.raid-manager-detail-page .raid-audit-time {
   color: var(--color-text-faint);
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
   margin-right: 0.4rem;
 }
 
@@ -2807,13 +2816,13 @@ body.raid-manager-detail-page .raid-audit-time {
   }
 
   .collapsible .heading {
-    font-size: 1.1rem;
+    font-size: var(--font-title-sm);
   }
 
   .ranking-link-btn {
     width: 100%;
     min-width: 0;
-    font-size: 1.05rem;
+    font-size: var(--font-size-lg);
   }
 
   .ranking-controls {
@@ -2971,7 +2980,7 @@ body.raid-manager-detail-page .raid-audit-time {
   }
 
   body.gallery-page #lightboxCaption {
-    font-size: 0.9rem;
+    font-size: var(--font-size-base);
   }
 
   body:not(.ranking-page):not(.potion-page) .container-inner {
@@ -2984,7 +2993,7 @@ body.raid-manager-detail-page .raid-audit-time {
     justify-content: space-between;
     gap: 0.5rem;
     padding: 0.75rem 0.875rem;
-    font-size: 1.05rem;
+    font-size: var(--font-title-sm);
     line-height: 1.25;
     white-space: normal;
   }
@@ -2993,7 +3002,7 @@ body.raid-manager-detail-page .raid-audit-time {
     order: 0;
     flex: 0 0 auto;
     margin-left: 0;
-    font-size: 1.05rem;
+    font-size: var(--font-title-sm);
     line-height: 1;
   }
 
@@ -3017,7 +3026,7 @@ body.raid-manager-detail-page .raid-audit-time {
     width: 100%;
     min-width: 0;
     padding: 0.9rem 1rem;
-    font-size: 1.05rem;
+    font-size: var(--font-size-lg);
     line-height: 1.2;
     white-space: normal;
   }
@@ -3113,13 +3122,13 @@ body.account-page .account-info {
 }
 
 body.account-page .account-username {
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg);
   font-weight: 600;
   color: var(--color-text-strong);
 }
 
 body.account-page .account-discord-id {
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
@@ -3137,7 +3146,7 @@ body.account-page .account-form input[type="text"] {
   border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   outline: none;
 }
 
@@ -3166,7 +3175,7 @@ body.account-page .account-chars-hints {
 }
 
 body.account-page .account-chars-hint {
-  font-size: 13px;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
   line-height: 1.6;
   max-width: 200px;
@@ -3183,14 +3192,14 @@ body.account-page .account-characters-table td {
   padding: 0.4rem 0.6rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   vertical-align: middle;
 }
 
 body.account-page .account-characters-table th {
   color: var(--color-text-strong);
   font-weight: 500;
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
 }
 
 body.account-page .account-characters-table tbody tr:hover {
@@ -3261,7 +3270,7 @@ body.account-page .account-lang-toggle-btn {
   border-radius: var(--radius-sm);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
@@ -3289,7 +3298,7 @@ body.account-page .account-admin-tools + .account-admin-tools {
 
 body.account-page .account-admin-hint {
   margin: 0 0 0.5rem;
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
@@ -3319,11 +3328,11 @@ body.account-page .account-default-officer-item {
   justify-content: space-between;
   padding: 0.35rem 0.5rem;
   border-bottom: 1px solid var(--color-border);
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
 }
 
 body.account-page .account-default-officers-empty {
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
   padding: 0.35rem 0;
 }
@@ -3334,7 +3343,7 @@ body.account-page .link-button-std {
   border-radius: var(--radius-md);
   padding: 0.25rem 0.6rem;
   color: var(--color-link);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 
@@ -3382,7 +3391,7 @@ body.account-page .link-button-std:hover {
     width: 48px;
     height: 48px;
     z-index: auto;
-    font-size: 1.9rem;
+    font-size: var(--font-size-display-sm);
     transform: none;
   }
 
@@ -3407,7 +3416,7 @@ body.account-page .link-button-std:hover {
     margin: 0;
     color: var(--color-text-soft);
     text-align: center;
-    font-size: 0.95rem;
+    font-size: var(--font-size-base);
   }
 
   .nav__link {
@@ -3440,7 +3449,7 @@ body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(3) { width: 10%; 
 body.raid-manager-detail-page .penalty-input {
   width: 5rem;
   padding: 0.25rem 0.375rem;
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   text-align: center;
   background: var(--color-surface-2);
   border: 1px solid var(--color-border);
@@ -3464,7 +3473,7 @@ body.raid-manager-detail-page .penalty-value--none {
 
 body.raid-manager-detail-page .penalty-potion-stat {
   color: var(--color-text-faint);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   white-space: nowrap;
 }
 
@@ -3477,7 +3486,7 @@ body.raid-manager-detail-page .penalty-reason-input {
   width: 100%;
   min-width: 8rem;
   padding: 0.25rem 0.375rem;
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   background: var(--color-surface-2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -3491,7 +3500,7 @@ body.raid-manager-detail-page .penalty-reason-input:focus {
 
 body.raid-manager-detail-page .penalty-reason-text {
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   overflow-wrap: break-word;
   word-break: break-word;
 }
@@ -3535,7 +3544,7 @@ body.raid-manager-detail-page .penalty-reason-text {
   border-radius: 50%;
   background: none;
   color: var(--color-link);
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg);
   line-height: 1;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
@@ -3548,7 +3557,7 @@ body.raid-manager-detail-page .penalty-reason-text {
 
 .raid-transfer-indicator {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   padding: 0.15rem 0.4rem;
   border-radius: var(--radius-sm);
   vertical-align: middle;
@@ -3571,7 +3580,7 @@ body.raid-manager-detail-page .penalty-reason-text {
   background: rgba(160, 168, 184, 0.1);
   border-left: 3px solid var(--color-text-faint);
   color: var(--color-text-soft);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
 }
 
 .raid-transfer-limit-row {
@@ -3580,7 +3589,7 @@ body.raid-manager-detail-page .penalty-reason-text {
   gap: 0.5rem;
   flex-wrap: wrap;
   margin-bottom: 0.75rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-soft);
 }
 
@@ -3591,12 +3600,12 @@ body.raid-manager-detail-page .penalty-reason-text {
   border-radius: var(--radius-sm);
   background: rgba(12, 21, 33, 0.6);
   color: var(--color-text-strong);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
 }
 
 .raid-transfer-limit-hint {
   color: var(--color-text-faint);
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
 }
 
 /* Модал підтвердження передачі */
@@ -3633,14 +3642,14 @@ body.raid-manager-detail-page .penalty-reason-text {
 
 .raid-modal-title {
   margin: 0 0 0.75rem;
-  font-size: 1rem;
+  font-size: var(--font-title-sm);
   font-weight: 600;
   color: var(--color-text-strong);
 }
 
 .raid-modal-text {
   margin: 0 0 1rem;
-  font-size: 13px;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
   line-height: 1.6;
 }
@@ -3652,7 +3661,7 @@ body.raid-manager-detail-page .penalty-reason-text {
 .raid-modal-field label {
   display: block;
   margin-bottom: 0.3rem;
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
@@ -3663,7 +3672,7 @@ body.raid-manager-detail-page .penalty-reason-text {
   border-radius: var(--radius-sm);
   background: rgba(12, 21, 33, 0.8);
   color: var(--color-text-strong);
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
 }
 
 .raid-modal-actions {
@@ -3682,7 +3691,7 @@ body.raid-manager-detail-page .penalty-reason-text {
 }
 
 .raid-bonus-chip {
-  font-size: 0.72rem;
+  font-size: var(--font-size-sm);
   font-weight: 600;
   padding: 1px 6px;
   border-radius: var(--radius-sm);
