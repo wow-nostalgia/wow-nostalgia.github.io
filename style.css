@@ -819,11 +819,12 @@ body.ranking-page .ranking-table-wrap {
   max-height: 70vh;
   overflow-x: auto;
   overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 body.ranking-page #rankingTable {
   width: max-content;
-  min-width: 100%;
+  min-width: calc(100% - 2px);
 }
 
 body.ranking-page #rankingTable thead {
