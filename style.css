@@ -209,10 +209,12 @@ h1 {
 }
 
 .container-inner {
+  --gutter-x: 1rem;
+  --gutter-y: 1rem;
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  padding: 1rem;
+  padding: var(--gutter-y) var(--gutter-x);
 }
 
 
@@ -510,8 +512,7 @@ button.nav__link {
    ========================= */
 
 footer {
-  width: 100%;
-  margin-top: auto;
+  margin: auto calc(-1 * var(--gutter-x, 1rem)) calc(-1 * var(--gutter-y, 1rem));
   padding: 0.75rem 1rem;
   background-color: var(--color-surface-solid);
   border-top: 1px solid var(--color-border-soft);
@@ -817,10 +818,12 @@ body.ranking-page .container {
 }
 
 body.ranking-page .container-inner {
+  --gutter-x: 1rem;
+  --gutter-y: 1rem;
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  padding: 1rem;
+  padding: var(--gutter-y) var(--gutter-x);
 }
 
 body.ranking-page .ranking-table-wrap {
@@ -2885,6 +2888,7 @@ body.raid-manager-detail-page .raid-audit-time {
   }
 
   .container-inner {
+    --gutter-x: 0.875rem;
     padding: 1rem 0.875rem;
   }
 
@@ -3053,6 +3057,7 @@ body.raid-manager-detail-page .raid-audit-time {
   }
 
   body:not(.ranking-page):not(.potion-page) .container-inner {
+    --gutter-x: 0.875rem;
     padding: 1rem 0.875rem;
   }
 
