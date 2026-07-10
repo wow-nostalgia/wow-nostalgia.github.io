@@ -3,7 +3,7 @@
    ========================= */
 
 :root {
-  --font-sans: 'Roboto', 'Open Sans', sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 
   --color-page-bg: #0b1220;
   --color-surface: rgba(29, 38, 54, 0.94);
@@ -37,6 +37,9 @@
   --color-border-strong: rgba(197, 198, 205, 0.45);
   --color-border-accent: rgba(123, 170, 245, 0.45);
   --color-border-accent-strong: rgba(123, 170, 245, 0.7);
+  --color-border-input: rgba(197, 198, 205, 0.35);
+  --color-border-button: rgba(255, 255, 255, 0.28);
+  --color-border-button-hover: rgba(255, 255, 255, 0.45);
 
   --color-hover: rgba(123, 170, 245, 0.10);
   --color-hover-strong: rgba(123, 170, 245, 0.18);
@@ -47,15 +50,19 @@
   --shadow-sm: 0 8px 22px rgba(0, 0, 0, 0.18);
   --shadow-md: 0 14px 28px rgba(0, 0, 0, 0.28);
   --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --shadow-tooltip: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.5);
 
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 10px;
+  /* Radius/spacing/transition scale ported from @primer/primitives@11.9.0
+     (non-color tokens only — колірна палітра лишається наша) */
+  --radius-sm: 0.1875rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.75rem;
   --radius-xl: 14px;
-  --radius-pill: 999px;
+  --radius-pill: 624.9375rem;
 
-  --space-1: 0.15rem;
-  --space-2: 0.35rem;
+  --space-1: 0.125rem;
+  --space-2: 0.375rem;
   --space-3: 0.5rem;
   --space-4: 0.75rem;
   --space-5: 0.875rem;
@@ -64,11 +71,48 @@
   --space-8: 1.5rem;
   --space-9: 2rem;
 
-  --transition-fast: 0.2s ease;
-  --container-width: 900px;
+  --transition-fast: 80ms cubic-bezier(0.33, 1, 0.68, 1);
+  --container-width: 1012px;
   --header-width: 1280px;
 
+  /* Typography scale ported from @primer/primitives text-body/title/display tiers */
+  --font-size-sm: 0.75rem;
+  --font-size-base: 0.875rem;
+  --font-size-lg: 1rem;
+  --font-title-sm: 0.875rem;
+  --font-title-md: 1.25rem;
+  --font-title-lg: 1.5rem;
+  --font-size-display-sm: 2rem;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  --line-height-condensed: 1;
+  --line-height-tight: 1.25;
+  --line-height-default: 1.4;
+  --line-height-base: 1.5;
+  --line-height-relaxed: 1.6;
+
+  /* z-index scale — named 1:1 from existing values, no renumbering (preserves stacking order) */
+  --z-modal-box: 1;
+  --z-lightbox-nav: 2;
+  --z-tooltip-local: 5;
+  --z-footer: 10;
+  --z-dropdown: 20;
+  --z-overlay: 100;
+  --z-modal: 200;
+  --z-sticky: 1000;
+  --z-nav-dropdown: 1001;
+
   color-scheme: dark;
+}
+
+@keyframes primer-dropdown-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
 }
 
 
@@ -97,9 +141,9 @@ body {
   background-size: cover;
   background-attachment: fixed;
   color: var(--color-text);
-  line-height: 1.5;
-  font-size: 1rem;
-  font-weight: 300;
+  line-height: var(--line-height-base);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-normal);
 }
 
 img,
@@ -143,13 +187,10 @@ select:focus-visible {
 
 h1 {
   margin: 0.5rem 0 0.75rem;
-  font-size: 1.4rem;
-  line-height: 1.25;
+  font-size: var(--font-title-md);
+  line-height: var(--line-height-tight);
   text-align: center;
-  background: linear-gradient(45deg, var(--color-brand), var(--color-brand-gradient-end));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--color-text-strong);
 }
 
 
@@ -158,6 +199,8 @@ h1 {
    ========================= */
 
 .container {
+  display: flex;
+  flex-direction: column;
   max-width: var(--container-width);
   min-height: 100vh;
   min-height: 100dvh;
@@ -166,7 +209,35 @@ h1 {
 }
 
 .container-inner {
-  padding: 1rem 1rem 4.5rem;
+  --gutter-x: 1rem;
+  --gutter-y: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  padding: var(--gutter-y) var(--gutter-x);
+}
+
+body.index-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.index-page .container-inner > h1,
+body.index-page .container-inner > .intro-text {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+body.account-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.account-page .container-inner > h1,
+body.account-page .container-inner > #loggedOutView,
+body.account-page .container-inner > #loggedInView,
+body.account-page .container-inner > #accountLoading,
+body.account-page .container-inner > #callbackStatus {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 
@@ -177,11 +248,8 @@ h1 {
 .topbar {
   position: sticky;
   top: 0;
-  z-index: 1000;
-  background: var(--color-surface);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--color-border);
+  z-index: var(--z-sticky);
+  background-color: var(--color-surface-solid);
 }
 
 .topbar__inner {
@@ -197,8 +265,9 @@ h1 {
 .brand {
   color: var(--color-accent-gold);
   text-decoration: none;
-  font-weight: 700;
-  font-size: 20px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-title-md);
+  line-height: var(--line-height-tight);
   white-space: nowrap;
 }
 
@@ -245,7 +314,7 @@ h1 {
   display: block;
   width: 22px;
   height: 2px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   background: var(--color-text-strong);
   transition: transform var(--transition-fast), opacity var(--transition-fast);
 }
@@ -271,8 +340,8 @@ h1 {
   border: 1px solid transparent;
   border-radius: var(--radius-lg);
   color: var(--color-text-strong);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   white-space: nowrap;
   text-decoration: none;
   transition:
@@ -305,7 +374,7 @@ button.nav__link {
 
 .nav__lang-btn {
   padding: 0 8px;
-  line-height: 1;
+  line-height: var(--line-height-condensed);
   background: transparent;
   cursor: pointer;
 }
@@ -330,6 +399,13 @@ button.nav__link {
   margin-right: 6px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.nav__icon--inline {
+  display: inline-block;
+  margin-right: 6px;
+  flex-shrink: 0;
+  vertical-align: -4px;
 }
 
 .nav__dropdown {
@@ -362,7 +438,7 @@ button.nav__link {
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
-  z-index: 1001;
+  z-index: var(--z-nav-dropdown);
 }
 
 .nav__dropdown.is-open .nav__dropdown-menu {
@@ -409,9 +485,9 @@ button.nav__link {
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.03);
   color: var(--color-text-soft);
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.3;
+  font-size: var(--font-title-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
   cursor: pointer;
   transition:
     background var(--transition-fast),
@@ -459,21 +535,15 @@ button.nav__link {
    ========================= */
 
 footer {
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: var(--container-width);
+  margin: auto calc(-1 * var(--gutter-x, 1rem)) calc(-1 * var(--gutter-y, 1rem));
   padding: 0.75rem 1rem;
   background-color: var(--color-surface-solid);
   border-top: 1px solid var(--color-border-soft);
   text-align: center;
-  z-index: 10;
 }
 
 footer span {
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
 }
 
 
@@ -493,12 +563,12 @@ footer span {
   justify-content: center;
   min-width: 280px;
   padding: 12px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid var(--color-border-button);
   border-radius: var(--radius-md);
   background: var(--color-surface-soft);
   color: var(--color-text-strong);
-  font-size: 20px;
-  font-weight: 500;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
   text-align: center;
   text-decoration: none;
   transition:
@@ -510,7 +580,7 @@ footer span {
 
 .ranking-link-btn:hover {
   background: var(--color-surface-soft-hover);
-  border-color: rgba(255, 255, 255, 0.45);
+  border-color: var(--color-border-button-hover);
   transform: translateY(-1px);
   text-decoration: none;
 }
@@ -527,25 +597,25 @@ footer span {
 .ranking-controls {
   display: flex;
   flex-wrap: wrap;
-  align-items: end;
+  align-items: center;
   gap: 0.75rem 1rem;
   margin: 1.25rem 0 1rem;
 }
 
 .ranking-controls label {
   color: var(--color-text-soft);
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
 }
 
 .ranking-controls select,
 .ranking-controls input[type="text"] {
   min-width: 180px;
-  padding: 0.45rem 0.65rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -561,22 +631,22 @@ footer span {
 }
 
 .ranking-controls select:disabled:hover {
-  border-color: rgba(197, 198, 205, 0.35);
+  border-color: var(--color-border-input);
 }
 
 .ranking-controls select:focus,
 .ranking-controls input[type="text"]:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 .ranking-controls select {
   appearance: none;
-  padding-right: 2rem;
+  padding-right: 2.5rem;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 0.65rem center;
-  background-size: 0.65rem;
+  background-position: right 0.5rem center;
+  background-size: 1rem;
 }
 
 .analytics-day-filter {
@@ -591,12 +661,12 @@ footer span {
   align-items: center;
   gap: 0.3rem;
   padding: 0.3rem 0.55rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
+  border: 1px solid var(--color-border-input);
   border-radius: var(--radius-sm);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-soft);
-  font-size: 0.82rem;
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   user-select: none;
   transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
@@ -640,7 +710,7 @@ footer span {
   min-height: 44px;
   padding: 0 0.25rem;
   color: var(--color-text-soft);
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
   white-space: nowrap;
   cursor: pointer;
 }
@@ -660,21 +730,30 @@ footer span {
   gap: 0.15rem;
 }
 
+#loginGate {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+#loginGate p {
+  margin: 0 0 1rem;
+}
+
 .compare-btn {
   padding: 0.5rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid var(--color-border-button);
   border-radius: var(--radius-md);
   background: var(--color-surface-soft);
   color: var(--color-text-strong);
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: background var(--transition-fast), border-color var(--transition-fast);
 }
 
 .compare-btn:hover:not(:disabled) {
   background: var(--color-surface-soft-hover);
-  border-color: rgba(255, 255, 255, 0.45);
+  border-color: var(--color-border-button-hover);
 }
 
 .compare-btn:disabled {
@@ -707,6 +786,8 @@ footer span {
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
   background-color: var(--color-surface-table);
+  box-shadow: inset -12px 0 12px -12px rgba(0, 0, 0, 0.35),
+    inset 12px 0 12px -12px rgba(0, 0, 0, 0.35);
 }
 
 #rankingTable {
@@ -726,15 +807,20 @@ footer span {
   text-align: left;
 }
 
+#rankingTable th.ranking-table-numeric,
+#rankingTable td.ranking-table-numeric {
+  text-align: right;
+}
+
 #rankingTable th {
   color: #e6eefc;
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
 }
 
 #rankingTable td {
   color: #d3d9e5;
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
 }
 
 #rankingTable tbody tr:hover {
@@ -746,6 +832,8 @@ footer span {
 }
 
 body.ranking-page .container {
+  display: flex;
+  flex-direction: column;
   max-width: var(--container-width);
   min-height: 100vh;
   min-height: 100dvh;
@@ -753,17 +841,43 @@ body.ranking-page .container {
 }
 
 body.ranking-page .container-inner {
-  padding: 1rem 1rem 4.5rem;
+  --gutter-x: 1rem;
+  --gutter-y: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  gap: var(--space-6);
+  padding: var(--gutter-y) var(--gutter-x);
+}
+
+body.ranking-page .container-inner > h1,
+body.ranking-page .container-inner > ul,
+body.ranking-page .container-inner > .ranking-controls,
+body.ranking-page .container-inner > .ranking-status-row,
+body.ranking-page .container-inner > .ranking-table-wrap,
+body.ranking-page .container-inner > .potion-view-switch {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 body.ranking-page .ranking-table-wrap {
   width: 100%;
+  max-height: 70vh;
   overflow-x: auto;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 body.ranking-page #rankingTable {
   width: max-content;
-  min-width: 100%;
+  min-width: calc(100% - 2px);
+}
+
+body.ranking-page #rankingTable thead {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-dropdown);
+  background-color: var(--color-surface-overlay);
 }
 
 body.ranking-page #rankingTable th,
@@ -772,27 +886,25 @@ body.ranking-page #rankingTable td {
 }
 
 body.ranking-page #rankingTable th {
-  max-width: 32px;
-  padding: 0.25rem 0.1rem 0.7rem;
-  line-height: 1;
+  padding: 0.35rem 0.4rem;
+  line-height: var(--line-height-condensed);
   vertical-align: bottom;
   word-break: break-word;
   overflow-wrap: anywhere;
 }
 
 body.ranking-page #rankingTable th .boss-header {
-  display: inline-block;
-  width: 1.7ch;
-  max-width: 1.7ch;
-  line-height: 1;
-  text-align: center;
-  white-space: normal;
-  word-break: normal;
-  overflow-wrap: normal;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  transform-origin: center center;
+  text-decoration: none;
+  border-bottom: 1px dotted var(--color-text-faint);
+  cursor: help;
+}
+
+body.ranking-page #rankingTable th .table-header-icon {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  color: var(--color-text-faint);
+  cursor: help;
 }
 
 
@@ -802,7 +914,7 @@ body.ranking-page #rankingTable th .boss-header {
 
 body.potion-page #potionStatus {
   margin: 1rem 0 1.25rem;
-  font-size: 1rem;
+  font-size: var(--font-size-lg);
 }
 
 body.potion-page .potion-view-switch,
@@ -825,8 +937,8 @@ body.personal-analytics-page .potion-view-btn {
   margin-bottom: -1px;
   border-bottom: 2px solid transparent;
   color: var(--color-text-faint);
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -893,13 +1005,13 @@ body.potion-page .potion-log-btn.active {
 }
 
 body.potion-page .potion-log-date {
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.3;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-default);
 }
 
 body.potion-page .potion-log-uploader {
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-muted);
   margin-top: 0.2rem;
 }
@@ -925,8 +1037,8 @@ body.potion-page .potion-table th,
 body.potion-page .potion-table td {
   padding: 0.2rem 0.35rem;
   border: 1px solid rgba(197, 198, 205, 0.08);
-  text-align: center;
-  line-height: 1.2;
+  text-align: right;
+  line-height: var(--line-height-tight);
 }
 
 body.potion-page .potion-table th:first-child,
@@ -934,9 +1046,19 @@ body.potion-page .potion-table td:first-child {
   text-align: left;
 }
 
+body.potion-page .honor-table th:first-child,
+body.potion-page .honor-table td:first-child {
+  text-align: right;
+}
+
+body.potion-page .honor-table th:nth-child(2),
+body.potion-page .honor-table td:nth-child(2) {
+  text-align: left;
+}
+
 body.potion-page .potion-table th {
   background: var(--color-surface-head);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 body.potion-page .potion-table tbody tr:nth-child(even) {
@@ -983,8 +1105,9 @@ body.personal-analytics-page .sortable {
 
 body.potion-page .sortable .sort-indicator,
 body.personal-analytics-page .sortable .sort-indicator {
+  display: inline-flex;
+  align-items: center;
   margin-left: 0.35rem;
-  font-size: 0.9em;
   opacity: 0.85;
 }
 
@@ -1026,7 +1149,7 @@ body.potion-page .add-log-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: var(--z-overlay);
   background-color: rgba(0, 0, 0, 0.65);
   align-items: center;
   justify-content: center;
@@ -1048,8 +1171,9 @@ body.potion-page .add-log-dialog {
 
 body.potion-page .add-log-title {
   margin: 0 0 1.25rem;
-  font-size: 1.05rem;
-  font-weight: 500;
+  font-size: var(--font-title-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
   color: var(--color-text-strong);
 }
 
@@ -1061,22 +1185,22 @@ body.potion-page .add-log-field {
 }
 
 body.potion-page .add-log-label {
-  font-size: 0.82rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-soft);
 }
 
 body.potion-page .add-log-label span {
   color: var(--color-text-faint);
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
 }
 
 body.potion-page .add-log-input {
-  padding: 0.45rem 0.65rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   width: 100%;
@@ -1085,7 +1209,7 @@ body.potion-page .add-log-input {
 
 body.potion-page .add-log-input:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 body.potion-page .add-log-actions {
@@ -1096,7 +1220,7 @@ body.potion-page .add-log-actions {
 
 body.potion-page .add-log-status {
   margin-top: 0.75rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-soft);
   min-height: 1.2em;
 }
@@ -1113,10 +1237,6 @@ body.potion-page .add-log-status.success {
 /* =========================
    GALLERY PAGE
    ========================= */
-
-body.gallery-page .container-inner {
-  padding-bottom: 6rem;
-}
 
 body.gallery-page .potion-top-actions {
   display: flex;
@@ -1253,8 +1373,8 @@ body.gallery-page .gallery-lightbox-close {
   right: 0.625rem;
   width: 44px;
   height: 44px;
-  font-size: 1.9rem;
-  line-height: 1;
+  font-size: var(--font-size-display-sm);
+  line-height: var(--line-height-condensed);
 }
 
 body.gallery-page .gallery-lightbox-close:hover {
@@ -1264,11 +1384,11 @@ body.gallery-page .gallery-lightbox-close:hover {
 body.gallery-page .gallery-lightbox-nav {
   position: absolute;
   top: 50%;
-  z-index: 2;
+  z-index: var(--z-lightbox-nav);
   width: 52px;
   height: 52px;
   font-size: 2rem;
-  line-height: 1;
+  line-height: var(--line-height-condensed);
   transform: translateY(-50%);
 }
 
@@ -1284,7 +1404,7 @@ body.gallery-page #lightboxCaption {
   margin: 0.75rem 0 0;
   color: var(--color-text-soft);
   text-align: center;
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
 }
 
 
@@ -1292,11 +1412,23 @@ body.gallery-page #lightboxCaption {
    ANALYTICS
    ========================= */
 
+body.analytics-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.analytics-page .container-inner > h1,
+body.analytics-page .container-inner > ul,
+body.analytics-page .container-inner > #analyticsStatus,
+body.analytics-page .container-inner > .last-updated-text,
+body.analytics-page .container-inner > .analytics-grid {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 body.analytics-page .analytics-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
 }
 
 body.analytics-page .analytics-card {
@@ -1321,7 +1453,8 @@ body.analytics-page .analytics-card-header {
 
 body.analytics-page .analytics-card h2 {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: var(--font-title-sm);
+  line-height: var(--line-height-tight);
   color: var(--color-text-strong);
 }
 
@@ -1329,8 +1462,8 @@ body.analytics-page .analytics-scope-chip {
   flex-shrink: 0;
   padding: 0.15rem 0.55rem;
   border-radius: var(--radius-pill);
-  font-size: 0.7rem;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   white-space: nowrap;
   border: 1px solid var(--color-border-mid);
   color: var(--color-text-faint);
@@ -1363,7 +1496,7 @@ body.analytics-page .analytics-split-col .analytics-scope-chip {
 body.analytics-page .analytics-card-caption {
   margin: 0 0 0.8rem;
   color: var(--color-text-faint);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   font-style: italic;
 }
 
@@ -1390,6 +1523,16 @@ body.analytics-page .analytics-chart-wrap canvas {
    PERSONAL ANALYTICS
    ========================= */
 
+body.personal-analytics-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.personal-analytics-page .container-inner > h1,
+body.personal-analytics-page .container-inner > .potion-view-switch {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 body.personal-analytics-page .personal-analytics-chart-wrap {
   position: relative;
   height: 420px;
@@ -1415,13 +1558,13 @@ body.personal-analytics-page .player-controls-grid select {
 
 body.personal-analytics-page .player-raid-count {
   color: var(--color-text-faint);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   white-space: nowrap;
 }
 
 body.personal-analytics-page .player-potion-stat {
   color: var(--color-text-faint);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   white-space: nowrap;
 }
 
@@ -1432,9 +1575,9 @@ body.personal-analytics-page .player-search-layout {
 }
 
 body.personal-analytics-page .player-search-hint {
-  font-size: 13px;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   max-width: 280px;
   margin: 0;
 }
@@ -1449,12 +1592,17 @@ body.personal-analytics-page .player-siblings-table td {
   padding: 0.4rem 0.6rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
 }
 
 body.personal-analytics-page .player-siblings-table th {
   color: var(--color-text-strong);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
+}
+
+body.personal-analytics-page .player-siblings-table th:nth-child(n+3),
+body.personal-analytics-page .player-siblings-table td:nth-child(n+3) {
+  text-align: right;
 }
 
 body.personal-analytics-page .player-siblings-table tbody tr:hover {
@@ -1497,8 +1645,8 @@ body.personal-analytics-page .autocomplete-clear {
   padding: 0;
   width: 1.2rem;
   height: 1.2rem;
-  line-height: 1;
-  font-size: 1.15rem;
+  line-height: var(--line-height-condensed);
+  font-size: var(--font-size-lg);
   color: var(--color-text-faint);
   cursor: pointer;
 }
@@ -1513,23 +1661,24 @@ body.personal-analytics-page .autocomplete-list {
   top: 100%;
   left: 0;
   right: 0;
-  z-index: 20;
+  z-index: var(--z-dropdown);
   margin-top: 0.25rem;
   max-height: 28.2rem;
   overflow-y: auto;
-  border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-lg);
   background-color: rgba(12, 21, 33, 0.97);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 body.personal-analytics-page .autocomplete-list.is-open {
   display: block;
+  animation: primer-dropdown-in 0.12s cubic-bezier(0, 0.1, 0.1, 1) backwards;
 }
 
 body.personal-analytics-page .autocomplete-item {
   padding: 0.3rem 0.65rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-strong);
   cursor: pointer;
 }
@@ -1540,7 +1689,7 @@ body.personal-analytics-page .autocomplete-item:hover {
 
 body.personal-analytics-page .autocomplete-empty {
   padding: 0.3rem 0.65rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
@@ -1552,18 +1701,18 @@ body.personal-analytics-page .spline-select-wrap {
 
 body.personal-analytics-page .spline-select-wrap label {
   color: var(--color-text-soft);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
 }
 
 body.personal-analytics-page .spline-select-wrap select {
   appearance: none;
   padding: 0.35rem 0.55rem;
   padding-right: 2rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   outline: none;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
@@ -1577,7 +1726,7 @@ body.personal-analytics-page .spline-select-wrap select:hover {
 
 body.personal-analytics-page .spline-select-wrap select:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 body.personal-analytics-page .boss-checkboxes-head {
@@ -1597,7 +1746,7 @@ body.personal-analytics-page .link-button {
   border: none;
   padding: 0;
   color: var(--color-link);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 
@@ -1610,24 +1759,28 @@ body.personal-analytics-page .boss-checkboxes {
   grid-template-columns: repeat(5, max-content);
   gap: 0.4rem 1.4rem;
   padding: 0.6rem 0.85rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
+  border: 1px solid var(--color-border-input);
   border-radius: var(--radius-sm);
   background-color: rgba(12, 21, 33, 0.88);
 }
 
 body.personal-analytics-page .boss-checkboxes-empty {
   color: var(--color-text-faint);
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
 }
 
 body.personal-analytics-page .boss-checkbox {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
   white-space: nowrap;
   color: var(--color-text-strong);
   cursor: pointer;
+}
+
+body.personal-analytics-page .boss-checkbox input[type="checkbox"] {
+  accent-color: var(--color-link);
 }
 
 body.personal-analytics-page .boss-checkbox-swatch {
@@ -1643,8 +1796,8 @@ body.personal-analytics-page .boss-checkbox-swatch {
    ========================= */
 
 .intro-text {
-  font-size: 0.9rem;
-  line-height: 1.65;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
   width: max-content;
   max-width: 100%;
   margin-inline: auto;
@@ -1655,9 +1808,9 @@ body.personal-analytics-page .boss-checkbox-swatch {
 .last-updated-text {
   margin-top: 0.15rem;
   color: var(--color-text-faint);
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
   font-style: italic;
-  line-height: 1.35;
+  line-height: var(--line-height-default);
 }
 
 .player-badge {
@@ -1668,9 +1821,9 @@ body.personal-analytics-page .boss-checkbox-swatch {
   height: 18px;
   margin-right: 0.35rem;
   border-radius: 50%;
-  font-size: 0.65rem;
-  font-weight: 700;
-  line-height: 1;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-condensed);
   flex-shrink: 0;
   vertical-align: middle;
   cursor: default;
@@ -1687,10 +1840,11 @@ body.personal-analytics-page .boss-checkbox-swatch {
 }
 
 .primary-character-badge {
-  padding: 0.05rem 0.35rem;
+  padding: 0 7px;
   border-radius: var(--radius-pill);
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: 18px;
   color: #1d2636;
   background-color: var(--color-link);
 }
@@ -1699,6 +1853,19 @@ body.personal-analytics-page .boss-checkbox-swatch {
 /* =========================
    RAID MANAGER
    ========================= */
+
+body.raid-manager-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.raid-manager-page .container-inner > h1,
+body.raid-manager-page .container-inner > ul,
+body.raid-manager-page .container-inner > #loginGate,
+body.raid-manager-page .container-inner > .raid-form-panel,
+body.raid-manager-page .container-inner > #archiveSection {
+  margin-top: 0;
+  margin-bottom: 0;
+}
 
 body.raid-manager-detail-page .raid-forms-grid {
   display: grid;
@@ -1748,12 +1915,12 @@ body.raid-manager-page .raid-toggle-group {
 
 body.raid-manager-page .raid-toggle-btn {
   padding: 0.35rem 0.7rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
+  border: 1px solid var(--color-border-input);
   border-radius: var(--radius-sm);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   white-space: nowrap;
   cursor: pointer;
   transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
@@ -1780,14 +1947,14 @@ body.raid-manager-page .raid-filter-checkbox {
   gap: 0.3rem;
   grid-column: 2;
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 
 body.raid-manager-detail-page .raid-no-characters-hint {
   grid-column: 2;
   margin: -0.25rem 0 0;
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
@@ -1801,12 +1968,12 @@ body.raid-manager-detail-page .raid-input-wrap input[type="text"],
 body.account-page .raid-input-wrap input[type="text"],
 body.raid-manager-detail-page .raid-items-filters select,
 body.raid-manager-detail-page .raid-item-picker-trigger {
-  padding: 0.45rem 0.65rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -1831,7 +1998,7 @@ body.account-page .raid-input-wrap input[type="text"]:focus,
 body.raid-manager-detail-page .raid-items-filters select:focus,
 body.raid-manager-detail-page .raid-item-picker-trigger:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 body.raid-manager-detail-page .raid-soft-form select:disabled,
@@ -1846,11 +2013,11 @@ body.raid-manager-page .raid-create-form select,
 body.raid-manager-detail-page .raid-soft-form select,
 body.raid-manager-detail-page .raid-items-filters select {
   appearance: none;
-  padding-right: 2rem;
+  padding-right: 2.5rem;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 0.65rem center;
-  background-size: 0.65rem;
+  background-position: right 0.5rem center;
+  background-size: 1rem;
 }
 
 body.raid-manager-page .ranking-table-wrap {
@@ -1883,13 +2050,13 @@ body.raid-manager-page .raid-table td {
   padding: 0.3rem 0.4rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
-  font-size: 0.82rem;
+  font-size: var(--font-size-base);
   vertical-align: top;
 }
 
 body.raid-manager-page .raid-table th {
   color: var(--color-text-strong);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 body.raid-manager-page .raid-table tbody tr:hover {
@@ -1917,12 +2084,21 @@ body.raid-manager-detail-page .raid-list-item-name {
   gap: 0.35rem;
 }
 
+body.raid-manager-detail-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.raid-manager-detail-page .container-inner > h1,
+body.raid-manager-detail-page .container-inner > .raid-banner-row {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 body.raid-manager-detail-page .raid-banner-row {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin: 0.5rem 0;
 }
 
 body.raid-manager-detail-page .raid-settings-banner {
@@ -1937,10 +2113,11 @@ body.raid-manager-detail-page .raid-copy-link-wrap {
 
 body.raid-manager-detail-page .raid-chip,
 body.raid-manager-page .raid-chip {
-  padding: 0.15rem 0.55rem;
+  padding: 0 7px;
   border-radius: var(--radius-pill);
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: 18px;
   white-space: nowrap;
   border: 1px solid var(--color-border-mid);
   color: var(--color-text-faint);
@@ -1959,7 +2136,7 @@ body.raid-manager-page .raid-chip--completed {
   color: var(--color-text-faint);
   border-color: var(--color-border-strong);
   background-color: var(--color-surface-soft);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 body.raid-manager-page .link-button-std {
@@ -1968,7 +2145,7 @@ body.raid-manager-page .link-button-std {
   border-radius: var(--radius-md);
   padding: 0.25rem 0.6rem;
   color: var(--color-link);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 
@@ -1995,7 +2172,7 @@ body.raid-manager-page .archive-confirm-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: var(--z-overlay);
   background-color: rgba(0, 0, 0, 0.65);
   align-items: center;
   justify-content: center;
@@ -2018,14 +2195,14 @@ body.raid-manager-page .archive-confirm-dialog {
 
 body.raid-manager-page .archive-confirm-text {
   margin: 0 0 0.25rem;
-  font-size: 1.05rem;
-  font-weight: 500;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-strong);
 }
 
 body.raid-manager-page .archive-confirm-raid-title {
   margin: 0 0 1.25rem;
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-soft);
 }
 
@@ -2066,8 +2243,8 @@ body.raid-manager-detail-page .raid-status-chip {
   display: inline-block;
   padding: 0.2rem 0.65rem;
   border-radius: var(--radius-pill);
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   border: 1px solid var(--color-border-mid);
   color: var(--color-text-faint);
   background-color: var(--color-surface-soft);
@@ -2107,13 +2284,13 @@ body.raid-manager-detail-page .raid-tooltip {
   border: 1px solid var(--color-border-mid);
   background-color: var(--color-surface-overlay);
   color: var(--color-text-strong);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -4px);
   transition: opacity var(--transition-fast), transform var(--transition-fast);
-  z-index: 5;
+  z-index: var(--z-tooltip-local);
 }
 
 body.raid-manager-detail-page .raid-tooltip.is-visible {
@@ -2131,7 +2308,7 @@ body.raid-manager-detail-page .link-button-std {
   border-radius: var(--radius-md);
   padding: 0.25rem 0.6rem;
   color: var(--color-link);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 
@@ -2169,7 +2346,8 @@ body.raid-manager-detail-page .raid-benchmark-panel {
 }
 
 body.raid-manager-detail-page .raid-benchmark-panel h2 {
-  font-size: 0.75rem;
+  font-size: var(--font-title-sm);
+  line-height: var(--line-height-tight);
   color: var(--color-link);
 }
 
@@ -2181,15 +2359,15 @@ body.raid-manager-detail-page .raid-benchmark-list {
   margin: 0.35rem 0 0;
   padding-left: 1.25rem;
   color: var(--color-link);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
 }
 
 body.raid-manager-detail-page .raid-benchmark-note {
   margin: 0.6rem 0 0;
   color: var(--color-link);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
 }
 
 body.raid-manager-detail-page .raid-input-wrap,
@@ -2214,8 +2392,8 @@ body.raid-manager-detail-page .raid-input-clear {
   padding: 0;
   width: 1.2rem;
   height: 1.2rem;
-  line-height: 1;
-  font-size: 1.15rem;
+  line-height: var(--line-height-condensed);
+  font-size: var(--font-size-lg);
   color: var(--color-text-faint);
   cursor: pointer;
 }
@@ -2236,25 +2414,26 @@ body.account-page .raid-autocomplete-list {
   top: 100%;
   left: 0;
   right: 0;
-  z-index: 20;
+  z-index: var(--z-dropdown);
   margin-top: 0.25rem;
   max-height: 18.75rem;
   overflow-y: auto;
-  border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-lg);
   background-color: rgba(12, 21, 33, 0.97);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 body.raid-manager-detail-page .raid-autocomplete-list.is-open,
 body.account-page .raid-autocomplete-list.is-open {
   display: block;
+  animation: primer-dropdown-in 0.12s cubic-bezier(0, 0.1, 0.1, 1) backwards;
 }
 
 body.raid-manager-detail-page .raid-autocomplete-item,
 body.account-page .raid-autocomplete-item {
   padding: 0.3rem 0.65rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-strong);
   cursor: pointer;
 }
@@ -2267,7 +2446,7 @@ body.account-page .raid-autocomplete-item:hover {
 body.raid-manager-detail-page .raid-autocomplete-empty,
 body.account-page .raid-autocomplete-empty {
   padding: 0.3rem 0.65rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
@@ -2304,18 +2483,19 @@ body.raid-manager-detail-page .raid-item-picker-list {
   top: 100%;
   left: 0;
   right: 0;
-  z-index: 20;
+  z-index: var(--z-dropdown);
   margin-top: 0.25rem;
   max-height: 18.75rem;
   overflow-y: auto;
-  border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-lg);
   background-color: rgba(12, 21, 33, 0.97);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 body.raid-manager-detail-page .raid-item-picker-list.is-open {
   display: block;
+  animation: primer-dropdown-in 0.12s cubic-bezier(0, 0.1, 0.1, 1) backwards;
 }
 
 body.raid-manager-detail-page .raid-item-picker-option {
@@ -2323,7 +2503,7 @@ body.raid-manager-detail-page .raid-item-picker-option {
   align-items: center;
   gap: 0.4rem;
   padding: 0.3rem 0.65rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-strong);
   cursor: pointer;
 }
@@ -2348,7 +2528,7 @@ body.raid-manager-detail-page .raid-player-name-cell {
 .raid-item-icon {
   width: 18px;
   height: 18px;
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--color-border-mid);
   object-fit: cover;
   flex-shrink: 0;
@@ -2373,8 +2553,8 @@ body.account-page .raid-tab {
   margin-bottom: -1px;
   border-bottom: 2px solid transparent;
   color: var(--color-text-faint);
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
 }
 
@@ -2399,12 +2579,12 @@ body.raid-manager-detail-page .raid-search-input {
   width: 100%;
   max-width: 260px;
   margin: 0.4rem 0;
-  padding: 0.45rem 0.65rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(197, 198, 205, 0.35);
+  padding: 5px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-input);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -2415,7 +2595,7 @@ body.raid-manager-detail-page .raid-search-input:hover {
 
 body.raid-manager-detail-page .raid-search-input:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 body.raid-manager-detail-page .raid-items-filters {
@@ -2430,8 +2610,13 @@ body.raid-manager-detail-page .raid-filter-checkbox {
   align-items: center;
   gap: 0.3rem;
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
+}
+
+body.raid-manager-page .raid-filter-checkbox input[type="checkbox"],
+body.raid-manager-detail-page .raid-filter-checkbox input[type="checkbox"] {
+  accent-color: var(--color-link);
 }
 
 body.raid-manager-detail-page .raid-hidden-notice {
@@ -2439,7 +2624,7 @@ body.raid-manager-detail-page .raid-hidden-notice {
   padding: 0.4rem 0.8rem;
   border-left: 3px solid var(--color-warning, #f0ad4e);
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
 }
 
 body.raid-manager-detail-page .raid-table {
@@ -2452,13 +2637,23 @@ body.raid-manager-detail-page .raid-table td {
   padding: 0.3rem 0.4rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
-  font-size: 0.82rem;
+  font-size: var(--font-size-base);
   vertical-align: top;
 }
 
 body.raid-manager-detail-page .raid-table th {
   color: var(--color-text-strong);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
+}
+
+body.raid-manager-detail-page #raidPlayersTable th:first-child,
+body.raid-manager-detail-page #raidPlayersTable td:first-child {
+  text-align: right;
+}
+
+body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(n+2):nth-child(-n+4),
+body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(n+2):nth-child(-n+4) {
+  text-align: right;
 }
 
 body.raid-manager-detail-page .raid-table tbody tr:hover {
@@ -2561,12 +2756,12 @@ body.raid-manager-detail-page .raid-weight-toggle {
 
 body.raid-manager-detail-page .raid-weight-toggle-btn {
   padding: 0.35rem 0.7rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
+  border: 1px solid var(--color-border-input);
   border-radius: var(--radius-sm);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
 }
@@ -2587,26 +2782,27 @@ body.raid-manager-detail-page .raid-weight-toggle-btn--active {
 }
 
 body.raid-manager-detail-page .raid-weight-badge {
-  padding: 0.05rem 0.35rem;
+  padding: 0 7px;
   border-radius: var(--radius-pill);
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: 18px;
   color: #1d2636;
   background-color: var(--color-link);
 }
 
 body.raid-manager-detail-page #raidItemTooltip {
   position: fixed;
-  z-index: 1000;
+  z-index: var(--z-sticky);
   max-width: 320px;
   padding: 0.6rem 0.75rem;
   background-color: rgba(8, 14, 24, 0.97);
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-sm);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.8rem;
-  line-height: 1.4;
+  box-shadow: var(--shadow-tooltip);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-default);
   color: #ffffff;
   pointer-events: none;
 }
@@ -2639,7 +2835,7 @@ body.raid-manager-detail-page #raidItemTooltip .whtt-sellprice,
 body.raid-manager-detail-page #raidItemTooltip .whtt-droppedby,
 body.raid-manager-detail-page #raidItemTooltip .whtt-dropchance {
   color: var(--color-text-faint);
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
 }
 
 body.raid-manager-detail-page #raidItemTooltip .moneygold { color: #ffd700; }
@@ -2651,9 +2847,9 @@ body.raid-manager-detail-page .raid-remove-btn {
   border: none;
   cursor: pointer;
   color: var(--color-text-faint);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   padding: 0 0.1rem;
-  line-height: 1;
+  line-height: var(--line-height-condensed);
 }
 
 body.raid-manager-detail-page .raid-remove-btn:hover {
@@ -2703,7 +2899,7 @@ body.raid-manager-detail-page .raid-audit-list {
 body.raid-manager-detail-page .raid-audit-row {
   padding: 0.25rem 0;
   border-bottom: 1px solid var(--color-border);
-  font-size: 0.82rem;
+  font-size: var(--font-size-base);
 }
 
 body.raid-manager-detail-page .raid-audit-row:last-child {
@@ -2712,7 +2908,7 @@ body.raid-manager-detail-page .raid-audit-row:last-child {
 
 body.raid-manager-detail-page .raid-audit-time {
   color: var(--color-text-faint);
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
   margin-right: 0.4rem;
 }
 
@@ -2722,7 +2918,7 @@ body.raid-manager-detail-page .raid-audit-time {
    RESPONSIVE
    ========================= */
 
-@media (max-width: 1024px) {
+@media (max-width: 1012px) {
   body.gallery-page .gallery-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2768,17 +2964,18 @@ body.raid-manager-detail-page .raid-audit-time {
   }
 
   .container-inner {
-    padding: 1rem 0.875rem 5rem;
+    --gutter-x: 0.875rem;
+    padding: 1rem 0.875rem;
   }
 
   .collapsible .heading {
-    font-size: 1.1rem;
+    font-size: var(--font-title-sm);
   }
 
   .ranking-link-btn {
     width: 100%;
     min-width: 0;
-    font-size: 1.05rem;
+    font-size: var(--font-size-lg);
   }
 
   .ranking-controls {
@@ -2890,10 +3087,6 @@ body.raid-manager-detail-page .raid-audit-time {
     overflow-x: auto;
   }
 
-  body.gallery-page .container-inner {
-    padding-bottom: 5.5rem;
-  }
-
   body.gallery-page .potion-top-actions {
     justify-content: stretch;
   }
@@ -2936,11 +3129,12 @@ body.raid-manager-detail-page .raid-audit-time {
   }
 
   body.gallery-page #lightboxCaption {
-    font-size: 0.9rem;
+    font-size: var(--font-size-base);
   }
 
   body:not(.ranking-page):not(.potion-page) .container-inner {
-    padding: 1rem 0.875rem 5rem;
+    --gutter-x: 0.875rem;
+    padding: 1rem 0.875rem;
   }
 
   body:not(.ranking-page):not(.potion-page) .collapsible .heading {
@@ -2949,8 +3143,8 @@ body.raid-manager-detail-page .raid-audit-time {
     justify-content: space-between;
     gap: 0.5rem;
     padding: 0.75rem 0.875rem;
-    font-size: 1.05rem;
-    line-height: 1.25;
+    font-size: var(--font-title-sm);
+    line-height: var(--line-height-tight);
     white-space: normal;
   }
 
@@ -2958,8 +3152,8 @@ body.raid-manager-detail-page .raid-audit-time {
     order: 0;
     flex: 0 0 auto;
     margin-left: 0;
-    font-size: 1.05rem;
-    line-height: 1;
+    font-size: var(--font-title-sm);
+    line-height: var(--line-height-condensed);
   }
 
   body:not(.ranking-page):not(.potion-page) .collapsible .heading,
@@ -2982,8 +3176,8 @@ body.raid-manager-detail-page .raid-audit-time {
     width: 100%;
     min-width: 0;
     padding: 0.9rem 1rem;
-    font-size: 1.05rem;
-    line-height: 1.2;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-tight);
     white-space: normal;
   }
 
@@ -3078,13 +3272,13 @@ body.account-page .account-info {
 }
 
 body.account-page .account-username {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-text-strong);
 }
 
 body.account-page .account-discord-id {
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
@@ -3097,18 +3291,18 @@ body.account-page .account-form {
 }
 
 body.account-page .account-form input[type="text"] {
-  padding: 0.45rem 0.65rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
-  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-md);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   outline: none;
 }
 
 body.account-page .account-form input[type="text"]:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
 body.account-page .account-chars-layout {
@@ -3131,9 +3325,9 @@ body.account-page .account-chars-hints {
 }
 
 body.account-page .account-chars-hint {
-  font-size: 13px;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   max-width: 200px;
   padding-top: 0.25rem;
 }
@@ -3148,14 +3342,14 @@ body.account-page .account-characters-table td {
   padding: 0.4rem 0.6rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   vertical-align: middle;
 }
 
 body.account-page .account-characters-table th {
   color: var(--color-text-strong);
-  font-weight: 500;
-  font-size: 0.78rem;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
 }
 
 body.account-page .account-characters-table tbody tr:hover {
@@ -3166,7 +3360,7 @@ body.account-page .account-character-name-cell {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-strong);
 }
 
@@ -3181,6 +3375,10 @@ body.account-page .account-primary-col,
 body.account-page .account-primary-checkbox-td {
   text-align: center;
   width: 5rem;
+}
+
+body.account-page .account-primary-checkbox-td input[type="checkbox"] {
+  accent-color: var(--color-link);
 }
 
 body.account-page .account-delete-col {
@@ -3218,12 +3416,12 @@ body.account-page .account-lang-toggle {
 
 body.account-page .account-lang-toggle-btn {
   padding: 0.35rem 0.7rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
+  border: 1px solid var(--color-border-input);
   border-radius: var(--radius-sm);
   background-color: rgba(12, 21, 33, 0.88);
   color: var(--color-text-strong);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   white-space: nowrap;
   cursor: pointer;
   transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
@@ -3250,7 +3448,7 @@ body.account-page .account-admin-tools + .account-admin-tools {
 
 body.account-page .account-admin-hint {
   margin: 0 0 0.5rem;
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
@@ -3280,11 +3478,11 @@ body.account-page .account-default-officer-item {
   justify-content: space-between;
   padding: 0.35rem 0.5rem;
   border-bottom: 1px solid var(--color-border);
-  font-size: 0.9rem;
+  font-size: var(--font-size-base);
 }
 
 body.account-page .account-default-officers-empty {
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
   padding: 0.35rem 0;
 }
@@ -3295,7 +3493,7 @@ body.account-page .link-button-std {
   border-radius: var(--radius-md);
   padding: 0.25rem 0.6rem;
   color: var(--color-link);
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
 }
 
@@ -3303,7 +3501,7 @@ body.account-page .link-button-std:hover {
   background-color: var(--color-hover);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 544px) {
   body.raid-manager-page .raid-create-form {
     grid-template-columns: 1fr;
   }
@@ -3314,7 +3512,7 @@ body.account-page .link-button-std:hover {
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 544px) {
   body.gallery-page .gallery-grid {
     grid-template-columns: 1fr;
   }
@@ -3343,7 +3541,7 @@ body.account-page .link-button-std:hover {
     width: 48px;
     height: 48px;
     z-index: auto;
-    font-size: 1.9rem;
+    font-size: var(--font-size-display-sm);
     transform: none;
   }
 
@@ -3368,7 +3566,7 @@ body.account-page .link-button-std:hover {
     margin: 0;
     color: var(--color-text-soft);
     text-align: center;
-    font-size: 0.95rem;
+    font-size: var(--font-size-base);
   }
 
   .nav__link {
@@ -3401,22 +3599,22 @@ body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(3) { width: 10%; 
 body.raid-manager-detail-page .penalty-input {
   width: 5rem;
   padding: 0.25rem 0.375rem;
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   text-align: center;
-  background: var(--color-surface-2);
+  background-color: rgba(12, 21, 33, 0.88);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   color: var(--color-text);
 }
 
 body.raid-manager-detail-page .penalty-input:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-link);
   outline-offset: 1px;
 }
 
 body.raid-manager-detail-page .penalty-value--active {
   color: var(--color-danger);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 body.raid-manager-detail-page .penalty-value--none {
@@ -3425,34 +3623,34 @@ body.raid-manager-detail-page .penalty-value--none {
 
 body.raid-manager-detail-page .penalty-potion-stat {
   color: var(--color-text-faint);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   white-space: nowrap;
 }
 
 body.raid-manager-detail-page .penalty-input--nonzero {
   color: var(--color-danger);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 body.raid-manager-detail-page .penalty-reason-input {
   width: 100%;
   min-width: 8rem;
   padding: 0.25rem 0.375rem;
-  font-size: 0.875rem;
-  background: var(--color-surface-2);
+  font-size: var(--font-size-base);
+  background-color: rgba(12, 21, 33, 0.88);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   color: var(--color-text);
 }
 
 body.raid-manager-detail-page .penalty-reason-input:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-link);
   outline-offset: 1px;
 }
 
 body.raid-manager-detail-page .penalty-reason-text {
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
   overflow-wrap: break-word;
   word-break: break-word;
 }
@@ -3496,8 +3694,8 @@ body.raid-manager-detail-page .penalty-reason-text {
   border-radius: 50%;
   background: none;
   color: var(--color-link);
-  font-size: 1.1rem;
-  line-height: 1;
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-condensed);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 }
@@ -3509,7 +3707,7 @@ body.raid-manager-detail-page .penalty-reason-text {
 
 .raid-transfer-indicator {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: var(--font-size-sm);
   padding: 0.15rem 0.4rem;
   border-radius: var(--radius-sm);
   vertical-align: middle;
@@ -3532,7 +3730,7 @@ body.raid-manager-detail-page .penalty-reason-text {
   background: rgba(160, 168, 184, 0.1);
   border-left: 3px solid var(--color-text-faint);
   color: var(--color-text-soft);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
 }
 
 .raid-transfer-limit-row {
@@ -3541,23 +3739,23 @@ body.raid-manager-detail-page .penalty-reason-text {
   gap: 0.5rem;
   flex-wrap: wrap;
   margin-bottom: 0.75rem;
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-soft);
 }
 
 .raid-transfer-limit-row input[type="number"] {
   width: 4rem;
   padding: 0.3rem 0.45rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
+  border: 1px solid var(--color-border-input);
   border-radius: var(--radius-sm);
   background: rgba(12, 21, 33, 0.6);
   color: var(--color-text-strong);
-  font-size: 0.85rem;
+  font-size: var(--font-size-base);
 }
 
 .raid-transfer-limit-hint {
   color: var(--color-text-faint);
-  font-size: 0.78rem;
+  font-size: var(--font-size-base);
 }
 
 /* Модал підтвердження передачі */
@@ -3565,7 +3763,7 @@ body.raid-manager-detail-page .penalty-reason-text {
 .raid-modal {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3583,27 +3781,28 @@ body.raid-manager-detail-page .penalty-reason-text {
 
 .raid-modal-box {
   position: relative;
-  z-index: 1;
+  z-index: var(--z-modal-box);
   width: min(90vw, 26rem);
   padding: 1.5rem 1.75rem;
   border-radius: var(--radius-md, 0.6rem);
   background: #0f1c2e;
   border: 1px solid rgba(197, 198, 205, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-modal);
 }
 
 .raid-modal-title {
   margin: 0 0 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-title-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
   color: var(--color-text-strong);
 }
 
 .raid-modal-text {
   margin: 0 0 1rem;
-  font-size: 13px;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .raid-modal-field {
@@ -3613,18 +3812,18 @@ body.raid-manager-detail-page .penalty-reason-text {
 .raid-modal-field label {
   display: block;
   margin-bottom: 0.3rem;
-  font-size: 0.8rem;
+  font-size: var(--font-size-base);
   color: var(--color-text-faint);
 }
 
 .raid-modal-field select {
   width: 100%;
   padding: 0.4rem 0.6rem;
-  border: 1px solid rgba(197, 198, 205, 0.35);
+  border: 1px solid var(--color-border-input);
   border-radius: var(--radius-sm);
   background: rgba(12, 21, 33, 0.8);
   color: var(--color-text-strong);
-  font-size: 0.875rem;
+  font-size: var(--font-size-base);
 }
 
 .raid-modal-actions {
@@ -3643,10 +3842,10 @@ body.raid-manager-detail-page .penalty-reason-text {
 }
 
 .raid-bonus-chip {
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   padding: 1px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: rgba(34, 197, 94, 0.15);
   color: #22c55e;
   border: 1px solid rgba(34, 197, 94, 0.3);

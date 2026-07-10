@@ -392,6 +392,28 @@ function translateBoss(name) {
   return getNameLanguage() === "uk" ? (BOSS_NAMES_UK[name] || name) : name;
 }
 
+const BOSS_ABBR = {
+  "Lord Marrowgar": { uk: "ЛОР", en: "LOR" },
+  "Lady Deathwhisper": { uk: "ЛЕД", en: "LAD" },
+  "Gunship Battle": { uk: "ПОВ", en: "GUN" },
+  "Deathbringer Saurfang": { uk: "САУ", en: "DEA" },
+  "Festergut": { uk: "ТУХ", en: "FES" },
+  "Rotface": { uk: "ГНИ", en: "ROT" },
+  "Professor Putricide": { uk: "ПРО", en: "PRO" },
+  "Blood Prince Council": { uk: "РАД", en: "BPC" },
+  "Blood-Queen Lana'thel": { uk: "КРИ", en: "BQL" },
+  "Valithria Dreamwalker": { uk: "ВАЛ", en: "VAL" },
+  "Sindragosa": { uk: "СИН", en: "SIN" },
+  "The Lich King": { uk: "КОР", en: "TLK" },
+  "Halion": { uk: "ХАЛ", en: "HAL" }
+};
+
+function bossAbbr(name) {
+  const entry = BOSS_ABBR[name];
+  if (entry) return entry[getNameLanguage()] || entry.en;
+  return (translateBoss(name) || name).slice(0, 3).toUpperCase();
+}
+
 function translateItem(name) {
   return getNameLanguage() === "uk" ? (ITEM_NAMES_UK[name] || name) : name;
 }
