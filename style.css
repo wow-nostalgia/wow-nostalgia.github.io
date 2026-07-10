@@ -217,6 +217,29 @@ h1 {
   padding: var(--gutter-y) var(--gutter-x);
 }
 
+body.index-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.index-page .container-inner > h1,
+body.index-page .container-inner > .intro-text {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+body.account-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.account-page .container-inner > h1,
+body.account-page .container-inner > #loggedOutView,
+body.account-page .container-inner > #loggedInView,
+body.account-page .container-inner > #accountLoading,
+body.account-page .container-inner > #callbackStatus {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 
 /* =========================
    HEADER / NAV
@@ -823,7 +846,18 @@ body.ranking-page .container-inner {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
+  gap: var(--space-6);
   padding: var(--gutter-y) var(--gutter-x);
+}
+
+body.ranking-page .container-inner > h1,
+body.ranking-page .container-inner > ul,
+body.ranking-page .container-inner > .ranking-controls,
+body.ranking-page .container-inner > .ranking-status-row,
+body.ranking-page .container-inner > .ranking-table-wrap,
+body.ranking-page .container-inner > .potion-view-switch {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 body.ranking-page .ranking-table-wrap {
@@ -852,8 +886,7 @@ body.ranking-page #rankingTable td {
 }
 
 body.ranking-page #rankingTable th {
-  max-width: 32px;
-  padding: 0.25rem 0.1rem 0.7rem;
+  padding: 0.35rem 0.4rem;
   line-height: var(--line-height-condensed);
   vertical-align: bottom;
   word-break: break-word;
@@ -861,18 +894,17 @@ body.ranking-page #rankingTable th {
 }
 
 body.ranking-page #rankingTable th .boss-header {
-  display: inline-block;
-  width: 1.7ch;
-  max-width: 1.7ch;
-  line-height: var(--line-height-condensed);
-  text-align: center;
-  white-space: normal;
-  word-break: normal;
-  overflow-wrap: normal;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  transform-origin: center center;
+  text-decoration: none;
+  border-bottom: 1px dotted var(--color-text-faint);
+  cursor: help;
+}
+
+body.ranking-page #rankingTable th .table-header-icon {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  color: var(--color-text-faint);
+  cursor: help;
 }
 
 
@@ -1380,11 +1412,23 @@ body.gallery-page #lightboxCaption {
    ANALYTICS
    ========================= */
 
+body.analytics-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.analytics-page .container-inner > h1,
+body.analytics-page .container-inner > ul,
+body.analytics-page .container-inner > #analyticsStatus,
+body.analytics-page .container-inner > .last-updated-text,
+body.analytics-page .container-inner > .analytics-grid {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 body.analytics-page .analytics-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
 }
 
 body.analytics-page .analytics-card {
@@ -1478,6 +1522,16 @@ body.analytics-page .analytics-chart-wrap canvas {
 /* =========================
    PERSONAL ANALYTICS
    ========================= */
+
+body.personal-analytics-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.personal-analytics-page .container-inner > h1,
+body.personal-analytics-page .container-inner > .potion-view-switch {
+  margin-top: 0;
+  margin-bottom: 0;
+}
 
 body.personal-analytics-page .personal-analytics-chart-wrap {
   position: relative;
@@ -1800,6 +1854,19 @@ body.personal-analytics-page .boss-checkbox-swatch {
    RAID MANAGER
    ========================= */
 
+body.raid-manager-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.raid-manager-page .container-inner > h1,
+body.raid-manager-page .container-inner > ul,
+body.raid-manager-page .container-inner > #loginGate,
+body.raid-manager-page .container-inner > .raid-form-panel,
+body.raid-manager-page .container-inner > #archiveSection {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 body.raid-manager-detail-page .raid-forms-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -2017,12 +2084,21 @@ body.raid-manager-detail-page .raid-list-item-name {
   gap: 0.35rem;
 }
 
+body.raid-manager-detail-page .container-inner {
+  gap: var(--space-6);
+}
+
+body.raid-manager-detail-page .container-inner > h1,
+body.raid-manager-detail-page .container-inner > .raid-banner-row {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 body.raid-manager-detail-page .raid-banner-row {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin: 0.5rem 0;
 }
 
 body.raid-manager-detail-page .raid-settings-banner {

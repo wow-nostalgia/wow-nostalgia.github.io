@@ -8,6 +8,17 @@ const compareBtn = document.getElementById('compareBtn');
 
 const selectedPlayers = new Set();
 
+const HEADER_ICONS = {
+  __index: {
+    title: 'Рейтинг гільдії',
+    svg: '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M1.75 16A1.75 1.75 0 0 1 0 14.25V1.75C0 .784.784 0 1.75 0h8.5C11.216 0 12 .784 12 1.75v12.5c0 .085-.006.168-.018.25h2.268a.25.25 0 0 0 .25-.25V8.285a.25.25 0 0 0-.111-.208l-1.055-.703a.749.749 0 1 1 .832-1.248l1.055.703c.487.325.779.871.779 1.456v5.965A1.75 1.75 0 0 1 14.25 16h-3.5a.766.766 0 0 1-.197-.026c-.099.017-.2.026-.303.026h-3a.75.75 0 0 1-.75-.75V14h-1v1.25a.75.75 0 0 1-.75.75Zm-.25-1.75c0 .138.112.25.25.25H4v-1.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 .75.75v1.25h2.25a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25ZM3.75 6h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5ZM3 3.75A.75.75 0 0 1 3.75 3h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 3 3.75Zm4 3A.75.75 0 0 1 7.75 6h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 7 6.75ZM7.75 3h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5ZM3 9.75A.75.75 0 0 1 3.75 9h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 3 9.75ZM7.75 9h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5Z"/></svg>'
+  },
+  overallRank: {
+    title: 'Рейтинг сервера',
+    svg: '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM5.78 8.75a9.64 9.64 0 0 0 1.363 4.177c.255.426.542.832.857 1.215.245-.296.551-.705.857-1.215A9.64 9.64 0 0 0 10.22 8.75Zm4.44-1.5a9.64 9.64 0 0 0-1.363-4.177c-.307-.51-.612-.919-.857-1.215a9.927 9.927 0 0 0-.857 1.215A9.64 9.64 0 0 0 5.78 7.25Zm-5.944 1.5H1.543a6.507 6.507 0 0 0 4.666 5.5c-.123-.181-.24-.365-.352-.552-.715-1.192-1.437-2.874-1.581-4.948Zm-2.733-1.5h2.733c.144-2.074.866-3.756 1.58-4.948.12-.197.237-.381.353-.552a6.507 6.507 0 0 0-4.666 5.5Zm10.181 1.5c-.144 2.074-.866 3.756-1.58 4.948-.12.197-.237.381-.353.552a6.507 6.507 0 0 0 4.666-5.5Zm2.733-1.5a6.507 6.507 0 0 0-4.666-5.5c.123.181.24.365.353.552.714 1.192 1.436 2.874 1.58 4.948Z"/></svg>'
+  }
+};
+
 let lastUpdatedText = document.getElementById('lastUpdatedText');
 
 if (!lastUpdatedText && tableStatus) {
@@ -148,7 +159,9 @@ function renderTable(className, specName) {
     { key: 'overallScore', label: 'Очки' },
     ...bossColumns.map(bossName => ({
       key: `bosses.${bossName}`,
-      label: translateBoss(bossName)
+      label: translateBoss(bossName),
+      isBoss: true,
+      bossName
     }))
   ];
 
@@ -158,10 +171,23 @@ function renderTable(className, specName) {
     const th = document.createElement('th');
     if (col.key === '__checkbox') th.classList.add('checkbox-cell');
     if (col.key !== '__checkbox' && col.key !== 'name') th.classList.add('ranking-table-numeric');
-    const wrap = document.createElement('div');
-    wrap.className = 'boss-header';
-    wrap.textContent = col.label;
-    th.appendChild(wrap);
+    const headerIcon = HEADER_ICONS[col.key];
+    if (col.isBoss) {
+      const abbr = document.createElement('abbr');
+      abbr.className = 'boss-header';
+      abbr.title = col.label;
+      abbr.textContent = bossAbbr(col.bossName);
+      th.appendChild(abbr);
+    } else if (headerIcon) {
+      const abbr = document.createElement('abbr');
+      abbr.className = 'table-header-icon';
+      abbr.title = headerIcon.title;
+      abbr.setAttribute('aria-label', headerIcon.title);
+      abbr.innerHTML = headerIcon.svg;
+      th.appendChild(abbr);
+    } else {
+      th.textContent = col.label;
+    }
     headRow.appendChild(th);
   });
 

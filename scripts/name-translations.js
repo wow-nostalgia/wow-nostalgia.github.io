@@ -392,6 +392,11 @@ function translateBoss(name) {
   return getNameLanguage() === "uk" ? (BOSS_NAMES_UK[name] || name) : name;
 }
 
+function bossAbbr(name) {
+  const label = BOSS_NAMES_UK[name] || name;
+  return label.slice(0, 3).toUpperCase();
+}
+
 function translateItem(name) {
   return getNameLanguage() === "uk" ? (ITEM_NAMES_UK[name] || name) : name;
 }
