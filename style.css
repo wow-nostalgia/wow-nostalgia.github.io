@@ -2338,9 +2338,13 @@ body.raid-manager-detail-page .raid-officer-panel {
   background-color: var(--color-surface-soft);
 }
 
+body.raid-manager-detail-page .raid-officer-panel h2 {
+  margin-top: 0;
+}
+
 body.raid-manager-detail-page .raid-benchmark-panel {
   padding: 0.75rem;
-  border: 1px solid var(--color-border-accent);
+  border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-md);
   background-color: var(--color-surface-soft);
 }
@@ -2348,7 +2352,7 @@ body.raid-manager-detail-page .raid-benchmark-panel {
 body.raid-manager-detail-page .raid-benchmark-panel h2 {
   font-size: var(--font-title-sm);
   line-height: var(--line-height-tight);
-  color: var(--color-link);
+  color: var(--color-text-strong);
 }
 
 body.raid-manager-detail-page .raid-benchmark-note a {
@@ -2358,14 +2362,14 @@ body.raid-manager-detail-page .raid-benchmark-note a {
 body.raid-manager-detail-page .raid-benchmark-list {
   margin: 0.35rem 0 0;
   padding-left: 1.25rem;
-  color: var(--color-link);
+  color: var(--color-text);
   font-size: var(--font-size-base);
   line-height: var(--line-height-relaxed);
 }
 
 body.raid-manager-detail-page .raid-benchmark-note {
   margin: 0.6rem 0 0;
-  color: var(--color-link);
+  color: var(--color-text);
   font-size: var(--font-size-base);
   line-height: var(--line-height-relaxed);
 }
@@ -3594,7 +3598,10 @@ body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(2) { width: 10%; 
 body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(3),
 body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(3) { width: 10%; }
 
-/* 4-та колонка (Причини) — решта 60% */
+body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(4),
+body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(4) { width: 10%; }
+
+/* 5-та колонка (Причини) — решта 50% */
 
 body.raid-manager-detail-page .penalty-input {
   width: 5rem;
