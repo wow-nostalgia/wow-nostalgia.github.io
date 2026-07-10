@@ -378,6 +378,7 @@ button.nav__link {
 }
 
 .nav__icon--inline {
+  display: inline-block;
   margin-right: 6px;
   flex-shrink: 0;
   vertical-align: -4px;
@@ -709,6 +710,15 @@ footer span {
   flex-direction: column;
   align-items: flex-end;
   gap: 0.15rem;
+}
+
+#loginGate {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+#loginGate p {
+  margin: 0 0 1rem;
 }
 
 .compare-btn {
