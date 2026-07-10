@@ -157,6 +157,7 @@ function renderTable(className, specName) {
   columns.forEach(col => {
     const th = document.createElement('th');
     if (col.key === '__checkbox') th.classList.add('checkbox-cell');
+    if (col.key !== '__checkbox' && col.key !== 'name') th.classList.add('ranking-table-numeric');
     const wrap = document.createElement('div');
     wrap.className = 'boss-header';
     wrap.textContent = col.label;
@@ -181,6 +182,7 @@ function renderTable(className, specName) {
 
       columns.forEach(col => {
         const td = document.createElement('td');
+        if (col.key !== '__checkbox' && col.key !== 'name') td.classList.add('ranking-table-numeric');
 
         if (col.key === '__checkbox') {
           td.classList.add('checkbox-cell');

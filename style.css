@@ -758,6 +758,8 @@ footer span {
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
   background-color: var(--color-surface-table);
+  box-shadow: inset -12px 0 12px -12px rgba(0, 0, 0, 0.35),
+    inset 12px 0 12px -12px rgba(0, 0, 0, 0.35);
 }
 
 #rankingTable {
@@ -775,6 +777,11 @@ footer span {
   padding: 0.15rem 0.2rem;
   border-bottom: 1px solid rgba(197, 198, 205, 0.16);
   text-align: left;
+}
+
+#rankingTable th.ranking-table-numeric,
+#rankingTable td.ranking-table-numeric {
+  text-align: right;
 }
 
 #rankingTable th {
@@ -809,12 +816,21 @@ body.ranking-page .container-inner {
 
 body.ranking-page .ranking-table-wrap {
   width: 100%;
+  max-height: 70vh;
   overflow-x: auto;
+  overflow-y: auto;
 }
 
 body.ranking-page #rankingTable {
   width: max-content;
   min-width: 100%;
+}
+
+body.ranking-page #rankingTable thead {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-dropdown);
+  background-color: var(--color-surface-overlay);
 }
 
 body.ranking-page #rankingTable th,
@@ -976,12 +992,22 @@ body.potion-page .potion-table th,
 body.potion-page .potion-table td {
   padding: 0.2rem 0.35rem;
   border: 1px solid rgba(197, 198, 205, 0.08);
-  text-align: center;
+  text-align: right;
   line-height: var(--line-height-tight);
 }
 
 body.potion-page .potion-table th:first-child,
 body.potion-page .potion-table td:first-child {
+  text-align: left;
+}
+
+body.potion-page .honor-table th:first-child,
+body.potion-page .honor-table td:first-child {
+  text-align: right;
+}
+
+body.potion-page .honor-table th:nth-child(2),
+body.potion-page .honor-table td:nth-child(2) {
   text-align: left;
 }
 
@@ -1034,8 +1060,9 @@ body.personal-analytics-page .sortable {
 
 body.potion-page .sortable .sort-indicator,
 body.personal-analytics-page .sortable .sort-indicator {
+  display: inline-flex;
+  align-items: center;
   margin-left: 0.35rem;
-  font-size: 0.9em;
   opacity: 0.85;
 }
 
@@ -1508,6 +1535,11 @@ body.personal-analytics-page .player-siblings-table td {
 body.personal-analytics-page .player-siblings-table th {
   color: var(--color-text-strong);
   font-weight: var(--font-weight-medium);
+}
+
+body.personal-analytics-page .player-siblings-table th:nth-child(n+3),
+body.personal-analytics-page .player-siblings-table td:nth-child(n+3) {
+  text-align: right;
 }
 
 body.personal-analytics-page .player-siblings-table tbody tr:hover {
@@ -2527,6 +2559,16 @@ body.raid-manager-detail-page .raid-table td {
 body.raid-manager-detail-page .raid-table th {
   color: var(--color-text-strong);
   font-weight: var(--font-weight-medium);
+}
+
+body.raid-manager-detail-page #raidPlayersTable th:first-child,
+body.raid-manager-detail-page #raidPlayersTable td:first-child {
+  text-align: right;
+}
+
+body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(n+2):nth-child(-n+4),
+body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(n+2):nth-child(-n+4) {
+  text-align: right;
 }
 
 body.raid-manager-detail-page .raid-table tbody tr:hover {
