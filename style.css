@@ -1533,6 +1533,10 @@ body.personal-analytics-page .container-inner > .potion-view-switch {
   margin-bottom: 0;
 }
 
+body.personal-analytics-page .container-inner > .ranking-checkbox-label {
+  align-self: flex-start;
+}
+
 body.personal-analytics-page .personal-analytics-chart-wrap {
   position: relative;
   height: 420px;
