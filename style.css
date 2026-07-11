@@ -240,6 +240,13 @@ body.account-page .container-inner > #callbackStatus {
   margin-bottom: 0;
 }
 
+body.account-page #loggedInView h2 {
+  margin: 0 0 0.75rem;
+  font-size: var(--font-title-sm);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-strong);
+}
+
 
 /* =========================
    HEADER / NAV
@@ -2340,6 +2347,13 @@ body.raid-manager-detail-page .raid-officer-panel {
   border: 1px solid var(--color-border-accent);
   border-radius: var(--radius-md);
   background-color: var(--color-surface-soft);
+}
+
+body.raid-manager-detail-page .raid-form-col h2 {
+  margin: 0 0 0.75rem;
+  font-size: var(--font-title-sm);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-strong);
 }
 
 body.raid-manager-detail-page .raid-officer-panel h2 {
