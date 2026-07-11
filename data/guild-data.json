@@ -9684,31 +9684,6 @@
       }
     },
     {
-      "name": "Небеса",
-      "server": "FreedomUA",
-      "class": "Paladin",
-      "spec": "Retribution",
-      "specIndex": 3,
-      "overallRank": 86,
-      "overallScore": 81.22,
-      "bosses": {
-        "Lord Marrowgar": 16507.2,
-        "Lady Deathwhisper": 12971.9,
-        "Deathbringer Saurfang": 18890.7,
-        "Festergut": 18120.9,
-        "Rotface": 17967.7,
-        "Professor Putricide": 11296.3,
-        "Blood Prince Council": 13396.6,
-        "Blood-Queen Lana'thel": 17627.1,
-        "Sindragosa": 10924.7,
-        "The Lich King": 10683.6,
-        "Toravon the Ice Watcher": 10888.5,
-        "Halion": 9727.8,
-        "Anub'arak": 9525,
-        "Valithria Dreamwalker": 1486.2
-      }
-    },
-    {
       "name": "Ashmore",
       "server": "FreedomUA",
       "class": "Death Knight",
@@ -10780,31 +10755,6 @@
         "Toravon the Ice Watcher": 0,
         "Halion": 13860.6,
         "Anub'arak": 9343.8,
-        "Valithria Dreamwalker": 0
-      }
-    },
-    {
-      "name": "Ноаукр",
-      "server": "FreedomUA",
-      "class": "Rogue",
-      "spec": "Combat",
-      "specIndex": 2,
-      "overallRank": 116,
-      "overallScore": 59.8,
-      "bosses": {
-        "Lord Marrowgar": 16031.2,
-        "Lady Deathwhisper": 15702.5,
-        "Deathbringer Saurfang": 18646.7,
-        "Festergut": 16433.7,
-        "Rotface": 15007.4,
-        "Professor Putricide": 9577.5,
-        "Blood Prince Council": 8419.2,
-        "Blood-Queen Lana'thel": 14059.2,
-        "Sindragosa": 7373.2,
-        "The Lich King": 8596.3,
-        "Toravon the Ice Watcher": 8927.8,
-        "Halion": 10039.5,
-        "Anub'arak": 9946,
         "Valithria Dreamwalker": 0
       }
     },
