@@ -10,18 +10,51 @@
 
 ## Дизайн-токени (завжди використовуй, не хардкодь)
 
+Портовані вручну з Primer-примітивів (`@primer/primitives@11.9.0` — сам пакет
+не підключений, тільки non-color токени radius/spacing/typography; колірна
+палітра — власна). Не плутай з розділом [WoW-специфічні кольори](#wow-специфічні-кольори-не-дизайн-токени)
+нижче — це окрема, навмисно не-темована група.
+
 | Категорія | Змінні |
 |---|---|
-| Кольори тексту | `--color-text`, `--color-text-strong`, `--color-text-soft`, `--color-text-muted`, `--color-text-faint` |
-| Поверхні | `--color-surface`, `--color-surface-soft`, `--color-surface-overlay`, `--color-surface-table` |
+| Кольори тексту | `--color-text`, `--color-text-strong`, `--color-text-soft`, `--color-text-muted`, `--color-text-faint`, `--color-on-accent` (#ffffff, текст на насичених/темних кольорових фонах) |
+| Поверхні | `--color-surface`, `--color-surface-soft`, `--color-surface-solid` (#1d2636), `--color-surface-overlay`, `--color-surface-table`, `--color-surface-modal` (#0f1c2e) |
 | Бордюри | `--color-border`, `--color-border-soft`, `--color-border-mid`, `--color-border-strong`, `--color-border-accent` |
 | Стани hover/active | `--color-hover`, `--color-hover-strong`, `--color-active` |
-| Акценти | `--color-link` (#7baaf5), `--color-link-hover` (#ffd700), `--color-brand`, `--color-accent-gold`, `--color-accent-purple` |
-| Семантика | `--color-success` (#63d471), `--color-danger` (#ff6b6b) |
+| Акценти | `--color-link` (#7baaf5), `--color-link-hover` (#ffd700), `--color-brand`, `--color-accent-gold`, `--color-accent-purple`, `--color-accent-orange` (#f2994a), `--color-accent-mint` (#6dd09a), `--color-accent-emerald` (#22c55e) |
+| Семантика | `--color-success` (#63d471) — колір тексту/чіпів; `--color-success-strong` (#3a9e4a) + `--color-success-strong-hover` (#2f8a3e) — суцільний фон кнопки; `--color-danger` (#ff6b6b) + `--color-danger-hover` (#e05252); `--color-warning` (#f0ad4e) |
 | Радіуси | `--radius-sm` (4px), `--radius-md` (8px), `--radius-lg` (10px), `--radius-xl` (14px), `--radius-pill` (999px) |
 | Тіні | `--shadow-sm`, `--shadow-md`, `--shadow-lg` |
 | Анімація | `--transition-fast` (0.2s ease) |
 | Відступи | `--space-1`…`--space-9` (0.15rem…2rem) |
+
+> `--color-success` і `--color-success-strong` — це РІЗНІ токени для різних ролей, не одне й те саме перцепційно вирівняне значення: перший — для тексту/чіпів на темному тлі, другий — для суцільного фону кнопки (за задумом темніший, щоб не сліпив). Те саме для `--color-danger`/`--color-danger-hover`.
+
+---
+
+## WoW-специфічні кольори (НЕ дизайн-токени)
+
+Фіксовані кольори якості предметів/грошей клієнта WotLK (тултіп предметів,
+`.raid-rarity--*`) — власний `:root`-блок **окремо** від секції DESIGN TOKENS
+у `style.css` (коментар "WoW game constants"), бо тема сайту їх ніколи не
+повинна чіпати:
+
+| Змінна | Значення | Де |
+|---|---|---|
+| `--wow-quality-poor` | #9d9d9d | `.q0` |
+| `--wow-quality-common` | #ffffff | `.q1`, `.raid-rarity--common` |
+| `--wow-quality-uncommon` | #1eff00 | `.q2`, `.raid-rarity--uncommon` |
+| `--wow-quality-rare` | #0070dd | `.q3`, `.raid-rarity--rare` |
+| `--wow-quality-epic` | #a335ee | `.q4`, `.raid-rarity--epic` |
+| `--wow-quality-legendary` | #ff8000 | `.q5` |
+| `--wow-quality-artifact` | #e6cc80 | `.q6` |
+| `--wow-quality-heirloom` | #00ccff | `.q7` |
+| `--wow-money-gold` / `-silver` / `-copper` | #ffd700 / #c0c0c0 / #b87333 | `.moneygold`/`.moneysilver`/`.moneycopper` |
+
+Юзай ці токени, а не сирі hex — вони й так дублювались між `.q*` і
+`.raid-rarity--*`, звідси й токенізація. Але ніколи не заміняй їх на
+`--color-*` дизайн-токени сайту, навіть якщо значення випадково збіглось
+(напр. `--color-link-hover` теж #ffd700) — семантика різна.
 
 ---
 
@@ -63,7 +96,7 @@ color: var(--color-link);
 font-size: 0.8rem;
 cursor: pointer;
 /* :hover */ background-color: var(--color-hover);
-/* --danger modifier */ color: --color-danger; border-color: rgba(255,107,107,0.4); bg: rgba(255,107,107,0.12);
+/* --danger modifier */ color: var(--color-danger); border-color: rgba(255,107,107,0.4); bg: rgba(255,107,107,0.12);
 ```
 
 ### Іконка-видалення: `.account-delete-btn` / `.archive-delete-btn`
@@ -96,17 +129,17 @@ SVG-іконка: `width="16" height="16"`, кошик (polyline 3 6 5 6 21 6 + 
 
 ```css
 body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn {
-  background: #3a9e4a;
-  border-color: #3a9e4a;
-  color: #ffffff;
+  background: var(--color-success-strong);
+  border-color: var(--color-success-strong);
+  color: var(--color-on-accent);
 }
 body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:hover:not(:disabled) {
-  background: #2f8a3e;
-  border-color: #2f8a3e;
+  background: var(--color-success-strong-hover);
+  border-color: var(--color-success-strong-hover);
 }
 ```
 
-> Колір `#3a9e4a` — затемнена версія `--color-success` (#63d471), підібрана так, щоб суцільний фон кнопки виглядав так само як `--color-success` у ролі тексту на темному тлі (перцепційне вирівнювання). Не заміняй на `var(--color-success)` — як фон він буде занадто яскравим.
+> `--color-success-strong` — окремий токен від `--color-success` (не той самий, затемнений вручну), бо як суцільний фон кнопки `--color-success` виглядав би занадто яскраво. Аналогічно для danger-кнопок: фон — `var(--color-danger)`, hover — `var(--color-danger-hover)`.
 
 ### Тогл-кнопки: `.raid-toggle-btn` / `.raid-weight-toggle-btn`
 ```css
@@ -119,7 +152,7 @@ font-size: 0.85rem; font-weight: 600;
 cursor: pointer;
 transition: border-color, background-color, color — var(--transition-fast);
 /* :hover */ border-color: rgba(123,170,245,0.55);
-/* --active */ background: var(--color-accent-gold); border-color: var(--color-accent-gold); color: #1d2636;
+/* --active */ background: var(--color-accent-gold); border-color: var(--color-accent-gold); color: var(--color-surface-solid);
 ```
 
 ---
@@ -296,8 +329,8 @@ font-size: 0.75rem; font-weight: 500; white-space: nowrap;
 border: 1px solid var(--color-border-mid);
 color: var(--color-text-faint);
 background-color: var(--color-surface-soft);
-/* --active */ color: --color-success; border: rgba(99,212,113,0.4); bg: rgba(99,212,113,0.12);
-/* --danger / error */ color: --color-danger; border: rgba(255,107,107,0.4); bg: rgba(255,107,107,0.12);
+/* --active */ color: var(--color-success); border: rgba(99,212,113,0.4); bg: rgba(99,212,113,0.12);
+/* --danger / error */ color: var(--color-danger); border: rgba(255,107,107,0.4); bg: rgba(255,107,107,0.12);
 ```
 
 `.player-badge` (гравець — гільдієць/легіонер): глобальний клас, не дублюй.
