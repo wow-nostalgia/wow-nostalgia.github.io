@@ -29,7 +29,17 @@
   --color-accent-purple: #cdb7e9;
 
   --color-success: #63d471;
+  --color-success-strong: #3a9e4a;
+  --color-success-strong-hover: #2f8a3e;
   --color-danger: #ff6b6b;
+  --color-danger-hover: #e05252;
+  --color-warning: #f0ad4e;
+
+  --color-on-accent: #ffffff;
+  --color-accent-orange: #f2994a;
+  --color-accent-mint: #6dd09a;
+  --color-accent-emerald: #22c55e;
+  --color-surface-modal: #0f1c2e;
 
   --color-border: rgba(197, 198, 205, 0.18);
   --color-border-soft: rgba(197, 198, 205, 0.15);
@@ -366,13 +376,13 @@ button.nav__link {
 
 .nav__link:hover {
   background: var(--color-hover);
-  color: #ffffff;
+  color: var(--color-on-accent);
   text-decoration: none;
 }
 
 .nav__link--active {
   background: var(--color-brand-dark);
-  color: #ffffff;
+  color: var(--color-on-accent);
 }
 
 .nav__link--icon {
@@ -529,7 +539,7 @@ button.nav__link {
 .info-tabs .collapsible.open .heading {
   background: var(--color-brand-dark);
   border-color: rgba(132, 170, 255, 0.35);
-  color: #ffffff;
+  color: var(--color-on-accent);
 }
 
 .info-tabs .collapsible.open .hider {
@@ -687,7 +697,7 @@ footer span {
 .analytics-day-check:has(input:checked) {
   background-color: var(--color-link);
   border-color: var(--color-link);
-  color: #1d2636;
+  color: var(--color-surface-solid);
 }
 
 .analytics-day-check input[type="checkbox"] {
@@ -820,13 +830,13 @@ footer span {
 }
 
 #rankingTable th {
-  color: #e6eefc;
+  color: var(--color-text-strong);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
 }
 
 #rankingTable td {
-  color: #d3d9e5;
+  color: var(--color-text-soft);
   font-size: var(--font-size-base);
 }
 
@@ -1008,7 +1018,7 @@ body.potion-page .potion-log-btn:hover {
 body.potion-page .potion-log-btn.active {
   background: var(--color-brand-dark);
   border-color: rgba(132, 170, 255, 0.35);
-  color: #ffffff;
+  color: var(--color-on-accent);
 }
 
 body.potion-page .potion-log-date {
@@ -1496,7 +1506,7 @@ body.analytics-page .analytics-scope-chip--guild {
 }
 
 body.analytics-page .analytics-scope-chip--legion {
-  color: #f2994a;
+  color: var(--color-accent-orange);
   border-color: rgba(242, 153, 74, 0.4);
   background-color: rgba(242, 153, 74, 0.12);
 }
@@ -1854,12 +1864,12 @@ body.personal-analytics-page .boss-checkbox-swatch {
 
 .player-badge--guild {
   background: var(--color-brand-dark);
-  color: #ffffff;
+  color: var(--color-on-accent);
 }
 
 .player-badge--legion {
   background: var(--color-accent-purple);
-  color: #1d2636;
+  color: var(--color-surface-solid);
 }
 
 .primary-character-badge {
@@ -1868,7 +1878,7 @@ body.personal-analytics-page .boss-checkbox-swatch {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   line-height: 18px;
-  color: #1d2636;
+  color: var(--color-surface-solid);
   background-color: var(--color-link);
 }
 
@@ -1956,7 +1966,7 @@ body.raid-manager-page .raid-toggle-btn:hover {
 body.raid-manager-page .raid-toggle-btn--active {
   background-color: var(--color-link);
   border-color: var(--color-link);
-  color: #1d2636;
+  color: var(--color-surface-solid);
 }
 
 body.raid-manager-page .raid-create-form button[type="submit"] {
@@ -2656,7 +2666,7 @@ body.raid-manager-detail-page .raid-filter-checkbox input[type="checkbox"] {
 body.raid-manager-detail-page .raid-hidden-notice {
   margin: 0.5rem 0 0.75rem;
   padding: 0.4rem 0.8rem;
-  border-left: 3px solid var(--color-warning, #f0ad4e);
+  border-left: 3px solid var(--color-warning);
   color: var(--color-text-muted);
   font-size: var(--font-size-base);
 }
@@ -2747,40 +2757,40 @@ body.raid-manager-detail-page #settingsForm button[type="submit"] {
 }
 
 body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn {
-  background: #3a9e4a;
-  border-color: #3a9e4a;
-  color: #ffffff;
+  background: var(--color-success-strong);
+  border-color: var(--color-success-strong);
+  color: var(--color-on-accent);
 }
 
 body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:hover:not(:disabled) {
-  background: #2f8a3e;
-  border-color: #2f8a3e;
+  background: var(--color-success-strong-hover);
+  border-color: var(--color-success-strong-hover);
 }
 
 body.raid-manager-page .raid-create-form button[type="submit"].compare-btn,
 body.ranking-page #compareBtn.compare-btn,
 body.raid-manager-detail-page #transferConfirmBtn.compare-btn {
-  background: #3a9e4a;
-  border-color: #3a9e4a;
-  color: #ffffff;
+  background: var(--color-success-strong);
+  border-color: var(--color-success-strong);
+  color: var(--color-on-accent);
 }
 
 body.raid-manager-page .raid-create-form button[type="submit"].compare-btn:hover:not(:disabled),
 body.ranking-page #compareBtn.compare-btn:hover:not(:disabled),
 body.raid-manager-detail-page #transferConfirmBtn.compare-btn:hover:not(:disabled) {
-  background: #2f8a3e;
-  border-color: #2f8a3e;
+  background: var(--color-success-strong-hover);
+  border-color: var(--color-success-strong-hover);
 }
 
 body.raid-manager-detail-page #cancelTransferConfirmBtn.compare-btn {
   background: var(--color-danger);
   border-color: var(--color-danger);
-  color: #ffffff;
+  color: var(--color-on-accent);
 }
 
 body.raid-manager-detail-page #cancelTransferConfirmBtn.compare-btn:hover:not(:disabled) {
-  background: #e05252;
-  border-color: #e05252;
+  background: var(--color-danger-hover);
+  border-color: var(--color-danger-hover);
 }
 
 body.raid-manager-detail-page .raid-weight-toggle {
@@ -2812,7 +2822,7 @@ body.raid-manager-detail-page .raid-weight-toggle-btn:disabled {
 body.raid-manager-detail-page .raid-weight-toggle-btn--active {
   background-color: var(--color-link);
   border-color: var(--color-link);
-  color: #1d2636;
+  color: var(--color-surface-solid);
 }
 
 body.raid-manager-detail-page .raid-weight-badge {
@@ -2821,8 +2831,26 @@ body.raid-manager-detail-page .raid-weight-badge {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   line-height: 18px;
-  color: #1d2636;
+  color: var(--color-surface-solid);
   background-color: var(--color-link);
+}
+
+/* WoW game constants — фіксовані кольори якості предметів/грошей клієнта
+   гри (WotLK). Це НЕ дизайн-токени сайту: не мають змінюватись темою,
+   лишені окремо від блоку DESIGN TOKENS навмисно. */
+:root {
+  --wow-quality-poor: #9d9d9d;
+  --wow-quality-common: #ffffff;
+  --wow-quality-uncommon: #1eff00;
+  --wow-quality-rare: #0070dd;
+  --wow-quality-epic: #a335ee;
+  --wow-quality-legendary: #ff8000;
+  --wow-quality-artifact: #e6cc80;
+  --wow-quality-heirloom: #00ccff;
+
+  --wow-money-gold: #ffd700;
+  --wow-money-silver: #c0c0c0;
+  --wow-money-copper: #b87333;
 }
 
 body.raid-manager-detail-page #raidItemTooltip {
@@ -2837,7 +2865,7 @@ body.raid-manager-detail-page #raidItemTooltip {
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
   line-height: var(--line-height-default);
-  color: #ffffff;
+  color: var(--color-on-accent);
   pointer-events: none;
 }
 
@@ -2855,14 +2883,14 @@ body.raid-manager-detail-page #raidItemTooltip a {
 }
 
 body.raid-manager-detail-page #raidItemTooltip .q,
-body.raid-manager-detail-page #raidItemTooltip .q1 { color: #ffffff; }
-body.raid-manager-detail-page #raidItemTooltip .q0 { color: #9d9d9d; }
-body.raid-manager-detail-page #raidItemTooltip .q2 { color: #1eff00; }
-body.raid-manager-detail-page #raidItemTooltip .q3 { color: #0070dd; }
-body.raid-manager-detail-page #raidItemTooltip .q4 { color: #a335ee; }
-body.raid-manager-detail-page #raidItemTooltip .q5 { color: #ff8000; }
-body.raid-manager-detail-page #raidItemTooltip .q6 { color: #e6cc80; }
-body.raid-manager-detail-page #raidItemTooltip .q7 { color: #00ccff; }
+body.raid-manager-detail-page #raidItemTooltip .q1 { color: var(--wow-quality-common); }
+body.raid-manager-detail-page #raidItemTooltip .q0 { color: var(--wow-quality-poor); }
+body.raid-manager-detail-page #raidItemTooltip .q2 { color: var(--wow-quality-uncommon); }
+body.raid-manager-detail-page #raidItemTooltip .q3 { color: var(--wow-quality-rare); }
+body.raid-manager-detail-page #raidItemTooltip .q4 { color: var(--wow-quality-epic); }
+body.raid-manager-detail-page #raidItemTooltip .q5 { color: var(--wow-quality-legendary); }
+body.raid-manager-detail-page #raidItemTooltip .q6 { color: var(--wow-quality-artifact); }
+body.raid-manager-detail-page #raidItemTooltip .q7 { color: var(--wow-quality-heirloom); }
 
 body.raid-manager-detail-page #raidItemTooltip .whtt-extra,
 body.raid-manager-detail-page #raidItemTooltip .whtt-sellprice,
@@ -2872,9 +2900,9 @@ body.raid-manager-detail-page #raidItemTooltip .whtt-dropchance {
   font-size: var(--font-size-base);
 }
 
-body.raid-manager-detail-page #raidItemTooltip .moneygold { color: #ffd700; }
-body.raid-manager-detail-page #raidItemTooltip .moneysilver { color: #c0c0c0; }
-body.raid-manager-detail-page #raidItemTooltip .moneycopper { color: #b87333; }
+body.raid-manager-detail-page #raidItemTooltip .moneygold { color: var(--wow-money-gold); }
+body.raid-manager-detail-page #raidItemTooltip .moneysilver { color: var(--wow-money-silver); }
+body.raid-manager-detail-page #raidItemTooltip .moneycopper { color: var(--wow-money-copper); }
 
 body.raid-manager-detail-page .raid-remove-btn {
   background: none;
@@ -2916,10 +2944,10 @@ body.raid-manager-detail-page .raid-item-received {
   opacity: 0.6;
 }
 
-body.raid-manager-detail-page .raid-rarity--common { color: #ffffff; }
-body.raid-manager-detail-page .raid-rarity--uncommon { color: #1eff00; }
-body.raid-manager-detail-page .raid-rarity--rare { color: #0070dd; }
-body.raid-manager-detail-page .raid-rarity--epic { color: #a335ee; }
+body.raid-manager-detail-page .raid-rarity--common { color: var(--wow-quality-common); }
+body.raid-manager-detail-page .raid-rarity--uncommon { color: var(--wow-quality-uncommon); }
+body.raid-manager-detail-page .raid-rarity--rare { color: var(--wow-quality-rare); }
+body.raid-manager-detail-page .raid-rarity--epic { color: var(--wow-quality-epic); }
 
 body.raid-manager-detail-page .raid-audit-list {
   max-height: 480px;
@@ -3468,7 +3496,7 @@ body.account-page .account-lang-toggle-btn:hover {
 body.account-page .account-lang-toggle-btn--active {
   background-color: var(--color-accent-gold);
   border-color: var(--color-accent-gold);
-  color: #1d2636;
+  color: var(--color-surface-solid);
 }
 
 body.account-page .account-admin-tools {
@@ -3756,7 +3784,7 @@ body.raid-manager-detail-page .penalty-reason-text {
 }
 
 .raid-transfer-indicator--to {
-  color: #6dd09a;
+  color: var(--color-accent-mint);
   background: rgba(109, 208, 154, 0.12);
 }
 
@@ -3822,7 +3850,7 @@ body.raid-manager-detail-page .penalty-reason-text {
   width: min(90vw, 26rem);
   padding: 1.5rem 1.75rem;
   border-radius: var(--radius-md, 0.6rem);
-  background: #0f1c2e;
+  background: var(--color-surface-modal);
   border: 1px solid rgba(197, 198, 205, 0.2);
   box-shadow: var(--shadow-modal);
 }
@@ -3884,6 +3912,6 @@ body.raid-manager-detail-page .penalty-reason-text {
   padding: 1px 6px;
   border-radius: var(--radius-sm);
   background: rgba(34, 197, 94, 0.15);
-  color: #22c55e;
+  color: var(--color-accent-emerald);
   border: 1px solid rgba(34, 197, 94, 0.3);
 }
