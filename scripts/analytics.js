@@ -725,7 +725,7 @@ function computeBossMetricOverTime(personalStats, boss, valueFn) {
     const value = valueFn(record);
     if (value == null) continue;
 
-    points.push({ date: record.date, value });
+    points.push({ date: record.date, value, raidUrl: record.raidUrl });
   }
 
   return points.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
@@ -742,7 +742,7 @@ function computeBossMetricByDay(personalStats, boss, valueFn) {
 
     const dow = dayOfWeek(record.date);
     if (!byDay.has(dow)) byDay.set(dow, []);
-    byDay.get(dow).push({ date: record.date, value });
+    byDay.get(dow).push({ date: record.date, value, raidUrl: record.raidUrl });
   }
 
   for (const points of byDay.values()) {
@@ -766,6 +766,14 @@ function computeBossDurationOverTime(personalStats, boss) {
 
 function computeBossDurationByDay(personalStats, boss) {
   return computeBossMetricByDay(personalStats, boss, fightDuration);
+}
+
+function openRaidLog(url) {
+  if (url) window.open(url, '_blank', 'noopener');
+}
+
+function pointerCursorOnHover(event, elements) {
+  if (event.native) event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
 }
 
 function computeTrendLine(points) {
@@ -834,6 +842,12 @@ function renderBossMetricOverTimeChart({
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      onClick: (event, elements) => {
+        if (!elements.length) return;
+        const point = seriesPoints[elements[0].index];
+        if (point && !point.isTrend) openRaidLog(point.raidUrl);
+      },
+      onHover: pointerCursorOnHover,
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -844,6 +858,10 @@ function renderBossMetricOverTimeChart({
 
               const suffix = point.isTrend ? ' (тренд)' : '';
               return `${yLabel}${suffix}: ${formatValue(point.value)}`;
+            },
+            footer: (items) => {
+              const point = seriesPoints[items[0]?.dataIndex];
+              return point && !point.isTrend && point.raidUrl ? 'Клік — відкрити лог' : undefined;
             }
           }
         }
@@ -878,10 +896,12 @@ function renderBossMetricMultiDayChart({
   const datasets = selectedDays.map((dow) => {
     const rawPoints = byDay.get(dow) || [];
     const dateValueMap = new Map(rawPoints.map((p) => [p.date, p.value]));
+    const dateUrlMap = new Map(rawPoints.map((p) => [p.date, p.raidUrl]));
     const color = DAY_COLORS[dow];
+    const isTrend = splineMode === 'trend';
 
     let values;
-    if (splineMode === 'trend') {
+    if (isTrend) {
       const trend = computeTrendLine(rawPoints.map((p, idx) => ({ x: idx, y: p.value })));
       values = allDates.map((date) => {
         const idx = rawPoints.findIndex((p) => p.date === date);
@@ -897,6 +917,7 @@ function renderBossMetricMultiDayChart({
     return {
       label: DAY_LABELS[dow],
       data: values,
+      raidUrls: isTrend ? [] : allDates.map((date) => dateUrlMap.get(date) || null),
       borderColor: color,
       backgroundColor: color,
       spanGaps: true,
@@ -921,6 +942,12 @@ function renderBossMetricMultiDayChart({
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      onClick: (event, elements) => {
+        if (!elements.length) return;
+        const { datasetIndex, index } = elements[0];
+        openRaidLog(datasets[datasetIndex].raidUrls[index]);
+      },
+      onHover: pointerCursorOnHover,
       plugins: {
         legend: { display: true },
         tooltip: {
@@ -928,6 +955,11 @@ function renderBossMetricMultiDayChart({
             label: (ctx) => {
               if (ctx.parsed.y === null) return null;
               return `${ctx.dataset.label}: ${formatValue(ctx.parsed.y)}`;
+            },
+            footer: (items) => {
+              const item = items[0];
+              const url = item && datasets[item.datasetIndex].raidUrls[item.dataIndex];
+              return url ? 'Клік — відкрити лог' : undefined;
             }
           }
         }
