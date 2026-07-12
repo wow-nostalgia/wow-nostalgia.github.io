@@ -7,11 +7,14 @@ const bossDurationOverTimeSelect = document.getElementById('bossDurationOverTime
 const bossDurationOverTimeSplineSelect = document.getElementById('bossDurationOverTimeSplineSelect');
 const bossDurationDayFilter = document.getElementById('bossDurationDayFilter');
 
+const TROPHY_ICON_PATH = 'M3.217 6.962A3.75 3.75 0 0 1 0 3.25v-.5C0 1.784.784 1 1.75 1h1.356c.228-.585.796-1 1.462-1h6.864c.647 0 1.227.397 1.462 1h1.356c.966 0 1.75.784 1.75 1.75v.5a3.75 3.75 0 0 1-3.217 3.712 5.014 5.014 0 0 1-2.771 3.117l.144 1.446c.005.05.03.12.114.204.086.087.217.17.373.227.283.103.618.274.89.568.285.31.467.723.467 1.226v.75h1.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H4v-.75c0-.503.182-.916.468-1.226.27-.294.606-.465.889-.568.139-.048.266-.126.373-.227.084-.085.109-.153.114-.204l.144-1.446a5.015 5.015 0 0 1-2.77-3.117ZM4.5 1.568V5.5a3.5 3.5 0 1 0 7 0V1.568a.068.068 0 0 0-.068-.068H4.568a.068.068 0 0 0-.068.068Zm2.957 8.902-.12 1.204c-.093.925-.858 1.47-1.467 1.691a.766.766 0 0 0-.3.176c-.037.04-.07.093-.07.21v.75h5v-.75c0-.117-.033-.17-.07-.21a.766.766 0 0 0-.3-.176c-.609-.221-1.374-.766-1.466-1.69l-.12-1.204a5.064 5.064 0 0 1-1.087 0ZM13 2.5v2.872a2.25 2.25 0 0 0 1.5-2.122v-.5a.25.25 0 0 0-.25-.25H13Zm-10 0H1.75a.25.25 0 0 0-.25.25v.5c0 .98.626 1.813 1.5 2.122Z';
+const TROPHY_ICON_PATH2D = new Path2D(TROPHY_ICON_PATH);
+
 const bestResultLabelPlugin = {
   id: 'bestResultLabel',
   afterDraw(chart) {
-    const text = chart.options.plugins?.bestResultLabel?.text;
-    if (!text) return;
+    const opts = chart.options.plugins?.bestResultLabel;
+    if (!opts?.text) return;
 
     const { ctx, chartArea } = chart;
     ctx.save();
@@ -19,7 +22,23 @@ const bestResultLabelPlugin = {
     ctx.fillStyle = cssVar('--color-text-faint');
     ctx.textAlign = 'right';
     ctx.textBaseline = 'bottom';
-    ctx.fillText(text, chartArea.right - 4, chartArea.bottom - 4);
+    ctx.fillText(opts.text, chartArea.right - 4, chartArea.bottom - 4);
+    ctx.restore();
+
+    if (opts.datasetIndex == null || opts.pointIndex == null) return;
+
+    const point = chart.getDatasetMeta(opts.datasetIndex)?.data?.[opts.pointIndex];
+    if (!point) return;
+
+    const iconSize = 14;
+    const gap = 6;
+    const iconY = opts.iconPosition === 'below' ? point.y + gap : point.y - gap - iconSize;
+
+    ctx.save();
+    ctx.translate(point.x - iconSize / 2, iconY);
+    ctx.scale(iconSize / 16, iconSize / 16);
+    ctx.fillStyle = cssVar('--color-accent-gold');
+    ctx.fill(TROPHY_ICON_PATH2D);
     ctx.restore();
   }
 };
@@ -794,11 +813,25 @@ function pointerCursorOnHover(event, elements) {
   if (event.native) event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
 }
 
-function computeBestResultText(points, isBetter, formatValue) {
-  if (!points.length) return '';
+const BEST_ICON_CLEARANCE = 24;
 
-  const best = points.reduce((a, b) => (isBetter(b.value, a.value) ? b : a));
-  return `Найкращий результат: ${formatValue(best.value)} (${formatDateLabel(best.date)})`;
+function bestIconLayoutPadding(showBestResult, bestIconPosition) {
+  if (!showBestResult) return {};
+  return bestIconPosition === 'below' ? { bottom: BEST_ICON_CLEARANCE } : { top: BEST_ICON_CLEARANCE };
+}
+
+function findBestPoint(points, isBetter) {
+  if (!points.length) return null;
+
+  let bestIndex = 0;
+  for (let i = 1; i < points.length; i += 1) {
+    if (isBetter(points[i].value, points[bestIndex].value)) bestIndex = i;
+  }
+  return { point: points[bestIndex], index: bestIndex };
+}
+
+function formatBestResultText(point, formatValue) {
+  return `Найкращий результат: ${formatValue(point.value)} (${formatDateLabel(point.date)})`;
 }
 
 function computeTrendLine(points) {
@@ -830,11 +863,13 @@ function renderBossMetricOverTimeChart({
   formatValue = (v) => Math.round(v).toLocaleString('en-US'),
   computeYMin = (minValue) => Math.max(0, Math.floor((minValue - 50000) / 10000) * 10000),
   showBestResult = false,
-  isBetter = (a, b) => a > b
+  isBetter = (a, b) => a > b,
+  bestIconPosition = 'above'
 }) {
   let seriesPoints = points;
   const minValue = points.length ? Math.min(...points.map((p) => p.value)) : 0;
-  const bestResultText = showBestResult ? computeBestResultText(points, isBetter, formatValue) : '';
+  const best = showBestResult ? findBestPoint(points, isBetter) : null;
+  const bestResultText = best ? formatBestResultText(best.point, formatValue) : '';
 
   if (splineMode === 'trend') {
     const trend = computeTrendLine(points.map((p, idx) => ({ x: idx, y: p.value })));
@@ -870,6 +905,7 @@ function renderBossMetricOverTimeChart({
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: { padding: bestIconLayoutPadding(showBestResult, bestIconPosition) },
       onClick: (event, elements) => {
         if (!elements.length) return;
         const point = seriesPoints[elements[0].index];
@@ -878,7 +914,12 @@ function renderBossMetricOverTimeChart({
       onHover: pointerCursorOnHover,
       plugins: {
         legend: { display: false },
-        bestResultLabel: { text: bestResultText },
+        bestResultLabel: {
+          text: bestResultText,
+          datasetIndex: best ? 0 : null,
+          pointIndex: best ? best.index : null,
+          iconPosition: bestIconPosition
+        },
         tooltip: {
           callbacks: {
             label: (ctx) => {
@@ -916,17 +957,36 @@ function renderBossMetricMultiDayChart({
   formatValue = (v) => v.toLocaleString('en-US'),
   computeYMin = (minValue) => Math.max(0, Math.floor((minValue - 50000) / 10000) * 10000),
   showBestResult = false,
-  isBetter = (a, b) => a > b
+  isBetter = (a, b) => a > b,
+  bestIconPosition = 'above'
 }) {
-  const bestResultText = showBestResult
-    ? computeBestResultText(selectedDays.flatMap((dow) => byDay.get(dow) || []), isBetter, formatValue)
-    : '';
-
   const spline = SPLINE_MODES[splineMode] || SPLINE_MODES.smoothNoPoints;
 
   const allDates = [...new Set(
     selectedDays.flatMap((dow) => (byDay.get(dow) || []).map((p) => p.date))
   )].sort();
+
+  let bestResultText = '';
+  let bestDatasetIndex = null;
+  let bestPointIndex = null;
+
+  if (showBestResult) {
+    let best = null;
+    let bestDsIdx = null;
+    selectedDays.forEach((dow, dsIdx) => {
+      const found = findBestPoint(byDay.get(dow) || [], isBetter);
+      if (found && (!best || isBetter(found.point.value, best.point.value))) {
+        best = found;
+        bestDsIdx = dsIdx;
+      }
+    });
+
+    if (best) {
+      bestResultText = formatBestResultText(best.point, formatValue);
+      bestDatasetIndex = bestDsIdx;
+      bestPointIndex = allDates.indexOf(best.point.date);
+    }
+  }
 
   const datasets = selectedDays.map((dow) => {
     const rawPoints = byDay.get(dow) || [];
@@ -977,6 +1037,7 @@ function renderBossMetricMultiDayChart({
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: { padding: bestIconLayoutPadding(showBestResult, bestIconPosition) },
       onClick: (event, elements) => {
         if (!elements.length) return;
         const { datasetIndex, index } = elements[0];
@@ -985,7 +1046,12 @@ function renderBossMetricMultiDayChart({
       onHover: pointerCursorOnHover,
       plugins: {
         legend: { display: true },
-        bestResultLabel: { text: bestResultText },
+        bestResultLabel: {
+          text: bestResultText,
+          datasetIndex: bestDatasetIndex,
+          pointIndex: bestPointIndex,
+          iconPosition: bestIconPosition
+        },
         tooltip: {
           callbacks: {
             label: (ctx) => {
@@ -1064,7 +1130,8 @@ function renderBossDurationOverTimeChart(personalStats, boss) {
       formatValue: formatSeconds,
       computeYMin: () => 0,
       showBestResult: true,
-      isBetter: (a, b) => a < b
+      isBetter: (a, b) => a < b,
+      bestIconPosition: 'below'
     });
   } else {
     renderBossMetricMultiDayChart({
@@ -1076,7 +1143,8 @@ function renderBossDurationOverTimeChart(personalStats, boss) {
       formatValue: formatSeconds,
       computeYMin: () => 0,
       showBestResult: true,
-      isBetter: (a, b) => a < b
+      isBetter: (a, b) => a < b,
+      bestIconPosition: 'below'
     });
   }
 }
