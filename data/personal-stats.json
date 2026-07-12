@@ -1,5 +1,1579 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-12--20-28--Boroheal--FreedomUA/",
+    "date": "2026-07-12",
+    "boss": "Lord Marrowgar",
+    "durationSeconds": 109.86099999999999,
+    "players": [
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19638.4
+      },
+      {
+        "name": "Брукса",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 17336
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 17333.1
+      },
+      {
+        "name": "Арау",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 17326.2
+      },
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 17290
+      },
+      {
+        "name": "Бульбошка",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 17246.4
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 16818
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 16739.9
+      },
+      {
+        "name": "Luxlemorne",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 16511.9
+      },
+      {
+        "name": "Ibizalover",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 16019.7
+      },
+      {
+        "name": "Кумпіупіу",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 15792.5
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 14411
+      },
+      {
+        "name": "Namikaze",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 14304.7
+      },
+      {
+        "name": "Dandeli",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 13763.8
+      },
+      {
+        "name": "Більшенедам",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "dps": 13627.2
+      },
+      {
+        "name": "Fuko",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 13256.4
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 12886.2
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12802.5
+      },
+      {
+        "name": "Vettala",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 10499.5
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 4534.8
+      },
+      {
+        "name": "Melande",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3623.5
+      },
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 513.3
+      },
+      {
+        "name": "Ikisen",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 262.6
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-12--20-28--Boroheal--FreedomUA/",
+    "date": "2026-07-12",
+    "boss": "Lady Deathwhisper",
+    "durationSeconds": 232.499,
+    "players": [
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 16227.7
+      },
+      {
+        "name": "Fuko",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15740.1
+      },
+      {
+        "name": "Кумпіупіу",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 15018.2
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 12735.3
+      },
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 12723
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 12683.7
+      },
+      {
+        "name": "Luxlemorne",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 12471.7
+      },
+      {
+        "name": "Бульбошка",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 11724.2
+      },
+      {
+        "name": "Більшенедам",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "dps": 10828.3
+      },
+      {
+        "name": "Арау",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 10705.2
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 9648.5
+      },
+      {
+        "name": "Namikaze",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 9599.6
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 8811.9
+      },
+      {
+        "name": "Ibizalover",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 8493.9
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 8452.5
+      },
+      {
+        "name": "Vettala",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 8405.6
+      },
+      {
+        "name": "Dandeli",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 7586.4
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 7460.8
+      },
+      {
+        "name": "Melande",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3281.2
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2481.7
+      },
+      {
+        "name": "Брукса",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2296
+      },
+      {
+        "name": "Ikisen",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 105.6
+      },
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 51.8
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-12--20-28--Boroheal--FreedomUA/",
+    "date": "2026-07-12",
+    "boss": "Deathbringer Saurfang",
+    "durationSeconds": 123.833,
+    "players": [
+      {
+        "name": "Бульбошка",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 22323.5
+      },
+      {
+        "name": "Fuko",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 21951.8
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 21390.2
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 19676.8
+      },
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 19475.2
+      },
+      {
+        "name": "Namikaze",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 18810.2
+      },
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 18491.7
+      },
+      {
+        "name": "Брукса",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 18377.5
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 17944.2
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 17931.2
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 17902.7
+      },
+      {
+        "name": "Арау",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 17860.2
+      },
+      {
+        "name": "Ibizalover",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 17718.4
+      },
+      {
+        "name": "Більшенедам",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "dps": 17506.4
+      },
+      {
+        "name": "Luxlemorne",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17239.4
+      },
+      {
+        "name": "Кумпіупіу",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 16520.3
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 15616.3
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 15093.2
+      },
+      {
+        "name": "Dandeli",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 14092.4
+      },
+      {
+        "name": "Vettala",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 13458.1
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 4859.5
+      },
+      {
+        "name": "Melande",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 4098.4
+      },
+      {
+        "name": "Ikisen",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 106
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-12--20-28--Boroheal--FreedomUA/",
+    "date": "2026-07-12",
+    "boss": "Blood Prince Council",
+    "durationSeconds": 153.098,
+    "players": [
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 16689.1
+      },
+      {
+        "name": "Fuko",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 16605.3
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 14847.6
+      },
+      {
+        "name": "Арау",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 14767.1
+      },
+      {
+        "name": "Бульбошка",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 14616.5
+      },
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13715.3
+      },
+      {
+        "name": "Більшенедам",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "dps": 12936.4
+      },
+      {
+        "name": "Luxlemorne",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 12707.1
+      },
+      {
+        "name": "Кумпіупіу",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 11216.8
+      },
+      {
+        "name": "Namikaze",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 10943.6
+      },
+      {
+        "name": "Ibizalover",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 10905.6
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9030.3
+      },
+      {
+        "name": "Dandeli",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 8760.2
+      },
+      {
+        "name": "Брукса",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 7167.1
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 6904.5
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 6060.3
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3495.1
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 3317.3
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 3160.9
+      },
+      {
+        "name": "Vettala",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 1100
+      },
+      {
+        "name": "Melande",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 554.9
+      },
+      {
+        "name": "Ikisen",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 80.8
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-12--20-28--Boroheal--FreedomUA/",
+    "date": "2026-07-12",
+    "boss": "Blood-Queen Lana'thel",
+    "durationSeconds": 209.5,
+    "players": [
+      {
+        "name": "Fuko",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 38175.6
+      },
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 26435.7
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 19675.8
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 19545.1
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 18116.6
+      },
+      {
+        "name": "Бульбошка",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 17588.6
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 17153.8
+      },
+      {
+        "name": "Кумпіупіу",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 16691.4
+      },
+      {
+        "name": "Арау",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 16564.9
+      },
+      {
+        "name": "Luxlemorne",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15748.8
+      },
+      {
+        "name": "Ibizalover",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 15371.8
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 15059.4
+      },
+      {
+        "name": "Більшенедам",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "dps": 14982.3
+      },
+      {
+        "name": "Namikaze",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 14808
+      },
+      {
+        "name": "Dandeli",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 14045.8
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 13899.3
+      },
+      {
+        "name": "Брукса",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 13535.5
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "dps": 13248.2
+      },
+      {
+        "name": "Vettala",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 12728.5
+      },
+      {
+        "name": "Melande",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3329.3
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3201.8
+      },
+      {
+        "name": "Ikisen",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 229.3
+      },
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 201.2
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-12--20-28--Boroheal--FreedomUA/",
+    "date": "2026-07-12",
+    "boss": "Rotface",
+    "durationSeconds": 188.448,
+    "players": [
+      {
+        "name": "Fuko",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18382.6
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 17682
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15744
+      },
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15622.5
+      },
+      {
+        "name": "Бульбошка",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 15324.1
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 15223.6
+      },
+      {
+        "name": "Більшенедам",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "dps": 15051.5
+      },
+      {
+        "name": "Кумпіупіу",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 14827.4
+      },
+      {
+        "name": "Dandeli",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 14313.9
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 14301.6
+      },
+      {
+        "name": "Арау",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 14150.7
+      },
+      {
+        "name": "Брукса",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 13708.9
+      },
+      {
+        "name": "Ibizalover",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 13075.9
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 11793.6
+      },
+      {
+        "name": "Namikaze",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 11564
+      },
+      {
+        "name": "Vettala",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 9915.1
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 9764.3
+      },
+      {
+        "name": "Luxlemorne",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 6899.7
+      },
+      {
+        "name": "Melande",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3324.7
+      },
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 411.9
+      },
+      {
+        "name": "Ikisen",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 273.7
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 127.6
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 112.8
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Unknown",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-12--20-28--Boroheal--FreedomUA/",
+    "date": "2026-07-12",
+    "boss": "Festergut",
+    "durationSeconds": 183.044,
+    "players": [
+      {
+        "name": "Fuko",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 20734.8
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 18666.4
+      },
+      {
+        "name": "Бульбошка",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 17505.2
+      },
+      {
+        "name": "Ibizalover",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 16688.6
+      },
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 16386.7
+      },
+      {
+        "name": "Більшенедам",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "dps": 16021.8
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 15884.9
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 15757.5
+      },
+      {
+        "name": "Namikaze",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 15687.1
+      },
+      {
+        "name": "Кумпіупіу",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 15594.1
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 15158.7
+      },
+      {
+        "name": "Luxlemorne",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 15033.6
+      },
+      {
+        "name": "Арау",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 14765.2
+      },
+      {
+        "name": "Брукса",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 13715.3
+      },
+      {
+        "name": "Dandeli",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 13313.6
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 12730.7
+      },
+      {
+        "name": "Vettala",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 12413.8
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 10658.2
+      },
+      {
+        "name": "Melande",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 4578.7
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 3845.5
+      },
+      {
+        "name": "Ikisen",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 308.8
+      },
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 239.2
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-12--20-28--Boroheal--FreedomUA/",
+    "date": "2026-07-12",
+    "boss": "Professor Putricide",
+    "durationSeconds": 299.634,
+    "players": [
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 16601.6
+      },
+      {
+        "name": "Fuko",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 16182.7
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 14920.9
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 13252.2
+      },
+      {
+        "name": "Luxlemorne",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 12795
+      },
+      {
+        "name": "Більшенедам",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "dps": 12513.7
+      },
+      {
+        "name": "Кумпіупіу",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 11863.4
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 11681.1
+      },
+      {
+        "name": "Ibizalover",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 11326.6
+      },
+      {
+        "name": "Namikaze",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 11210.4
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 11137.6
+      },
+      {
+        "name": "Бульбошка",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 10809.5
+      },
+      {
+        "name": "Арау",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 10349.1
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9058.9
+      },
+      {
+        "name": "Брукса",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 8981.2
+      },
+      {
+        "name": "Dandeli",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 8565.4
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 8128.7
+      },
+      {
+        "name": "Reichstag",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 7673
+      },
+      {
+        "name": "Vettala",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 7213.3
+      },
+      {
+        "name": "Melande",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 3496.8
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 288
+      },
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 178.2
+      },
+      {
+        "name": "Ikisen",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 132
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-12--20-28--Boroheal--FreedomUA/",
+    "date": "2026-07-12",
+    "boss": "Valithria Dreamwalker",
+    "durationSeconds": 252.258,
+    "players": [
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 6327.3
+      },
+      {
+        "name": "Dandeli",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 6019.5
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 5830.2
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 5669.4
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 5494.2
+      },
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 5328
+      },
+      {
+        "name": "Бульбошка",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 5282.7
+      },
+      {
+        "name": "Кумпіупіу",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 4899.4
+      },
+      {
+        "name": "Namikaze",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 4715.4
+      },
+      {
+        "name": "Брукса",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 4511.3
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 4498.8
+      },
+      {
+        "name": "Fuko",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 4359.3
+      },
+      {
+        "name": "Reichstag",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 4135.1
+      },
+      {
+        "name": "Більшенедам",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "dps": 3272.2
+      },
+      {
+        "name": "Luxlemorne",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 3267.9
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 3013.7
+      },
+      {
+        "name": "Ibizalover",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 2611.5
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2140
+      },
+      {
+        "name": "Melande",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 1432.2
+      },
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 112.7
+      },
+      {
+        "name": "Vettala",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Арау",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Ikisen",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-12--20-28--Boroheal--FreedomUA/",
+    "date": "2026-07-12",
+    "boss": "Sindragosa",
+    "durationSeconds": 290.078,
+    "players": [
+      {
+        "name": "Fuko",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 14542.1
+      },
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 12554.7
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 11925.8
+      },
+      {
+        "name": "Кумпіупіу",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "dps": 11144.1
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 10290.3
+      },
+      {
+        "name": "Брукса",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "dps": 10151.6
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "dps": 10144.2
+      },
+      {
+        "name": "Більшенедам",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "dps": 10128.6
+      },
+      {
+        "name": "Бульбошка",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "dps": 10006.7
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "dps": 9725.7
+      },
+      {
+        "name": "Vettala",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "dps": 9500.9
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 9194.3
+      },
+      {
+        "name": "Dandeli",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "dps": 9181
+      },
+      {
+        "name": "Арау",
+        "class": "Druid",
+        "spec": "Balance",
+        "dps": 8436.4
+      },
+      {
+        "name": "Namikaze",
+        "class": "Rogue",
+        "spec": "Combat",
+        "dps": 8195.8
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "dps": 8190.6
+      },
+      {
+        "name": "Luxlemorne",
+        "class": "Mage",
+        "spec": "Fire",
+        "dps": 6487.6
+      },
+      {
+        "name": "Reichstag",
+        "class": "Death Knight",
+        "spec": "Frost",
+        "dps": 5666.5
+      },
+      {
+        "name": "Melande",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "dps": 2391.4
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Protection",
+        "dps": 2016.4
+      },
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Discipline",
+        "dps": 568.7
+      },
+      {
+        "name": "Ibizalover",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 145.8
+      },
+      {
+        "name": "Ikisen",
+        "class": "Paladin",
+        "spec": "Holy",
+        "dps": 46.1
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "dps": 0
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "dps": 0
+      }
+    ]
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-07-11--20-37--Boro--FreedomUA/",
     "date": "2026-07-11",
     "boss": "Lord Marrowgar",
