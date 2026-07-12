@@ -35,6 +35,13 @@ function parseDecimalNumber(value) {
   return cleaned ? Number(cleaned) : 0;
 }
 
+function parseDurationToSeconds(text) {
+  const match = String(text || '').trim().match(/^(\d+):(\d+(?:\.\d+)?)$/);
+  if (!match) return null;
+  const [, minutes, seconds] = match;
+  return Number(minutes) * 60 + Number(seconds);
+}
+
 function normalizeText(value) {
   return String(value || '').replace(/\s+/g, ' ').trim();
 }
@@ -80,11 +87,11 @@ function extractKills($) {
 
     if (parts.length < 3) return;
 
-    const [, mode, boss] = parts;
+    const [durationText, mode, boss] = parts;
     if (mode !== MODE) return;
     if (!BOSS_ORDER.includes(boss)) return;
 
-    kills.push({ boss, href });
+    kills.push({ boss, href, durationSeconds: parseDurationToSeconds(durationText) });
   });
 
   return kills;
@@ -188,11 +195,11 @@ async function main() {
         const raidRecords = [];
 
         for (let k = 0; k < kills.length; k += 1) {
-          const { boss, href } = kills[k];
+          const { boss, href, durationSeconds } = kills[k];
           console.log(`  Fetching boss (${k + 1}/${kills.length}): ${boss}`);
 
           const players = await fetchBossPlayers(raidUrl, href);
-          raidRecords.push({ raidUrl, date, boss, players });
+          raidRecords.push({ raidUrl, date, boss, durationSeconds, players });
 
           if (k < kills.length - 1) {
             await sleepBetweenRequests();

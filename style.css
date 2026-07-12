@@ -1425,11 +1425,23 @@ body.analytics-page .container-inner {
 
 body.analytics-page .container-inner > h1,
 body.analytics-page .container-inner > ul,
-body.analytics-page .container-inner > #analyticsStatus,
-body.analytics-page .container-inner > .last-updated-text,
+body.analytics-page .container-inner > .analytics-status-row,
 body.analytics-page .container-inner > .analytics-grid {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+body.analytics-page .analytics-status-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+body.analytics-page .analytics-status-row #analyticsStatus,
+body.analytics-page .analytics-status-row .last-updated-text {
+  margin: 0;
+  color: var(--color-text-muted);
 }
 
 body.analytics-page .analytics-grid {

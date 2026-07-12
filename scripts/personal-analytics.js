@@ -654,7 +654,7 @@ function renderPlayerSiblings(characterName) {
 async function init() {
   Chart.defaults.color = cssVar('--color-text');
   Chart.defaults.borderColor = cssVar('--color-border');
-  Chart.defaults.font.family = "'Roboto', 'Open Sans', sans-serif";
+  Chart.defaults.font.family = cssVar('--font-sans');
 
   renderBossCheckboxes();
 

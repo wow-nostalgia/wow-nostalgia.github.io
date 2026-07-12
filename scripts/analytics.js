@@ -3,6 +3,9 @@ const lastUpdatedText = document.getElementById('lastUpdatedText');
 const bossSumOverTimeSelect = document.getElementById('bossSumOverTimeSelect');
 const bossSumOverTimeSplineSelect = document.getElementById('bossSumOverTimeSplineSelect');
 const bossSumDayFilter = document.getElementById('bossSumDayFilter');
+const bossDurationOverTimeSelect = document.getElementById('bossDurationOverTimeSelect');
+const bossDurationOverTimeSplineSelect = document.getElementById('bossDurationOverTimeSplineSelect');
+const bossDurationDayFilter = document.getElementById('bossDurationDayFilter');
 
 const ROLE_BY_SPEC = {
   Blood: 'Tank',
@@ -18,8 +21,6 @@ const EXCLUDED_BOSSES = new Set([
   'Toravon the Ice Watcher'
 ]);
 
-const RANK_THRESHOLDS = [50, 100, 200, 500];
-const SCORE_THRESHOLDS = [95, 90, 80, 70];
 
 function getClassColor(className) {
   return WOW_CLASS_COLORS[className] || '#999999';
@@ -109,28 +110,6 @@ function bestPerPlayer(rows, field, isBetter) {
   }
 
   return best;
-}
-
-function computeGuildVsServer(rows) {
-  const bestRank = bestPerPlayer(rows, 'overallRank', (value, current) => value < current);
-  const total = bestRank.size;
-  const ranks = [...bestRank.values()];
-
-  return RANK_THRESHOLDS.map((threshold) => {
-    const count = ranks.filter((rank) => rank <= threshold).length;
-    return { threshold, count, percent: total ? (count / total) * 100 : 0 };
-  });
-}
-
-function computeEliteThresholds(rows) {
-  const bestScore = bestPerPlayer(rows, 'overallScore', (value, current) => value > current);
-  const total = bestScore.size;
-  const scores = [...bestScore.values()];
-
-  return SCORE_THRESHOLDS.map((threshold) => {
-    const count = scores.filter((score) => score >= threshold).length;
-    return { threshold, count, percent: total ? (count / total) * 100 : 0 };
-  });
 }
 
 function computeBossAverages(rows, bossOrder) {
@@ -416,78 +395,6 @@ function renderAvgScoreChart(canvasId, rows) {
       scales: {
         x: { beginAtZero: true },
         y: { ticks: { color: classTickColor(stats) } }
-      }
-    }
-  });
-}
-
-function renderGuildVsServerChart(rows) {
-  const stats = computeGuildVsServer(rows);
-
-  new Chart(document.getElementById('chartGuildVsServer'), {
-    type: 'bar',
-    data: {
-      labels: stats.map((s) => `Топ-${s.threshold}`),
-      datasets: [
-        {
-          label: '% гільдії',
-          data: stats.map((s) => Number(s.percent.toFixed(1))),
-          backgroundColor: cssVar('--color-link')
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => {
-              const s = stats[ctx.dataIndex];
-              return `${s.count} гравців (${s.percent.toFixed(1)}%)`;
-            }
-          }
-        }
-      },
-      scales: {
-        y: { beginAtZero: true, max: 100, ticks: { callback: (v) => `${v}%` } }
-      }
-    }
-  });
-}
-
-function renderEliteChart(rows) {
-  const stats = computeEliteThresholds(rows);
-
-  new Chart(document.getElementById('chartElite'), {
-    type: 'bar',
-    data: {
-      labels: stats.map((s) => `Score ≥ ${s.threshold}`),
-      datasets: [
-        {
-          label: 'Гравців',
-          data: stats.map((s) => s.count),
-          backgroundColor: cssVar('--color-success')
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => {
-              const s = stats[ctx.dataIndex];
-              return `${s.count} гравців (${s.percent.toFixed(1)}%)`;
-            }
-          }
-        }
-      },
-      scales: {
-        y: { beginAtZero: true, ticks: { precision: 0 } }
       }
     }
   });
@@ -792,31 +699,47 @@ function getSelectedDays() {
   return [...bossSumDayFilter.querySelectorAll('input:checked')].map((cb) => Number(cb.value));
 }
 
-function computeBossSumOverTime(personalStats, boss) {
+function sumDps(record) {
+  const players = record.players || [];
+  if (!players.length) return null;
+  return players.reduce((sum, p) => sum + Number(p.dps || 0), 0);
+}
+
+function fightDuration(record) {
+  return record.durationSeconds != null ? Number(record.durationSeconds) : null;
+}
+
+function formatSeconds(totalSeconds) {
+  const rounded = Math.round(totalSeconds);
+  const m = Math.floor(rounded / 60);
+  const s = rounded % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function computeBossMetricOverTime(personalStats, boss, valueFn) {
   const points = [];
 
   for (const record of personalStats) {
     if (record.error || record.boss !== boss) continue;
 
-    const players = record.players || [];
-    if (!players.length) continue;
+    const value = valueFn(record);
+    if (value == null) continue;
 
-    const value = players.reduce((sum, p) => sum + Number(p.dps || 0), 0);
     points.push({ date: record.date, value });
   }
 
   return points.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
 }
 
-function computeBossSumByDay(personalStats, boss) {
+function computeBossMetricByDay(personalStats, boss, valueFn) {
   const byDay = new Map();
 
   for (const record of personalStats) {
     if (record.error || record.boss !== boss) continue;
-    const players = record.players || [];
-    if (!players.length) continue;
 
-    const value = players.reduce((sum, p) => sum + Number(p.dps || 0), 0);
+    const value = valueFn(record);
+    if (value == null) continue;
+
     const dow = dayOfWeek(record.date);
     if (!byDay.has(dow)) byDay.set(dow, []);
     byDay.get(dow).push({ date: record.date, value });
@@ -827,6 +750,22 @@ function computeBossSumByDay(personalStats, boss) {
   }
 
   return byDay;
+}
+
+function computeBossSumOverTime(personalStats, boss) {
+  return computeBossMetricOverTime(personalStats, boss, sumDps);
+}
+
+function computeBossSumByDay(personalStats, boss) {
+  return computeBossMetricByDay(personalStats, boss, sumDps);
+}
+
+function computeBossDurationOverTime(personalStats, boss) {
+  return computeBossMetricOverTime(personalStats, boss, fightDuration);
+}
+
+function computeBossDurationByDay(personalStats, boss) {
+  return computeBossMetricByDay(personalStats, boss, fightDuration);
 }
 
 function computeTrendLine(points) {
@@ -849,7 +788,15 @@ function computeTrendLine(points) {
   return { slope, intercept: meanY - slope * meanX };
 }
 
-function renderBossMetricOverTimeChart({ canvasId, points, splineMode, datasetLabel, yLabel }) {
+function renderBossMetricOverTimeChart({
+  canvasId,
+  points,
+  splineMode,
+  datasetLabel,
+  yLabel,
+  formatValue = (v) => Math.round(v).toLocaleString('en-US'),
+  computeYMin = (minValue) => Math.max(0, Math.floor((minValue - 50000) / 10000) * 10000)
+}) {
   let seriesPoints = points;
   const minValue = points.length ? Math.min(...points.map((p) => p.value)) : 0;
 
@@ -872,7 +819,7 @@ function renderBossMetricOverTimeChart({ canvasId, points, splineMode, datasetLa
       datasets: [
         {
           label: datasetLabel,
-          data: seriesPoints.map((p) => Math.round(p.value)),
+          data: seriesPoints.map((p) => p.value),
           borderColor: cssVar('--color-brand'),
           backgroundColor: cssVar('--color-brand'),
           spanGaps: true,
@@ -896,22 +843,32 @@ function renderBossMetricOverTimeChart({ canvasId, points, splineMode, datasetLa
               if (!point) return null;
 
               const suffix = point.isTrend ? ' (тренд)' : '';
-              return `${yLabel}${suffix}: ${Math.round(point.value).toLocaleString('en-US')}`;
+              return `${yLabel}${suffix}: ${formatValue(point.value)}`;
             }
           }
         }
       },
       scales: {
-        x: { title: { display: true, text: 'Дата рейду' } },
-        y: { title: { display: true, text: yLabel }, min: Math.max(0, Math.floor((minValue - 50000) / 10000) * 10000) }
+        x: { title: { display: true, text: 'Дата рейду' }, ticks: { minRotation: 45, maxRotation: 45 } },
+        y: {
+          title: { display: true, text: yLabel },
+          min: computeYMin(minValue),
+          ticks: { callback: (v) => formatValue(v) }
+        }
       }
     }
   });
 }
 
-function renderBossSumMultiDayChart(personalStats, boss, selectedDays) {
-  const byDay = computeBossSumByDay(personalStats, boss);
-  const splineMode = bossSumOverTimeSplineSelect.value;
+function renderBossMetricMultiDayChart({
+  canvasId,
+  byDay,
+  selectedDays,
+  splineMode,
+  yLabel,
+  formatValue = (v) => v.toLocaleString('en-US'),
+  computeYMin = (minValue) => Math.max(0, Math.floor((minValue - 50000) / 10000) * 10000)
+}) {
   const spline = SPLINE_MODES[splineMode] || SPLINE_MODES.smoothNoPoints;
 
   const allDates = [...new Set(
@@ -928,12 +885,12 @@ function renderBossSumMultiDayChart(personalStats, boss, selectedDays) {
       const trend = computeTrendLine(rawPoints.map((p, idx) => ({ x: idx, y: p.value })));
       values = allDates.map((date) => {
         const idx = rawPoints.findIndex((p) => p.date === date);
-        return idx >= 0 && trend ? Math.round(trend.slope * idx + trend.intercept) : null;
+        return idx >= 0 && trend ? trend.slope * idx + trend.intercept : null;
       });
     } else {
       values = allDates.map((date) => {
         const val = dateValueMap.get(date);
-        return val !== undefined ? Math.round(val) : null;
+        return val !== undefined ? val : null;
       });
     }
 
@@ -955,10 +912,10 @@ function renderBossSumMultiDayChart(personalStats, boss, selectedDays) {
   const allValues = datasets.flatMap((ds) => ds.data.filter((v) => v !== null));
   const multiMinValue = allValues.length ? Math.min(...allValues) : 0;
 
-  const existingChart = Chart.getChart('chartBossSumOverTime');
+  const existingChart = Chart.getChart(canvasId);
   if (existingChart) existingChart.destroy();
 
-  new Chart(document.getElementById('chartBossSumOverTime'), {
+  new Chart(document.getElementById(canvasId), {
     type: 'line',
     data: { labels: allDates.map(formatDateLabel), datasets },
     options: {
@@ -970,14 +927,18 @@ function renderBossSumMultiDayChart(personalStats, boss, selectedDays) {
           callbacks: {
             label: (ctx) => {
               if (ctx.parsed.y === null) return null;
-              return `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString('en-US')}`;
+              return `${ctx.dataset.label}: ${formatValue(ctx.parsed.y)}`;
             }
           }
         }
       },
       scales: {
-        x: { title: { display: true, text: 'Дата рейду' } },
-        y: { title: { display: true, text: 'Сумарний DPS' }, min: Math.max(0, Math.floor((multiMinValue - 50000) / 10000) * 10000) }
+        x: { title: { display: true, text: 'Дата рейду' }, ticks: { minRotation: 45, maxRotation: 45 } },
+        y: {
+          title: { display: true, text: yLabel },
+          min: computeYMin(multiMinValue),
+          ticks: { callback: (v) => formatValue(v) }
+        }
       }
     }
   });
@@ -1002,14 +963,54 @@ function renderBossSumOverTimeChart(personalStats, boss) {
       yLabel: 'Сумарний DPS'
     });
   } else {
-    renderBossSumMultiDayChart(personalStats, boss, selectedDays);
+    renderBossMetricMultiDayChart({
+      canvasId: 'chartBossSumOverTime',
+      byDay: computeBossSumByDay(personalStats, boss),
+      selectedDays,
+      splineMode: bossSumOverTimeSplineSelect.value,
+      yLabel: 'Сумарний DPS'
+    });
+  }
+}
+
+function renderBossDurationOverTimeChart(personalStats, boss) {
+  const selectedDays = [...bossDurationDayFilter.querySelectorAll('input:checked')].map((cb) => Number(cb.value));
+  const splineMode = bossDurationOverTimeSplineSelect.value;
+
+  if (selectedDays.length <= 1) {
+    let points;
+    if (selectedDays.length === 0) {
+      points = computeBossDurationOverTime(personalStats, boss);
+    } else {
+      const byDay = computeBossDurationByDay(personalStats, boss);
+      points = byDay.get(selectedDays[0]) || [];
+    }
+    renderBossMetricOverTimeChart({
+      canvasId: 'chartBossDurationOverTime',
+      points,
+      splineMode,
+      datasetLabel: `Час бою — ${translateBoss(boss)}`,
+      yLabel: 'Час бою',
+      formatValue: formatSeconds,
+      computeYMin: () => 0
+    });
+  } else {
+    renderBossMetricMultiDayChart({
+      canvasId: 'chartBossDurationOverTime',
+      byDay: computeBossDurationByDay(personalStats, boss),
+      selectedDays,
+      splineMode,
+      yLabel: 'Час бою',
+      formatValue: formatSeconds,
+      computeYMin: () => 0
+    });
   }
 }
 
 async function init() {
   Chart.defaults.color = cssVar('--color-text');
   Chart.defaults.borderColor = cssVar('--color-border');
-  Chart.defaults.font.family = "'Roboto', 'Open Sans', sans-serif";
+  Chart.defaults.font.family = cssVar('--font-sans');
 
   try {
     setStatus('Завантаження даних...');
@@ -1075,10 +1076,26 @@ async function init() {
       renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
     });
 
+    populateBossSelect(bossDurationOverTimeSelect);
+
+    if (bossesWithHistory.length) {
+      renderBossDurationOverTimeChart(personalStats, bossesWithHistory[0]);
+    }
+
+    bossDurationOverTimeSelect.addEventListener('change', () => {
+      renderBossDurationOverTimeChart(personalStats, bossDurationOverTimeSelect.value);
+    });
+
+    bossDurationOverTimeSplineSelect.addEventListener('change', () => {
+      renderBossDurationOverTimeChart(personalStats, bossDurationOverTimeSelect.value);
+    });
+
+    bossDurationDayFilter.addEventListener('change', () => {
+      renderBossDurationOverTimeChart(personalStats, bossDurationOverTimeSelect.value);
+    });
+
     renderAvgScoreChart('chartAvgScoreGuild', guildDpsRows);
     renderAvgScoreChart('chartAvgScoreLegion', dpsRows.filter((row) => !guildNames.has(row.name)));
-    renderGuildVsServerChart(guildDpsRows);
-    renderEliteChart(guildDpsRows);
     renderGuildVsLegionChart(dpsRows, legionNames, players.length);
     renderScoreHistogramChart(guildDpsRows);
     renderTopByClassChart(guildDpsRows, 'DPS', 'chartTopByClassDps');

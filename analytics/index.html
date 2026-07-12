@@ -6,8 +6,8 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
-  <title>Аналітика</title>
-  <link rel="stylesheet" href="../style.css?v=24">
+  <title>Гільдійська аналітика</title>
+  <link rel="stylesheet" href="../style.css?v=26">
 </head>
 
 <body class="analytics-page">
@@ -48,19 +48,21 @@
 
     <div class="container-inner">
 
-      <h1>Аналітика</h1>
+      <h1>Гільдійська аналітика</h1>
 
       <ul>
         <li>Графіки будуються на основі тих самих даних, що й <a href="../guild-ranking/">🏆 Рейтинг DPS</a> (uwu-logs.xyz, режим ЦЛК 25 ХМ).</li>
       </ul>
 
-      <p id="analyticsStatus">Завантаження даних...</p>
-      <p id="lastUpdatedText" class="last-updated-text"></p>
+      <div class="analytics-status-row">
+        <p id="analyticsStatus">Завантаження даних...</p>
+        <p id="lastUpdatedText" class="last-updated-text"></p>
+      </div>
 
       <div class="analytics-grid">
         <div class="analytics-card analytics-card--wide analytics-card--medium">
           <div class="analytics-card-header">
-            <h2>Сумарний DPS рейду по босу в часі</h2>
+            <h2>Сумарний DPS рейду</h2>
             <span class="analytics-scope-chip">Всі</span>
           </div>
           <p class="analytics-card-caption">Сума DPS усіх гравців рейду (дамаг-спеки, танки і хіли) по обраному босу ЦЛК, по датах рейдів.</p>
@@ -89,6 +91,40 @@
           </div>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossSumOverTime"></canvas>
+          </div>
+        </div>
+
+        <div class="analytics-card analytics-card--wide analytics-card--medium">
+          <div class="analytics-card-header">
+            <h2>Час бою</h2>
+            <span class="analytics-scope-chip">Всі</span>
+          </div>
+          <p class="analytics-card-caption">Тривалість вбивчого пулу по обраному босу ЦЛК, по датах рейдів.</p>
+          <div class="ranking-controls">
+            <label for="bossDurationOverTimeSelect">Бос</label>
+            <select id="bossDurationOverTimeSelect"></select>
+
+            <label for="bossDurationOverTimeSplineSelect">Тип лінії</label>
+            <select id="bossDurationOverTimeSplineSelect">
+              <option value="smooth">Плавна</option>
+              <option value="smoothNoPoints" selected>Плавна без точок</option>
+              <option value="linear">Пряма</option>
+              <option value="linearNoPoints">Пряма без точок</option>
+              <option value="trend">Лінія тренду</option>
+            </select>
+
+            <div class="analytics-day-filter" id="bossDurationDayFilter">
+              <label class="analytics-day-check"><input type="checkbox" value="1"><span>ПН</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="2"><span>ВТ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="3"><span>СР</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="4"><span>ЧТ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="5"><span>ПТ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="6"><span>СБ</span></label>
+              <label class="analytics-day-check"><input type="checkbox" value="0"><span>НД</span></label>
+            </div>
+          </div>
+          <div class="analytics-chart-wrap">
+            <canvas id="chartBossDurationOverTime"></canvas>
           </div>
         </div>
 
@@ -139,7 +175,7 @@
             <h2>Середній DPS по босах</h2>
             <span class="analytics-scope-chip">Всі</span>
           </div>
-          <p class="analytics-card-caption">Середній DPS по кожному босу ЦЛК (боси без чіткого DPS-чеку — Валітрія, Анубарак, Toravon — не враховані).</p>
+          <p class="analytics-card-caption">Середній DPS по кожному босу ЦЛК.</p>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossAvg"></canvas>
           </div>
@@ -163,28 +199,6 @@
                 <canvas id="chartAvgScoreLegion"></canvas>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="analytics-card">
-          <div class="analytics-card-header">
-            <h2>Гільдія проти серверу</h2>
-            <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
-          </div>
-          <p class="analytics-card-caption">Скільки гравців гільдії потрапляють в топ-50/100/200/500 серверу (за найкращим спеком кожного гравця).</p>
-          <div class="analytics-chart-wrap">
-            <canvas id="chartGuildVsServer"></canvas>
-          </div>
-        </div>
-
-        <div class="analytics-card">
-          <div class="analytics-card-header">
-            <h2>Елітні виконавці</h2>
-            <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
-          </div>
-          <p class="analytics-card-caption">Кількість гравців гільдії з найкращим Score не нижче порогу.</p>
-          <div class="analytics-chart-wrap">
-            <canvas id="chartElite"></canvas>
           </div>
         </div>
 
@@ -276,7 +290,7 @@
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=1"></script>
   <script src="../scripts/name-translations.js"></script>
-  <script src="../scripts/analytics.js?v=4"></script>
+  <script src="../scripts/analytics.js?v=8"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
