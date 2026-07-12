@@ -1593,14 +1593,15 @@ body.personal-analytics-page .player-potion-stat {
 body.personal-analytics-page .player-search-layout {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 
 body.personal-analytics-page .player-search-hint {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
+  font-style: italic;
   color: var(--color-text-faint);
   line-height: var(--line-height-relaxed);
-  max-width: 280px;
+  white-space: nowrap;
   margin: 0;
 }
 
