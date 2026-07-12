@@ -365,6 +365,35 @@ function render() {
     };
   });
 
+  const bestByPlayer = new Map();
+  combos.forEach((combo, datasetIndex) => {
+    combo.series.forEach((point) => {
+      const pointIndex = labels.indexOf(point.date);
+      if (pointIndex < 0) return;
+
+      const candidate = { value: point.dps, date: point.date, datasetIndex, pointIndex };
+      const current = bestByPlayer.get(combo.player);
+      if (!current || candidate.value > current.value) bestByPlayer.set(combo.player, candidate);
+    });
+  });
+
+  const playerBests = pairs
+    .map((pair) => ({ player: pair.name, best: bestByPlayer.get(pair.name) }))
+    .filter((entry) => entry.best)
+    .sort((a, b) => b.best.value - a.best.value);
+
+  const medals = playerBests.map((entry, rank) => {
+    const formatValue = (v) => Math.round(v).toLocaleString('en-US');
+    const suffix = playerBests.length > 1 ? ` — ${entry.player}` : '';
+    return {
+      text: `${formatBestResultText(entry.best, formatValue)}${suffix}`,
+      datasetIndex: entry.best.datasetIndex,
+      pointIndex: entry.best.pointIndex,
+      iconPosition: 'above',
+      color: getMedalColor(rank)
+    };
+  });
+
   const canvas = document.getElementById('chartPersonalDps');
 
   chart = new Chart(canvas, {
@@ -376,6 +405,7 @@ function render() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: { padding: bestIconLayoutPadding(medals.length > 0, 'above') },
       plugins: {
         legend: {
           display: true,
@@ -392,6 +422,7 @@ function render() {
             }
           }
         },
+        bestResultLabel: { medals },
         tooltip: {
           callbacks: {
             label: (ctx) => {
@@ -406,7 +437,7 @@ function render() {
       },
       scales: {
         x: { title: { display: true, text: 'Дата рейду' } },
-        y: { title: { display: true, text: 'DPS' }, beginAtZero: true }
+        y: { title: { display: true, text: 'DPS' }, beginAtZero: true, grace: '15%' }
       }
     }
   });

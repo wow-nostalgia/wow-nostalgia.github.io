@@ -7,43 +7,6 @@ const bossDurationOverTimeSelect = document.getElementById('bossDurationOverTime
 const bossDurationOverTimeSplineSelect = document.getElementById('bossDurationOverTimeSplineSelect');
 const bossDurationDayFilter = document.getElementById('bossDurationDayFilter');
 
-const TROPHY_ICON_PATH = 'M3.217 6.962A3.75 3.75 0 0 1 0 3.25v-.5C0 1.784.784 1 1.75 1h1.356c.228-.585.796-1 1.462-1h6.864c.647 0 1.227.397 1.462 1h1.356c.966 0 1.75.784 1.75 1.75v.5a3.75 3.75 0 0 1-3.217 3.712 5.014 5.014 0 0 1-2.771 3.117l.144 1.446c.005.05.03.12.114.204.086.087.217.17.373.227.283.103.618.274.89.568.285.31.467.723.467 1.226v.75h1.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H4v-.75c0-.503.182-.916.468-1.226.27-.294.606-.465.889-.568.139-.048.266-.126.373-.227.084-.085.109-.153.114-.204l.144-1.446a5.015 5.015 0 0 1-2.77-3.117ZM4.5 1.568V5.5a3.5 3.5 0 1 0 7 0V1.568a.068.068 0 0 0-.068-.068H4.568a.068.068 0 0 0-.068.068Zm2.957 8.902-.12 1.204c-.093.925-.858 1.47-1.467 1.691a.766.766 0 0 0-.3.176c-.037.04-.07.093-.07.21v.75h5v-.75c0-.117-.033-.17-.07-.21a.766.766 0 0 0-.3-.176c-.609-.221-1.374-.766-1.466-1.69l-.12-1.204a5.064 5.064 0 0 1-1.087 0ZM13 2.5v2.872a2.25 2.25 0 0 0 1.5-2.122v-.5a.25.25 0 0 0-.25-.25H13Zm-10 0H1.75a.25.25 0 0 0-.25.25v.5c0 .98.626 1.813 1.5 2.122Z';
-const TROPHY_ICON_PATH2D = new Path2D(TROPHY_ICON_PATH);
-
-const bestResultLabelPlugin = {
-  id: 'bestResultLabel',
-  afterDraw(chart) {
-    const opts = chart.options.plugins?.bestResultLabel;
-    if (!opts?.text) return;
-
-    const { ctx, chartArea } = chart;
-    ctx.save();
-    ctx.font = `italic ${Chart.defaults.font.size}px ${cssVar('--font-sans')}`;
-    ctx.fillStyle = cssVar('--color-text-faint');
-    ctx.textAlign = 'right';
-    ctx.textBaseline = 'bottom';
-    ctx.fillText(opts.text, chartArea.right - 4, chartArea.bottom - 4);
-    ctx.restore();
-
-    if (opts.datasetIndex == null || opts.pointIndex == null) return;
-
-    const point = chart.getDatasetMeta(opts.datasetIndex)?.data?.[opts.pointIndex];
-    if (!point) return;
-
-    const iconSize = 14;
-    const gap = 6;
-    const iconY = opts.iconPosition === 'below' ? point.y + gap : point.y - gap - iconSize;
-
-    ctx.save();
-    ctx.translate(point.x - iconSize / 2, iconY);
-    ctx.scale(iconSize / 16, iconSize / 16);
-    ctx.fillStyle = cssVar('--color-accent-gold');
-    ctx.fill(TROPHY_ICON_PATH2D);
-    ctx.restore();
-  }
-};
-Chart.register(bestResultLabelPlugin);
-
 const ROLE_BY_SPEC = {
   Blood: 'Tank',
   Protection: 'Tank',
@@ -813,30 +776,6 @@ function pointerCursorOnHover(event, elements) {
   if (event.native) event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
 }
 
-const BEST_ICON_CLEARANCE = 24;
-const BEST_ICON_HALF_WIDTH = 10;
-
-function bestIconLayoutPadding(showBestResult, bestIconPosition) {
-  if (!showBestResult) return {};
-
-  const vertical = bestIconPosition === 'below' ? { bottom: BEST_ICON_CLEARANCE } : { top: BEST_ICON_CLEARANCE };
-  return { ...vertical, left: BEST_ICON_HALF_WIDTH, right: BEST_ICON_HALF_WIDTH };
-}
-
-function findBestPoint(points, isBetter) {
-  if (!points.length) return null;
-
-  let bestIndex = 0;
-  for (let i = 1; i < points.length; i += 1) {
-    if (isBetter(points[i].value, points[bestIndex].value)) bestIndex = i;
-  }
-  return { point: points[bestIndex], index: bestIndex };
-}
-
-function formatBestResultText(point, formatValue) {
-  return `Найкращий результат: ${formatValue(point.value)} (${formatDateLabel(point.date)})`;
-}
-
 function computeTrendLine(points) {
   const n = points.length;
   if (n < 2) return null;
@@ -918,10 +857,9 @@ function renderBossMetricOverTimeChart({
       plugins: {
         legend: { display: false },
         bestResultLabel: {
-          text: bestResultText,
-          datasetIndex: best ? 0 : null,
-          pointIndex: best ? best.index : null,
-          iconPosition: bestIconPosition
+          medals: best
+            ? [{ text: bestResultText, datasetIndex: 0, pointIndex: best.index, iconPosition: bestIconPosition, color: getMedalColor(0) }]
+            : []
         },
         tooltip: {
           callbacks: {
@@ -1050,10 +988,9 @@ function renderBossMetricMultiDayChart({
       plugins: {
         legend: { display: true },
         bestResultLabel: {
-          text: bestResultText,
-          datasetIndex: bestDatasetIndex,
-          pointIndex: bestPointIndex,
-          iconPosition: bestIconPosition
+          medals: bestDatasetIndex != null
+            ? [{ text: bestResultText, datasetIndex: bestDatasetIndex, pointIndex: bestPointIndex, iconPosition: bestIconPosition, color: getMedalColor(0) }]
+            : []
         },
         tooltip: {
           callbacks: {
@@ -1074,6 +1011,7 @@ function renderBossMetricMultiDayChart({
         y: {
           title: { display: true, text: yLabel },
           min: computeYMin(multiMinValue),
+          grace: '15%',
           ticks: { callback: (v) => formatValue(v) }
         }
       }
