@@ -814,10 +814,13 @@ function pointerCursorOnHover(event, elements) {
 }
 
 const BEST_ICON_CLEARANCE = 24;
+const BEST_ICON_HALF_WIDTH = 10;
 
 function bestIconLayoutPadding(showBestResult, bestIconPosition) {
   if (!showBestResult) return {};
-  return bestIconPosition === 'below' ? { bottom: BEST_ICON_CLEARANCE } : { top: BEST_ICON_CLEARANCE };
+
+  const vertical = bestIconPosition === 'below' ? { bottom: BEST_ICON_CLEARANCE } : { top: BEST_ICON_CLEARANCE };
+  return { ...vertical, left: BEST_ICON_HALF_WIDTH, right: BEST_ICON_HALF_WIDTH };
 }
 
 function findBestPoint(points, isBetter) {
