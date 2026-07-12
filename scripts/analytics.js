@@ -7,6 +7,24 @@ const bossDurationOverTimeSelect = document.getElementById('bossDurationOverTime
 const bossDurationOverTimeSplineSelect = document.getElementById('bossDurationOverTimeSplineSelect');
 const bossDurationDayFilter = document.getElementById('bossDurationDayFilter');
 
+const bestResultLabelPlugin = {
+  id: 'bestResultLabel',
+  afterDraw(chart) {
+    const text = chart.options.plugins?.bestResultLabel?.text;
+    if (!text) return;
+
+    const { ctx, chartArea } = chart;
+    ctx.save();
+    ctx.font = `italic ${Chart.defaults.font.size}px ${cssVar('--font-sans')}`;
+    ctx.fillStyle = cssVar('--color-text-faint');
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(text, chartArea.right - 4, chartArea.bottom - 4);
+    ctx.restore();
+  }
+};
+Chart.register(bestResultLabelPlugin);
+
 const ROLE_BY_SPEC = {
   Blood: 'Tank',
   Protection: 'Tank',
@@ -776,6 +794,13 @@ function pointerCursorOnHover(event, elements) {
   if (event.native) event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
 }
 
+function computeBestResultText(points, isBetter, formatValue) {
+  if (!points.length) return '';
+
+  const best = points.reduce((a, b) => (isBetter(b.value, a.value) ? b : a));
+  return `Найкращий результат: ${formatValue(best.value)} (${formatDateLabel(best.date)})`;
+}
+
 function computeTrendLine(points) {
   const n = points.length;
   if (n < 2) return null;
@@ -803,10 +828,13 @@ function renderBossMetricOverTimeChart({
   datasetLabel,
   yLabel,
   formatValue = (v) => Math.round(v).toLocaleString('en-US'),
-  computeYMin = (minValue) => Math.max(0, Math.floor((minValue - 50000) / 10000) * 10000)
+  computeYMin = (minValue) => Math.max(0, Math.floor((minValue - 50000) / 10000) * 10000),
+  showBestResult = false,
+  isBetter = (a, b) => a > b
 }) {
   let seriesPoints = points;
   const minValue = points.length ? Math.min(...points.map((p) => p.value)) : 0;
+  const bestResultText = showBestResult ? computeBestResultText(points, isBetter, formatValue) : '';
 
   if (splineMode === 'trend') {
     const trend = computeTrendLine(points.map((p, idx) => ({ x: idx, y: p.value })));
@@ -850,6 +878,7 @@ function renderBossMetricOverTimeChart({
       onHover: pointerCursorOnHover,
       plugins: {
         legend: { display: false },
+        bestResultLabel: { text: bestResultText },
         tooltip: {
           callbacks: {
             label: (ctx) => {
@@ -885,8 +914,14 @@ function renderBossMetricMultiDayChart({
   splineMode,
   yLabel,
   formatValue = (v) => v.toLocaleString('en-US'),
-  computeYMin = (minValue) => Math.max(0, Math.floor((minValue - 50000) / 10000) * 10000)
+  computeYMin = (minValue) => Math.max(0, Math.floor((minValue - 50000) / 10000) * 10000),
+  showBestResult = false,
+  isBetter = (a, b) => a > b
 }) {
+  const bestResultText = showBestResult
+    ? computeBestResultText(selectedDays.flatMap((dow) => byDay.get(dow) || []), isBetter, formatValue)
+    : '';
+
   const spline = SPLINE_MODES[splineMode] || SPLINE_MODES.smoothNoPoints;
 
   const allDates = [...new Set(
@@ -950,6 +985,7 @@ function renderBossMetricMultiDayChart({
       onHover: pointerCursorOnHover,
       plugins: {
         legend: { display: true },
+        bestResultLabel: { text: bestResultText },
         tooltip: {
           callbacks: {
             label: (ctx) => {
@@ -992,7 +1028,8 @@ function renderBossSumOverTimeChart(personalStats, boss) {
       points,
       splineMode: bossSumOverTimeSplineSelect.value,
       datasetLabel: `Сумарний DPS — ${translateBoss(boss)}`,
-      yLabel: 'Сумарний DPS'
+      yLabel: 'Сумарний DPS',
+      showBestResult: true
     });
   } else {
     renderBossMetricMultiDayChart({
@@ -1000,7 +1037,8 @@ function renderBossSumOverTimeChart(personalStats, boss) {
       byDay: computeBossSumByDay(personalStats, boss),
       selectedDays,
       splineMode: bossSumOverTimeSplineSelect.value,
-      yLabel: 'Сумарний DPS'
+      yLabel: 'Сумарний DPS',
+      showBestResult: true
     });
   }
 }
@@ -1024,7 +1062,9 @@ function renderBossDurationOverTimeChart(personalStats, boss) {
       datasetLabel: `Час бою — ${translateBoss(boss)}`,
       yLabel: 'Час бою',
       formatValue: formatSeconds,
-      computeYMin: () => 0
+      computeYMin: () => 0,
+      showBestResult: true,
+      isBetter: (a, b) => a < b
     });
   } else {
     renderBossMetricMultiDayChart({
@@ -1034,7 +1074,9 @@ function renderBossDurationOverTimeChart(personalStats, boss) {
       splineMode,
       yLabel: 'Час бою',
       formatValue: formatSeconds,
-      computeYMin: () => 0
+      computeYMin: () => 0,
+      showBestResult: true,
+      isBetter: (a, b) => a < b
     });
   }
 }
