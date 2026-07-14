@@ -563,6 +563,35 @@ footer span {
   font-size: var(--font-size-sm);
 }
 
+.footer-socials {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: 0.75rem;
+  vertical-align: middle;
+}
+
+.footer-social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-faint);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.footer-social-link:hover {
+  color: var(--color-text-strong);
+  background-color: var(--color-hover);
+}
+
+.footer-social-link svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
 
 /* =========================
    SHARED BUTTONS / CTA
