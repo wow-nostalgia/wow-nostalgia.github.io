@@ -476,3 +476,11 @@ export async function updateReserveBonusWeight(db, raidId, reserveId, delta) {
     .run();
   return getReserveById(db, raidId, reserveId);
 }
+
+export async function updateReserveOfficerBonusWeight(db, raidId, reserveId, delta) {
+  await db
+    .prepare('UPDATE soft_reserves SET officer_bonus_weight = officer_bonus_weight + ?, updated_at = ? WHERE id = ? AND raid_id = ?')
+    .bind(delta, nowIso(), reserveId, raidId)
+    .run();
+  return getReserveById(db, raidId, reserveId);
+}

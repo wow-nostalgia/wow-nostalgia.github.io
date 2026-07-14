@@ -816,7 +816,7 @@ function renderPlayersTable() {
 
       const weightBadge = document.createElement('span');
       weightBadge.className = 'raid-weight-badge';
-      weightBadge.textContent = formatWeight((r.weight || 0) + (r.bonus_weight || 0));
+      weightBadge.textContent = formatWeight((r.weight || 0) + (r.bonus_weight || 0) + (r.officer_bonus_weight || 0));
       itemSpan.appendChild(weightBadge);
 
       const itemInfo = findItemInfo(r.item_id, r.boss);
@@ -864,11 +864,14 @@ function buildReservesByWeight(reservers, penalizedIds) {
 
   const byWeight = new Map();
   reservers.forEach((r) => {
-    const effectiveWeight = (r.weight || 0) + (r.bonus_weight || 0);
+    const effectiveWeight = (r.weight || 0) + (r.bonus_weight || 0) + (r.officer_bonus_weight || 0);
     if (!byWeight.has(effectiveWeight)) byWeight.set(effectiveWeight, { visible: [], hidden: 0 });
-    if (r.player_name !== null) byWeight.get(effectiveWeight).visible.push({ name: r.player_name, id: r.id });
-    else byWeight.get(effectiveWeight).hidden++;
+    if (r.player_name !== null) {
+      byWeight.get(effectiveWeight).visible.push({ name: r.player_name, id: r.id, officerBonus: r.officer_bonus_weight || 0 });
+    } else byWeight.get(effectiveWeight).hidden++;
   });
+
+  const canOfficerBonus = isOfficerMode() && !isRaidCompleted();
 
   [...byWeight.keys()].sort((a, b) => a - b).forEach((weight) => {
     const entry = byWeight.get(weight);
@@ -885,7 +888,7 @@ function buildReservesByWeight(reservers, penalizedIds) {
     const namesSpan = document.createElement('span');
     namesSpan.className = 'raid-reserve-weight-names';
     const visibleNames = entry.visible;
-    visibleNames.forEach(({ name, id }, i) => {
+    visibleNames.forEach(({ name, id, officerBonus }, i) => {
       const p = penaltiesList.find((x) => x.player_name === name);
       const isPenalized = penalizedIds.has(id);
       if (isPenalized) {
@@ -902,6 +905,37 @@ function buildReservesByWeight(reservers, penalizedIds) {
         penSpan.textContent = ` (-${p.roll_penalty})`;
         namesSpan.appendChild(penSpan);
       }
+
+      if (canOfficerBonus) {
+        const bonusControls = document.createElement('span');
+        bonusControls.className = 'raid-bonus-controls';
+
+        if (officerBonus > 0) {
+          const chip = document.createElement('span');
+          chip.className = 'raid-bonus-chip';
+          chip.textContent = `+${officerBonus}`;
+          bonusControls.appendChild(chip);
+
+          const removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'raid-remove-btn';
+          removeBtn.textContent = '−';
+          removeBtn.title = 'Прибрати офіцерську вагу';
+          removeBtn.addEventListener('click', () => changeOfficerBonusWeight(id, -1));
+          bonusControls.appendChild(removeBtn);
+        } else {
+          const addBtn = document.createElement('button');
+          addBtn.type = 'button';
+          addBtn.className = 'raid-transfer-btn';
+          addBtn.textContent = '+';
+          addBtn.title = 'Додати офіцерську вагу (+1)';
+          addBtn.addEventListener('click', () => changeOfficerBonusWeight(id, 1));
+          bonusControls.appendChild(addBtn);
+        }
+
+        namesSpan.appendChild(bonusControls);
+      }
+
       const isLast = i === visibleNames.length - 1 && !entry.hidden;
       if (!isLast) namesSpan.appendChild(document.createTextNode(', '));
     });
@@ -1057,6 +1091,10 @@ function describeAuditAction(entry) {
     case 'unlock': return 'розблокував рейд';
     case 'settings_change': return 'змінив налаштування рейду';
     case 'item_received': return d.received ? 'позначив предмет отриманим' : 'скасував "отримано"';
+    case 'officer_bonus_weight':
+      return hideSoftDetails
+        ? `${d.delta > 0 ? 'додав' : 'прибрав'} офіцерську вагу`
+        : `${d.delta > 0 ? 'додав' : 'прибрав'} офіцерську вагу гравцю ${d.playerName} (${translateBoss(d.boss)})`;
     case 'hide_reserves': return "увімкнув режим прихованих софтів";
     case 'show_reserves': return "вимкнув режим прихованих софтів";
     case 'complete': return 'завершив рейд';
@@ -1171,6 +1209,20 @@ async function loadAudit() {
 async function changeBonusWeight(reserveId, delta) {
   try {
     await apiCall('PATCH', `/raids/${raidId}/reserves/${reserveId}/bonus`, {
+      token: getSessionToken(),
+      body: { delta }
+    });
+    await loadReserves();
+    renderPlayersTable();
+    renderItemsTable();
+  } catch (err) {
+    setStatus(`Помилка: ${err.message}`, 'error');
+  }
+}
+
+async function changeOfficerBonusWeight(reserveId, delta) {
+  try {
+    await apiCall('PATCH', `/raids/${raidId}/reserves/${reserveId}/officer-bonus`, {
       token: getSessionToken(),
       body: { delta }
     });

@@ -20,7 +20,8 @@ import {
   handleDeleteAllForPlayer,
   handleToggleReceived,
   handleOfficerAssign,
-  handleUpdateBonusWeight
+  handleUpdateBonusWeight,
+  handleUpdateOfficerBonusWeight
 } from './routes/reserves.js';
 import { handleListAudit } from './routes/audit.js';
 import { handleListTransfers, handleCreateTransfer, handleDeleteTransfer } from './routes/transfers.js';
@@ -149,6 +150,9 @@ async function routeRaids(request, env, parts, session) {
     }
     if (parts[3] === 'bonus' && method === 'PATCH') {
       return handleUpdateBonusWeight(request, env, raidId, Number(reserveId), session);
+    }
+    if (parts[3] === 'officer-bonus' && method === 'PATCH') {
+      return handleUpdateOfficerBonusWeight(request, env, raidId, Number(reserveId), session);
     }
     if (!parts[3] && method === 'DELETE') {
       return handleDeleteReserve(request, env, raidId, Number(reserveId), session);
