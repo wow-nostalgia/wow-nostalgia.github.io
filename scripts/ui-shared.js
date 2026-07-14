@@ -120,7 +120,7 @@ const bestResultLabelPlugin = {
     });
   }
 };
-Chart.register(bestResultLabelPlugin);
+if (typeof Chart !== 'undefined') Chart.register(bestResultLabelPlugin);
 
 const BEST_ICON_CLEARANCE = 24;
 const BEST_ICON_HALF_WIDTH = 10;
