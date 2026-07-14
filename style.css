@@ -3642,9 +3642,21 @@ body.account-page .link-button-std:hover {
 
 /* ── Штрафи (вкладка penalties) ──────────────────────────────────────── */
 
+/* На вузьких екранах жорсткі % колонки з table-layout: fixed стискають
+   ім'я до нечитабельної ширини (наповзає на сусідню колонку, бо
+   white-space: nowrap не дає перенести текст). Замість стиснення —
+   мінімальна ширина таблиці й горизонтальний скрол обгортки, той самий
+   патерн, що й .raid-tables-grid .ranking-table-wrap вище. */
+body.raid-manager-detail-page #penaltiesPane .ranking-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 body.raid-manager-detail-page #raidPenaltiesTable {
   table-layout: fixed;
   width: 100%;
+  min-width: 34rem;
 }
 
 body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(1),
