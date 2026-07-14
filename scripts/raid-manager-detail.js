@@ -920,15 +920,15 @@ function buildReservesByWeight(reservers, penalizedIds) {
           removeBtn.type = 'button';
           removeBtn.className = 'raid-remove-btn';
           removeBtn.textContent = '−';
-          removeBtn.title = 'Прибрати офіцерську вагу';
+          removeBtn.title = 'Прибрати бонусний софт';
           removeBtn.addEventListener('click', () => changeOfficerBonusWeight(id, -1));
           bonusControls.appendChild(removeBtn);
         } else {
           const addBtn = document.createElement('button');
           addBtn.type = 'button';
-          addBtn.className = 'raid-transfer-btn';
+          addBtn.className = 'raid-transfer-btn raid-transfer-btn--officer';
           addBtn.textContent = '+';
-          addBtn.title = 'Додати офіцерську вагу (+1)';
+          addBtn.title = 'Додати бонусний софт';
           addBtn.addEventListener('click', () => changeOfficerBonusWeight(id, 1));
           bonusControls.appendChild(addBtn);
         }
