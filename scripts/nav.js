@@ -1,3 +1,11 @@
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').catch((err) => {
+      console.error('Service worker registration failed:', err);
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.querySelector('.nav-toggle');
   const nav = document.getElementById('primaryNav');
