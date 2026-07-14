@@ -12,6 +12,22 @@ const TITLE_INSTANCE_ABBR_UK = { ICC: "ЦЛК", RS: "РС" };
 const TITLE_DIFFICULTY_ABBR_UK = { "25H": "25ХМ", "25N": "25Н", "10H": "10ХМ", "10N": "10Н" };
 
 let titleAutoFilled = true;
+let todayRaids = [];
+
+function toLocalDateKey(date) {
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+}
+
+async function loadTodayRaids() {
+  try {
+    const { raids } = await apiCall('GET', '/raids?limit=50&offset=0', { token: getSessionToken() });
+    const todayKey = toLocalDateKey(new Date());
+    todayRaids = raids.filter((r) => toLocalDateKey(new Date(r.created_at)) === todayKey);
+  } catch (err) {
+    console.error(err);
+    todayRaids = [];
+  }
+}
 
 function generateTitle() {
   const instance = raidInstanceInput.value;
@@ -19,9 +35,11 @@ function generateTitle() {
   const now = new Date();
   const dd = String(now.getDate()).padStart(2, '0');
   const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const yyyy = now.getFullYear();
   const inst = TITLE_INSTANCE_ABBR_UK[instance] || instance;
   const diff = TITLE_DIFFICULTY_ABBR_UK[difficulty] || difficulty;
-  return `${inst} ${diff}-${dd}.${mm}`;
+  const seq = todayRaids.filter((r) => r.instance === instance && r.difficulty === difficulty).length + 1;
+  return `${inst} ${diff} #${seq} - ${dd}.${mm}.${yyyy}`;
 }
 
 function updateTitleIfAuto() {
@@ -90,6 +108,7 @@ async function init() {
     return;
   }
 
+  await loadTodayRaids();
   updateTitleIfAuto();
   createRaidSection.hidden = false;
 }
