@@ -3943,14 +3943,14 @@ body.raid-manager-detail-page .penalty-reason-text {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.1rem;
+  height: 1.1rem;
   padding: 0;
   border: 1px solid rgba(123, 170, 245, 0.5);
-  border-radius: 50%;
+  border-radius: var(--radius-sm);
   background: none;
   color: var(--color-link);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-sm);
   line-height: var(--line-height-condensed);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
