@@ -3415,6 +3415,19 @@ body.account-page .account-form input[type="text"]:focus {
   box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
+body.account-page #addCharacterForm button[type="submit"].compare-btn,
+body.account-page #defaultOfficerAddBtn.compare-btn {
+  background: var(--color-success-strong);
+  border-color: var(--color-success-strong);
+  color: var(--color-on-accent);
+}
+
+body.account-page #addCharacterForm button[type="submit"].compare-btn:hover:not(:disabled),
+body.account-page #defaultOfficerAddBtn.compare-btn:hover:not(:disabled) {
+  background: var(--color-success-strong-hover);
+  border-color: var(--color-success-strong-hover);
+}
+
 body.account-page .account-chars-layout {
   display: flex;
   align-items: flex-start;
