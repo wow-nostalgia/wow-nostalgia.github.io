@@ -1219,6 +1219,12 @@ body.potion-page .potion-table tbody tr:nth-child(even) {
   background: var(--color-surface-stripe);
 }
 
+body.potion-page .potion-boss-count {
+  margin: 0 0 0.5rem;
+  color: var(--color-text-faint);
+  font-size: 0.9rem;
+}
+
 body.potion-page .potion-raid-link {
   margin-top: 0.5rem;
 }

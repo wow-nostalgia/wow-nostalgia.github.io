@@ -29,6 +29,13 @@ function getBossCountForRaid(raid) {
     const set = bossesByRaidUrl.get(url);
     if (set) for (const boss of set) bosses.add(boss);
   }
+
+  // Gunship Battle не потрапляє у personal-stats.json (не тягне DPS-даних),
+  // але якщо вбито Deathbringer Saurfang - Gunship Battle точно був пройдений.
+  if (bosses.has('Deathbringer Saurfang') && !bosses.has('Gunship Battle')) {
+    bosses.add('Gunship Battle');
+  }
+
   return bosses.size;
 }
 
@@ -108,7 +115,8 @@ function createRaidContent(raid) {
   if (!Array.isArray(raid.players) || raid.players.length === 0) return `<p>Немає даних гравців</p>`;
   const bossCount = getBossCountForRaid(raid);
   const rowsHtml = raid.players.map((player) => createPlayerRow(player, bossCount)).join('');
-  return `<div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}`;
+  const bossCountHtml = bossCount ? `<p class="potion-boss-count">Вбито босів: ${bossCount}</p>` : '';
+  return `${bossCountHtml}<div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}`;
 }
 
 function isMobileLayout() {
