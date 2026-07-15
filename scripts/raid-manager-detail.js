@@ -761,7 +761,7 @@ function renderPlayersTable() {
 
     if (personalAnalyticsNames.has(name)) {
       const link = document.createElement('a');
-      link.href = `../../personal-analytics/?${new URLSearchParams({ player: name }).toString()}`;
+      link.href = `../../guild-ranking/?${new URLSearchParams({ view: 'player', player: name }).toString()}`;
       link.textContent = name;
       nameWrap.appendChild(link);
     } else {

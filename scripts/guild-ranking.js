@@ -612,6 +612,12 @@ async function init() {
     } else {
       setStatus('Немає доступних класів.');
     }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const presetPlayer = urlParams.get('player');
+    if (presetPlayer && urlParams.get('view') === 'player') {
+      goToPlayerView(presetPlayer);
+    }
   } catch (error) {
     console.error(error);
     setStatus('Не вдалося завантажити дані рейтингу.');
