@@ -618,6 +618,8 @@ document.addEventListener('click', () => {
   closeRowDropdowns();
 });
 
+document.addEventListener('scroll', () => closeRowDropdowns(), true);
+
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
@@ -960,6 +962,24 @@ function closeRowDropdowns() {
   });
 }
 
+// position: fixed (в'юпорт), а не absolute всередині .ranking-table-wrap -
+// інакше overflow-x: auto на цьому контейнері за специфікацією CSS змушує
+// й overflow-y стати auto, і меню, що вивалюється нижче, вмикає вертикальний
+// скрол замість вільного спливання (як і #raidItemTooltip нижче в цьому файлі).
+function positionRowDropdownMenu(trigger, menu) {
+  const rect = trigger.getBoundingClientRect();
+  menu.style.left = `${rect.left}px`;
+  menu.style.top = `${rect.bottom + 4}px`;
+
+  const menuRect = menu.getBoundingClientRect();
+  if (menuRect.right > window.innerWidth) {
+    menu.style.left = `${Math.max(0, window.innerWidth - menuRect.width - 4)}px`;
+  }
+  if (menuRect.bottom > window.innerHeight) {
+    menu.style.top = `${Math.max(0, rect.top - menuRect.height - 4)}px`;
+  }
+}
+
 // Одна кнопка-дропдаун в кінці рядка замість окремої "+" біля кожного імені
 // без бонусу - інакше рядок із кількома гравцями захаращений кнопками.
 function buildOfficerBonusDropdown(eligible) {
@@ -1001,7 +1021,10 @@ function buildOfficerBonusDropdown(eligible) {
     event.stopPropagation();
     const willOpen = !menu.classList.contains('is-open');
     closeRowDropdowns();
-    menu.classList.toggle('is-open', willOpen);
+    if (willOpen) {
+      menu.classList.add('is-open');
+      positionRowDropdownMenu(trigger, menu);
+    }
     trigger.setAttribute('aria-expanded', String(willOpen));
   });
 

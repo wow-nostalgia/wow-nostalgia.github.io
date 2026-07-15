@@ -2960,11 +2960,8 @@ body.raid-manager-detail-page .raid-row-dropdown-trigger-caret::after {
 
 body.raid-manager-detail-page .raid-row-dropdown-menu {
   display: none;
-  position: absolute;
-  top: 100%;
-  right: 0;
+  position: fixed;
   z-index: var(--z-dropdown);
-  margin-top: 0.25rem;
   max-height: 18.75rem;
   min-width: 8rem;
   overflow-y: auto;
