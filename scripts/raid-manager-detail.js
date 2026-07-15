@@ -769,7 +769,10 @@ function renderPlayersTable() {
     }
 
     const ownerName = characterOwnerNames.get(name);
-    if (ownerName) nameWrap.title = ownerName;
+    if (ownerName) {
+      nameWrap.classList.add('tooltipped');
+      nameWrap.setAttribute('aria-label', ownerName);
+    }
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
@@ -790,16 +793,16 @@ function renderPlayersTable() {
       if (canCancel && !isRaidCompleted()) {
         const cancelBtn = document.createElement('button');
         cancelBtn.type = 'button';
-        cancelBtn.className = 'raid-remove-btn';
-        cancelBtn.title = 'Скасувати передачу софту';
+        cancelBtn.className = 'raid-remove-btn tooltipped';
+        cancelBtn.setAttribute('aria-label', 'Скасувати передачу софту');
         cancelBtn.textContent = '✕';
         cancelBtn.addEventListener('click', () => deleteTransfer(name));
         transferTd.appendChild(cancelBtn);
       }
     } else if (toTransfer) {
       const indicator = document.createElement('span');
-      indicator.className = 'raid-transfer-indicator raid-transfer-indicator--to';
-      indicator.title = `Отримує софти від ${toTransfer.from_player}`;
+      indicator.className = 'raid-transfer-indicator raid-transfer-indicator--to tooltipped';
+      indicator.setAttribute('aria-label', `Отримує софти від ${toTransfer.from_player}`);
       indicator.textContent = `+${toTransfer.from_player}`;
       transferTd.appendChild(indicator);
     }
@@ -829,9 +832,9 @@ function renderPlayersTable() {
       if (manageable) {
         const delBtn = document.createElement('button');
         delBtn.type = 'button';
-        delBtn.className = 'raid-remove-btn';
+        delBtn.className = 'raid-remove-btn tooltipped';
         delBtn.textContent = '✕';
-        delBtn.title = 'Видалити цей софт';
+        delBtn.setAttribute('aria-label', 'Видалити цей софт');
         delBtn.disabled = isRaidCompleted();
         delBtn.addEventListener('click', () => removeReserve(r));
         itemSpan.appendChild(delBtn);
@@ -918,17 +921,17 @@ function buildReservesByWeight(reservers, penalizedIds) {
 
           const removeBtn = document.createElement('button');
           removeBtn.type = 'button';
-          removeBtn.className = 'raid-remove-btn';
+          removeBtn.className = 'raid-remove-btn tooltipped';
           removeBtn.textContent = '−';
-          removeBtn.title = 'Прибрати бонусний софт';
+          removeBtn.setAttribute('aria-label', 'Прибрати бонусний софт');
           removeBtn.addEventListener('click', () => changeOfficerBonusWeight(id, -1));
           bonusControls.appendChild(removeBtn);
         } else {
           const addBtn = document.createElement('button');
           addBtn.type = 'button';
-          addBtn.className = 'raid-transfer-btn raid-transfer-btn--officer';
+          addBtn.className = 'raid-transfer-btn raid-transfer-btn--officer tooltipped';
           addBtn.textContent = '+';
-          addBtn.title = 'Додати бонусний софт';
+          addBtn.setAttribute('aria-label', 'Додати бонусний софт');
           addBtn.addEventListener('click', () => changeOfficerBonusWeight(id, 1));
           bonusControls.appendChild(addBtn);
         }
@@ -1051,9 +1054,9 @@ function renderItemsTable() {
 
         const addBtn = document.createElement('button');
         addBtn.type = 'button';
-        addBtn.className = 'raid-transfer-btn';
+        addBtn.className = 'raid-transfer-btn tooltipped';
         addBtn.textContent = '+';
-        addBtn.title = "Додати бонусну вагу";
+        addBtn.setAttribute('aria-label', 'Додати бонусну вагу');
         addBtn.disabled = !canAdd;
         addBtn.addEventListener('click', () => changeBonusWeight(myReserveForItem.id, 1));
         bonusDiv.appendChild(addBtn);
@@ -1061,9 +1064,9 @@ function renderItemsTable() {
         if (canRemove) {
           const removeBtn = document.createElement('button');
           removeBtn.type = 'button';
-          removeBtn.className = 'raid-remove-btn';
+          removeBtn.className = 'raid-remove-btn tooltipped';
           removeBtn.textContent = '−';
-          removeBtn.title = "Прибрати бонусну вагу";
+          removeBtn.setAttribute('aria-label', 'Прибрати бонусну вагу');
           removeBtn.addEventListener('click', () => changeBonusWeight(myReserveForItem.id, -1));
           bonusDiv.appendChild(removeBtn);
         }

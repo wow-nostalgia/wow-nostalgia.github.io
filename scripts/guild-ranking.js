@@ -193,14 +193,13 @@ function renderTable(className, specName) {
     const headerIcon = HEADER_ICONS[col.key];
     if (col.isBoss) {
       const abbr = document.createElement('abbr');
-      abbr.className = 'boss-header';
-      abbr.title = col.label;
+      abbr.className = 'boss-header tooltipped tooltipped--s';
+      abbr.setAttribute('aria-label', col.label);
       abbr.textContent = bossAbbr(col.bossName);
       th.appendChild(abbr);
     } else if (headerIcon) {
       const abbr = document.createElement('abbr');
-      abbr.className = 'table-header-icon';
-      abbr.title = headerIcon.title;
+      abbr.className = 'table-header-icon tooltipped tooltipped--s';
       abbr.setAttribute('aria-label', headerIcon.title);
       abbr.innerHTML = headerIcon.svg;
       th.appendChild(abbr);
@@ -244,7 +243,10 @@ function renderTable(className, specName) {
           link.href = '#';
           link.textContent = row.name;
           const ownerName = characterOwnerNames.get(row.name);
-          if (ownerName) link.title = ownerName;
+          if (ownerName) {
+            link.classList.add('tooltipped');
+            link.setAttribute('aria-label', ownerName);
+          }
           link.addEventListener('click', (event) => {
             event.preventDefault();
             goToPlayerView(row.name);

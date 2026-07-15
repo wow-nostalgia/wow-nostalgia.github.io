@@ -650,6 +650,89 @@ footer span {
 
 
 /* =========================
+   TOOLTIP
+   ========================= */
+
+.tooltipped {
+  position: relative;
+}
+
+/* Для елементів, де aria-label вже зайнятий іншим текстом (напр. стан
+   кнопки) — джерело тексту тултіпа через окремий атрибут. */
+.tooltipped[data-tooltip]::after {
+  content: attr(data-tooltip);
+}
+
+.tooltipped::before,
+.tooltipped::after {
+  position: absolute;
+  left: 50%;
+  z-index: var(--z-tooltip-local);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.tooltipped::before {
+  content: '';
+  bottom: 100%;
+  margin-bottom: -4px;
+  border: 5px solid transparent;
+  border-top-color: var(--color-surface-overlay);
+  transform: translate(-50%, -4px);
+}
+
+.tooltipped::after {
+  content: attr(aria-label);
+  bottom: 100%;
+  margin-bottom: 6px;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-mid);
+  background-color: var(--color-surface-overlay);
+  color: var(--color-text-strong);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  white-space: nowrap;
+  box-shadow: var(--shadow-tooltip);
+  transform: translate(-50%, -4px);
+}
+
+.tooltipped:hover::before,
+.tooltipped:hover::after,
+.tooltipped:focus-visible::before,
+.tooltipped:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.tooltipped--s::before {
+  top: 100%;
+  bottom: auto;
+  margin-bottom: 0;
+  margin-top: -4px;
+  border-top-color: transparent;
+  border-bottom-color: var(--color-surface-overlay);
+  transform: translate(-50%, 4px);
+}
+
+.tooltipped--s::after {
+  top: 100%;
+  bottom: auto;
+  margin-bottom: 0;
+  margin-top: 6px;
+  transform: translate(-50%, 4px);
+}
+
+.tooltipped--s:hover::before,
+.tooltipped--s:hover::after,
+.tooltipped--s:focus-visible::before,
+.tooltipped--s:focus-visible::after {
+  transform: translate(-50%, 0);
+}
+
+
+/* =========================
    RANKING PAGE
    ========================= */
 

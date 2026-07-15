@@ -20,7 +20,7 @@ let characterOwnerNames = new Map();
 
 function ownerTooltipAttr(name) {
   const ownerName = characterOwnerNames.get(name);
-  return ownerName ? ` title="${escapeHtml(ownerName)}"` : '';
+  return ownerName ? ` class="tooltipped" aria-label="${escapeHtml(ownerName)}"` : '';
 }
 
 function buildPersonalAnalyticsUrl(name) {

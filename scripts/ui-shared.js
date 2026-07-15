@@ -8,8 +8,8 @@
 function createPlayerBadge(name) {
   const isGuild = guildMemberNames.has(name);
   const badge = document.createElement('span');
-  badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
-  badge.title = isGuild ? 'Ностальгія' : 'Легіонер';
+  badge.className = `player-badge tooltipped ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
+  badge.setAttribute('aria-label', isGuild ? 'Ностальгія' : 'Легіонер');
   badge.textContent = isGuild ? 'N' : 'L';
   return badge;
 }
@@ -21,7 +21,7 @@ function createPlayerBadgeHtml(name) {
   const cls = isGuild ? 'player-badge--guild' : 'player-badge--legion';
   const title = isGuild ? 'Ностальгія' : 'Легіонер';
   const letter = isGuild ? 'N' : 'L';
-  return `<span class="player-badge ${cls}" title="${title}">${letter}</span>`;
+  return `<span class="player-badge tooltipped ${cls}" aria-label="${title}">${letter}</span>`;
 }
 
 const SCORE_TIERS = [
