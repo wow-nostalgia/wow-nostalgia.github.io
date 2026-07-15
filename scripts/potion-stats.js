@@ -44,8 +44,8 @@ function ownerTooltipAttr(name) {
   return ownerName ? ` class="tooltipped" aria-label="${escapeHtml(ownerName)}"` : '';
 }
 
-function buildPersonalAnalyticsUrl(name) {
-  return `../personal-analytics/?${new URLSearchParams({ player: name }).toString()}`;
+function buildPlayerViewUrl(name) {
+  return `../guild-ranking/?${new URLSearchParams({ view: 'player', player: name }).toString()}`;
 }
 
 function isSafeUrl(url) {
@@ -210,7 +210,7 @@ function renderHonorBoard(players) {
   }
 
   honorTableBodyEl.innerHTML = visiblePlayers
-    .map((player, index) => `<tr><td>${index + 1}</td><td>${createPlayerBadgeHtml(player.name)}<a href="${escapeHtml(buildPersonalAnalyticsUrl(player.name))}"${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</a></td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`)
+    .map((player, index) => `<tr><td>${index + 1}</td><td>${createPlayerBadgeHtml(player.name)}<a href="${escapeHtml(buildPlayerViewUrl(player.name))}"${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</a></td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`)
     .join('');
 
   updateSortIndicators();
