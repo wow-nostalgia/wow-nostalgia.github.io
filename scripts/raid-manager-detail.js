@@ -615,11 +615,13 @@ function setupWeightToggle(toggleEl, hiddenInput) {
 
 document.addEventListener('click', () => {
   document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
+  closeRowDropdowns();
 });
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
+    closeRowDropdowns();
   }
 });
 
@@ -891,6 +893,7 @@ function buildReservesByWeight(reservers, penalizedIds) {
     const namesSpan = document.createElement('span');
     namesSpan.className = 'raid-reserve-weight-names';
     const visibleNames = entry.visible;
+    const eligibleForBonus = [];
     visibleNames.forEach(({ name, id, officerBonus }, i) => {
       const p = penaltiesList.find((x) => x.player_name === name);
       const isPenalized = penalizedIds.has(id);
@@ -909,34 +912,26 @@ function buildReservesByWeight(reservers, penalizedIds) {
         namesSpan.appendChild(penSpan);
       }
 
-      if (canOfficerBonus) {
+      if (canOfficerBonus && officerBonus > 0) {
         const bonusControls = document.createElement('span');
         bonusControls.className = 'raid-bonus-controls';
 
-        if (officerBonus > 0) {
-          const chip = document.createElement('span');
-          chip.className = 'raid-bonus-chip';
-          chip.textContent = `+${officerBonus}`;
-          bonusControls.appendChild(chip);
+        const chip = document.createElement('span');
+        chip.className = 'raid-bonus-chip';
+        chip.textContent = `+${officerBonus}`;
+        bonusControls.appendChild(chip);
 
-          const removeBtn = document.createElement('button');
-          removeBtn.type = 'button';
-          removeBtn.className = 'raid-remove-btn tooltipped';
-          removeBtn.textContent = '−';
-          removeBtn.setAttribute('aria-label', 'Прибрати бонусний софт');
-          removeBtn.addEventListener('click', () => changeOfficerBonusWeight(id, -1));
-          bonusControls.appendChild(removeBtn);
-        } else {
-          const addBtn = document.createElement('button');
-          addBtn.type = 'button';
-          addBtn.className = 'raid-transfer-btn raid-transfer-btn--officer tooltipped';
-          addBtn.textContent = '+';
-          addBtn.setAttribute('aria-label', 'Додати бонусний софт');
-          addBtn.addEventListener('click', () => changeOfficerBonusWeight(id, 1));
-          bonusControls.appendChild(addBtn);
-        }
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'raid-remove-btn tooltipped';
+        removeBtn.textContent = '−';
+        removeBtn.setAttribute('aria-label', 'Прибрати бонусний софт');
+        removeBtn.addEventListener('click', () => changeOfficerBonusWeight(id, -1));
+        bonusControls.appendChild(removeBtn);
 
         namesSpan.appendChild(bonusControls);
+      } else if (canOfficerBonus) {
+        eligibleForBonus.push({ name, id });
       }
 
       const isLast = i === visibleNames.length - 1 && !entry.hidden;
@@ -948,9 +943,62 @@ function buildReservesByWeight(reservers, penalizedIds) {
     }
     row.appendChild(namesSpan);
 
+    if (eligibleForBonus.length) {
+      row.appendChild(buildOfficerBonusDropdown(eligibleForBonus));
+    }
+
     wrap.appendChild(row);
   });
 
+  return wrap;
+}
+
+function closeRowDropdowns() {
+  document.querySelectorAll('.raid-row-dropdown-menu.is-open').forEach((menu) => {
+    menu.classList.remove('is-open');
+    menu.previousElementSibling?.setAttribute('aria-expanded', 'false');
+  });
+}
+
+// Одна кнопка-дропдаун в кінці рядка замість окремої "+" біля кожного імені
+// без бонусу - інакше рядок із кількома гравцями захаращений кнопками.
+function buildOfficerBonusDropdown(eligible) {
+  const wrap = document.createElement('div');
+  wrap.className = 'raid-row-dropdown';
+
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'raid-row-dropdown-trigger tooltipped';
+  trigger.textContent = '+';
+  trigger.setAttribute('aria-label', 'Додати бонусний софт');
+  trigger.setAttribute('aria-haspopup', 'true');
+  trigger.setAttribute('aria-expanded', 'false');
+
+  const menu = document.createElement('div');
+  menu.className = 'raid-row-dropdown-menu';
+
+  eligible.forEach(({ name, id }) => {
+    const opt = document.createElement('button');
+    opt.type = 'button';
+    opt.className = 'raid-row-dropdown-option';
+    opt.textContent = name;
+    opt.addEventListener('click', () => {
+      closeRowDropdowns();
+      changeOfficerBonusWeight(id, 1);
+    });
+    menu.appendChild(opt);
+  });
+
+  trigger.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const willOpen = !menu.classList.contains('is-open');
+    closeRowDropdowns();
+    menu.classList.toggle('is-open', willOpen);
+    trigger.setAttribute('aria-expanded', String(willOpen));
+  });
+
+  wrap.appendChild(trigger);
+  wrap.appendChild(menu);
   return wrap;
 }
 
@@ -1659,7 +1707,7 @@ async function init() {
     } catch (err) {
       console.error(err);
     }
-  }, 4000);
+  }, 10000);
 }
 
 init();
