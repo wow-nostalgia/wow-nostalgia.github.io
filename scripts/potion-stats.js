@@ -17,6 +17,20 @@ let honorBoardCache = [];
 let sortState = { column: 'averagePotionsPerBoss', direction: 'desc' };
 let guildMemberNames = new Set();
 let characterOwnerNames = new Map();
+let bossesByRaidUrl = new Map();
+
+// Кількість босів логу — рахуємо по унікальних босах з personal-stats.json
+// для цього raidUrl (+ mergedFrom, якщо лог було розділено на кілька звітів).
+// potion-stats.json сам по собі кількість босів не містить.
+function getBossCountForRaid(raid) {
+  const urls = [raid.raidUrl, ...(raid.mergedFrom || [])];
+  const bosses = new Set();
+  for (const url of urls) {
+    const set = bossesByRaidUrl.get(url);
+    if (set) for (const boss of set) bosses.add(boss);
+  }
+  return bosses.size;
+}
 
 function ownerTooltipAttr(name) {
   const ownerName = characterOwnerNames.get(name);
@@ -80,17 +94,20 @@ function createRaidLinksHtml(raid) {
   return parts.join('');
 }
 
-function getRowClass(player) {
-  return Number(player.total || 0) >= 12 ? 'potion-good' : 'potion-bad';
+function getRowClass(player, bossCount) {
+  if (!bossCount) return '';
+  const avgPerBoss = Number(player.total || 0) / bossCount;
+  return avgPerBoss >= 1 ? 'potion-good' : 'potion-bad';
 }
 
-function createPlayerRow(player) {
-  return `<tr class="${getRowClass(player)}"><td>${createPlayerBadgeHtml(player.name)}<span${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</span></td><td>${Number(player.total || 0)}</td><td>${Number(player.potionOfSpeed || 0)}</td><td>${Number(player.potionOfWildMagic || 0)}</td></tr>`;
+function createPlayerRow(player, bossCount) {
+  return `<tr class="${getRowClass(player, bossCount)}"><td>${createPlayerBadgeHtml(player.name)}<span${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</span></td><td>${Number(player.total || 0)}</td><td>${Number(player.potionOfSpeed || 0)}</td><td>${Number(player.potionOfWildMagic || 0)}</td></tr>`;
 }
 
 function createRaidContent(raid) {
   if (!Array.isArray(raid.players) || raid.players.length === 0) return `<p>Немає даних гравців</p>`;
-  const rowsHtml = raid.players.map(createPlayerRow).join('');
+  const bossCount = getBossCountForRaid(raid);
+  const rowsHtml = raid.players.map((player) => createPlayerRow(player, bossCount)).join('');
   return `<div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}`;
 }
 
@@ -237,11 +254,12 @@ function attachHonorFilter() {
 async function loadPotionStats() {
   try {
     statusEl.textContent = 'Завантаження даних...';
-    const [response, honorBoardResponse, playersResponse, ownersResponse] = await Promise.all([
+    const [response, honorBoardResponse, playersResponse, ownersResponse, personalStatsResponse] = await Promise.all([
       fetch('/data/potion-stats.json?t=' + Date.now()),
       fetch('/data/honor-board.json?t=' + Date.now()),
       fetch('/data/players.json?t=' + Date.now()),
-      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null)
+      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null),
+      fetch('/data/personal-stats.json?t=' + Date.now()).catch(() => null)
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
@@ -255,6 +273,16 @@ async function loadPotionStats() {
 
     if (ownersResponse?.ok) {
       characterOwnerNames = new Map(Object.entries(await ownersResponse.json()));
+    }
+
+    if (personalStatsResponse?.ok) {
+      const personalStats = await personalStatsResponse.json();
+      bossesByRaidUrl = new Map();
+      for (const record of personalStats) {
+        if (!record.raidUrl || !record.boss) continue;
+        if (!bossesByRaidUrl.has(record.raidUrl)) bossesByRaidUrl.set(record.raidUrl, new Set());
+        bossesByRaidUrl.get(record.raidUrl).add(record.boss);
+      }
     }
 
     const validRaids = raids.filter((raid) => Array.isArray(raid.players) && raid.players.length > 0 && raid.raidUrl);
