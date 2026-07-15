@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейтинг DPS</title>
-  <link rel="stylesheet" href="../style.css?v=39">
+  <link rel="stylesheet" href="../style.css?v=40">
 </head>
 
 <body class="ranking-page">
@@ -56,42 +56,99 @@
 
       <h1>Рейтинг DPS</h1>
 
-      <ul>
-        <li>Рейтинг DPS з сайту <a href="https://uwu-logs.xyz/" target="_blank" rel="noopener noreferrer">uwu-logs.xyz</a> куди ми завантажуємо логи наших рейдів.</li>
-        <li>Тут присутні гравці гільдії + легіонери (5+ рейдів з нами).</li>
-      </ul>
-
-      <div class="ranking-controls">
-        <label for="classSelect">Клас</label>
-        <select id="classSelect">
-          <option value="">Завантаження класів...</option>
-        </select>
-
-        <label for="specSelect">Спеціалізація</label>
-        <select id="specSelect">
-          <option value="">Спочатку обери клас</option>
-        </select>
-
-        <label class="ranking-checkbox-label" for="legionnairesCheckbox">
-          <input type="checkbox" id="legionnairesCheckbox" checked>
-          Легіонери
-        </label>
+      <div class="potion-view-switch" role="tablist" aria-label="Режим перегляду рейтингу">
+        <button class="potion-view-btn active" type="button" role="tab" data-view="character" aria-selected="true">
+          Персонаж
+        </button>
+        <button class="potion-view-btn" type="button" role="tab" data-view="player" aria-selected="false">
+          Гравець
+        </button>
       </div>
 
-      <div class="ranking-status-row">
-        <button type="button" id="compareBtn" class="compare-btn" disabled>Переглянути/Порівняти</button>
-        <div class="ranking-status-text">
-          <p id="tableStatus">Завантаження даних...</p>
-          <p id="lastUpdatedText" class="last-updated-text"></p>
+      <section id="characterView" role="tabpanel">
+        <ul>
+          <li>Рейтинг DPS з сайту <a href="https://uwu-logs.xyz/" target="_blank" rel="noopener noreferrer">uwu-logs.xyz</a> куди ми завантажуємо логи наших рейдів.</li>
+          <li>Тут присутні гравці гільдії + легіонери (5+ рейдів з нами).</li>
+        </ul>
+
+        <div class="ranking-controls">
+          <label for="classSelect">Клас</label>
+          <select id="classSelect">
+            <option value="">Завантаження класів...</option>
+          </select>
+
+          <label for="specSelect">Спеціалізація</label>
+          <select id="specSelect">
+            <option value="">Спочатку обери клас</option>
+          </select>
+
+          <label class="ranking-checkbox-label" for="legionnairesCheckbox">
+            <input type="checkbox" id="legionnairesCheckbox" checked>
+            Легіонери
+          </label>
         </div>
-      </div>
 
-      <div class="ranking-table-wrap">
-        <table id="rankingTable">
-          <thead id="rankingHead"></thead>
-          <tbody id="rankingBody"></tbody>
-        </table>
-      </div>
+        <div class="ranking-status-row">
+          <button type="button" id="compareBtn" class="compare-btn" disabled>Переглянути/Порівняти</button>
+          <div class="ranking-status-text">
+            <p id="tableStatus">Завантаження даних...</p>
+            <p id="lastUpdatedText" class="last-updated-text"></p>
+          </div>
+        </div>
+
+        <div class="ranking-table-wrap">
+          <table id="rankingTable">
+            <thead id="rankingHead"></thead>
+            <tbody id="rankingBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="playerView" role="tabpanel" hidden>
+        <div class="player-search-layout">
+          <div class="ranking-controls player-controls-grid">
+            <label for="playerViewCharacterSelect">Персонаж</label>
+            <div class="autocomplete-wrap">
+              <input type="text" id="playerViewCharacterSelect" autocomplete="off" placeholder="Почни вводити ім'я...">
+              <button type="button" class="autocomplete-clear" id="playerViewCharacterSelectClear" aria-label="Очистити">&times;</button>
+              <div class="autocomplete-list" id="playerViewCharacterSelectList"></div>
+            </div>
+          </div>
+          <p class="player-search-hint">Знайди одного персонажа, щоб переглянути аналітику по всім персонажам гравця</p>
+        </div>
+
+        <label class="ranking-checkbox-label">
+          <input type="checkbox" id="hideHealTankSpecs" checked />
+          <span>Не показувати хіло/танко-спеки</span>
+        </label>
+
+        <p id="playerViewStatus"></p>
+
+        <div class="ranking-table-wrap" id="playerSiblingsTableWrap" hidden>
+          <table class="player-siblings-table" id="playerSiblingsTable">
+            <thead>
+              <tr>
+                <th class="sortable active" data-sort="name" data-direction="asc">
+                  Персонаж <span class="sort-indicator"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M3.47 7.78a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0l4.25 4.25a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018L9 4.81v7.44a.75.75 0 0 1-1.5 0V4.81L4.53 7.78a.75.75 0 0 1-1.06 0Z"/></svg></span>
+                </th>
+                <th class="sortable" data-sort="spec" data-direction="asc">
+                  Спеціалізація <span class="sort-indicator"></span>
+                </th>
+                <th class="sortable" data-sort="overallRank" data-direction="asc">
+                  Рейтинг сервера <span class="sort-indicator"></span>
+                </th>
+                <th class="sortable" data-sort="overallScore" data-direction="desc">
+                  Очки <span class="sort-indicator"></span>
+                </th>
+                <th class="sortable" data-sort="potions" data-direction="desc">
+                  Потів/бос <span class="sort-indicator"></span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="playerSiblingsBody"></tbody>
+          </table>
+        </div>
+      </section>
 
       <footer>
         <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank" rel="noopener noreferrer">Freedom WoW</a></span>
@@ -109,7 +166,7 @@
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=4"></script>
   <script src="../scripts/name-translations.js"></script>
-  <script src="../scripts/guild-ranking.js"></script>
+  <script src="../scripts/guild-ranking.js?v=1"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

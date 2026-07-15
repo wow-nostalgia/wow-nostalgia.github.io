@@ -912,10 +912,6 @@ body.ranking-page .container-inner {
 }
 
 body.ranking-page .container-inner > h1,
-body.ranking-page .container-inner > ul,
-body.ranking-page .container-inner > .ranking-controls,
-body.ranking-page .container-inner > .ranking-status-row,
-body.ranking-page .container-inner > .ranking-table-wrap,
 body.ranking-page .container-inner > .potion-view-switch {
   margin-top: 0;
   margin-bottom: 0;
@@ -979,7 +975,7 @@ body.potion-page #potionStatus {
 }
 
 body.potion-page .potion-view-switch,
-body.personal-analytics-page .potion-view-switch {
+body.ranking-page .potion-view-switch {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -989,7 +985,7 @@ body.personal-analytics-page .potion-view-switch {
 }
 
 body.potion-page .potion-view-btn,
-body.personal-analytics-page .potion-view-btn {
+body.ranking-page .potion-view-btn {
   display: inline-flex;
   align-items: center;
   background: none;
@@ -1006,12 +1002,12 @@ body.personal-analytics-page .potion-view-btn {
 }
 
 body.potion-page .potion-view-btn:hover,
-body.personal-analytics-page .potion-view-btn:hover {
+body.ranking-page .potion-view-btn:hover {
   color: var(--color-text-strong);
 }
 
 body.potion-page .potion-view-btn.active,
-body.personal-analytics-page .potion-view-btn.active {
+body.ranking-page .potion-view-btn.active {
   color: var(--color-text-strong);
   border-bottom-color: var(--color-link);
 }
@@ -1163,13 +1159,13 @@ body.potion-page #honorStatus {
 }
 
 body.potion-page .sortable,
-body.personal-analytics-page .sortable {
+body.ranking-page .sortable {
   cursor: pointer;
   user-select: none;
 }
 
 body.potion-page .sortable .sort-indicator,
-body.personal-analytics-page .sortable .sort-indicator {
+body.ranking-page .sortable .sort-indicator {
   display: inline-flex;
   align-items: center;
   margin-left: 0.35rem;
@@ -1177,7 +1173,7 @@ body.personal-analytics-page .sortable .sort-indicator {
 }
 
 body.potion-page .sortable.active,
-body.personal-analytics-page .sortable.active {
+body.ranking-page .sortable.active {
   background: var(--color-active);
 }
 
@@ -1603,14 +1599,9 @@ body.personal-analytics-page .container-inner {
   gap: var(--space-6);
 }
 
-body.personal-analytics-page .container-inner > h1,
-body.personal-analytics-page .container-inner > .potion-view-switch {
+body.personal-analytics-page .container-inner > h1 {
   margin-top: 0;
   margin-bottom: 0;
-}
-
-body.personal-analytics-page .container-inner > .ranking-checkbox-label {
-  align-self: flex-start;
 }
 
 body.personal-analytics-page .personal-analytics-chart-wrap {
@@ -1624,7 +1615,8 @@ body.personal-analytics-page .personal-analytics-chart-wrap canvas {
   height: 100% !important;
 }
 
-body.personal-analytics-page .player-controls-grid {
+body.personal-analytics-page .player-controls-grid,
+body.ranking-page .player-controls-grid {
   display: grid;
   grid-template-columns: max-content minmax(220px, 320px) max-content max-content max-content max-content;
   align-items: center;
@@ -1648,13 +1640,13 @@ body.personal-analytics-page .player-potion-stat {
   white-space: nowrap;
 }
 
-body.personal-analytics-page .player-search-layout {
+body.ranking-page .player-search-layout {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-body.personal-analytics-page .player-search-hint {
+body.ranking-page .player-search-hint {
   font-size: var(--font-size-sm);
   font-style: italic;
   color: var(--color-text-faint);
@@ -1663,60 +1655,63 @@ body.personal-analytics-page .player-search-hint {
   margin: 0;
 }
 
-body.personal-analytics-page .player-siblings-table {
+body.ranking-page .player-siblings-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-body.personal-analytics-page .player-siblings-table th,
-body.personal-analytics-page .player-siblings-table td {
+body.ranking-page .player-siblings-table th,
+body.ranking-page .player-siblings-table td {
   padding: 0.4rem 0.6rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
   font-size: var(--font-size-base);
 }
 
-body.personal-analytics-page .player-siblings-table th {
+body.ranking-page .player-siblings-table th {
   color: var(--color-text-strong);
   font-weight: var(--font-weight-medium);
 }
 
-body.personal-analytics-page .player-siblings-table th:nth-child(n+3),
-body.personal-analytics-page .player-siblings-table td:nth-child(n+3) {
+body.ranking-page .player-siblings-table th:nth-child(n+3),
+body.ranking-page .player-siblings-table td:nth-child(n+3) {
   text-align: right;
 }
 
-body.personal-analytics-page .player-siblings-table tbody tr:hover {
+body.ranking-page .player-siblings-table tbody tr:hover {
   background-color: var(--color-hover);
 }
 
-body.personal-analytics-page .player-siblings-table tbody tr:last-child td {
+body.ranking-page .player-siblings-table tbody tr:last-child td {
   border-bottom: none;
 }
 
-body.personal-analytics-page .player-siblings-table a {
+body.ranking-page .player-siblings-table a {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
 }
 
-body.personal-analytics-page .player-siblings-name-cell {
+body.ranking-page .player-siblings-name-cell {
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
 
-body.personal-analytics-page .autocomplete-wrap {
+body.personal-analytics-page .autocomplete-wrap,
+body.ranking-page .autocomplete-wrap {
   position: relative;
   width: 100%;
 }
 
-body.personal-analytics-page .autocomplete-wrap input[type="text"] {
+body.personal-analytics-page .autocomplete-wrap input[type="text"],
+body.ranking-page .autocomplete-wrap input[type="text"] {
   width: 100%;
   padding-right: 1.9rem;
 }
 
-body.personal-analytics-page .autocomplete-clear {
+body.personal-analytics-page .autocomplete-clear,
+body.ranking-page .autocomplete-clear {
   position: absolute;
   top: 50%;
   right: 0.5rem;
@@ -1732,11 +1727,13 @@ body.personal-analytics-page .autocomplete-clear {
   cursor: pointer;
 }
 
-body.personal-analytics-page .autocomplete-clear:hover {
+body.personal-analytics-page .autocomplete-clear:hover,
+body.ranking-page .autocomplete-clear:hover {
   color: var(--color-text-strong);
 }
 
-body.personal-analytics-page .autocomplete-list {
+body.personal-analytics-page .autocomplete-list,
+body.ranking-page .autocomplete-list {
   display: none;
   position: absolute;
   top: 100%;
@@ -1752,23 +1749,27 @@ body.personal-analytics-page .autocomplete-list {
   box-shadow: var(--shadow-md);
 }
 
-body.personal-analytics-page .autocomplete-list.is-open {
+body.personal-analytics-page .autocomplete-list.is-open,
+body.ranking-page .autocomplete-list.is-open {
   display: block;
   animation: primer-dropdown-in 0.12s cubic-bezier(0, 0.1, 0.1, 1) backwards;
 }
 
-body.personal-analytics-page .autocomplete-item {
+body.personal-analytics-page .autocomplete-item,
+body.ranking-page .autocomplete-item {
   padding: 0.3rem 0.65rem;
   font-size: var(--font-size-base);
   color: var(--color-text-strong);
   cursor: pointer;
 }
 
-body.personal-analytics-page .autocomplete-item:hover {
+body.personal-analytics-page .autocomplete-item:hover,
+body.ranking-page .autocomplete-item:hover {
   background-color: rgba(123, 170, 245, 0.18);
 }
 
-body.personal-analytics-page .autocomplete-empty {
+body.personal-analytics-page .autocomplete-empty,
+body.ranking-page .autocomplete-empty {
   padding: 0.3rem 0.65rem;
   font-size: var(--font-size-base);
   color: var(--color-text-faint);
@@ -3103,22 +3104,18 @@ body.raid-manager-detail-page .raid-audit-time {
     min-width: 0;
   }
 
-  body.personal-analytics-page .player-controls-grid {
+  body.personal-analytics-page .player-controls-grid,
+  body.ranking-page .player-controls-grid {
     grid-template-columns: 1fr;
   }
 
-  body.personal-analytics-page .player-search-layout {
+  body.ranking-page .player-search-layout {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
   }
 
-  body.personal-analytics-page .ranking-table-wrap {
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  body.personal-analytics-page .player-siblings-table {
+  body.ranking-page .player-siblings-table {
     width: max-content;
     min-width: 100%;
   }

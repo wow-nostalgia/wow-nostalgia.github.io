@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Персональна Аналітика</title>
-  <link rel="stylesheet" href="../style.css?v=39">
+  <link rel="stylesheet" href="../style.css?v=40">
 </head>
 
 <body class="personal-analytics-page">
@@ -56,116 +56,59 @@
 
       <h1>Персональна Аналітика</h1>
 
-      <div class="potion-view-switch" role="tablist" aria-label="Режим перегляду персональної аналітики">
-        <button class="potion-view-btn active" type="button" role="tab" data-view="character" aria-selected="true">
-          Персонаж
-        </button>
-        <button class="potion-view-btn" type="button" role="tab" data-view="player" aria-selected="false">
-          Гравець
-        </button>
+      <div class="ranking-controls player-controls-grid">
+        <label for="playerSelect">Персонаж 1</label>
+        <div class="autocomplete-wrap">
+          <input type="text" id="playerSelect" autocomplete="off" placeholder="Почни вводити ім'я...">
+          <button type="button" class="autocomplete-clear" id="playerSelectClear" aria-label="Очистити">&times;</button>
+          <div class="autocomplete-list" id="playerSelectList"></div>
+        </div>
+
+        <label for="player1Spec">Спек</label>
+        <select id="player1Spec" disabled>
+          <option value="">Усі спеки</option>
+        </select>
+        <span id="player1PotionStat" class="player-potion-stat"></span>
+        <span id="player1RaidCount" class="player-raid-count"></span>
+
+        <label for="player2Select">Персонаж 2</label>
+        <div class="autocomplete-wrap">
+          <input type="text" id="player2Select" autocomplete="off" placeholder="Без порівняння (опційно)">
+          <button type="button" class="autocomplete-clear" id="player2SelectClear" aria-label="Очистити">&times;</button>
+          <div class="autocomplete-list" id="player2SelectList"></div>
+        </div>
+
+        <label for="player2Spec">Спек</label>
+        <select id="player2Spec" disabled>
+          <option value="">Усі спеки</option>
+        </select>
+        <span id="player2PotionStat" class="player-potion-stat"></span>
+        <span id="player2RaidCount" class="player-raid-count"></span>
       </div>
 
-      <section id="characterView" role="tabpanel">
-        <div class="ranking-controls player-controls-grid">
-          <label for="playerSelect">Персонаж 1</label>
-          <div class="autocomplete-wrap">
-            <input type="text" id="playerSelect" autocomplete="off" placeholder="Почни вводити ім'я...">
-            <button type="button" class="autocomplete-clear" id="playerSelectClear" aria-label="Очистити">&times;</button>
-            <div class="autocomplete-list" id="playerSelectList"></div>
-          </div>
+      <div class="boss-checkboxes-head">
+        <span>Боси</span>
+        <button type="button" id="selectAllBosses" class="link-button">Обрати всі</button>
+        <button type="button" id="deselectAllBosses" class="link-button">Зняти всі</button>
 
-          <label for="player1Spec">Спек</label>
-          <select id="player1Spec" disabled>
-            <option value="">Усі спеки</option>
+        <div class="spline-select-wrap">
+          <label for="splineSelect">Тип лінії</label>
+          <select id="splineSelect">
+            <option value="smooth">Плавна</option>
+            <option value="smoothNoPoints" selected>Плавна без точок</option>
+            <option value="linear">Пряма</option>
+            <option value="linearNoPoints">Пряма без точок</option>
+            <option value="trend">Лінія тренду</option>
           </select>
-          <span id="player1PotionStat" class="player-potion-stat"></span>
-          <span id="player1RaidCount" class="player-raid-count"></span>
-
-          <label for="player2Select">Персонаж 2</label>
-          <div class="autocomplete-wrap">
-            <input type="text" id="player2Select" autocomplete="off" placeholder="Без порівняння (опційно)">
-            <button type="button" class="autocomplete-clear" id="player2SelectClear" aria-label="Очистити">&times;</button>
-            <div class="autocomplete-list" id="player2SelectList"></div>
-          </div>
-
-          <label for="player2Spec">Спек</label>
-          <select id="player2Spec" disabled>
-            <option value="">Усі спеки</option>
-          </select>
-          <span id="player2PotionStat" class="player-potion-stat"></span>
-          <span id="player2RaidCount" class="player-raid-count"></span>
         </div>
+      </div>
+      <div class="boss-checkboxes" id="bossCheckboxes"></div>
 
-        <div class="boss-checkboxes-head">
-          <span>Боси</span>
-          <button type="button" id="selectAllBosses" class="link-button">Обрати всі</button>
-          <button type="button" id="deselectAllBosses" class="link-button">Зняти всі</button>
+      <p id="tableStatus"></p>
 
-          <div class="spline-select-wrap">
-            <label for="splineSelect">Тип лінії</label>
-            <select id="splineSelect">
-              <option value="smooth">Плавна</option>
-              <option value="smoothNoPoints" selected>Плавна без точок</option>
-              <option value="linear">Пряма</option>
-              <option value="linearNoPoints">Пряма без точок</option>
-              <option value="trend">Лінія тренду</option>
-            </select>
-          </div>
-        </div>
-        <div class="boss-checkboxes" id="bossCheckboxes"></div>
-
-        <p id="tableStatus"></p>
-
-        <div class="personal-analytics-chart-wrap">
-          <canvas id="chartPersonalDps"></canvas>
-        </div>
-      </section>
-
-      <section id="playerView" role="tabpanel" hidden>
-        <div class="player-search-layout">
-          <div class="ranking-controls player-controls-grid">
-            <label for="playerViewCharacterSelect">Персонаж</label>
-            <div class="autocomplete-wrap">
-              <input type="text" id="playerViewCharacterSelect" autocomplete="off" placeholder="Почни вводити ім'я...">
-              <button type="button" class="autocomplete-clear" id="playerViewCharacterSelectClear" aria-label="Очистити">&times;</button>
-              <div class="autocomplete-list" id="playerViewCharacterSelectList"></div>
-            </div>
-          </div>
-          <p class="player-search-hint">Знайди одного персонажа, щоб переглянути аналітику по всім персонажам гравця</p>
-        </div>
-
-        <label class="ranking-checkbox-label">
-          <input type="checkbox" id="hideHealTankSpecs" checked />
-          <span>Не показувати хіло/танко-спеки</span>
-        </label>
-
-        <p id="playerViewStatus"></p>
-
-        <div class="ranking-table-wrap" id="playerSiblingsTableWrap" hidden>
-          <table class="player-siblings-table" id="playerSiblingsTable">
-            <thead>
-              <tr>
-                <th class="sortable active" data-sort="name" data-direction="asc">
-                  Персонаж <span class="sort-indicator"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M3.47 7.78a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0l4.25 4.25a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018L9 4.81v7.44a.75.75 0 0 1-1.5 0V4.81L4.53 7.78a.75.75 0 0 1-1.06 0Z"/></svg></span>
-                </th>
-                <th class="sortable" data-sort="spec" data-direction="asc">
-                  Спеціалізація <span class="sort-indicator"></span>
-                </th>
-                <th class="sortable" data-sort="overallRank" data-direction="asc">
-                  Рейтинг сервера <span class="sort-indicator"></span>
-                </th>
-                <th class="sortable" data-sort="overallScore" data-direction="desc">
-                  Очки <span class="sort-indicator"></span>
-                </th>
-                <th class="sortable" data-sort="potions" data-direction="desc">
-                  Потів/бос <span class="sort-indicator"></span>
-                </th>
-              </tr>
-            </thead>
-            <tbody id="playerSiblingsBody"></tbody>
-          </table>
-        </div>
-      </section>
+      <div class="personal-analytics-chart-wrap">
+        <canvas id="chartPersonalDps"></canvas>
+      </div>
 
       <footer>
         <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank" rel="noopener noreferrer">Freedom WoW</a></span>
@@ -184,7 +127,7 @@
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=4"></script>
   <script src="../scripts/name-translations.js"></script>
-  <script src="../scripts/personal-analytics.js?v=19"></script>
+  <script src="../scripts/personal-analytics.js?v=20"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

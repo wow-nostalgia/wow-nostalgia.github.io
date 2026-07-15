@@ -1,7 +1,4 @@
-﻿const SORT_ICON_ASC = '<svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M3.47 7.78a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0l4.25 4.25a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018L9 4.81v7.44a.75.75 0 0 1-1.5 0V4.81L4.53 7.78a.75.75 0 0 1-1.06 0Z"/></svg>';
-const SORT_ICON_DESC = '<svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M13.03 8.22a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L3.47 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l2.97 2.97V3.75a.75.75 0 0 1 1.5 0v7.44l2.97-2.97a.75.75 0 0 1 1.06 0Z"/></svg>';
-
-const playerSelect = document.getElementById('playerSelect');
+﻿const playerSelect = document.getElementById('playerSelect');
 const player2Select = document.getElementById('player2Select');
 const player1SpecSelect = document.getElementById('player1Spec');
 const player2SpecSelect = document.getElementById('player2Spec');
@@ -14,24 +11,9 @@ const selectAllBossesBtn = document.getElementById('selectAllBosses');
 const deselectAllBossesBtn = document.getElementById('deselectAllBosses');
 const tableStatus = document.getElementById('tableStatus');
 const splineSelect = document.getElementById('splineSelect');
-const characterViewEl = document.getElementById('characterView');
-const playerViewEl = document.getElementById('playerView');
-const viewButtons = document.querySelectorAll('.potion-view-btn');
-const playerViewCharacterSelect = document.getElementById('playerViewCharacterSelect');
-const playerViewCharacterSelectList = document.getElementById('playerViewCharacterSelectList');
-const playerViewCharacterSelectClear = document.getElementById('playerViewCharacterSelectClear');
-const playerViewStatus = document.getElementById('playerViewStatus');
-const playerSiblingsTableWrap = document.getElementById('playerSiblingsTableWrap');
-const playerSiblingsBody = document.getElementById('playerSiblingsBody');
-const hideHealTankSpecsCheckbox = document.getElementById('hideHealTankSpecs');
-
-const HEAL_TANK_SPECS = new Set(['Holy', 'Discipline', 'Restoration', 'Blood', 'Protection']);
 
 let personalStats = [];
 let honorBoard = [];
-let guildDataRows = [];
-let characterOwners = {};
-let primaryCharacterNames = new Set();
 let chart = null;
 
 const BOSS_ORDER = [
@@ -445,26 +427,6 @@ function render() {
   setStatus('');
 }
 
-function switchView(viewName) {
-  characterViewEl.hidden = viewName !== 'character';
-  playerViewEl.hidden = viewName !== 'player';
-
-  viewButtons.forEach((button) => {
-    const isActive = button.dataset.view === viewName;
-    button.classList.toggle('active', isActive);
-    button.setAttribute('aria-selected', isActive.toString());
-  });
-}
-
-function attachViewSwitch() {
-  viewButtons.forEach((button) => {
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      switchView(button.dataset.view);
-    });
-  });
-}
-
 function applyUrlParams() {
   const urlParams = new URLSearchParams(window.location.search);
   const presetPlayer1 = urlParams.get('player');
@@ -493,195 +455,6 @@ function applyUrlParams() {
   }
 }
 
-function buildCharacterLink(name, guildRow) {
-  const link = document.createElement('a');
-  const params = new URLSearchParams({ player: name });
-  if (guildRow) params.set('spec', `${guildRow.class} — ${guildRow.spec}`);
-  link.href = `?${params.toString()}`;
-  link.appendChild(createPlayerBadge(name));
-  link.appendChild(document.createTextNode(name));
-  return link;
-}
-
-let siblingSortState = { column: 'name', direction: 'asc' };
-let currentSiblingRows = [];
-
-function siblingPotions(row) {
-  const entry = honorBoard.find((e) => e.name === row.name);
-  return entry ? entry.averagePotionsPerBoss : -1;
-}
-
-function sortSiblingRows(rows) {
-  const { column, direction } = siblingSortState;
-  return [...rows].sort((a, b) => {
-    let av;
-    let bv;
-    switch (column) {
-      case 'spec':
-        av = translateSpecKey(`${a.class} — ${a.spec}`);
-        bv = translateSpecKey(`${b.class} — ${b.spec}`);
-        break;
-      case 'overallRank':
-        av = Number(a.overallRank ?? Infinity);
-        bv = Number(b.overallRank ?? Infinity);
-        break;
-      case 'overallScore':
-        av = Number(a.overallScore ?? 0);
-        bv = Number(b.overallScore ?? 0);
-        break;
-      case 'potions':
-        av = siblingPotions(a);
-        bv = siblingPotions(b);
-        break;
-      default:
-        av = a.name;
-        bv = b.name;
-    }
-
-    if (typeof av === 'string') {
-      const cmp = av.localeCompare(bv, 'uk');
-      return direction === 'asc' ? cmp : -cmp;
-    }
-
-    if (av < bv) return direction === 'asc' ? -1 : 1;
-    if (av > bv) return direction === 'asc' ? 1 : -1;
-    return a.name.localeCompare(b.name, 'uk');
-  });
-}
-
-function updateSiblingSortIndicators() {
-  document.querySelectorAll('#playerSiblingsTable .sortable').forEach((th) => {
-    th.classList.remove('active');
-    const indicator = th.querySelector('.sort-indicator');
-    if (indicator) indicator.textContent = '';
-  });
-
-  const active = document.querySelector(`#playerSiblingsTable .sortable[data-sort="${siblingSortState.column}"]`);
-  if (active) {
-    active.classList.add('active');
-    const indicator = active.querySelector('.sort-indicator');
-    if (indicator) indicator.innerHTML = siblingSortState.direction === 'asc' ? SORT_ICON_ASC : SORT_ICON_DESC;
-  }
-}
-
-function getVisibleSiblingRows() {
-  const hideHealTank = hideHealTankSpecsCheckbox.checked;
-  return hideHealTank ? currentSiblingRows.filter((row) => !HEAL_TANK_SPECS.has(row.spec)) : currentSiblingRows;
-}
-
-function renderSiblingRows() {
-  playerSiblingsBody.innerHTML = '';
-
-  if (!currentSiblingRows.length) {
-    playerSiblingsTableWrap.hidden = true;
-    updateSiblingSortIndicators();
-    return;
-  }
-
-  const visibleRows = getVisibleSiblingRows();
-
-  if (!visibleRows.length) {
-    playerViewStatus.textContent = 'Усі персонажі цього профілю — хіли/танки, приховано фільтром.';
-    playerSiblingsTableWrap.hidden = true;
-    updateSiblingSortIndicators();
-    return;
-  }
-
-  playerViewStatus.textContent = '';
-  playerSiblingsTableWrap.hidden = false;
-
-  sortSiblingRows(visibleRows).forEach((row) => {
-    const tr = document.createElement('tr');
-
-    const nameTd = document.createElement('td');
-    nameTd.className = 'player-siblings-name-cell';
-    nameTd.appendChild(buildCharacterLink(row.name, row));
-    if (primaryCharacterNames.has(row.name)) {
-      const primaryBadge = document.createElement('span');
-      primaryBadge.className = 'primary-character-badge';
-      primaryBadge.textContent = 'Основний';
-      nameTd.appendChild(primaryBadge);
-    }
-    tr.appendChild(nameTd);
-
-    const specTd = document.createElement('td');
-    specTd.textContent = translateSpecKey(`${row.class} — ${row.spec}`);
-    if (WOW_CLASS_COLORS[row.class]) specTd.style.color = WOW_CLASS_COLORS[row.class];
-    tr.appendChild(specTd);
-
-    const rankTd = document.createElement('td');
-    rankTd.textContent = row.overallRank ?? '';
-    tr.appendChild(rankTd);
-
-    const scoreTd = document.createElement('td');
-    const score = Number(row.overallScore ?? 0);
-    const scoreTier = getScoreTier(score);
-    const scoreIcon = scoreTier ? scoreTier.medal : '🤷‍♂️';
-    scoreTd.textContent = `${scoreIcon} ${score.toFixed(2)}`;
-    tr.appendChild(scoreTd);
-
-    const potionTd = document.createElement('td');
-    const potions = siblingPotions(row);
-    potionTd.textContent = potions >= 0 ? potions.toFixed(2) : '—';
-    tr.appendChild(potionTd);
-
-    playerSiblingsBody.appendChild(tr);
-  });
-
-  updateSiblingSortIndicators();
-}
-
-function attachSiblingTableSorting() {
-  document.querySelectorAll('#playerSiblingsTable .sortable').forEach((th) => {
-    th.addEventListener('click', () => {
-      const column = th.dataset.sort;
-      if (!column) return;
-
-      if (siblingSortState.column === column) {
-        siblingSortState.direction = siblingSortState.direction === 'desc' ? 'asc' : 'desc';
-      } else {
-        siblingSortState.column = column;
-        siblingSortState.direction = th.dataset.direction || 'asc';
-      }
-
-      renderSiblingRows();
-    });
-  });
-}
-
-function renderPlayerSiblings(characterName) {
-  playerSiblingsBody.innerHTML = '';
-  currentSiblingRows = [];
-
-  if (!characterName) {
-    playerViewStatus.textContent = '';
-    playerSiblingsTableWrap.hidden = true;
-    return;
-  }
-
-  const ownerDisplayName = characterOwners[characterName];
-  if (!ownerDisplayName) {
-    playerViewStatus.textContent = 'Цей персонаж не прив’язаний до жодного профілю.';
-    playerSiblingsTableWrap.hidden = true;
-    return;
-  }
-
-  const siblingNames = Object.entries(characterOwners)
-    .filter(([, displayName]) => displayName === ownerDisplayName)
-    .map(([name]) => name);
-
-  const rows = siblingNames.flatMap((name) => guildDataRows.filter((row) => row.name === name));
-
-  if (!rows.length) {
-    playerViewStatus.textContent = 'Для персонажів цього профілю немає даних рейтингу.';
-    playerSiblingsTableWrap.hidden = true;
-    return;
-  }
-
-  currentSiblingRows = rows;
-  renderSiblingRows();
-}
-
 async function init() {
   Chart.defaults.color = cssVar('--color-text');
   Chart.defaults.borderColor = cssVar('--color-border');
@@ -691,13 +464,10 @@ async function init() {
 
   try {
     setStatus('Завантаження даних...');
-    const [personalResponse, playersResponse, honorResponse, guildDataResponse, ownersResponse, primaryResponse] = await Promise.all([
+    const [personalResponse, playersResponse, honorResponse] = await Promise.all([
       fetch('/data/personal-stats.json?t=' + Date.now()),
       fetch('/data/players.json?t=' + Date.now()),
-      fetch('/data/honor-board.json?t=' + Date.now()),
-      fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
-      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null),
-      fetch(`${AUTH_API_BASE}/characters/primary`).catch(() => null)
+      fetch('/data/honor-board.json?t=' + Date.now())
     ]);
 
     if (!personalResponse.ok) throw new Error(`HTTP ${personalResponse.status}`);
@@ -712,19 +482,6 @@ async function init() {
 
     if (honorResponse.ok) {
       honorBoard = await honorResponse.json();
-    }
-
-    if (guildDataResponse?.ok) {
-      const guildData = await guildDataResponse.json();
-      guildDataRows = guildData.rows || [];
-    }
-
-    if (ownersResponse?.ok) {
-      characterOwners = await ownersResponse.json();
-    }
-
-    if (primaryResponse?.ok) {
-      primaryCharacterNames = new Set(await primaryResponse.json());
     }
 
     const onPlayer1Change = () => {
@@ -756,19 +513,6 @@ async function init() {
       player2Select.value = '';
       onPlayer2Change();
       player2Select.focus();
-    });
-
-    const onPlayerViewChange = () => {
-      const name = playerViewCharacterSelect.value.trim();
-      renderPlayerSiblings(allNames.includes(name) ? name : '');
-    };
-
-    setupAutocomplete(playerViewCharacterSelect, playerViewCharacterSelectList, onPlayerViewChange);
-
-    playerViewCharacterSelectClear.addEventListener('click', () => {
-      playerViewCharacterSelect.value = '';
-      onPlayerViewChange();
-      playerViewCharacterSelect.focus();
     });
 
     applyUrlParams();
@@ -813,8 +557,4 @@ deselectAllBossesBtn.addEventListener('click', () => {
 
 splineSelect.addEventListener('change', render);
 
-hideHealTankSpecsCheckbox.addEventListener('change', renderSiblingRows);
-
-attachViewSwitch();
-attachSiblingTableSorting();
 init();
