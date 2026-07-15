@@ -273,7 +273,10 @@ body.account-page #loggedInView h2 {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  background-color: var(--color-surface-solid);
+  background-color: rgba(29, 38, 54, 0.75);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border-soft);
 }
 
 .topbar__inner {
@@ -517,13 +520,16 @@ button.nav__link {
     background var(--transition-fast),
     border-color var(--transition-fast),
     color var(--transition-fast),
-    transform var(--transition-fast);
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .info-tabs .heading:hover {
   background: var(--color-hover);
   border-color: var(--color-border-accent);
   color: var(--color-text-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .info-tabs .heading .icon {
@@ -796,17 +802,19 @@ footer span {
   padding: 0.5rem 1rem;
   border: 1px solid var(--color-border-button);
   border-radius: var(--radius-md);
-  background: var(--color-surface-soft);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0)), var(--color-surface-soft);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: background var(--transition-fast), border-color var(--transition-fast);
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .compare-btn:hover:not(:disabled) {
-  background: var(--color-surface-soft-hover);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0)), var(--color-surface-soft-hover);
   border-color: var(--color-border-button-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .compare-btn:disabled {
@@ -1042,13 +1050,17 @@ body.potion-page .potion-log-btn {
   transition:
     background var(--transition-fast),
     border-color var(--transition-fast),
-    color var(--transition-fast);
+    color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 body.potion-page .potion-log-btn:hover {
   background: var(--color-hover);
   border-color: var(--color-border-accent);
   color: var(--color-text-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 body.potion-page .potion-log-btn.active {
