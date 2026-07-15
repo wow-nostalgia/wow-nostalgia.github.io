@@ -134,10 +134,8 @@ function buildPersonalAnalyticsUrl(players) {
 }
 
 function updateCompareButton() {
-  const count = selectedPlayers.size;
-  compareBtn.disabled = count === 0;
-  compareBtn.textContent =
-    count === 2 ? 'Порівняти' : count === 1 ? 'Переглянути' : 'Переглянути/Порівняти';
+  compareBtn.disabled = selectedPlayers.size !== 2;
+  compareBtn.textContent = 'Порівняти аналітику';
 }
 
 function updateCheckboxAvailability() {
@@ -175,7 +173,7 @@ function renderTable(className, specName) {
   const columns = [
     { key: '__checkbox', label: '' },
     { key: '__index', label: 'Рейтинг гільдії' },
-    { key: 'name', label: "Ім'я гравця" },
+    { key: 'name', label: "Ім'я персонажу" },
     { key: 'overallRank', label: 'Рейтинг сервера' },
     { key: 'overallScore', label: 'Очки' },
     ...bossColumns.map(bossName => ({
@@ -243,10 +241,14 @@ function renderTable(className, specName) {
           td.textContent = idx + 1;
         } else if (col.key === 'name') {
           const link = document.createElement('a');
-          link.href = buildPersonalAnalyticsUrl([row.name]);
+          link.href = '#';
           link.textContent = row.name;
           const ownerName = characterOwnerNames.get(row.name);
           if (ownerName) link.title = ownerName;
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            goToPlayerView(row.name);
+          });
           td.appendChild(createPlayerBadge(row.name));
           td.appendChild(link);
         } else if (col.key.startsWith('bosses.')) {
@@ -275,7 +277,7 @@ function renderTable(className, specName) {
 
   rankingBody.appendChild(bodyFragment);
 
-  setStatus(`Знайдено гравців: ${rows.length}`);
+  setStatus('');
 }
 
 function switchView(viewName) {
@@ -296,6 +298,16 @@ function attachViewSwitch() {
       switchView(button.dataset.view);
     });
   });
+}
+
+function selectPlayerViewCharacter(name) {
+  playerViewCharacterSelect.value = name;
+  renderPlayerSiblings(allNames.includes(name) ? name : '');
+}
+
+function goToPlayerView(name) {
+  switchView('player');
+  selectPlayerViewCharacter(name);
 }
 
 function setupAutocomplete(inputEl, listEl, onSelect) {
@@ -573,10 +585,7 @@ async function init() {
       primaryCharacterNames = new Set(await primaryResponse.json());
     }
 
-    const onPlayerViewChange = () => {
-      const name = playerViewCharacterSelect.value.trim();
-      renderPlayerSiblings(allNames.includes(name) ? name : '');
-    };
+    const onPlayerViewChange = () => selectPlayerViewCharacter(playerViewCharacterSelect.value.trim());
 
     setupAutocomplete(playerViewCharacterSelect, playerViewCharacterSelectList, onPlayerViewChange);
 
@@ -646,7 +655,7 @@ rankingBody.addEventListener('change', event => {
 });
 
 compareBtn.addEventListener('click', () => {
-  if (!selectedPlayers.size) return;
+  if (selectedPlayers.size !== 2) return;
   window.location.href = buildPersonalAnalyticsUrl([...selectedPlayers]);
 });
 

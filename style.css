@@ -912,12 +912,22 @@ body.ranking-page .container-inner {
 }
 
 body.ranking-page .container-inner > h1,
+body.ranking-page .container-inner > ul,
 body.ranking-page .container-inner > .potion-view-switch {
   margin-top: 0;
   margin-bottom: 0;
 }
 
+body.ranking-page .ranking-controls {
+  margin-bottom: 0.5rem;
+}
+
+body.ranking-page .ranking-status-row {
+  margin: 0.25rem 0 0.5rem;
+}
+
 body.ranking-page .ranking-table-wrap {
+  margin-top: 0.5rem;
   width: 100%;
   max-height: 70vh;
   overflow-x: auto;
