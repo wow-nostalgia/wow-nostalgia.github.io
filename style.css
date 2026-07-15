@@ -2914,28 +2914,31 @@ body.raid-manager-detail-page .raid-row-dropdown {
 body.raid-manager-detail-page .raid-row-dropdown-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 0.2rem;
-  width: auto;
-  height: 1.1rem;
-  padding: 0 0.3rem;
+  height: 1.4rem;
+  padding: 0 0 0 0.55rem;
   border: 1px solid rgba(34, 197, 94, 0.5);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: none;
   color: var(--color-accent-emerald);
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-condensed);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 }
 
 body.raid-manager-detail-page .raid-row-dropdown-trigger::after {
   content: '';
-  flex-shrink: 0;
-  width: 0.5rem;
-  height: 0.5rem;
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  justify-content: center;
+  width: 1.3rem;
+  margin-left: 0.5rem;
+  border-left: 1px solid rgba(34, 197, 94, 0.35);
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2334d17c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 0.6rem;
   background-position: center;
 }
 
