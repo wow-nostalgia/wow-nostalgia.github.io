@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-14T00:33:55.454Z",
+  "updatedAt": "2026-07-15T00:30:13.281Z",
   "specs": [
     {
       "class": "Paladin",
@@ -316,6 +316,10 @@
           "hps": 35334.3
         },
         {
+          "name": "Olachil",
+          "hps": 35313.8
+        },
+        {
           "name": "Juliet",
           "hps": 35268.7
         },
@@ -438,10 +442,6 @@
         {
           "name": "Aste",
           "hps": 32333.2
-        },
-        {
-          "name": "Olachil",
-          "hps": 32204
         },
         {
           "name": "Риболов",
@@ -2538,6 +2538,10 @@
           "hps": 18918.4
         },
         {
+          "name": "Пивнабочка",
+          "hps": 18917.5
+        },
+        {
           "name": "Lunarsun",
           "hps": 18812.4
         },
@@ -3772,6 +3776,10 @@
           "hps": 27912.2
         },
         {
+          "name": "Phh",
+          "hps": 27796.3
+        },
+        {
           "name": "Boronir",
           "hps": 27590.6
         },
@@ -4012,6 +4020,10 @@
           "hps": 24776.7
         },
         {
+          "name": "Orbital",
+          "hps": 24768.2
+        },
+        {
           "name": "Картотека",
           "hps": 24766.2
         },
@@ -4142,10 +4154,6 @@
         {
           "name": "Mankasho",
           "hps": 23299.5
-        },
-        {
-          "name": "Phh",
-          "hps": 23296.9
         },
         {
           "name": "Shamen",
@@ -4426,10 +4434,6 @@
         {
           "name": "Її",
           "hps": 19204.6
-        },
-        {
-          "name": "Orbital",
-          "hps": 19099.1
         },
         {
           "name": "Kharakternyk",
