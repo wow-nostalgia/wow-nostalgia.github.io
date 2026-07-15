@@ -2909,7 +2909,6 @@ body.raid-manager-detail-page .raid-row-dropdown {
   position: relative;
   flex-shrink: 0;
   align-self: center;
-  margin-left: auto;
 }
 
 body.raid-manager-detail-page .raid-row-dropdown-trigger {
