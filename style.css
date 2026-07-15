@@ -145,15 +145,22 @@ html {
 body {
   font-family: var(--font-sans);
   background-color: var(--color-page-bg);
-  background-image: url("./images/background.jpg");
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
-  background-attachment: fixed;
   color: var(--color-text);
   line-height: var(--line-height-base);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-normal);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: url("./images/background.jpg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+  pointer-events: none;
 }
 
 img,
