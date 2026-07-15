@@ -969,10 +969,18 @@ function buildOfficerBonusDropdown(eligible) {
   const trigger = document.createElement('button');
   trigger.type = 'button';
   trigger.className = 'raid-row-dropdown-trigger tooltipped';
-  trigger.textContent = '+';
   trigger.setAttribute('aria-label', 'Додати бонусний софт');
   trigger.setAttribute('aria-haspopup', 'true');
   trigger.setAttribute('aria-expanded', 'false');
+
+  const triggerIcon = document.createElement('span');
+  triggerIcon.className = 'raid-row-dropdown-trigger-icon';
+  triggerIcon.textContent = '+';
+  trigger.appendChild(triggerIcon);
+
+  const triggerCaret = document.createElement('span');
+  triggerCaret.className = 'raid-row-dropdown-trigger-caret';
+  trigger.appendChild(triggerCaret);
 
   const menu = document.createElement('div');
   menu.className = 'raid-row-dropdown-menu';
