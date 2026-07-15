@@ -26,7 +26,7 @@ const selectedPlayers = new Set();
 let honorBoard = [];
 let primaryCharacterNames = new Set();
 let allNames = [];
-let siblingSortState = { column: 'name', direction: 'asc' };
+let siblingSortState = { column: 'overallScore', direction: 'desc' };
 let currentSiblingRows = [];
 
 const HEADER_ICONS = {
