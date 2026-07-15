@@ -1219,10 +1219,32 @@ body.potion-page .potion-table tbody tr:nth-child(even) {
   background: var(--color-surface-stripe);
 }
 
+body.potion-page .potion-raid-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
 body.potion-page .potion-boss-count {
-  margin: 0 0 0.5rem;
   color: var(--color-text-faint);
   font-size: 0.9rem;
+}
+
+body.potion-page .potion-raid-meta-row a {
+  color: var(--color-link);
+  font-size: 0.9rem;
+}
+
+body.potion-page .potion-raid-split-note {
+  color: var(--color-text-faint);
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+body.potion-page .potion-raid-meta-row a:hover {
+  color: var(--color-link-hover);
 }
 
 body.potion-page .potion-raid-link {

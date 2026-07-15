@@ -82,23 +82,18 @@ function createLogLinksList(urls) {
     .join(' · ');
 }
 
-function createRaidLinksHtml(raid) {
+function createRaidLogInfoHtml(raid) {
   const splitUrls = [raid.raidUrl, ...(raid.mergedFrom || [])];
-  const alternateUrls = raid.alternateLogs || [];
-
-  const parts = [];
-
   if (splitUrls.length > 1) {
-    parts.push(`<p class="potion-raid-link">Цей рейд був розділений на кілька звітів UwU-Logs: ${createLogLinksList(splitUrls)}</p>`);
-  } else {
-    parts.push(`<p class="potion-raid-link"><a href="${escapeHtml(isSafeUrl(raid.raidUrl) ? raid.raidUrl : '#')}" target="_blank" rel="noopener noreferrer">Оригінальний лог UwU-Logs</a></p>`);
+    return `<span class="potion-raid-split-note">Рейд розділений на кілька звітів UwU-Logs: ${createLogLinksList(splitUrls)}</span>`;
   }
+  return `<a href="${escapeHtml(isSafeUrl(raid.raidUrl) ? raid.raidUrl : '#')}" target="_blank" rel="noopener noreferrer">Оригінальний лог UwU-Logs</a>`;
+}
 
-  if (alternateUrls.length > 0) {
-    parts.push(`<p class="potion-raid-link">Цей рейд також записаний іншим гравцем: ${createLogLinksList(alternateUrls)}</p>`);
-  }
-
-  return parts.join('');
+function createRaidLinksHtml(raid) {
+  const alternateUrls = raid.alternateLogs || [];
+  if (!alternateUrls.length) return '';
+  return `<p class="potion-raid-link">Цей рейд також записаний іншим гравцем: ${createLogLinksList(alternateUrls)}</p>`;
 }
 
 function getRowClass(player, bossCount) {
@@ -115,8 +110,12 @@ function createRaidContent(raid) {
   if (!Array.isArray(raid.players) || raid.players.length === 0) return `<p>Немає даних гравців</p>`;
   const bossCount = getBossCountForRaid(raid);
   const rowsHtml = raid.players.map((player) => createPlayerRow(player, bossCount)).join('');
-  const bossCountHtml = bossCount ? `<p class="potion-boss-count">Вбито босів: ${bossCount}</p>` : '';
-  return `${bossCountHtml}<div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}`;
+  const bossCountHtml = bossCount ? `<span class="potion-boss-count">Босів: ${bossCount}</span>` : '';
+  const raidLogInfoHtml = createRaidLogInfoHtml(raid);
+  const metaRowHtml = bossCountHtml || raidLogInfoHtml
+    ? `<div class="potion-raid-meta-row">${bossCountHtml}${raidLogInfoHtml}</div>`
+    : '';
+  return `${metaRowHtml}<div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}`;
 }
 
 function isMobileLayout() {
