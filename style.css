@@ -3980,6 +3980,27 @@ body.account-page .link-button-std:hover {
   }
 }
 
+/* ── Предмети (вкладка items) ────────────────────────────────────────── */
+
+/* На відміну від таблиці штрафів нижче - тут навпаки: назва предмета
+   (.raid-item-name-cell, align-items:flex-start) і список гравців
+   (.raid-reserve-weight-names, white-space:normal) вже розраховані на
+   перенос по кількох рядках. Єдине, що заважало - жорсткий min-width
+   30rem + width 25rem на першу колонку (під найдовшу назву предмета
+   в каталозі), розрахований на десктоп. На вузьких екранах прибираємо
+   ці жорсткі значення - замість горизонтального скролу таблиця просто
+   вужчає і контент переноситься. */
+@media (max-width: 544px) {
+  body.raid-manager-detail-page #raidItemsTable {
+    min-width: 0;
+  }
+
+  body.raid-manager-detail-page #raidItemsTable th:first-child,
+  body.raid-manager-detail-page #raidItemsTable td:first-child {
+    width: 45%;
+  }
+}
+
 /* ── Штрафи (вкладка penalties) ──────────────────────────────────────── */
 
 /* На вузьких екранах жорсткі % колонки з table-layout: fixed стискають
