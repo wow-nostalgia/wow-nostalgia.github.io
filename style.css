@@ -4091,6 +4091,45 @@ body.raid-manager-detail-page .penalty-reason-text {
   word-break: break-word;
 }
 
+/* На min-width:34rem виправдано розраховувати на десктоп-ширину, але
+   .penalty-input (5rem = 80px) і .penalty-reason-input (min-width 8rem)
+   ширші за свої 8%/15% колонки, тому вилазять і наповзають на сусідні
+   клітинки навіть у межах цих 34rem (не лише через брак viewport-ширини).
+   На мобільних прибираємо min-width таблиці й даємо інпутам заповнювати
+   свою (тепер трохи ширшу) колонку замість фіксованого px. */
+@media (max-width: 544px) {
+  body.raid-manager-detail-page #raidPenaltiesTable {
+    min-width: 0;
+  }
+
+  body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(1),
+  body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(1) {
+    width: 38%;
+  }
+
+  body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(2),
+  body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(2),
+  body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(3),
+  body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(3) {
+    width: 16%;
+  }
+
+  body.raid-manager-detail-page #raidPenaltiesTable .raid-player-name-cell {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  body.raid-manager-detail-page #raidPenaltiesTable .penalty-input {
+    width: 100%;
+    min-width: 0;
+    padding: 0.25rem 0.2rem;
+  }
+
+  body.raid-manager-detail-page #raidPenaltiesTable .penalty-reason-input {
+    min-width: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
