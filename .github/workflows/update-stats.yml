@@ -20,11 +20,7 @@ jobs:
 
       - run: npm ci
 
-      - run: npm run update:potions
-
-      - run: npm run update:personal
-
-      - run: npm run update:rosters
+      - run: npm run update:raid
 
       - name: Commit updated stats
         run: |
