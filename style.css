@@ -3110,7 +3110,7 @@ body.raid-manager-detail-page .raid-icon-btn {
   border: 1px solid var(--color-border-button);
   border-radius: var(--radius-md);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0)), var(--color-surface-soft);
-  color: var(--color-accent-gold);
+  color: var(--color-text-strong);
   cursor: pointer;
   transition: background var(--transition-fast), border-color var(--transition-fast);
 }
