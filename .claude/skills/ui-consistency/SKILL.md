@@ -86,6 +86,31 @@ gh api repos/primer/octicons/contents/icons/gift-16.svg --jq '.content' | base64
 
 ---
 
+## Тултіпи — тільки `.tooltipped` (Primer-стиль), ніколи нативний `title`
+
+Єдиний дозволений спосіб підказки при наведенні — клас `.tooltipped` +
+`aria-label` (CSS `::before`/`::after` в `style.css`, секція TOOLTIP):
+```html
+<button type="button" class="raid-icon-btn tooltipped" aria-label="Текст підказки">…</button>
+```
+`aria-label` — єдине джерело тексту (і для screen reader, і для CSS-контенту
+`.tooltipped::after`). **Ніколи не додавай атрибут `title` поруч** —
+браузер покаже свій нативний тултіп ПОВЕРХ кастомного, і користувач побачить
+два підписи одночасно (це баг, перевіряй при рев'ю).
+
+Якщо `.tooltipped::after` візуально обрізається `overflow:hidden`
+батьківського контейнера — це НЕ привід повертати `title` як "фолбек".
+Правильний фікс: `position: fixed` JS-тултіп, що позиціонується через
+`getBoundingClientRect()` елемента при `mouseenter`/`focus` — той самий
+прийом, що вже реалізований для `#raidItemTooltip` і `#raidBtnTooltip`
+(`scripts/raid-manager-detail.js`): `position: fixed` рендериться відносно
+viewport і не залежить від `overflow` жодного предка.
+
+Перед рев'ю нового `.tooltipped`-елемента — grep на `title=` поруч із ним,
+щоб не пропустити дублікат.
+
+---
+
 ## Правило скопінгу CSS
 
 **Майже всі page-specific класи мають префікс `body.<page>-page`**, наприклад:
