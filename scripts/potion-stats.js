@@ -20,38 +20,11 @@ let characterOwnerNames = new Map();
 let bossesByRaidUrl = new Map();
 let rostersByRaidUrl = new Map();
 
-// Кількість босів логу — рахуємо по унікальних босах з personal-stats.json
-// для цього raidUrl (+ mergedFrom, якщо лог було розділено на кілька звітів).
-// potion-stats.json сам по собі кількість босів не містить.
+// potion-stats.json сам по собі кількість босів не містить - рахуємо по
+// bossesByRaidUrl (з personal-stats.json), той самий рецепт, що й у табі
+// "Лог" (scripts/potion-shared.js: countRaidBosses).
 function getBossCountForRaid(raid) {
-  const urls = [raid.raidUrl, ...(raid.mergedFrom || [])];
-  const bosses = new Set();
-  for (const url of urls) {
-    const set = bossesByRaidUrl.get(url);
-    if (set) for (const boss of set) bosses.add(boss);
-  }
-
-  // Gunship Battle не потрапляє у personal-stats.json (не тягне DPS-даних),
-  // але якщо вбито Deathbringer Saurfang - Gunship Battle точно був пройдений.
-  if (bosses.has('Deathbringer Saurfang') && !bosses.has('Gunship Battle')) {
-    bosses.add('Gunship Battle');
-  }
-
-  return bosses.size;
-}
-
-// Клас гравця саме в цьому лозі (data/raid-rosters.json, той самий
-// патерн, що в raid-manager-detail.js для табу "Лог") - надійніше за
-// глобальний знімок гільдії, бо охоплює й легіонерів.
-function getPlayerClassColor(raidUrl, name) {
-  const rosterEntry = rostersByRaidUrl.get(raidUrl);
-  const playerClass = rosterEntry?.players.find((p) => p.name === name)?.class;
-  return (playerClass && WOW_CLASS_COLORS[playerClass]) || '';
-}
-
-function getPlayerSpecIcon(raidUrl, name) {
-  const rosterEntry = rostersByRaidUrl.get(raidUrl);
-  return rosterEntry?.players.find((p) => p.name === name)?.icon || null;
+  return countRaidBosses(bossesByRaidUrl, raid);
 }
 
 function ownerTooltipAttr(name) {
@@ -63,14 +36,6 @@ function buildPlayerViewUrl(name) {
   return `../guild-ranking/?${new URLSearchParams({ view: 'player', player: name }).toString()}`;
 }
 
-function isSafeUrl(url) {
-  try {
-    return ['https:', 'http:'].includes(new URL(String(url)).protocol);
-  } catch {
-    return false;
-  }
-}
-
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -78,17 +43,6 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
-}
-
-function extractUploaderName(raidUrl) {
-  const match = String(raidUrl || '').match(/--([^-/]+)--FreedomUA\/?.*$/);
-  return match ? match[1] : 'Невідомо';
-}
-
-function formatRaidTitle(raid) {
-  const date = raid.date || 'Невідома дата';
-  const uploader = extractUploaderName(raid.raidUrl || '');
-  return `Лог від ${date}. Завантажив ${uploader}`;
 }
 
 function createLogLinksList(urls) {
@@ -111,18 +65,13 @@ function createRaidLinksHtml(raid) {
   return `<p class="potion-raid-link">Цей рейд також записаний іншим гравцем: ${createLogLinksList(alternateUrls)}</p>`;
 }
 
-function getRowClass(player, bossCount) {
-  if (!bossCount) return '';
-  const avgPerBoss = Number(player.total || 0) / bossCount;
-  return avgPerBoss >= 1 ? 'potion-good' : 'potion-bad';
-}
-
 function createPlayerRow(player, bossCount, raidUrl) {
-  const color = getPlayerClassColor(raidUrl, player.name);
+  const rosterEntry = rostersByRaidUrl.get(raidUrl);
+  const color = getPlayerClassColor(rosterEntry, player.name);
   const nameStyle = color ? ` style="color:${color}"` : '';
-  const specIcon = getPlayerSpecIcon(raidUrl, player.name);
-  const iconHtml = specIcon ? `<img class="raid-item-icon" src="https://wow.zamimg.com/images/wow/icons/small/${specIcon}.jpg" alt="">` : '';
-  return `<tr class="${getRowClass(player, bossCount)}"><td class="potion-name-cell"><span class="potion-name-wrap"${nameStyle}>${iconHtml}<span${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</span></span></td><td>${Number(player.total || 0)}</td><td>${Number(player.potionOfSpeed || 0)}</td><td>${Number(player.potionOfWildMagic || 0)}</td></tr>`;
+  const specIcon = getPlayerSpecIcon(rosterEntry, player.name);
+  const iconHtml = specIcon ? `<img class="raid-item-icon" src="${specIconUrl(specIcon)}" alt="">` : '';
+  return `<tr class="${getPotionRowClass(player, bossCount)}"><td class="potion-name-cell"><span class="potion-name-wrap"${nameStyle}>${iconHtml}<span${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</span></span></td><td>${Number(player.total || 0)}</td><td>${Number(player.potionOfSpeed || 0)}</td><td>${Number(player.potionOfWildMagic || 0)}</td></tr>`;
 }
 
 function createRaidContent(raid) {
@@ -164,7 +113,7 @@ function showRaid(raids, index) {
 function renderSidebar(raids) {
   potionSidebarEl.innerHTML = raids.map((raid, i) => {
     const date = raid.date || 'Невідома дата';
-    const uploader = extractUploaderName(raid.raidUrl || '');
+    const uploader = extractLogUploaderName(raid.raidUrl || '');
     return `<button type="button" class="potion-log-btn${i === 0 ? ' active' : ''}" data-index="${i}">` +
       `<span class="potion-log-date">Лог від ${escapeHtml(date)}</span>` +
       `<span class="potion-log-uploader">Завантажив ${escapeHtml(uploader)}</span>` +
@@ -304,30 +253,22 @@ async function loadPotionStats() {
 
     if (personalStatsResponse?.ok) {
       const personalStats = await personalStatsResponse.json();
-      bossesByRaidUrl = new Map();
-      for (const record of personalStats) {
-        if (!record.raidUrl || !record.boss) continue;
-        if (!bossesByRaidUrl.has(record.raidUrl)) bossesByRaidUrl.set(record.raidUrl, new Set());
-        bossesByRaidUrl.get(record.raidUrl).add(record.boss);
-      }
+      bossesByRaidUrl = buildBossCountMap(personalStats);
     }
 
     if (rostersResponse?.ok) {
-      const rosters = await rostersResponse.json();
-      rostersByRaidUrl = new Map(rosters.map((r) => [r.raidUrl, r]));
+      rostersByRaidUrl = buildRosterMap(await rostersResponse.json());
     }
 
-    const validRaids = raids.filter((raid) => Array.isArray(raid.players) && raid.players.length > 0 && raid.raidUrl);
+    const sortedRaids = filterAndSortPotionRaids(raids);
 
-    if (!validRaids.length) {
+    if (!sortedRaids.length) {
       statusEl.textContent = 'Немає валідних рейдів з даними гравців.';
       potionContentEl.innerHTML = '<p class="no-data">Немає даних для відображення.</p>';
       honorStatusEl.textContent = 'Немає даних.';
       honorTableBodyEl.innerHTML = '<tr><td colspan="4">Немає даних</td></tr>';
       return;
     }
-
-    const sortedRaids = [...validRaids].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
     statusEl.textContent = `Знайдено рейдів: ${sortedRaids.length}`;
     renderSidebar(sortedRaids);

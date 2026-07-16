@@ -482,34 +482,13 @@ function setupUserSearchAutocomplete(inputEl, listEl, onPick) {
 // у raids зберігається лише raidUrl обраного логу, самі дані потів
 // (гравці/лічильники) ніде не дублюються в БД, а фетчаться напряму з
 // data/potion-stats.json, як і на самій сторінці Статистики.
-function isSafeUrl(url) {
-  try {
-    return ['https:', 'http:'].includes(new URL(String(url)).protocol);
-  } catch {
-    return false;
-  }
-}
-
-function extractPotionUploaderName(raidUrl) {
-  const match = String(raidUrl || '').match(/--([^-/]+)--FreedomUA\/?.*$/);
-  return match ? match[1] : 'Невідомо';
-}
-
-function formatPotionLogLabel(statsRaid) {
-  const date = statsRaid.date || 'Невідома дата';
-  const uploader = extractPotionUploaderName(statsRaid.raidUrl || '');
-  return `Лог від ${date}. Завантажив ${uploader}`;
-}
+// isSafeUrl/getPlayerSpecIcon/getPlayerClassColor/getPotionRowClass/
+// formatPotionLogLabel - спільні з potion-stats.js, див. potion-shared.js.
 
 async function ensurePotionStatsLoaded() {
   if (potionStatsRaids) return potionStatsRaids;
   const res = await fetch('/data/potion-stats.json?t=' + Date.now());
-  const raids = await res.json();
-  potionStatsRaids = Array.isArray(raids)
-    ? raids
-        .filter((r) => Array.isArray(r.players) && r.players.length > 0 && r.raidUrl)
-        .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
-    : [];
+  potionStatsRaids = filterAndSortPotionRaids(await res.json());
   return potionStatsRaids;
 }
 
@@ -520,33 +499,19 @@ const HEAL_TANK_SPECS = new Set(['Holy', 'Discipline', 'Restoration', 'Blood', '
 async function ensureRaidRostersLoaded() {
   if (raidRosters) return raidRosters;
   const res = await fetch('/data/raid-rosters.json?t=' + Date.now());
-  const rosters = await res.json();
-  raidRosters = Array.isArray(rosters) ? rosters : [];
+  raidRosters = buildRosterMap(await res.json());
   return raidRosters;
 }
 
 function findRosterEntry(raidUrl) {
-  if (!raidUrl || !raidRosters) return null;
-  return raidRosters.find((r) => r.raidUrl === raidUrl) || null;
+  return raidRosters?.get(raidUrl) || null;
 }
 
 // Невідомий спек (гравця нема в ростері, або uwu-logs не зміг його
 // визначити) - показуємо гравця, а не ховаємо через брак даних.
 function isHealOrTankPlayer(rosterEntry, name) {
-  const spec = rosterEntry?.players.find((p) => p.name === name)?.spec;
+  const spec = findRosterPlayer(rosterEntry, name)?.spec;
   return Boolean(spec && HEAL_TANK_SPECS.has(spec));
-}
-
-function getPlayerSpecIcon(rosterEntry, name) {
-  return rosterEntry?.players.find((p) => p.name === name)?.icon || null;
-}
-
-// Клас гравця конкретно в цьому лозі (raid-rosters.json) надійніший за
-// глобальний classColorMap (data/guild-data.json) - легіонери чи разові
-// учасники можуть бути відсутні в гільдійському знімку.
-function getPlayerClassColor(rosterEntry, name) {
-  const playerClass = rosterEntry?.players.find((p) => p.name === name)?.class;
-  return (playerClass && WOW_CLASS_COLORS[playerClass]) || classColorMap.get(name) || '';
 }
 
 function findPotionLogEntry(raidUrl) {
@@ -558,38 +523,12 @@ function findPotionLogEntry(raidUrl) {
 // сторінці Статистика Potion (scripts/potion-stats.js) - лише джерело
 // даних тут вже завантажене раніше в init() як personalStatsRecords.
 function getPotionBossMap() {
-  if (potionBossesByRaidUrl) return potionBossesByRaidUrl;
-  potionBossesByRaidUrl = new Map();
-  for (const record of personalStatsRecords) {
-    if (!record.raidUrl || !record.boss) continue;
-    if (!potionBossesByRaidUrl.has(record.raidUrl)) potionBossesByRaidUrl.set(record.raidUrl, new Set());
-    potionBossesByRaidUrl.get(record.raidUrl).add(record.boss);
-  }
+  if (!potionBossesByRaidUrl) potionBossesByRaidUrl = buildBossCountMap(personalStatsRecords);
   return potionBossesByRaidUrl;
 }
 
 function getPotionBossCount(statsRaid) {
-  const map = getPotionBossMap();
-  const urls = [statsRaid.raidUrl, ...(statsRaid.mergedFrom || [])];
-  const bosses = new Set();
-  for (const url of urls) {
-    const set = map.get(url);
-    if (set) for (const boss of set) bosses.add(boss);
-  }
-
-  // Gunship Battle не потрапляє у personal-stats.json (не тягне DPS-даних),
-  // але якщо вбито Deathbringer Saurfang - Gunship Battle точно був пройдений.
-  if (bosses.has('Deathbringer Saurfang') && !bosses.has('Gunship Battle')) {
-    bosses.add('Gunship Battle');
-  }
-
-  return bosses.size;
-}
-
-function getPotionRowClass(player, bossCount) {
-  if (!bossCount) return '';
-  const avgPerBoss = Number(player.total || 0) / bossCount;
-  return avgPerBoss >= 1 ? 'potion-good' : 'potion-bad';
+  return countRaidBosses(getPotionBossMap(), statsRaid);
 }
 
 function renderPotionLogTable(statsRaid) {
@@ -640,13 +579,13 @@ function renderPotionLogTable(statsRaid) {
     const nameTd = document.createElement('td');
     nameTd.className = 'raid-potion-name-cell';
     const nameWrap = document.createElement('span');
-    nameWrap.className = 'raid-potion-name-wrap';
-    nameWrap.style.color = getPlayerClassColor(rosterEntry, player.name);
+    nameWrap.className = 'potion-name-wrap';
+    nameWrap.style.color = getPlayerClassColor(rosterEntry, player.name, classColorMap);
     const specIcon = getPlayerSpecIcon(rosterEntry, player.name);
     if (specIcon) {
       const iconImg = document.createElement('img');
       iconImg.className = 'raid-item-icon';
-      iconImg.src = `https://wow.zamimg.com/images/wow/icons/small/${specIcon}.jpg`;
+      iconImg.src = specIconUrl(specIcon);
       iconImg.alt = '';
       nameWrap.appendChild(iconImg);
     }
