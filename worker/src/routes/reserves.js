@@ -10,12 +10,12 @@ import {
   sumPlayerWeight,
   sumBonusWeight,
   updateReserveBonusWeight,
-  updateReserveOfficerBonusWeight,
   createClaim,
   insertAudit,
   getClaimedPlayerNames,
   getWeightTransferByFrom,
-  getWeightTransferByTo
+  getWeightTransferByTo,
+  getBonusGrant
 } from '../db.js';
 import { checkPlayerAccess, requireRaidOfficer, isRaidOfficer } from '../auth.js';
 
@@ -205,8 +205,9 @@ export async function handleUpdateBonusWeight(request, env, raidId, reserveId, s
   if (!reserve) throw new HttpError(404, 'Софт не знайдено');
 
   const receivedTransfer = await getWeightTransferByTo(env.DB, raidId, reserve.player_name);
-  if (!receivedTransfer) {
-    throw new HttpError(409, `${reserve.player_name} не отримував передачу ваги`);
+  const bonusGrant = await getBonusGrant(env.DB, raidId, reserve.player_name);
+  if (!receivedTransfer && !bonusGrant) {
+    throw new HttpError(409, `${reserve.player_name} не отримував передачу ваги або бонусний софт`);
   }
 
   await checkPlayerAccess(env.DB, raidId, raid, session, reserve.player_name);
@@ -226,37 +227,5 @@ export async function handleUpdateBonusWeight(request, env, raidId, reserveId, s
   }
 
   const updated = await updateReserveBonusWeight(env.DB, raidId, reserveId, delta);
-  return jsonResponse(updated);
-}
-
-export async function handleUpdateOfficerBonusWeight(request, env, raidId, reserveId, session) {
-  const raid = await loadRaidOr404(env, raidId);
-  if (raid.status === 'completed') throw new HttpError(423, 'Рейд завершено');
-
-  await requireRaidOfficer(env.DB, raidId, raid, session);
-
-  const reserve = await getReserveById(env.DB, raidId, reserveId);
-  if (!reserve) throw new HttpError(404, 'Софт не знайдено');
-
-  const body = await readJson(request);
-  const delta = Number(body.delta);
-  if (delta !== 1 && delta !== -1) throw new HttpError(400, 'delta має бути 1 або -1');
-
-  if (delta === 1) {
-    if (reserve.officer_bonus_weight >= 1) {
-      throw new HttpError(409, 'Офіцерський бонус вже максимальний (+1)');
-    }
-  } else if (reserve.officer_bonus_weight < 1) {
-    throw new HttpError(409, 'Офіцерський бонус вже 0');
-  }
-
-  const updated = await updateReserveOfficerBonusWeight(env.DB, raidId, reserveId, delta);
-  await insertAudit(env.DB, raidId, session.username, 'officer_bonus_weight', {
-    playerName: reserve.player_name,
-    itemId: reserve.item_id,
-    boss: reserve.boss,
-    delta
-  });
-
   return jsonResponse(updated);
 }

@@ -21,11 +21,11 @@ import {
   handleDeleteAllForPlayer,
   handleToggleReceived,
   handleOfficerAssign,
-  handleUpdateBonusWeight,
-  handleUpdateOfficerBonusWeight
+  handleUpdateBonusWeight
 } from './routes/reserves.js';
 import { handleListAudit } from './routes/audit.js';
 import { handleListTransfers, handleCreateTransfer, handleDeleteTransfer } from './routes/transfers.js';
+import { handleListBonusGrants, handleCreateBonusGrant, handleDeleteBonusGrant } from './routes/bonus-grants.js';
 import { handleListPenalties, handleUpsertPenalty } from './routes/penalties.js';
 import {
   handleDiscordCallback,
@@ -153,9 +153,6 @@ async function routeRaids(request, env, parts, session) {
     if (parts[3] === 'bonus' && method === 'PATCH') {
       return handleUpdateBonusWeight(request, env, raidId, Number(reserveId), session);
     }
-    if (parts[3] === 'officer-bonus' && method === 'PATCH') {
-      return handleUpdateOfficerBonusWeight(request, env, raidId, Number(reserveId), session);
-    }
     if (!parts[3] && method === 'DELETE') {
       return handleDeleteReserve(request, env, raidId, Number(reserveId), session);
     }
@@ -184,6 +181,14 @@ async function routeRaids(request, env, parts, session) {
     if (!fromPlayer && method === 'GET') return handleListTransfers(request, env, raidId);
     if (!fromPlayer && method === 'POST') return handleCreateTransfer(request, env, raidId, session);
     if (fromPlayer && method === 'DELETE') return handleDeleteTransfer(request, env, raidId, fromPlayer, session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
+
+  if (sub === 'bonus-grants') {
+    const playerName = parts[2] ? decodeURIComponent(parts[2]) : null;
+    if (!playerName && method === 'GET') return handleListBonusGrants(request, env, raidId);
+    if (!playerName && method === 'POST') return handleCreateBonusGrant(request, env, raidId, session);
+    if (playerName && method === 'DELETE') return handleDeleteBonusGrant(request, env, raidId, playerName, session);
     throw new HttpError(405, 'Метод не підтримується');
   }
 

@@ -34,6 +34,7 @@ const assignItemTrigger = document.getElementById('assignItemTrigger');
 const assignItemList = document.getElementById('assignItemList');
 const assignWeight = document.getElementById('assignWeight');
 const assignWeightToggle = document.getElementById('assignWeightToggle');
+const bonusGrantOpenBtn = document.getElementById('bonusGrantOpenBtn');
 
 const officersTab = document.getElementById('officersTab');
 const penaltiesTab = document.getElementById('penaltiesTab');
@@ -98,6 +99,11 @@ const cancelTransferCancelBtn = document.getElementById('cancelTransferCancelBtn
 const transferNotice = document.getElementById('transferNotice');
 const bonusPoolBanner = document.getElementById('bonusPoolBanner');
 const transferWeightLimitInput = document.getElementById('transferWeightLimitInput');
+const bonusGrantModal = document.getElementById('bonusGrantModal');
+const bonusGrantModalBackdrop = document.getElementById('bonusGrantModalBackdrop');
+const bonusGrantTableBody = document.getElementById('bonusGrantTableBody');
+const bonusGrantSaveBtn = document.getElementById('bonusGrantSaveBtn');
+const bonusGrantCancelBtn = document.getElementById('bonusGrantCancelBtn');
 let currentTooltipItemId = null;
 
 let raidId = null;
@@ -114,6 +120,7 @@ let personalStatsRecords = [];
 let potionBossesByRaidUrl = null;
 let reserves = [];
 let weightTransfers = [];
+let bonusGrants = [];
 let penaltiesList = [];
 let classColorMap = new Map();
 let auditEntries = [];
@@ -280,6 +287,11 @@ function getMyReceivedTransfer() {
   return weightTransfers.find((t) => names.includes(t.to_player)) || null;
 }
 
+function getMyBonusGrant() {
+  const names = myCharNames();
+  return bonusGrants.find((g) => names.includes(g.player_name)) || null;
+}
+
 // Лок блокує самософт лише для звичайних гравців — офіцери/лідер обходять
 // лок на бекенді (reserves.js). Завершення рейду (isRaidCompleted) блокує
 // форму для всіх без винятку, включно з лідером/офіцерами.
@@ -298,7 +310,8 @@ function applySoftFormLockState() {
 
   const transfersEnabled = (raid.transfer_weight_limit ?? 0) !== 0;
   const myReceived = getMyReceivedTransfer();
-  const canShowTransferBtn = currentUser && transfersEnabled && !isRaidCompleted() && !myTransfer && !myReceived && myCharNames().length > 0;
+  const myBonusGrant = getMyBonusGrant();
+  const canShowTransferBtn = currentUser && transfersEnabled && !isRaidCompleted() && !myTransfer && !myReceived && !myBonusGrant && myCharNames().length > 0;
   transferWeightBtn.hidden = !canShowTransferBtn;
 
   if (myTransfer) {
@@ -312,13 +325,14 @@ function applySoftFormLockState() {
       cancelLink.addEventListener('click', () => deleteTransfer(myTransfer.from_player));
       transferNotice.appendChild(cancelLink);
     }
+  } else if (myReceived) {
+    transferNotice.hidden = false;
+    transferNotice.textContent = `Ти отримав софт від ${myReceived.from_player}. Розподіли його на вкладці «Предмети».`;
+  } else if (myBonusGrant) {
+    transferNotice.hidden = false;
+    transferNotice.textContent = 'Тобі призначено бонусний софт офіцером. Розподіли його на вкладці «Предмети».';
   } else {
-    if (myReceived) {
-      transferNotice.hidden = false;
-      transferNotice.textContent = `Ти отримав софт від ${myReceived.from_player}. Розподіли його на вкладці «Предмети».`;
-    } else {
-      transferNotice.hidden = true;
-    }
+    transferNotice.hidden = true;
   }
 }
 
@@ -333,6 +347,7 @@ function applyOfficerFormLockState() {
   assignBoss.disabled = locked;
   assignItemTrigger.disabled = locked;
   officerAssignForm.querySelector('button[type="submit"]').disabled = locked;
+  bonusGrantOpenBtn.disabled = locked;
 
   assignWeightToggle.querySelectorAll('.raid-weight-toggle-btn').forEach((btn) => {
     btn.disabled = locked || Number(btn.dataset.weight) > raid.soft_limit_total;
@@ -796,15 +811,11 @@ function setupWeightToggle(toggleEl, hiddenInput) {
 
 document.addEventListener('click', () => {
   document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
-  closeRowDropdowns();
 });
-
-document.addEventListener('scroll', () => closeRowDropdowns(), true);
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
-    closeRowDropdowns();
   }
 });
 
@@ -1068,11 +1079,9 @@ function buildReservesByWeight(reservers, penalizedIds) {
     const effectiveWeight = (r.weight || 0) + (r.bonus_weight || 0) + (r.officer_bonus_weight || 0);
     if (!byWeight.has(effectiveWeight)) byWeight.set(effectiveWeight, { visible: [], hidden: 0 });
     if (r.player_name !== null) {
-      byWeight.get(effectiveWeight).visible.push({ name: r.player_name, id: r.id, officerBonus: r.officer_bonus_weight || 0 });
+      byWeight.get(effectiveWeight).visible.push({ name: r.player_name, id: r.id });
     } else byWeight.get(effectiveWeight).hidden++;
   });
-
-  const canOfficerBonus = isOfficerMode() && !isRaidCompleted();
 
   [...byWeight.keys()].sort((a, b) => a - b).forEach((weight) => {
     const entry = byWeight.get(weight);
@@ -1089,8 +1098,7 @@ function buildReservesByWeight(reservers, penalizedIds) {
     const namesSpan = document.createElement('span');
     namesSpan.className = 'raid-reserve-weight-names';
     const visibleNames = entry.visible;
-    const eligibleForBonus = [];
-    visibleNames.forEach(({ name, id, officerBonus }, i) => {
+    visibleNames.forEach(({ name, id }, i) => {
       const p = penaltiesList.find((x) => x.player_name === name);
       const isPenalized = penalizedIds.has(id);
       if (isPenalized) {
@@ -1108,29 +1116,6 @@ function buildReservesByWeight(reservers, penalizedIds) {
         namesSpan.appendChild(penSpan);
       }
 
-      if (canOfficerBonus && officerBonus > 0) {
-        const bonusControls = document.createElement('span');
-        bonusControls.className = 'raid-bonus-controls';
-
-        const chip = document.createElement('span');
-        chip.className = 'raid-bonus-chip';
-        chip.textContent = `+${officerBonus}`;
-        bonusControls.appendChild(chip);
-
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'raid-remove-btn tooltipped';
-        removeBtn.textContent = '−';
-        removeBtn.setAttribute('aria-label', 'Прибрати бонусний софт');
-        removeBtn.title = 'Прибрати бонусний софт'; // .tooltipped обрізається overflow:hidden на .raid-softs-col (таб Предмети)
-        removeBtn.addEventListener('click', () => changeOfficerBonusWeight(id, -1));
-        bonusControls.appendChild(removeBtn);
-
-        namesSpan.appendChild(bonusControls);
-      } else if (canOfficerBonus) {
-        eligibleForBonus.push({ name, id });
-      }
-
       const isLast = i === visibleNames.length - 1 && !entry.hidden;
       if (!isLast) namesSpan.appendChild(document.createTextNode(', '));
     });
@@ -1140,92 +1125,9 @@ function buildReservesByWeight(reservers, penalizedIds) {
     }
     row.appendChild(namesSpan);
 
-    if (eligibleForBonus.length) {
-      row.appendChild(buildOfficerBonusDropdown(eligibleForBonus));
-    }
-
     wrap.appendChild(row);
   });
 
-  return wrap;
-}
-
-function closeRowDropdowns() {
-  document.querySelectorAll('.raid-row-dropdown-menu.is-open').forEach((menu) => {
-    menu.classList.remove('is-open');
-    menu.previousElementSibling?.setAttribute('aria-expanded', 'false');
-  });
-}
-
-// position: fixed (в'юпорт), а не absolute всередині .ranking-table-wrap -
-// інакше overflow-x: auto на цьому контейнері за специфікацією CSS змушує
-// й overflow-y стати auto, і меню, що вивалюється нижче, вмикає вертикальний
-// скрол замість вільного спливання (як і #raidItemTooltip нижче в цьому файлі).
-function positionRowDropdownMenu(trigger, menu) {
-  const rect = trigger.getBoundingClientRect();
-  menu.style.left = `${rect.left}px`;
-  menu.style.top = `${rect.bottom + 4}px`;
-
-  const menuRect = menu.getBoundingClientRect();
-  if (menuRect.right > window.innerWidth) {
-    menu.style.left = `${Math.max(0, window.innerWidth - menuRect.width - 4)}px`;
-  }
-  if (menuRect.bottom > window.innerHeight) {
-    menu.style.top = `${Math.max(0, rect.top - menuRect.height - 4)}px`;
-  }
-}
-
-// Одна кнопка-дропдаун в кінці рядка замість окремої "+" біля кожного імені
-// без бонусу - інакше рядок із кількома гравцями захаращений кнопками.
-function buildOfficerBonusDropdown(eligible) {
-  const wrap = document.createElement('div');
-  wrap.className = 'raid-row-dropdown';
-
-  const trigger = document.createElement('button');
-  trigger.type = 'button';
-  trigger.className = 'raid-row-dropdown-trigger tooltipped';
-  trigger.setAttribute('aria-label', 'Додати бонусний софт');
-  trigger.title = 'Додати бонусний софт'; // .tooltipped обрізається overflow:hidden на .raid-softs-col (таб Предмети)
-  trigger.setAttribute('aria-haspopup', 'true');
-  trigger.setAttribute('aria-expanded', 'false');
-
-  const triggerIcon = document.createElement('span');
-  triggerIcon.className = 'raid-row-dropdown-trigger-icon';
-  triggerIcon.textContent = '+';
-  trigger.appendChild(triggerIcon);
-
-  const triggerCaret = document.createElement('span');
-  triggerCaret.className = 'raid-row-dropdown-trigger-caret';
-  trigger.appendChild(triggerCaret);
-
-  const menu = document.createElement('div');
-  menu.className = 'raid-row-dropdown-menu';
-
-  eligible.forEach(({ name, id }) => {
-    const opt = document.createElement('button');
-    opt.type = 'button';
-    opt.className = 'raid-row-dropdown-option';
-    opt.textContent = name;
-    opt.addEventListener('click', () => {
-      closeRowDropdowns();
-      changeOfficerBonusWeight(id, 1);
-    });
-    menu.appendChild(opt);
-  });
-
-  trigger.addEventListener('click', (event) => {
-    event.stopPropagation();
-    const willOpen = !menu.classList.contains('is-open');
-    closeRowDropdowns();
-    if (willOpen) {
-      menu.classList.add('is-open');
-      positionRowDropdownMenu(trigger, menu);
-    }
-    trigger.setAttribute('aria-expanded', String(willOpen));
-  });
-
-  wrap.appendChild(trigger);
-  wrap.appendChild(menu);
   return wrap;
 }
 
@@ -1234,16 +1136,18 @@ function renderItemsTable() {
   raidItemsBody.innerHTML = '';
 
   const myReceivedForItems = getMyReceivedTransfer();
+  const myBonusGrantForItems = getMyBonusGrant();
   const myNamesForItems = myCharNames();
   let bonusPoolForItems = 0;
   let usedBonusForItems = 0;
-  if (myReceivedForItems && currentUser) {
+  if ((myReceivedForItems || myBonusGrantForItems) && currentUser) {
     bonusPoolForItems = raid.transfer_weight_limit ?? raid.soft_limit_total;
     usedBonusForItems = reserves
       .filter((r) => myNamesForItems.includes(r.player_name))
       .reduce((s, r) => s + (r.bonus_weight || 0), 0);
     bonusPoolBanner.hidden = false;
-    bonusPoolBanner.textContent = `Бонусна вага від ${myReceivedForItems.from_player}: ${usedBonusForItems}/${bonusPoolForItems} використано.`;
+    const bonusSource = myReceivedForItems ? `від ${myReceivedForItems.from_player}` : 'від офіцера';
+    bonusPoolBanner.textContent = `Бонусна вага ${bonusSource}: ${usedBonusForItems}/${bonusPoolForItems} використано.`;
   } else {
     bonusPoolBanner.hidden = true;
   }
@@ -1308,7 +1212,7 @@ function renderItemsTable() {
       reserversTd.appendChild(buildReservesByWeight(reservers, penalizedIds));
     }
 
-    if (myReceivedForItems && currentUser && !isRaidCompleted()) {
+    if ((myReceivedForItems || myBonusGrantForItems) && currentUser && !isRaidCompleted()) {
       const myReserveForItem = reservers.find((r) => myNamesForItems.includes(r.player_name));
       if (myReserveForItem) {
         const canAdd = usedBonusForItems < bonusPoolForItems;
@@ -1378,6 +1282,10 @@ function describeAuditAction(entry) {
     case 'officer_remove': return `видалив офіцера ${d.discordId}`;
     case 'weight_transfer': return `передав вагу гравцю ${d.toPlayer}`;
     case 'weight_transfer_cancel': return `скасував передачу ваги від ${d.fromPlayer} до ${d.toPlayer}`;
+    case 'bonus_grant':
+      return hideSoftDetails ? 'призначив бонусний софт' : `призначив бонусний софт гравцю ${d.playerName}`;
+    case 'bonus_grant_cancel':
+      return hideSoftDetails ? 'скасував бонусний софт' : `скасував бонусний софт гравцю ${d.playerName}`;
     default: return entry.action;
   }
 }
@@ -1420,6 +1328,14 @@ async function loadTransfers() {
     weightTransfers = await apiCall('GET', `/raids/${raidId}/transfers`, { token: getSessionToken() });
   } catch {
     weightTransfers = [];
+  }
+}
+
+async function loadBonusGrants() {
+  try {
+    bonusGrants = await apiCall('GET', `/raids/${raidId}/bonus-grants`, { token: getSessionToken() });
+  } catch {
+    bonusGrants = [];
   }
 }
 
@@ -1484,20 +1400,6 @@ async function loadAudit() {
 async function changeBonusWeight(reserveId, delta) {
   try {
     await apiCall('PATCH', `/raids/${raidId}/reserves/${reserveId}/bonus`, {
-      token: getSessionToken(),
-      body: { delta }
-    });
-    await loadReserves();
-    renderPlayersTable();
-    renderItemsTable();
-  } catch (err) {
-    setStatus(`Помилка: ${err.message}`, 'error');
-  }
-}
-
-async function changeOfficerBonusWeight(reserveId, delta) {
-  try {
-    await apiCall('PATCH', `/raids/${raidId}/reserves/${reserveId}/officer-bonus`, {
       token: getSessionToken(),
       body: { delta }
     });
@@ -1835,6 +1737,70 @@ transferCancelModalBtn.addEventListener('click', () => { transferModal.hidden = 
 transferModalBackdrop.addEventListener('click', () => { transferModal.hidden = true; });
 transferWeightBtn.addEventListener('click', () => showTransferModal());
 
+function showBonusGrantModal() {
+  const names = [...getPlayersWithSoftsSet()].sort((a, b) => a.localeCompare(b, 'uk'));
+  const grantedNames = new Set(bonusGrants.map((g) => g.player_name));
+
+  bonusGrantTableBody.innerHTML = '';
+  names.forEach((name) => {
+    const tr = document.createElement('tr');
+    const nameTd = document.createElement('td');
+    nameTd.textContent = name;
+    const checkTd = document.createElement('td');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.dataset.player = name;
+    checkbox.checked = grantedNames.has(name);
+    checkTd.appendChild(checkbox);
+    tr.appendChild(nameTd);
+    tr.appendChild(checkTd);
+    bonusGrantTableBody.appendChild(tr);
+  });
+
+  bonusGrantModal.hidden = false;
+}
+
+bonusGrantOpenBtn.addEventListener('click', () => showBonusGrantModal());
+
+bonusGrantSaveBtn.addEventListener('click', async () => {
+  const grantedNames = new Set(bonusGrants.map((g) => g.player_name));
+  const checkedNames = new Set(
+    [...bonusGrantTableBody.querySelectorAll('input[type="checkbox"]')]
+      .filter((cb) => cb.checked)
+      .map((cb) => cb.dataset.player)
+  );
+
+  const toGrant = [...checkedNames].filter((name) => !grantedNames.has(name));
+  const toRevoke = [...grantedNames].filter((name) => !checkedNames.has(name));
+
+  bonusGrantSaveBtn.disabled = true;
+  try {
+    await Promise.all([
+      ...toGrant.map((playerName) => apiCall('POST', `/raids/${raidId}/bonus-grants`, {
+        token: getSessionToken(),
+        body: { playerName }
+      })),
+      ...toRevoke.map((playerName) => apiCall('DELETE', `/raids/${raidId}/bonus-grants/${encodeURIComponent(playerName)}`, {
+        token: getSessionToken()
+      }))
+    ]);
+    await loadBonusGrants();
+    await loadReserves();
+    renderPlayersTable();
+    renderItemsTable();
+    applySoftFormLockState();
+    bonusGrantModal.hidden = true;
+    setStatus('Бонусний софт оновлено.', 'success');
+  } catch (err) {
+    await loadBonusGrants();
+    setStatus(`Помилка: ${err.message}`, 'error');
+  } finally {
+    bonusGrantSaveBtn.disabled = false;
+  }
+});
+
+bonusGrantCancelBtn.addEventListener('click', () => { bonusGrantModal.hidden = true; });
+bonusGrantModalBackdrop.addEventListener('click', () => { bonusGrantModal.hidden = true; });
 
 async function init() {
   raidId = new URLSearchParams(window.location.search).get('id');
@@ -1920,6 +1886,7 @@ async function init() {
 
   await loadReserves();
   await loadTransfers();
+  await loadBonusGrants();
   await loadPenalties();
   renderPlayersTable();
   renderItemsTable();
@@ -1931,6 +1898,7 @@ async function init() {
     try {
       await loadReserves();
       await loadTransfers();
+      await loadBonusGrants();
       renderPlayersTable();
       renderItemsTable();
       applySoftFormLockState();

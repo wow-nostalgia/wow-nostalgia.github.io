@@ -454,6 +454,35 @@ export async function deleteAllTransfersForRaid(db, raidId) {
     .run();
 }
 
+export async function listBonusGrants(db, raidId) {
+  const { results } = await db
+    .prepare('SELECT player_name, granted_by, created_at FROM raid_bonus_grants WHERE raid_id = ? ORDER BY created_at ASC')
+    .bind(raidId)
+    .all();
+  return results;
+}
+
+export async function getBonusGrant(db, raidId, playerName) {
+  return db
+    .prepare('SELECT player_name, granted_by FROM raid_bonus_grants WHERE raid_id = ? AND player_name = ?')
+    .bind(raidId, playerName)
+    .first();
+}
+
+export async function createBonusGrant(db, raidId, playerName, grantedBy) {
+  await db
+    .prepare('INSERT INTO raid_bonus_grants (raid_id, player_name, granted_by, created_at) VALUES (?, ?, ?, ?)')
+    .bind(raidId, playerName, grantedBy, nowIso())
+    .run();
+}
+
+export async function deleteBonusGrant(db, raidId, playerName) {
+  await db
+    .prepare('DELETE FROM raid_bonus_grants WHERE raid_id = ? AND player_name = ?')
+    .bind(raidId, playerName)
+    .run();
+}
+
 export async function resetAllBonusWeightsForRaid(db, raidId) {
   await db
     .prepare('UPDATE soft_reserves SET bonus_weight = 0 WHERE raid_id = ?')
@@ -477,10 +506,3 @@ export async function updateReserveBonusWeight(db, raidId, reserveId, delta) {
   return getReserveById(db, raidId, reserveId);
 }
 
-export async function updateReserveOfficerBonusWeight(db, raidId, reserveId, delta) {
-  await db
-    .prepare('UPDATE soft_reserves SET officer_bonus_weight = officer_bonus_weight + ?, updated_at = ? WHERE id = ? AND raid_id = ?')
-    .bind(delta, nowIso(), reserveId, raidId)
-    .run();
-  return getReserveById(db, raidId, reserveId);
-}

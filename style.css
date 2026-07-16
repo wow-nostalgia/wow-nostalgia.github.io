@@ -3006,94 +3006,6 @@ body.raid-manager-detail-page .raid-reserve-weight-names {
   white-space: normal;
 }
 
-body.raid-manager-detail-page .raid-row-dropdown {
-  position: relative;
-  flex-shrink: 0;
-  align-self: center;
-}
-
-body.raid-manager-detail-page .raid-row-dropdown-trigger {
-  display: flex;
-  align-items: stretch;
-  height: 1.6rem;
-  padding: 0;
-  border: 1px solid var(--color-border-mid);
-  border-radius: var(--radius-md);
-  background-color: var(--color-surface-soft);
-  font-family: inherit;
-  cursor: pointer;
-  transition: background-color 0.15s, border-color 0.15s;
-}
-
-body.raid-manager-detail-page .raid-row-dropdown-trigger:hover {
-  background-color: var(--color-hover-strong);
-  border-color: var(--color-border-strong);
-}
-
-body.raid-manager-detail-page .raid-row-dropdown-trigger-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 0.5rem;
-  color: var(--color-accent-emerald);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1;
-}
-
-body.raid-manager-detail-page .raid-row-dropdown-trigger-caret {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.4rem;
-  border-left: 1px solid var(--color-border-mid);
-}
-
-body.raid-manager-detail-page .raid-row-dropdown-trigger-caret::after {
-  content: '';
-  width: 0.6rem;
-  height: 0.6rem;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-
-body.raid-manager-detail-page .raid-row-dropdown-menu {
-  display: none;
-  position: fixed;
-  z-index: var(--z-dropdown);
-  max-height: 18.75rem;
-  min-width: 8rem;
-  overflow-y: auto;
-  border: 1px solid var(--color-border-input);
-  border-radius: var(--radius-lg);
-  background-color: rgba(12, 21, 33, 0.97);
-  box-shadow: var(--shadow-md);
-}
-
-body.raid-manager-detail-page .raid-row-dropdown-menu.is-open {
-  display: block;
-  animation: primer-dropdown-in 0.12s cubic-bezier(0, 0.1, 0.1, 1) backwards;
-}
-
-body.raid-manager-detail-page .raid-row-dropdown-option {
-  display: block;
-  width: 100%;
-  text-align: left;
-  padding: 0.3rem 0.65rem;
-  border: none;
-  background: none;
-  font-size: var(--font-size-base);
-  font-family: inherit;
-  color: var(--color-text-strong);
-  cursor: pointer;
-}
-
-body.raid-manager-detail-page .raid-row-dropdown-option:hover {
-  background-color: rgba(123, 170, 245, 0.18);
-}
-
 body.raid-manager-detail-page .raid-weight-row {
   display: flex;
   align-items: center;
@@ -3184,6 +3096,31 @@ body.raid-manager-detail-page .raid-weight-toggle-btn--active {
   background-color: var(--color-link);
   border-color: var(--color-link);
   color: var(--color-surface-solid);
+}
+
+body.raid-manager-detail-page .raid-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  padding: 0;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.88);
+  color: var(--color-accent-gold);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+body.raid-manager-detail-page .raid-icon-btn:hover {
+  border-color: rgba(123, 170, 245, 0.55);
+  background-color: var(--color-hover-strong);
+}
+
+body.raid-manager-detail-page .raid-icon-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 body.raid-manager-detail-page .raid-weight-badge {
@@ -4245,6 +4182,21 @@ body.raid-manager-detail-page .penalty-reason-text {
   background: var(--color-surface-modal);
   border: 1px solid rgba(197, 198, 205, 0.2);
   box-shadow: var(--shadow-modal);
+}
+
+.raid-modal-box--wide {
+  width: min(92vw, 32rem);
+}
+
+.raid-modal-table-wrap {
+  max-height: 60vh;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.raid-modal-table-wrap th:last-child,
+.raid-modal-table-wrap td:last-child {
+  text-align: center;
 }
 
 .raid-modal-title {

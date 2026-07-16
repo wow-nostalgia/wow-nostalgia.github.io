@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейд — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=73">
+  <link rel="stylesheet" href="../../style.css?v=74">
 </head>
 
 <body class="raid-manager-detail-page">
@@ -147,6 +147,11 @@
                 </div>
                 <input type="hidden" id="assignWeight" value="1">
                 <button type="submit" class="compare-btn">Призначити софт</button>
+                <button type="button" id="bonusGrantOpenBtn" class="raid-icon-btn tooltipped" aria-label="Призначити бонусний софт" title="Призначити бонусний софт">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 16.9l-6.2 3.4 1.6-6.8L2.2 8.9l6.9-.6L12 2z"/>
+                  </svg>
+                </button>
               </div>
             </form>
           </div>
@@ -302,6 +307,29 @@
     </div>
   </div>
 
+  <div id="bonusGrantModal" class="raid-modal" hidden>
+    <div class="raid-modal-backdrop" id="bonusGrantModalBackdrop"></div>
+    <div class="raid-modal-box raid-modal-box--wide">
+      <h3 class="raid-modal-title">Призначити бонусний софт</h3>
+      <p class="raid-modal-text">Гравець сам розподілить +1 на вкладці «Предмети».</p>
+      <div class="ranking-table-wrap raid-modal-table-wrap">
+        <table class="raid-table">
+          <thead>
+            <tr>
+              <th>Ім'я</th>
+              <th>Бонус-софт</th>
+            </tr>
+          </thead>
+          <tbody id="bonusGrantTableBody"></tbody>
+        </table>
+      </div>
+      <div class="raid-modal-actions">
+        <button type="button" id="bonusGrantSaveBtn" class="compare-btn">Зберегти</button>
+        <button type="button" id="bonusGrantCancelBtn" class="link-button-std">Скасувати</button>
+      </div>
+    </div>
+  </div>
+
   <div id="cancelTransferModal" class="raid-modal" hidden>
     <div class="raid-modal-backdrop" id="cancelTransferModalBackdrop"></div>
     <div class="raid-modal-box">
@@ -336,7 +364,7 @@
   <script src="../../scripts/ui-shared.js?v=5"></script>
   <script src="../../scripts/raid-manager-shared.js?v=3"></script>
   <script src="../../scripts/name-translations.js?v=1"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=63"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=64"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
