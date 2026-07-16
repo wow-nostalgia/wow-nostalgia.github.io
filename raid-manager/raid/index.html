@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейд — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=66">
+  <link rel="stylesheet" href="../../style.css?v=67">
 </head>
 
 <body class="raid-manager-detail-page">
@@ -213,6 +213,10 @@
               <button type="button" id="potionsClearBtn" class="raid-potion-clear-btn tooltipped" aria-label="Видалити посилання на лог" hidden>
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
               </button>
+              <label id="potionsHideHealTankLabel" class="raid-filter-checkbox" for="potionsHideHealTank" hidden>
+                <input type="checkbox" id="potionsHideHealTank" checked>
+                Не показувати хілів/танків
+              </label>
               <label id="potionsSoftedOnlyLabel" class="raid-filter-checkbox" for="potionsSoftedOnly" hidden>
                 <input type="checkbox" id="potionsSoftedOnly" checked>
                 Гравці з софтами
@@ -334,7 +338,7 @@
   <script src="../../scripts/ui-shared.js?v=5"></script>
   <script src="../../scripts/raid-manager-shared.js?v=3"></script>
   <script src="../../scripts/name-translations.js?v=1"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=54"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=55"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

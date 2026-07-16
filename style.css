@@ -1298,11 +1298,11 @@ body.ranking-page .sortable.active {
   background: var(--color-active);
 }
 
-body.potion-page .potion-table tbody tr.potion-good>td {
+body.potion-page .potion-table tbody tr.potion-good>td:not(.potion-name-cell) {
   color: var(--color-success) !important;
 }
 
-body.potion-page .potion-table tbody tr.potion-bad>td {
+body.potion-page .potion-table tbody tr.potion-bad>td:not(.potion-name-cell) {
   color: var(--color-danger) !important;
 }
 
@@ -2849,11 +2849,12 @@ body.raid-manager-detail-page .raid-potion-picker-row {
   margin-bottom: 0.75rem;
 }
 
+body.raid-manager-detail-page #potionsHideHealTankLabel[hidden],
 body.raid-manager-detail-page #potionsSoftedOnlyLabel[hidden] {
   display: none;
 }
 
-body.raid-manager-detail-page #potionsSoftedOnlyLabel {
+body.raid-manager-detail-page #potionsHideHealTankLabel {
   margin-left: auto;
 }
 
@@ -2894,11 +2895,11 @@ body.raid-manager-detail-page .raid-potion-empty {
   font-size: var(--font-size-base);
 }
 
-body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-good>td:not(.penalty-potion-stat) {
+body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-good>td:not(.penalty-potion-stat):not(.raid-potion-name-cell) {
   color: var(--color-success) !important;
 }
 
-body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-bad>td:not(.penalty-potion-stat) {
+body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-bad>td:not(.penalty-potion-stat):not(.raid-potion-name-cell) {
   color: var(--color-danger) !important;
 }
 

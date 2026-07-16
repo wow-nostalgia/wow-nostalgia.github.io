@@ -3,12 +3,10 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const cheerio = require('cheerio');
-const { BOSS_ORDER, CLASSES, sleep, findRaidLogMerges, findDuplicateRaidLogs, readRaidLogMerges, writeRaidLogMerges } = require('./shared');
+const { BOSS_ORDER, sleep, parsePlayerTable, findRaidLogMerges, findDuplicateRaidLogs, readRaidLogMerges, writeRaidLogMerges } = require('./shared');
 
 const RAID_LOGS_FILE = path.join(__dirname, '..', 'data', 'raid-logs.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'personal-stats.json');
-
-const SLUG_TO_CLASS = new Map(CLASSES.map((cls) => [cls.toLowerCase().replace(/\s+/g, '-'), cls]));
 
 const MODE = '25H';
 const REQUEST_DELAY_MS = 1800;
@@ -28,11 +26,6 @@ function extractRaidDateFromUrl(raidUrl) {
   if (!match) return null;
   const [, yy, mm, dd] = match;
   return `20${yy}-${mm}-${dd}`;
-}
-
-function parseDecimalNumber(value) {
-  const cleaned = String(value || '').replace(/[^\d.]/g, '');
-  return cleaned ? Number(cleaned) : 0;
 }
 
 function parseDurationToSeconds(text) {
@@ -99,34 +92,6 @@ function extractKills($) {
 
 function buildSliceUrl(raidUrl, href) {
   return `${normalizeUrl(raidUrl)}${href}`;
-}
-
-function parsePlayerTable($) {
-  const players = [];
-
-  $('table.add-player-rank tbody tr').each((_, row) => {
-    const cell = $(row).find('td.player-cell');
-    const title = cell.attr('title');
-    if (!title || title === 'Total') return;
-
-    const anchor = cell.find('a');
-    const name = normalizeText(anchor.text());
-    if (!name) return;
-
-    const slug = (anchor.attr('class') || '').trim();
-    if (!slug) return; // vehicle/transform row (e.g. Putricide's "Mutated Abomination"), not a real player
-
-    const playerClass = SLUG_TO_CLASS.get(slug) || CLASSES.find((cls) => title.endsWith(` ${cls}`)) || 'Unknown';
-    const spec = title.endsWith(` ${playerClass}`)
-      ? title.slice(0, title.length - playerClass.length).trim()
-      : 'Unknown';
-
-    const dps = parseDecimalNumber($(row).find('td.useful.per-sec-cell').first().text());
-
-    players.push({ name, class: playerClass, spec, dps });
-  });
-
-  return players;
 }
 
 async function fetchRaidKills(raidUrl) {

@@ -87,6 +87,48 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+const SLUG_TO_CLASS = new Map(CLASSES.map((cls) => [cls.toLowerCase().replace(/\s+/g, '-'), cls]));
+
+function normalizeText(value) {
+  return String(value || '').replace(/\s+/g, ' ').trim();
+}
+
+// Спільний парсер таблиці "table.add-player-rank" - той самий формат рядків
+// (title="Spec Class" + img-іконка спеку + a.class-slug) і на per-боса
+// сторінках рангу (update-personal-stats.js), і на кореневій сторінці
+// рейду, де ця ж таблиця показує зведення по всьому рейду одразу
+// (update-raid-rosters.js).
+function parsePlayerTable($) {
+  const players = [];
+
+  $('table.add-player-rank tbody tr').each((_, row) => {
+    const cell = $(row).find('td.player-cell');
+    const title = cell.attr('title');
+    if (!title || title === 'Total') return;
+
+    const anchor = cell.find('a');
+    const name = normalizeText(anchor.text());
+    if (!name) return;
+
+    const slug = (anchor.attr('class') || '').trim();
+    if (!slug) return; // vehicle/transform row (e.g. Putricide's "Mutated Abomination"), not a real player
+
+    const playerClass = SLUG_TO_CLASS.get(slug) || CLASSES.find((cls) => title.endsWith(` ${cls}`)) || 'Unknown';
+    const spec = title.endsWith(` ${playerClass}`)
+      ? title.slice(0, title.length - playerClass.length).trim()
+      : 'Unknown';
+
+    const iconSrc = cell.find('img').attr('src') || '';
+    const icon = iconSrc.split('/').pop().split('.')[0] || null;
+
+    const dps = parseFloat(String($(row).find('td.useful.per-sec-cell').first().text()).replace(/[^\d.]/g, '')) || 0;
+
+    players.push({ name, class: playerClass, spec, icon, dps });
+  });
+
+  return players;
+}
+
 function getClassName(classIndex) {
   return CLASSES[classIndex] ?? 'Unknown';
 }
@@ -247,6 +289,7 @@ module.exports = {
   sleep,
   getClassName,
   getSpecName,
+  parsePlayerTable,
   normalizeScore,
   normalizeBosses,
   hasAnyBossData,

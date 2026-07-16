@@ -64,6 +64,8 @@ const raidItemsBody = document.getElementById('raidItemsBody');
 const potionsPane = document.getElementById('potionsPane');
 const potionsAddBtn = document.getElementById('potionsAddBtn');
 const potionsClearBtn = document.getElementById('potionsClearBtn');
+const potionsHideHealTankLabel = document.getElementById('potionsHideHealTankLabel');
+const potionsHideHealTankCheckbox = document.getElementById('potionsHideHealTank');
 const potionsSoftedOnlyLabel = document.getElementById('potionsSoftedOnlyLabel');
 const potionsSoftedOnlyCheckbox = document.getElementById('potionsSoftedOnly');
 const potionsBossCount = document.getElementById('potionsBossCount');
@@ -116,6 +118,7 @@ let penaltiesList = [];
 let classColorMap = new Map();
 let auditEntries = [];
 let potionStatsRaids = null;
+let raidRosters = null;
 let activeTab = 'players';
 let honorBoard = [];
 
@@ -510,6 +513,42 @@ async function ensurePotionStatsLoaded() {
   return potionStatsRaids;
 }
 
+// Той самий список спеків, що вже фільтрує "Не показувати хіло/танко-спеки"
+// на Рейтингу DPS (scripts/guild-ranking.js) - консистентність між сторінками.
+const HEAL_TANK_SPECS = new Set(['Holy', 'Discipline', 'Restoration', 'Blood', 'Protection']);
+
+async function ensureRaidRostersLoaded() {
+  if (raidRosters) return raidRosters;
+  const res = await fetch('/data/raid-rosters.json?t=' + Date.now());
+  const rosters = await res.json();
+  raidRosters = Array.isArray(rosters) ? rosters : [];
+  return raidRosters;
+}
+
+function findRosterEntry(raidUrl) {
+  if (!raidUrl || !raidRosters) return null;
+  return raidRosters.find((r) => r.raidUrl === raidUrl) || null;
+}
+
+// Невідомий спек (гравця нема в ростері, або uwu-logs не зміг його
+// визначити) - показуємо гравця, а не ховаємо через брак даних.
+function isHealOrTankPlayer(rosterEntry, name) {
+  const spec = rosterEntry?.players.find((p) => p.name === name)?.spec;
+  return Boolean(spec && HEAL_TANK_SPECS.has(spec));
+}
+
+function getPlayerSpecIcon(rosterEntry, name) {
+  return rosterEntry?.players.find((p) => p.name === name)?.icon || null;
+}
+
+// Клас гравця конкретно в цьому лозі (raid-rosters.json) надійніший за
+// глобальний classColorMap (data/guild-data.json) - легіонери чи разові
+// учасники можуть бути відсутні в гільдійському знімку.
+function getPlayerClassColor(rosterEntry, name) {
+  const playerClass = rosterEntry?.players.find((p) => p.name === name)?.class;
+  return (playerClass && WOW_CLASS_COLORS[playerClass]) || classColorMap.get(name) || '';
+}
+
 function findPotionLogEntry(raidUrl) {
   if (!raidUrl || !potionStatsRaids) return null;
   return potionStatsRaids.find((r) => r.raidUrl === raidUrl || (r.mergedFrom || []).includes(raidUrl)) || null;
@@ -565,6 +604,7 @@ function renderPotionLogTable(statsRaid) {
     potionsMetaLabel.href = isSafeUrl(statsRaid.raidUrl) ? statsRaid.raidUrl : '#';
   }
   potionsSoftedOnlyLabel.hidden = !statsRaid;
+  potionsHideHealTankLabel.hidden = !statsRaid;
   potionsContent.innerHTML = '';
 
   if (!statsRaid) {
@@ -584,14 +624,31 @@ function renderPotionLogTable(statsRaid) {
   table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Потів/бос</th></tr></thead>";
   const tbody = document.createElement('tbody');
 
-  const players = potionsSoftedOnlyCheckbox.checked
-    ? (statsRaid.players || []).filter((player) => getPlayersWithSoftsSet().has(player.name))
-    : (statsRaid.players || []);
+  const rosterEntry = findRosterEntry(statsRaid.raidUrl);
+
+  let players = statsRaid.players || [];
+  if (potionsSoftedOnlyCheckbox.checked) {
+    players = players.filter((player) => getPlayersWithSoftsSet().has(player.name));
+  }
+  if (potionsHideHealTankCheckbox.checked) {
+    players = players.filter((player) => !isHealOrTankPlayer(rosterEntry, player.name));
+  }
 
   players.forEach((player) => {
     const tr = document.createElement('tr');
     tr.className = getPotionRowClass(player, bossCount);
     const nameTd = document.createElement('td');
+    nameTd.className = 'raid-potion-name-cell';
+    nameTd.style.color = getPlayerClassColor(rosterEntry, player.name);
+    const specIcon = getPlayerSpecIcon(rosterEntry, player.name);
+    if (specIcon) {
+      const iconImg = document.createElement('img');
+      iconImg.className = 'raid-item-icon';
+      iconImg.src = `https://wow.zamimg.com/images/wow/icons/small/${specIcon}.jpg`;
+      iconImg.alt = '';
+      nameTd.appendChild(iconImg);
+      nameTd.appendChild(document.createTextNode(' '));
+    }
     nameTd.appendChild(createPlayerBadge(player.name));
     nameTd.appendChild(document.createTextNode(player.name));
     tr.appendChild(nameTd);
@@ -616,7 +673,7 @@ function renderPotionLogTable(statsRaid) {
 }
 
 async function loadPotionsTab() {
-  await ensurePotionStatsLoaded();
+  await Promise.all([ensurePotionStatsLoaded(), ensureRaidRostersLoaded()]);
   renderPotionLogTable(findPotionLogEntry(raid.potion_log_url));
 }
 
@@ -1617,6 +1674,7 @@ setupUserSearchAutocomplete(addOfficerInput, addOfficerList, addOfficer);
 potionsAddBtn.addEventListener('click', () => showPotionLogModal());
 potionsClearBtn.addEventListener('click', () => setPotionLog(null));
 potionsSoftedOnlyCheckbox.addEventListener('change', () => renderPotionLogTable(findPotionLogEntry(raid.potion_log_url)));
+potionsHideHealTankCheckbox.addEventListener('change', () => renderPotionLogTable(findPotionLogEntry(raid.potion_log_url)));
 potionLogConfirmBtn.addEventListener('click', () => {
   const raidUrl = potionLogSelect.value;
   potionLogModal.hidden = true;
