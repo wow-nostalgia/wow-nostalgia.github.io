@@ -58,6 +58,34 @@
 
 ---
 
+## Іконки — тільки Primer Octicons
+
+Усі SVG-іконки на сайті беремо з бібліотеки [Primer Octicons](https://github.com/primer/octicons)
+(той самий проєкт, що дав дизайн-токени вище) — **ніколи не малюй іконку
+вручну** (ні stroke-based "feather"-стиль, ні довільні path).
+
+Формат Octicons: `viewBox="0 0 16 16"`, `fill="currentColor"`, один або
+кілька `<path>` без `stroke`. Приклад (навбар вже так робить, `index.html`):
+```html
+<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
+  <path d="..."/>
+</svg>
+```
+
+**Як дістати потрібну іконку:** через GitHub API репозиторію `primer/octicons`
+(файли `icons/<name>-16.svg`, decode base64):
+```bash
+gh api repos/primer/octicons/contents/icons/gift-16.svg --jq '.content' | base64 -d
+```
+Або пошук назви на https://primer.style/foundations/icons.
+
+> **Історичний виняток:** приклад "Іконка-видалення" нижче (кошик,
+> `.account-delete-btn`) намальований вручну до введення цього правила —
+> НЕ копіюй його SVG як зразок для нових кнопок, копіюй тільки CSS-клас.
+> Для нового кошика бери Octicons `trash-16`.
+
+---
+
 ## Правило скопінгу CSS
 
 **Майже всі page-specific класи мають префікс `body.<page>-page`**, наприклад:
