@@ -4185,7 +4185,7 @@ body.raid-manager-detail-page .penalty-reason-text {
 }
 
 .raid-modal-box--wide {
-  width: min(92vw, 32rem);
+  width: min(90vw, 18rem);
 }
 
 .raid-modal-table-wrap {
