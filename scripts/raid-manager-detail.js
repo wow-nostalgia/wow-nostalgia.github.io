@@ -63,11 +63,16 @@ const raidItemsBody = document.getElementById('raidItemsBody');
 
 const potionsPane = document.getElementById('potionsPane');
 const potionsPickerControls = document.getElementById('potionsPickerControls');
-const potionsLogInput = document.getElementById('potionsLogInput');
-const potionsLogList = document.getElementById('potionsLogList');
+const potionsAddBtn = document.getElementById('potionsAddBtn');
 const potionsClearBtn = document.getElementById('potionsClearBtn');
+const potionsBossCount = document.getElementById('potionsBossCount');
 const potionsMetaLabel = document.getElementById('potionsMetaLabel');
 const potionsContent = document.getElementById('potionsContent');
+const potionLogModal = document.getElementById('potionLogModal');
+const potionLogModalBackdrop = document.getElementById('potionLogModalBackdrop');
+const potionLogSelect = document.getElementById('potionLogSelect');
+const potionLogConfirmBtn = document.getElementById('potionLogConfirmBtn');
+const potionLogCancelBtn = document.getElementById('potionLogCancelBtn');
 
 const penaltiesPane = document.getElementById('penaltiesPane');
 const raidPenaltiesBody = document.getElementById('raidPenaltiesBody');
@@ -548,9 +553,14 @@ function getPotionRowClass(player, bossCount) {
 }
 
 function renderPotionLogTable(statsRaid) {
+  const bossCount = statsRaid ? getPotionBossCount(statsRaid) : 0;
+
+  potionsBossCount.hidden = !bossCount;
+  if (bossCount) potionsBossCount.textContent = `Босів: ${bossCount}`;
+
   potionsMetaLabel.hidden = !statsRaid;
   if (statsRaid) {
-    potionsMetaLabel.textContent = `Лог від ${statsRaid.date || 'Невідома дата'}`;
+    potionsMetaLabel.textContent = `UwU-Log від ${statsRaid.date || 'Невідома дата'}`;
     potionsMetaLabel.href = isSafeUrl(statsRaid.raidUrl) ? statsRaid.raidUrl : '#';
   }
   potionsContent.innerHTML = '';
@@ -571,7 +581,6 @@ function renderPotionLogTable(statsRaid) {
   table.className = 'raid-table';
   table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead>";
   const tbody = document.createElement('tbody');
-  const bossCount = getPotionBossCount(statsRaid);
 
   (statsRaid.players || []).forEach((player) => {
     const tr = document.createElement('tr');
@@ -599,11 +608,10 @@ async function loadPotionsTab() {
 }
 
 // Дозволяє офіцеру в будь-який момент обрати інший лог замість поточного
-// (рядок пошуку лишається доступним і після вибору - не ховається).
+// (кнопка "Додати" лишається доступною і після вибору).
 async function setPotionLog(raidUrl) {
   try {
     raid = await apiCall('PATCH', `/raids/${raidId}/potion-log`, { token: getSessionToken(), body: { raidUrl } });
-    potionsLogInput.value = '';
     potionsClearBtn.hidden = !raid.potion_log_url;
     renderPotionLogTable(findPotionLogEntry(raid.potion_log_url));
   } catch (err) {
@@ -611,51 +619,22 @@ async function setPotionLog(raidUrl) {
   }
 }
 
-// Локальний пошук без дебаунсу (дані вже в potionStatsRaids) - той самий
-// патерн, що setupNameAutocomplete, але по датах/завантажувачах логів.
-function setupPotionLogAutocomplete(inputEl, listEl, onPick) {
-  function closeList() {
-    listEl.classList.remove('is-open');
-    listEl.innerHTML = '';
-  }
+// Той самий патерн, що showTransferModal(): попап із <select>, а не
+// інлайновий пошук - список логів однаково короткий, і зайвий автокомпліт
+// був би зайвим ускладненням.
+async function showPotionLogModal() {
+  const raids = await ensurePotionStatsLoaded();
 
-  async function openList() {
-    const raids = await ensurePotionStatsLoaded();
-    const query = inputEl.value.trim().toLocaleLowerCase('uk');
-    const matches = query
-      ? raids.filter((r) => formatPotionLogLabel(r).toLocaleLowerCase('uk').includes(query))
-      : raids;
-
-    listEl.innerHTML = '';
-
-    if (!matches.length) {
-      const empty = document.createElement('div');
-      empty.className = 'raid-autocomplete-empty';
-      empty.textContent = 'Логів не знайдено';
-      listEl.appendChild(empty);
-    } else {
-      matches.forEach((statsRaid) => {
-        const item = document.createElement('div');
-        item.className = 'raid-autocomplete-item';
-        item.textContent = formatPotionLogLabel(statsRaid);
-        item.addEventListener('mousedown', (event) => {
-          event.preventDefault();
-          closeList();
-          onPick(statsRaid);
-        });
-        listEl.appendChild(item);
-      });
-    }
-
-    listEl.classList.add('is-open');
-  }
-
-  inputEl.addEventListener('focus', openList);
-  inputEl.addEventListener('input', openList);
-  inputEl.addEventListener('blur', () => setTimeout(closeList, 100));
-  inputEl.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeList();
+  potionLogSelect.innerHTML = '';
+  raids.forEach((statsRaid) => {
+    const opt = document.createElement('option');
+    opt.value = statsRaid.raidUrl;
+    opt.textContent = formatPotionLogLabel(statsRaid);
+    potionLogSelect.appendChild(opt);
   });
+  if (raid.potion_log_url) potionLogSelect.value = raid.potion_log_url;
+
+  potionLogModal.hidden = false;
 }
 
 async function loadOfficers() {
@@ -1610,8 +1589,15 @@ assignPlayerNameClear.addEventListener('click', () => {
 });
 setupNameAutocomplete(assignPlayerNameInput, assignPlayerNameList);
 setupUserSearchAutocomplete(addOfficerInput, addOfficerList, addOfficer);
-setupPotionLogAutocomplete(potionsLogInput, potionsLogList, (statsRaid) => setPotionLog(statsRaid.raidUrl));
+potionsAddBtn.addEventListener('click', () => showPotionLogModal());
 potionsClearBtn.addEventListener('click', () => setPotionLog(null));
+potionLogConfirmBtn.addEventListener('click', () => {
+  const raidUrl = potionLogSelect.value;
+  potionLogModal.hidden = true;
+  if (raidUrl) setPotionLog(raidUrl);
+});
+potionLogCancelBtn.addEventListener('click', () => { potionLogModal.hidden = true; });
+potionLogModalBackdrop.addEventListener('click', () => { potionLogModal.hidden = true; });
 itemsBossFilter.addEventListener('change', renderItemsTable);
 itemsSoftedOnlyCheckbox.addEventListener('change', renderItemsTable);
 

@@ -87,7 +87,7 @@ function createRaidLogInfoHtml(raid) {
   if (splitUrls.length > 1) {
     return `<span class="potion-raid-split-note">Рейд розділений на кілька звітів UwU-Logs: ${createLogLinksList(splitUrls)}</span>`;
   }
-  return `<a href="${escapeHtml(isSafeUrl(raid.raidUrl) ? raid.raidUrl : '#')}" target="_blank" rel="noopener noreferrer">Оригінальний лог UwU-Logs</a>`;
+  return `<a href="${escapeHtml(isSafeUrl(raid.raidUrl) ? raid.raidUrl : '#')}" target="_blank" rel="noopener noreferrer">UwU-Log</a>`;
 }
 
 function createRaidLinksHtml(raid) {

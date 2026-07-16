@@ -2853,14 +2853,30 @@ body.raid-manager-detail-page .raid-potion-picker-controls {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  flex: 1;
-  min-width: 0;
-  max-width: 26rem;
 }
 
-body.raid-manager-detail-page .raid-potion-picker {
-  flex: 1;
-  min-width: 0;
+body.raid-manager-detail-page .raid-potion-clear-btn {
+  background: none;
+  border: none;
+  padding: 0.4rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+body.raid-manager-detail-page .raid-potion-clear-btn:hover {
+  color: var(--color-danger);
+  background-color: rgba(255, 107, 107, 0.12);
+}
+
+body.raid-manager-detail-page .raid-potion-boss-count {
+  margin-left: auto;
+  color: var(--color-text-faint);
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 body.raid-manager-detail-page .raid-potion-meta {
