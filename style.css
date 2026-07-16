@@ -2945,6 +2945,16 @@ body.raid-manager-detail-page .raid-table tbody tr:hover {
   background-color: var(--color-hover);
 }
 
+/* Chrome інколи завищує scrollWidth для клітинки з великою кількістю
+   inline-flex чіпів, що переносяться на новий рядок (самі чіпи фактично
+   не виходять за межі клітинки - це артефакт підрахунку) - це "фантомне"
+   значення протікає через overflow:visible до .ranking-table-wrap і
+   вмикає його горизонтальний скрол. overflow:hidden тут нічого візуально
+   не обрізає (контент і так вміщується), лише блокує цей витік вгору. */
+body.raid-manager-detail-page .raid-softs-col {
+  overflow: hidden;
+}
+
 body.raid-manager-detail-page .raid-reserve-item {
   display: inline-flex;
   align-items: center;

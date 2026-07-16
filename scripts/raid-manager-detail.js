@@ -1006,6 +1006,7 @@ function renderPlayersTable() {
     tr.appendChild(transferTd);
 
     const itemsTd = document.createElement('td');
+    itemsTd.className = 'raid-softs-col';
     const manageable = canManage(name);
 
     grouped.get(name).forEach((r) => {
