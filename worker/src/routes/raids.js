@@ -176,6 +176,19 @@ export async function handleRemoveOfficer(request, env, id, discordId, session) 
   return jsonResponse({ ok: true });
 }
 
+export async function handleSetPotionLog(request, env, id, session) {
+  const raid = await loadRaidOr404(env, id);
+  await requireRaidOfficer(env.DB, id, raid, session);
+
+  const body = await readJson(request);
+  const raidUrl = body.raidUrl === null || body.raidUrl === undefined ? null : String(body.raidUrl).trim() || null;
+
+  const updated = await updateRaidSettings(env.DB, id, { potion_log_url: raidUrl });
+  await insertAudit(env.DB, id, session.username, 'potion_log_change', { raidUrl });
+
+  return jsonResponse(publicRaid(updated));
+}
+
 export async function handleToggleHiddenReserves(request, env, id, session) {
   const raid = await loadRaidOr404(env, id);
   await requireRaidOfficer(env.DB, id, raid, session);

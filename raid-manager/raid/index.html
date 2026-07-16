@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейд — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=54">
+  <link rel="stylesheet" href="../../style.css?v=55">
 </head>
 
 <body class="raid-manager-detail-page">
@@ -157,6 +157,7 @@
         <div class="raid-tabs" role="tablist">
           <button type="button" class="raid-tab raid-tab--active" data-tab="players">Гравці</button>
           <button type="button" class="raid-tab" data-tab="items">Предмети</button>
+          <button type="button" class="raid-tab" data-tab="potions">Поти</button>
           <button type="button" class="raid-tab" data-tab="penalties" id="penaltiesTab" hidden>Штрафи</button>
           <button type="button" class="raid-tab" data-tab="officers" id="officersTab" hidden>Офіцери</button>
           <button type="button" class="raid-tab" data-tab="settings" id="settingsTab" hidden>Налаштування</button>
@@ -203,6 +204,17 @@
                 <tbody id="raidItemsBody"></tbody>
               </table>
             </div>
+          </div>
+
+          <div id="potionsPane" hidden>
+            <div id="potionsPickerRow" class="raid-potion-picker-row" hidden>
+              <div class="raid-input-wrap raid-potion-picker">
+                <input type="text" id="potionsLogInput" autocomplete="off" placeholder="Виберіть лог зі Статистики Potion...">
+                <div class="raid-autocomplete-list" id="potionsLogList"></div>
+              </div>
+              <button type="button" id="potionsClearBtn" class="link-button-std" hidden>Прибрати вибір</button>
+            </div>
+            <div id="potionsContent"></div>
           </div>
 
           <div id="auditPane" hidden>
@@ -303,7 +315,7 @@
   <script src="../../scripts/ui-shared.js?v=5"></script>
   <script src="../../scripts/raid-manager-shared.js?v=3"></script>
   <script src="../../scripts/name-translations.js?v=1"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=44"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=45"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

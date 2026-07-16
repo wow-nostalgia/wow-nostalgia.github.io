@@ -2841,6 +2841,30 @@ body.raid-manager-detail-page .raid-hidden-notice {
   font-size: var(--font-size-base);
 }
 
+body.raid-manager-detail-page .raid-potion-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 26rem;
+  margin-bottom: 0.75rem;
+}
+
+body.raid-manager-detail-page .raid-potion-picker {
+  flex: 1;
+  min-width: 0;
+}
+
+body.raid-manager-detail-page .raid-potion-meta {
+  margin: 0 0 0.6rem;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+}
+
+body.raid-manager-detail-page .raid-potion-empty {
+  color: var(--color-text-faint);
+  font-size: var(--font-size-base);
+}
+
 body.raid-manager-detail-page .raid-table {
   width: 100%;
   border-collapse: collapse;

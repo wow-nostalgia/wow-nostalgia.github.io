@@ -61,6 +61,13 @@ const itemsBossFilter = document.getElementById('itemsBossFilter');
 const itemsSoftedOnlyCheckbox = document.getElementById('itemsSoftedOnly');
 const raidItemsBody = document.getElementById('raidItemsBody');
 
+const potionsPane = document.getElementById('potionsPane');
+const potionsPickerRow = document.getElementById('potionsPickerRow');
+const potionsLogInput = document.getElementById('potionsLogInput');
+const potionsLogList = document.getElementById('potionsLogList');
+const potionsClearBtn = document.getElementById('potionsClearBtn');
+const potionsContent = document.getElementById('potionsContent');
+
 const penaltiesPane = document.getElementById('penaltiesPane');
 const raidPenaltiesBody = document.getElementById('raidPenaltiesBody');
 
@@ -99,6 +106,7 @@ let weightTransfers = [];
 let penaltiesList = [];
 let classColorMap = new Map();
 let auditEntries = [];
+let potionStatsRaids = null;
 let activeTab = 'players';
 let honorBoard = [];
 
@@ -183,6 +191,8 @@ function renderBanner() {
 
   settingsTab.hidden = !isLeader();
   penaltiesTab.hidden = !isOfficerMode();
+  potionsPickerRow.hidden = !isOfficerMode();
+  potionsClearBtn.hidden = !raid.potion_log_url;
   settingsTitleInput.value = raid.title;
   settingsSoftLimitInput.value = raid.soft_limit_total;
 
@@ -450,6 +460,147 @@ function setupUserSearchAutocomplete(inputEl, listEl, onPick) {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(search, 250);
   });
+  inputEl.addEventListener('blur', () => setTimeout(closeList, 100));
+  inputEl.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeList();
+  });
+}
+
+// Таб "Поти" - найпростіший референс на лог зі "Статистика Potion":
+// у raids зберігається лише raidUrl обраного логу, самі дані потів
+// (гравці/лічильники) ніде не дублюються в БД, а фетчаться напряму з
+// data/potion-stats.json, як і на самій сторінці Статистики.
+function extractPotionUploaderName(raidUrl) {
+  const match = String(raidUrl || '').match(/--([^-/]+)--FreedomUA\/?.*$/);
+  return match ? match[1] : 'Невідомо';
+}
+
+function formatPotionLogLabel(statsRaid) {
+  const date = statsRaid.date || 'Невідома дата';
+  const uploader = extractPotionUploaderName(statsRaid.raidUrl || '');
+  return `Лог від ${date}. Завантажив ${uploader}`;
+}
+
+async function ensurePotionStatsLoaded() {
+  if (potionStatsRaids) return potionStatsRaids;
+  const res = await fetch('/data/potion-stats.json?t=' + Date.now());
+  const raids = await res.json();
+  potionStatsRaids = Array.isArray(raids)
+    ? raids
+        .filter((r) => Array.isArray(r.players) && r.players.length > 0 && r.raidUrl)
+        .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+    : [];
+  return potionStatsRaids;
+}
+
+function findPotionLogEntry(raidUrl) {
+  if (!raidUrl || !potionStatsRaids) return null;
+  return potionStatsRaids.find((r) => r.raidUrl === raidUrl || (r.mergedFrom || []).includes(raidUrl)) || null;
+}
+
+function renderPotionLogTable(statsRaid) {
+  potionsContent.innerHTML = '';
+
+  if (!statsRaid) {
+    const empty = document.createElement('p');
+    empty.className = 'raid-potion-empty';
+    empty.textContent = raid.potion_log_url
+      ? 'Обраний лог не знайдено у Статистиці Potion.'
+      : 'Лог ще не обрано.';
+    potionsContent.appendChild(empty);
+    return;
+  }
+
+  const meta = document.createElement('p');
+  meta.className = 'raid-potion-meta';
+  meta.textContent = formatPotionLogLabel(statsRaid);
+  potionsContent.appendChild(meta);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'ranking-table-wrap';
+  const table = document.createElement('table');
+  table.className = 'raid-table';
+  table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead>";
+  const tbody = document.createElement('tbody');
+
+  (statsRaid.players || []).forEach((player) => {
+    const tr = document.createElement('tr');
+    const nameTd = document.createElement('td');
+    nameTd.appendChild(createPlayerBadge(player.name));
+    nameTd.appendChild(document.createTextNode(player.name));
+    tr.appendChild(nameTd);
+    [player.total, player.potionOfSpeed, player.potionOfWildMagic].forEach((value) => {
+      const td = document.createElement('td');
+      td.textContent = Number(value || 0);
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  potionsContent.appendChild(wrap);
+}
+
+async function loadPotionsTab() {
+  await ensurePotionStatsLoaded();
+  renderPotionLogTable(findPotionLogEntry(raid.potion_log_url));
+}
+
+// Дозволяє офіцеру в будь-який момент обрати інший лог замість поточного
+// (рядок пошуку лишається доступним і після вибору - не ховається).
+async function setPotionLog(raidUrl) {
+  try {
+    raid = await apiCall('PATCH', `/raids/${raidId}/potion-log`, { token: getSessionToken(), body: { raidUrl } });
+    potionsLogInput.value = '';
+    potionsClearBtn.hidden = !raid.potion_log_url;
+    renderPotionLogTable(findPotionLogEntry(raid.potion_log_url));
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+// Локальний пошук без дебаунсу (дані вже в potionStatsRaids) - той самий
+// патерн, що setupNameAutocomplete, але по датах/завантажувачах логів.
+function setupPotionLogAutocomplete(inputEl, listEl, onPick) {
+  function closeList() {
+    listEl.classList.remove('is-open');
+    listEl.innerHTML = '';
+  }
+
+  async function openList() {
+    const raids = await ensurePotionStatsLoaded();
+    const query = inputEl.value.trim().toLocaleLowerCase('uk');
+    const matches = query
+      ? raids.filter((r) => formatPotionLogLabel(r).toLocaleLowerCase('uk').includes(query))
+      : raids;
+
+    listEl.innerHTML = '';
+
+    if (!matches.length) {
+      const empty = document.createElement('div');
+      empty.className = 'raid-autocomplete-empty';
+      empty.textContent = 'Логів не знайдено';
+      listEl.appendChild(empty);
+    } else {
+      matches.forEach((statsRaid) => {
+        const item = document.createElement('div');
+        item.className = 'raid-autocomplete-item';
+        item.textContent = formatPotionLogLabel(statsRaid);
+        item.addEventListener('mousedown', (event) => {
+          event.preventDefault();
+          closeList();
+          onPick(statsRaid);
+        });
+        listEl.appendChild(item);
+      });
+    }
+
+    listEl.classList.add('is-open');
+  }
+
+  inputEl.addEventListener('focus', openList);
+  inputEl.addEventListener('input', openList);
   inputEl.addEventListener('blur', () => setTimeout(closeList, 100));
   inputEl.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeList();
@@ -1379,7 +1530,7 @@ hiddenReservesToggle.addEventListener('change', async () => {
   }
 });
 
-const TAB_PANES = { players: playersPane, items: itemsPane, audit: auditPane, penalties: penaltiesPane, officers: officersPane, settings: settingsPane };
+const TAB_PANES = { players: playersPane, items: itemsPane, potions: potionsPane, audit: auditPane, penalties: penaltiesPane, officers: officersPane, settings: settingsPane };
 
 async function setActiveTab(tab) {
   activeTab = tab;
@@ -1387,6 +1538,7 @@ async function setActiveTab(tab) {
   Object.entries(TAB_PANES).forEach(([key, el]) => { el.hidden = key !== tab; });
   if (tab === 'audit') await loadAudit();
   if (tab === 'penalties') await loadAndRenderPenalties();
+  if (tab === 'potions') await loadPotionsTab();
 }
 
 raidTabs.forEach((btn) => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)));
@@ -1407,6 +1559,8 @@ assignPlayerNameClear.addEventListener('click', () => {
 });
 setupNameAutocomplete(assignPlayerNameInput, assignPlayerNameList);
 setupUserSearchAutocomplete(addOfficerInput, addOfficerList, addOfficer);
+setupPotionLogAutocomplete(potionsLogInput, potionsLogList, (statsRaid) => setPotionLog(statsRaid.raidUrl));
+potionsClearBtn.addEventListener('click', () => setPotionLog(null));
 itemsBossFilter.addEventListener('change', renderItemsTable);
 itemsSoftedOnlyCheckbox.addEventListener('change', renderItemsTable);
 
