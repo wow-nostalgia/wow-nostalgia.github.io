@@ -64,6 +64,8 @@ const raidItemsBody = document.getElementById('raidItemsBody');
 const potionsPane = document.getElementById('potionsPane');
 const potionsAddBtn = document.getElementById('potionsAddBtn');
 const potionsClearBtn = document.getElementById('potionsClearBtn');
+const potionsSoftedOnlyLabel = document.getElementById('potionsSoftedOnlyLabel');
+const potionsSoftedOnlyCheckbox = document.getElementById('potionsSoftedOnly');
 const potionsBossCount = document.getElementById('potionsBossCount');
 const potionsMetaLabel = document.getElementById('potionsMetaLabel');
 const potionsContent = document.getElementById('potionsContent');
@@ -562,6 +564,7 @@ function renderPotionLogTable(statsRaid) {
     potionsMetaLabel.textContent = `UwU-Log від ${statsRaid.date || 'Невідома дата'}`;
     potionsMetaLabel.href = isSafeUrl(statsRaid.raidUrl) ? statsRaid.raidUrl : '#';
   }
+  potionsSoftedOnlyLabel.hidden = !statsRaid;
   potionsContent.innerHTML = '';
 
   if (!statsRaid) {
@@ -581,7 +584,11 @@ function renderPotionLogTable(statsRaid) {
   table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Потів/бос</th></tr></thead>";
   const tbody = document.createElement('tbody');
 
-  (statsRaid.players || []).forEach((player) => {
+  const players = potionsSoftedOnlyCheckbox.checked
+    ? (statsRaid.players || []).filter((player) => getPlayersWithSoftsSet().has(player.name))
+    : (statsRaid.players || []);
+
+  players.forEach((player) => {
     const tr = document.createElement('tr');
     tr.className = getPotionRowClass(player, bossCount);
     const nameTd = document.createElement('td');
@@ -908,6 +915,17 @@ function groupReservesByPlayer(list) {
     map.get(r.player_name).push(r);
   });
   return map;
+}
+
+// Той самий набір імен, що потрапляє у таб "Гравці" - засофчені +
+// учасники передач софту (можуть мати 0 власних софтів).
+function getPlayersWithSoftsSet() {
+  const names = new Set(groupReservesByPlayer(reserves).keys());
+  weightTransfers.forEach((t) => {
+    names.add(t.from_player);
+    names.add(t.to_player);
+  });
+  return names;
 }
 
 function renderPlayersTable() {
@@ -1598,6 +1616,7 @@ setupNameAutocomplete(assignPlayerNameInput, assignPlayerNameList);
 setupUserSearchAutocomplete(addOfficerInput, addOfficerList, addOfficer);
 potionsAddBtn.addEventListener('click', () => showPotionLogModal());
 potionsClearBtn.addEventListener('click', () => setPotionLog(null));
+potionsSoftedOnlyCheckbox.addEventListener('change', () => renderPotionLogTable(findPotionLogEntry(raid.potion_log_url)));
 potionLogConfirmBtn.addEventListener('click', () => {
   const raidUrl = potionLogSelect.value;
   potionLogModal.hidden = true;

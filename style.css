@@ -2849,6 +2849,14 @@ body.raid-manager-detail-page .raid-potion-picker-row {
   margin-bottom: 0.75rem;
 }
 
+body.raid-manager-detail-page #potionsSoftedOnlyLabel[hidden] {
+  display: none;
+}
+
+body.raid-manager-detail-page #potionsSoftedOnlyLabel {
+  margin-left: auto;
+}
+
 body.raid-manager-detail-page .raid-potion-clear-btn {
   background: none;
   border: none;
@@ -2871,7 +2879,6 @@ body.raid-manager-detail-page .raid-potion-clear-btn:hover {
 }
 
 body.raid-manager-detail-page .raid-potion-boss-count {
-  margin-left: auto;
   color: var(--color-text-faint);
   font-size: 0.9rem;
   white-space: nowrap;
@@ -2887,11 +2894,11 @@ body.raid-manager-detail-page .raid-potion-empty {
   font-size: var(--font-size-base);
 }
 
-body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-good>td {
+body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-good>td:not(.penalty-potion-stat) {
   color: var(--color-success) !important;
 }
 
-body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-bad>td {
+body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-bad>td:not(.penalty-potion-stat) {
   color: var(--color-danger) !important;
 }
 
