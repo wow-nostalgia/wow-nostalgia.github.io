@@ -492,10 +492,6 @@ async function ensurePotionStatsLoaded() {
   return potionStatsRaids;
 }
 
-// Той самий список спеків, що вже фільтрує "Не показувати хіло/танко-спеки"
-// на Рейтингу DPS (scripts/guild-ranking.js) - консистентність між сторінками.
-const HEAL_TANK_SPECS = new Set(['Holy', 'Discipline', 'Restoration', 'Blood', 'Protection']);
-
 async function ensureRaidRostersLoaded() {
   if (raidRosters) return raidRosters;
   const res = await fetch('/data/raid-rosters.json?t=' + Date.now());
@@ -505,13 +501,6 @@ async function ensureRaidRostersLoaded() {
 
 function findRosterEntry(raidUrl) {
   return raidRosters?.get(raidUrl) || null;
-}
-
-// Невідомий спек (гравця нема в ростері, або uwu-logs не зміг його
-// визначити) - показуємо гравця, а не ховаємо через брак даних.
-function isHealOrTankPlayer(rosterEntry, name) {
-  const spec = findRosterPlayer(rosterEntry, name)?.spec;
-  return Boolean(spec && HEAL_TANK_SPECS.has(spec));
 }
 
 function findPotionLogEntry(raidUrl) {

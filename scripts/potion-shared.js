@@ -87,3 +87,14 @@ function getPlayerClassColor(rosterEntry, name, fallbackColorMap) {
 function specIconUrl(icon) {
   return `https://wow.zamimg.com/images/wow/icons/small/${icon}.jpg`;
 }
+
+// Той самий список спеків, що вже фільтрує "Не показувати хіло/танко-спеки"
+// на Рейтингу DPS (scripts/guild-ranking.js) - консистентність між сторінками.
+const HEAL_TANK_SPECS = new Set(['Holy', 'Discipline', 'Restoration', 'Blood', 'Protection']);
+
+// Невідомий спек (гравця нема в ростері, або uwu-logs не зміг його
+// визначити) - показуємо гравця, а не ховаємо через брак даних.
+function isHealOrTankPlayer(rosterEntry, name) {
+  const spec = findRosterPlayer(rosterEntry, name)?.spec;
+  return Boolean(spec && HEAL_TANK_SPECS.has(spec));
+}

@@ -5,6 +5,7 @@ const statusEl = document.getElementById('potionStatus');
 const honorStatusEl = document.getElementById('honorStatus');
 const honorTableBodyEl = document.getElementById('honorTableBody');
 const hideZeroPlayersEl = document.getElementById('hideZeroPlayers');
+const potionHideHealTankEl = document.getElementById('potionHideHealTank');
 const honorTableEl = document.getElementById('honorTable');
 const logsViewEl = document.getElementById('logsView');
 const honorViewEl = document.getElementById('honorView');
@@ -19,6 +20,8 @@ let guildMemberNames = new Set();
 let characterOwnerNames = new Map();
 let bossesByRaidUrl = new Map();
 let rostersByRaidUrl = new Map();
+let currentRaids = [];
+let currentRaidIndex = 0;
 
 // potion-stats.json сам по собі кількість босів не містить - рахуємо по
 // bossesByRaidUrl (з personal-stats.json), той самий рецепт, що й у табі
@@ -77,7 +80,12 @@ function createPlayerRow(player, bossCount, raidUrl) {
 function createRaidContent(raid) {
   if (!Array.isArray(raid.players) || raid.players.length === 0) return `<p>Немає даних гравців</p>`;
   const bossCount = getBossCountForRaid(raid);
-  const rowsHtml = raid.players.map((player) => createPlayerRow(player, bossCount, raid.raidUrl)).join('');
+  let players = raid.players;
+  if (potionHideHealTankEl?.checked) {
+    const rosterEntry = rostersByRaidUrl.get(raid.raidUrl);
+    players = players.filter((player) => !isHealOrTankPlayer(rosterEntry, player.name));
+  }
+  const rowsHtml = players.map((player) => createPlayerRow(player, bossCount, raid.raidUrl)).join('');
   const bossCountHtml = bossCount ? `<span class="potion-boss-count">Босів: ${bossCount}</span>` : '';
   const raidLogInfoHtml = createRaidLogInfoHtml(raid);
   const metaRowHtml = bossCountHtml || raidLogInfoHtml
@@ -91,6 +99,8 @@ function isMobileLayout() {
 }
 
 function showRaid(raids, index) {
+  currentRaids = raids;
+  currentRaidIndex = index;
   potionSidebarEl.querySelectorAll('.potion-log-btn').forEach((btn, i) => {
     btn.classList.toggle('active', i === index);
   });
@@ -226,6 +236,10 @@ function attachHonorFilter() {
   hideZeroPlayersEl?.addEventListener('change', () => renderHonorBoard(honorBoardCache));
 }
 
+function attachHealTankFilter() {
+  potionHideHealTankEl?.addEventListener('change', () => showRaid(currentRaids, currentRaidIndex));
+}
+
 async function loadPotionStats() {
   try {
     statusEl.textContent = 'Завантаження даних...';
@@ -291,6 +305,7 @@ async function loadPotionStats() {
 document.addEventListener('DOMContentLoaded', () => {
   attachViewSwitch();
   attachHonorFilter();
+  attachHealTankFilter();
   switchView('logs');
   loadPotionStats();
 });
