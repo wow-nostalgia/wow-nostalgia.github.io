@@ -2739,6 +2739,13 @@ body.raid-manager-detail-page .raid-player-name-cell {
   white-space: nowrap;
 }
 
+body.raid-manager-detail-page .raid-potion-name-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
 .raid-item-icon {
   width: 18px;
   height: 18px;

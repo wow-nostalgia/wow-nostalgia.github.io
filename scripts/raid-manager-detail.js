@@ -621,7 +621,7 @@ function renderPotionLogTable(statsRaid) {
   wrap.className = 'ranking-table-wrap';
   const table = document.createElement('table');
   table.className = 'raid-table';
-  table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Потів/бос</th></tr></thead>";
+  table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Потів/бос за всі рейди</th></tr></thead>";
   const tbody = document.createElement('tbody');
 
   const rosterEntry = findRosterEntry(statsRaid.raidUrl);
@@ -639,18 +639,19 @@ function renderPotionLogTable(statsRaid) {
     tr.className = getPotionRowClass(player, bossCount);
     const nameTd = document.createElement('td');
     nameTd.className = 'raid-potion-name-cell';
-    nameTd.style.color = getPlayerClassColor(rosterEntry, player.name);
+    const nameWrap = document.createElement('span');
+    nameWrap.className = 'raid-potion-name-wrap';
+    nameWrap.style.color = getPlayerClassColor(rosterEntry, player.name);
     const specIcon = getPlayerSpecIcon(rosterEntry, player.name);
     if (specIcon) {
       const iconImg = document.createElement('img');
       iconImg.className = 'raid-item-icon';
       iconImg.src = `https://wow.zamimg.com/images/wow/icons/small/${specIcon}.jpg`;
       iconImg.alt = '';
-      nameTd.appendChild(iconImg);
-      nameTd.appendChild(document.createTextNode(' '));
+      nameWrap.appendChild(iconImg);
     }
-    nameTd.appendChild(createPlayerBadge(player.name));
-    nameTd.appendChild(document.createTextNode(player.name));
+    nameWrap.appendChild(document.createTextNode(player.name));
+    nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
     [player.total, player.potionOfSpeed, player.potionOfWildMagic].forEach((value) => {
       const td = document.createElement('td');
