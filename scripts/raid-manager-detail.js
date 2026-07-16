@@ -578,7 +578,7 @@ function renderPotionLogTable(statsRaid) {
   wrap.className = 'ranking-table-wrap';
   const table = document.createElement('table');
   table.className = 'raid-table';
-  table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead>";
+  table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Потів/бос</th></tr></thead>";
   const tbody = document.createElement('tbody');
 
   (statsRaid.players || []).forEach((player) => {
@@ -593,6 +593,13 @@ function renderPotionLogTable(statsRaid) {
       td.textContent = Number(value || 0);
       tr.appendChild(td);
     });
+
+    const hbEntry = honorBoard.find((r) => r.name === player.name);
+    const potionTd = document.createElement('td');
+    potionTd.textContent = hbEntry ? hbEntry.averagePotionsPerBoss.toFixed(2) : '—';
+    potionTd.className = 'penalty-potion-stat';
+    tr.appendChild(potionTd);
+
     tbody.appendChild(tr);
   });
 
@@ -1700,7 +1707,7 @@ function renderPenaltiesTable() {
   if (!penaltiesList.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 5;
+    td.colSpan = 4;
     td.textContent = "Ще немає учасників рейду.";
     tr.appendChild(td);
     raidPenaltiesBody.appendChild(tr);
@@ -1719,12 +1726,6 @@ function renderPenaltiesTable() {
     nameWrap.appendChild(document.createTextNode(player_name));
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
-
-    const potionTd = document.createElement('td');
-    const hbEntry = honorBoard.find((r) => r.name === player_name);
-    potionTd.textContent = hbEntry ? hbEntry.averagePotionsPerBoss.toFixed(2) : '—';
-    potionTd.className = 'penalty-potion-stat';
-    tr.appendChild(potionTd);
 
     if (officerMode) {
       const rollInput = document.createElement('input');

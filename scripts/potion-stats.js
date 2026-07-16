@@ -113,7 +113,7 @@ function createRaidContent(raid) {
   const bossCountHtml = bossCount ? `<span class="potion-boss-count">Босів: ${bossCount}</span>` : '';
   const raidLogInfoHtml = createRaidLogInfoHtml(raid);
   const metaRowHtml = bossCountHtml || raidLogInfoHtml
-    ? `<div class="potion-raid-meta-row">${bossCountHtml}${raidLogInfoHtml}</div>`
+    ? `<div class="potion-raid-meta-row">${raidLogInfoHtml}${bossCountHtml}</div>`
     : '';
   return `${metaRowHtml}<div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}`;
 }
