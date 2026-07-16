@@ -1746,6 +1746,7 @@ function showBonusGrantModal() {
     const tr = document.createElement('tr');
     const nameTd = document.createElement('td');
     nameTd.textContent = name;
+    nameTd.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
     const checkTd = document.createElement('td');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';

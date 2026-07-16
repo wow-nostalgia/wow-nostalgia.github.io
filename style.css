@@ -3041,7 +3041,8 @@ body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:
 body.raid-manager-page .raid-create-form button[type="submit"].compare-btn,
 body.ranking-page #compareBtn.compare-btn,
 body.raid-manager-detail-page #transferConfirmBtn.compare-btn,
-body.raid-manager-detail-page #potionsAddBtn.compare-btn {
+body.raid-manager-detail-page #potionsAddBtn.compare-btn,
+body.raid-manager-detail-page #bonusGrantSaveBtn.compare-btn {
   background: var(--color-success-strong);
   border-color: var(--color-success-strong);
   color: var(--color-on-accent);
@@ -3050,7 +3051,8 @@ body.raid-manager-detail-page #potionsAddBtn.compare-btn {
 body.raid-manager-page .raid-create-form button[type="submit"].compare-btn:hover:not(:disabled),
 body.ranking-page #compareBtn.compare-btn:hover:not(:disabled),
 body.raid-manager-detail-page #transferConfirmBtn.compare-btn:hover:not(:disabled),
-body.raid-manager-detail-page #potionsAddBtn.compare-btn:hover:not(:disabled) {
+body.raid-manager-detail-page #potionsAddBtn.compare-btn:hover:not(:disabled),
+body.raid-manager-detail-page #bonusGrantSaveBtn.compare-btn:hover:not(:disabled) {
   background: var(--color-success-strong-hover);
   border-color: var(--color-success-strong-hover);
 }
@@ -3105,17 +3107,17 @@ body.raid-manager-detail-page .raid-icon-btn {
   width: 2.1rem;
   height: 2.1rem;
   padding: 0;
-  border: 1px solid var(--color-border-input);
-  border-radius: var(--radius-sm);
-  background-color: rgba(12, 21, 33, 0.88);
+  border: 1px solid var(--color-border-button);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0)), var(--color-surface-soft);
   color: var(--color-accent-gold);
   cursor: pointer;
-  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
 }
 
 body.raid-manager-detail-page .raid-icon-btn:hover {
-  border-color: rgba(123, 170, 245, 0.55);
-  background-color: var(--color-hover-strong);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0)), var(--color-surface-soft-hover);
+  border-color: var(--color-border-button-hover);
 }
 
 body.raid-manager-detail-page .raid-icon-btn:disabled {
