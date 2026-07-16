@@ -4189,7 +4189,7 @@ body.raid-manager-detail-page .penalty-reason-text {
 }
 
 .raid-modal-table-wrap {
-  max-height: 60vh;
+  max-height: 21.75rem;
   overflow-y: auto;
   margin-bottom: 1rem;
 }
