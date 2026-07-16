@@ -4242,6 +4242,10 @@ body.raid-manager-detail-page .penalty-reason-text {
   margin-top: 0.25rem;
 }
 
+#bonusGrantModal .raid-modal-actions {
+  margin-right: -1.25rem;
+}
+
 /* --- Bonus weight controls (Items tab, receiver B) --- */
 .raid-bonus-controls {
   display: inline-flex;
