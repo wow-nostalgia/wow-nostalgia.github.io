@@ -49,6 +49,11 @@ function getPlayerClassColor(raidUrl, name) {
   return (playerClass && WOW_CLASS_COLORS[playerClass]) || '';
 }
 
+function getPlayerSpecIcon(raidUrl, name) {
+  const rosterEntry = rostersByRaidUrl.get(raidUrl);
+  return rosterEntry?.players.find((p) => p.name === name)?.icon || null;
+}
+
 function ownerTooltipAttr(name) {
   const ownerName = characterOwnerNames.get(name);
   return ownerName ? ` class="tooltipped" aria-label="${escapeHtml(ownerName)}"` : '';
@@ -115,7 +120,9 @@ function getRowClass(player, bossCount) {
 function createPlayerRow(player, bossCount, raidUrl) {
   const color = getPlayerClassColor(raidUrl, player.name);
   const nameStyle = color ? ` style="color:${color}"` : '';
-  return `<tr class="${getRowClass(player, bossCount)}"><td class="potion-name-cell"${nameStyle}>${createPlayerBadgeHtml(player.name)}<span${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</span></td><td>${Number(player.total || 0)}</td><td>${Number(player.potionOfSpeed || 0)}</td><td>${Number(player.potionOfWildMagic || 0)}</td></tr>`;
+  const specIcon = getPlayerSpecIcon(raidUrl, player.name);
+  const iconHtml = specIcon ? `<img class="raid-item-icon" src="https://wow.zamimg.com/images/wow/icons/small/${specIcon}.jpg" alt="">` : '';
+  return `<tr class="${getRowClass(player, bossCount)}"><td class="potion-name-cell"><span class="potion-name-wrap"${nameStyle}>${iconHtml}<span${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</span></span></td><td>${Number(player.total || 0)}</td><td>${Number(player.potionOfSpeed || 0)}</td><td>${Number(player.potionOfWildMagic || 0)}</td></tr>`;
 }
 
 function createRaidContent(raid) {
