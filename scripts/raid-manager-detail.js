@@ -884,7 +884,7 @@ function populateBossSelect(selectEl) {
 }
 
 function renderItemsBossFilterOptions() {
-  itemsBossFilter.innerHTML = '<option value="">Усі боси</option>';
+  itemsBossFilter.innerHTML = '';
   bossesWithCatalog().forEach((boss) => {
     const opt = document.createElement('option');
     opt.value = boss;
@@ -1258,7 +1258,7 @@ function renderItemsTable() {
   if (!flat.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 3;
+    td.colSpan = 2;
     td.textContent = 'Нічого не знайдено.';
     tr.appendChild(td);
     raidItemsBody.appendChild(tr);
@@ -1293,11 +1293,8 @@ function renderItemsTable() {
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
-    const bossTd = document.createElement('td');
-    bossTd.textContent = translateBoss(item.boss);
-    tr.appendChild(bossTd);
-
     const reserversTd = document.createElement('td');
+    reserversTd.className = 'raid-softs-col';
     const reservers = reserves.filter((r) => r.item_id === item.id);
 
     if (raid.hidden_reserves && !isOfficerMode()) {
