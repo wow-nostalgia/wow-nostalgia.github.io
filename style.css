@@ -4243,7 +4243,7 @@ body.raid-manager-detail-page .penalty-reason-text {
 }
 
 #bonusGrantModal .raid-modal-actions {
-  margin-right: -1.25rem;
+  justify-content: flex-start;
 }
 
 /* --- Bonus weight controls (Items tab, receiver B) --- */
