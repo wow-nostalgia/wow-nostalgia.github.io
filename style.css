@@ -2844,9 +2844,18 @@ body.raid-manager-detail-page .raid-hidden-notice {
 body.raid-manager-detail-page .raid-potion-picker-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.6rem;
-  max-width: 26rem;
   margin-bottom: 0.75rem;
+}
+
+body.raid-manager-detail-page .raid-potion-picker-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+  min-width: 0;
+  max-width: 26rem;
 }
 
 body.raid-manager-detail-page .raid-potion-picker {
@@ -2855,14 +2864,22 @@ body.raid-manager-detail-page .raid-potion-picker {
 }
 
 body.raid-manager-detail-page .raid-potion-meta {
-  margin: 0 0 0.6rem;
-  color: var(--color-text-muted);
+  margin-left: auto;
   font-size: var(--font-size-base);
+  white-space: nowrap;
 }
 
 body.raid-manager-detail-page .raid-potion-empty {
   color: var(--color-text-faint);
   font-size: var(--font-size-base);
+}
+
+body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-good>td {
+  color: var(--color-success) !important;
+}
+
+body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-bad>td {
+  color: var(--color-danger) !important;
 }
 
 body.raid-manager-detail-page .raid-table {

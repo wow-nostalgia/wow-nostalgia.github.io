@@ -62,10 +62,11 @@ const itemsSoftedOnlyCheckbox = document.getElementById('itemsSoftedOnly');
 const raidItemsBody = document.getElementById('raidItemsBody');
 
 const potionsPane = document.getElementById('potionsPane');
-const potionsPickerRow = document.getElementById('potionsPickerRow');
+const potionsPickerControls = document.getElementById('potionsPickerControls');
 const potionsLogInput = document.getElementById('potionsLogInput');
 const potionsLogList = document.getElementById('potionsLogList');
 const potionsClearBtn = document.getElementById('potionsClearBtn');
+const potionsMetaLabel = document.getElementById('potionsMetaLabel');
 const potionsContent = document.getElementById('potionsContent');
 
 const penaltiesPane = document.getElementById('penaltiesPane');
@@ -101,6 +102,8 @@ let guildMemberNames = new Set();
 let guildMemberNamesSorted = [];
 let characterOwnerNames = new Map();
 let personalAnalyticsNames = new Set();
+let personalStatsRecords = [];
+let potionBossesByRaidUrl = null;
 let reserves = [];
 let weightTransfers = [];
 let penaltiesList = [];
@@ -191,7 +194,7 @@ function renderBanner() {
 
   settingsTab.hidden = !isLeader();
   penaltiesTab.hidden = !isOfficerMode();
-  potionsPickerRow.hidden = !isOfficerMode();
+  potionsPickerControls.hidden = !isOfficerMode();
   potionsClearBtn.hidden = !raid.potion_log_url;
   settingsTitleInput.value = raid.title;
   settingsSoftLimitInput.value = raid.soft_limit_total;
@@ -470,6 +473,14 @@ function setupUserSearchAutocomplete(inputEl, listEl, onPick) {
 // у raids зберігається лише raidUrl обраного логу, самі дані потів
 // (гравці/лічильники) ніде не дублюються в БД, а фетчаться напряму з
 // data/potion-stats.json, як і на самій сторінці Статистики.
+function isSafeUrl(url) {
+  try {
+    return ['https:', 'http:'].includes(new URL(String(url)).protocol);
+  } catch {
+    return false;
+  }
+}
+
 function extractPotionUploaderName(raidUrl) {
   const match = String(raidUrl || '').match(/--([^-/]+)--FreedomUA\/?.*$/);
   return match ? match[1] : 'Невідомо';
@@ -498,7 +509,50 @@ function findPotionLogEntry(raidUrl) {
   return potionStatsRaids.find((r) => r.raidUrl === raidUrl || (r.mergedFrom || []).includes(raidUrl)) || null;
 }
 
+// Той самий підрахунок босів логу й та сама планка "потів/бос", що на
+// сторінці Статистика Potion (scripts/potion-stats.js) - лише джерело
+// даних тут вже завантажене раніше в init() як personalStatsRecords.
+function getPotionBossMap() {
+  if (potionBossesByRaidUrl) return potionBossesByRaidUrl;
+  potionBossesByRaidUrl = new Map();
+  for (const record of personalStatsRecords) {
+    if (!record.raidUrl || !record.boss) continue;
+    if (!potionBossesByRaidUrl.has(record.raidUrl)) potionBossesByRaidUrl.set(record.raidUrl, new Set());
+    potionBossesByRaidUrl.get(record.raidUrl).add(record.boss);
+  }
+  return potionBossesByRaidUrl;
+}
+
+function getPotionBossCount(statsRaid) {
+  const map = getPotionBossMap();
+  const urls = [statsRaid.raidUrl, ...(statsRaid.mergedFrom || [])];
+  const bosses = new Set();
+  for (const url of urls) {
+    const set = map.get(url);
+    if (set) for (const boss of set) bosses.add(boss);
+  }
+
+  // Gunship Battle не потрапляє у personal-stats.json (не тягне DPS-даних),
+  // але якщо вбито Deathbringer Saurfang - Gunship Battle точно був пройдений.
+  if (bosses.has('Deathbringer Saurfang') && !bosses.has('Gunship Battle')) {
+    bosses.add('Gunship Battle');
+  }
+
+  return bosses.size;
+}
+
+function getPotionRowClass(player, bossCount) {
+  if (!bossCount) return '';
+  const avgPerBoss = Number(player.total || 0) / bossCount;
+  return avgPerBoss >= 1 ? 'potion-good' : 'potion-bad';
+}
+
 function renderPotionLogTable(statsRaid) {
+  potionsMetaLabel.hidden = !statsRaid;
+  if (statsRaid) {
+    potionsMetaLabel.textContent = `Лог від ${statsRaid.date || 'Невідома дата'}`;
+    potionsMetaLabel.href = isSafeUrl(statsRaid.raidUrl) ? statsRaid.raidUrl : '#';
+  }
   potionsContent.innerHTML = '';
 
   if (!statsRaid) {
@@ -511,20 +565,17 @@ function renderPotionLogTable(statsRaid) {
     return;
   }
 
-  const meta = document.createElement('p');
-  meta.className = 'raid-potion-meta';
-  meta.textContent = formatPotionLogLabel(statsRaid);
-  potionsContent.appendChild(meta);
-
   const wrap = document.createElement('div');
   wrap.className = 'ranking-table-wrap';
   const table = document.createElement('table');
   table.className = 'raid-table';
   table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead>";
   const tbody = document.createElement('tbody');
+  const bossCount = getPotionBossCount(statsRaid);
 
   (statsRaid.players || []).forEach((player) => {
     const tr = document.createElement('tr');
+    tr.className = getPotionRowClass(player, bossCount);
     const nameTd = document.createElement('td');
     nameTd.appendChild(createPlayerBadge(player.name));
     nameTd.appendChild(document.createTextNode(player.name));
@@ -1827,6 +1878,7 @@ async function init() {
     }
     if (personalStatsRes?.ok) {
       const personalStats = await personalStatsRes.json();
+      personalStatsRecords = personalStats;
       for (const record of personalStats) {
         for (const player of record.players || []) {
           personalAnalyticsNames.add(player.name);
