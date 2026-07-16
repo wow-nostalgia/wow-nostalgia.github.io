@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-15T00:30:13.281Z",
+  "updatedAt": "2026-07-16T00:43:53.767Z",
   "specs": [
     {
       "class": "Paladin",
@@ -3226,6 +3226,10 @@
           "hps": 6896.1
         },
         {
+          "name": "Celtae",
+          "hps": 6513.9
+        },
+        {
           "name": "Farra",
           "hps": 5784.6
         },
@@ -3580,6 +3584,10 @@
           "hps": 33432.7
         },
         {
+          "name": "Goliafka",
+          "hps": 33094.2
+        },
+        {
           "name": "Lvb",
           "hps": 32357.3
         },
@@ -3690,10 +3698,6 @@
         {
           "name": "Манхольм",
           "hps": 29403.2
-        },
-        {
-          "name": "Goliafka",
-          "hps": 29365
         },
         {
           "name": "Cobra",
