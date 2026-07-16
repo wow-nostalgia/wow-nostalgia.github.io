@@ -4010,18 +4010,16 @@ body.raid-manager-detail-page #raidPenaltiesTable {
 }
 
 body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(1),
-body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(1) { width: 20%; }
+body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(1) { width: 15%; }
 
 body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(2),
-body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(2) { width: 10%; }
+body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(2) { width: 8%; }
 
 body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(3),
-body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(3) { width: 10%; }
+body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(3) { width: 8%; }
 
-body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(4),
-body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(4) { width: 10%; }
-
-/* 5-та колонка (Причини) — решта 50% */
+/* Причини (4-та, остання колонка) - без явної ширини, table-layout:fixed
+   віддає їй весь залишок (~69%) - максимум простору під довгий текст. */
 
 body.raid-manager-detail-page .penalty-input {
   width: 5rem;
