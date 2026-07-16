@@ -82,6 +82,7 @@ const penaltiesPane = document.getElementById('penaltiesPane');
 const raidPenaltiesBody = document.getElementById('raidPenaltiesBody');
 
 const itemTooltipEl = document.getElementById('raidItemTooltip');
+const btnTooltipEl = document.getElementById('raidBtnTooltip');
 
 const transferModal = document.getElementById('transferModal');
 const transferModalBackdrop = document.getElementById('transferModalBackdrop');
@@ -830,7 +831,32 @@ function positionItemTooltip(event) {
   itemTooltipEl.style.top = `${Math.max(0, y)}px`;
 }
 
+function showBtnTooltip(btn) {
+  btnTooltipEl.textContent = btn.getAttribute('aria-label') || '';
+  btnTooltipEl.hidden = false;
+  const btnRect = btn.getBoundingClientRect();
+  const tipRect = btnTooltipEl.getBoundingClientRect();
+  let x = btnRect.left + btnRect.width / 2 - tipRect.width / 2;
+  let y = btnRect.top - tipRect.height - 8;
+  if (y < 0) y = btnRect.bottom + 8;
+  x = Math.max(4, Math.min(x, window.innerWidth - tipRect.width - 4));
+  btnTooltipEl.style.left = `${x}px`;
+  btnTooltipEl.style.top = `${y}px`;
+}
+
+function hideBtnTooltip() {
+  btnTooltipEl.hidden = true;
+}
+
 document.addEventListener('mousemove', (event) => {
+  if (event.target.closest('.raid-remove-btn')) {
+    if (currentTooltipItemId !== null) {
+      itemTooltipEl.hidden = true;
+      currentTooltipItemId = null;
+    }
+    return;
+  }
+
   const target = event.target.closest('[data-item-id]');
   if (!target) {
     if (currentTooltipItemId !== null) {
@@ -1040,12 +1066,15 @@ function renderPlayersTable() {
       if (manageable) {
         const delBtn = document.createElement('button');
         delBtn.type = 'button';
-        delBtn.className = 'raid-remove-btn tooltipped';
+        delBtn.className = 'raid-remove-btn';
         delBtn.textContent = '✕';
         delBtn.setAttribute('aria-label', 'Видалити цей софт');
-        delBtn.title = 'Видалити цей софт'; // .tooltipped обрізається overflow:hidden на .raid-softs-col
         delBtn.disabled = isRaidCompleted();
         delBtn.addEventListener('click', () => removeReserve(r));
+        delBtn.addEventListener('mouseenter', () => showBtnTooltip(delBtn));
+        delBtn.addEventListener('mouseleave', hideBtnTooltip);
+        delBtn.addEventListener('focus', () => showBtnTooltip(delBtn));
+        delBtn.addEventListener('blur', hideBtnTooltip);
         itemSpan.appendChild(delBtn);
       }
 

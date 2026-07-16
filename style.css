@@ -3204,6 +3204,28 @@ body.raid-manager-detail-page #raidItemTooltip .moneygold { color: var(--wow-mon
 body.raid-manager-detail-page #raidItemTooltip .moneysilver { color: var(--wow-money-silver); }
 body.raid-manager-detail-page #raidItemTooltip .moneycopper { color: var(--wow-money-copper); }
 
+/* position: fixed — той самий прийом, що #raidItemTooltip: позиціонується
+   відносно viewport через JS, тому не обрізається overflow:hidden
+   на .raid-softs-col (де звичайний .tooltipped::after обрізався б). */
+body.raid-manager-detail-page #raidBtnTooltip {
+  position: fixed;
+  z-index: var(--z-tooltip-local);
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-mid);
+  background-color: var(--color-surface-overlay);
+  color: var(--color-text-strong);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  white-space: nowrap;
+  box-shadow: var(--shadow-tooltip);
+  pointer-events: none;
+}
+
+body.raid-manager-detail-page #raidBtnTooltip[hidden] {
+  display: none;
+}
+
 body.raid-manager-detail-page .raid-remove-btn {
   background: none;
   border: none;
