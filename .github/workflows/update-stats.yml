@@ -1,11 +1,6 @@
 name: Update Stats
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'data/raid-logs.json'
-      - 'data/raid-log-merges.json'
   workflow_dispatch:
 
 jobs:
