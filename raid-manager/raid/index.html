@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейд — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=61">
+  <link rel="stylesheet" href="../../style.css?v=64">
 </head>
 
 <body class="raid-manager-detail-page">
@@ -208,14 +208,12 @@
 
           <div id="potionsPane" hidden>
             <div class="raid-potion-picker-row">
-              <div id="potionsPickerControls" class="raid-potion-picker-controls" hidden>
-                <button type="button" id="potionsAddBtn" class="compare-btn">Додати</button>
-                <button type="button" id="potionsClearBtn" class="raid-potion-clear-btn" aria-label="Прибрати вибір логу" hidden>
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-                </button>
-              </div>
-              <span id="potionsBossCount" class="raid-potion-boss-count" hidden></span>
+              <button type="button" id="potionsAddBtn" class="compare-btn" hidden>Додати</button>
               <a id="potionsMetaLabel" class="raid-potion-meta" target="_blank" rel="noopener noreferrer" hidden></a>
+              <button type="button" id="potionsClearBtn" class="raid-potion-clear-btn tooltipped" aria-label="Видалити посилання на лог" hidden>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+              </button>
+              <span id="potionsBossCount" class="raid-potion-boss-count" hidden></span>
             </div>
             <div id="potionsContent"></div>
           </div>
@@ -333,7 +331,7 @@
   <script src="../../scripts/ui-shared.js?v=5"></script>
   <script src="../../scripts/raid-manager-shared.js?v=3"></script>
   <script src="../../scripts/name-translations.js?v=1"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=51"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=52"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

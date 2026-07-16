@@ -62,7 +62,6 @@ const itemsSoftedOnlyCheckbox = document.getElementById('itemsSoftedOnly');
 const raidItemsBody = document.getElementById('raidItemsBody');
 
 const potionsPane = document.getElementById('potionsPane');
-const potionsPickerControls = document.getElementById('potionsPickerControls');
 const potionsAddBtn = document.getElementById('potionsAddBtn');
 const potionsClearBtn = document.getElementById('potionsClearBtn');
 const potionsBossCount = document.getElementById('potionsBossCount');
@@ -199,8 +198,8 @@ function renderBanner() {
 
   settingsTab.hidden = !isLeader();
   penaltiesTab.hidden = !isOfficerMode();
-  potionsPickerControls.hidden = !isOfficerMode();
-  potionsClearBtn.hidden = !raid.potion_log_url;
+  potionsAddBtn.hidden = !isOfficerMode() || Boolean(raid.potion_log_url);
+  potionsClearBtn.hidden = !isOfficerMode() || !raid.potion_log_url;
   settingsTitleInput.value = raid.title;
   settingsSoftLimitInput.value = raid.soft_limit_total;
 
@@ -608,11 +607,12 @@ async function loadPotionsTab() {
 }
 
 // Дозволяє офіцеру в будь-який момент обрати інший лог замість поточного
-// (кнопка "Додати" лишається доступною і після вибору).
+// через кнопку видалення + повторне "Додати".
 async function setPotionLog(raidUrl) {
   try {
     raid = await apiCall('PATCH', `/raids/${raidId}/potion-log`, { token: getSessionToken(), body: { raidUrl } });
-    potionsClearBtn.hidden = !raid.potion_log_url;
+    potionsAddBtn.hidden = !isOfficerMode() || Boolean(raid.potion_log_url);
+    potionsClearBtn.hidden = !isOfficerMode() || !raid.potion_log_url;
     renderPotionLogTable(findPotionLogEntry(raid.potion_log_url));
   } catch (err) {
     alert(err.message);
