@@ -1032,6 +1032,7 @@ function renderPlayersTable() {
         delBtn.className = 'raid-remove-btn tooltipped';
         delBtn.textContent = '✕';
         delBtn.setAttribute('aria-label', 'Видалити цей софт');
+        delBtn.title = 'Видалити цей софт'; // .tooltipped обрізається overflow:hidden на .raid-softs-col
         delBtn.disabled = isRaidCompleted();
         delBtn.addEventListener('click', () => removeReserve(r));
         itemSpan.appendChild(delBtn);
@@ -1121,6 +1122,7 @@ function buildReservesByWeight(reservers, penalizedIds) {
         removeBtn.className = 'raid-remove-btn tooltipped';
         removeBtn.textContent = '−';
         removeBtn.setAttribute('aria-label', 'Прибрати бонусний софт');
+        removeBtn.title = 'Прибрати бонусний софт'; // .tooltipped обрізається overflow:hidden на .raid-softs-col (таб Предмети)
         removeBtn.addEventListener('click', () => changeOfficerBonusWeight(id, -1));
         bonusControls.appendChild(removeBtn);
 
@@ -1183,6 +1185,7 @@ function buildOfficerBonusDropdown(eligible) {
   trigger.type = 'button';
   trigger.className = 'raid-row-dropdown-trigger tooltipped';
   trigger.setAttribute('aria-label', 'Додати бонусний софт');
+  trigger.title = 'Додати бонусний софт'; // .tooltipped обрізається overflow:hidden на .raid-softs-col (таб Предмети)
   trigger.setAttribute('aria-haspopup', 'true');
   trigger.setAttribute('aria-expanded', 'false');
 

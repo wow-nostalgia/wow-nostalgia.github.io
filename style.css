@@ -2741,6 +2741,21 @@ body.raid-manager-detail-page .raid-item-name-cell {
   gap: 0.4rem;
 }
 
+/* Ширина під найдовшу назву предмета в каталозі - "Прокляття Трогга,
+   сокира зимонародженого короля" (укр. переклад, довший за англ.
+   оригінал "Glorenzelg, High-Blade of the Silver Hand") + іконка +
+   відступи клітинки, з невеликим запасом. */
+body.raid-manager-detail-page #raidItemsTable {
+  table-layout: fixed;
+  width: 100%;
+  min-width: 30rem;
+}
+
+body.raid-manager-detail-page #raidItemsTable th:first-child,
+body.raid-manager-detail-page #raidItemsTable td:first-child {
+  width: 25rem;
+}
+
 body.raid-manager-detail-page .raid-player-name-cell {
   display: inline-flex;
   align-items: center;
@@ -2950,7 +2965,12 @@ body.raid-manager-detail-page .raid-table tbody tr:hover {
    не виходять за межі клітинки - це артефакт підрахунку) - це "фантомне"
    значення протікає через overflow:visible до .ranking-table-wrap і
    вмикає його горизонтальний скрол. overflow:hidden тут нічого візуально
-   не обрізає (контент і так вміщується), лише блокує цей витік вгору. */
+   не обрізає (контент і так вміщується), лише блокує цей витік вгору.
+   Перевірено: overflow:clip+overflow-clip-margin (щоб не ховати тултіпи)
+   під навантаженням ненадійний - фантомний scrollWidth все одно протікає
+   в частині випадків. Тому overflow:hidden, а тултіпи кнопок усередині
+   цієї клітинки (delete/дропдаун бонусу) дублюються через title="" -
+   нативний браузерний тултіп не залежить від overflow. */
 body.raid-manager-detail-page .raid-softs-col {
   overflow: hidden;
 }
