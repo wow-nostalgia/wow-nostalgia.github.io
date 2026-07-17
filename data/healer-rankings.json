@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-16T00:43:53.767Z",
+  "updatedAt": "2026-07-17T00:41:32.857Z",
   "specs": [
     {
       "class": "Paladin",
@@ -408,6 +408,10 @@
           "hps": 32959.7
         },
         {
+          "name": "Тайде",
+          "hps": 32845.4
+        },
+        {
           "name": "Purple",
           "hps": 32706.7
         },
@@ -512,16 +516,16 @@
           "hps": 30508.5
         },
         {
+          "name": "Маргаритка",
+          "hps": 30336.8
+        },
+        {
           "name": "Facelesspal",
           "hps": 30327.9
         },
         {
           "name": "Пекельна",
           "hps": 30286.5
-        },
-        {
-          "name": "Тайде",
-          "hps": 30284.7
         },
         {
           "name": "Гаситесвет",
@@ -722,10 +726,6 @@
         {
           "name": "Trojan",
           "hps": 26946.3
-        },
-        {
-          "name": "Vektor",
-          "hps": 26765
         },
         {
           "name": "Агенор",
@@ -1128,6 +1128,10 @@
           "hps": 10432.8
         },
         {
+          "name": "Чітер",
+          "hps": 10359.5
+        },
+        {
           "name": "Holydoly",
           "hps": 10185.8
         },
@@ -1136,16 +1140,16 @@
           "hps": 9906
         },
         {
-          "name": "Aragarn",
-          "hps": 9694.1
-        },
-        {
           "name": "Atalhim",
           "hps": 9642.3
         },
         {
           "name": "Джедай",
           "hps": 9336.8
+        },
+        {
+          "name": "Tenara",
+          "hps": 9214.1
         },
         {
           "name": "Seraphiel",
@@ -1952,6 +1956,10 @@
         {
           "name": "Priestlik",
           "hps": 156.8
+        },
+        {
+          "name": "Propionat",
+          "hps": 151.2
         },
         {
           "name": "Mypzo",
@@ -3530,6 +3538,10 @@
           "hps": 428.9
         },
         {
+          "name": "Гілкодуб",
+          "hps": 405.2
+        },
+        {
           "name": "Flame",
           "hps": 390.7
         },
@@ -3567,14 +3579,6 @@
       "class": "Shaman",
       "spec": "Restoration",
       "players": [
-        {
-          "name": "Strawberry",
-          "hps": 37182.2
-        },
-        {
-          "name": "Aylon",
-          "hps": 35160.4
-        },
         {
           "name": "Колін",
           "hps": 34873.7
@@ -3856,6 +3860,10 @@
           "hps": 26617.8
         },
         {
+          "name": "Strawberry",
+          "hps": 26568
+        },
+        {
           "name": "Turisto",
           "hps": 26546.5
         },
@@ -3886,10 +3894,6 @@
         {
           "name": "Екобуст",
           "hps": 26245.2
-        },
-        {
-          "name": "Растение",
-          "hps": 26242.7
         },
         {
           "name": "Bogatur",
@@ -4052,10 +4056,6 @@
           "hps": 24593.9
         },
         {
-          "name": "Джонн",
-          "hps": 24578.4
-        },
-        {
           "name": "Troublemaker",
           "hps": 24493.5
         },
@@ -4110,6 +4110,10 @@
         {
           "name": "Xbuw",
           "hps": 23874.1
+        },
+        {
+          "name": "Memory",
+          "hps": 23808
         },
         {
           "name": "Говерла",
@@ -4274,10 +4278,6 @@
         {
           "name": "Bigi",
           "hps": 21711.3
-        },
-        {
-          "name": "Memory",
-          "hps": 21710.2
         },
         {
           "name": "Їжвай'ґія",
@@ -4722,6 +4722,10 @@
         {
           "name": "Rusofobb",
           "hps": 2356
+        },
+        {
+          "name": "Джонн",
+          "hps": 2255.6
         },
         {
           "name": "Taoruna",
