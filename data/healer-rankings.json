@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-17T00:41:32.857Z",
+  "updatedAt": "2026-07-18T00:42:06.054Z",
   "specs": [
     {
       "class": "Paladin",
@@ -498,6 +498,10 @@
         {
           "name": "Дюбель",
           "hps": 30811.4
+        },
+        {
+          "name": "Veselka",
+          "hps": 30770.8
         },
         {
           "name": "Джекічан",
@@ -3214,6 +3218,10 @@
           "hps": 7890.2
         },
         {
+          "name": "Gallardo",
+          "hps": 7523.7
+        },
+        {
           "name": "Яхілю",
           "hps": 7469
         },
@@ -3486,6 +3494,10 @@
           "hps": 873.6
         },
         {
+          "name": "Гілкодуб",
+          "hps": 859.4
+        },
+        {
           "name": "Turinthalion",
           "hps": 676.4
         },
@@ -3536,10 +3548,6 @@
         {
           "name": "Azirov",
           "hps": 428.9
-        },
-        {
-          "name": "Гілкодуб",
-          "hps": 405.2
         },
         {
           "name": "Flame",
@@ -4016,6 +4024,10 @@
           "hps": 24897.1
         },
         {
+          "name": "Anitrium",
+          "hps": 24880.9
+        },
+        {
           "name": "Podarunok",
           "hps": 24849.3
         },
@@ -4138,10 +4150,6 @@
         {
           "name": "Weriti",
           "hps": 23532.4
-        },
-        {
-          "name": "Anitrium",
-          "hps": 23494.5
         },
         {
           "name": "Сенджин",
