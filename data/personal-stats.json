@@ -1,5 +1,12 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-18--20-33--Boro--FreedomUA/",
+    "date": "2026-07-18",
+    "boss": null,
+    "players": [],
+    "error": "fetch failed"
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-07-15--20-29--Boronir--FreedomUA/",
     "date": "2026-07-15",
     "boss": "Lord Marrowgar",
@@ -17172,7 +17179,7 @@
     "date": "2026-06-21",
     "boss": null,
     "players": [],
-    "error": "No fights-container found (corrupted or empty report)"
+    "error": "fetch failed"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-06-20--20-29--Boro--FreedomUA/",
@@ -30623,7 +30630,7 @@
     "date": "2026-05-09",
     "boss": null,
     "players": [],
-    "error": "No fights-container found (corrupted or empty report)"
+    "error": "fetch failed"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-05-03--20-31--Boro--FreedomUA/",
