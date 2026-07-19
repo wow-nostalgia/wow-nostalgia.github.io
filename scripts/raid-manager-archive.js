@@ -79,14 +79,6 @@ function renderArchiveList(raids, total) {
     titleTd.appendChild(link);
     tr.appendChild(titleTd);
 
-    const statusTd = document.createElement('td');
-    const isCompleted = raid.status === 'completed';
-    const statusChip = document.createElement('span');
-    statusChip.className = `raid-chip raid-chip--${isCompleted ? 'completed' : 'active'}`;
-    statusChip.textContent = isCompleted ? 'Завершений' : 'Активний';
-    statusTd.appendChild(statusChip);
-    tr.appendChild(statusTd);
-
     const instanceTd = document.createElement('td');
     instanceTd.textContent = translateInstance(raid.instance, INSTANCE_LABELS);
     tr.appendChild(instanceTd);
@@ -102,6 +94,14 @@ function renderArchiveList(raids, total) {
     const createdTd = document.createElement('td');
     createdTd.textContent = formatDateTimeKyiv(raid.created_at);
     tr.appendChild(createdTd);
+
+    const statusTd = document.createElement('td');
+    const isCompleted = raid.status === 'completed';
+    const statusChip = document.createElement('span');
+    statusChip.className = `raid-chip raid-chip--${isCompleted ? 'completed' : 'active'}`;
+    statusChip.textContent = isCompleted ? 'Завершений' : 'Активний';
+    statusTd.appendChild(statusChip);
+    tr.appendChild(statusTd);
 
     if (isAdmin) {
       const actionsTd = document.createElement('td');
