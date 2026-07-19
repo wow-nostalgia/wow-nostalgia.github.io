@@ -3123,6 +3123,12 @@ body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:
   border-color: var(--color-success-strong-hover);
 }
 
+body.raid-manager-page #createRaidOpenBtn.compare-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
 body.raid-manager-page .raid-create-form button[type="submit"].compare-btn,
 body.raid-manager-page #createRaidOpenBtn.compare-btn,
 body.ranking-page #compareBtn.compare-btn,
