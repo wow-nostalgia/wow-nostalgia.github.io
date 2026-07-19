@@ -1130,14 +1130,11 @@ function buildReservesByWeight(reservers, penalizedIds) {
     visibleNames.forEach(({ name, id }, i) => {
       const p = penaltiesList.find((x) => x.player_name === name);
       const isPenalized = penalizedIds.has(id);
-      if (isPenalized) {
-        const nameSpan = document.createElement('span');
-        nameSpan.className = 'raid-reserve-item--penalized';
-        nameSpan.textContent = name;
-        namesSpan.appendChild(nameSpan);
-      } else {
-        namesSpan.appendChild(document.createTextNode(name));
-      }
+      const nameSpan = document.createElement('span');
+      if (isPenalized) nameSpan.className = 'raid-reserve-item--penalized';
+      nameSpan.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
+      nameSpan.textContent = name;
+      namesSpan.appendChild(nameSpan);
       if (p && p.roll_penalty > 0) {
         const penSpan = document.createElement('span');
         penSpan.className = 'penalty-value--active';
