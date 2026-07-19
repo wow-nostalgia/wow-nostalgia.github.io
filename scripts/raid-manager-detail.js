@@ -1643,7 +1643,10 @@ function renderPenaltiesTable() {
     const nameWrap = document.createElement('span');
     nameWrap.className = 'raid-player-name-cell';
     nameWrap.appendChild(createPlayerBadge(player_name));
-    nameWrap.appendChild(document.createTextNode(player_name));
+    const nameEl = document.createElement('span');
+    nameEl.style.color = classColorMap.get(player_name) || 'var(--color-text-faint)';
+    nameEl.textContent = player_name;
+    nameWrap.appendChild(nameEl);
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
