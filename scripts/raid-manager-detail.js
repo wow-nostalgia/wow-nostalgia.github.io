@@ -594,7 +594,13 @@ function renderPotionLogTable(statsRaid) {
       iconImg.alt = '';
       nameWrap.appendChild(iconImg);
     }
-    nameWrap.appendChild(document.createTextNode(player.name));
+    const nameEl = document.createElement('span');
+    nameEl.textContent = player.name;
+    const isGuild = guildMemberNames.has(player.name);
+    const ownerName = characterOwnerNames.get(player.name);
+    nameEl.classList.add('tooltipped');
+    nameEl.setAttribute('aria-label', `${player.name} - ${isGuild ? 'Ностальгія' : 'Легіонер'}${ownerName ? ` (${ownerName})` : ''}`);
+    nameWrap.appendChild(nameEl);
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
     [player.total, player.potionOfSpeed, player.potionOfWildMagic, player.potionOfInsaneStrength].forEach((value) => {
