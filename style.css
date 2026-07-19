@@ -4179,14 +4179,16 @@ body.raid-manager-detail-page .penalty-reason-text {
 .raid-transfer-indicator {
   display: inline-block;
   font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: 18px;
   padding: 0.15rem 0.4rem;
   border-radius: var(--radius-sm);
   vertical-align: middle;
 }
 
 .raid-transfer-indicator--from {
-  color: var(--color-text-faint);
-  background: rgba(160, 168, 184, 0.12);
+  color: var(--color-surface-solid);
+  background-color: var(--color-link);
   margin: 0 0.5rem 0.2rem 0;
 }
 
