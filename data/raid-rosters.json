@@ -18945,7 +18945,163 @@
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-07-18--20-33--Boro--FreedomUA/",
-    "players": [],
-    "error": "fetch failed"
+    "players": [
+      {
+        "name": "Allashayka",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "icon": "spell_nature_lightningshield"
+      },
+      {
+        "name": "Melande",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence"
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis"
+      },
+      {
+        "name": "Kawaiibaka",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall"
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Vampirickiss",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain"
+      },
+      {
+        "name": "Bidjo",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence"
+      },
+      {
+        "name": "Vagonkauflin",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight"
+      },
+      {
+        "name": "Alldie",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Quadrobear",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform"
+      },
+      {
+        "name": "Namikaze",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab"
+      },
+      {
+        "name": "Velaa",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain"
+      },
+      {
+        "name": "Grozd",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura"
+      },
+      {
+        "name": "Kalistrat",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight"
+      },
+      {
+        "name": "Квакушка",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship"
+      },
+      {
+        "name": "Infernlok",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil"
+      },
+      {
+        "name": "Fuko",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Boro",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Metallheadxp",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt"
+      },
+      {
+        "name": "Арау",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall"
+      },
+      {
+        "name": "Astyt",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Trymyskill",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity"
+      },
+      {
+        "name": "Sangria",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude"
+      },
+      {
+        "name": "Кумсаша",
+        "class": "Paladin",
+        "spec": "Unknown",
+        "icon": "class_paladin"
+      },
+      {
+        "name": "Dofaminka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch"
+      }
+    ]
   }
 ]
