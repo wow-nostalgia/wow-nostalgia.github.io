@@ -57,6 +57,7 @@ function renderArchiveList(raids, total) {
 
     const titleTd = document.createElement('td');
     const link = document.createElement('a');
+    link.className = 'archive-row-link';
     link.href = `../raid/?id=${encodeURIComponent(raid.id)}`;
     link.textContent = raid.title;
     titleTd.appendChild(link);

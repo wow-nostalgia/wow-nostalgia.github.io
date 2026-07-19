@@ -2425,6 +2425,8 @@ body.raid-manager-page .archive-confirm-actions {
 }
 
 body.raid-manager-page .archive-delete-btn {
+  position: relative;
+  z-index: 1;
   background: none;
   border: none;
   padding: 0.4rem;
@@ -2449,6 +2451,21 @@ body.raid-manager-page .archive-delete-td {
   width: 2.75rem;
   text-align: center;
   padding: 0;
+}
+
+/* "Stretched link" — весь рядок клікабельний через розтягнутий ::after
+   справжнього <a>, а не onclick на <tr> (недоступно з клавіатури/скрінрідера,
+   ламає відкриття в новій вкладці). .archive-delete-btn піднятий z-index'ом
+   вище, щоб не провалюватись під розтягнутий клік-регіон. */
+body.raid-manager-page #archiveTable tbody tr {
+  position: relative;
+  cursor: pointer;
+}
+
+body.raid-manager-page .archive-row-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
 }
 
 body.raid-manager-detail-page .raid-status-chip {
