@@ -3229,6 +3229,10 @@ body.raid-manager-detail-page .raid-weight-badge {
   background-color: var(--color-link);
 }
 
+body.raid-manager-detail-page .raid-weight-badge--penalized {
+  background-color: var(--color-danger);
+}
+
 /* WoW game constants — фіксовані кольори якості предметів/грошей клієнта
    гри (WotLK). Це НЕ дизайн-токени сайту: не мають змінюватись темою,
    лишені окремо від блоку DESIGN TOKENS навмисно. */

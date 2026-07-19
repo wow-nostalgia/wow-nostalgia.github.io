@@ -940,6 +940,28 @@ function groupReservesByPlayer(list) {
   return map;
 }
 
+// "Мінус до софту" - штраф у вагових одиницях, не в кількості предметів.
+// З'їдаємо softPenalty вагу з кінця списку речей гравця: предмет, чиєї ваги
+// вистачає щоб покрити залишок штрафу - гаситься повністю (сірий), інакше
+// у нього лишається (вага - штраф), відображається звичайним кольором,
+// але з червоним чіпсом.
+function computeSoftPenaltyDeductions(orderedReserves, softPenalty) {
+  const deductions = new Map(); // reserveId -> { deduct, fullyPenalized }
+  let remaining = softPenalty;
+  for (let i = orderedReserves.length - 1; i >= 0 && remaining > 0; i--) {
+    const r = orderedReserves[i];
+    const weight = (r.weight || 0) + (r.bonus_weight || 0) + (r.officer_bonus_weight || 0);
+    if (weight <= remaining) {
+      deductions.set(r.id, { deduct: weight, fullyPenalized: true });
+      remaining -= weight;
+    } else {
+      deductions.set(r.id, { deduct: remaining, fullyPenalized: false });
+      remaining = 0;
+    }
+  }
+  return deductions;
+}
+
 // Той самий набір імен, що потрапляє у таб "Гравці" - засофчені +
 // учасники передач софту (можуть мати 0 власних софтів).
 function getPlayersWithSoftsSet() {
@@ -1031,14 +1053,26 @@ function renderPlayersTable() {
       }
     }
 
-    grouped.get(name).forEach((r) => {
+    const playerReserves = grouped.get(name);
+    const softPenalty = penaltiesList.find((p) => p.player_name === name)?.soft_penalty ?? 0;
+    const penaltyDeductions = computeSoftPenaltyDeductions(playerReserves, softPenalty);
+
+    playerReserves.forEach((r) => {
       const itemSpan = document.createElement('span');
       itemSpan.className = 'raid-reserve-item';
       itemSpan.dataset.itemId = r.item_id;
 
+      const deduction = penaltyDeductions.get(r.id);
+      const effectiveWeight = (r.weight || 0) + (r.bonus_weight || 0) + (r.officer_bonus_weight || 0);
+
       const weightBadge = document.createElement('span');
-      weightBadge.className = 'raid-weight-badge';
-      weightBadge.textContent = formatWeight((r.weight || 0) + (r.bonus_weight || 0) + (r.officer_bonus_weight || 0));
+      if (deduction && !deduction.fullyPenalized) {
+        weightBadge.className = 'raid-weight-badge raid-weight-badge--penalized';
+        weightBadge.textContent = formatWeight(effectiveWeight - deduction.deduct);
+      } else {
+        weightBadge.className = 'raid-weight-badge';
+        weightBadge.textContent = formatWeight(effectiveWeight);
+      }
       itemSpan.appendChild(weightBadge);
 
       const itemInfo = findItemInfo(r.item_id, r.boss);
@@ -1047,6 +1081,10 @@ function renderPlayersTable() {
       nameEl.className = `${itemRarityClass(r.item_id)}${r.is_received ? ' raid-item-received' : ''}`;
       nameEl.textContent = ` ${itemInfo ? translateItem(itemInfo.name) : `#${r.item_id}`}`;
       itemSpan.appendChild(nameEl);
+
+      if (deduction && deduction.fullyPenalized) {
+        itemSpan.classList.add('raid-reserve-item--penalized');
+      }
 
       if (manageable) {
         const delBtn = document.createElement('button');
@@ -1066,16 +1104,6 @@ function renderPlayersTable() {
       itemsTd.appendChild(itemSpan);
     });
 
-    const penalty = penaltiesList.find((p) => p.player_name === name);
-    const softPenalty = penalty?.soft_penalty ?? 0;
-    if (softPenalty > 0) {
-      const items = itemsTd.querySelectorAll('.raid-reserve-item');
-      const total = items.length;
-      for (let i = Math.max(0, total - softPenalty); i < total; i++) {
-        items[i].classList.add('raid-reserve-item--penalized');
-      }
-    }
-
     tr.appendChild(itemsTd);
 
     raidPlayersBody.appendChild(tr);
@@ -1084,39 +1112,68 @@ function renderPlayersTable() {
 
 // Групує резерви по вазі — окремий рядок на кожну вагу, щоб не плодити
 // купу однакових чіпсів "x1" поряд з кожним іменем.
-function buildReservesByWeight(reservers, penalizedIds) {
+function buildReservesByWeight(reservers, penaltyDeductions) {
   const wrap = document.createElement('div');
   wrap.className = 'raid-reserve-weight-list';
 
   const byWeight = new Map();
+  const partialRows = [];
   reservers.forEach((r) => {
     const effectiveWeight = (r.weight || 0) + (r.bonus_weight || 0) + (r.officer_bonus_weight || 0);
+    const deduction = penaltyDeductions.get(r.id);
+
+    // Часткове "з'їдання" ваги штрафом - речі не вистачило ваги іншим
+    // гравцям на цю ж вагу, показуємо окремим рядком зі зменшеним чіпсом,
+    // а не ховаємо всю вагу цілком.
+    if (deduction && !deduction.fullyPenalized && r.player_name !== null) {
+      partialRows.push({ weight: effectiveWeight - deduction.deduct, name: r.player_name, id: r.id });
+      return;
+    }
+
     if (!byWeight.has(effectiveWeight)) byWeight.set(effectiveWeight, { visible: [], hidden: 0 });
     if (r.player_name !== null) {
-      byWeight.get(effectiveWeight).visible.push({ name: r.player_name, id: r.id });
+      byWeight.get(effectiveWeight).visible.push({ name: r.player_name, id: r.id, fullyPenalized: !!(deduction && deduction.fullyPenalized) });
     } else byWeight.get(effectiveWeight).hidden++;
   });
 
-  [...byWeight.keys()].sort((a, b) => a - b).forEach((weight) => {
-    const entry = byWeight.get(weight);
-    if (!entry) return;
+  const rows = [...byWeight.keys()].map((weight) => ({ weight, entry: byWeight.get(weight), partial: null }))
+    .concat(partialRows.map((p) => ({ weight: p.weight, entry: null, partial: p })))
+    .sort((a, b) => a.weight - b.weight);
 
+  rows.forEach(({ weight, entry, partial }) => {
     const row = document.createElement('div');
     row.className = 'raid-reserve-weight-row';
 
     const weightBadge = document.createElement('span');
-    weightBadge.className = 'raid-weight-badge';
+    weightBadge.className = partial ? 'raid-weight-badge raid-weight-badge--penalized' : 'raid-weight-badge';
     weightBadge.textContent = formatWeight(weight);
     row.appendChild(weightBadge);
 
     const namesSpan = document.createElement('span');
     namesSpan.className = 'raid-reserve-weight-names';
-    const visibleNames = entry.visible;
-    visibleNames.forEach(({ name, id }, i) => {
-      const p = penaltiesList.find((x) => x.player_name === name);
-      const isPenalized = penalizedIds.has(id);
+
+    if (partial) {
       const nameSpan = document.createElement('span');
-      if (isPenalized) nameSpan.className = 'raid-reserve-item--penalized';
+      nameSpan.style.color = classColorMap.get(partial.name) || 'var(--color-text-faint)';
+      nameSpan.textContent = partial.name;
+      namesSpan.appendChild(nameSpan);
+      const p = penaltiesList.find((x) => x.player_name === partial.name);
+      if (p && p.roll_penalty > 0) {
+        const penSpan = document.createElement('span');
+        penSpan.className = 'penalty-value--active';
+        penSpan.textContent = ` (-${p.roll_penalty})`;
+        namesSpan.appendChild(penSpan);
+      }
+      row.appendChild(namesSpan);
+      wrap.appendChild(row);
+      return;
+    }
+
+    const visibleNames = entry.visible;
+    visibleNames.forEach(({ name, id, fullyPenalized }, i) => {
+      const p = penaltiesList.find((x) => x.player_name === name);
+      const nameSpan = document.createElement('span');
+      if (fullyPenalized) nameSpan.className = 'raid-reserve-item--penalized';
       nameSpan.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
       nameSpan.textContent = name;
       namesSpan.appendChild(nameSpan);
@@ -1183,16 +1240,12 @@ function renderItemsTable() {
     return;
   }
 
-  const penalizedIds = new Set();
+  const penaltyDeductions = new Map();
   const groupedForPenalty = groupReservesByPlayer(reserves);
   for (const [pName, pReserves] of groupedForPenalty) {
-    const penalty = penaltiesList.find((p) => p.player_name === pName);
-    const softPenalty = penalty?.soft_penalty ?? 0;
+    const softPenalty = penaltiesList.find((p) => p.player_name === pName)?.soft_penalty ?? 0;
     if (softPenalty > 0) {
-      const total = pReserves.length;
-      for (let i = Math.max(0, total - softPenalty); i < total; i++) {
-        penalizedIds.add(pReserves[i].id);
-      }
+      computeSoftPenaltyDeductions(pReserves, softPenalty).forEach((v, id) => penaltyDeductions.set(id, v));
     }
   }
 
@@ -1220,7 +1273,7 @@ function renderItemsTable() {
     } else if (!reservers.length) {
       reserversTd.textContent = '—';
     } else {
-      reserversTd.appendChild(buildReservesByWeight(reservers, penalizedIds));
+      reserversTd.appendChild(buildReservesByWeight(reservers, penaltyDeductions));
     }
 
     if ((myReceivedForItems || myBonusGrantForItems) && currentUser && !isRaidCompleted()) {
