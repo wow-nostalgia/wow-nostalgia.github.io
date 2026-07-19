@@ -1275,6 +1275,22 @@ body.potion-page .honor-table td:nth-child(2) {
   text-align: left;
 }
 
+/* Клікабельні рядки — stretched link, див. UI-скіл. */
+body.potion-page #honorTable tbody tr {
+  position: relative;
+  cursor: pointer;
+}
+
+body.potion-page #honorTable tbody tr:hover {
+  background-color: var(--color-hover);
+}
+
+body.potion-page .honor-row-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
 body.potion-page #honorStatus {
   margin: 0 0 1rem;
 }

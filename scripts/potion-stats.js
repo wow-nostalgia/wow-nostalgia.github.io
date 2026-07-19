@@ -188,7 +188,13 @@ function renderHonorBoard(players) {
   }
 
   honorTableBodyEl.innerHTML = visiblePlayers
-    .map((player, index) => `<tr><td>${index + 1}</td><td>${createPlayerBadgeHtml(player.name)}<a href="${escapeHtml(buildPlayerViewUrl(player.name))}"${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</a></td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`)
+    .map((player, index) => {
+      const ownerName = characterOwnerNames.get(player.name);
+      const nameHtml = ownerName
+        ? `<span class="tooltipped" aria-label="${escapeHtml(ownerName)}">${escapeHtml(player.name)}</span>`
+        : escapeHtml(player.name);
+      return `<tr><td>${index + 1}</td><td>${createPlayerBadgeHtml(player.name)}<a class="honor-row-link" href="${escapeHtml(buildPlayerViewUrl(player.name))}">${nameHtml}</a></td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`;
+    })
     .join('');
 
   updateSortIndicators();

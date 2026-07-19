@@ -416,7 +416,21 @@ body.<page>-page .archive-delete-btn {
 ```
 
 Готовий приклад — "Архів рейдів" (`scripts/raid-manager-archive.js`,
-`.archive-row-link` / `.archive-delete-btn` у `style.css`).
+`.archive-row-link` / `.archive-delete-btn` у `style.css`), "Дошка Пошани"
+(`scripts/potion-stats.js`, `.honor-row-link`).
+
+**Пастка:** якщо той самий `<a>` ще й має клас `.tooltipped` (напр. тултіп
+власника персонажа) — НЕ вішай обидва класи на один елемент. Обидва
+використовують `::after`, і `.tooltipped::after` приносить
+`opacity: 0; pointer-events: none;`, які протікають на розтягнутий
+overlay — клік перестає спрацьовувати, поки рядок не в `:hover`. Виправлення:
+перенеси `.tooltipped` + `aria-label` на внутрішній `<span>` навколо
+тексту імені, а `.archive-row-link`/`.honor-row-link` лиши на `<a>`:
+```html
+<a class="honor-row-link" href="...">
+  <span class="tooltipped" aria-label="OwnerName">Ім'я</span>
+</a>
+```
 
 ---
 
