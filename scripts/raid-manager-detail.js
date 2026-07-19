@@ -598,8 +598,13 @@ function renderPotionLogTable(statsRaid) {
     nameEl.textContent = player.name;
     const isGuild = guildMemberNames.has(player.name);
     const ownerName = characterOwnerNames.get(player.name);
-    nameEl.classList.add('tooltipped');
+    // JS-позиційований тултіп (не CSS .tooltipped), бо .ranking-table-wrap
+    // тут має overflow-x: auto - звичайний ::after обрізало б зверху/зліва.
     nameEl.setAttribute('aria-label', `${player.name} - ${isGuild ? 'Ностальгія' : 'Легіонер'}${ownerName ? ` (${ownerName})` : ''}`);
+    nameEl.addEventListener('mouseenter', () => showBtnTooltip(nameEl));
+    nameEl.addEventListener('mouseleave', hideBtnTooltip);
+    nameEl.addEventListener('focus', () => showBtnTooltip(nameEl));
+    nameEl.addEventListener('blur', hideBtnTooltip);
     nameWrap.appendChild(nameEl);
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
