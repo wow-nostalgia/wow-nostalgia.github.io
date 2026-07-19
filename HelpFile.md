@@ -7,7 +7,7 @@
 
    Скрипти самі пам'ятають, які рейди вже обробили — щодня запускати на всі рейди не треба, обробиться лише новододаний лог (секунди). Лише першого разу повний прохід по всіх рейдах займає ~30-40 хвилин.
 
-Рейтинг гравців оновлюється автоматично кожен ранок. Є спеціальний Action: <https://github.com/wow-nostalgia/wow-nostalgia.github.io/actions/workflows/update-guild-data.yml> або локально `npm run update:guild` (лише перебудова рейтингу з уже існуючого списку гравців, без оновлення самого списку).
+Рейтинг гравців оновлюється автоматично кожен ранок. Є спеціальний Action: <https://github.com/wow-nostalgia/wow-nostalgia.github.io/actions/workflows/update-guild-data.yml> або локально `npm run update:guild`
 
 Єдине, що список согільдійців треба заливати (оновлювати вручну). Для цього є спеціальний аддон для експорту списку гравців гільдії. Він лежить в папці `Addon-to-export-guild-members`. Читай `ReadMe` всередині аддону.
 
@@ -15,9 +15,7 @@
 
 1. В грі виконай команду `/groster` (аддон GuildRosterExportMini).
 2. Скопіюй файл `World of Warcraft\WTF\Account\<ТВІЙ_АКАУНТ>\SavedVariables\GuildRosterExportMini.lua` в корінь проєкту.
-3. В консолі запусти команду `npm run update:players` із cd "c:\Work\wow-nostalgia.github.io"
-
-   Скрипт послідовно перепише `data/players.json` і оновить `data/guild-data.json` (Рейтинг DPS) — новододані гравці одразу підтягнуть свої дані з uwu-logs.xyz, не чекаючи ранкового автооновлення. Гравець з'явиться в рейтингу, лише якщо засвітився мінімум у 2 рейд-логах (щоб не було порожніх рядків без реальних даних).
+3. В консолі запусти команду `npm run update:players` — скрипт перепише `data/players.json`.
 
 # Галерея
 
