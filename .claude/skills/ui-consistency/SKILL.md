@@ -405,11 +405,15 @@ body.<page>-page .archive-row-link::after {
 `position: relative` на `<tr>` коректно працює в усіх сучасних браузерах
 (row-box охоплює всі колонки) — не потрібен обгортковий `<div>`.
 
-**Якщо в рядку є ще одна інтерактивна кнопка** (напр. видалити) —
-підніми її над розтягнутим лінком, інакше клік по ній проковтне
-overlay:
+**Будь-який інший елемент у рядку, що потребує власної click- або
+hover-поведінки** (кнопка видалити, `.tooltipped`-підказка тощо) —
+розтягнутий `::after` лежить НАД ним (z-index:auto positioned-елемент
+завжди малюється поверх non-positioned вмісту), тому такий елемент
+"глухне": кнопка не клікається, `:hover`/тултіп не спрацьовує. Піднімай
+його явно:
 ```css
-body.<page>-page .archive-delete-btn {
+body.<page>-page .archive-delete-btn,
+body.<page>-page .honor-row-link .tooltipped {
   position: relative;
   z-index: 1;
 }
@@ -419,13 +423,13 @@ body.<page>-page .archive-delete-btn {
 `.archive-row-link` / `.archive-delete-btn` у `style.css`), "Дошка Пошани"
 (`scripts/potion-stats.js`, `.honor-row-link`).
 
-**Пастка:** якщо той самий `<a>` ще й має клас `.tooltipped` (напр. тултіп
-власника персонажа) — НЕ вішай обидва класи на один елемент. Обидва
-використовують `::after`, і `.tooltipped::after` приносить
-`opacity: 0; pointer-events: none;`, які протікають на розтягнутий
-overlay — клік перестає спрацьовувати, поки рядок не в `:hover`. Виправлення:
-перенеси `.tooltipped` + `aria-label` на внутрішній `<span>` навколо
-тексту імені, а `.archive-row-link`/`.honor-row-link` лиши на `<a>`:
+**Пастка №2:** якщо той самий `<a>`, що несе розтягнутий overlay, ще й сам
+має клас `.tooltipped` (напр. тултіп власника персонажа) — НЕ вішай обидва
+класи на один елемент. Обидва використовують `::after`, і `.tooltipped::after`
+приносить `opacity: 0; pointer-events: none;`, які протікають на overlay —
+контент лінка стає невидимим/некликабельним, поки не в `:hover`. Виправлення:
+перенеси `.tooltipped` + `aria-label` на внутрішній `<span>` навколо тексту
+імені (і не забудь підняти цей span z-index'ом, як вище):
 ```html
 <a class="honor-row-link" href="...">
   <span class="tooltipped" aria-label="OwnerName">Ім'я</span>

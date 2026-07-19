@@ -1291,6 +1291,13 @@ body.potion-page .honor-row-link::after {
   inset: 0;
 }
 
+/* Внутрішній тултіп власника лежав би під розтягнутим ::after — піднімаємо,
+   інакше :hover ловить лише сам лінк, а не span, і тултіп не показується. */
+body.potion-page .honor-row-link .tooltipped {
+  position: relative;
+  z-index: 1;
+}
+
 body.potion-page #honorStatus {
   margin: 0 0 1rem;
 }
