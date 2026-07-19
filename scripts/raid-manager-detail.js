@@ -992,20 +992,22 @@ function renderPlayersTable() {
     nameWrap.className = 'raid-player-name-cell';
     nameWrap.appendChild(createPlayerBadge(name));
 
+    let nameEl;
     if (personalAnalyticsNames.has(name)) {
-      const link = document.createElement('a');
-      link.href = `../../guild-ranking/?${new URLSearchParams({ view: 'player', player: name }).toString()}`;
-      link.textContent = name;
-      nameWrap.appendChild(link);
+      nameEl = document.createElement('a');
+      nameEl.href = `../../guild-ranking/?${new URLSearchParams({ view: 'player', player: name }).toString()}`;
+      nameEl.textContent = name;
     } else {
-      nameWrap.appendChild(document.createTextNode(name));
+      nameEl = document.createElement('span');
+      nameEl.textContent = name;
     }
 
     const ownerName = characterOwnerNames.get(name);
     if (ownerName) {
-      nameWrap.classList.add('tooltipped');
-      nameWrap.setAttribute('aria-label', ownerName);
+      nameEl.classList.add('tooltipped');
+      nameEl.setAttribute('aria-label', ownerName);
     }
+    nameWrap.appendChild(nameEl);
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
