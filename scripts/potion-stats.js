@@ -68,6 +68,17 @@ function createRaidLinksHtml(raid) {
   return `<p class="potion-raid-link">Цей рейд також записаний іншим гравцем: ${createLogLinksList(alternateUrls)}</p>`;
 }
 
+// Дошка Пошани не прив'язана до конкретного рейду - шукаємо клас/спек
+// гравця в будь-якому вже завантаженому ростері (клас не змінюється між
+// рейдами, тож перший знайдений збіг достатньо точний).
+function findAnyRosterPlayer(name) {
+  for (const entry of rostersByRaidUrl.values()) {
+    const found = findRosterPlayer(entry, name);
+    if (found) return found;
+  }
+  return null;
+}
+
 function createPlayerRow(player, bossCount, raidUrl) {
   const rosterEntry = rostersByRaidUrl.get(raidUrl);
   const color = getPlayerClassColor(rosterEntry, player.name);
@@ -189,11 +200,17 @@ function renderHonorBoard(players) {
 
   honorTableBodyEl.innerHTML = visiblePlayers
     .map((player, index) => {
+      const rosterPlayer = findAnyRosterPlayer(player.name);
+      const color = rosterPlayer?.class ? WOW_CLASS_COLORS[rosterPlayer.class] : '';
+      const nameStyle = color ? ` style="color:${color}"` : '';
+      const iconHtml = rosterPlayer?.icon ? `<img class="raid-item-icon" src="${specIconUrl(rosterPlayer.icon)}" alt="">` : '';
+
+      const isGuild = guildMemberNames.has(player.name);
       const ownerName = characterOwnerNames.get(player.name);
-      const nameHtml = ownerName
-        ? `<span class="tooltipped" aria-label="${escapeHtml(ownerName)}">${escapeHtml(player.name)}</span>`
-        : escapeHtml(player.name);
-      return `<tr><td>${index + 1}</td><td>${createPlayerBadgeHtml(player.name)}<a class="honor-row-link" href="${escapeHtml(buildPlayerViewUrl(player.name))}">${nameHtml}</a></td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`;
+      const tooltipLabel = `${player.name} - ${isGuild ? 'Ностальгія' : 'Легіонер'}${ownerName ? ` (${ownerName})` : ''}`;
+
+      const nameHtml = `<span class="tooltipped" aria-label="${escapeHtml(tooltipLabel)}">${escapeHtml(player.name)}</span>`;
+      return `<tr><td>${index + 1}</td><td><a class="honor-row-link" href="${escapeHtml(buildPlayerViewUrl(player.name))}"><span class="potion-name-wrap"${nameStyle}>${iconHtml}${nameHtml}</span></a></td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`;
     })
     .join('');
 
