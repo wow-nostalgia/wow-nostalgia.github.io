@@ -19103,5 +19103,178 @@
         "icon": "spell_nature_healingtouch"
       }
     ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-19--20-45--Boroheal--FreedomUA/",
+    "players": [
+      {
+        "name": "Pitzkur",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence"
+      },
+      {
+        "name": "Vampiree",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Палідан",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt"
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall"
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall"
+      },
+      {
+        "name": "Ibizalover",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight"
+      },
+      {
+        "name": "Sempaiibaka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity"
+      },
+      {
+        "name": "Єва",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura"
+      },
+      {
+        "name": "Белазище",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight"
+      },
+      {
+        "name": "Полум'я",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Лютерок",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab"
+      },
+      {
+        "name": "Merdarion",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis"
+      },
+      {
+        "name": "Dum",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship"
+      },
+      {
+        "name": "Metallheadxm",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Butterfly",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform"
+      },
+      {
+        "name": "Infern",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence"
+      },
+      {
+        "name": "Chuchundra",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight"
+      },
+      {
+        "name": "Boroheal",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain"
+      },
+      {
+        "name": "Amffitaminka",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Bu",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Раздва",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Ronnychsigma",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "De",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch"
+      },
+      {
+        "name": "Unforgiven",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude"
+      },
+      {
+        "name": "Extedy",
+        "class": "Druid",
+        "spec": "Unknown",
+        "icon": "class_druid"
+      },
+      {
+        "name": "Tramaed",
+        "class": "Priest",
+        "spec": "Unknown",
+        "icon": "class_priest"
+      },
+      {
+        "name": "Cilya",
+        "class": "Priest",
+        "spec": "Unknown",
+        "icon": "class_priest"
+      }
+    ]
   }
 ]
