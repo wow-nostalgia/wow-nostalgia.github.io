@@ -3419,6 +3419,6 @@ GuildRosterExportMiniDB = {
 		}, -- [854]
 	},
 	["realmName"] = "Freedom x5",
-	["exportedAt"] = "2026-07-09T17:56:37Z",
 	["guildName"] = "Nostalgia",
+	["exportedAt"] = "2026-07-09T17:56:37Z",
 }
