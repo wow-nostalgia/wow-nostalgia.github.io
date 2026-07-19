@@ -372,6 +372,54 @@ width: 100%; border-collapse: collapse;
 
 ---
 
+## Клікабельні рядки таблиці ("stretched link")
+
+Коли весь `<tr>` має вести на іншу сторінку (напр. "Архів рейдів" →
+конкретний рейд) — **ніколи не вішай `onclick`/навігацію на `<tr>`**:
+неможливо відкрити в новій вкладці ctrl/middle-click, клавіатура й
+скрінрідер не бачать рядок як інтерактивний елемент. Замість цього —
+розтягуємо вже наявний справжній `<a>` у клітинці на весь рядок через
+`::after`.
+
+### JS — додай клас на вже існуючий `<a>` у клітинці
+```js
+const link = document.createElement('a');
+link.className = 'archive-row-link'; // page-scoped назва під конкретну таблицю
+link.href = `../raid/?id=${encodeURIComponent(raid.id)}`;
+link.textContent = raid.title;
+```
+
+### CSS
+```css
+body.<page>-page #myTable tbody tr {
+  position: relative; /* containing block для ::after */
+  cursor: pointer;
+}
+
+body.<page>-page .archive-row-link::after {
+  content: '';
+  position: absolute;
+  inset: 0; /* перекриває весь <tr>, не лише свою <td> */
+}
+```
+`position: relative` на `<tr>` коректно працює в усіх сучасних браузерах
+(row-box охоплює всі колонки) — не потрібен обгортковий `<div>`.
+
+**Якщо в рядку є ще одна інтерактивна кнопка** (напр. видалити) —
+підніми її над розтягнутим лінком, інакше клік по ній проковтне
+overlay:
+```css
+body.<page>-page .archive-delete-btn {
+  position: relative;
+  z-index: 1;
+}
+```
+
+Готовий приклад — "Архів рейдів" (`scripts/raid-manager-archive.js`,
+`.archive-row-link` / `.archive-delete-btn` у `style.css`).
+
+---
+
 ## Чіпи / бейджі
 
 `.raid-chip` (статус/інфо):
