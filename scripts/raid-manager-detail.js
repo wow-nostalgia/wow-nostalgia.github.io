@@ -565,7 +565,7 @@ function renderPotionLogTable(statsRaid) {
   wrap.className = 'ranking-table-wrap';
   const table = document.createElement('table');
   table.className = 'raid-table';
-  table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Потів/бос за всі рейди</th></tr></thead>";
+  table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Insane Strength Potion</th><th>Потів/бос за всі рейди</th></tr></thead>";
   const tbody = document.createElement('tbody');
 
   const rosterEntry = findRosterEntry(statsRaid.raidUrl);
@@ -597,7 +597,7 @@ function renderPotionLogTable(statsRaid) {
     nameWrap.appendChild(document.createTextNode(player.name));
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
-    [player.total, player.potionOfSpeed, player.potionOfWildMagic].forEach((value) => {
+    [player.total, player.potionOfSpeed, player.potionOfWildMagic, player.potionOfInsaneStrength].forEach((value) => {
       const td = document.createElement('td');
       td.textContent = Number(value || 0);
       tr.appendChild(td);

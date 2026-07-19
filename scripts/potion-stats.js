@@ -85,7 +85,7 @@ function createPlayerRow(player, bossCount, raidUrl) {
   const nameStyle = color ? ` style="color:${color}"` : '';
   const specIcon = getPlayerSpecIcon(rosterEntry, player.name);
   const iconHtml = specIcon ? `<img class="raid-item-icon" src="${specIconUrl(specIcon)}" alt="">` : '';
-  return `<tr class="${getPotionRowClass(player, bossCount)}"><td class="potion-name-cell"><span class="potion-name-wrap"${nameStyle}>${iconHtml}<span${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</span></span></td><td>${Number(player.total || 0)}</td><td>${Number(player.potionOfSpeed || 0)}</td><td>${Number(player.potionOfWildMagic || 0)}</td></tr>`;
+  return `<tr class="${getPotionRowClass(player, bossCount)}"><td class="potion-name-cell"><span class="potion-name-wrap"${nameStyle}>${iconHtml}<span${ownerTooltipAttr(player.name)}>${escapeHtml(player.name)}</span></span></td><td>${Number(player.total || 0)}</td><td>${Number(player.potionOfSpeed || 0)}</td><td>${Number(player.potionOfWildMagic || 0)}</td><td>${Number(player.potionOfInsaneStrength || 0)}</td></tr>`;
 }
 
 function createRaidContent(raid) {
@@ -102,7 +102,7 @@ function createRaidContent(raid) {
   const metaRowHtml = bossCountHtml || raidLogInfoHtml
     ? `<div class="potion-raid-meta-row">${raidLogInfoHtml}${bossCountHtml}</div>`
     : '';
-  return `${metaRowHtml}<div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}`;
+  return `${metaRowHtml}<div class="ranking-table-wrap"><table class="potion-table"><thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Insane Strength Potion</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>${createRaidLinksHtml(raid)}`;
 }
 
 function isMobileLayout() {

@@ -8,6 +8,7 @@ const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'potion-stats.json');
 
 const POTION_SPEED = 'Potion of Speed';
 const POTION_WILD_MAGIC = 'Potion of Wild Magic';
+const POTION_INSANE_STRENGTH = 'Insane Strength Potion';
 
 const REQUEST_DELAY_MS = 2500;
 const RETRY_DELAY_MS = 8000;
@@ -95,7 +96,10 @@ function resolveColumnIndices(headerTexts, headerIcons) {
   let wildIndex = headerTexts.findIndex((t) => t.includes(POTION_WILD_MAGIC));
   if (wildIndex === -1) wildIndex = headerIcons.findIndex((t) => t.includes(POTION_WILD_MAGIC));
 
-  if (speedIndex === -1 || wildIndex === -1) {
+  let insaneIndex = headerTexts.findIndex((t) => t.includes(POTION_INSANE_STRENGTH));
+  if (insaneIndex === -1) insaneIndex = headerIcons.findIndex((t) => t.includes(POTION_INSANE_STRENGTH));
+
+  if (speedIndex === -1 || wildIndex === -1 || insaneIndex === -1) {
     const style = headerTexts.map((text, i) => ({
       i,
       text,
@@ -105,7 +109,7 @@ function resolveColumnIndices(headerTexts, headerIcons) {
     throw new Error(`Could not resolve potion columns: ${JSON.stringify(style)}`);
   }
 
-  return { nameIndex, speedIndex, wildIndex };
+  return { nameIndex, speedIndex, wildIndex, insaneIndex };
 }
 
 function parseConsumablesTable(html) {
@@ -117,7 +121,7 @@ function parseConsumablesTable(html) {
   }
 
   const { table, row, texts, icons } = headerMatch;
-  const { nameIndex, speedIndex, wildIndex } = resolveColumnIndices(texts, icons);
+  const { nameIndex, speedIndex, wildIndex, insaneIndex } = resolveColumnIndices(texts, icons);
 
   const allRows = $(table).find('tr').toArray();
   const headerRowIndex = allRows.indexOf(row);
@@ -135,12 +139,14 @@ function parseConsumablesTable(html) {
 
     const speed = parseNumber(values[speedIndex]);
     const wild = parseNumber(values[wildIndex]);
+    const insane = parseNumber(values[insaneIndex]);
 
     players.push({
       name,
-      total: speed + wild,
+      total: speed + wild + insane,
       potionOfSpeed: speed,
-      potionOfWildMagic: wild
+      potionOfWildMagic: wild,
+      potionOfInsaneStrength: insane
     });
   }
 
@@ -203,13 +209,14 @@ function mergePotionPlayers(playersA, playersB) {
 
   for (const player of [...(playersA || []), ...(playersB || [])]) {
     if (!merged.has(player.name)) {
-      merged.set(player.name, { name: player.name, total: 0, potionOfSpeed: 0, potionOfWildMagic: 0 });
+      merged.set(player.name, { name: player.name, total: 0, potionOfSpeed: 0, potionOfWildMagic: 0, potionOfInsaneStrength: 0 });
     }
 
     const current = merged.get(player.name);
     current.total += Number(player.total || 0);
     current.potionOfSpeed += Number(player.potionOfSpeed || 0);
     current.potionOfWildMagic += Number(player.potionOfWildMagic || 0);
+    current.potionOfInsaneStrength += Number(player.potionOfInsaneStrength || 0);
   }
 
   return [...merged.values()].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
