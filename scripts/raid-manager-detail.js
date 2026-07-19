@@ -954,9 +954,6 @@ function getPlayersWithSoftsSet() {
 function renderPlayersTable() {
   raidPlayersBody.innerHTML = '';
 
-  const transfersDisabled = (raid.transfer_weight_limit ?? 0) === 0;
-  raidPlayersBody.closest('table').classList.toggle('raid-transfers-disabled', transfersDisabled);
-
   const grouped = groupReservesByPlayer(reserves);
 
   // Гравці з трансферами (можуть мати 0 власних софтів) теж повинні з'являтись
@@ -1011,18 +1008,16 @@ function renderPlayersTable() {
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
-    // --- Колонка "Передати" ---
-    const transferTd = document.createElement('td');
-    transferTd.className = 'raid-transfer-col';
+    const itemsTd = document.createElement('td');
+    itemsTd.className = 'raid-softs-col';
+    const manageable = canManage(name);
 
     const fromTransfer = weightTransfers.find((t) => t.from_player === name);
-    const toTransfer = weightTransfers.find((t) => t.to_player === name);
-
     if (fromTransfer) {
       const indicator = document.createElement('span');
       indicator.className = 'raid-transfer-indicator raid-transfer-indicator--from';
       indicator.textContent = `→ ${fromTransfer.to_player}`;
-      transferTd.appendChild(indicator);
+      itemsTd.appendChild(indicator);
 
       const canCancel = isOfficerMode() || myNames.includes(name);
       if (canCancel && !isRaidCompleted()) {
@@ -1032,21 +1027,9 @@ function renderPlayersTable() {
         cancelBtn.setAttribute('aria-label', 'Скасувати передачу софту');
         cancelBtn.textContent = '✕';
         cancelBtn.addEventListener('click', () => deleteTransfer(name));
-        transferTd.appendChild(cancelBtn);
+        itemsTd.appendChild(cancelBtn);
       }
-    } else if (toTransfer) {
-      const indicator = document.createElement('span');
-      indicator.className = 'raid-transfer-indicator raid-transfer-indicator--to tooltipped';
-      indicator.setAttribute('aria-label', `Отримує софти від ${toTransfer.from_player}`);
-      indicator.textContent = `+${toTransfer.from_player}`;
-      transferTd.appendChild(indicator);
     }
-
-    tr.appendChild(transferTd);
-
-    const itemsTd = document.createElement('td');
-    itemsTd.className = 'raid-softs-col';
-    const manageable = canManage(name);
 
     grouped.get(name).forEach((r) => {
       const itemSpan = document.createElement('span');

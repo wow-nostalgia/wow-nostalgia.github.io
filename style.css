@@ -4142,22 +4142,6 @@ body.raid-manager-detail-page .penalty-reason-text {
 
 /* ─── Передача ваги (weight transfer) ──────────────────────────────── */
 
-.raid-transfer-th {
-  width: 6rem;
-  white-space: nowrap;
-}
-
-.raid-transfer-col {
-  width: 6rem;
-  white-space: nowrap;
-  vertical-align: middle;
-}
-
-.raid-transfers-disabled .raid-transfer-th,
-.raid-transfers-disabled .raid-transfer-col {
-  display: none;
-}
-
 .raid-transfer-btn {
   display: inline-flex;
   align-items: center;
@@ -4203,11 +4187,7 @@ body.raid-manager-detail-page .penalty-reason-text {
 .raid-transfer-indicator--from {
   color: var(--color-text-faint);
   background: rgba(160, 168, 184, 0.12);
-}
-
-.raid-transfer-indicator--to {
-  color: var(--color-accent-mint);
-  background: rgba(109, 208, 154, 0.12);
+  margin: 0 0.5rem 0.2rem 0;
 }
 
 .raid-transfer-notice {
