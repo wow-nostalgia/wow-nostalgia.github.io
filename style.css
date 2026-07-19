@@ -2403,6 +2403,43 @@ body.raid-manager-page .link-button-std--danger:hover {
   background-color: rgba(255, 107, 107, 0.2);
 }
 
+body.raid-manager-page .archive-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Форма створення рейду в попапі - завжди однокoлонкова (лейбл над
+   полем), а не auto/1fr як на старій повноцінній сторінці: найдовший
+   лейбл ("Ліміт передачі софтів") стискав би колонку контролів занадто
+   сильно для ширини модалки, і тогл-групи переносились би на два рядки. */
+body.raid-manager-page #createRaidModal .raid-create-form {
+  grid-template-columns: 1fr;
+}
+
+body.raid-manager-page #createRaidModal .raid-filter-checkbox,
+body.raid-manager-page #createRaidModal .raid-modal-actions {
+  grid-column: 1;
+}
+
+/* Форма довша за інші модалки - на невисоких вікнах align-items:center
+   (стандарт .raid-modal) підняв би картку під sticky-хедер, який має
+   вищий z-index (--z-sticky > --z-modal, так у всього сайту) і
+   перекрив би заголовок картки. Тому цей попап - виняток: якориться
+   зверху з відступом під хедер, а не по центру, і сам скролиться,
+   якщо однаково не влазить. */
+body.raid-manager-page #createRaidModal {
+  align-items: flex-start;
+  padding: 4.5rem 1rem 2rem;
+}
+
+body.raid-manager-page #createRaidModal .raid-modal-box {
+  max-height: calc(100vh - 6.5rem);
+  overflow-y: auto;
+}
+
 body.raid-manager-page .archive-confirm-overlay {
   display: none;
   position: fixed;
@@ -3087,6 +3124,7 @@ body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:
 }
 
 body.raid-manager-page .raid-create-form button[type="submit"].compare-btn,
+body.raid-manager-page #createRaidOpenBtn.compare-btn,
 body.ranking-page #compareBtn.compare-btn,
 body.raid-manager-detail-page #transferConfirmBtn.compare-btn,
 body.raid-manager-detail-page #potionsAddBtn.compare-btn,
@@ -3097,6 +3135,7 @@ body.raid-manager-detail-page #bonusGrantSaveBtn.compare-btn {
 }
 
 body.raid-manager-page .raid-create-form button[type="submit"].compare-btn:hover:not(:disabled),
+body.raid-manager-page #createRaidOpenBtn.compare-btn:hover:not(:disabled),
 body.ranking-page #compareBtn.compare-btn:hover:not(:disabled),
 body.raid-manager-detail-page #transferConfirmBtn.compare-btn:hover:not(:disabled),
 body.raid-manager-detail-page #potionsAddBtn.compare-btn:hover:not(:disabled),

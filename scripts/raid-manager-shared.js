@@ -1,4 +1,4 @@
-// Спільні константи/хелпери для raid-manager.js і raid-manager-detail.js.
+// Спільні константи/хелпери для raid-manager-archive.js і raid-manager-detail.js.
 // Підключати тегом <script> ДО них (без бандлера, як і інші клієнтські скрипти).
 //
 // Усі <script src="...?v=N"> на raid-manager/account сторінках мають той
