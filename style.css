@@ -3873,6 +3873,12 @@ body.account-page .account-character-actions {
   gap: 0.4rem;
 }
 
+body.account-page .account-attendance-col {
+  text-align: center;
+  width: 4.5rem;
+  color: var(--color-text-faint);
+}
+
 body.account-page .account-primary-col,
 body.account-page .account-primary-checkbox-td {
   text-align: center;

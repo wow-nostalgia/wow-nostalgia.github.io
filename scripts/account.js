@@ -39,13 +39,15 @@ async function readErrorMessage(res) {
 let guildMemberNames = new Set();
 let personalAnalyticsNames = new Set();
 let classColorMap = new Map();
+let raidAttendanceByName = new Map();
 
 async function loadCharacterStatsSources() {
   try {
-    const [players, personalStats, guildDataRes] = await Promise.all([
+    const [players, personalStats, guildDataRes, potionStats] = await Promise.all([
       fetch('/data/players.json?t=' + Date.now()).then((r) => r.json()),
       fetch('/data/personal-stats.json?t=' + Date.now()).then((r) => r.json()),
-      fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null)
+      fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
+      fetch('/data/potion-stats.json?t=' + Date.now()).then((r) => r.json())
     ]);
     guildMemberNames = new Set(players.map((p) => p.name));
     personalAnalyticsNames = new Set();
@@ -57,6 +59,12 @@ async function loadCharacterStatsSources() {
     if (guildDataRes?.ok) {
       const guildData = await guildDataRes.json();
       classColorMap = buildClassColorMap(guildData.rows || []);
+    }
+    raidAttendanceByName = new Map();
+    for (const raid of potionStats || []) {
+      for (const player of raid.players || []) {
+        raidAttendanceByName.set(player.name, (raidAttendanceByName.get(player.name) || 0) + 1);
+      }
     }
   } catch (err) {
     console.error(err);
@@ -88,7 +96,7 @@ function renderCharactersList(characters) {
   if (!characters.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 3;
+    td.colSpan = 4;
     td.textContent = 'Ще не додано жодного персонажа.';
     tr.appendChild(td);
     charactersList.appendChild(tr);
@@ -113,6 +121,11 @@ function renderCharactersList(characters) {
     }
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
+
+    const attendanceTd = document.createElement('td');
+    attendanceTd.className = 'account-attendance-col';
+    attendanceTd.textContent = String(raidAttendanceByName.get(name) || 0);
+    tr.appendChild(attendanceTd);
 
     const checkboxTd = document.createElement('td');
     checkboxTd.className = 'account-primary-checkbox-td';
