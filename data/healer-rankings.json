@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-19T09:33:33.068Z",
+  "updatedAt": "2026-07-20T00:41:43.863Z",
   "specs": [
     {
       "class": "Paladin",
@@ -1112,6 +1112,10 @@
           "hps": 12312.8
         },
         {
+          "name": "Vampirr",
+          "hps": 12161.9
+        },
+        {
           "name": "Sonytix",
           "hps": 12066.2
         },
@@ -1642,6 +1646,10 @@
           "hps": 439.5
         },
         {
+          "name": "Fromhell",
+          "hps": 436.2
+        },
+        {
           "name": "Dlgl",
           "hps": 433.5
         },
@@ -2056,10 +2064,6 @@
         {
           "name": "Miumiu",
           "hps": 19.9
-        },
-        {
-          "name": "Fromhell",
-          "hps": 12.8
         }
       ]
     },
@@ -2314,6 +2318,10 @@
           "hps": 25673.5
         },
         {
+          "name": "Зорекрила",
+          "hps": 25414.9
+        },
+        {
           "name": "Джулс",
           "hps": 24818.7
         },
@@ -2376,10 +2384,6 @@
         {
           "name": "Ivi",
           "hps": 22703.3
-        },
-        {
-          "name": "Зорекрила",
-          "hps": 22548.8
         },
         {
           "name": "Breylsford",
@@ -2882,6 +2886,10 @@
           "hps": 14984.7
         },
         {
+          "name": "Гунт",
+          "hps": 14906.2
+        },
+        {
           "name": "Shanika",
           "hps": 14667.1
         },
@@ -3156,10 +3164,6 @@
         {
           "name": "Бастурма",
           "hps": 10237.5
-        },
-        {
-          "name": "Гунт",
-          "hps": 10233.2
         },
         {
           "name": "Aurelia",
@@ -3836,6 +3840,10 @@
           "hps": 27165.1
         },
         {
+          "name": "Possibility",
+          "hps": 27127.2
+        },
+        {
           "name": "Basslopata",
           "hps": 27054.9
         },
@@ -3950,10 +3958,6 @@
         {
           "name": "Harlow",
           "hps": 25758.7
-        },
-        {
-          "name": "Possibility",
-          "hps": 25700.8
         },
         {
           "name": "Neru",
