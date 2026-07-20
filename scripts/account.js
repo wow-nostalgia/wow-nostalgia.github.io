@@ -118,12 +118,6 @@ function renderCharactersList(characters) {
     nameWrap.className = 'account-character-name-cell';
     nameWrap.appendChild(createPlayerBadge(name));
     nameWrap.appendChild(characterNameNode(name));
-    if (isPrimary) {
-      const primaryBadge = document.createElement('span');
-      primaryBadge.className = 'primary-character-badge';
-      primaryBadge.textContent = 'Основний';
-      nameWrap.appendChild(primaryBadge);
-    }
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
