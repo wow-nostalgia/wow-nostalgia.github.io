@@ -230,17 +230,27 @@ function computeRaidAttendance(potionStats, isIncluded) {
 
 function computeRaidAttendanceByAccount(potionStats, characterOwnerNames) {
   const counts = new Map();
+  const charCounts = new Map();
 
   for (const raid of potionStats || []) {
     for (const player of raid.players || []) {
       const accountName = characterOwnerNames.get(player.name);
       if (!accountName) continue;
       counts.set(accountName, (counts.get(accountName) || 0) + 1);
+      if (!charCounts.has(accountName)) charCounts.set(accountName, new Map());
+      const chars = charCounts.get(accountName);
+      chars.set(player.name, (chars.get(player.name) || 0) + 1);
     }
   }
 
   return [...counts.entries()]
-    .map(([name, count]) => ({ name, count }))
+    .map(([name, count]) => ({
+      name,
+      count,
+      characters: [...charCounts.get(name).entries()]
+        .map(([charName, charCount]) => ({ name: charName, count: charCount }))
+        .sort((a, b) => b.count - a.count)
+    }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 15);
 }
@@ -617,7 +627,18 @@ function renderRaidAttendanceChart(canvasId, stats, color) {
       indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            afterBody: (items) => {
+              const characters = stats[items[0]?.dataIndex]?.characters;
+              if (!characters) return [];
+              return characters.map((c) => `${c.name}: ${c.count}`);
+            }
+          }
+        }
+      },
       scales: {
         x: { beginAtZero: true, ticks: { precision: 0 } }
       }
