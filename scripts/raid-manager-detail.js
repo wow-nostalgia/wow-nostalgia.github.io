@@ -1031,6 +1031,7 @@ function renderPlayersTable() {
       nameEl = document.createElement('span');
       nameEl.textContent = name;
     }
+    nameEl.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
 
     const ownerName = characterOwnerNames.get(name);
     if (ownerName) {
