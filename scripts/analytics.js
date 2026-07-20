@@ -228,6 +228,23 @@ function computeRaidAttendance(potionStats, isIncluded) {
     .slice(0, 15);
 }
 
+function computeRaidAttendanceByAccount(potionStats, characterOwnerNames) {
+  const counts = new Map();
+
+  for (const raid of potionStats || []) {
+    for (const player of raid.players || []) {
+      const accountName = characterOwnerNames.get(player.name);
+      if (!accountName) continue;
+      counts.set(accountName, (counts.get(accountName) || 0) + 1);
+    }
+  }
+
+  return [...counts.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 15);
+}
+
 function getRaidRolesByPlayer(personalStats) {
   const rolesByPlayerRaid = new Map();
 
@@ -1097,12 +1114,13 @@ async function init() {
 
   try {
     setStatus('Завантаження даних...');
-    const [guildResponse, playersResponse, potionResponse, healerResponse, personalResponse] = await Promise.all([
+    const [guildResponse, playersResponse, potionResponse, healerResponse, personalResponse, ownersResponse] = await Promise.all([
       fetch('/data/guild-data.json?t=' + Date.now()),
       fetch('/data/players.json?t=' + Date.now()),
       fetch('/data/potion-stats.json?t=' + Date.now()),
       fetch('/data/healer-rankings.json?t=' + Date.now()),
-      fetch('/data/personal-stats.json?t=' + Date.now())
+      fetch('/data/personal-stats.json?t=' + Date.now()),
+      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null)
     ]);
 
     if (!guildResponse.ok) {
@@ -1114,6 +1132,7 @@ async function init() {
     const potionStats = potionResponse.ok ? await potionResponse.json() : [];
     const healerRankings = healerResponse.ok ? await healerResponse.json() : { specs: [] };
     const personalStats = personalResponse.ok ? await personalResponse.json() : [];
+    const characterOwnerNames = new Map(Object.entries(ownersResponse && ownersResponse.ok ? await ownersResponse.json() : {}));
     const guildNames = new Set(players.map((p) => p.name));
 
     const rows = (data.rows || []).filter((row) => row.class && row.spec);
@@ -1185,6 +1204,7 @@ async function init() {
     renderTopHealersChart(healerRankings, guildNames);
     renderRaidAttendanceChart('chartRaidAttendanceGuild', computeRaidAttendance(potionStats, (name) => guildNames.has(name)), cssVar('--color-success'));
     renderRaidAttendanceChart('chartRaidAttendanceLegion', computeRaidAttendance(potionStats, (name) => !guildNames.has(name)), '#f2994a');
+    renderRaidAttendanceChart('chartRaidAttendanceAccount', computeRaidAttendanceByAccount(potionStats, characterOwnerNames), cssVar('--color-accent-purple'));
     renderPotionScoreChart(potionStats, dpsRows, personalStats, guildNames);
 
     renderLastUpdated(data);

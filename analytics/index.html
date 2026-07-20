@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Гільдійська аналітика</title>
-  <link rel="stylesheet" href="../style.css?v=95">
+  <link rel="stylesheet" href="../style.css?v=96">
 </head>
 
 <body class="analytics-page">
@@ -249,8 +249,8 @@
           <div class="analytics-card-header">
             <h2>Відвідуваність рейдів</h2>
           </div>
-          <p class="analytics-card-caption">Топ-15 гравців за кількістю рейдів, в яких вони брали участь (за даними логів потів).</p>
-          <div class="analytics-split-grid">
+          <p class="analytics-card-caption">Топ-15 гравців за кількістю рейдів, в яких вони брали участь (за даними логів потів). "Акаунт" — сума відвідувань усіх персонажів, прив'язаних до одного профілю.</p>
+          <div class="analytics-split-grid analytics-split-grid--triple">
             <div class="analytics-split-col">
               <span class="analytics-scope-chip analytics-scope-chip--guild">Гільдія</span>
               <div class="analytics-chart-wrap">
@@ -261,6 +261,12 @@
               <span class="analytics-scope-chip analytics-scope-chip--legion">Легіонери</span>
               <div class="analytics-chart-wrap">
                 <canvas id="chartRaidAttendanceLegion"></canvas>
+              </div>
+            </div>
+            <div class="analytics-split-col">
+              <span class="analytics-scope-chip analytics-scope-chip--account">Акаунт</span>
+              <div class="analytics-chart-wrap">
+                <canvas id="chartRaidAttendanceAccount"></canvas>
               </div>
             </div>
           </div>
@@ -295,7 +301,7 @@
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=5"></script>
   <script src="../scripts/name-translations.js"></script>
-  <script src="../scripts/analytics.js?v=19"></script>
+  <script src="../scripts/analytics.js?v=20"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

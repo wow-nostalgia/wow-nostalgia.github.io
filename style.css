@@ -1708,10 +1708,20 @@ body.analytics-page .analytics-scope-chip--legion {
   background-color: rgba(242, 153, 74, 0.12);
 }
 
+body.analytics-page .analytics-scope-chip--account {
+  color: var(--color-accent-purple);
+  border-color: rgba(205, 183, 233, 0.4);
+  background-color: rgba(205, 183, 233, 0.12);
+}
+
 body.analytics-page .analytics-split-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+}
+
+body.analytics-page .analytics-split-grid--triple {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 body.analytics-page .analytics-split-col .analytics-scope-chip {
