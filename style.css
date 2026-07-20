@@ -4009,6 +4009,16 @@ body.account-page .link-button-std:hover {
   background-color: var(--color-hover);
 }
 
+body.account-page .link-button-std--danger {
+  color: var(--color-danger);
+  border-color: rgba(255, 107, 107, 0.4);
+  background-color: rgba(255, 107, 107, 0.12);
+}
+
+body.account-page .link-button-std--danger:hover {
+  background-color: rgba(255, 107, 107, 0.2);
+}
+
 @media (max-width: 544px) {
   body.raid-manager-page .raid-create-form {
     grid-template-columns: 1fr;

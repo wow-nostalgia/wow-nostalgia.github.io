@@ -20,6 +20,11 @@ const defaultOfficerList = document.getElementById('defaultOfficerList');
 const defaultOfficerAddBtn = document.getElementById('defaultOfficerAddBtn');
 const defaultOfficersList = document.getElementById('defaultOfficersList');
 const defaultOfficersStatus = document.getElementById('defaultOfficersStatus');
+const deleteCharacterModal = document.getElementById('deleteCharacterModal');
+const deleteCharacterModalBackdrop = document.getElementById('deleteCharacterModalBackdrop');
+const deleteCharacterModalText = document.getElementById('deleteCharacterModalText');
+const deleteCharacterConfirmBtn = document.getElementById('deleteCharacterConfirmBtn');
+const deleteCharacterCancelBtn = document.getElementById('deleteCharacterCancelBtn');
 
 function setAccountStatus(text) {
   accountStatus.textContent = text || '';
@@ -160,25 +165,41 @@ function renderCharactersList(characters) {
     removeBtn.className = 'account-delete-btn';
     removeBtn.setAttribute('aria-label', "Видалити персонажа");
     removeBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
-    removeBtn.addEventListener('click', async () => {
-      try {
-        const token = getSessionToken();
-        const res = await fetch(`${AUTH_API_BASE}/auth/me/characters/${encodeURIComponent(name)}`, {
-          method: 'DELETE',
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        if (!res.ok) throw new Error(await readErrorMessage(res));
-        renderCharactersList(await res.json());
-      } catch (err) {
-        setAccountStatus(`Помилка: ${err.message}`);
-      }
-    });
+    removeBtn.addEventListener('click', () => openDeleteCharacterModal(name));
     actionsTd.appendChild(removeBtn);
     tr.appendChild(actionsTd);
 
     charactersList.appendChild(tr);
   });
 }
+
+function openDeleteCharacterModal(name) {
+  deleteCharacterModalText.textContent = `Видалити персонажа "${name}"?`;
+  deleteCharacterModal._characterName = name;
+  deleteCharacterModal.hidden = false;
+}
+
+deleteCharacterConfirmBtn.addEventListener('click', async () => {
+  const name = deleteCharacterModal._characterName;
+  deleteCharacterConfirmBtn.disabled = true;
+  try {
+    const token = getSessionToken();
+    const res = await fetch(`${AUTH_API_BASE}/auth/me/characters/${encodeURIComponent(name)}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    renderCharactersList(await res.json());
+    deleteCharacterModal.hidden = true;
+  } catch (err) {
+    setAccountStatus(`Помилка: ${err.message}`);
+  } finally {
+    deleteCharacterConfirmBtn.disabled = false;
+  }
+});
+
+deleteCharacterCancelBtn.addEventListener('click', () => { deleteCharacterModal.hidden = true; });
+deleteCharacterModalBackdrop.addEventListener('click', () => { deleteCharacterModal.hidden = true; });
 
 addCharacterForm.addEventListener('submit', async (event) => {
   event.preventDefault();

@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Профіль — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../style.css?v=98">
+  <link rel="stylesheet" href="../style.css?v=99">
 </head>
 
 <body class="account-page">
@@ -131,6 +131,18 @@
 
       <p id="accountLoading">Завантаження...</p>
 
+      <div id="deleteCharacterModal" class="raid-modal" hidden>
+        <div class="raid-modal-backdrop" id="deleteCharacterModalBackdrop"></div>
+        <div class="raid-modal-box">
+          <h3 class="raid-modal-title">Видалити персонажа</h3>
+          <p id="deleteCharacterModalText" class="raid-modal-text"></p>
+          <div class="raid-modal-actions">
+            <button type="button" id="deleteCharacterConfirmBtn" class="link-button-std link-button-std--danger">Так, видалити</button>
+            <button type="button" id="deleteCharacterCancelBtn" class="link-button-std">Скасувати</button>
+          </div>
+        </div>
+      </div>
+
       <footer>
         <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank" rel="noopener noreferrer">Freedom WoW</a></span>
         <span class="footer-socials">
@@ -146,7 +158,7 @@
   <script src="../scripts/auth-shared.js?v=9"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=5"></script>
-  <script src="../scripts/account.js?v=17"></script>
+  <script src="../scripts/account.js?v=18"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
