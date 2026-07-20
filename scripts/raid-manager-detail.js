@@ -1711,6 +1711,13 @@ function renderPenaltiesTable() {
     const nameEl = document.createElement('span');
     nameEl.style.color = classColorMap.get(player_name) || 'var(--color-text-faint)';
     nameEl.textContent = player_name;
+
+    const ownerName = characterOwnerNames.get(player_name);
+    if (ownerName) {
+      nameEl.classList.add('tooltipped');
+      nameEl.setAttribute('aria-label', ownerName);
+    }
+
     nameWrap.appendChild(nameEl);
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
