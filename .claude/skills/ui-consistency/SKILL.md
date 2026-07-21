@@ -98,16 +98,35 @@ gh api repos/primer/octicons/contents/icons/gift-16.svg --jq '.content' | base64
 браузер покаже свій нативний тултіп ПОВЕРХ кастомного, і користувач побачить
 два підписи одночасно (це баг, перевіряй при рев'ю).
 
-Якщо `.tooltipped::after` візуально обрізається `overflow:hidden`
-батьківського контейнера — це НЕ привід повертати `title` як "фолбек".
-Правильний фікс: `position: fixed` JS-тултіп, що позиціонується через
-`getBoundingClientRect()` елемента при `mouseenter`/`focus` — той самий
+Якщо `.tooltipped::after` візуально обрізається `overflow:hidden`/
+`overflow-x:auto` батьківського контейнера — це НЕ привід повертати `title`
+як "фолбек". Правильний фікс: `position: fixed` JS-тултіп, що позиціонується
+через `getBoundingClientRect()` елемента при `mouseenter`/`focus` — той самий
 прийом, що вже реалізований для `#raidItemTooltip` і `#raidBtnTooltip`
 (`scripts/raid-manager-detail.js`): `position: fixed` рендериться відносно
 viewport і не залежить від `overflow` жодного предка.
 
-Перед рев'ю нового `.tooltipped`-елемента — grep на `title=` поруч із ним,
-щоб не пропустити дублікат.
+**Відомий клипаючий контейнер:** будь-що всередині
+`body.raid-manager-detail-page .raid-tables-grid .ranking-table-wrap`
+(вкладки Гравці/Предмети/Штрафи в рейд-менеджері) — там навмисно
+`overflow-x: auto` (див. коментар у `style.css` біля `.raid-softs-col`), і
+браузер через це форсує `overflow-y` теж не-`visible`, тому CSS-тултіп
+обрізається як зверху, так і збоку. Для НОВИХ кнопок/імен у цих трьох
+таблицях одразу бери JS-тултіп, не `.tooltipped` — готовий хелпер
+`bindTooltip(el)` у `scripts/raid-manager-detail.js` (вішає
+mouseenter/mouseleave/focus/blur на `showBtnTooltip`/`hideBtnTooltip`,
+текст бере з `aria-label` елемента):
+```js
+btn.setAttribute('aria-label', 'Текст підказки');
+bindTooltip(btn);
+```
+Не копіюй 4 `addEventListener` вручну — саме через це дублювання один із
+кількох однотипних тултіпів (кнопка скасування передачі софту) свого часу
+лишили на старому `.tooltipped` і не помітили, що він обрізається.
+
+Перед рев'ю нового `.tooltipped`-елемента — grep на `title=` поруч із ним
+(щоб не пропустити дублікат) і перевір, чи елемент не всередині
+клипаючого контейнера вище.
 
 ---
 

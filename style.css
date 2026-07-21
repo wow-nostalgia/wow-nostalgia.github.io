@@ -3056,9 +3056,10 @@ body.raid-manager-detail-page .raid-table tbody tr:hover {
    не обрізає (контент і так вміщується), лише блокує цей витік вгору.
    Перевірено: overflow:clip+overflow-clip-margin (щоб не ховати тултіпи)
    під навантаженням ненадійний - фантомний scrollWidth все одно протікає
-   в частині випадків. Тому overflow:hidden, а тултіпи кнопок усередині
-   цієї клітинки (delete/дропдаун бонусу) дублюються через title="" -
-   нативний браузерний тултіп не залежить від overflow. */
+   в частині випадків. Тому overflow:hidden, а всі тултіпи кнопок і імен
+   усередині .raid-tables-grid .ranking-table-wrap (ця клітинка й сусідні)
+   - JS-позиційовані через bindTooltip() у raid-manager-detail.js, а не
+   CSS .tooltipped::after, який тут обрізається. */
 body.raid-manager-detail-page .raid-softs-col {
   overflow: hidden;
 }

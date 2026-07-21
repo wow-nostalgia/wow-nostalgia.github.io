@@ -598,13 +598,8 @@ function renderPotionLogTable(statsRaid) {
     nameEl.textContent = player.name;
     const isGuild = guildMemberNames.has(player.name);
     const ownerName = characterOwnerNames.get(player.name);
-    // JS-позиційований тултіп (не CSS .tooltipped), бо .ranking-table-wrap
-    // тут має overflow-x: auto - звичайний ::after обрізало б зверху/зліва.
     nameEl.setAttribute('aria-label', `${player.name} - ${isGuild ? 'Ностальгія' : 'Легіонер'}${ownerName ? ` (${ownerName})` : ''}`);
-    nameEl.addEventListener('mouseenter', () => showBtnTooltip(nameEl));
-    nameEl.addEventListener('mouseleave', hideBtnTooltip);
-    nameEl.addEventListener('focus', () => showBtnTooltip(nameEl));
-    nameEl.addEventListener('blur', hideBtnTooltip);
+    bindTooltip(nameEl);
     nameWrap.appendChild(nameEl);
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
@@ -859,6 +854,20 @@ function hideBtnTooltip() {
   btnTooltipEl.hidden = true;
 }
 
+// CSS .tooltipped (::after) обрізається всередині
+// body.raid-manager-detail-page .raid-tables-grid .ranking-table-wrap
+// (overflow-x:auto змушує браузер обчислити overflow-y як auto теж —
+// тултіп над елементом йде за межі скрол-боксу і ховається). Тому будь-
+// який елемент з тултіпом усередині таблиць на цій сторінці (Гравці,
+// Предмети, Штрафи) має використовувати цей JS-позиційований тултіп
+// замість класу .tooltipped. aria-label лишається джерелом тексту.
+function bindTooltip(el) {
+  el.addEventListener('mouseenter', () => showBtnTooltip(el));
+  el.addEventListener('mouseleave', hideBtnTooltip);
+  el.addEventListener('focus', () => showBtnTooltip(el));
+  el.addEventListener('blur', hideBtnTooltip);
+}
+
 document.addEventListener('mousemove', (event) => {
   if (event.target.closest('.raid-remove-btn')) {
     if (currentTooltipItemId !== null) {
@@ -1035,8 +1044,8 @@ function renderPlayersTable() {
 
     const ownerName = characterOwnerNames.get(name);
     if (ownerName) {
-      nameEl.classList.add('tooltipped');
       nameEl.setAttribute('aria-label', ownerName);
+      bindTooltip(nameEl);
     }
     nameWrap.appendChild(nameEl);
     nameTd.appendChild(nameWrap);
@@ -1057,10 +1066,11 @@ function renderPlayersTable() {
       if (canCancel && !isRaidCompleted()) {
         const cancelBtn = document.createElement('button');
         cancelBtn.type = 'button';
-        cancelBtn.className = 'raid-remove-btn tooltipped';
+        cancelBtn.className = 'raid-remove-btn';
         cancelBtn.setAttribute('aria-label', 'Скасувати передачу софту');
         cancelBtn.textContent = '✕';
         cancelBtn.addEventListener('click', () => deleteTransfer(name));
+        bindTooltip(cancelBtn);
         itemsTd.appendChild(cancelBtn);
       }
     }
@@ -1106,10 +1116,7 @@ function renderPlayersTable() {
         delBtn.setAttribute('aria-label', 'Видалити цей софт');
         delBtn.disabled = isRaidCompleted();
         delBtn.addEventListener('click', () => removeReserve(r));
-        delBtn.addEventListener('mouseenter', () => showBtnTooltip(delBtn));
-        delBtn.addEventListener('mouseleave', hideBtnTooltip);
-        delBtn.addEventListener('focus', () => showBtnTooltip(delBtn));
-        delBtn.addEventListener('blur', hideBtnTooltip);
+        bindTooltip(delBtn);
         itemSpan.appendChild(delBtn);
       }
 
@@ -1122,12 +1129,6 @@ function renderPlayersTable() {
   });
 }
 
-// Групує резерви по вазі — окремий рядок на кожну вагу, щоб не плодити
-// купу однакових чіпсів "x1" поряд з кожним іменем.
-// Тултіп через .tooltipped (CSS ::after) тут обрізається, бо .raid-softs-col
-// має overflow:hidden (див. коментар біля цього класу в style.css) — тому
-// кнопки бонусної ваги використовують той самий JS-позиційований тултіп
-// (showBtnTooltip/hideBtnTooltip), що й кнопка видалення софту в цій колонці.
 function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove }) {
   const bonusSpan = document.createElement('span');
   bonusSpan.className = 'raid-bonus-controls';
@@ -1149,10 +1150,7 @@ function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove }) {
     addBtn.textContent = '+';
     addBtn.setAttribute('aria-label', 'Додати бонусну вагу');
     addBtn.addEventListener('click', () => changeBonusWeight(reserveId, 1));
-    addBtn.addEventListener('mouseenter', () => showBtnTooltip(addBtn));
-    addBtn.addEventListener('mouseleave', hideBtnTooltip);
-    addBtn.addEventListener('focus', () => showBtnTooltip(addBtn));
-    addBtn.addEventListener('blur', hideBtnTooltip);
+    bindTooltip(addBtn);
     bonusSpan.appendChild(addBtn);
   }
 
@@ -1163,16 +1161,15 @@ function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove }) {
     removeBtn.textContent = '−';
     removeBtn.setAttribute('aria-label', 'Прибрати бонусну вагу');
     removeBtn.addEventListener('click', () => changeBonusWeight(reserveId, -1));
-    removeBtn.addEventListener('mouseenter', () => showBtnTooltip(removeBtn));
-    removeBtn.addEventListener('mouseleave', hideBtnTooltip);
-    removeBtn.addEventListener('focus', () => showBtnTooltip(removeBtn));
-    removeBtn.addEventListener('blur', hideBtnTooltip);
+    bindTooltip(removeBtn);
     bonusSpan.appendChild(removeBtn);
   }
 
   return bonusSpan;
 }
 
+// Групує резерви по вазі — окремий рядок на кожну вагу, щоб не плодити
+// купу однакових чіпсів "x1" поряд з кожним іменем.
 function buildReservesByWeight(reservers, penaltyDeductions, bonusContext = null) {
   const wrap = document.createElement('div');
   wrap.className = 'raid-reserve-weight-list';
@@ -1743,8 +1740,8 @@ function renderPenaltiesTable() {
 
     const ownerName = characterOwnerNames.get(player_name);
     if (ownerName) {
-      nameEl.classList.add('tooltipped');
       nameEl.setAttribute('aria-label', ownerName);
+      bindTooltip(nameEl);
     }
 
     nameWrap.appendChild(nameEl);
