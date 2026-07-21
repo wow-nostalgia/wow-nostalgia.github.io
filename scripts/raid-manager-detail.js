@@ -1139,18 +1139,22 @@ function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove }) {
     bonusSpan.appendChild(chip);
   }
 
-  const addBtn = document.createElement('button');
-  addBtn.type = 'button';
-  addBtn.className = 'raid-transfer-btn raid-transfer-btn--add';
-  addBtn.textContent = '+';
-  addBtn.setAttribute('aria-label', 'Додати бонусну вагу');
-  addBtn.disabled = !canAdd;
-  addBtn.addEventListener('click', () => changeBonusWeight(reserveId, 1));
-  addBtn.addEventListener('mouseenter', () => showBtnTooltip(addBtn));
-  addBtn.addEventListener('mouseleave', hideBtnTooltip);
-  addBtn.addEventListener('focus', () => showBtnTooltip(addBtn));
-  addBtn.addEventListener('blur', hideBtnTooltip);
-  bonusSpan.appendChild(addBtn);
+  // Вага розподіляється по предмету лише раз - якщо вона вже додана,
+  // кнопку "+" ховаємо повністю (лишається тільки "−" для скасування),
+  // а не просто дизейблимо.
+  if (bonusWeight === 0 && canAdd) {
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'raid-transfer-btn raid-transfer-btn--add';
+    addBtn.textContent = '+';
+    addBtn.setAttribute('aria-label', 'Додати бонусну вагу');
+    addBtn.addEventListener('click', () => changeBonusWeight(reserveId, 1));
+    addBtn.addEventListener('mouseenter', () => showBtnTooltip(addBtn));
+    addBtn.addEventListener('mouseleave', hideBtnTooltip);
+    addBtn.addEventListener('focus', () => showBtnTooltip(addBtn));
+    addBtn.addEventListener('blur', hideBtnTooltip);
+    bonusSpan.appendChild(addBtn);
+  }
 
   if (canRemove) {
     const removeBtn = document.createElement('button');
