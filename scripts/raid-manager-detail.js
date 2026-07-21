@@ -1124,7 +1124,52 @@ function renderPlayersTable() {
 
 // Групує резерви по вазі — окремий рядок на кожну вагу, щоб не плодити
 // купу однакових чіпсів "x1" поряд з кожним іменем.
-function buildReservesByWeight(reservers, penaltyDeductions) {
+// Тултіп через .tooltipped (CSS ::after) тут обрізається, бо .raid-softs-col
+// має overflow:hidden (див. коментар біля цього класу в style.css) — тому
+// кнопки бонусної ваги використовують той самий JS-позиційований тултіп
+// (showBtnTooltip/hideBtnTooltip), що й кнопка видалення софту в цій колонці.
+function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove }) {
+  const bonusSpan = document.createElement('span');
+  bonusSpan.className = 'raid-bonus-controls';
+
+  if (bonusWeight > 0) {
+    const chip = document.createElement('span');
+    chip.className = 'raid-bonus-chip';
+    chip.textContent = `+${bonusWeight}`;
+    bonusSpan.appendChild(chip);
+  }
+
+  const addBtn = document.createElement('button');
+  addBtn.type = 'button';
+  addBtn.className = 'raid-transfer-btn raid-transfer-btn--add';
+  addBtn.textContent = '+';
+  addBtn.setAttribute('aria-label', 'Додати бонусну вагу');
+  addBtn.disabled = !canAdd;
+  addBtn.addEventListener('click', () => changeBonusWeight(reserveId, 1));
+  addBtn.addEventListener('mouseenter', () => showBtnTooltip(addBtn));
+  addBtn.addEventListener('mouseleave', hideBtnTooltip);
+  addBtn.addEventListener('focus', () => showBtnTooltip(addBtn));
+  addBtn.addEventListener('blur', hideBtnTooltip);
+  bonusSpan.appendChild(addBtn);
+
+  if (canRemove) {
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'raid-remove-btn';
+    removeBtn.textContent = '−';
+    removeBtn.setAttribute('aria-label', 'Прибрати бонусну вагу');
+    removeBtn.addEventListener('click', () => changeBonusWeight(reserveId, -1));
+    removeBtn.addEventListener('mouseenter', () => showBtnTooltip(removeBtn));
+    removeBtn.addEventListener('mouseleave', hideBtnTooltip);
+    removeBtn.addEventListener('focus', () => showBtnTooltip(removeBtn));
+    removeBtn.addEventListener('blur', hideBtnTooltip);
+    bonusSpan.appendChild(removeBtn);
+  }
+
+  return bonusSpan;
+}
+
+function buildReservesByWeight(reservers, penaltyDeductions, bonusContext = null) {
   const wrap = document.createElement('div');
   wrap.className = 'raid-reserve-weight-list';
 
@@ -1169,6 +1214,9 @@ function buildReservesByWeight(reservers, penaltyDeductions) {
       nameSpan.style.color = classColorMap.get(partial.name) || 'var(--color-text-faint)';
       nameSpan.textContent = partial.name;
       namesSpan.appendChild(nameSpan);
+      if (bonusContext && bonusContext.reserveId === partial.id) {
+        namesSpan.appendChild(buildBonusControls(bonusContext));
+      }
       const p = penaltiesList.find((x) => x.player_name === partial.name);
       if (p && p.roll_penalty > 0) {
         const penSpan = document.createElement('span');
@@ -1189,6 +1237,9 @@ function buildReservesByWeight(reservers, penaltyDeductions) {
       nameSpan.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
       nameSpan.textContent = name;
       namesSpan.appendChild(nameSpan);
+      if (bonusContext && bonusContext.reserveId === id) {
+        namesSpan.appendChild(buildBonusControls(bonusContext));
+      }
       if (p && p.roll_penalty > 0) {
         const penSpan = document.createElement('span');
         penSpan.className = 'penalty-value--active';
@@ -1280,51 +1331,25 @@ function renderItemsTable() {
     reserversTd.className = 'raid-softs-col';
     const reservers = reserves.filter((r) => r.item_id === item.id);
 
+    const myReserveForItem = reservers.find((r) => myNamesForItems.includes(r.player_name));
+    const bonusContext = (myReceivedForItems || myBonusGrantForItems) && currentUser && !isRaidCompleted() && myReserveForItem
+      ? {
+        reserveId: myReserveForItem.id,
+        bonusWeight: myReserveForItem.bonus_weight || 0,
+        canAdd: usedBonusForItems < bonusPoolForItems,
+        canRemove: (myReserveForItem.bonus_weight || 0) > 0
+      }
+      : null;
+
     if (raid.hidden_reserves && !isOfficerMode()) {
+      // Приховані резерви - імена інших не показуємо, тож кнопці нема біля
+      // кого стояти; додаємо її окремо, це єдиний вміст клітинки.
       reserversTd.textContent = '';
+      if (bonusContext) reserversTd.appendChild(buildBonusControls(bonusContext));
     } else if (!reservers.length) {
       reserversTd.textContent = '—';
     } else {
-      reserversTd.appendChild(buildReservesByWeight(reservers, penaltyDeductions));
-    }
-
-    if ((myReceivedForItems || myBonusGrantForItems) && currentUser && !isRaidCompleted()) {
-      const myReserveForItem = reservers.find((r) => myNamesForItems.includes(r.player_name));
-      if (myReserveForItem) {
-        const canAdd = usedBonusForItems < bonusPoolForItems;
-        const canRemove = (myReserveForItem.bonus_weight || 0) > 0;
-
-        const bonusDiv = document.createElement('div');
-        bonusDiv.className = 'raid-bonus-controls';
-
-        if (myReserveForItem.bonus_weight > 0) {
-          const chip = document.createElement('span');
-          chip.className = 'raid-bonus-chip';
-          chip.textContent = `+${myReserveForItem.bonus_weight}`;
-          bonusDiv.appendChild(chip);
-        }
-
-        const addBtn = document.createElement('button');
-        addBtn.type = 'button';
-        addBtn.className = 'raid-transfer-btn tooltipped';
-        addBtn.textContent = '+';
-        addBtn.setAttribute('aria-label', 'Додати бонусну вагу');
-        addBtn.disabled = !canAdd;
-        addBtn.addEventListener('click', () => changeBonusWeight(myReserveForItem.id, 1));
-        bonusDiv.appendChild(addBtn);
-
-        if (canRemove) {
-          const removeBtn = document.createElement('button');
-          removeBtn.type = 'button';
-          removeBtn.className = 'raid-remove-btn tooltipped';
-          removeBtn.textContent = '−';
-          removeBtn.setAttribute('aria-label', 'Прибрати бонусну вагу');
-          removeBtn.addEventListener('click', () => changeBonusWeight(myReserveForItem.id, -1));
-          bonusDiv.appendChild(removeBtn);
-        }
-
-        reserversTd.appendChild(bonusDiv);
-      }
+      reserversTd.appendChild(buildReservesByWeight(reservers, penaltyDeductions, bonusContext));
     }
 
     tr.appendChild(reserversTd);

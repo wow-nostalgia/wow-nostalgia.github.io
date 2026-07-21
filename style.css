@@ -4280,14 +4280,14 @@ body.raid-manager-detail-page .penalty-reason-text {
   border-color: var(--color-link);
 }
 
-/* Кнопка "+" бонусного (офіцерського) софту — зелена, щоб відрізнялась від
-   синьої кнопки бонусної ваги від передачі софту поряд у тій же клітинці. */
-.raid-transfer-btn--officer {
+/* Кнопка "+" самостійного розподілу бонусної ваги (Items tab) — зелена,
+   щоб виглядала як явно позитивна дія, а не як передача софту. */
+.raid-transfer-btn--add {
   border-color: rgba(34, 197, 94, 0.5);
   color: var(--color-accent-emerald);
 }
 
-.raid-transfer-btn--officer:hover {
+.raid-transfer-btn--add:hover {
   background: rgba(34, 197, 94, 0.15);
   border-color: var(--color-accent-emerald);
 }
@@ -4442,7 +4442,7 @@ body.raid-manager-detail-page .penalty-reason-text {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  margin-top: 4px;
+  margin-left: 4px;
 }
 
 .raid-bonus-chip {
