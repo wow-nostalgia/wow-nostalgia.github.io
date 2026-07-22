@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-21T00:35:06.087Z",
+  "updatedAt": "2026-07-22T00:37:58.519Z",
   "specs": [
     {
       "class": "Paladin",
@@ -1227,7 +1227,7 @@
         },
         {
           "name": "Engeltje",
-          "hps": 7300.3
+          "hps": 7304.2
         },
         {
           "name": "Equanimity",
@@ -3070,6 +3070,10 @@
           "hps": 12389.5
         },
         {
+          "name": "Waterdevice",
+          "hps": 12366.6
+        },
+        {
           "name": "Фарміла",
           "hps": 12286.3
         },
@@ -3524,10 +3528,6 @@
         {
           "name": "Хермес",
           "hps": 570.7
-        },
-        {
-          "name": "Waterdevice",
-          "hps": 552
         },
         {
           "name": "Мастерйода",
