@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-22T00:37:58.519Z",
+  "updatedAt": "2026-07-23T00:41:46.723Z",
   "specs": [
     {
       "class": "Paladin",
@@ -1814,6 +1814,10 @@
           "hps": 283.3
         },
         {
+          "name": "Metallheadp",
+          "hps": 280.9
+        },
+        {
           "name": "Kiborgg",
           "hps": 280.6
         },
@@ -2266,6 +2270,10 @@
         {
           "name": "Annabelle",
           "hps": 2568.1
+        },
+        {
+          "name": "Вагончик",
+          "hps": 2370
         },
         {
           "name": "Roon",
@@ -3550,6 +3558,10 @@
           "hps": 471.9
         },
         {
+          "name": "Акне",
+          "hps": 459.3
+        },
+        {
           "name": "Windfall",
           "hps": 431.8
         },
@@ -4284,6 +4296,10 @@
           "hps": 21901.8
         },
         {
+          "name": "Wellboy",
+          "hps": 21869.7
+        },
+        {
           "name": "Aliya",
           "hps": 21836.4
         },
@@ -4346,10 +4362,6 @@
         {
           "name": "Торпедіс",
           "hps": 20805.2
-        },
-        {
-          "name": "Wellboy",
-          "hps": 20793.3
         },
         {
           "name": "Sharur",
@@ -4490,6 +4502,10 @@
         {
           "name": "Navius",
           "hps": 18751.5
+        },
+        {
+          "name": "Буренка",
+          "hps": 18736.5
         },
         {
           "name": "Таурус",
