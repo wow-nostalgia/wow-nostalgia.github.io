@@ -1,5 +1,356 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-22--21-00--Borolgin--FreedomUA/",
+    "consumablesUrl": "https://uwu-logs.xyz/reports/26-07-22--21-00--Borolgin--FreedomUA/consumables/",
+    "date": "2026-07-22",
+    "title": "https://uwu-logs.xyz/reports/26-07-22--21-00--Borolgin--FreedomUA/",
+    "players": [
+      {
+        "name": "Reidan",
+        "total": 22,
+        "potionOfSpeed": 22,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Буренка",
+        "total": 21,
+        "potionOfSpeed": 21,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Alabay",
+        "total": 18,
+        "potionOfSpeed": 18,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Dolia",
+        "total": 17,
+        "potionOfSpeed": 17,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Hanika",
+        "total": 15,
+        "potionOfSpeed": 6,
+        "potionOfWildMagic": 9,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Borolgin",
+        "total": 11,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 11,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Simplesix",
+        "total": 11,
+        "potionOfSpeed": 11,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Вівторок",
+        "total": 6,
+        "potionOfSpeed": 6,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Спиртовик",
+        "total": 6,
+        "potionOfSpeed": 6,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Starbanner",
+        "total": 6,
+        "potionOfSpeed": 3,
+        "potionOfWildMagic": 3,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Весло",
+        "total": 5,
+        "potionOfSpeed": 4,
+        "potionOfWildMagic": 1,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Квадробер",
+        "total": 5,
+        "potionOfSpeed": 5,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Case",
+        "total": 5,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 4,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Infernsham",
+        "total": 5,
+        "potionOfSpeed": 5,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Oksana",
+        "total": 5,
+        "potionOfSpeed": 5,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Anybis",
+        "total": 4,
+        "potionOfSpeed": 4,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Илянчо",
+        "total": 3,
+        "potionOfSpeed": 2,
+        "potionOfWildMagic": 1,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Mallboro",
+        "total": 3,
+        "potionOfSpeed": 3,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Вентресс",
+        "total": 2,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 1,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Неверхууд",
+        "total": 2,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 1,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Оби",
+        "total": 2,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 2,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Томас",
+        "total": 2,
+        "potionOfSpeed": 2,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Белазик",
+        "total": 1,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Люблютебе",
+        "total": 1,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Likee",
+        "total": 1,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Zelos",
+        "total": 1,
+        "potionOfSpeed": 1,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Айронхайд",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Акне",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Антихрест",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Дейлі",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Кумсаша",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Мелісера",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Словотаунт",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Совесть",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Спот",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Тампон",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Фозі",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Abrika",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Cryheart",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Dranosh",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Dysar",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Ironclad",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Kampett",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Kartofa",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Metallheadp",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Nerta",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Powwder",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Tamadaxxl",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Victory",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      }
+    ]
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-07-21--21-14--Borolgin--FreedomUA/",
     "consumablesUrl": "https://uwu-logs.xyz/reports/26-07-21--21-14--Borolgin--FreedomUA/consumables/",
     "date": "2026-07-21",
