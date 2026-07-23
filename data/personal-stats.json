@@ -1,5 +1,371 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-23--20-00--Borolgin--FreedomUA/",
+    "date": "2026-07-23",
+    "boss": "Sindragosa",
+    "durationSeconds": 290.18,
+    "players": [
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 13196.3
+      },
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 13128.1
+      },
+      {
+        "name": "Kubita",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 11763.7
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 11512.4
+      },
+      {
+        "name": "Авжежжекагей",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 11454.4
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 11345.5
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 10785.9
+      },
+      {
+        "name": "Reina",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 10277.1
+      },
+      {
+        "name": "Infernsham",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "icon": "spell_nature_lightning",
+        "dps": 10249.5
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 10190.5
+      },
+      {
+        "name": "Reidan",
+        "class": "Mage",
+        "spec": "Arcane",
+        "icon": "spell_holy_magicalsentry",
+        "dps": 10055.2
+      },
+      {
+        "name": "Shleyf",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 9681.9
+      },
+      {
+        "name": "Kfln",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 9558.4
+      },
+      {
+        "name": "Kappalini",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 9480.3
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 8316.9
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "icon": "spell_nature_lightningshield",
+        "dps": 7509
+      },
+      {
+        "name": "Вентресс",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 6644.1
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 3253.2
+      },
+      {
+        "name": "Simplesix",
+        "class": "Paladin",
+        "spec": "Unknown",
+        "icon": "class_paladin",
+        "dps": 2120.6
+      },
+      {
+        "name": "Kartofa",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 1053.5
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 157.6
+      },
+      {
+        "name": "Goliafka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 112.4
+      },
+      {
+        "name": "Hanika",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "dps": 82
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      },
+      {
+        "name": "Rshamka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-07-23--20-00--Borolgin--FreedomUA/",
+    "date": "2026-07-23",
+    "boss": "The Lich King",
+    "durationSeconds": 691.718,
+    "players": [
+      {
+        "name": "Melaniaocean",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 13224.6
+      },
+      {
+        "name": "Reina",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 12076
+      },
+      {
+        "name": "Авжежжекагей",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 11348.3
+      },
+      {
+        "name": "Infernsham",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "icon": "spell_nature_lightning",
+        "dps": 11294.3
+      },
+      {
+        "name": "Ветала",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 11292.4
+      },
+      {
+        "name": "Kappalini",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 10874.1
+      },
+      {
+        "name": "Quadrobeer",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 10710.3
+      },
+      {
+        "name": "Mallboro",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 10510
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 10356.3
+      },
+      {
+        "name": "Shleyf",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 10103.3
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 9972.3
+      },
+      {
+        "name": "Alabay",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 9782.5
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 9659.8
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "icon": "spell_nature_lightningshield",
+        "dps": 8952.1
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 8935.3
+      },
+      {
+        "name": "Reidan",
+        "class": "Mage",
+        "spec": "Arcane",
+        "icon": "spell_holy_magicalsentry",
+        "dps": 8549.1
+      },
+      {
+        "name": "Kfln",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 8435.9
+      },
+      {
+        "name": "Havroshka",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 7691
+      },
+      {
+        "name": "Вентресс",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 6226.1
+      },
+      {
+        "name": "Simplesix",
+        "class": "Paladin",
+        "spec": "Unknown",
+        "icon": "class_paladin",
+        "dps": 2487.7
+      },
+      {
+        "name": "Kubita",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "dps": 1940.1
+      },
+      {
+        "name": "Трахер",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 191.4
+      },
+      {
+        "name": "Hanika",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "dps": 125.6
+      },
+      {
+        "name": "Rshamka",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 0
+      },
+      {
+        "name": "Iki",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      }
+    ]
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-07-22--21-00--Borolgin--FreedomUA/",
     "date": "2026-07-22",
     "boss": "Lord Marrowgar",
