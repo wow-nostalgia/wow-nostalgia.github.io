@@ -2285,10 +2285,6 @@ body.shard-queue-page .raid-table {
   border-collapse: collapse;
 }
 
-body.shard-queue-page .raid-table td select {
-  margin-right: 0.4rem;
-}
-
 .raid-pagination {
   display: flex;
   align-items: center;

@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Черга на уламки та кров</title>
-  <link rel="stylesheet" href="../style.css?v=104">
+  <link rel="stylesheet" href="../style.css?v=105">
 </head>
 
 <body class="shard-queue-page">
@@ -98,6 +98,22 @@
       </div>
     </div>
 
+    <div id="moveDayModal" class="raid-modal" hidden>
+      <div class="raid-modal-backdrop" id="moveDayModalBackdrop"></div>
+      <div class="raid-modal-box">
+        <h3 class="raid-modal-title">Перенести на інший день</h3>
+        <p class="raid-modal-text" id="moveDayModalText"></p>
+        <div class="raid-modal-field">
+          <label for="moveDayModalSelect">День</label>
+          <select id="moveDayModalSelect"></select>
+        </div>
+        <div class="raid-modal-actions">
+          <button type="button" id="moveDayModalConfirmBtn" class="compare-btn">Перенести</button>
+          <button type="button" id="moveDayModalCancelBtn" class="link-button-std">Скасувати</button>
+        </div>
+      </div>
+    </div>
+
     <div id="confirmModal" class="raid-modal" hidden>
       <div class="raid-modal-backdrop" id="confirmModalBackdrop"></div>
       <div class="raid-modal-box">
@@ -115,7 +131,7 @@
   <script src="../scripts/auth-shared.js?v=9"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=5"></script>
-  <script src="../scripts/shard-queue.js?v=7"></script>
+  <script src="../scripts/shard-queue.js?v=8"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

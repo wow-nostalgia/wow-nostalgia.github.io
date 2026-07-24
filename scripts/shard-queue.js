@@ -20,6 +20,13 @@ const renameDayInput = document.getElementById('renameDayInput');
 const renameDayModalStatus = document.getElementById('renameDayModalStatus');
 const renameDayCancelBtn = document.getElementById('renameDayCancelBtn');
 
+const moveDayModal = document.getElementById('moveDayModal');
+const moveDayModalBackdrop = document.getElementById('moveDayModalBackdrop');
+const moveDayModalText = document.getElementById('moveDayModalText');
+const moveDayModalSelect = document.getElementById('moveDayModalSelect');
+const moveDayModalConfirmBtn = document.getElementById('moveDayModalConfirmBtn');
+const moveDayModalCancelBtn = document.getElementById('moveDayModalCancelBtn');
+
 const confirmModal = document.getElementById('confirmModal');
 const confirmModalBackdrop = document.getElementById('confirmModalBackdrop');
 const confirmModalTitle = document.getElementById('confirmModalTitle');
@@ -412,7 +419,7 @@ function renderDayView(dayId) {
   const day = days.find((d) => d.id === dayId);
   if (!day) return;
 
-  ['blood', 'shard'].forEach((resourceType) => {
+  ['shard', 'blood'].forEach((resourceType) => {
     queueContent.appendChild(buildResourceBlock(day, resourceType));
   });
 }
@@ -452,7 +459,7 @@ function buildResourceBlock(day, resourceType) {
   table.className = 'raid-table';
 
   const thead = document.createElement('thead');
-  thead.innerHTML = '<tr><th></th><th>№</th><th>Ім’я</th><th>Прогрес</th><th>Перенести</th><th></th></tr>';
+  thead.innerHTML = '<tr><th></th><th>№</th><th>Ім’я</th><th>Прогрес</th><th>Перенести на інший день</th><th></th></tr>';
   table.appendChild(thead);
 
   const tbody = document.createElement('tbody');
@@ -512,25 +519,13 @@ function buildResourceBlock(day, resourceType) {
     tr.appendChild(progressTd);
 
     const moveTd = document.createElement('td');
-    if (canEdit) {
-      const otherDays = days.filter((d) => d.is_active && d.id !== day.id);
-      if (otherDays.length) {
-        const select = document.createElement('select');
-        otherDays.forEach((d) => {
-          const opt = document.createElement('option');
-          opt.value = String(d.id);
-          opt.textContent = d.label;
-          select.appendChild(opt);
-        });
-        moveTd.appendChild(select);
-
-        const moveBtn = document.createElement('button');
-        moveBtn.type = 'button';
-        moveBtn.className = 'link-button-std';
-        moveBtn.textContent = 'OK';
-        moveBtn.addEventListener('click', () => moveEntryDay(entry, Number(select.value)));
-        moveTd.appendChild(moveBtn);
-      }
+    if (canEdit && days.some((d) => d.is_active && d.id !== day.id)) {
+      const chooseDayBtn = document.createElement('button');
+      chooseDayBtn.type = 'button';
+      chooseDayBtn.className = 'link-button-std';
+      chooseDayBtn.textContent = 'Обрати день';
+      chooseDayBtn.addEventListener('click', () => openMoveDayModal(entry, day));
+      moveTd.appendChild(chooseDayBtn);
     }
     tr.appendChild(moveTd);
 
@@ -708,7 +703,7 @@ function enableDragReorder(tbody, dayId, resourceType) {
 }
 
 function renderBacklogView() {
-  ['blood', 'shard'].forEach((resourceType) => {
+  ['shard', 'blood'].forEach((resourceType) => {
     const section = document.createElement('section');
     section.className = 'shard-queue-resource-block shard-queue-resource-block--backlog';
 
@@ -818,19 +813,43 @@ async function performMoveEntryDay(entry, targetDayId) {
   }
 }
 
-function moveEntryDay(entry, targetDayId) {
-  if (!isOfficer()) {
-    const targetLabel = dayLabel(targetDayId);
-    showConfirmModal({
-      title: 'Перенести персонажа',
-      text: `Персонажа буде перенесено в кінець черги дня "${targetLabel}". Продовжити?`,
-      confirmLabel: 'Перенести',
-      onConfirm: () => performMoveEntryDay(entry, targetDayId)
-    });
-    return;
-  }
-  performMoveEntryDay(entry, targetDayId);
+function openMoveDayModal(entry, day) {
+  const otherDays = days.filter((d) => d.is_active && d.id !== day.id);
+  if (!otherDays.length) return;
+
+  moveDayModalSelect.innerHTML = '';
+  otherDays.forEach((d) => {
+    const opt = document.createElement('option');
+    opt.value = String(d.id);
+    opt.textContent = d.label;
+    moveDayModalSelect.appendChild(opt);
+  });
+  moveDayModalText.textContent = isOfficer()
+    ? ''
+    : 'Персонажа буде перенесено в кінець черги обраного дня.';
+  moveDayModal._entry = entry;
+  moveDayModal.hidden = false;
 }
+
+function hideMoveDayModal() {
+  moveDayModal.hidden = true;
+  moveDayModal._entry = null;
+}
+
+moveDayModalConfirmBtn.addEventListener('click', async () => {
+  const entry = moveDayModal._entry;
+  if (!entry) return;
+  const targetDayId = Number(moveDayModalSelect.value);
+  moveDayModalConfirmBtn.disabled = true;
+  try {
+    await performMoveEntryDay(entry, targetDayId);
+  } finally {
+    moveDayModalConfirmBtn.disabled = false;
+  }
+  hideMoveDayModal();
+});
+moveDayModalCancelBtn.addEventListener('click', hideMoveDayModal);
+moveDayModalBackdrop.addEventListener('click', hideMoveDayModal);
 
 async function performDeleteEntry(entry) {
   try {
