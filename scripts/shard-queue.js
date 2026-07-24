@@ -563,7 +563,11 @@ function buildAddForms(day, resourceType) {
   const wrap = document.createElement('div');
   wrap.className = 'shard-queue-add-forms';
 
-  const eligibleCharacters = userCharacters.filter(isFarmEligibleOrUnknownClass);
+  const alreadyQueuedNames = new Set(
+    entries.filter((e) => e.resource_type === resourceType).map((e) => e.player_name)
+  );
+  const classEligibleCharacters = userCharacters.filter(isFarmEligibleOrUnknownClass);
+  const eligibleCharacters = classEligibleCharacters.filter((name) => !alreadyQueuedNames.has(name));
 
   if (user && eligibleCharacters.length) {
     const form = document.createElement('form');
@@ -604,10 +608,15 @@ function buildAddForms(day, resourceType) {
     hint.className = 'shard-queue-hint';
     hint.innerHTML = 'Щоб записатись самому, спершу додай персонажа на сторінці <a href="../account/">"Акаунт"</a>.';
     wrap.appendChild(hint);
-  } else if (user && userCharacters.length && !eligibleCharacters.length) {
+  } else if (user && userCharacters.length && !classEligibleCharacters.length) {
     const hint = document.createElement('p');
     hint.className = 'shard-queue-hint';
     hint.textContent = 'Фармити уламки й кров можуть лише Воїни, Лицарі смерті та Паладини — серед твоїх персонажів таких немає.';
+    wrap.appendChild(hint);
+  } else if (user && classEligibleCharacters.length && !eligibleCharacters.length) {
+    const hint = document.createElement('p');
+    hint.className = 'shard-queue-hint';
+    hint.textContent = `Усі твої відповідні персонажі вже в черзі на ${RESOURCE_LABELS_LOWER[resourceType]}.`;
     wrap.appendChild(hint);
   }
 
