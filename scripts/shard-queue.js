@@ -5,6 +5,8 @@ const RESOURCE_CAPS = { shard: 50, blood: 2 };
 const RESOURCE_LABELS = { blood: 'Кров', shard: 'Уламки' };
 const RESOURCE_LABELS_LOWER = { blood: 'кров', shard: 'уламки' };
 const WEEKDAYS = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', "П'ятниця", 'Субота', 'Неділя'];
+// Фармити уламки/кров можуть лише танкові класи — так влаштований сам фарм.
+const FARM_ELIGIBLE_CLASSES = new Set(['Warrior', 'Death Knight', 'Paladin']);
 
 const loggedOutHint = document.getElementById('loggedOutHint');
 const dayTabs = document.getElementById('dayTabs');
@@ -17,8 +19,10 @@ let entries = [];
 let userCharacters = [];
 let userCharacterNamesLower = new Set();
 let rosterNames = [];
+let farmEligibleRosterNames = [];
 let guildMemberNames = new Set();
 let classColorMap = new Map();
+let nameClassMap = new Map();
 let activeTab = null; // { type: 'day', dayId } | { type: 'backlog' } | { type: 'settings' }
 let dayManageStatusEl = null;
 
@@ -53,6 +57,10 @@ function canEditEntry(entry) {
   return isOfficer() || isOwnCharacter(entry.player_name);
 }
 
+function isFarmEligible(name) {
+  return FARM_ELIGIBLE_CLASSES.has(nameClassMap.get(name));
+}
+
 function dayLabel(dayId) {
   return days.find((d) => d.id === dayId)?.label || '?';
 }
@@ -71,8 +79,14 @@ async function loadRosterSources() {
     }
     if (guildDataRes.ok) {
       const guildData = await guildDataRes.json();
-      rosterNames = [...new Set((guildData.rows || []).map((row) => row.name))].sort((a, b) => a.localeCompare(b, 'uk'));
-      classColorMap = buildClassColorMap(guildData.rows || []);
+      const rows = guildData.rows || [];
+      rosterNames = [...new Set(rows.map((row) => row.name))].sort((a, b) => a.localeCompare(b, 'uk'));
+      classColorMap = buildClassColorMap(rows);
+      nameClassMap = new Map();
+      for (const row of rows) {
+        if (!nameClassMap.has(row.name)) nameClassMap.set(row.name, row.class);
+      }
+      farmEligibleRosterNames = rosterNames.filter((name) => FARM_ELIGIBLE_CLASSES.has(nameClassMap.get(name)));
     }
   } catch (err) {
     console.error(err);
@@ -485,7 +499,7 @@ function buildAddForms(day, resourceType) {
     btn.textContent = 'Додати';
     form.appendChild(btn);
 
-    setupNameAutocomplete(input, list, rosterNames);
+    setupNameAutocomplete(input, list, farmEligibleRosterNames);
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const name = input.value.trim();
@@ -496,12 +510,14 @@ function buildAddForms(day, resourceType) {
     wrap.appendChild(form);
   }
 
-  if (user && userCharacters.length) {
+  const eligibleCharacters = userCharacters.filter(isFarmEligible);
+
+  if (user && eligibleCharacters.length) {
     const form = document.createElement('form');
     form.className = 'account-form';
 
     const select = document.createElement('select');
-    userCharacters.forEach((name) => {
+    eligibleCharacters.forEach((name) => {
       const opt = document.createElement('option');
       opt.value = name;
       opt.textContent = name;
@@ -525,6 +541,11 @@ function buildAddForms(day, resourceType) {
     const hint = document.createElement('p');
     hint.className = 'shard-queue-hint';
     hint.innerHTML = 'Щоб записатись самому, спершу додай персонажа на сторінці <a href="../account/">"Акаунт"</a>.';
+    wrap.appendChild(hint);
+  } else if (user && userCharacters.length && !eligibleCharacters.length) {
+    const hint = document.createElement('p');
+    hint.className = 'shard-queue-hint';
+    hint.textContent = 'Фармити уламки й кров можуть лише Воїни, Лицарі смерті та Паладини — серед твоїх персонажів таких немає.';
     wrap.appendChild(hint);
   }
 
