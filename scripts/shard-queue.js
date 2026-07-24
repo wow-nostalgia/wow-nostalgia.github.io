@@ -651,8 +651,10 @@ function buildAddForms(day, resourceType) {
       const opt = document.createElement('option');
       opt.value = name;
       opt.textContent = name;
-      const color = classColorMap.get(name);
-      if (color) opt.style.color = color;
+      // Явно ставимо колір навіть за відсутності класу — інакше <option>
+      // успадковує style.color з <select>, який ми фарбуємо в колір
+      // поточно обраного персонажа (див. syncSelectColor нижче).
+      opt.style.color = classColorMap.get(name) || 'var(--color-text-strong)';
       select.appendChild(opt);
     });
     const syncSelectColor = () => {
