@@ -95,7 +95,7 @@ async function loadShardQueueDays() {
 }
 
 async function loadShardQueueEntries() {
-  const res = await fetch(`${AUTH_API_BASE}/shard-queue`, { headers: authHeaders() });
+  const res = await fetch(`${AUTH_API_BASE}/shard-queue/entries`, { headers: authHeaders() });
   if (!res.ok) throw new Error(await readErrorMessage(res));
   entries = await res.json();
 }
