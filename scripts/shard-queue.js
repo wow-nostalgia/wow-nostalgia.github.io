@@ -616,7 +616,7 @@ function buildAddForms(day, resourceType) {
     const input = document.createElement('input');
     input.type = 'text';
     input.autocomplete = 'off';
-    input.placeholder = "Ім'я персонажа (гільдія/легіон)";
+    input.placeholder = "Ім'я персонажа";
     const list = document.createElement('div');
     list.className = 'raid-autocomplete-list';
     inputWrap.appendChild(input);
