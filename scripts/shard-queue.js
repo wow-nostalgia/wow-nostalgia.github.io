@@ -76,6 +76,14 @@ function isFarmEligible(name) {
   return FARM_ELIGIBLE_CLASSES.has(nameClassMap.get(name));
 }
 
+// Для власних персонажів клас відомий лише якщо вони вже відвідали хоч
+// один рейд (guild-data.json будується з рейд-логів) — новий/невідвіданий
+// альт трактуємо як дозволений, а не ховаємо через відсутність даних.
+function isFarmEligibleOrUnknownClass(name) {
+  const cls = nameClassMap.get(name);
+  return !cls || FARM_ELIGIBLE_CLASSES.has(cls);
+}
+
 function dayLabel(dayId) {
   return days.find((d) => d.id === dayId)?.label || '?';
 }
@@ -589,7 +597,7 @@ function buildAddForms(day, resourceType) {
     wrap.appendChild(form);
   }
 
-  const eligibleCharacters = userCharacters.filter(isFarmEligible);
+  const eligibleCharacters = userCharacters.filter(isFarmEligibleOrUnknownClass);
 
   if (user && eligibleCharacters.length) {
     const form = document.createElement('form');
