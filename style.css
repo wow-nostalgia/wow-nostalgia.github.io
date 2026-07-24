@@ -4571,6 +4571,27 @@ body.shard-queue-page .shard-queue-step-btn {
   font-weight: var(--font-weight-semibold);
 }
 
+body.shard-queue-page .shard-queue-progress-input {
+  width: 3.2rem;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.88);
+  color: var(--color-text-strong);
+  font-size: var(--font-size-sm);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+body.shard-queue-page .shard-queue-progress-input:hover {
+  border-color: rgba(123, 170, 245, 0.55);
+}
+
+body.shard-queue-page .shard-queue-progress-input:focus {
+  border-color: var(--color-link);
+  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+}
+
 body.shard-queue-page .shard-queue-add-forms {
   display: flex;
   flex-wrap: wrap;

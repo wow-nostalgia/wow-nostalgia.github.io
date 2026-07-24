@@ -496,10 +496,30 @@ function buildResourceBlock(day, resourceType) {
     tr.appendChild(nameTd);
 
     const progressTd = document.createElement('td');
-    const progressLabel = document.createElement('span');
-    progressLabel.textContent = `${entry.progress}/${cap}`;
-    progressTd.appendChild(progressLabel);
     if (canEdit) {
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.className = 'shard-queue-progress-input';
+      input.min = '0';
+      input.max = String(cap);
+      input.value = String(entry.progress);
+      const commit = () => {
+        let val = Math.round(Number(input.value));
+        if (!Number.isFinite(val)) val = entry.progress;
+        val = Math.max(0, Math.min(cap, val));
+        if (val !== entry.progress) updateProgress(entry.id, val);
+        else input.value = String(entry.progress);
+      };
+      input.addEventListener('change', commit);
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') input.blur();
+      });
+      progressTd.appendChild(input);
+
+      const capLabel = document.createElement('span');
+      capLabel.textContent = `/${cap}`;
+      progressTd.appendChild(capLabel);
+
       const minusBtn = document.createElement('button');
       minusBtn.type = 'button';
       minusBtn.className = 'link-button-std shard-queue-step-btn';
@@ -515,6 +535,10 @@ function buildResourceBlock(day, resourceType) {
       plusBtn.disabled = entry.progress >= cap;
       plusBtn.addEventListener('click', () => updateProgress(entry.id, entry.progress + 1));
       progressTd.appendChild(plusBtn);
+    } else {
+      const progressLabel = document.createElement('span');
+      progressLabel.textContent = `${entry.progress}/${cap}`;
+      progressTd.appendChild(progressLabel);
     }
     tr.appendChild(progressTd);
 
