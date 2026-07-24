@@ -4501,6 +4501,9 @@ body.shard-queue-page .shard-queue-manage {
 
 body.shard-queue-page .shard-queue-manage h2 {
   margin-top: 0;
+  font-size: var(--font-title-sm);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-strong);
 }
 
 body.shard-queue-page .shard-queue-manage-list {
@@ -4533,7 +4536,10 @@ body.shard-queue-page .shard-queue-resource-block {
 }
 
 body.shard-queue-page .shard-queue-resource-block h2 {
-  margin-bottom: var(--space-2);
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-title-sm);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-strong);
 }
 
 body.shard-queue-page .shard-queue-resource-block--backlog {
