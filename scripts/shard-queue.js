@@ -286,11 +286,21 @@ function renderSettingsView() {
     label.textContent = day.is_active ? day.label : `${day.label} (анульовано)`;
     li.appendChild(label);
 
+    const hasActiveEntries = day.is_active && entries.some(
+      (e) => e.day_id === day.id && e.progress < RESOURCE_CAPS[e.resource_type]
+    );
+
     const toggleBtn = document.createElement('button');
     toggleBtn.type = 'button';
     toggleBtn.className = 'link-button-std' + (day.is_active ? ' link-button-std--danger' : '');
     toggleBtn.textContent = day.is_active ? 'Видалити' : 'Повернути';
-    toggleBtn.addEventListener('click', () => toggleDayActive(day));
+    if (hasActiveEntries) {
+      toggleBtn.disabled = true;
+      toggleBtn.setAttribute('aria-label', 'У черзі цього дня ще є гравці — спершу перенеси їх на інший день');
+      bindTooltip(toggleBtn);
+    } else {
+      toggleBtn.addEventListener('click', () => toggleDayActive(day));
+    }
     li.appendChild(toggleBtn);
 
     list.appendChild(li);
