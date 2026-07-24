@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-23T00:41:46.723Z",
+  "updatedAt": "2026-07-24T00:41:00.075Z",
   "specs": [
     {
       "class": "Paladin",
@@ -4632,6 +4632,10 @@
           "hps": 15415.4
         },
         {
+          "name": "Kilimanjaro",
+          "hps": 15414.1
+        },
+        {
           "name": "Vkutok",
           "hps": 15370.6
         },
@@ -4698,10 +4702,6 @@
         {
           "name": "Jerichon",
           "hps": 12162.3
-        },
-        {
-          "name": "Kilimanjaro",
-          "hps": 12090.2
         },
         {
           "name": "Lazyspirit",
