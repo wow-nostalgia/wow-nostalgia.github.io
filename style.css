@@ -3826,14 +3826,16 @@ body.shard-queue-page .account-form input[type="text"]:focus {
 }
 
 body.account-page #addCharacterForm button[type="submit"].compare-btn,
-body.account-page #defaultOfficerAddBtn.compare-btn {
+body.account-page #defaultOfficerAddBtn.compare-btn,
+body.shard-queue-page .shard-queue-self-add-btn.compare-btn {
   background: var(--color-success-strong);
   border-color: var(--color-success-strong);
   color: var(--color-on-accent);
 }
 
 body.account-page #addCharacterForm button[type="submit"].compare-btn:hover:not(:disabled),
-body.account-page #defaultOfficerAddBtn.compare-btn:hover:not(:disabled) {
+body.account-page #defaultOfficerAddBtn.compare-btn:hover:not(:disabled),
+body.shard-queue-page .shard-queue-self-add-btn.compare-btn:hover:not(:disabled) {
   background: var(--color-success-strong-hover);
   border-color: var(--color-success-strong-hover);
 }

@@ -578,7 +578,7 @@ function buildAddForms(day, resourceType) {
     const btn = document.createElement('button');
     btn.type = 'submit';
     btn.className = 'compare-btn';
-    btn.textContent = 'Додати';
+    btn.textContent = 'Додати персонажа';
     form.appendChild(btn);
 
     setupNameAutocomplete(input, list, farmEligibleRosterNames);
@@ -609,8 +609,8 @@ function buildAddForms(day, resourceType) {
 
     const btn = document.createElement('button');
     btn.type = 'submit';
-    btn.className = 'compare-btn';
-    btn.textContent = 'Записатись самому';
+    btn.className = 'compare-btn shard-queue-self-add-btn';
+    btn.textContent = 'Додати';
     form.appendChild(btn);
 
     form.addEventListener('submit', (event) => {
