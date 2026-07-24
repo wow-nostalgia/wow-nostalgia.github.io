@@ -289,7 +289,7 @@ function renderSettingsView() {
     const toggleBtn = document.createElement('button');
     toggleBtn.type = 'button';
     toggleBtn.className = 'link-button-std' + (day.is_active ? ' link-button-std--danger' : '');
-    toggleBtn.textContent = day.is_active ? 'Анулювати' : 'Повернути';
+    toggleBtn.textContent = day.is_active ? 'Видалити' : 'Повернути';
     toggleBtn.addEventListener('click', () => toggleDayActive(day));
     li.appendChild(toggleBtn);
 
@@ -339,9 +339,9 @@ function toggleDayActive(day) {
     return;
   }
   showConfirmModal({
-    title: 'Анулювати день',
-    text: `Анулювати день "${day.label}"? Він зникне з активних вкладок для всіх.`,
-    confirmLabel: 'Анулювати',
+    title: 'Видалити день',
+    text: `Видалити день "${day.label}"? Він зникне з активних вкладок для всіх.`,
+    confirmLabel: 'Видалити',
     onConfirm: () => performToggleDayActive(day)
   });
 }
