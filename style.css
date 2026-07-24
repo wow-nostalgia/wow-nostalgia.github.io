@@ -4567,12 +4567,6 @@ body.shard-queue-page tr.is-dragging {
   opacity: 0.4;
 }
 
-body.shard-queue-page .shard-queue-step-btn {
-  padding: 0.1rem 0.45rem;
-  margin-left: var(--space-2);
-  font-weight: var(--font-weight-semibold);
-}
-
 body.shard-queue-page .shard-queue-progress-input {
   width: 3.2rem;
   padding: 0.3rem 0.4rem;

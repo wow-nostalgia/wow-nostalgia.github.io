@@ -559,22 +559,6 @@ function buildResourceBlock(day, resourceType) {
       const capLabel = document.createElement('span');
       capLabel.textContent = `/${cap}`;
       progressTd.appendChild(capLabel);
-
-      const minusBtn = document.createElement('button');
-      minusBtn.type = 'button';
-      minusBtn.className = 'link-button-std shard-queue-step-btn';
-      minusBtn.textContent = '−';
-      minusBtn.disabled = entry.progress <= 0;
-      minusBtn.addEventListener('click', () => updateProgress(entry.id, entry.progress - 1));
-      progressTd.appendChild(minusBtn);
-
-      const plusBtn = document.createElement('button');
-      plusBtn.type = 'button';
-      plusBtn.className = 'link-button-std shard-queue-step-btn';
-      plusBtn.textContent = '+';
-      plusBtn.disabled = entry.progress >= cap;
-      plusBtn.addEventListener('click', () => updateProgress(entry.id, entry.progress + 1));
-      progressTd.appendChild(plusBtn);
     } else {
       const progressLabel = document.createElement('span');
       progressLabel.textContent = `${entry.progress}/${cap}`;
