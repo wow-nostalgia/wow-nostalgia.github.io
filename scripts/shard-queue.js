@@ -756,7 +756,32 @@ function renderBacklogView() {
       tr.appendChild(nameTd);
 
       const progressTd = document.createElement('td');
-      progressTd.textContent = `${entry.progress}/${cap}`;
+      if (canEditEntry(entry)) {
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.className = 'shard-queue-progress-input';
+        input.min = '0';
+        input.max = String(cap);
+        input.value = String(entry.progress);
+        const commit = () => {
+          let val = Math.round(Number(input.value));
+          if (!Number.isFinite(val)) val = entry.progress;
+          val = Math.max(0, Math.min(cap, val));
+          if (val !== entry.progress) updateProgress(entry.id, val);
+          else input.value = String(entry.progress);
+        };
+        input.addEventListener('change', commit);
+        input.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') input.blur();
+        });
+        progressTd.appendChild(input);
+
+        const capLabel = document.createElement('span');
+        capLabel.textContent = `/${cap}`;
+        progressTd.appendChild(capLabel);
+      } else {
+        progressTd.textContent = `${entry.progress}/${cap}`;
+      }
       tr.appendChild(progressTd);
 
       const dayTd = document.createElement('td');
