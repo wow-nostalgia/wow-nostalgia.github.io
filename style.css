@@ -3344,7 +3344,8 @@ body.raid-manager-detail-page #raidItemTooltip .moneycopper { color: var(--wow-m
 /* position: fixed — той самий прийом, що #raidItemTooltip: позиціонується
    відносно viewport через JS, тому не обрізається overflow:hidden
    на .raid-softs-col (де звичайний .tooltipped::after обрізався б). */
-body.raid-manager-detail-page #raidBtnTooltip {
+body.raid-manager-detail-page #raidBtnTooltip,
+body.shard-queue-page #raidBtnTooltip {
   position: fixed;
   z-index: var(--z-tooltip-local);
   padding: 0.25rem 0.6rem;
@@ -3359,7 +3360,8 @@ body.raid-manager-detail-page #raidBtnTooltip {
   pointer-events: none;
 }
 
-body.raid-manager-detail-page #raidBtnTooltip[hidden] {
+body.raid-manager-detail-page #raidBtnTooltip[hidden],
+body.shard-queue-page #raidBtnTooltip[hidden] {
   display: none;
 }
 

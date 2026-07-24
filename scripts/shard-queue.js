@@ -12,6 +12,7 @@ const loggedOutHint = document.getElementById('loggedOutHint');
 const dayTabs = document.getElementById('dayTabs');
 const queueContent = document.getElementById('queueContent');
 const queueStatus = document.getElementById('queueStatus');
+const btnTooltipEl = document.getElementById('raidBtnTooltip');
 
 const renameDayModal = document.getElementById('renameDayModal');
 const renameDayModalBackdrop = document.getElementById('renameDayModalBackdrop');
@@ -45,6 +46,7 @@ let farmEligibleRosterNames = [];
 let guildMemberNames = new Set();
 let classColorMap = new Map();
 let nameClassMap = new Map();
+let characterOwnerNames = new Map();
 let activeTab = null; // { type: 'day', dayId } | { type: 'backlog' } | { type: 'settings' }
 let dayManageStatusEl = null;
 
@@ -159,9 +161,10 @@ renameDayModalBackdrop.addEventListener('click', hideRenameDayModal);
 
 async function loadRosterSources() {
   try {
-    const [playersRes, guildDataRes] = await Promise.all([
+    const [playersRes, guildDataRes, ownersRes] = await Promise.all([
       fetch('/data/players.json?t=' + Date.now()),
-      fetch('/data/guild-data.json?t=' + Date.now())
+      fetch('/data/guild-data.json?t=' + Date.now()),
+      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null)
     ]);
     if (playersRes.ok) {
       const players = await playersRes.json();
@@ -177,6 +180,9 @@ async function loadRosterSources() {
         if (!nameClassMap.has(row.name)) nameClassMap.set(row.name, row.class);
       }
       farmEligibleRosterNames = rosterNames.filter((name) => FARM_ELIGIBLE_CLASSES.has(nameClassMap.get(name)));
+    }
+    if (ownersRes?.ok) {
+      characterOwnerNames = new Map(Object.entries(await ownersRes.json()));
     }
   } catch (err) {
     console.error(err);
@@ -424,6 +430,33 @@ function renderDayView(dayId) {
   });
 }
 
+// CSS .tooltipped (::after) обрізається всередині .ranking-table-wrap
+// (overflow-x:auto змушує браузер обчислити overflow-y як auto теж) —
+// той самий фікс, що вже є в raid-manager-detail.js.
+function showBtnTooltip(el) {
+  btnTooltipEl.textContent = el.getAttribute('aria-label') || '';
+  btnTooltipEl.hidden = false;
+  const rect = el.getBoundingClientRect();
+  const tipRect = btnTooltipEl.getBoundingClientRect();
+  let x = rect.left + rect.width / 2 - tipRect.width / 2;
+  let y = rect.top - tipRect.height - 8;
+  if (y < 0) y = rect.bottom + 8;
+  x = Math.max(4, Math.min(x, window.innerWidth - tipRect.width - 4));
+  btnTooltipEl.style.left = `${x}px`;
+  btnTooltipEl.style.top = `${y}px`;
+}
+
+function hideBtnTooltip() {
+  btnTooltipEl.hidden = true;
+}
+
+function bindTooltip(el) {
+  el.addEventListener('mouseenter', () => showBtnTooltip(el));
+  el.addEventListener('mouseleave', hideBtnTooltip);
+  el.addEventListener('focus', () => showBtnTooltip(el));
+  el.addEventListener('blur', hideBtnTooltip);
+}
+
 function playerNameCell(name) {
   const wrap = document.createElement('span');
   wrap.className = 'shard-queue-name-cell';
@@ -439,6 +472,13 @@ function playerNameCell(name) {
   } else {
     wrap.appendChild(document.createTextNode(name));
   }
+
+  const ownerName = characterOwnerNames.get(name);
+  if (ownerName) {
+    wrap.setAttribute('aria-label', ownerName);
+    bindTooltip(wrap);
+  }
+
   return wrap;
 }
 
