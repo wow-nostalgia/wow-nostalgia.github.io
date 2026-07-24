@@ -607,39 +607,6 @@ function buildAddForms(day, resourceType) {
   const wrap = document.createElement('div');
   wrap.className = 'shard-queue-add-forms';
 
-  if (isOfficer()) {
-    const form = document.createElement('form');
-    form.className = 'account-form';
-
-    const inputWrap = document.createElement('div');
-    inputWrap.className = 'raid-input-wrap';
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.autocomplete = 'off';
-    input.placeholder = "Ім'я персонажа";
-    const list = document.createElement('div');
-    list.className = 'raid-autocomplete-list';
-    inputWrap.appendChild(input);
-    inputWrap.appendChild(list);
-    form.appendChild(inputWrap);
-
-    const btn = document.createElement('button');
-    btn.type = 'submit';
-    btn.className = 'compare-btn';
-    btn.textContent = 'Додати персонажа';
-    form.appendChild(btn);
-
-    setupNameAutocomplete(input, list, farmEligibleRosterNames);
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const name = input.value.trim();
-      if (!name) return;
-      createEntry(day.id, resourceType, name, form);
-    });
-
-    wrap.appendChild(form);
-  }
-
   const eligibleCharacters = userCharacters.filter(isFarmEligibleOrUnknownClass);
 
   if (user && eligibleCharacters.length) {
@@ -686,6 +653,39 @@ function buildAddForms(day, resourceType) {
     hint.className = 'shard-queue-hint';
     hint.textContent = 'Фармити уламки й кров можуть лише Воїни, Лицарі смерті та Паладини — серед твоїх персонажів таких немає.';
     wrap.appendChild(hint);
+  }
+
+  if (isOfficer()) {
+    const form = document.createElement('form');
+    form.className = 'account-form';
+
+    const inputWrap = document.createElement('div');
+    inputWrap.className = 'raid-input-wrap';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.autocomplete = 'off';
+    input.placeholder = "Ім'я персонажа";
+    const list = document.createElement('div');
+    list.className = 'raid-autocomplete-list';
+    inputWrap.appendChild(input);
+    inputWrap.appendChild(list);
+    form.appendChild(inputWrap);
+
+    const btn = document.createElement('button');
+    btn.type = 'submit';
+    btn.className = 'compare-btn';
+    btn.textContent = 'Додати персонажа';
+    form.appendChild(btn);
+
+    setupNameAutocomplete(input, list, farmEligibleRosterNames);
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = input.value.trim();
+      if (!name) return;
+      createEntry(day.id, resourceType, name, form);
+    });
+
+    wrap.appendChild(form);
   }
 
   return wrap;
