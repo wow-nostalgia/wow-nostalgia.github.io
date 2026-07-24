@@ -18,6 +18,7 @@ let userCharacters = [];
 let userCharacterNamesLower = new Set();
 let rosterNames = [];
 let guildMemberNames = new Set();
+let classColorMap = new Map();
 let activeTab = null; // { type: 'day', dayId } | { type: 'backlog' } | { type: 'settings' }
 let dayManageStatusEl = null;
 
@@ -71,6 +72,7 @@ async function loadRosterSources() {
     if (guildDataRes.ok) {
       const guildData = await guildDataRes.json();
       rosterNames = [...new Set((guildData.rows || []).map((row) => row.name))].sort((a, b) => a.localeCompare(b, 'uk'));
+      classColorMap = buildClassColorMap(guildData.rows || []);
     }
   } catch (err) {
     console.error(err);
@@ -320,8 +322,15 @@ function playerNameCell(name) {
   if (typeof createPlayerBadge === 'function') {
     wrap.appendChild(createPlayerBadge(name));
   }
-  const text = document.createTextNode(name);
-  wrap.appendChild(text);
+  const color = classColorMap.get(name);
+  if (color) {
+    const span = document.createElement('span');
+    span.textContent = name;
+    span.style.color = color;
+    wrap.appendChild(span);
+  } else {
+    wrap.appendChild(document.createTextNode(name));
+  }
   return wrap;
 }
 
