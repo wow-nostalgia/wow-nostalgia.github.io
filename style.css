@@ -2211,6 +2211,8 @@ body.raid-manager-detail-page .raid-soft-form input[type="text"],
 body.raid-manager-detail-page .raid-soft-form input[type="number"],
 body.raid-manager-detail-page .raid-input-wrap input[type="text"],
 body.account-page .raid-input-wrap input[type="text"],
+body.shard-queue-page .raid-input-wrap input[type="text"],
+body.shard-queue-page select,
 body.raid-manager-detail-page .raid-items-filters select,
 body.raid-manager-detail-page .raid-item-picker-trigger {
   padding: 5px 12px;
@@ -2229,6 +2231,8 @@ body.raid-manager-detail-page .raid-soft-form select:hover,
 body.raid-manager-detail-page .raid-soft-form input:hover,
 body.raid-manager-detail-page .raid-input-wrap input[type="text"]:hover,
 body.account-page .raid-input-wrap input[type="text"]:hover,
+body.shard-queue-page .raid-input-wrap input[type="text"]:hover,
+body.shard-queue-page select:hover,
 body.raid-manager-detail-page .raid-items-filters select:hover,
 body.raid-manager-detail-page .raid-item-picker-trigger:hover {
   border-color: rgba(123, 170, 245, 0.55);
@@ -2240,6 +2244,8 @@ body.raid-manager-detail-page .raid-soft-form select:focus,
 body.raid-manager-detail-page .raid-soft-form input:focus,
 body.raid-manager-detail-page .raid-input-wrap input[type="text"]:focus,
 body.account-page .raid-input-wrap input[type="text"]:focus,
+body.shard-queue-page .raid-input-wrap input[type="text"]:focus,
+body.shard-queue-page select:focus,
 body.raid-manager-detail-page .raid-items-filters select:focus,
 body.raid-manager-detail-page .raid-item-picker-trigger:focus {
   border-color: var(--color-link);
@@ -2265,14 +2271,16 @@ body.raid-manager-detail-page .raid-items-filters select {
   background-size: 1rem;
 }
 
-body.raid-manager-page .ranking-table-wrap {
+body.raid-manager-page .ranking-table-wrap,
+body.shard-queue-page .ranking-table-wrap {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
   overflow-x: auto;
 }
 
-body.raid-manager-page .raid-table {
+body.raid-manager-page .raid-table,
+body.shard-queue-page .raid-table {
   width: 100%;
   border-collapse: collapse;
 }
@@ -2291,7 +2299,9 @@ body.raid-manager-page .raid-table {
 }
 
 body.raid-manager-page .raid-table th,
-body.raid-manager-page .raid-table td {
+body.raid-manager-page .raid-table td,
+body.shard-queue-page .raid-table th,
+body.shard-queue-page .raid-table td {
   padding: 0.3rem 0.4rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
@@ -2299,12 +2309,14 @@ body.raid-manager-page .raid-table td {
   vertical-align: top;
 }
 
-body.raid-manager-page .raid-table th {
+body.raid-manager-page .raid-table th,
+body.shard-queue-page .raid-table th {
   color: var(--color-text-strong);
   font-weight: var(--font-weight-medium);
 }
 
-body.raid-manager-page .raid-table tbody tr:hover {
+body.raid-manager-page .raid-table tbody tr:hover,
+body.shard-queue-page .raid-table tbody tr:hover {
   background-color: var(--color-hover);
 }
 
@@ -2385,7 +2397,8 @@ body.raid-manager-page .raid-chip--completed {
   font-weight: var(--font-weight-semibold);
 }
 
-body.raid-manager-page .link-button-std {
+body.raid-manager-page .link-button-std,
+body.shard-queue-page .link-button-std {
   background: none;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
@@ -2395,22 +2408,26 @@ body.raid-manager-page .link-button-std {
   cursor: pointer;
 }
 
-body.raid-manager-page .link-button-std:hover {
+body.raid-manager-page .link-button-std:hover,
+body.shard-queue-page .link-button-std:hover {
   background-color: var(--color-hover);
 }
 
-body.raid-manager-page .link-button-std:disabled {
+body.raid-manager-page .link-button-std:disabled,
+body.shard-queue-page .link-button-std:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 
-body.raid-manager-page .link-button-std--danger {
+body.raid-manager-page .link-button-std--danger,
+body.shard-queue-page .link-button-std--danger {
   color: var(--color-danger);
   border-color: rgba(255, 107, 107, 0.4);
   background-color: rgba(255, 107, 107, 0.12);
 }
 
-body.raid-manager-page .link-button-std--danger:hover {
+body.raid-manager-page .link-button-std--danger:hover,
+body.shard-queue-page .link-button-std--danger:hover {
   background-color: rgba(255, 107, 107, 0.2);
 }
 
@@ -2682,13 +2699,15 @@ body.raid-manager-detail-page .raid-benchmark-note {
 }
 
 body.raid-manager-detail-page .raid-input-wrap,
-body.account-page .raid-input-wrap {
+body.account-page .raid-input-wrap,
+body.shard-queue-page .raid-input-wrap {
   position: relative;
   width: 100%;
 }
 
 body.raid-manager-detail-page .raid-input-wrap input[type="text"],
-body.account-page .raid-input-wrap input[type="text"] {
+body.account-page .raid-input-wrap input[type="text"],
+body.shard-queue-page .raid-input-wrap input[type="text"] {
   width: 100%;
   padding-right: 1.9rem;
 }
@@ -2719,7 +2738,8 @@ body.raid-manager-detail-page .raid-input-clear:disabled {
 }
 
 body.raid-manager-detail-page .raid-autocomplete-list,
-body.account-page .raid-autocomplete-list {
+body.account-page .raid-autocomplete-list,
+body.shard-queue-page .raid-autocomplete-list {
   display: none;
   position: absolute;
   top: 100%;
@@ -2736,13 +2756,15 @@ body.account-page .raid-autocomplete-list {
 }
 
 body.raid-manager-detail-page .raid-autocomplete-list.is-open,
-body.account-page .raid-autocomplete-list.is-open {
+body.account-page .raid-autocomplete-list.is-open,
+body.shard-queue-page .raid-autocomplete-list.is-open {
   display: block;
   animation: primer-dropdown-in 0.12s cubic-bezier(0, 0.1, 0.1, 1) backwards;
 }
 
 body.raid-manager-detail-page .raid-autocomplete-item,
-body.account-page .raid-autocomplete-item {
+body.account-page .raid-autocomplete-item,
+body.shard-queue-page .raid-autocomplete-item {
   padding: 0.3rem 0.65rem;
   font-size: var(--font-size-base);
   color: var(--color-text-strong);
@@ -2750,7 +2772,8 @@ body.account-page .raid-autocomplete-item {
 }
 
 body.raid-manager-detail-page .raid-autocomplete-item:hover,
-body.account-page .raid-autocomplete-item:hover {
+body.account-page .raid-autocomplete-item:hover,
+body.shard-queue-page .raid-autocomplete-item:hover {
   background-color: rgba(123, 170, 245, 0.18);
 }
 
@@ -2862,7 +2885,8 @@ body.raid-manager-detail-page .raid-player-name-cell {
 }
 
 body.raid-manager-detail-page .raid-tabs,
-body.account-page .raid-tabs {
+body.account-page .raid-tabs,
+body.shard-queue-page .raid-tabs {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -2872,7 +2896,8 @@ body.account-page .raid-tabs {
 }
 
 body.raid-manager-detail-page .raid-tab,
-body.account-page .raid-tab {
+body.account-page .raid-tab,
+body.shard-queue-page .raid-tab {
   background: none;
   border: none;
   padding: 0.5rem 0.9rem;
@@ -2885,12 +2910,14 @@ body.account-page .raid-tab {
 }
 
 body.raid-manager-detail-page .raid-tab:hover,
-body.account-page .raid-tab:hover {
+body.account-page .raid-tab:hover,
+body.shard-queue-page .raid-tab:hover {
   color: var(--color-text-strong);
 }
 
 body.raid-manager-detail-page .raid-tab--active,
-body.account-page .raid-tab--active {
+body.account-page .raid-tab--active,
+body.shard-queue-page .raid-tab--active {
   color: var(--color-text-strong);
   border-bottom-color: var(--color-link);
 }
@@ -3772,7 +3799,8 @@ body.account-page .account-discord-id {
   color: var(--color-text-faint);
 }
 
-body.account-page .account-form {
+body.account-page .account-form,
+body.shard-queue-page .account-form {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 0.5rem 0.75rem;
@@ -3780,7 +3808,8 @@ body.account-page .account-form {
   max-width: 480px;
 }
 
-body.account-page .account-form input[type="text"] {
+body.account-page .account-form input[type="text"],
+body.shard-queue-page .account-form input[type="text"] {
   padding: 5px 12px;
   border: 1px solid var(--color-border-input);
   border-radius: var(--radius-md);
@@ -3790,7 +3819,8 @@ body.account-page .account-form input[type="text"] {
   outline: none;
 }
 
-body.account-page .account-form input[type="text"]:focus {
+body.account-page .account-form input[type="text"]:focus,
+body.shard-queue-page .account-form input[type="text"]:focus {
   border-color: var(--color-link);
   box-shadow: inset 0 0 0 1px var(--color-link);
 }
@@ -3901,7 +3931,8 @@ body.account-page .account-delete-td {
   padding: 0;
 }
 
-body.account-page .account-delete-btn {
+body.account-page .account-delete-btn,
+body.shard-queue-page .account-delete-btn {
   background: none;
   border: none;
   padding: 0.4rem;
@@ -3912,7 +3943,8 @@ body.account-page .account-delete-btn {
   align-items: center;
 }
 
-body.account-page .account-delete-btn:hover {
+body.account-page .account-delete-btn:hover,
+body.shard-queue-page .account-delete-btn:hover {
   color: var(--color-danger);
   background-color: rgba(255, 107, 107, 0.12);
 }
@@ -4454,4 +4486,94 @@ body.raid-manager-detail-page .penalty-reason-text {
   background: rgba(34, 197, 94, 0.15);
   color: var(--color-accent-emerald);
   border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* --- Черга на уламки і кров (body.shard-queue-page) --- */
+
+body.shard-queue-page .shard-queue-manage {
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-soft);
+  padding: var(--space-4);
+  margin: var(--space-4) 0;
+}
+
+body.shard-queue-page .shard-queue-manage h2 {
+  margin-top: 0;
+}
+
+body.shard-queue-page .shard-queue-manage-list {
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+body.shard-queue-page .shard-queue-manage-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+body.shard-queue-page .shard-queue-manage-item span {
+  flex: 1;
+}
+
+body.shard-queue-page .shard-queue-manage-item--inactive {
+  color: var(--color-text-faint);
+}
+
+body.shard-queue-page .shard-queue-resource-block {
+  margin: var(--space-5) 0;
+}
+
+body.shard-queue-page .shard-queue-resource-block h2 {
+  margin-bottom: var(--space-2);
+}
+
+body.shard-queue-page .shard-queue-resource-block--backlog {
+  color: var(--color-text-faint);
+}
+
+body.shard-queue-page .shard-queue-name-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+body.shard-queue-page .shard-queue-drag-handle {
+  cursor: grab;
+  color: var(--color-text-faint);
+  width: 1.5rem;
+  text-align: center;
+}
+
+body.shard-queue-page tr.is-dragging {
+  opacity: 0.4;
+}
+
+body.shard-queue-page .shard-queue-step-btn {
+  padding: 0.1rem 0.45rem;
+  margin-left: var(--space-2);
+  font-weight: var(--font-weight-semibold);
+}
+
+body.shard-queue-page .shard-queue-add-forms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+}
+
+body.shard-queue-page .shard-queue-hint {
+  color: var(--color-text-faint);
+  font-size: var(--font-size-sm);
+}
+
+body.shard-queue-page .shard-queue-status--error {
+  color: var(--color-danger);
 }

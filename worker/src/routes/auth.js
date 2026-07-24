@@ -13,7 +13,8 @@ import {
   findCharacterOwner,
   removeCharacterByAnyOwner,
   listCharacterOwnerNames,
-  listPrimaryCharacterNames
+  listPrimaryCharacterNames,
+  isDefaultOfficer
 } from '../db.js';
 import { requireSession } from '../auth.js';
 
@@ -84,7 +85,11 @@ export async function handleDiscordCallback(request, env) {
 export async function handleGetMe(request, env) {
   const session = await requireSession(env.DB, request);
   const user = await getUserByDiscordId(env.DB, session.discordId);
-  return jsonResponse({ ...publicUser(user), isAdmin: session.discordId === env.ADMIN_DISCORD_ID });
+  return jsonResponse({
+    ...publicUser(user),
+    isAdmin: session.discordId === env.ADMIN_DISCORD_ID,
+    isGuildOfficer: await isDefaultOfficer(env.DB, session.discordId)
+  });
 }
 
 export async function handleLogout(request, env) {

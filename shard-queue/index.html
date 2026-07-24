@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="uk-UA">
 
 <head>
@@ -12,11 +12,11 @@
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
-  <title>Профіль — Рейд-менеджер</title>
+  <title>Черга на уламки та кров</title>
   <link rel="stylesheet" href="../style.css?v=102">
 </head>
 
-<body class="account-page">
+<body class="shard-queue-page">
   <div class="container">
 
     <header class="topbar">
@@ -31,10 +31,10 @@
         <nav class="nav" id="primaryNav">
           <a class="nav__link nav__link--icon tooltipped tooltipped--s" href="../" aria-label="Головна"><svg class="nav__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 12 3l9 6.5"/><path d="M5 10v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V10"/></svg></a>
           <div class="nav__dropdown">
-            <button type="button" class="nav__link nav__dropdown-trigger" aria-haspopup="true" aria-expanded="false"><svg class="nav__icon nav__icon--inline" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v1.5A1.75 1.75 0 0 1 14.25 6H1.75A1.75 1.75 0 0 1 0 4.25ZM1.75 7a.75.75 0 0 1 .75.75v5.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-5.5a.75.75 0 0 1 1.5 0v5.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25v-5.5A.75.75 0 0 1 1.75 7Zm0-4.5a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25ZM6.25 8h3.5a.75.75 0 0 1 0 1.5h-3.5a.75.75 0 0 1 0-1.5Z"/></svg>Рейди</button>
+            <button type="button" class="nav__link nav__dropdown-trigger nav__link--active" aria-haspopup="true" aria-expanded="false"><svg class="nav__icon nav__icon--inline" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v1.5A1.75 1.75 0 0 1 14.25 6H1.75A1.75 1.75 0 0 1 0 4.25ZM1.75 7a.75.75 0 0 1 .75.75v5.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-5.5a.75.75 0 0 1 1.5 0v5.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25v-5.5A.75.75 0 0 1 1.75 7Zm0-4.5a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25ZM6.25 8h3.5a.75.75 0 0 1 0 1.5h-3.5a.75.75 0 0 1 0-1.5Z"/></svg>Рейди</button>
             <div class="nav__dropdown-menu">
               <a class="nav__link" href="../raid-manager/archive/"><svg class="nav__icon nav__icon--inline" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v1.5A1.75 1.75 0 0 1 14.25 6H1.75A1.75 1.75 0 0 1 0 4.25ZM1.75 7a.75.75 0 0 1 .75.75v5.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-5.5a.75.75 0 0 1 1.5 0v5.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25v-5.5A.75.75 0 0 1 1.75 7Zm0-4.5a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25ZM6.25 8h3.5a.75.75 0 0 1 0 1.5h-3.5a.75.75 0 0 1 0-1.5Z"/></svg>Рейди</a>
-              <a class="nav__link" href="../shard-queue/"><svg class="nav__icon nav__icon--inline" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M1 2.75A.75.75 0 0 1 1.75 2h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 2.75Zm0 5A.75.75 0 0 1 1.75 7h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 7.75Zm0 5a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1-.75-.75Z"/></svg>Черга на уламки та кров</a>
+              <a class="nav__link nav__link--active" href="../shard-queue/"><svg class="nav__icon nav__icon--inline" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M1 2.75A.75.75 0 0 1 1.75 2h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 2.75Zm0 5A.75.75 0 0 1 1.75 7h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 7.75Zm0 5a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1-.75-.75Z"/></svg>Черга на уламки та кров</a>
             </div>
           </div>
           <a class="nav__link" href="../potion-stats/"><svg class="nav__icon nav__icon--inline" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M5 5.782V2.5h-.25a.75.75 0 0 1 0-1.5h6.5a.75.75 0 0 1 0 1.5H11v3.282l3.666 5.76C15.619 13.04 14.543 15 12.767 15H3.233c-1.776 0-2.852-1.96-1.899-3.458Zm-2.4 6.565a.75.75 0 0 0 .633 1.153h9.534a.75.75 0 0 0 .633-1.153L12.225 10.5h-8.45ZM9.5 2.5h-3V6c0 .143-.04.283-.117.403L4.73 9h6.54L9.617 6.403A.746.746 0 0 1 9.5 6Z"/></svg>Статистика Potion</a>
@@ -54,100 +54,31 @@
 
     <div class="container-inner">
 
-      <h1>Профіль</h1>
+      <h1>Черга на уламки та кров</h1>
 
-      <div id="loggedOutView" hidden>
-        <p>Щоб скористатись профілем, увійди через Discord.</p>
-        <a class="compare-btn" id="loginBtn" href="#">Увійти</a>
+      <ul>
+        <li>Кожен день фарму — окрема черга на "Кров" (кап 2) і окрема на "Уламки" (кап 50).</li>
+        <li>Записатись можна за себе самому — завжди в кінець черги. Порядок черги переставляє лише офіцер.</li>
+        <li>Коли прогрес сягає капу — запис автоматично переїжджає на вкладку "Вже зібрано".</li>
+      </ul>
+
+      <p id="loggedOutHint" hidden>Щоб самому записатись у чергу чи оновити прогрес, увійди через Discord.</p>
+
+      <div id="dayManagePanel" class="shard-queue-manage" hidden>
+        <h2>Керування днями</h2>
+        <form id="addDayForm" class="account-form">
+          <input type="text" id="addDayInput" autocomplete="off" placeholder="Назва нового дня">
+          <button type="submit" class="compare-btn">Додати день</button>
+        </form>
+        <ul id="dayManageList" class="shard-queue-manage-list"></ul>
+        <p id="dayManageStatus"></p>
       </div>
 
-      <div id="loggedInView" hidden>
-        <h2>Акаунт Discord</h2>
+      <div id="dayTabs" class="raid-tabs" role="tablist"></div>
 
-        <div class="account-profile">
-          <img id="profileAvatar" class="account-avatar" alt="" hidden>
-          <div class="account-info">
-            <span id="profileUsername" class="account-username"></span>
-            <span id="profileDiscordId" class="account-discord-id"></span>
-          </div>
-        </div>
+      <div id="queueContent"></div>
 
-        <div id="accountTabs" class="raid-tabs" role="tablist" hidden>
-          <button type="button" class="raid-tab raid-tab--active" data-tab="account">Персонажі</button>
-          <button type="button" class="raid-tab" data-tab="admin">Адмін-панель</button>
-        </div>
-
-        <div id="accountTabPane">
-          <h2>Мої персонажі</h2>
-
-          <form id="addCharacterForm" class="account-form">
-            <input type="text" id="characterNameInput" autocomplete="off" placeholder="Введи ім'я персонажа, точно як у грі">
-            <button type="submit" class="compare-btn">Додати</button>
-          </form>
-
-          <div class="account-chars-layout">
-            <div class="ranking-table-wrap account-characters-table-wrap">
-              <table class="account-characters-table">
-                <thead>
-                  <tr>
-                    <th>Персонаж</th>
-                    <th class="account-attendance-col">Рейдів</th>
-                    <th class="account-primary-col">Основний</th>
-                    <th class="account-delete-col"></th>
-                  </tr>
-                </thead>
-                <tbody id="charactersList"></tbody>
-              </table>
-            </div>
-            <div class="account-chars-hints">
-              <p class="account-chars-hint">Персонажі із цього списку доступні для софту предметів.</p>
-              <p class="account-chars-hint">Ім'я основного персонажа відображається у підказці при наведенні на твіна гравця. Якщо не обрано — показується нік Discord. Це допомагає зрозуміти чий перс.</p>
-            </div>
-          </div>
-
-          <p id="accountStatus"></p>
-        </div>
-
-        <div id="adminTabPane" hidden>
-          <div class="account-admin-tools">
-            <h2>Офіцери за замовчуванням</h2>
-            <p class="account-admin-hint">Ці гравці автоматично отримують права офіцера в кожному новому рейді.</p>
-            <div class="account-default-officers-add">
-              <div class="raid-input-wrap">
-                <input type="text" id="defaultOfficerInput" autocomplete="off" placeholder="Пошук по Discord-ніку...">
-                <div class="raid-autocomplete-list" id="defaultOfficerList"></div>
-              </div>
-              <button type="button" id="defaultOfficerAddBtn" class="compare-btn" disabled>Додати</button>
-            </div>
-            <ul id="defaultOfficersList" class="account-default-officers-list"></ul>
-            <p id="defaultOfficersStatus"></p>
-          </div>
-
-          <div class="account-admin-tools">
-            <h2>Звільнити персонажа</h2>
-            <p class="account-admin-hint">Примусово прибирає персонажа з чужого акаунту (виправлення помилкового застовплення).</p>
-            <form id="adminRemoveCharacterForm" class="account-form">
-              <input type="text" id="adminCharacterNameInput" autocomplete="off" placeholder="Ім'я персонажа">
-              <button type="submit" class="compare-btn">Звільнити</button>
-            </form>
-            <p id="adminCharacterStatus"></p>
-          </div>
-        </div>
-      </div>
-
-      <p id="accountLoading">Завантаження...</p>
-
-      <div id="deleteCharacterModal" class="raid-modal" hidden>
-        <div class="raid-modal-backdrop" id="deleteCharacterModalBackdrop"></div>
-        <div class="raid-modal-box">
-          <h3 class="raid-modal-title">Видалити персонажа</h3>
-          <p id="deleteCharacterModalText" class="raid-modal-text"></p>
-          <div class="raid-modal-actions">
-            <button type="button" id="deleteCharacterConfirmBtn" class="link-button-std link-button-std--danger">Так, видалити</button>
-            <button type="button" id="deleteCharacterCancelBtn" class="link-button-std">Скасувати</button>
-          </div>
-        </div>
-      </div>
+      <p id="queueStatus"></p>
 
       <footer>
         <span>&copy; Гільдія "Nostalgia", сервер <a href="https://freedom-wow.in.ua/" target="_blank" rel="noopener noreferrer">Freedom WoW</a></span>
@@ -162,9 +93,8 @@
 
   <script src="../scripts/nav.js?v=2"></script>
   <script src="../scripts/auth-shared.js?v=9"></script>
-  <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=5"></script>
-  <script src="../scripts/account.js?v=19"></script>
+  <script src="../scripts/shard-queue.js?v=1"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

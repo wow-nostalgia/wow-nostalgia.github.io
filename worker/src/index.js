@@ -28,6 +28,17 @@ import { handleListTransfers, handleCreateTransfer, handleDeleteTransfer } from 
 import { handleListBonusGrants, handleCreateBonusGrant, handleDeleteBonusGrant } from './routes/bonus-grants.js';
 import { handleListPenalties, handleUpsertPenalty } from './routes/penalties.js';
 import {
+  handleListShardQueueDays,
+  handleCreateShardQueueDay,
+  handleUpdateShardQueueDay,
+  handleListShardQueue,
+  handleCreateShardQueueEntry,
+  handleUpdateProgress,
+  handleReorderShardQueue,
+  handleMoveShardQueueEntryDay,
+  handleDeleteShardQueueEntry
+} from './routes/shard-queue.js';
+import {
   handleDiscordCallback,
   handleGetMe,
   handleLogout,
@@ -195,6 +206,38 @@ async function routeRaids(request, env, parts, session) {
   throw new HttpError(404, 'Невідомий шлях');
 }
 
+async function routeShardQueue(request, env, parts, session) {
+  const method = request.method;
+  const [sub, sub2, sub3] = parts;
+
+  if (sub === 'days') {
+    if (!sub2) {
+      if (method === 'GET') return handleListShardQueueDays(request, env);
+      if (method === 'POST') return handleCreateShardQueueDay(request, env, session);
+      throw new HttpError(405, 'Метод не підтримується');
+    }
+    if (method === 'PATCH') return handleUpdateShardQueueDay(request, env, Number(sub2), session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
+
+  if (sub === 'entries') {
+    if (!sub2) {
+      if (method === 'GET') return handleListShardQueue(request, env);
+      if (method === 'POST') return handleCreateShardQueueEntry(request, env, session);
+      throw new HttpError(405, 'Метод не підтримується');
+    }
+    const entryId = Number(sub2);
+    if (sub3 === 'progress' && method === 'PATCH') return handleUpdateProgress(request, env, entryId, session);
+    if (sub3 === 'day' && method === 'PATCH') return handleMoveShardQueueEntryDay(request, env, entryId, session);
+    if (!sub3 && method === 'DELETE') return handleDeleteShardQueueEntry(request, env, entryId, session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
+
+  if (sub === 'reorder' && method === 'PATCH') return handleReorderShardQueue(request, env, session);
+
+  throw new HttpError(404, 'Невідомий шлях');
+}
+
 // Один хардкодований Discord ID власника сайту (env var, не секрет) —
 // без повноцінної системи ролей. Дає змогу примусово звільнити персонажа,
 // якщо хтось помилково застовпив чужого (унікальність — first-come, без
@@ -262,6 +305,11 @@ async function route(request, env) {
   if (parts[2] === 'admin') {
     const session = await requireSession(env.DB, request);
     return routeAdmin(request, env, parts.slice(3), session);
+  }
+
+  if (parts[2] === 'shard-queue') {
+    const session = await requireSession(env.DB, request);
+    return routeShardQueue(request, env, parts.slice(3), session);
   }
 
   throw new HttpError(404, 'Невідомий шлях');

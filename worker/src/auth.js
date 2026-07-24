@@ -6,7 +6,8 @@ import {
   getClaimOwner,
   isRaidOfficerRow,
   getPrimaryCharacterName,
-  listUserCharacters
+  listUserCharacters,
+  isDefaultOfficer
 } from './db.js';
 
 export async function requireSession(db, request) {
@@ -45,6 +46,17 @@ export async function isRaidOfficer(db, raidId, raid, discordId) {
 export async function requireRaidOfficer(db, raidId, raid, session) {
   if (!(await isRaidOfficer(db, raidId, raid, session.discordId))) {
     throw new HttpError(403, 'Потрібні права лідера/офіцера рейду');
+  }
+}
+
+// Гільдійний офіцер, не прив'язаний до конкретного рейду (на відміну від
+// requireRaidOfficer) — для наскрізних фіч на кшталт черги уламків/крові.
+// default_officers — це вже наявний "сід-список" (worker/src/db.js), який
+// досі лише копіювався в raid_officers при створенні рейду; тут стає
+// першим прямим споживачем як реальний permission-гейт.
+export async function requireGlobalOfficer(db, session) {
+  if (!(await isDefaultOfficer(db, session.discordId))) {
+    throw new HttpError(403, 'Лише офіцер гільдії');
   }
 }
 

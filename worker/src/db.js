@@ -407,6 +407,10 @@ export async function removeDefaultOfficer(db, discordId) {
   return listDefaultOfficers(db);
 }
 
+export async function isDefaultOfficer(db, discordId) {
+  return Boolean(await db.prepare('SELECT 1 FROM default_officers WHERE discord_id = ?').bind(discordId).first());
+}
+
 export async function deleteRaid(db, raidId) {
   await db.prepare('DELETE FROM raids WHERE id = ?').bind(raidId).run();
 }
@@ -504,5 +508,143 @@ export async function updateReserveBonusWeight(db, raidId, reserveId, delta) {
     .bind(delta, nowIso(), reserveId, raidId)
     .run();
   return getReserveById(db, raidId, reserveId);
+}
+
+// ---- Черга на уламки і кров (гільдійна, не прив'язана до raid_id) ----
+
+export async function listShardQueueDays(db) {
+  const { results } = await db.prepare('SELECT * FROM shard_queue_days ORDER BY sort_order ASC').all();
+  return results;
+}
+
+export async function getShardQueueDay(db, id) {
+  return db.prepare('SELECT * FROM shard_queue_days WHERE id = ?').bind(id).first();
+}
+
+export async function createShardQueueDay(db, label) {
+  const ts = nowIso();
+  const row = await db.prepare('SELECT COALESCE(MAX(sort_order), 0) AS maxOrder FROM shard_queue_days').first();
+  const result = await db
+    .prepare('INSERT INTO shard_queue_days (label, sort_order, is_active, created_at, updated_at) VALUES (?, ?, 1, ?, ?)')
+    .bind(label, row.maxOrder + 1, ts, ts)
+    .run();
+  return getShardQueueDay(db, result.meta.last_row_id);
+}
+
+// Частковий апдейт — рядок будується динамічно з переданих полів (той самий
+// підхід, що updateRaidSettings). Той самий ендпоінт і для перейменування,
+// і для анулювати/повернути (isActive true/false).
+export async function updateShardQueueDay(db, id, { label, isActive } = {}) {
+  const fields = [];
+  const values = [];
+  if (label !== undefined) {
+    fields.push('label = ?');
+    values.push(label);
+  }
+  if (isActive !== undefined) {
+    fields.push('is_active = ?');
+    values.push(isActive ? 1 : 0);
+  }
+  if (!fields.length) return getShardQueueDay(db, id);
+
+  await db
+    .prepare(`UPDATE shard_queue_days SET ${fields.join(', ')}, updated_at = ? WHERE id = ?`)
+    .bind(...values, nowIso(), id)
+    .run();
+  return getShardQueueDay(db, id);
+}
+
+export async function listShardQueueEntries(db) {
+  const { results } = await db
+    .prepare('SELECT * FROM shard_queue_entries ORDER BY day_id ASC, resource_type ASC, priority_rank ASC')
+    .all();
+  return results;
+}
+
+export async function listShardQueueEntriesByDay(db, dayId) {
+  const { results } = await db.prepare('SELECT * FROM shard_queue_entries WHERE day_id = ?').bind(dayId).all();
+  return results;
+}
+
+export async function getShardQueueEntry(db, id) {
+  return db.prepare('SELECT * FROM shard_queue_entries WHERE id = ?').bind(id).first();
+}
+
+// Для точного 409-повідомлення "вже в черзі"/"вже зібрав" перед тим, як
+// покластись на сам UNIQUE-виняток (той лишається останньою страховкою).
+export async function getShardQueueEntryByResource(db, resourceType, playerName) {
+  return db
+    .prepare('SELECT * FROM shard_queue_entries WHERE resource_type = ? AND player_name = ?')
+    .bind(resourceType, playerName)
+    .first();
+}
+
+async function nextShardQueueRank(db, dayId, resourceType) {
+  const row = await db
+    .prepare('SELECT COALESCE(MAX(priority_rank), -1) AS maxRank FROM shard_queue_entries WHERE day_id = ? AND resource_type = ?')
+    .bind(dayId, resourceType)
+    .first();
+  return row.maxRank + 1;
+}
+
+export async function createShardQueueEntry(db, dayId, resourceType, playerName) {
+  const ts = nowIso();
+  const rank = await nextShardQueueRank(db, dayId, resourceType);
+  const result = await db
+    .prepare(
+      `INSERT INTO shard_queue_entries (day_id, resource_type, player_name, priority_rank, progress, created_at, updated_at)
+       VALUES (?, ?, ?, ?, 0, ?, ?)`
+    )
+    .bind(dayId, resourceType, playerName, rank, ts, ts)
+    .run();
+  return getShardQueueEntry(db, result.meta.last_row_id);
+}
+
+export async function updateShardQueueProgress(db, id, progress) {
+  await db
+    .prepare('UPDATE shard_queue_entries SET progress = ?, updated_at = ? WHERE id = ?')
+    .bind(progress, nowIso(), id)
+    .run();
+  return getShardQueueEntry(db, id);
+}
+
+// Своп рангу на "додати в кінець поточної групи день+ресурс" — для
+// self-add/officer-add (нова стрічка) і для реактивації рядка з беклогу
+// назад в активну чергу (стара позиція вже нерелевантна).
+export async function appendShardQueueEntryToEnd(db, id) {
+  const entry = await getShardQueueEntry(db, id);
+  const rank = await nextShardQueueRank(db, entry.day_id, entry.resource_type);
+  await db
+    .prepare('UPDATE shard_queue_entries SET priority_rank = ?, updated_at = ? WHERE id = ?')
+    .bind(rank, nowIso(), id)
+    .run();
+  return getShardQueueEntry(db, id);
+}
+
+// Переносить рядок на інший день, завжди в кінець черги дня-призначення.
+export async function moveShardQueueEntryDay(db, id, newDayId) {
+  await db.prepare('UPDATE shard_queue_entries SET day_id = ?, updated_at = ? WHERE id = ?').bind(newDayId, nowIso(), id).run();
+  return appendShardQueueEntryToEnd(db, id);
+}
+
+// Для drag-and-drop — приймає повний упорядкований масив id активних рядків
+// однієї групи день+ресурс, rank = позиція в масиві.
+export async function reorderShardQueueEntries(db, orderedIds) {
+  await Promise.all(
+    orderedIds.map((id, index) =>
+      db.prepare('UPDATE shard_queue_entries SET priority_rank = ?, updated_at = ? WHERE id = ?').bind(index, nowIso(), id).run()
+    )
+  );
+}
+
+export async function deleteShardQueueEntry(db, id) {
+  await db.prepare('DELETE FROM shard_queue_entries WHERE id = ?').bind(id).run();
+}
+
+export async function insertShardQueueAudit(db, actorName, action, detail) {
+  await db
+    .prepare('INSERT INTO shard_queue_audit_log (actor_name, action, detail_json, created_at) VALUES (?, ?, ?, ?)')
+    .bind(actorName, action, JSON.stringify(detail || {}), nowIso())
+    .run();
 }
 
