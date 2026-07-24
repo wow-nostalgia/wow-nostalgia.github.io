@@ -14,13 +14,6 @@ const queueContent = document.getElementById('queueContent');
 const queueStatus = document.getElementById('queueStatus');
 const btnTooltipEl = document.getElementById('raidBtnTooltip');
 
-const renameDayModal = document.getElementById('renameDayModal');
-const renameDayModalBackdrop = document.getElementById('renameDayModalBackdrop');
-const renameDayForm = document.getElementById('renameDayForm');
-const renameDayInput = document.getElementById('renameDayInput');
-const renameDayModalStatus = document.getElementById('renameDayModalStatus');
-const renameDayCancelBtn = document.getElementById('renameDayCancelBtn');
-
 const moveDayModal = document.getElementById('moveDayModal');
 const moveDayModalBackdrop = document.getElementById('moveDayModalBackdrop');
 const moveDayModalText = document.getElementById('moveDayModalText');
@@ -124,38 +117,6 @@ confirmModalConfirmBtn.addEventListener('click', async () => {
 });
 confirmModalCancelBtn.addEventListener('click', hideConfirmModal);
 confirmModalBackdrop.addEventListener('click', hideConfirmModal);
-
-function hideRenameDayModal() {
-  renameDayModal.hidden = true;
-  renameDayModal._day = null;
-}
-
-renameDayForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  const day = renameDayModal._day;
-  const label = renameDayInput.value.trim();
-  if (!label || label === day.label) { hideRenameDayModal(); return; }
-  const submitBtn = renameDayForm.querySelector('button[type="submit"]');
-  submitBtn.disabled = true;
-  try {
-    const res = await fetch(`${AUTH_API_BASE}/shard-queue/days/${day.id}`, {
-      method: 'PATCH',
-      headers: authHeaders(true),
-      body: JSON.stringify({ label })
-    });
-    if (!res.ok) throw new Error(await readErrorMessage(res));
-    hideRenameDayModal();
-    if (dayManageStatusEl) dayManageStatusEl.textContent = '';
-    await refreshAll();
-  } catch (err) {
-    renameDayModalStatus.textContent = `Помилка: ${err.message}`;
-    renameDayModalStatus.classList.add('shard-queue-status--error');
-  } finally {
-    submitBtn.disabled = false;
-  }
-});
-renameDayCancelBtn.addEventListener('click', hideRenameDayModal);
-renameDayModalBackdrop.addEventListener('click', hideRenameDayModal);
 
 // ---- Дані ----
 
@@ -325,13 +286,6 @@ function renderSettingsView() {
     label.textContent = day.is_active ? day.label : `${day.label} (анульовано)`;
     li.appendChild(label);
 
-    const renameBtn = document.createElement('button');
-    renameBtn.type = 'button';
-    renameBtn.className = 'link-button-std';
-    renameBtn.textContent = 'Перейменувати';
-    renameBtn.addEventListener('click', () => renameDay(day));
-    li.appendChild(renameBtn);
-
     const toggleBtn = document.createElement('button');
     toggleBtn.type = 'button';
     toggleBtn.className = 'link-button-std' + (day.is_active ? ' link-button-std--danger' : '');
@@ -362,15 +316,6 @@ async function addDay(label) {
   } catch (err) {
     if (dayManageStatusEl) dayManageStatusEl.textContent = `Помилка: ${err.message}`;
   }
-}
-
-function renameDay(day) {
-  renameDayInput.value = day.label;
-  renameDayModalStatus.textContent = '';
-  renameDayModalStatus.classList.remove('shard-queue-status--error');
-  renameDayModal._day = day;
-  renameDayModal.hidden = false;
-  renameDayInput.focus();
 }
 
 async function performToggleDayActive(day) {
@@ -487,7 +432,8 @@ function buildResourceBlock(day, resourceType) {
   section.className = 'shard-queue-resource-block';
 
   const heading = document.createElement('h2');
-  heading.textContent = RESOURCE_LABELS[resourceType];
+  heading.appendChild(createResourceIcon(resourceType));
+  heading.appendChild(document.createTextNode(RESOURCE_LABELS[resourceType]));
   section.appendChild(heading);
 
   const list = activeEntriesFor(day.id, resourceType);
@@ -765,7 +711,8 @@ function renderBacklogView() {
     section.className = 'shard-queue-resource-block shard-queue-resource-block--backlog';
 
     const heading = document.createElement('h2');
-    heading.textContent = RESOURCE_LABELS[resourceType];
+    heading.appendChild(createResourceIcon(resourceType));
+    heading.appendChild(document.createTextNode(RESOURCE_LABELS[resourceType]));
     section.appendChild(heading);
 
     const cap = RESOURCE_CAPS[resourceType];

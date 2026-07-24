@@ -129,6 +129,40 @@ let potionStatsRaids = null;
 let raidRosters = null;
 let activeTab = 'players';
 let honorBoard = [];
+let shardQueueIconsByName = new Map(); // player_name -> Set('shard' | 'blood')
+
+// Реальний день тижня (за Києвом) на момент створення рейду — дні черги
+// "Черга на уламки та кров" тепер завжди мають назви днів тижня (без
+// перейменування), тому зіставлення напряму за назвою надійне.
+function kyivWeekdayLabel(isoString) {
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return null;
+  return new Intl.DateTimeFormat('uk-UA', { timeZone: 'Europe/Kyiv', weekday: 'long' }).format(date);
+}
+
+async function loadShardQueueIcons() {
+  try {
+    const [days, entries] = await Promise.all([
+      apiCall('GET', '/shard-queue/days', { token: getSessionToken() }),
+      apiCall('GET', '/shard-queue/entries', { token: getSessionToken() })
+    ]);
+    const weekday = kyivWeekdayLabel(raid.created_at);
+    const matchedDay = days.find((d) => d.is_active && weekday && d.label.trim().toLocaleLowerCase('uk') === weekday.toLocaleLowerCase('uk'));
+    if (!matchedDay) return;
+
+    const caps = { shard: 50, blood: 2 };
+    const map = new Map();
+    entries
+      .filter((e) => e.day_id === matchedDay.id && e.progress < caps[e.resource_type])
+      .forEach((e) => {
+        if (!map.has(e.player_name)) map.set(e.player_name, new Set());
+        map.get(e.player_name).add(e.resource_type);
+      });
+    shardQueueIconsByName = map;
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 function setStatus(text, type = 'info') {
   raidStatus.innerHTML = '';
@@ -1048,6 +1082,16 @@ function renderPlayersTable() {
       bindTooltip(nameEl);
     }
     nameWrap.appendChild(nameEl);
+
+    const queuedResources = shardQueueIconsByName.get(name);
+    if (queuedResources) {
+      const labels = { shard: 'Уламки', blood: 'Кров' };
+      ['shard', 'blood'].forEach((resourceType) => {
+        if (queuedResources.has(resourceType)) {
+          nameWrap.appendChild(createResourceIcon(resourceType, `У черзі на ${labels[resourceType]} на сьогодні`));
+        }
+      });
+    }
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
@@ -2001,6 +2045,7 @@ async function init() {
   await loadTransfers();
   await loadBonusGrants();
   await loadPenalties();
+  await loadShardQueueIcons();
   renderPlayersTable();
   renderItemsTable();
 
@@ -2012,6 +2057,7 @@ async function init() {
       await loadReserves();
       await loadTransfers();
       await loadBonusGrants();
+      await loadShardQueueIcons();
       renderPlayersTable();
       renderItemsTable();
       applySoftFormLockState();

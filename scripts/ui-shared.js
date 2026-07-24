@@ -24,6 +24,24 @@ function createPlayerBadgeHtml(name) {
   return `<span class="player-badge tooltipped ${cls}" aria-label="${title}">${letter}</span>`;
 }
 
+// Іконки ресурсів "Черга на уламки та кров" — кристал (уламки) і крапля
+// (кров). Спільні для самої сторінки shard-queue/ (заголовки розділів) і
+// сторінки рейду (біля імені гравця, який записаний у чергу відповідного
+// дня, — raid-manager-detail.js).
+const RESOURCE_ICON_LABELS = { blood: 'Кров', shard: 'Уламки' };
+const RESOURCE_ICON_PATHS = {
+  shard: 'M8 1 13 6 8 15 3 6Z',
+  blood: 'M8 1.3C8 1.3 3 8 3 10.8a5 5 0 0 0 10 0C13 8 8 1.3 8 1.3Z'
+};
+
+function createResourceIcon(resourceType, title) {
+  const wrap = document.createElement('span');
+  wrap.className = `resource-icon-wrap resource-icon-wrap--${resourceType}`;
+  if (title) wrap.title = title;
+  wrap.innerHTML = `<svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="${RESOURCE_ICON_PATHS[resourceType]}"/></svg>`;
+  return wrap;
+}
+
 const SCORE_TIERS = [
   { min: 90, medal: '🥇' },
   { min: 80, medal: '🥈' },
