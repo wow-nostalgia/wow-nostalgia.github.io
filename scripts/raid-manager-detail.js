@@ -140,6 +140,12 @@ function kyivWeekdayLabel(isoString) {
   return new Intl.DateTimeFormat('uk-UA', { timeZone: 'Europe/Kyiv', weekday: 'long' }).format(date);
 }
 
+// Intl повертає "пʼятниця" з апострофом U+02BC, а не звичайним U+0027 —
+// прибираємо будь-які варіанти апострофа перед порівнянням назв днів.
+function normalizeWeekday(str) {
+  return str.replace(/['’ʼ]/g, '').trim().toLocaleLowerCase('uk');
+}
+
 async function loadShardQueueIcons() {
   try {
     const [days, entries] = await Promise.all([
@@ -147,7 +153,7 @@ async function loadShardQueueIcons() {
       apiCall('GET', '/shard-queue/entries', { token: getSessionToken() })
     ]);
     const weekday = kyivWeekdayLabel(raid.created_at);
-    const matchedDay = days.find((d) => d.is_active && weekday && d.label.trim().toLocaleLowerCase('uk') === weekday.toLocaleLowerCase('uk'));
+    const matchedDay = days.find((d) => d.is_active && weekday && normalizeWeekday(d.label) === normalizeWeekday(weekday));
     if (!matchedDay) return;
 
     const caps = { shard: 50, blood: 2 };
