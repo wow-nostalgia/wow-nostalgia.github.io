@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Черга на уламки та кров</title>
-  <link rel="stylesheet" href="../style.css?v=102">
+  <link rel="stylesheet" href="../style.css?v=103">
 </head>
 
 <body class="shard-queue-page">
@@ -79,13 +79,43 @@
         </span>
       </footer>
     </div>
+
+    <div id="renameDayModal" class="raid-modal" hidden>
+      <div class="raid-modal-backdrop" id="renameDayModalBackdrop"></div>
+      <div class="raid-modal-box">
+        <h3 class="raid-modal-title">Перейменувати день</h3>
+        <form id="renameDayForm">
+          <div class="raid-modal-field">
+            <label for="renameDayInput">Нова назва</label>
+            <input type="text" id="renameDayInput" autocomplete="off" required>
+          </div>
+          <p id="renameDayModalStatus"></p>
+          <div class="raid-modal-actions">
+            <button type="submit" class="compare-btn">Зберегти</button>
+            <button type="button" id="renameDayCancelBtn" class="link-button-std">Скасувати</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="confirmModal" class="raid-modal" hidden>
+      <div class="raid-modal-backdrop" id="confirmModalBackdrop"></div>
+      <div class="raid-modal-box">
+        <h3 class="raid-modal-title" id="confirmModalTitle"></h3>
+        <p class="raid-modal-text" id="confirmModalText"></p>
+        <div class="raid-modal-actions">
+          <button type="button" id="confirmModalConfirmBtn" class="compare-btn"></button>
+          <button type="button" id="confirmModalCancelBtn" class="link-button-std">Скасувати</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="../scripts/nav.js?v=2"></script>
   <script src="../scripts/auth-shared.js?v=9"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=5"></script>
-  <script src="../scripts/shard-queue.js?v=5"></script>
+  <script src="../scripts/shard-queue.js?v=6"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

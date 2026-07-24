@@ -13,6 +13,21 @@ const dayTabs = document.getElementById('dayTabs');
 const queueContent = document.getElementById('queueContent');
 const queueStatus = document.getElementById('queueStatus');
 
+const renameDayModal = document.getElementById('renameDayModal');
+const renameDayModalBackdrop = document.getElementById('renameDayModalBackdrop');
+const renameDayForm = document.getElementById('renameDayForm');
+const renameDayInput = document.getElementById('renameDayInput');
+const renameDayModalStatus = document.getElementById('renameDayModalStatus');
+const renameDayCancelBtn = document.getElementById('renameDayCancelBtn');
+
+const confirmModal = document.getElementById('confirmModal');
+const confirmModalBackdrop = document.getElementById('confirmModalBackdrop');
+const confirmModalTitle = document.getElementById('confirmModalTitle');
+const confirmModalText = document.getElementById('confirmModalText');
+const confirmModalConfirmBtn = document.getElementById('confirmModalConfirmBtn');
+const confirmModalCancelBtn = document.getElementById('confirmModalCancelBtn');
+let confirmModalAction = null;
+
 let user = null;
 let days = [];
 let entries = [];
@@ -64,6 +79,66 @@ function isFarmEligible(name) {
 function dayLabel(dayId) {
   return days.find((d) => d.id === dayId)?.label || '?';
 }
+
+// ---- Модалки замість window.confirm/window.prompt ----
+
+function showConfirmModal({ title, text, confirmLabel, onConfirm }) {
+  confirmModalTitle.textContent = title;
+  confirmModalText.textContent = text;
+  confirmModalConfirmBtn.textContent = confirmLabel;
+  confirmModalAction = onConfirm;
+  confirmModal.hidden = false;
+}
+
+function hideConfirmModal() {
+  confirmModal.hidden = true;
+  confirmModalAction = null;
+}
+
+confirmModalConfirmBtn.addEventListener('click', async () => {
+  if (!confirmModalAction) return;
+  confirmModalConfirmBtn.disabled = true;
+  try {
+    await confirmModalAction();
+  } finally {
+    confirmModalConfirmBtn.disabled = false;
+  }
+  hideConfirmModal();
+});
+confirmModalCancelBtn.addEventListener('click', hideConfirmModal);
+confirmModalBackdrop.addEventListener('click', hideConfirmModal);
+
+function hideRenameDayModal() {
+  renameDayModal.hidden = true;
+  renameDayModal._day = null;
+}
+
+renameDayForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const day = renameDayModal._day;
+  const label = renameDayInput.value.trim();
+  if (!label || label === day.label) { hideRenameDayModal(); return; }
+  const submitBtn = renameDayForm.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/shard-queue/days/${day.id}`, {
+      method: 'PATCH',
+      headers: authHeaders(true),
+      body: JSON.stringify({ label })
+    });
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    hideRenameDayModal();
+    if (dayManageStatusEl) dayManageStatusEl.textContent = '';
+    await refreshAll();
+  } catch (err) {
+    renameDayModalStatus.textContent = `Помилка: ${err.message}`;
+    renameDayModalStatus.classList.add('shard-queue-status--error');
+  } finally {
+    submitBtn.disabled = false;
+  }
+});
+renameDayCancelBtn.addEventListener('click', hideRenameDayModal);
+renameDayModalBackdrop.addEventListener('click', hideRenameDayModal);
 
 // ---- Дані ----
 
@@ -268,25 +343,16 @@ async function addDay(label) {
   }
 }
 
-async function renameDay(day) {
-  const label = window.prompt('Нова назва дня:', day.label);
-  if (!label || !label.trim() || label.trim() === day.label) return;
-  try {
-    const res = await fetch(`${AUTH_API_BASE}/shard-queue/days/${day.id}`, {
-      method: 'PATCH',
-      headers: authHeaders(true),
-      body: JSON.stringify({ label: label.trim() })
-    });
-    if (!res.ok) throw new Error(await readErrorMessage(res));
-    if (dayManageStatusEl) dayManageStatusEl.textContent = '';
-    await refreshAll();
-  } catch (err) {
-    if (dayManageStatusEl) dayManageStatusEl.textContent = `Помилка: ${err.message}`;
-  }
+function renameDay(day) {
+  renameDayInput.value = day.label;
+  renameDayModalStatus.textContent = '';
+  renameDayModalStatus.classList.remove('shard-queue-status--error');
+  renameDayModal._day = day;
+  renameDayModal.hidden = false;
+  renameDayInput.focus();
 }
 
-async function toggleDayActive(day) {
-  if (day.is_active && !window.confirm(`Анулювати день "${day.label}"? Він зникне з активних вкладок для всіх.`)) return;
+async function performToggleDayActive(day) {
   try {
     const res = await fetch(`${AUTH_API_BASE}/shard-queue/days/${day.id}`, {
       method: 'PATCH',
@@ -299,6 +365,19 @@ async function toggleDayActive(day) {
   } catch (err) {
     if (dayManageStatusEl) dayManageStatusEl.textContent = `Помилка: ${err.message}`;
   }
+}
+
+function toggleDayActive(day) {
+  if (!day.is_active) {
+    performToggleDayActive(day);
+    return;
+  }
+  showConfirmModal({
+    title: 'Анулювати день',
+    text: `Анулювати день "${day.label}"? Він зникне з активних вкладок для всіх.`,
+    confirmLabel: 'Анулювати',
+    onConfirm: () => performToggleDayActive(day)
+  });
 }
 
 // ---- Вміст вкладки ----
@@ -716,11 +795,7 @@ async function updateProgress(entryId, progress) {
   }
 }
 
-async function moveEntryDay(entry, targetDayId) {
-  if (!isOfficer()) {
-    const targetLabel = dayLabel(targetDayId);
-    if (!window.confirm(`Персонажа буде перенесено в кінець черги дня "${targetLabel}". Продовжити?`)) return;
-  }
+async function performMoveEntryDay(entry, targetDayId) {
   try {
     const res = await fetch(`${AUTH_API_BASE}/shard-queue/entries/${entry.id}/day`, {
       method: 'PATCH',
@@ -735,8 +810,21 @@ async function moveEntryDay(entry, targetDayId) {
   }
 }
 
-async function deleteEntry(entry) {
-  if (!window.confirm(`Прибрати "${entry.player_name}" з черги?`)) return;
+function moveEntryDay(entry, targetDayId) {
+  if (!isOfficer()) {
+    const targetLabel = dayLabel(targetDayId);
+    showConfirmModal({
+      title: 'Перенести персонажа',
+      text: `Персонажа буде перенесено в кінець черги дня "${targetLabel}". Продовжити?`,
+      confirmLabel: 'Перенести',
+      onConfirm: () => performMoveEntryDay(entry, targetDayId)
+    });
+    return;
+  }
+  performMoveEntryDay(entry, targetDayId);
+}
+
+async function performDeleteEntry(entry) {
   try {
     const res = await fetch(`${AUTH_API_BASE}/shard-queue/entries/${entry.id}`, {
       method: 'DELETE',
@@ -748,6 +836,15 @@ async function deleteEntry(entry) {
   } catch (err) {
     setQueueStatus(`Помилка: ${err.message}`, true);
   }
+}
+
+function deleteEntry(entry) {
+  showConfirmModal({
+    title: 'Прибрати з черги',
+    text: `Прибрати "${entry.player_name}" з черги?`,
+    confirmLabel: 'Прибрати',
+    onConfirm: () => performDeleteEntry(entry)
+  });
 }
 
 // ---- Ініціалізація ----
