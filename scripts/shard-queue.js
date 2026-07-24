@@ -4,13 +4,9 @@
 const RESOURCE_CAPS = { shard: 50, blood: 2 };
 const RESOURCE_LABELS = { blood: 'Кров', shard: 'Уламки' };
 const RESOURCE_LABELS_LOWER = { blood: 'кров', shard: 'уламки' };
+const WEEKDAYS = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', "П'ятниця", 'Субота', 'Неділя'];
 
 const loggedOutHint = document.getElementById('loggedOutHint');
-const dayManagePanel = document.getElementById('dayManagePanel');
-const addDayForm = document.getElementById('addDayForm');
-const addDayInput = document.getElementById('addDayInput');
-const dayManageList = document.getElementById('dayManageList');
-const dayManageStatus = document.getElementById('dayManageStatus');
 const dayTabs = document.getElementById('dayTabs');
 const queueContent = document.getElementById('queueContent');
 const queueStatus = document.getElementById('queueStatus');
@@ -22,7 +18,8 @@ let userCharacters = [];
 let userCharacterNamesLower = new Set();
 let rosterNames = [];
 let guildMemberNames = new Set();
-let activeTab = null; // { type: 'day', dayId } | { type: 'backlog' }
+let activeTab = null; // { type: 'day', dayId } | { type: 'backlog' } | { type: 'settings' }
+let dayManageStatusEl = null;
 
 function setQueueStatus(text, isError) {
   queueStatus.textContent = text || '';
@@ -109,9 +106,12 @@ async function refreshAll() {
     // Поточна вкладка зникла (анульована іншим офіцером) — падаємо на першу активну.
     const firstActiveDay = days.find((d) => d.is_active);
     activeTab = firstActiveDay ? { type: 'day', dayId: firstActiveDay.id } : { type: 'backlog' };
+  } else if (activeTab.type === 'settings' && !isOfficer()) {
+    // Права офіцера забрали, поки вкладка була відкрита.
+    const firstActiveDay = days.find((d) => d.is_active);
+    activeTab = firstActiveDay ? { type: 'day', dayId: firstActiveDay.id } : { type: 'backlog' };
   }
   renderDayTabs();
-  renderDayManagePanel();
   renderQueueContent();
 }
 
@@ -137,23 +137,74 @@ function renderDayTabs() {
   backlogBtn.dataset.tabType = 'backlog';
   backlogBtn.textContent = 'Вже зібрано';
   dayTabs.appendChild(backlogBtn);
+
+  if (isOfficer()) {
+    const settingsBtn = document.createElement('button');
+    settingsBtn.type = 'button';
+    settingsBtn.className = 'raid-tab' + (activeTab?.type === 'settings' ? ' raid-tab--active' : '');
+    settingsBtn.dataset.tabType = 'settings';
+    settingsBtn.textContent = 'Налаштування';
+    dayTabs.appendChild(settingsBtn);
+  }
 }
 
 dayTabs.addEventListener('click', (event) => {
   const btn = event.target.closest('[data-tab-type]');
   if (!btn) return;
-  activeTab = btn.dataset.tabType === 'backlog' ? { type: 'backlog' } : { type: 'day', dayId: Number(btn.dataset.dayId) };
+  if (btn.dataset.tabType === 'backlog') activeTab = { type: 'backlog' };
+  else if (btn.dataset.tabType === 'settings') activeTab = { type: 'settings' };
+  else activeTab = { type: 'day', dayId: Number(btn.dataset.dayId) };
   renderDayTabs();
   renderQueueContent();
 });
 
 // ---- Керування днями (тільки офіцер) ----
 
-function renderDayManagePanel() {
-  dayManagePanel.hidden = !isOfficer();
-  if (!isOfficer()) return;
+function renderSettingsView() {
+  const section = document.createElement('section');
+  section.className = 'shard-queue-manage';
 
-  dayManageList.innerHTML = '';
+  const heading = document.createElement('h2');
+  heading.textContent = 'Керування днями';
+  section.appendChild(heading);
+
+  const usedLabels = new Set(days.map((d) => d.label.trim().toLocaleLowerCase('uk')));
+  const availableWeekdays = WEEKDAYS.filter((w) => !usedLabels.has(w.toLocaleLowerCase('uk')));
+
+  if (availableWeekdays.length) {
+    const form = document.createElement('form');
+    form.className = 'account-form';
+
+    const select = document.createElement('select');
+    availableWeekdays.forEach((w) => {
+      const opt = document.createElement('option');
+      opt.value = w;
+      opt.textContent = w;
+      select.appendChild(opt);
+    });
+    form.appendChild(select);
+
+    const btn = document.createElement('button');
+    btn.type = 'submit';
+    btn.className = 'compare-btn';
+    btn.textContent = 'Додати день';
+    form.appendChild(btn);
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      addDay(select.value);
+    });
+
+    section.appendChild(form);
+  } else {
+    const hint = document.createElement('p');
+    hint.className = 'shard-queue-hint';
+    hint.textContent = 'Усі дні тижня вже додані.';
+    section.appendChild(hint);
+  }
+
+  const list = document.createElement('ul');
+  list.className = 'shard-queue-manage-list';
   days.forEach((day) => {
     const li = document.createElement('li');
     li.className = 'shard-queue-manage-item' + (day.is_active ? '' : ' shard-queue-manage-item--inactive');
@@ -176,8 +227,29 @@ function renderDayManagePanel() {
     toggleBtn.addEventListener('click', () => toggleDayActive(day));
     li.appendChild(toggleBtn);
 
-    dayManageList.appendChild(li);
+    list.appendChild(li);
   });
+  section.appendChild(list);
+
+  dayManageStatusEl = document.createElement('p');
+  section.appendChild(dayManageStatusEl);
+
+  queueContent.appendChild(section);
+}
+
+async function addDay(label) {
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/shard-queue/days`, {
+      method: 'POST',
+      headers: authHeaders(true),
+      body: JSON.stringify({ label })
+    });
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    if (dayManageStatusEl) dayManageStatusEl.textContent = '';
+    await refreshAll();
+  } catch (err) {
+    if (dayManageStatusEl) dayManageStatusEl.textContent = `Помилка: ${err.message}`;
+  }
 }
 
 async function renameDay(day) {
@@ -190,10 +262,10 @@ async function renameDay(day) {
       body: JSON.stringify({ label: label.trim() })
     });
     if (!res.ok) throw new Error(await readErrorMessage(res));
-    dayManageStatus.textContent = '';
+    if (dayManageStatusEl) dayManageStatusEl.textContent = '';
     await refreshAll();
   } catch (err) {
-    dayManageStatus.textContent = `Помилка: ${err.message}`;
+    if (dayManageStatusEl) dayManageStatusEl.textContent = `Помилка: ${err.message}`;
   }
 }
 
@@ -206,31 +278,12 @@ async function toggleDayActive(day) {
       body: JSON.stringify({ isActive: !day.is_active })
     });
     if (!res.ok) throw new Error(await readErrorMessage(res));
-    dayManageStatus.textContent = '';
+    if (dayManageStatusEl) dayManageStatusEl.textContent = '';
     await refreshAll();
   } catch (err) {
-    dayManageStatus.textContent = `Помилка: ${err.message}`;
+    if (dayManageStatusEl) dayManageStatusEl.textContent = `Помилка: ${err.message}`;
   }
 }
-
-addDayForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  const label = addDayInput.value.trim();
-  if (!label) return;
-  try {
-    const res = await fetch(`${AUTH_API_BASE}/shard-queue/days`, {
-      method: 'POST',
-      headers: authHeaders(true),
-      body: JSON.stringify({ label })
-    });
-    if (!res.ok) throw new Error(await readErrorMessage(res));
-    addDayInput.value = '';
-    dayManageStatus.textContent = '';
-    await refreshAll();
-  } catch (err) {
-    dayManageStatus.textContent = `Помилка: ${err.message}`;
-  }
-});
 
 // ---- Вміст вкладки ----
 
@@ -239,6 +292,8 @@ function renderQueueContent() {
   if (!activeTab) return;
   if (activeTab.type === 'backlog') {
     renderBacklogView();
+  } else if (activeTab.type === 'settings') {
+    renderSettingsView();
   } else {
     renderDayView(activeTab.dayId);
   }
