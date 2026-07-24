@@ -603,8 +603,15 @@ function buildAddForms(day, resourceType) {
       const opt = document.createElement('option');
       opt.value = name;
       opt.textContent = name;
+      const color = classColorMap.get(name);
+      if (color) opt.style.color = color;
       select.appendChild(opt);
     });
+    const syncSelectColor = () => {
+      select.style.color = classColorMap.get(select.value) || '';
+    };
+    syncSelectColor();
+    select.addEventListener('change', syncSelectColor);
     form.appendChild(select);
 
     const btn = document.createElement('button');
