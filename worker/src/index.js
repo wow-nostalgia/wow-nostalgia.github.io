@@ -71,6 +71,12 @@ function corsHeaders(request) {
     'Access-Control-Allow-Origin': allowOrigin,
     'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+    // Authorization-заголовок на кожному apiCall() змушує браузер робити
+    // CORS-preflight (OPTIONS) перед КОЖНИМ GET/POST - без Max-Age це
+    // повторюється щоразу на той самий URL, навіть у 10-секундному поллінгу
+    // сторінки рейду. 600s - браузер кешує підтвердження preflight'а на цей
+    // час і не повторює його для того самого шляху.
+    'Access-Control-Max-Age': '600',
     Vary: 'Origin'
   };
 }

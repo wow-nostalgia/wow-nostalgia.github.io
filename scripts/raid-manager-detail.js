@@ -129,6 +129,8 @@ let raidRosters = null;
 let activeTab = 'players';
 let honorBoard = [];
 let shardQueueIconsByName = new Map(); // player_name -> Set('shard' | 'blood')
+let personalStatsPromise = null;
+let initialRenderDone = false;
 
 // Реальний день тижня (за Києвом) на момент створення рейду — дні черги
 // "Черга на уламки та кров" тепер завжди мають назви днів тижня (без
@@ -145,28 +147,42 @@ function normalizeWeekday(str) {
   return str.replace(/['’ʼ]/g, '').trim().toLocaleLowerCase('uk');
 }
 
-async function loadShardQueueIcons() {
+// Розбито на фетч (не залежить від raid, можна пускати паралельно з іншими
+// запитами в init()/поллінгу) і apply (потребує raid.created_at - викликати,
+// тільки коли raid вже завантажений).
+async function fetchShardQueueRaw() {
   try {
     const [days, entries] = await Promise.all([
       apiCall('GET', '/shard-queue/days', { token: getSessionToken() }),
       apiCall('GET', '/shard-queue/entries', { token: getSessionToken() })
     ]);
-    const weekday = kyivWeekdayLabel(raid.created_at);
-    const matchedDay = days.find((d) => d.is_active && weekday && normalizeWeekday(d.label) === normalizeWeekday(weekday));
-    if (!matchedDay) return;
-
-    const caps = { shard: 50, blood: 2 };
-    const map = new Map();
-    entries
-      .filter((e) => e.day_id === matchedDay.id && e.progress < caps[e.resource_type])
-      .forEach((e) => {
-        if (!map.has(e.player_name)) map.set(e.player_name, new Set());
-        map.get(e.player_name).add(e.resource_type);
-      });
-    shardQueueIconsByName = map;
+    return { days, entries };
   } catch (err) {
     console.error(err);
+    return null;
   }
+}
+
+function applyShardQueueRaw(raw) {
+  if (!raw) return;
+  const { days, entries } = raw;
+  const weekday = kyivWeekdayLabel(raid.created_at);
+  const matchedDay = days.find((d) => d.is_active && weekday && normalizeWeekday(d.label) === normalizeWeekday(weekday));
+  if (!matchedDay) return;
+
+  const caps = { shard: 50, blood: 2 };
+  const map = new Map();
+  entries
+    .filter((e) => e.day_id === matchedDay.id && e.progress < caps[e.resource_type])
+    .forEach((e) => {
+      if (!map.has(e.player_name)) map.set(e.player_name, new Set());
+      map.get(e.player_name).add(e.resource_type);
+    });
+  shardQueueIconsByName = map;
+}
+
+async function loadShardQueueIcons() {
+  applyShardQueueRaw(await fetchShardQueueRaw());
 }
 
 function setStatus(text, type = 'info') {
@@ -554,6 +570,40 @@ async function ensureRaidRostersLoaded() {
   return raidRosters;
 }
 
+// personal-stats.json важить ~3.4 МБ (усі per-boss пули DPS усіх рейдів) —
+// на цій сторінці з нього реально треба лише список імен (personalAnalyticsNames,
+// чи робити ім'я гравця посиланням) і, окремо, підрахунок босів для вкладки
+// "Поти" (getPotionBossMap). Замість блокувати початковий рендер сторінки
+// цим файлом - вантажимо його у фоні (мемоізовано) і доре-рендерюємо
+// таблиці, коли він прийде; вкладка "Поти" чекає той самий проміс явно.
+function ensurePersonalStatsLoaded() {
+  if (!personalStatsPromise) {
+    personalStatsPromise = fetch('/data/personal-stats.json?t=' + Date.now())
+      .then((res) => res.json())
+      .then((personalStats) => {
+        personalStatsRecords = personalStats;
+        for (const record of personalStats) {
+          for (const player of record.players || []) {
+            personalAnalyticsNames.add(player.name);
+          }
+        }
+        return personalStats;
+      })
+      .catch((err) => {
+        console.error(err);
+        return [];
+      })
+      .then((personalStats) => {
+        if (initialRenderDone) {
+          renderPlayersTable();
+          renderItemsTable();
+        }
+        return personalStats;
+      });
+  }
+  return personalStatsPromise;
+}
+
 function findRosterEntry(raidUrl) {
   return raidRosters?.get(raidUrl) || null;
 }
@@ -663,7 +713,7 @@ function renderPotionLogTable(statsRaid) {
 }
 
 async function loadPotionsTab() {
-  await Promise.all([ensurePotionStatsLoaded(), ensureRaidRostersLoaded()]);
+  await Promise.all([ensurePotionStatsLoaded(), ensureRaidRostersLoaded(), ensurePersonalStatsLoaded()]);
   renderPotionLogTable(findPotionLogEntry(raid.potion_log_url));
 }
 
@@ -698,11 +748,21 @@ async function showPotionLogModal() {
   potionLogModal.hidden = false;
 }
 
-async function loadOfficers() {
-  const officers = await apiCall('GET', `/raids/${raidId}/officers`, { token: getSessionToken() });
+// Розбито так само, як fetchShardQueueRaw/applyShardQueueRaw - fetchOfficers
+// не залежить від raid і може йти паралельно з іншими запитами, applyOfficers
+// потребує вже завантаженого raid (renderOfficersPanel читає raid.leader_*).
+function fetchOfficers() {
+  return apiCall('GET', `/raids/${raidId}/officers`, { token: getSessionToken() });
+}
+
+function applyOfficers(officers) {
   raidOfficerIds = new Set(officers.map((o) => o.discord_id));
   officersTab.hidden = !isOfficerMode();
   renderOfficersPanel(officers);
+}
+
+async function loadOfficers() {
+  applyOfficers(await fetchOfficers());
 }
 
 // username і display_name збігаються, якщо основний персонаж не позначено
@@ -1954,16 +2014,39 @@ async function init() {
     return;
   }
 
+  // personal-stats.json (~3.4 МБ) на цій сторінці потрібен лише для
+  // некритичних речей (лінки на імена, вкладка "Поти") - не блокуємо ним
+  // рендер, вантажимо у фоні (ensurePersonalStatsLoaded сама доре-рендерить
+  // таблиці, коли дані прийдуть).
+  ensurePersonalStatsLoaded();
+
+  // Усі незалежні запити цієї сторінки запускаємо одночасно замість await
+  // одне за одним - раніше це були ~9 послідовних round-trip'ів до Worker'а.
+  // Кожен fetch/apiCall стартує одразу (до першого await всередині нього),
+  // тож просте оголошення змінних тут вже паралелить мережеві виклики;
+  // await нижче лише чекає на вже запущені запити в потрібному порядку.
+  const staticDataPromise = Promise.all([
+    fetch('/data/raid-items.json?t=' + Date.now()),
+    fetch('/data/players.json?t=' + Date.now()),
+    fetch(apiUrl('/characters/owners')).catch(() => null),
+    fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
+    fetch('/data/honor-board.json?t=' + Date.now()).catch(() => null),
+    loadItemIconData()
+  ]);
+
+  let raidError = null;
+  const raidPromise = loadRaid().catch((err) => { raidError = err; });
+  const officersPromise = fetchOfficers();
+  const reservesPromise = loadReserves();
+  const transfersPromise = loadTransfers();
+  const bonusGrantsPromise = loadBonusGrants();
+  const penaltiesPromise = loadPenalties();
+  const shardQueueRawPromise = fetchShardQueueRaw();
+  const myCharactersPromise = apiCall('GET', '/auth/me/characters', { token: getSessionToken() })
+    .catch((err) => { console.error(err); return null; });
+
   try {
-    const [itemsRes, playersRes, ownersRes, personalStatsRes, guildDataRes, honorBoardRes] = await Promise.all([
-      fetch('/data/raid-items.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now()),
-      fetch(apiUrl('/characters/owners')).catch(() => null),
-      fetch('/data/personal-stats.json?t=' + Date.now()).catch(() => null),
-      fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
-      fetch('/data/honor-board.json?t=' + Date.now()).catch(() => null),
-      loadItemIconData()
-    ]);
+    const [itemsRes, playersRes, ownersRes, guildDataRes, honorBoardRes] = await staticDataPromise;
     itemsCatalog = await itemsRes.json();
     if (playersRes.ok) {
       const players = await playersRes.json();
@@ -1972,15 +2055,6 @@ async function init() {
     }
     if (ownersRes?.ok) {
       characterOwnerNames = new Map(Object.entries(await ownersRes.json()));
-    }
-    if (personalStatsRes?.ok) {
-      const personalStats = await personalStatsRes.json();
-      personalStatsRecords = personalStats;
-      for (const record of personalStats) {
-        for (const player of record.players || []) {
-          personalAnalyticsNames.add(player.name);
-        }
-      }
     }
     if (guildDataRes?.ok) {
       const guildData = await guildDataRes.json();
@@ -1993,17 +2067,16 @@ async function init() {
     console.error(err);
   }
 
-  try {
-    await loadRaid();
-  } catch (err) {
-    setStatus(`Рейд не знайдено: ${err.message}`, 'error');
+  await raidPromise;
+  if (raidError) {
+    setStatus(`Рейд не знайдено: ${raidError.message}`, 'error');
     return;
   }
 
   raidTitleHeading.textContent = raid.title;
   document.title = `${raid.title} — Рейд-менеджер`;
 
-  await loadOfficers();
+  applyOfficers(await officersPromise);
   renderBanner();
   officerPanel.hidden = !isOfficerMode();
   renderBenchmarkPanel();
@@ -2014,30 +2087,30 @@ async function init() {
   populateItemPicker(assignItem, assignItemTrigger, assignItemList, assignBoss.value);
   renderItemsBossFilterOptions();
 
-  try {
-    myCharacters = await apiCall('GET', '/auth/me/characters', { token: getSessionToken() });
-  } catch (err) {
-    console.error(err);
-  }
+  myCharacters = (await myCharactersPromise) || [];
   populateMyCharacters();
 
-  await loadReserves();
-  await loadTransfers();
-  await loadBonusGrants();
-  await loadPenalties();
-  await loadShardQueueIcons();
+  await reservesPromise;
+  await transfersPromise;
+  await bonusGrantsPromise;
+  await penaltiesPromise;
+  applyShardQueueRaw(await shardQueueRawPromise);
   renderPlayersTable();
   renderItemsTable();
 
   raidContent.hidden = false;
   setStatus('');
+  initialRenderDone = true;
 
   setInterval(async () => {
     try {
-      await loadReserves();
-      await loadTransfers();
-      await loadBonusGrants();
-      await loadShardQueueIcons();
+      const [, , , shardRaw] = await Promise.all([
+        loadReserves(),
+        loadTransfers(),
+        loadBonusGrants(),
+        fetchShardQueueRaw()
+      ]);
+      applyShardQueueRaw(shardRaw);
       renderPlayersTable();
       renderItemsTable();
       applySoftFormLockState();
