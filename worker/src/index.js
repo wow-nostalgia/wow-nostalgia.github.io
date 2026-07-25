@@ -12,7 +12,8 @@ import {
   handleRemoveOfficer,
   handleToggleHiddenReserves,
   handleSetPotionLog,
-  handleDeleteRaid
+  handleDeleteRaid,
+  handlePruneOldRaids
 } from './routes/raids.js';
 import {
   handleListReserves,
@@ -56,7 +57,8 @@ import {
   listDefaultOfficers,
   addDefaultOfficer,
   removeDefaultOfficer,
-  getUserByDiscordId
+  getUserByDiscordId,
+  pruneOldRaidsIfOverLimit
 } from './db.js';
 
 const ALLOWED_ORIGINS = ['https://wow-nostalgia.github.io', 'http://localhost:8080'];
@@ -256,6 +258,10 @@ async function routeAdmin(request, env, parts, session) {
     return handleDeleteRaid(request, env, decodeURIComponent(sub2), session);
   }
 
+  if (sub === 'prune-old-raids' && method === 'POST') {
+    return handlePruneOldRaids(request, env, session);
+  }
+
   if (sub === 'default-officers') {
     if (!sub2) {
       if (method === 'GET') return jsonResponse(await listDefaultOfficers(env.DB));
@@ -329,5 +335,11 @@ export default {
       if (!(err instanceof HttpError)) console.error(err);
       return withCors(jsonResponse({ error: err.message || 'Внутрішня помилка сервера' }, status), request);
     }
+  },
+
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(
+      pruneOldRaidsIfOverLimit(env.DB).catch((err) => console.error('[prune] scheduled run failed', err))
+    );
   }
 };

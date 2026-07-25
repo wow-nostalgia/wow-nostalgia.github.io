@@ -15,7 +15,8 @@ import {
   listDefaultOfficers,
   deleteRaid,
   deleteAllTransfersForRaid,
-  resetAllBonusWeightsForRaid
+  resetAllBonusWeightsForRaid,
+  pruneOldRaidsIfOverLimit
 } from '../db.js';
 import { requireRaidOfficer, requireLeader } from '../auth.js';
 
@@ -206,6 +207,11 @@ export async function handleDeleteRaid(request, env, id, session) {
   await insertAudit(env.DB, id, session.username, 'raid_delete', { title: raid.title });
   await deleteRaid(env.DB, id);
   return jsonResponse({ ok: true });
+}
+
+export async function handlePruneOldRaids(request, env, session) {
+  if (session.discordId !== env.ADMIN_DISCORD_ID) throw new HttpError(403, "Лише адміністратор сайту");
+  return jsonResponse(await pruneOldRaidsIfOverLimit(env.DB));
 }
 
 export { publicRaid };

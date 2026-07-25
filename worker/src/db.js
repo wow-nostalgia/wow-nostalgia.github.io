@@ -412,7 +412,39 @@ export async function isDefaultOfficer(db, discordId) {
 }
 
 export async function deleteRaid(db, raidId) {
-  await db.prepare('DELETE FROM raids WHERE id = ?').bind(raidId).run();
+  // raid_participants і raid_penalties не мають ON DELETE CASCADE в схемі
+  // (заведені в 0005_add_penalties.sql без FK) — каскад на них не спрацює,
+  // тому чистимо їх явно. Решта таблиць з raid_id мають коректний FK.
+  await db.prepare('DELETE FROM raid_participants WHERE raid_id = ?').bind(raidId).run();
+  await db.prepare('DELETE FROM raid_penalties WHERE raid_id = ?').bind(raidId).run();
+  return db.prepare('DELETE FROM raids WHERE id = ?').bind(raidId).run();
+}
+
+export async function getRaidCountAndSize(db) {
+  // .all() (не .first()) — лише він повертає meta.size_after, точний
+  // поточний розмір D1-бази в байтах, без dbstat/PRAGMA/Cloudflare API.
+  const { results, meta } = await db.prepare('SELECT COUNT(*) AS n FROM raids').all();
+  return { count: results[0].n, sizeBytes: meta.size_after };
+}
+
+export async function pruneOldRaidsIfOverLimit(
+  db,
+  { thresholdBytes = 450_000_000, minRaidsToKeep = 20, maxDeletesPerRun = 10 } = {}
+) {
+  let { count: remaining, sizeBytes } = await getRaidCountAndSize(db);
+  let deleted = 0;
+
+  while (sizeBytes > thresholdBytes && remaining > minRaidsToKeep && deleted < maxDeletesPerRun) {
+    const oldest = await db.prepare('SELECT id, title FROM raids ORDER BY created_at ASC LIMIT 1').first();
+    if (!oldest) break;
+    const result = await deleteRaid(db, oldest.id);
+    deleted++;
+    remaining--;
+    sizeBytes = result.meta.size_after;
+    console.log(`[prune] deleted raid ${oldest.id} ("${oldest.title}"); db=${sizeBytes}B; ${remaining} raids left`);
+  }
+
+  return { deleted, sizeBytes, remaining };
 }
 
 export async function listWeightTransfers(db, raidId) {
