@@ -1179,7 +1179,7 @@ function renderPlayersTable() {
   });
 }
 
-function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove }) {
+function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove, allowStackOnSameItem }) {
   const bonusSpan = document.createElement('span');
   bonusSpan.className = 'raid-bonus-controls';
 
@@ -1190,10 +1190,12 @@ function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove }) {
     bonusSpan.appendChild(chip);
   }
 
-  // Вага розподіляється по предмету лише раз - якщо вона вже додана,
-  // кнопку "+" ховаємо повністю (лишається тільки "−" для скасування),
-  // а не просто дизейблимо.
-  if (bonusWeight === 0 && canAdd) {
+  // Для бонусного софту від офіцера (bonusGrant) вага розподіляється по
+  // предмету лише раз - кнопку "+" ховаємо повністю після першого кліку.
+  // Для переданої гравцем ваги (weightTransfer) обмеження нема - весь пул
+  // можна стакати на одному предметі, якщо в гравця більше нема на що
+  // його розподілити (allowStackOnSameItem).
+  if ((bonusWeight === 0 || allowStackOnSameItem) && canAdd) {
     const addBtn = document.createElement('button');
     addBtn.type = 'button';
     addBtn.className = 'raid-transfer-btn raid-transfer-btn--add';
@@ -1388,7 +1390,8 @@ function renderItemsTable() {
         reserveId: myReserveForItem.id,
         bonusWeight: myReserveForItem.bonus_weight || 0,
         canAdd: usedBonusForItems < bonusPoolForItems,
-        canRemove: (myReserveForItem.bonus_weight || 0) > 0
+        canRemove: (myReserveForItem.bonus_weight || 0) > 0,
+        allowStackOnSameItem: Boolean(myReceivedForItems)
       }
       : null;
 
