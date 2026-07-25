@@ -1094,7 +1094,9 @@ function renderPlayersTable() {
       const labels = { shard: 'Уламки', blood: 'Кров' };
       ['shard', 'blood'].forEach((resourceType) => {
         if (queuedResources.has(resourceType)) {
-          nameWrap.appendChild(createResourceIcon(resourceType, `У черзі на ${labels[resourceType]} на сьогодні`));
+          const icon = createResourceIcon(resourceType, `У черзі на ${labels[resourceType]} на сьогодні`);
+          bindTooltip(icon);
+          nameWrap.appendChild(icon);
         }
       });
     }
