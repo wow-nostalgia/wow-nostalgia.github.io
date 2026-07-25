@@ -12,7 +12,6 @@ const loggedOutHint = document.getElementById('loggedOutHint');
 const dayTabs = document.getElementById('dayTabs');
 const queueContent = document.getElementById('queueContent');
 const queueStatus = document.getElementById('queueStatus');
-const btnTooltipEl = document.getElementById('raidBtnTooltip');
 
 const moveDayModal = document.getElementById('moveDayModal');
 const moveDayModalBackdrop = document.getElementById('moveDayModalBackdrop');
@@ -385,32 +384,8 @@ function renderDayView(dayId) {
   });
 }
 
-// CSS .tooltipped (::after) обрізається всередині .ranking-table-wrap
-// (overflow-x:auto змушує браузер обчислити overflow-y як auto теж) —
-// той самий фікс, що вже є в raid-manager-detail.js.
-function showBtnTooltip(el) {
-  btnTooltipEl.textContent = el.getAttribute('aria-label') || '';
-  btnTooltipEl.hidden = false;
-  const rect = el.getBoundingClientRect();
-  const tipRect = btnTooltipEl.getBoundingClientRect();
-  let x = rect.left + rect.width / 2 - tipRect.width / 2;
-  let y = rect.top - tipRect.height - 8;
-  if (y < 0) y = rect.bottom + 8;
-  x = Math.max(4, Math.min(x, window.innerWidth - tipRect.width - 4));
-  btnTooltipEl.style.left = `${x}px`;
-  btnTooltipEl.style.top = `${y}px`;
-}
-
-function hideBtnTooltip() {
-  btnTooltipEl.hidden = true;
-}
-
-function bindTooltip(el) {
-  el.addEventListener('mouseenter', () => showBtnTooltip(el));
-  el.addEventListener('mouseleave', hideBtnTooltip);
-  el.addEventListener('focus', () => showBtnTooltip(el));
-  el.addEventListener('blur', hideBtnTooltip);
-}
+// showBtnTooltip/hideBtnTooltip/bindTooltip/btnTooltipEl - у ui-shared.js
+// (спільні для цієї сторінки й raid-manager-detail.js).
 
 function playerNameCell(name) {
   const wrap = document.createElement('span');

@@ -82,7 +82,6 @@ const penaltiesPane = document.getElementById('penaltiesPane');
 const raidPenaltiesBody = document.getElementById('raidPenaltiesBody');
 
 const itemTooltipEl = document.getElementById('raidItemTooltip');
-const btnTooltipEl = document.getElementById('raidBtnTooltip');
 
 const transferModal = document.getElementById('transferModal');
 const transferModalBackdrop = document.getElementById('transferModalBackdrop');
@@ -877,36 +876,8 @@ function positionItemTooltip(event) {
   itemTooltipEl.style.top = `${Math.max(0, y)}px`;
 }
 
-function showBtnTooltip(btn) {
-  btnTooltipEl.textContent = btn.getAttribute('aria-label') || '';
-  btnTooltipEl.hidden = false;
-  const btnRect = btn.getBoundingClientRect();
-  const tipRect = btnTooltipEl.getBoundingClientRect();
-  let x = btnRect.left + btnRect.width / 2 - tipRect.width / 2;
-  let y = btnRect.top - tipRect.height - 8;
-  if (y < 0) y = btnRect.bottom + 8;
-  x = Math.max(4, Math.min(x, window.innerWidth - tipRect.width - 4));
-  btnTooltipEl.style.left = `${x}px`;
-  btnTooltipEl.style.top = `${y}px`;
-}
-
-function hideBtnTooltip() {
-  btnTooltipEl.hidden = true;
-}
-
-// CSS .tooltipped (::after) обрізається всередині
-// body.raid-manager-detail-page .raid-tables-grid .ranking-table-wrap
-// (overflow-x:auto змушує браузер обчислити overflow-y як auto теж —
-// тултіп над елементом йде за межі скрол-боксу і ховається). Тому будь-
-// який елемент з тултіпом усередині таблиць на цій сторінці (Гравці,
-// Предмети, Штрафи) має використовувати цей JS-позиційований тултіп
-// замість класу .tooltipped. aria-label лишається джерелом тексту.
-function bindTooltip(el) {
-  el.addEventListener('mouseenter', () => showBtnTooltip(el));
-  el.addEventListener('mouseleave', hideBtnTooltip);
-  el.addEventListener('focus', () => showBtnTooltip(el));
-  el.addEventListener('blur', hideBtnTooltip);
-}
+// showBtnTooltip/hideBtnTooltip/bindTooltip/btnTooltipEl - у ui-shared.js
+// (спільні для цієї сторінки й shard-queue.js).
 
 document.addEventListener('mousemove', (event) => {
   if (event.target.closest('.raid-remove-btn')) {
@@ -1094,9 +1065,7 @@ function renderPlayersTable() {
       const labels = { shard: 'Уламки', blood: 'Кров' };
       ['shard', 'blood'].forEach((resourceType) => {
         if (queuedResources.has(resourceType)) {
-          const icon = createResourceIcon(resourceType, `У черзі на ${labels[resourceType]} на сьогодні`);
-          bindTooltip(icon);
-          nameWrap.appendChild(icon);
+          nameWrap.appendChild(createResourceIcon(resourceType, `У черзі на ${labels[resourceType]} на сьогодні`));
         }
       });
     }

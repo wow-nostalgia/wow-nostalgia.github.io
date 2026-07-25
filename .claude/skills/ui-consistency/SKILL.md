@@ -113,9 +113,9 @@ viewport і не залежить від `overflow` жодного предка.
 браузер через це форсує `overflow-y` теж не-`visible`, тому CSS-тултіп
 обрізається як зверху, так і збоку. Для НОВИХ кнопок/імен у цих трьох
 таблицях одразу бери JS-тултіп, не `.tooltipped` — готовий хелпер
-`bindTooltip(el)` у `scripts/raid-manager-detail.js` (вішає
-mouseenter/mouseleave/focus/blur на `showBtnTooltip`/`hideBtnTooltip`,
-текст бере з `aria-label` елемента):
+`bindTooltip(el)` у `scripts/ui-shared.js` (спільний для сторінки рейду й
+`shard-queue/`; вішає mouseenter/mouseleave/focus/blur на
+`showBtnTooltip`/`hideBtnTooltip`, текст бере з `aria-label` елемента):
 ```js
 btn.setAttribute('aria-label', 'Текст підказки');
 bindTooltip(btn);
@@ -123,6 +123,17 @@ bindTooltip(btn);
 Не копіюй 4 `addEventListener` вручну — саме через це дублювання один із
 кількох однотипних тултіпів (кнопка скасування передачі софту) свого часу
 лишили на старому `.tooltipped` і не помітили, що він обрізається.
+
+**Для спільних хелперів, що повертають DOM-елемент** (`createPlayerBadge`,
+`createResourceIcon` в `ui-shared.js`) — не вибирай `.tooltipped` чи
+`bindTooltip` вручну щоразу заново. Виклич `applyAutoTooltip(el)`: вона сама
+перевіряє, чи є на сторінці `#raidBtnTooltip`, і або вішає `bindTooltip`
+(клипаючі сторінки), або додає клас `.tooltipped` (усі інші) — правило "не
+`title`" стає неможливо порушити ще на рівні хелпера, а не лише в
+документації. Саме відсутність такого автовибору й призвела до того, що
+`createResourceIcon` 2026-07-24 отримав нативний `title` замість
+`.tooltipped`/`bindTooltip`, хоча правило вище вже існувало в цьому файлі —
+див. фікс 2026-07-25 (`ui-shared.js`, `applyAutoTooltip`).
 
 Перед рев'ю нового `.tooltipped`-елемента — grep на `title=` поруч із ним
 (щоб не пропустити дублікат) і перевір, чи елемент не всередині
@@ -495,3 +506,4 @@ max-width: 480px;
 4. **Не дублюй** `.raid-tabs`, `.raid-autocomplete-list`, `.compare-btn` тощо — розшир існуючий селектор.
 5. Hover/focus/disabled — обов'язково для будь-якого інтерактивного елемента.
 6. Мінімальна висота кліку для кнопок — `min-height: 44px` (стандарт доступності) або `padding` що дає ≥ 44px hit-area.
+7. **Тултіп на hover?** `aria-label` + `.tooltipped`, або `applyAutoTooltip(el)`/`bindTooltip(el)` з `ui-shared.js`, якщо елемент може опинитись у клипаючому контейнері. Ніколи атрибут `title`.

@@ -2,15 +2,68 @@
 // <script> ДО файлів, що їх використовують (без бандлера, як і інші
 // клієнтські скрипти).
 
+// CSS .tooltipped (::after) обрізається всередині
+// body.raid-manager-detail-page .raid-tables-grid .ranking-table-wrap
+// (overflow-x:auto змушує браузер обчислити overflow-y як auto теж —
+// тултіп над елементом йде за межі скрол-боксу і ховається). На сторінках,
+// де є #raidBtnTooltip (зараз: рейд-менеджер, черга на ШМ), треба саме цей
+// JS-позиційований тултіп замість класу .tooltipped. aria-label лишається
+// джерелом тексту в обох випадках.
+const btnTooltipEl = document.getElementById('raidBtnTooltip');
+
+function showBtnTooltip(el) {
+  if (!btnTooltipEl) return;
+  btnTooltipEl.textContent = el.getAttribute('aria-label') || '';
+  btnTooltipEl.hidden = false;
+  const rect = el.getBoundingClientRect();
+  const tipRect = btnTooltipEl.getBoundingClientRect();
+  let x = rect.left + rect.width / 2 - tipRect.width / 2;
+  let y = rect.top - tipRect.height - 8;
+  if (y < 0) y = rect.bottom + 8;
+  x = Math.max(4, Math.min(x, window.innerWidth - tipRect.width - 4));
+  btnTooltipEl.style.left = `${x}px`;
+  btnTooltipEl.style.top = `${y}px`;
+}
+
+function hideBtnTooltip() {
+  if (!btnTooltipEl) return;
+  btnTooltipEl.hidden = true;
+}
+
+// Прив'язує JS-позиційований тултіп. Викликай на сторінках з #raidBtnTooltip
+// (bindTooltip тихо не робить нічого, якщо його нема в DOM) — інакше просто
+// клади клас .tooltipped, CSS-варіант спрацює сам.
+function bindTooltip(el) {
+  el.addEventListener('mouseenter', () => showBtnTooltip(el));
+  el.addEventListener('mouseleave', hideBtnTooltip);
+  el.addEventListener('focus', () => showBtnTooltip(el));
+  el.addEventListener('blur', hideBtnTooltip);
+}
+
+// Автовибір механізму тултіпа для спільних хелперів нижче (createPlayerBadge,
+// createResourceIcon): якщо на сторінці є #raidBtnTooltip - JS bindTooltip
+// (коректно працює під overflow-x:auto клипаючих таблиць), інакше - звичайний
+// CSS .tooltipped. Це прибирає крок "не забудь викликати bindTooltip руками",
+// через який один і той самий баг (нативний title / обрізаний CSS-тултіп)
+// повторювався кілька разів - див. ui-consistency SKILL.md, розділ "Тултіпи".
+function applyAutoTooltip(el) {
+  if (btnTooltipEl) {
+    bindTooltip(el);
+  } else {
+    el.classList.add('tooltipped');
+  }
+}
+
 // Бейдж гільдієць/легіонер. Очікує глобальну змінну guildMemberNames
 // (Set з іменами гільдії), яку кожна сторінка заповнює сама зі свого
 // data/players.json.
 function createPlayerBadge(name) {
   const isGuild = guildMemberNames.has(name);
   const badge = document.createElement('span');
-  badge.className = `player-badge tooltipped ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
+  badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
   badge.setAttribute('aria-label', isGuild ? 'Ностальгія' : 'Легіонер');
   badge.textContent = isGuild ? 'N' : 'L';
+  applyAutoTooltip(badge);
   return badge;
 }
 
@@ -37,7 +90,10 @@ const RESOURCE_ICON_PATHS = {
 function createResourceIcon(resourceType, title) {
   const wrap = document.createElement('span');
   wrap.className = `resource-icon-wrap resource-icon-wrap--${resourceType}`;
-  if (title) wrap.setAttribute('aria-label', title);
+  if (title) {
+    wrap.setAttribute('aria-label', title);
+    applyAutoTooltip(wrap);
+  }
   wrap.innerHTML = `<svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="${RESOURCE_ICON_PATHS[resourceType]}"/></svg>`;
   return wrap;
 }

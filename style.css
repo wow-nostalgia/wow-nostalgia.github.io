@@ -3108,7 +3108,7 @@ body.raid-manager-detail-page .raid-table tbody tr:hover {
    під навантаженням ненадійний - фантомний scrollWidth все одно протікає
    в частині випадків. Тому overflow:hidden, а всі тултіпи кнопок і імен
    усередині .raid-tables-grid .ranking-table-wrap (ця клітинка й сусідні)
-   - JS-позиційовані через bindTooltip() у raid-manager-detail.js, а не
+   - JS-позиційовані через bindTooltip() у ui-shared.js, а не
    CSS .tooltipped::after, який тут обрізається. */
 body.raid-manager-detail-page .raid-softs-col {
   overflow: hidden;
