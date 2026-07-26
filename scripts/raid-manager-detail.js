@@ -268,11 +268,16 @@ function renderBanner() {
   penaltiesTab.hidden = !isOfficerMode();
   potionsAddBtn.hidden = !isOfficerMode() || Boolean(raid.potion_log_url);
   potionsClearBtn.hidden = !isOfficerMode() || !raid.potion_log_url;
-  settingsTitleInput.value = raid.title;
-  settingsSoftLimitInput.value = raid.soft_limit_total;
+  // document.activeElement-перевірка: після додавання loadRaid() у 10с
+  // поллінг renderBanner() викликається постійно, і без цього застереження
+  // він затирав би поле, яке лідер саме зараз редагує на вкладці "Налаштування".
+  if (document.activeElement !== settingsTitleInput) settingsTitleInput.value = raid.title;
+  if (document.activeElement !== settingsSoftLimitInput) settingsSoftLimitInput.value = raid.soft_limit_total;
 
   const tl = raid.transfer_weight_limit;
-  transferWeightLimitInput.value = (tl === null || tl === undefined || tl > 3) ? '0' : String(tl);
+  if (document.activeElement !== transferWeightLimitInput) {
+    transferWeightLimitInput.value = (tl === null || tl === undefined || tl > 3) ? '0' : String(tl);
+  }
 
   applyWeightLimits();
   applySoftFormLockState();
