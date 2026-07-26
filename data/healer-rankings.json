@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-25T00:46:15.449Z",
+  "updatedAt": "2026-07-26T00:43:51.268Z",
   "specs": [
     {
       "class": "Paladin",
@@ -542,6 +542,10 @@
         {
           "name": "Rpal",
           "hps": 30188.6
+        },
+        {
+          "name": "Адраса",
+          "hps": 30177.3
         },
         {
           "name": "Nerta",
@@ -2602,6 +2606,10 @@
           "hps": 18546.1
         },
         {
+          "name": "Гиляка",
+          "hps": 18461.8
+        },
+        {
           "name": "Шошо",
           "hps": 18389.4
         },
@@ -2708,10 +2716,6 @@
         {
           "name": "Goldbid",
           "hps": 17266.3
-        },
-        {
-          "name": "Гиляка",
-          "hps": 17215.6
         },
         {
           "name": "Совагеддон",
@@ -2840,6 +2844,10 @@
         {
           "name": "Akadora",
           "hps": 15536
+        },
+        {
+          "name": "Dofaminka",
+          "hps": 15522.1
         },
         {
           "name": "Bavovna",
@@ -3328,10 +3336,6 @@
         {
           "name": "Eaxbeetferal",
           "hps": 3018.4
-        },
-        {
-          "name": "Dofaminka",
-          "hps": 2955.5
         },
         {
           "name": "Aburaihan",
@@ -4172,6 +4176,10 @@
           "hps": 23607.7
         },
         {
+          "name": "Trymyskill",
+          "hps": 23534.5
+        },
+        {
           "name": "Weriti",
           "hps": 23532.4
         },
@@ -4216,6 +4224,10 @@
           "hps": 22932.5
         },
         {
+          "name": "Shurik",
+          "hps": 22868.1
+        },
+        {
           "name": "Стабик",
           "hps": 22846.4
         },
@@ -4248,6 +4260,10 @@
           "hps": 22581.4
         },
         {
+          "name": "Sonicx",
+          "hps": 22579.5
+        },
+        {
           "name": "Kulya",
           "hps": 22546.4
         },
@@ -4266,10 +4282,6 @@
         {
           "name": "Palyanytsya",
           "hps": 22210.4
-        },
-        {
-          "name": "Trymyskill",
-          "hps": 22121.3
         },
         {
           "name": "Цукорь",
@@ -4332,6 +4344,10 @@
           "hps": 21485.4
         },
         {
+          "name": "Vettala",
+          "hps": 21465.1
+        },
+        {
           "name": "Monsterhil",
           "hps": 21230.6
         },
@@ -4390,10 +4406,6 @@
         {
           "name": "Harakternik",
           "hps": 20354.3
-        },
-        {
-          "name": "Shurik",
-          "hps": 20258.1
         },
         {
           "name": "Arimakishou",
@@ -4548,6 +4560,10 @@
           "hps": 18016.5
         },
         {
+          "name": "Lazyspirit",
+          "hps": 17990.3
+        },
+        {
           "name": "Бондик",
           "hps": 17811.3
         },
@@ -4562,10 +4578,6 @@
         {
           "name": "Hollymolly",
           "hps": 17592.6
-        },
-        {
-          "name": "Sonicx",
-          "hps": 17565.3
         },
         {
           "name": "Шок",
@@ -4586,10 +4598,6 @@
         {
           "name": "Шоквейв",
           "hps": 16740.3
-        },
-        {
-          "name": "Vettala",
-          "hps": 16479.7
         },
         {
           "name": "Kikimor",
@@ -4702,10 +4710,6 @@
         {
           "name": "Jerichon",
           "hps": 12162.3
-        },
-        {
-          "name": "Lazyspirit",
-          "hps": 11737.5
         },
         {
           "name": "Onill",
