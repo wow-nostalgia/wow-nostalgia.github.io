@@ -663,7 +663,11 @@ function renderPotionLogTable(statsRaid) {
   wrap.className = 'ranking-table-wrap';
   const table = document.createElement('table');
   table.className = 'raid-table';
-  table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Insane Strength Potion</th><th>Потів/бос за всі рейди</th><th><abbr class=\"table-header-icon tooltipped tooltipped--s\" aria-label=\"Рейтинг сервера\">" + RANK_HEADER_ICON_SVG + "</abbr></th></tr></thead>";
+  table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Insane Strength Potion</th><th>Потів/бос за всі рейди</th><th><abbr class=\"table-header-icon\" aria-label=\"Рейтинг сервера\">" + RANK_HEADER_ICON_SVG + "</abbr></th></tr></thead>";
+  // .tooltipped::after тут обрізається (той самий клипаючий-контейнер
+  // патерн, що й .raid-tables-grid .ranking-table-wrap - див. ui-consistency
+  // SKILL.md) - тому JS-тултіп, не CSS-клас.
+  applyAutoTooltip(table.querySelector('.table-header-icon'));
   const tbody = document.createElement('tbody');
 
   const rosterEntry = findRosterEntry(statsRaid.raidUrl);
