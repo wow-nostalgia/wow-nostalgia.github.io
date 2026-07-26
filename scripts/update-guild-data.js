@@ -211,7 +211,12 @@ async function updateGuildData() {
         continue;
       }
 
-      const prevRank = Number.isFinite(Number(row.overallRank)) ? Number(row.overallRank) : null;
+      // row.overallRank є null для персонажа без попереднього рядка (перша
+      // поява) - Number(null) === 0, тож без явної перевірки на null/undefined
+      // ДО коерсії "немає попереднього рангу" помилково рахувалось як "рангу 0".
+      const prevRank = (row.overallRank !== null && row.overallRank !== undefined && Number.isFinite(Number(row.overallRank)))
+        ? Number(row.overallRank)
+        : null;
       const rankDelta = (prevRank !== null && Number.isFinite(Number(fresh.overallRank)))
         ? prevRank - Number(fresh.overallRank)
         : null;

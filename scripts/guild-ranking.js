@@ -230,8 +230,8 @@ function renderTable(className, specName) {
   rows
     .slice()
     .sort((a, b) => {
-      const rankA = Number.isFinite(Number(a.overallRank)) ? Number(a.overallRank) : Infinity;
-      const rankB = Number.isFinite(Number(b.overallRank)) ? Number(b.overallRank) : Infinity;
+      const rankA = Number.isFinite(a.overallRank) ? a.overallRank : Infinity;
+      const rankB = Number.isFinite(b.overallRank) ? b.overallRank : Infinity;
       return rankA - rankB;
     })
     .forEach((row, idx) => {
