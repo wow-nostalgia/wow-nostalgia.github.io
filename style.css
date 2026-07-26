@@ -1068,7 +1068,9 @@ body.ranking-page #rankingTable th .boss-header {
   cursor: help;
 }
 
-body.ranking-page #rankingTable th .table-header-icon {
+/* Глобальний - тепер використовується і на #rankingTable, і в табі "Лог"
+   рейд-менеджера. */
+.table-header-icon {
   display: flex;
   justify-content: center;
   width: 100%;
