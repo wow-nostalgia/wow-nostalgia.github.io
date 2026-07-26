@@ -686,11 +686,15 @@ function setupNameAutocomplete(inputEl, listEl, names) {
 
 function enableDragReorder(tbody, dayId, resourceType) {
   let draggedRow = null;
+  let originalIds = null;
 
   tbody.querySelectorAll('tr[draggable="true"]').forEach((row) => {
     row.addEventListener('dragstart', () => {
       draggedRow = row;
       row.classList.add('is-dragging');
+      originalIds = Array.from(tbody.children)
+        .filter((tr) => tr.dataset.id)
+        .map((tr) => Number(tr.dataset.id));
     });
 
     row.addEventListener('dragover', (event) => {
@@ -708,6 +712,13 @@ function enableDragReorder(tbody, dayId, resourceType) {
       const orderedIds = Array.from(tbody.children)
         .filter((tr) => tr.dataset.id)
         .map((tr) => Number(tr.dataset.id));
+
+      const unchanged = originalIds
+        && orderedIds.length === originalIds.length
+        && orderedIds.every((id, i) => id === originalIds[i]);
+      originalIds = null;
+      if (unchanged) return;
+
       try {
         const res = await fetch(`${AUTH_API_BASE}/shard-queue/reorder`, {
           method: 'PATCH',
