@@ -680,3 +680,11 @@ export async function insertShardQueueAudit(db, actorName, action, detail) {
     .run();
 }
 
+export async function listShardQueueAudit(db, limit = 250) {
+  const { results } = await db
+    .prepare('SELECT * FROM shard_queue_audit_log ORDER BY created_at DESC LIMIT ?')
+    .bind(limit)
+    .all();
+  return results;
+}
+

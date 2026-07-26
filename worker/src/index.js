@@ -37,7 +37,8 @@ import {
   handleUpdateProgress,
   handleReorderShardQueue,
   handleMoveShardQueueEntryDay,
-  handleDeleteShardQueueEntry
+  handleDeleteShardQueueEntry,
+  handleListShardQueueAudit
 } from './routes/shard-queue.js';
 import {
   handleDiscordCallback,
@@ -242,6 +243,8 @@ async function routeShardQueue(request, env, parts, session) {
   }
 
   if (sub === 'reorder' && method === 'PATCH') return handleReorderShardQueue(request, env, session);
+
+  if (sub === 'audit' && method === 'GET') return handleListShardQueueAudit(request, env);
 
   throw new HttpError(404, 'Невідомий шлях');
 }

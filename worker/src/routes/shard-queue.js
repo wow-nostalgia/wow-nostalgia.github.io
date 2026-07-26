@@ -16,6 +16,7 @@ import {
   reorderShardQueueEntries,
   deleteShardQueueEntry,
   insertShardQueueAudit,
+  listShardQueueAudit,
   isDefaultOfficer,
   listUserCharacters
 } from '../db.js';
@@ -176,6 +177,8 @@ export async function handleUpdateProgress(request, env, entryId, session) {
 
   await insertShardQueueAudit(env.DB, officer ? session.username : entry.player_name, 'progress_update', {
     entryId,
+    playerName: entry.player_name,
+    resourceType: entry.resource_type,
     from: entry.progress,
     to: progress
   });
@@ -229,6 +232,7 @@ export async function handleMoveShardQueueEntryDay(request, env, entryId, sessio
   const updated = await moveShardQueueEntryDay(env.DB, entryId, newDayId);
   await insertShardQueueAudit(env.DB, officer ? session.username : entry.player_name, 'entry_move_day', {
     entryId,
+    playerName: entry.player_name,
     fromDayId: entry.day_id,
     toDayId: newDayId
   });
@@ -254,4 +258,11 @@ export async function handleDeleteShardQueueEntry(request, env, entryId, session
   });
 
   return jsonResponse({ ok: true });
+}
+
+// ---- Аудит ----
+
+export async function handleListShardQueueAudit(request, env) {
+  const entries = await listShardQueueAudit(env.DB);
+  return jsonResponse(entries.map((e) => ({ ...e, detail: JSON.parse(e.detail_json) })));
 }

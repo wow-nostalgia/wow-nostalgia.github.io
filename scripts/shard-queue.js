@@ -31,6 +31,7 @@ let confirmModalAction = null;
 let user = null;
 let days = [];
 let entries = [];
+let auditEntries = [];
 let userCharacters = [];
 let userCharacterNamesLower = new Set();
 let rosterNames = [];
@@ -39,7 +40,7 @@ let guildMemberNames = new Set();
 let classColorMap = new Map();
 let nameClassMap = new Map();
 let characterOwnerNames = new Map();
-let activeTab = null; // { type: 'day', dayId } | { type: 'backlog' } | { type: 'settings' }
+let activeTab = null; // { type: 'day', dayId } | { type: 'backlog' } | { type: 'audit' } | { type: 'settings' }
 let dayManageStatusEl = null;
 
 function setQueueStatus(text, isError) {
@@ -169,6 +170,16 @@ async function loadShardQueueEntries() {
   entries = await res.json();
 }
 
+async function loadShardQueueAudit() {
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/shard-queue/audit`, { headers: authHeaders() });
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    auditEntries = await res.json();
+  } catch (err) {
+    setQueueStatus(`Помилка завантаження історії: ${err.message}`, true);
+  }
+}
+
 async function refreshAll() {
   await Promise.all([loadShardQueueDays(), loadShardQueueEntries()]);
   if (!activeTab) {
@@ -210,6 +221,13 @@ function renderDayTabs() {
   backlogBtn.textContent = 'Вже зібрано';
   dayTabs.appendChild(backlogBtn);
 
+  const auditBtn = document.createElement('button');
+  auditBtn.type = 'button';
+  auditBtn.className = 'raid-tab' + (activeTab?.type === 'audit' ? ' raid-tab--active' : '');
+  auditBtn.dataset.tabType = 'audit';
+  auditBtn.textContent = 'Історія дій';
+  dayTabs.appendChild(auditBtn);
+
   if (isOfficer()) {
     const settingsBtn = document.createElement('button');
     settingsBtn.type = 'button';
@@ -220,13 +238,15 @@ function renderDayTabs() {
   }
 }
 
-dayTabs.addEventListener('click', (event) => {
+dayTabs.addEventListener('click', async (event) => {
   const btn = event.target.closest('[data-tab-type]');
   if (!btn) return;
   if (btn.dataset.tabType === 'backlog') activeTab = { type: 'backlog' };
+  else if (btn.dataset.tabType === 'audit') activeTab = { type: 'audit' };
   else if (btn.dataset.tabType === 'settings') activeTab = { type: 'settings' };
   else activeTab = { type: 'day', dayId: Number(btn.dataset.dayId) };
   renderDayTabs();
+  if (activeTab.type === 'audit') await loadShardQueueAudit();
   renderQueueContent();
 });
 
@@ -362,6 +382,8 @@ function renderQueueContent() {
   if (!activeTab) return;
   if (activeTab.type === 'backlog') {
     renderBacklogView();
+  } else if (activeTab.type === 'audit') {
+    renderAuditView();
   } else if (activeTab.type === 'settings') {
     renderSettingsView();
   } else {
@@ -783,6 +805,72 @@ function renderBacklogView() {
     section.appendChild(wrap);
     queueContent.appendChild(section);
   });
+}
+
+function describeShardQueueAuditAction(entry) {
+  const d = entry.detail || {};
+  const resourceLabel = (rt) => RESOURCE_LABELS_LOWER[rt] || rt || '';
+  switch (entry.action) {
+    case 'day_create':
+      return `створив день "${d.label}"`;
+    case 'day_update': {
+      const parts = [];
+      if (d.label !== undefined) parts.push(`перейменував день у "${d.label}"`);
+      if (d.isActive !== undefined) parts.push(d.isActive ? `повернув день "${dayLabel(d.dayId)}"` : `видалив день "${dayLabel(d.dayId)}"`);
+      return parts.join(', ') || `оновив день "${dayLabel(d.dayId)}"`;
+    }
+    case 'entry_create':
+      return `додав ${d.playerName} у чергу на ${resourceLabel(d.resourceType)} (${dayLabel(d.dayId)})`;
+    case 'progress_update':
+      return d.playerName
+        ? `оновив прогрес ${d.playerName} (${resourceLabel(d.resourceType)}): ${d.from} → ${d.to}`
+        : `оновив прогрес запису #${d.entryId}: ${d.from} → ${d.to}`;
+    case 'entries_reorder':
+      return `змінив порядок черги на ${resourceLabel(d.resourceType)} (${dayLabel(d.dayId)})`;
+    case 'entry_move_day':
+      return d.playerName
+        ? `переніс ${d.playerName} з "${dayLabel(d.fromDayId)}" на "${dayLabel(d.toDayId)}"`
+        : `переніс запис #${d.entryId} з "${dayLabel(d.fromDayId)}" на "${dayLabel(d.toDayId)}"`;
+    case 'entry_delete':
+      return `прибрав ${d.playerName} з черги на ${resourceLabel(d.resourceType)} (${dayLabel(d.dayId)})`;
+    default:
+      return entry.action;
+  }
+}
+
+function renderAuditView() {
+  const section = document.createElement('section');
+  section.className = 'shard-queue-resource-block';
+
+  const heading = document.createElement('h2');
+  heading.textContent = 'Історія дій';
+  section.appendChild(heading);
+
+  const list = document.createElement('div');
+  list.className = 'raid-audit-list';
+
+  if (!auditEntries.length) {
+    list.textContent = 'Історія порожня.';
+  } else {
+    auditEntries.forEach((entry) => {
+      const row = document.createElement('div');
+      row.className = 'raid-audit-row';
+
+      const time = document.createElement('span');
+      time.className = 'raid-audit-time';
+      time.textContent = formatDateTimeKyiv(entry.created_at);
+      row.appendChild(time);
+
+      const text = document.createElement('span');
+      text.textContent = ` ${entry.actor_name} — ${describeShardQueueAuditAction(entry)}`;
+      row.appendChild(text);
+
+      list.appendChild(row);
+    });
+  }
+
+  section.appendChild(list);
+  queueContent.appendChild(section);
 }
 
 // ---- Дії над записами ----

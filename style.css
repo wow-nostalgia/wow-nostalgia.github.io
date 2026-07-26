@@ -3433,7 +3433,7 @@ body.raid-manager-detail-page .raid-rarity--uncommon { color: var(--wow-quality-
 body.raid-manager-detail-page .raid-rarity--rare { color: var(--wow-quality-rare); }
 body.raid-manager-detail-page .raid-rarity--epic { color: var(--wow-quality-epic); }
 
-body.raid-manager-detail-page .raid-audit-list {
+.raid-audit-list {
   max-height: 480px;
   overflow-y: auto;
   border: 1px solid var(--color-border-mid);
@@ -3442,17 +3442,17 @@ body.raid-manager-detail-page .raid-audit-list {
   padding: 0.5rem 0.75rem;
 }
 
-body.raid-manager-detail-page .raid-audit-row {
+.raid-audit-row {
   padding: 0.25rem 0;
   border-bottom: 1px solid var(--color-border);
   font-size: var(--font-size-base);
 }
 
-body.raid-manager-detail-page .raid-audit-row:last-child {
+.raid-audit-row:last-child {
   border-bottom: none;
 }
 
-body.raid-manager-detail-page .raid-audit-time {
+.raid-audit-time {
   color: var(--color-text-faint);
   font-size: var(--font-size-base);
   margin-right: 0.4rem;
