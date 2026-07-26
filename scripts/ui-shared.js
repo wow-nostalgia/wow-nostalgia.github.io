@@ -110,6 +110,22 @@ function getScoreTier(score) {
   return SCORE_TIERS.find((tier) => num > tier.min) || null;
 }
 
+// Степінь зміни рейтингу сервера з попереднього оновлення guild-data.json
+// (стиль тенісних рейтингів: +N зелене - піднявся, -N червоне - опустився,
+// нічого - без змін). row - об'єкт з полями overallRank/rankDelta (рядок
+// guild-data.json або еквівалент). Використовується на "Рейтинг DPS"
+// (guild-ranking.js) і в табі "Лог" рейд-менеджера (raid-manager-detail.js).
+function renderRankCell(td, row) {
+  td.textContent = row?.overallRank ?? '';
+  const delta = Number(row?.rankDelta);
+  if (!Number.isFinite(delta) || delta === 0) return;
+
+  const badge = document.createElement('span');
+  badge.className = `rank-delta ${delta > 0 ? 'rank-delta--up' : 'rank-delta--down'}`;
+  badge.textContent = delta > 0 ? `+${delta}` : `${delta}`;
+  td.appendChild(badge);
+}
+
 function formatDateTimeKyiv(isoString) {
   if (!isoString) return '';
   const date = new Date(isoString);

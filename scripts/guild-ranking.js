@@ -63,18 +63,7 @@ function setStatus(text) {
   tableStatus.textContent = text;
 }
 
-// Степінь зміни рейтингу сервера з попереднього оновлення (стиль тенісних
-// рейтингів: +N зелене — піднявся, -N червоне — опустився, нічого — без змін).
-function renderRankCell(td, row) {
-  td.textContent = row.overallRank ?? '';
-  const delta = Number(row.rankDelta);
-  if (!Number.isFinite(delta) || delta === 0) return;
-
-  const badge = document.createElement('span');
-  badge.className = `rank-delta ${delta > 0 ? 'rank-delta--up' : 'rank-delta--down'}`;
-  badge.textContent = delta > 0 ? `+${delta}` : `${delta}`;
-  td.appendChild(badge);
-}
+// renderRankCell - у ui-shared.js (спільний з табом "Лог" рейд-менеджера).
 
 function clearTable() {
   rankingHead.innerHTML = '';

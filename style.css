@@ -1016,15 +1016,17 @@ body.ranking-page .ranking-status-row {
   text-align: left;
 }
 
-body.ranking-page .rank-delta {
+/* Глобальні - тепер використовуються і на "Рейтинг DPS", і в табі "Лог"
+   рейд-менеджера. */
+.rank-delta {
   vertical-align: super;
   font-size: 0.7em;
   margin-left: 0.15em;
   font-weight: 600;
 }
 
-body.ranking-page .rank-delta--up { color: var(--color-success); }
-body.ranking-page .rank-delta--down { color: var(--color-danger); }
+.rank-delta--up { color: var(--color-success); }
+.rank-delta--down { color: var(--color-danger); }
 
 body.ranking-page .ranking-table-wrap {
   margin-top: 0.5rem;
