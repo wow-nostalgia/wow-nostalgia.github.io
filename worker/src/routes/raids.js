@@ -138,6 +138,13 @@ export async function handleSetStatus(request, env, id, status, session) {
   const raid = await loadRaidOr404(env, id);
   await requireRaidOfficer(env.DB, id, raid, session);
 
+  // Без цієї перевірки два офіцери, що не встигли побачити чужу зміну
+  // статусу (сторінка полить раз на 10с), могли обидва натиснути
+  // "Завершити рейд" і отримати два дублікатні записи в аудиті.
+  if (raid.status === status) {
+    return jsonResponse(publicRaid(raid));
+  }
+
   const updated = await setRaidStatus(env.DB, id, status);
   await insertAudit(env.DB, id, session.username, status === 'completed' ? 'complete' : 'reactivate', {});
 

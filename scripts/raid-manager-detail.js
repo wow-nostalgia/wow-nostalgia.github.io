@@ -2104,13 +2104,15 @@ async function init() {
 
   setInterval(async () => {
     try {
-      const [, , , shardRaw] = await Promise.all([
+      const [, , , , shardRaw] = await Promise.all([
+        loadRaid(),
         loadReserves(),
         loadTransfers(),
         loadBonusGrants(),
         fetchShardQueueRaw()
       ]);
       applyShardQueueRaw(shardRaw);
+      renderBanner();
       renderPlayersTable();
       renderItemsTable();
       applySoftFormLockState();
