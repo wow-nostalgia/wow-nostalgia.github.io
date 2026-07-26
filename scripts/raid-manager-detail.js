@@ -2109,19 +2109,28 @@ async function init() {
 
   setInterval(async () => {
     try {
-      const [, , , , shardRaw] = await Promise.all([
+      const [, , , , shardRaw, officers] = await Promise.all([
         loadRaid(),
         loadReserves(),
         loadTransfers(),
         loadBonusGrants(),
-        fetchShardQueueRaw()
+        fetchShardQueueRaw(),
+        fetchOfficers()
       ]);
       applyShardQueueRaw(shardRaw);
+      applyOfficers(officers);
       renderBanner();
       renderPlayersTable();
       renderItemsTable();
       applySoftFormLockState();
       if (activeTab === 'audit') await loadAudit();
+      // Штрафи: перебудовує весь tbody, тож пропускаємо, поки офіцер
+      // тримає фокус усередині таблиці (набирає суму/причину) - інакше
+      // поллінг зніс би незбережений ввід разом з фокусом.
+      if (activeTab === 'penalties' && !raidPenaltiesBody.contains(document.activeElement)) {
+        await loadAndRenderPenalties();
+      }
+      if (activeTab === 'potions') await loadPotionsTab();
     } catch (err) {
       console.error(err);
     }
