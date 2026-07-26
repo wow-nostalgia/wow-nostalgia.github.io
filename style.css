@@ -1009,6 +1009,13 @@ body.ranking-page .ranking-status-row {
   margin: 0.25rem 0 0.5rem;
 }
 
+/* Лівий align замість спадкованого правого - інакше цифри рейтингу
+   з'їжджають між рядками через різну ширину бейджа степені. */
+#rankingTable th.ranking-rank-col,
+#rankingTable td.ranking-rank-col {
+  text-align: left;
+}
+
 body.ranking-page .rank-delta {
   vertical-align: super;
   font-size: 0.7em;
@@ -1849,6 +1856,13 @@ body.ranking-page .player-siblings-table th {
 body.ranking-page .player-siblings-table th:nth-child(n+3),
 body.ranking-page .player-siblings-table td:nth-child(n+3) {
   text-align: right;
+}
+
+/* Лівий align для рейтингу сервера - інакше цифри з'їжджають між рядками
+   через різну ширину бейджа степені. */
+body.ranking-page .player-siblings-table th.ranking-rank-col,
+body.ranking-page .player-siblings-table td.ranking-rank-col {
+  text-align: left;
 }
 
 body.ranking-page .player-siblings-table tbody tr:hover {

@@ -203,6 +203,7 @@ function renderTable(className, specName) {
     const th = document.createElement('th');
     if (col.key === '__checkbox') th.classList.add('checkbox-cell');
     if (col.key !== '__checkbox' && col.key !== 'name') th.classList.add('ranking-table-numeric');
+    if (col.key === 'overallRank') th.classList.add('ranking-rank-col');
     const headerIcon = HEADER_ICONS[col.key];
     if (col.isBoss) {
       const abbr = document.createElement('abbr');
@@ -240,6 +241,7 @@ function renderTable(className, specName) {
       columns.forEach(col => {
         const td = document.createElement('td');
         if (col.key !== '__checkbox' && col.key !== 'name') td.classList.add('ranking-table-numeric');
+        if (col.key === 'overallRank') td.classList.add('ranking-rank-col');
 
         if (col.key === '__checkbox') {
           td.classList.add('checkbox-cell');
@@ -493,6 +495,7 @@ function renderSiblingRows() {
     tr.appendChild(specTd);
 
     const rankTd = document.createElement('td');
+    rankTd.className = 'ranking-rank-col';
     renderRankCell(rankTd, row);
     tr.appendChild(rankTd);
 
