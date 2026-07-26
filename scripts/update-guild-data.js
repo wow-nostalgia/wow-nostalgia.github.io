@@ -211,6 +211,11 @@ async function updateGuildData() {
         continue;
       }
 
+      const prevRank = Number.isFinite(Number(row.overallRank)) ? Number(row.overallRank) : null;
+      const rankDelta = (prevRank !== null && Number.isFinite(Number(fresh.overallRank)))
+        ? prevRank - Number(fresh.overallRank)
+        : null;
+
       updatedRows.push({
         name: fresh.name,
         server: fresh.server,
@@ -218,6 +223,7 @@ async function updateGuildData() {
         spec: fresh.spec,
         specIndex: fresh.specIndex,
         overallRank: fresh.overallRank,
+        rankDelta,
         overallScore: fresh.overallScore,
         bosses: fresh.bosses
       });

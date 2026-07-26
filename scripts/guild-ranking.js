@@ -63,6 +63,19 @@ function setStatus(text) {
   tableStatus.textContent = text;
 }
 
+// Степінь зміни рейтингу сервера з попереднього оновлення (стиль тенісних
+// рейтингів: +N зелене — піднявся, -N червоне — опустився, нічого — без змін).
+function renderRankCell(td, row) {
+  td.textContent = row.overallRank ?? '';
+  const delta = Number(row.rankDelta);
+  if (!Number.isFinite(delta) || delta === 0) return;
+
+  const badge = document.createElement('span');
+  badge.className = `rank-delta ${delta > 0 ? 'rank-delta--up' : 'rank-delta--down'}`;
+  badge.textContent = delta > 0 ? `+${delta}` : `${delta}`;
+  td.appendChild(badge);
+}
+
 function clearTable() {
   rankingHead.innerHTML = '';
   rankingBody.innerHTML = '';
@@ -266,7 +279,7 @@ function renderTable(className, specName) {
           const icon = scoreTier ? scoreTier.medal : '🤷‍♂️';
           td.textContent = `${icon} ${score.toFixed(2)}`;
         } else if (col.key === 'overallRank') {
-          td.textContent = row.overallRank ?? '';
+          renderRankCell(td, row);
         } else {
           td.textContent = row[col.key] ?? '';
         }
@@ -480,7 +493,7 @@ function renderSiblingRows() {
     tr.appendChild(specTd);
 
     const rankTd = document.createElement('td');
-    rankTd.textContent = row.overallRank ?? '';
+    renderRankCell(rankTd, row);
     tr.appendChild(rankTd);
 
     const scoreTd = document.createElement('td');

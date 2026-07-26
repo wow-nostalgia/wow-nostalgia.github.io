@@ -1009,6 +1009,16 @@ body.ranking-page .ranking-status-row {
   margin: 0.25rem 0 0.5rem;
 }
 
+body.ranking-page .rank-delta {
+  vertical-align: super;
+  font-size: 0.7em;
+  margin-left: 0.15em;
+  font-weight: 600;
+}
+
+body.ranking-page .rank-delta--up { color: var(--color-success); }
+body.ranking-page .rank-delta--down { color: var(--color-danger); }
+
 body.ranking-page .ranking-table-wrap {
   margin-top: 0.5rem;
   width: 100%;
