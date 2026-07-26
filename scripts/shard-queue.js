@@ -28,10 +28,13 @@ const confirmModalConfirmBtn = document.getElementById('confirmModalConfirmBtn')
 const confirmModalCancelBtn = document.getElementById('confirmModalCancelBtn');
 let confirmModalAction = null;
 
+const AUDIT_PAGE_SIZE = 20;
+
 let user = null;
 let days = [];
 let entries = [];
 let auditEntries = [];
+let auditPage = 0;
 let userCharacters = [];
 let userCharacterNamesLower = new Set();
 let rosterNames = [];
@@ -175,6 +178,7 @@ async function loadShardQueueAudit() {
     const res = await fetch(`${AUTH_API_BASE}/shard-queue/audit`, { headers: authHeaders() });
     if (!res.ok) throw new Error(await readErrorMessage(res));
     auditEntries = await res.json();
+    auditPage = 0;
   } catch (err) {
     setQueueStatus(`Помилка завантаження історії: ${err.message}`, true);
   }
@@ -846,13 +850,18 @@ function renderAuditView() {
   heading.textContent = 'Історія дій';
   section.appendChild(heading);
 
+  const totalPages = Math.max(Math.ceil(auditEntries.length / AUDIT_PAGE_SIZE), 1);
+  if (auditPage >= totalPages) auditPage = totalPages - 1;
+  if (auditPage < 0) auditPage = 0;
+  const pageEntries = auditEntries.slice(auditPage * AUDIT_PAGE_SIZE, (auditPage + 1) * AUDIT_PAGE_SIZE);
+
   const list = document.createElement('div');
   list.className = 'raid-audit-list';
 
-  if (!auditEntries.length) {
+  if (!pageEntries.length) {
     list.textContent = 'Історія порожня.';
   } else {
-    auditEntries.forEach((entry) => {
+    pageEntries.forEach((entry) => {
       const row = document.createElement('div');
       row.className = 'raid-audit-row';
 
@@ -870,6 +879,40 @@ function renderAuditView() {
   }
 
   section.appendChild(list);
+
+  if (totalPages > 1) {
+    const pagination = document.createElement('div');
+    pagination.className = 'raid-pagination';
+
+    const prevBtn = document.createElement('button');
+    prevBtn.type = 'button';
+    prevBtn.className = 'link-button-std';
+    prevBtn.textContent = '← Попередня';
+    prevBtn.disabled = auditPage === 0;
+    prevBtn.addEventListener('click', () => {
+      auditPage -= 1;
+      renderQueueContent();
+    });
+    pagination.appendChild(prevBtn);
+
+    const pageInfo = document.createElement('span');
+    pageInfo.textContent = `Сторінка ${auditPage + 1} з ${totalPages}`;
+    pagination.appendChild(pageInfo);
+
+    const nextBtn = document.createElement('button');
+    nextBtn.type = 'button';
+    nextBtn.className = 'link-button-std';
+    nextBtn.textContent = 'Наступна →';
+    nextBtn.disabled = auditPage >= totalPages - 1;
+    nextBtn.addEventListener('click', () => {
+      auditPage += 1;
+      renderQueueContent();
+    });
+    pagination.appendChild(nextBtn);
+
+    section.appendChild(pagination);
+  }
+
   queueContent.appendChild(section);
 }
 
