@@ -715,6 +715,7 @@ function renderPotionLogTable(statsRaid) {
 
     const playerSpec = findRosterPlayer(rosterEntry, player.name)?.spec;
     const rankTd = document.createElement('td');
+    rankTd.className = 'raid-potion-rank-cell';
     renderRankCell(rankTd, guildRankByNameSpec.get(`${player.name}::${playerSpec}`));
     tr.appendChild(rankTd);
 

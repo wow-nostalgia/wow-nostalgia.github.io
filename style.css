@@ -3085,11 +3085,11 @@ body.raid-manager-detail-page .raid-potion-empty {
   font-size: var(--font-size-base);
 }
 
-body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-good>td:not(.penalty-potion-stat):not(.raid-potion-name-cell) {
+body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-good>td:not(.penalty-potion-stat):not(.raid-potion-name-cell):not(.raid-potion-rank-cell) {
   color: var(--color-success) !important;
 }
 
-body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-bad>td:not(.penalty-potion-stat):not(.raid-potion-name-cell) {
+body.raid-manager-detail-page #potionsContent .raid-table tbody tr.potion-bad>td:not(.penalty-potion-stat):not(.raid-potion-name-cell):not(.raid-potion-rank-cell) {
   color: var(--color-danger) !important;
 }
 
