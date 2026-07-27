@@ -75,7 +75,7 @@ function renderArchiveList(raids, total) {
     const link = document.createElement('a');
     link.className = 'archive-row-link';
     link.href = `../raid/?id=${encodeURIComponent(raid.id)}`;
-    link.textContent = raid.title;
+    link.textContent = raid.title.replace(/\s*-\s*\d{2}\.\d{2}\.\d{4}$/, '');
     titleTd.appendChild(link);
     tr.appendChild(titleTd);
 
