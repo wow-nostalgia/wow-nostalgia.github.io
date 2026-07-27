@@ -1,4 +1,8 @@
 ﻿const raidTitleHeading = document.getElementById('raidTitleHeading');
+
+function stripDateFromTitle(title) {
+  return (title || '').replace(/\s*-\s*\d{2}\.\d{2}\.\d{4}$/, '');
+}
 const raidSettingsBanner = document.getElementById('raidSettingsBanner');
 const copyLinkBtn = document.getElementById('copyLinkBtn');
 const copyLinkTooltip = document.getElementById('copyLinkTooltip');
@@ -1780,7 +1784,7 @@ settingsForm.addEventListener('submit', async (event) => {
       token: getSessionToken(),
       body: { title, softLimitTotal, transferWeightLimit }
     });
-    raidTitleHeading.textContent = raid.title;
+    raidTitleHeading.textContent = stripDateFromTitle(raid.title);
     document.title = `${raid.title} — Рейд-менеджер`;
     renderBanner();
     setStatus('Налаштування збережено.', 'success');
