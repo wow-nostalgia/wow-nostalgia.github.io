@@ -242,7 +242,8 @@ function renderBanner() {
     translateInstance(raid.instance, INSTANCE_LABELS),
     translateDifficulty(raid.difficulty, DIFFICULTY_LABELS),
     `Ліміт ваги: ${raid.soft_limit_total}`,
-    `Лідер: ${raid.leader_display_name || '—'}`
+    `Лідер: ${raid.leader_display_name || '—'}`,
+    formatDateKyiv(raid.created_at)
   ];
 
   chips.forEach((text) => {

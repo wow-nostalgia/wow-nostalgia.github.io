@@ -146,6 +146,19 @@ function formatDateTimeKyiv(isoString) {
   }).format(date);
 }
 
+function formatDateKyiv(isoString) {
+  if (!isoString) return '';
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return '';
+
+  return new Intl.DateTimeFormat('uk-UA', {
+    timeZone: 'Europe/Kyiv',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  }).format(date);
+}
+
 const SPLINE_MODES = {
   smooth: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
   smoothNoPoints: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 },
