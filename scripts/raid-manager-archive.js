@@ -79,13 +79,13 @@ function renderArchiveList(raids, total) {
     titleTd.appendChild(link);
     tr.appendChild(titleTd);
 
-    const leaderTd = document.createElement('td');
-    leaderTd.textContent = raid.leader_display_name || '—';
-    tr.appendChild(leaderTd);
-
     const createdTd = document.createElement('td');
     createdTd.textContent = formatDateTimeKyiv(raid.created_at);
     tr.appendChild(createdTd);
+
+    const leaderTd = document.createElement('td');
+    leaderTd.textContent = raid.leader_display_name || '—';
+    tr.appendChild(leaderTd);
 
     const statusTd = document.createElement('td');
     const isCompleted = raid.status === 'completed';
