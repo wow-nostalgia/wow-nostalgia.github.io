@@ -30,7 +30,7 @@ const PAGE_SIZE = 20;
 let currentPage = 0;
 let isAdmin = false;
 let titleAutoFilled = true;
-let todayRaids = [];
+let weekRaids = [];
 
 function setStatus(text) {
   archiveStatus.textContent = text;
@@ -145,18 +145,25 @@ deleteRaidConfirmBtn.addEventListener('click', async () => {
   }
 });
 
-function toLocalDateKey(date) {
-  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+// Тиждень для нумерації рейдів рахується не з понеділка, а з п'ятниці
+// 04:00 (типовий час скидання рейдових locков) - тому "тиждень" тут
+// власний, не календарний.
+function getResetWeekStart(date) {
+  const day = date.getDay(); // 0=нд ... 5=пт, 6=сб
+  const diffFromFriday = (day - 5 + 7) % 7;
+  const start = new Date(date.getFullYear(), date.getMonth(), date.getDate() - diffFromFriday, 4, 0, 0, 0);
+  if (start > date) start.setDate(start.getDate() - 7);
+  return start;
 }
 
 async function loadTodayRaids() {
   try {
     const { raids } = await apiCall('GET', '/raids?limit=50&offset=0', { token: getSessionToken() });
-    const todayKey = toLocalDateKey(new Date());
-    todayRaids = raids.filter((r) => toLocalDateKey(new Date(r.created_at)) === todayKey);
+    const weekStart = getResetWeekStart(new Date());
+    weekRaids = raids.filter((r) => new Date(r.created_at) >= weekStart);
   } catch (err) {
     console.error(err);
-    todayRaids = [];
+    weekRaids = [];
   }
 }
 
@@ -169,7 +176,7 @@ function generateTitle() {
   const yyyy = now.getFullYear();
   const inst = TITLE_INSTANCE_ABBR_UK[instance] || instance;
   const diff = TITLE_DIFFICULTY_ABBR_UK[difficulty] || difficulty;
-  const seq = todayRaids.filter((r) => r.instance === instance && r.difficulty === difficulty).length + 1;
+  const seq = weekRaids.filter((r) => r.instance === instance && r.difficulty === difficulty).length + 1;
   return `${inst} ${diff} #${seq} - ${dd}.${mm}.${yyyy}`;
 }
 
