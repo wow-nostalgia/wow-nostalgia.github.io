@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-28T00:38:53.011Z",
+  "updatedAt": "2026-07-29T00:36:48.623Z",
   "specs": [
     {
       "class": "Paladin",
@@ -306,6 +306,10 @@
         {
           "name": "Thanos",
           "hps": 35488.6
+        },
+        {
+          "name": "Welena",
+          "hps": 35417.3
         },
         {
           "name": "Sashyk",
@@ -782,10 +786,6 @@
         {
           "name": "Фанатик",
           "hps": 25654.7
-        },
-        {
-          "name": "Welena",
-          "hps": 25371
         },
         {
           "name": "Saizel",
@@ -3434,6 +3434,10 @@
           "hps": 1576.7
         },
         {
+          "name": "Asaggi",
+          "hps": 1565
+        },
+        {
           "name": "Злагода",
           "hps": 1556.1
         },
@@ -3666,6 +3670,10 @@
         {
           "name": "Janefreakski",
           "hps": 31064.2
+        },
+        {
+          "name": "Пяточка",
+          "hps": 30989.2
         },
         {
           "name": "Bilderselem",
@@ -4202,10 +4210,6 @@
         {
           "name": "Elvis",
           "hps": 23474.3
-        },
-        {
-          "name": "Пяточка",
-          "hps": 23435.9
         },
         {
           "name": "Вакуум",
