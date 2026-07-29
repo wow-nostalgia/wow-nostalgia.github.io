@@ -15,7 +15,8 @@ import {
   getClaimedPlayerNames,
   getWeightTransferByFrom,
   getWeightTransferByTo,
-  getBonusGrant
+  getBonusGrant,
+  applyPenaltyBattalionIfMatched
 } from '../db.js';
 import { checkPlayerAccess, requireRaidOfficer, isRaidOfficer } from '../auth.js';
 
@@ -93,6 +94,7 @@ export async function handleCreateReserve(request, env, raidId, session) {
     throw err;
   }
 
+  await applyPenaltyBattalionIfMatched(env.DB, raid, playerName);
   await insertAudit(env.DB, raidId, access.officer ? session.username : playerName, 'soft_add', { itemId, boss, weight });
 
   return jsonResponse(reserve, 201);
@@ -192,6 +194,7 @@ export async function handleOfficerAssign(request, env, raidId, session) {
     throw err;
   }
 
+  await applyPenaltyBattalionIfMatched(env.DB, raid, playerName);
   await insertAudit(env.DB, raidId, session.username, 'officer_assign', { playerName, itemId, boss, weight });
 
   return jsonResponse(reserve, 201);

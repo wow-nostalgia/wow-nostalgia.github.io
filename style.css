@@ -2503,6 +2503,14 @@ body.raid-manager-page #createRaidModal .raid-modal-actions {
   grid-column: 1;
 }
 
+body.raid-manager-page #addPenaltyModal .raid-create-form {
+  grid-template-columns: 1fr;
+}
+
+body.raid-manager-page #addPenaltyModal .raid-modal-actions {
+  grid-column: 1;
+}
+
 /* Форма довша за інші модалки - на невисоких вікнах align-items:center
    (стандарт .raid-modal) підняв би картку під sticky-хедер, який має
    вищий z-index (--z-sticky > --z-modal, так у всього сайту) і
@@ -2750,6 +2758,7 @@ body.raid-manager-detail-page .raid-benchmark-note {
 }
 
 body.raid-manager-detail-page .raid-input-wrap,
+body.raid-manager-page .raid-input-wrap,
 body.account-page .raid-input-wrap,
 body.shard-queue-page .raid-input-wrap {
   position: relative;
@@ -2757,6 +2766,7 @@ body.shard-queue-page .raid-input-wrap {
 }
 
 body.raid-manager-detail-page .raid-input-wrap input[type="text"],
+body.raid-manager-page .raid-input-wrap input[type="text"],
 body.account-page .raid-input-wrap input[type="text"],
 body.shard-queue-page .raid-input-wrap input[type="text"] {
   width: 100%;
@@ -2789,6 +2799,7 @@ body.raid-manager-detail-page .raid-input-clear:disabled {
 }
 
 body.raid-manager-detail-page .raid-autocomplete-list,
+body.raid-manager-page .raid-autocomplete-list,
 body.account-page .raid-autocomplete-list,
 body.shard-queue-page .raid-autocomplete-list {
   display: none;
@@ -2807,6 +2818,7 @@ body.shard-queue-page .raid-autocomplete-list {
 }
 
 body.raid-manager-detail-page .raid-autocomplete-list.is-open,
+body.raid-manager-page .raid-autocomplete-list.is-open,
 body.account-page .raid-autocomplete-list.is-open,
 body.shard-queue-page .raid-autocomplete-list.is-open {
   display: block;
@@ -2814,6 +2826,7 @@ body.shard-queue-page .raid-autocomplete-list.is-open {
 }
 
 body.raid-manager-detail-page .raid-autocomplete-item,
+body.raid-manager-page .raid-autocomplete-item,
 body.account-page .raid-autocomplete-item,
 body.shard-queue-page .raid-autocomplete-item {
   padding: 0.3rem 0.65rem;
@@ -2823,12 +2836,14 @@ body.shard-queue-page .raid-autocomplete-item {
 }
 
 body.raid-manager-detail-page .raid-autocomplete-item:hover,
+body.raid-manager-page .raid-autocomplete-item:hover,
 body.account-page .raid-autocomplete-item:hover,
 body.shard-queue-page .raid-autocomplete-item:hover {
   background-color: rgba(123, 170, 245, 0.18);
 }
 
 body.raid-manager-detail-page .raid-autocomplete-empty,
+body.raid-manager-page .raid-autocomplete-empty,
 body.account-page .raid-autocomplete-empty {
   padding: 0.3rem 0.65rem;
   font-size: var(--font-size-base);

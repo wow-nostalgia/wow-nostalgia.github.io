@@ -133,6 +133,54 @@ export async function upsertRaidPenalty(db, raidId, playerName, rollPenalty, sof
     .run();
 }
 
+// ---- Штрафбат (відкладені штрафи, не прив'язані до конкретного рейду) ----
+
+export async function listPenaltyBattalion(db) {
+  const { results } = await db.prepare('SELECT * FROM penalty_battalion ORDER BY created_at DESC').all();
+  return results;
+}
+
+export async function addPenaltyBattalionEntry(db, { playerName, instance, rollPenalty, softPenalty, reason, addedBy }) {
+  await db
+    .prepare(
+      `INSERT INTO penalty_battalion (player_name, instance, roll_penalty, soft_penalty, reason, added_by, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`
+    )
+    .bind(playerName, instance, rollPenalty, softPenalty, reason, addedBy, nowIso())
+    .run();
+}
+
+export async function deletePenaltyBattalionEntry(db, id) {
+  await db.prepare('DELETE FROM penalty_battalion WHERE id = ?').bind(id).run();
+}
+
+export async function findPenaltyBattalionEntry(db, playerName, instance) {
+  return db
+    .prepare('SELECT * FROM penalty_battalion WHERE player_name = ? AND instance = ? ORDER BY created_at ASC LIMIT 1')
+    .bind(playerName, instance)
+    .first();
+}
+
+export async function hasRaidPenalty(db, raidId, playerName) {
+  return Boolean(
+    await db.prepare('SELECT 1 FROM raid_penalties WHERE raid_id = ? AND player_name = ?').bind(raidId, playerName).first()
+  );
+}
+
+// Автозастосування "відкладеного" штрафу: спрацьовує при першому софті
+// гравця в новому рейді того ж інстансу, що вказаний у Штрафбаті. Якщо в
+// рейді вже є будь-який штраф для гравця (напр. офіцер уже щось вписав
+// вручну) - не перезаписуємо, запис лишається на майбутнє.
+export async function applyPenaltyBattalionIfMatched(db, raid, playerName) {
+  const entry = await findPenaltyBattalionEntry(db, playerName, raid.instance);
+  if (!entry) return;
+  if (await hasRaidPenalty(db, raid.id, playerName)) return;
+
+  const softPenalty = Math.min(raid.soft_limit_total, entry.soft_penalty);
+  await upsertRaidPenalty(db, raid.id, playerName, entry.roll_penalty, softPenalty, entry.reason || 'Штрафбат');
+  await deletePenaltyBattalionEntry(db, entry.id);
+}
+
 export async function createReserve(db, { raidId, playerName, itemId, boss, weight, assignedByOfficer, discordId }) {
   const ts = nowIso();
   const result = await db

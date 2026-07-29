@@ -143,4 +143,7 @@ function renderAuthNav(user) {
 document.addEventListener('DOMContentLoaded', async () => {
   const user = await fetchCurrentUser();
   renderAuthNav(user);
+
+  const navPenaltyBattalion = document.getElementById('navPenaltyBattalion');
+  if (navPenaltyBattalion) navPenaltyBattalion.hidden = !user?.isGuildOfficer;
 });

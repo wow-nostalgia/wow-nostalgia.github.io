@@ -29,6 +29,11 @@ import { handleListTransfers, handleCreateTransfer, handleDeleteTransfer } from 
 import { handleListBonusGrants, handleCreateBonusGrant, handleDeleteBonusGrant } from './routes/bonus-grants.js';
 import { handleListPenalties, handleUpsertPenalty } from './routes/penalties.js';
 import {
+  handleListPenaltyBattalion,
+  handleAddPenaltyBattalionEntry,
+  handleDeletePenaltyBattalionEntry
+} from './routes/penalty-battalion.js';
+import {
   handleListShardQueueDays,
   handleCreateShardQueueDay,
   handleUpdateShardQueueDay,
@@ -249,6 +254,20 @@ async function routeShardQueue(request, env, parts, session) {
   throw new HttpError(404, 'Невідомий шлях');
 }
 
+async function routePenaltyBattalion(request, env, parts, session) {
+  const method = request.method;
+  const [id] = parts;
+
+  if (!id) {
+    if (method === 'GET') return handleListPenaltyBattalion(request, env, session);
+    if (method === 'POST') return handleAddPenaltyBattalionEntry(request, env, session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
+
+  if (method === 'DELETE') return handleDeletePenaltyBattalionEntry(request, env, Number(id), session);
+  throw new HttpError(405, 'Метод не підтримується');
+}
+
 // Один хардкодований Discord ID власника сайту (env var, не секрет) —
 // без повноцінної системи ролей. Дає змогу примусово звільнити персонажа,
 // якщо хтось помилково застовпив чужого (унікальність — first-come, без
@@ -325,6 +344,11 @@ async function route(request, env) {
   if (parts[2] === 'shard-queue') {
     const session = await requireSession(env.DB, request);
     return routeShardQueue(request, env, parts.slice(3), session);
+  }
+
+  if (parts[2] === 'penalty-battalion') {
+    const session = await requireSession(env.DB, request);
+    return routePenaltyBattalion(request, env, parts.slice(3), session);
   }
 
   throw new HttpError(404, 'Невідомий шлях');
