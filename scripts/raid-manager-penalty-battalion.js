@@ -119,6 +119,10 @@ function renderBattalionTable() {
     instanceTd.textContent = translateInstance(entry.instance, INSTANCE_LABELS);
     tr.appendChild(instanceTd);
 
+    const reasonTd = document.createElement('td');
+    reasonTd.textContent = entry.reason || '—';
+    tr.appendChild(reasonTd);
+
     const actionsTd = document.createElement('td');
     actionsTd.className = 'archive-delete-td';
     const deleteBtn = document.createElement('button');
