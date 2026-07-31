@@ -266,17 +266,20 @@ function attachHealTankFilter() {
 async function loadPotionStats() {
   try {
     statusEl.textContent = 'Завантаження даних...';
-    const [response, honorBoardResponse, playersResponse, ownersResponse, personalStatsResponse, rostersResponse] = await Promise.all([
+    const [response, honorBoardResponse, playersResponse, ownersResponse, personalStatsResponse, rostersResponse, aliasesResponse] = await Promise.all([
       fetch('/data/potion-stats.json?t=' + Date.now()),
       fetch('/data/honor-board.json?t=' + Date.now()),
       fetch('/data/players.json?t=' + Date.now()),
       fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null),
       fetch('/data/personal-stats.json?t=' + Date.now()).catch(() => null),
-      fetch('/data/raid-rosters.json?t=' + Date.now()).catch(() => null)
+      fetch('/data/raid-rosters.json?t=' + Date.now()).catch(() => null),
+      fetch('/data/character-aliases.json?t=' + Date.now()).catch(() => null)
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
-    const raids = await response.json();
+    const characterAliases = new Map(Object.entries(aliasesResponse?.ok ? await aliasesResponse.json() : {}));
+
+    const raids = applyCharacterAliases(await response.json(), characterAliases);
     if (!Array.isArray(raids)) throw new Error('Невалідний формат даних');
 
     if (playersResponse.ok) {
@@ -289,12 +292,12 @@ async function loadPotionStats() {
     }
 
     if (personalStatsResponse?.ok) {
-      const personalStats = await personalStatsResponse.json();
+      const personalStats = applyCharacterAliases(await personalStatsResponse.json(), characterAliases);
       bossesByRaidUrl = buildBossCountMap(personalStats);
     }
 
     if (rostersResponse?.ok) {
-      rostersByRaidUrl = buildRosterMap(await rostersResponse.json());
+      rostersByRaidUrl = buildRosterMap(applyCharacterAliases(await rostersResponse.json(), characterAliases));
     }
 
     const sortedRaids = filterAndSortPotionRaids(raids);

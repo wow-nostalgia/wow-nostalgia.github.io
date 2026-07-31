@@ -257,3 +257,35 @@ function findBestPoint(points, isBetter) {
 function formatBestResultText(point, formatValue) {
   return `Найкращий результат: ${formatValue(point.value)} (${formatDateLabel(point.date)})`;
 }
+
+// Персонаж міг перейменуватись кілька разів поспіль (A -> B -> C) - йдемо
+// ланцюжком до останньої ланки. Той самий алгоритм, що resolveCharacterAlias
+// у scripts/shared.js (Node), продубльований тут для браузера (немає
+// спільного модуля між Node-скриптами й <script>-тегами на цьому сайті).
+function resolveCharacterAliasChain(name, aliasMap) {
+  const visited = new Set();
+  let current = name;
+  while (aliasMap.has(current) && !visited.has(current)) {
+    visited.add(current);
+    current = aliasMap.get(current).canonical;
+  }
+  return current;
+}
+
+// Резолвить перейменування персонажів у сирих рейд-записах ([{..., players:
+// [{name, ...}]}] — формат potion-stats.json/personal-stats.json/raid-rosters.json)
+// одразу після fetch, до того як сторінка почне власну агрегацію по імені.
+// aliasMap: Map<стареІм'я, {canonical}> з /data/character-aliases.json.
+// Мутує records на місці й повертає той самий масив (для чейнінгу).
+function applyCharacterAliases(records, aliasMap) {
+  if (!aliasMap || aliasMap.size === 0) return records;
+
+  for (const record of records || []) {
+    if (!Array.isArray(record.players)) continue;
+    for (const player of record.players) {
+      player.name = resolveCharacterAliasChain(player.name, aliasMap);
+    }
+  }
+
+  return records;
+}

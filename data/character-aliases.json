@@ -1,0 +1,38 @@
+{
+  "Кумбабах": {
+    "canonical": "Рмт",
+    "detectedAt": "2026-07-31T07:33:30.651Z",
+    "reason": "guild-data-collision",
+    "evidence": {
+      "server": "FreedomUA",
+      "class": "Mage",
+      "specIndex": 2,
+      "overallRank": 92,
+      "overallScore": 83.85
+    }
+  },
+  "Feunwjfeew": {
+    "canonical": "Skyfallion",
+    "detectedAt": "2026-07-31T07:33:30.651Z",
+    "reason": "guild-data-collision",
+    "evidence": {
+      "server": "FreedomUA",
+      "class": "Druid",
+      "specIndex": 3,
+      "overallRank": 211,
+      "overallScore": 10.13
+    }
+  },
+  "Tsezar": {
+    "canonical": "Ветала",
+    "detectedAt": "2026-07-31T07:33:30.651Z",
+    "reason": "guild-data-collision",
+    "evidence": {
+      "server": "FreedomUA",
+      "class": "Warrior",
+      "specIndex": 3,
+      "overallRank": 47,
+      "overallScore": 4.07
+    }
+  }
+}

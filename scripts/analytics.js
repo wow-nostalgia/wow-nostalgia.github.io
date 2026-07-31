@@ -1135,24 +1135,27 @@ async function init() {
 
   try {
     setStatus('Завантаження даних...');
-    const [guildResponse, playersResponse, potionResponse, healerResponse, personalResponse, ownersResponse] = await Promise.all([
+    const [guildResponse, playersResponse, potionResponse, healerResponse, personalResponse, ownersResponse, aliasesResponse] = await Promise.all([
       fetch('/data/guild-data.json?t=' + Date.now()),
       fetch('/data/players.json?t=' + Date.now()),
       fetch('/data/potion-stats.json?t=' + Date.now()),
       fetch('/data/healer-rankings.json?t=' + Date.now()),
       fetch('/data/personal-stats.json?t=' + Date.now()),
-      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null)
+      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null),
+      fetch('/data/character-aliases.json?t=' + Date.now()).catch(() => null)
     ]);
 
     if (!guildResponse.ok) {
       throw new Error(`HTTP ${guildResponse.status}`);
     }
 
+    const characterAliases = new Map(Object.entries(aliasesResponse?.ok ? await aliasesResponse.json() : {}));
+
     const data = await guildResponse.json();
     const players = playersResponse.ok ? await playersResponse.json() : [];
-    const potionStats = potionResponse.ok ? await potionResponse.json() : [];
+    const potionStats = applyCharacterAliases(potionResponse.ok ? await potionResponse.json() : [], characterAliases);
     const healerRankings = healerResponse.ok ? await healerResponse.json() : { specs: [] };
-    const personalStats = personalResponse.ok ? await personalResponse.json() : [];
+    const personalStats = applyCharacterAliases(personalResponse.ok ? await personalResponse.json() : [], characterAliases);
     const characterOwnerNames = new Map(Object.entries(ownersResponse && ownersResponse.ok ? await ownersResponse.json() : {}));
     const guildNames = new Set(players.map((p) => p.name));
 

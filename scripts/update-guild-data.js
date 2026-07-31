@@ -11,7 +11,11 @@ const {
   normalizeBosses,
   hasAnyBossData,
   MIN_RAIDS_FOR_GUILD_MEMBER,
-  MIN_RAIDS_FOR_LEGIONNAIRE
+  MIN_RAIDS_FOR_LEGIONNAIRE,
+  readCharacterAliases,
+  writeCharacterAliases,
+  resolveCharacterAlias,
+  findCharacterAliases
 } = require('./shared');
 
 const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
@@ -34,7 +38,7 @@ async function writeJson(filePath, data) {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
 }
 
-async function countRaidsByName() {
+async function countRaidsByName(aliasMap) {
   const potionStats = await readJson(POTION_STATS_FILE).catch(() => []);
   const raidCounts = new Map();
 
@@ -42,8 +46,11 @@ async function countRaidsByName() {
     if (raid.error) continue;
 
     for (const player of raid.players || []) {
-      const name = String(player.name || '').trim();
-      if (!name) continue;
+      const rawName = String(player.name || '').trim();
+      if (!rawName) continue;
+      // Резолвимо через алiас-мапу - старі рейди перейменованого персонажа
+      // зливаються в лічильник канонічного імені.
+      const name = resolveCharacterAlias(rawName, aliasMap);
       raidCounts.set(name, (raidCounts.get(name) || 0) + 1);
     }
   }
@@ -51,30 +58,49 @@ async function countRaidsByName() {
   return raidCounts;
 }
 
+async function mostRecentRaidDateByName() {
+  const potionStats = await readJson(POTION_STATS_FILE).catch(() => []);
+  const dates = new Map();
+
+  for (const raid of potionStats) {
+    if (raid.error || !raid.date) continue;
+
+    for (const player of raid.players || []) {
+      const name = String(player.name || '').trim();
+      if (!name) continue;
+      const current = dates.get(name);
+      if (!current || raid.date > current) dates.set(name, raid.date);
+    }
+  }
+
+  return dates;
+}
+
 // "Легіонери" — гравці поза гільдією, яких знаходимо автоматично: хто
 // з'являвся в логах рейдів (potion-stats.json) щонайменше
-// MIN_RAIDS_FOR_LEGIONNAIRE разів і кого немає в players.json.
-function detectLegionnaires(raidCounts, guildNames) {
+// MIN_RAIDS_FOR_LEGIONNAIRE разів і кого немає в players.json. Уже відоме
+// старе ім'я (є ключем в aliasMap) більше ніколи не опитується окремо.
+function detectLegionnaires(raidCounts, guildNames, aliasMap) {
   return [...raidCounts.entries()]
-    .filter(([name, count]) => !guildNames.has(name) && count >= MIN_RAIDS_FOR_LEGIONNAIRE)
+    .filter(([name, count]) => !guildNames.has(name) && !aliasMap.has(name) && count >= MIN_RAIDS_FOR_LEGIONNAIRE)
     .map(([name]) => ({ name, server: 'FreedomUA' }));
 }
 
-async function readPlayers() {
+async function readPlayers(aliasMap) {
   const allPlayers = await readJson(PLAYERS_FILE);
   if (!Array.isArray(allPlayers)) {
     throw new Error('players.json не містить масив гравців');
   }
 
   const guildNames = new Set(allPlayers.map((p) => p.name));
-  const raidCounts = await countRaidsByName();
+  const raidCounts = await countRaidsByName(aliasMap);
 
   // Гільдійці з players.json теж мають підтвердити участь рейдами - інакше
   // Рейтинг DPS захаращується записами без реальних даних по босах.
   const activeGuildPlayers = allPlayers.filter(
     (p) => (raidCounts.get(p.name) || 0) >= MIN_RAIDS_FOR_GUILD_MEMBER
   );
-  const legionnaires = detectLegionnaires(raidCounts, guildNames);
+  const legionnaires = detectLegionnaires(raidCounts, guildNames, aliasMap);
 
   return [...activeGuildPlayers, ...legionnaires];
 }
@@ -152,7 +178,9 @@ async function fetchCharacterWithRetry(row) {
 }
 
 async function updateGuildData() {
-  const players = await readPlayers();
+  const aliasMap = new Map(Object.entries(await readCharacterAliases()));
+
+  const players = await readPlayers(aliasMap);
   const guildData = await readGuildData();
   const existingRows = Array.isArray(guildData.rows) ? guildData.rows : [];
 
@@ -247,9 +275,25 @@ async function updateGuildData() {
     }
   }
 
+  // Детектування перейменувань: серед щойно зафетчених рядків шукаємо пари
+  // імен на тій самій (server, class, specIndex, overallRank) з ідентичними
+  // overallScore/bosses - це один персонаж під двома іменами.
+  const guildMemberNames = new Set((await readJson(PLAYERS_FILE)).map((p) => p.name));
+  const raidDates = await mostRecentRaidDateByName();
+  const newAliases = findCharacterAliases(updatedRows, { guildMemberNames, mostRecentRaidDateByName: raidDates });
+
+  if (newAliases.size > 0) {
+    for (const [oldName, alias] of newAliases) {
+      aliasMap.set(oldName, alias);
+      console.log(`Виявлено перейменування: ${oldName} -> ${alias.canonical}`);
+    }
+    await writeCharacterAliases(Object.fromEntries(aliasMap));
+  }
+
   const uniqueRows = [];
   const seen = new Set();
   for (const row of updatedRows) {
+    if (aliasMap.has(row.name)) continue; // старе ім'я - канонічне вже має власний свіжий рядок
     const key = `${row.name}::${row.server}::${row.specIndex}`;
     if (seen.has(key)) continue;
     seen.add(key);

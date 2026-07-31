@@ -4,6 +4,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 
 const RAID_LOG_MERGES_FILE = path.join(__dirname, '..', 'data', 'raid-log-merges.json');
+const CHARACTER_ALIASES_FILE = path.join(__dirname, '..', 'data', 'character-aliases.json');
 
 const MIN_RAIDS_FOR_GUILD_MEMBER = 2;
 const MIN_RAIDS_FOR_LEGIONNAIRE = 5;
@@ -38,6 +39,101 @@ async function readRaidLogMerges() {
 async function writeRaidLogMerges(merges) {
   const sorted = Object.fromEntries(Object.entries(merges).sort(([a], [b]) => a.localeCompare(b)));
   await fs.writeFile(RAID_LOG_MERGES_FILE, JSON.stringify(sorted, null, 2), 'utf8');
+}
+
+// Персонажі, перейменовані в грі: старе ім'я -> { canonical, detectedAt, reason, evidence }.
+// Той самий патерн, що readRaidLogMerges/writeRaidLogMerges - плоский
+// журнал подій, застосовується на етапі читання/агрегації, сирі рейд-логи
+// під старим іменем ніколи не переписуються.
+async function readCharacterAliases() {
+  try {
+    const raw = await fs.readFile(CHARACTER_ALIASES_FILE, 'utf8');
+    return JSON.parse(raw);
+  } catch {
+    return {};
+  }
+}
+
+async function writeCharacterAliases(aliases) {
+  const sorted = Object.fromEntries(Object.entries(aliases).sort(([a], [b]) => a.localeCompare(b)));
+  await fs.writeFile(CHARACTER_ALIASES_FILE, JSON.stringify(sorted, null, 2), 'utf8');
+}
+
+// Персонаж міг перейменуватись кілька разів поспіль (A -> B -> C) - файл
+// лишається журналом окремих подій перейменування, резолвер сам проходить
+// весь ланцюжок до останньої ланки. Set відвіданих імен захищає від
+// зациклення при помилковому ручному записі (A -> B, B -> A).
+function resolveCharacterAlias(name, aliasMap) {
+  const visited = new Set();
+  let current = name;
+  while (aliasMap.has(current) && !visited.has(current)) {
+    visited.add(current);
+    current = aliasMap.get(current).canonical;
+  }
+  return current;
+}
+
+// Детектує перейменування персонажів у щойно зафетчених рядках guild-data.json
+// (ще до дедупу): два різні імена на тій самій (server, class, specIndex,
+// overallRank) з ідентичним overallScore (не нульовим) і побайтово ідентичним
+// bosses - майже напевно один і той самий персонаж, опитаний під двома
+// іменами (зовнішнє API резолвить по фізичному персонажу). Сам rank без
+// другого підтвердження ненадійний - персонажі без реальних даних (score 0)
+// масово діляться однією "хвостовою" позицією.
+function findCharacterAliases(freshRows, { guildMemberNames, mostRecentRaidDateByName }) {
+  const groups = new Map();
+  for (const row of freshRows) {
+    if (row.overallRank === null || row.overallRank === undefined) continue;
+    const key = `${row.server}::${row.class}::${row.specIndex}::${row.overallRank}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(row);
+  }
+
+  const discovered = new Map();
+
+  for (const rows of groups.values()) {
+    const names = [...new Set(rows.map((r) => r.name))];
+    if (names.length < 2) continue;
+
+    const score = rows[0].overallScore;
+    if (!(score > 0)) continue;
+
+    const bossesJson = JSON.stringify(rows[0].bosses);
+    const allMatch = rows.every((r) => r.overallScore === score && JSON.stringify(r.bosses) === bossesJson);
+    if (!allMatch) continue;
+
+    const inRoster = names.filter((n) => guildMemberNames.has(n));
+
+    let canonical;
+    if (inRoster.length === 1) {
+      canonical = inRoster[0];
+    } else {
+      const byRecency = names
+        .map((n) => ({ name: n, date: mostRecentRaidDateByName.get(n) || '' }))
+        .sort((a, b) => b.date.localeCompare(a.date));
+      const [first, second] = byRecency;
+      if (!first.date || first.date === second?.date) continue; // нічия - не вгадувати
+      canonical = first.name;
+    }
+
+    for (const name of names) {
+      if (name === canonical) continue;
+      discovered.set(name, {
+        canonical,
+        detectedAt: new Date().toISOString(),
+        reason: 'guild-data-collision',
+        evidence: {
+          server: rows[0].server,
+          class: rows[0].class,
+          specIndex: rows[0].specIndex,
+          overallRank: rows[0].overallRank,
+          overallScore: score
+        }
+      });
+    }
+  }
+
+  return discovered;
 }
 
 const CLASSES = [
@@ -297,6 +393,10 @@ module.exports = {
   findDuplicateRaidLogs,
   readRaidLogMerges,
   writeRaidLogMerges,
+  readCharacterAliases,
+  writeCharacterAliases,
+  resolveCharacterAlias,
+  findCharacterAliases,
   countBossesByRaid,
   MIN_RAIDS_FOR_GUILD_MEMBER,
   MIN_RAIDS_FOR_LEGIONNAIRE

@@ -10718,32 +10718,6 @@
       }
     },
     {
-      "name": "Кумбабах",
-      "server": "FreedomUA",
-      "class": "Mage",
-      "spec": "Fire",
-      "specIndex": 2,
-      "overallRank": 92,
-      "rankDelta": 3,
-      "overallScore": 83.85,
-      "bosses": {
-        "Lord Marrowgar": 20210.9,
-        "Lady Deathwhisper": 18076.1,
-        "Deathbringer Saurfang": 22606.1,
-        "Festergut": 20313.6,
-        "Rotface": 20839.6,
-        "Professor Putricide": 15791.4,
-        "Blood Prince Council": 17260.5,
-        "Blood-Queen Lana'thel": 35026.6,
-        "Sindragosa": 14649,
-        "The Lich King": 13837.8,
-        "Toravon the Ice Watcher": 13733.3,
-        "Halion": 16544,
-        "Anub'arak": 10343.7,
-        "Valithria Dreamwalker": 0
-      }
-    },
-    {
       "name": "Elizabeth",
       "server": "FreedomUA",
       "class": "Hunter",
@@ -13396,58 +13370,6 @@
       }
     },
     {
-      "name": "Tsezar",
-      "server": "FreedomUA",
-      "class": "Warrior",
-      "spec": "Fury",
-      "specIndex": 2,
-      "overallRank": 88,
-      "rankDelta": 0,
-      "overallScore": 84.68,
-      "bosses": {
-        "Lord Marrowgar": 21640,
-        "Lady Deathwhisper": 19038.9,
-        "Deathbringer Saurfang": 21591.2,
-        "Festergut": 19155,
-        "Rotface": 20931.2,
-        "Professor Putricide": 12692.8,
-        "Blood Prince Council": 14164.2,
-        "Blood-Queen Lana'thel": 28572.7,
-        "Sindragosa": 13196.3,
-        "The Lich King": 13078.3,
-        "Toravon the Ice Watcher": 18811.9,
-        "Halion": 13843.4,
-        "Anub'arak": 14622.7,
-        "Valithria Dreamwalker": 0
-      }
-    },
-    {
-      "name": "Tsezar",
-      "server": "FreedomUA",
-      "class": "Warrior",
-      "spec": "Protection",
-      "specIndex": 3,
-      "overallRank": 47,
-      "rankDelta": 0,
-      "overallScore": 4.07,
-      "bosses": {
-        "Lord Marrowgar": 0,
-        "Lady Deathwhisper": 0,
-        "Deathbringer Saurfang": 0,
-        "Festergut": 0,
-        "Rotface": 0,
-        "Professor Putricide": 0,
-        "Blood Prince Council": 0,
-        "Blood-Queen Lana'thel": 2676.3,
-        "Sindragosa": 0,
-        "The Lich King": 0,
-        "Toravon the Ice Watcher": 0,
-        "Halion": 0,
-        "Anub'arak": 0,
-        "Valithria Dreamwalker": 0
-      }
-    },
-    {
       "name": "Bibiza",
       "server": "FreedomUA",
       "class": "Druid",
@@ -13708,58 +13630,6 @@
       }
     },
     {
-      "name": "Feunwjfeew",
-      "server": "FreedomUA",
-      "class": "Druid",
-      "spec": "Balance",
-      "specIndex": 1,
-      "overallRank": 16,
-      "rankDelta": 1,
-      "overallScore": 96.17,
-      "bosses": {
-        "Lord Marrowgar": 20806.9,
-        "Lady Deathwhisper": 17768.7,
-        "Deathbringer Saurfang": 20956.5,
-        "Festergut": 19515.3,
-        "Rotface": 18678.9,
-        "Professor Putricide": 14662.5,
-        "Blood Prince Council": 16674.7,
-        "Blood-Queen Lana'thel": 26635.3,
-        "Sindragosa": 14722.1,
-        "The Lich King": 11764.7,
-        "Toravon the Ice Watcher": 12065,
-        "Halion": 13507.2,
-        "Anub'arak": 0,
-        "Valithria Dreamwalker": 3057.1
-      }
-    },
-    {
-      "name": "Feunwjfeew",
-      "server": "FreedomUA",
-      "class": "Druid",
-      "spec": "Restoration",
-      "specIndex": 3,
-      "overallRank": 211,
-      "rankDelta": 0,
-      "overallScore": 10.13,
-      "bosses": {
-        "Lord Marrowgar": 0,
-        "Lady Deathwhisper": 0,
-        "Deathbringer Saurfang": 0,
-        "Festergut": 0,
-        "Rotface": 0,
-        "Professor Putricide": 0,
-        "Blood Prince Council": 0,
-        "Blood-Queen Lana'thel": 0,
-        "Sindragosa": 23.7,
-        "The Lich King": 0,
-        "Toravon the Ice Watcher": 0,
-        "Halion": 0,
-        "Anub'arak": 0,
-        "Valithria Dreamwalker": 16154.6
-      }
-    },
-    {
       "name": "Hellokitty",
       "server": "FreedomUA",
       "class": "Mage",
@@ -13996,7 +13866,7 @@
   ],
   "lastUpdated": "2026-07-31T00:47:40.749Z",
   "updateSummary": {
-    "totalRows": 535,
+    "totalRows": 530,
     "failedPlayers": 0
   }
 }

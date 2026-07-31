@@ -2,7 +2,13 @@
 
 const fs = require('node:fs/promises');
 const path = require('node:path');
-const { countBossesByRaid, MIN_RAIDS_FOR_GUILD_MEMBER, MIN_RAIDS_FOR_LEGIONNAIRE } = require('./shared');
+const {
+  countBossesByRaid,
+  MIN_RAIDS_FOR_GUILD_MEMBER,
+  MIN_RAIDS_FOR_LEGIONNAIRE,
+  readCharacterAliases,
+  resolveCharacterAlias
+} = require('./shared');
 
 const POTION_STATS_FILE = path.join(__dirname, '..', 'data', 'potion-stats.json');
 const PERSONAL_STATS_FILE = path.join(__dirname, '..', 'data', 'personal-stats.json');
@@ -18,7 +24,7 @@ async function readJson(filePath) {
   }
 }
 
-function buildHonorBoard(raids, raidBossCounts, guildMemberNames) {
+function buildHonorBoard(raids, raidBossCounts, guildMemberNames, aliasMap) {
   const playersMap = new Map();
 
   raids.forEach((raid) => {
@@ -27,8 +33,9 @@ function buildHonorBoard(raids, raidBossCounts, guildMemberNames) {
     if (!Array.isArray(raid.players)) return;
 
     raid.players.forEach((player) => {
-      const name = String(player.name || '').trim();
-      if (!name) return;
+      const rawName = String(player.name || '').trim();
+      if (!rawName) return;
+      const name = resolveCharacterAlias(rawName, aliasMap);
       if (!playersMap.has(name)) playersMap.set(name, { name, totalPotions: 0, totalBosses: 0, raidsCount: 0 });
       const current = playersMap.get(name);
       current.totalPotions += Number(player.total || 0);
@@ -50,17 +57,19 @@ function buildHonorBoard(raids, raidBossCounts, guildMemberNames) {
 }
 
 async function main() {
-  const [potions, personalStats, players] = await Promise.all([
+  const [potions, personalStats, players, aliases] = await Promise.all([
     readJson(POTION_STATS_FILE),
     readJson(PERSONAL_STATS_FILE),
-    readJson(PLAYERS_FILE)
+    readJson(PLAYERS_FILE),
+    readCharacterAliases()
   ]);
 
   const guildMemberNames = new Set(players.map((p) => p.name));
+  const aliasMap = new Map(Object.entries(aliases));
   const raidBossCounts = countBossesByRaid(personalStats);
   const validRaids = potions.filter((raid) => Array.isArray(raid.players) && raid.players.length > 0 && raid.raidUrl);
 
-  const honorBoard = buildHonorBoard(validRaids, raidBossCounts, guildMemberNames);
+  const honorBoard = buildHonorBoard(validRaids, raidBossCounts, guildMemberNames, aliasMap);
 
   await fs.writeFile(OUTPUT_FILE, JSON.stringify(honorBoard, null, 2), 'utf8');
   console.log(`honor-board.json updated: ${honorBoard.length} players`);
