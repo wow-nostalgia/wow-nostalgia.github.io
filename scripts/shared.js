@@ -4,7 +4,6 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 
 const RAID_LOG_MERGES_FILE = path.join(__dirname, '..', 'data', 'raid-log-merges.json');
-const LEGIONNAIRE_EXCLUSIONS_FILE = path.join(__dirname, '..', 'data', 'legionnaire-exclusions.json');
 
 const MIN_RAIDS_FOR_GUILD_MEMBER = 2;
 const MIN_RAIDS_FOR_LEGIONNAIRE = 5;
@@ -33,20 +32,6 @@ async function readRaidLogMerges() {
     return normalized;
   } catch {
     return {};
-  }
-}
-
-// Старі імена гільдійців (до перейменування персонажа), яких НЕ треба
-// детектити як "легіонера" - навіть якщо старе ім'я перетнуло поріг
-// MIN_RAIDS_FOR_LEGIONNAIRE в архівних логах, бо поточне ім'я вже є в
-// players.json і рядок у Рейтингу DPS буде дублем.
-async function readLegionnaireExclusions() {
-  try {
-    const raw = await fs.readFile(LEGIONNAIRE_EXCLUSIONS_FILE, 'utf8');
-    const parsed = JSON.parse(raw);
-    return new Set(Array.isArray(parsed) ? parsed : []);
-  } catch {
-    return new Set();
   }
 }
 
@@ -312,7 +297,6 @@ module.exports = {
   findDuplicateRaidLogs,
   readRaidLogMerges,
   writeRaidLogMerges,
-  readLegionnaireExclusions,
   countBossesByRaid,
   MIN_RAIDS_FOR_GUILD_MEMBER,
   MIN_RAIDS_FOR_LEGIONNAIRE

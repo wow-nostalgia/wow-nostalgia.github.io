@@ -11,8 +11,7 @@ const {
   normalizeBosses,
   hasAnyBossData,
   MIN_RAIDS_FOR_GUILD_MEMBER,
-  MIN_RAIDS_FOR_LEGIONNAIRE,
-  readLegionnaireExclusions
+  MIN_RAIDS_FOR_LEGIONNAIRE
 } = require('./shared');
 
 const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
@@ -55,9 +54,9 @@ async function countRaidsByName() {
 // "Легіонери" — гравці поза гільдією, яких знаходимо автоматично: хто
 // з'являвся в логах рейдів (potion-stats.json) щонайменше
 // MIN_RAIDS_FOR_LEGIONNAIRE разів і кого немає в players.json.
-function detectLegionnaires(raidCounts, guildNames, excludedNames) {
+function detectLegionnaires(raidCounts, guildNames) {
   return [...raidCounts.entries()]
-    .filter(([name, count]) => !guildNames.has(name) && !excludedNames.has(name) && count >= MIN_RAIDS_FOR_LEGIONNAIRE)
+    .filter(([name, count]) => !guildNames.has(name) && count >= MIN_RAIDS_FOR_LEGIONNAIRE)
     .map(([name]) => ({ name, server: 'FreedomUA' }));
 }
 
@@ -69,14 +68,13 @@ async function readPlayers() {
 
   const guildNames = new Set(allPlayers.map((p) => p.name));
   const raidCounts = await countRaidsByName();
-  const excludedNames = await readLegionnaireExclusions();
 
   // Гільдійці з players.json теж мають підтвердити участь рейдами - інакше
   // Рейтинг DPS захаращується записами без реальних даних по босах.
   const activeGuildPlayers = allPlayers.filter(
     (p) => (raidCounts.get(p.name) || 0) >= MIN_RAIDS_FOR_GUILD_MEMBER
   );
-  const legionnaires = detectLegionnaires(raidCounts, guildNames, excludedNames);
+  const legionnaires = detectLegionnaires(raidCounts, guildNames);
 
   return [...activeGuildPlayers, ...legionnaires];
 }

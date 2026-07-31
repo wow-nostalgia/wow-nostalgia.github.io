@@ -10718,6 +10718,32 @@
       }
     },
     {
+      "name": "Кумбабах",
+      "server": "FreedomUA",
+      "class": "Mage",
+      "spec": "Fire",
+      "specIndex": 2,
+      "overallRank": 92,
+      "rankDelta": 3,
+      "overallScore": 83.85,
+      "bosses": {
+        "Lord Marrowgar": 20210.9,
+        "Lady Deathwhisper": 18076.1,
+        "Deathbringer Saurfang": 22606.1,
+        "Festergut": 20313.6,
+        "Rotface": 20839.6,
+        "Professor Putricide": 15791.4,
+        "Blood Prince Council": 17260.5,
+        "Blood-Queen Lana'thel": 35026.6,
+        "Sindragosa": 14649,
+        "The Lich King": 13837.8,
+        "Toravon the Ice Watcher": 13733.3,
+        "Halion": 16544,
+        "Anub'arak": 10343.7,
+        "Valithria Dreamwalker": 0
+      }
+    },
+    {
       "name": "Elizabeth",
       "server": "FreedomUA",
       "class": "Hunter",
@@ -13970,7 +13996,7 @@
   ],
   "lastUpdated": "2026-07-31T00:47:40.749Z",
   "updateSummary": {
-    "totalRows": 534,
+    "totalRows": 535,
     "failedPlayers": 0
   }
 }
