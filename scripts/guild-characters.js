@@ -21,6 +21,9 @@ const PAGE_SIZE = 50;
 let rostersByGuild = new Map();
 let classSpecByName = new Map();
 let characterOwnerNames = new Map();
+// Очікується createPlayerBadge/guildBadgeLabel з ui-shared.js.
+let guildMemberNames = new Set();
+let characterGuildLabels = new Map();
 let classData = { classes: [], specsByClass: {} };
 let tabNames = [NOSTALGIA];
 let activeTab = NOSTALGIA;
@@ -283,6 +286,8 @@ async function loadData() {
     fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null)
   ]);
 
+  guildMemberNames = new Set(nostalgiaPlayers.map((p) => p.name));
+  characterGuildLabels = new Map(Object.entries(characterGuilds));
   rostersByGuild = buildRostersByGuild(nostalgiaPlayers, characterGuilds);
   classSpecByName = buildClassSpecMap(guildData?.rows || []);
   classData = { classes: guildData?.classes || [], specsByClass: guildData?.specsByClass || {} };
