@@ -705,7 +705,7 @@ function renderPotionLogTable(statsRaid) {
     nameEl.textContent = player.name;
     const isGuild = guildMemberNames.has(player.name);
     const ownerName = characterOwnerNames.get(player.name);
-    nameEl.setAttribute('aria-label', `${player.name} - ${isGuild ? 'Ностальгія' : 'Легіонер'}${ownerName ? ` (${ownerName})` : ''}`);
+    nameEl.setAttribute('aria-label', `${player.name} - ${isGuild ? 'Nostalgia' : 'Легіонер'}${ownerName ? ` (${ownerName})` : ''}`);
     bindTooltip(nameEl);
     nameWrap.appendChild(nameEl);
     nameTd.appendChild(nameWrap);
