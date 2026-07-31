@@ -51,6 +51,7 @@ if (!lastUpdatedText && tableStatus) {
 
 let data = null;
 let guildMemberNames = new Set();
+let characterGuildLabels = new Map();
 let characterOwnerNames = new Map();
 
 const excludedBosses = new Set([
@@ -560,12 +561,13 @@ function renderPlayerSiblings(characterName) {
 async function init() {
   try {
     setStatus('Завантаження даних...');
-    const [rankingResponse, playersResponse, ownersResponse, honorResponse, primaryResponse] = await Promise.all([
+    const [rankingResponse, playersResponse, ownersResponse, honorResponse, primaryResponse, characterGuildsResponse] = await Promise.all([
       fetch('/data/guild-data.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now()),
+      fetch('/data/nostalgia_players.json?t=' + Date.now()),
       fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null),
       fetch('/data/honor-board.json?t=' + Date.now()).catch(() => null),
-      fetch(`${AUTH_API_BASE}/characters/primary`).catch(() => null)
+      fetch(`${AUTH_API_BASE}/characters/primary`).catch(() => null),
+      fetch('/data/character-guilds.json?t=' + Date.now()).catch(() => null)
     ]);
 
     if (!rankingResponse.ok) {
@@ -578,6 +580,10 @@ async function init() {
     if (playersResponse.ok) {
       const players = await playersResponse.json();
       guildMemberNames = new Set(players.map(player => player.name));
+    }
+
+    if (characterGuildsResponse?.ok) {
+      characterGuildLabels = new Map(Object.entries(await characterGuildsResponse.json()));
     }
 
     if (ownersResponse?.ok) {

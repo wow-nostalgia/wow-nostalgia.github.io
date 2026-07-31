@@ -64,6 +64,7 @@ function setStatus(text) {
 
 let allNames = [];
 let guildMemberNames = new Set();
+let characterGuildLabels = new Map();
 
 function computeAllNames() {
   const names = new Set();
@@ -464,11 +465,12 @@ async function init() {
 
   try {
     setStatus('Завантаження даних...');
-    const [personalResponse, playersResponse, honorResponse, aliasesResponse] = await Promise.all([
+    const [personalResponse, playersResponse, honorResponse, aliasesResponse, characterGuildsResponse] = await Promise.all([
       fetch('/data/personal-stats.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now()),
+      fetch('/data/nostalgia_players.json?t=' + Date.now()),
       fetch('/data/honor-board.json?t=' + Date.now()),
-      fetch('/data/character-aliases.json?t=' + Date.now()).catch(() => null)
+      fetch('/data/character-aliases.json?t=' + Date.now()).catch(() => null),
+      fetch('/data/character-guilds.json?t=' + Date.now()).catch(() => null)
     ]);
 
     if (!personalResponse.ok) throw new Error(`HTTP ${personalResponse.status}`);
@@ -480,6 +482,10 @@ async function init() {
     if (playersResponse.ok) {
       const players = await playersResponse.json();
       guildMemberNames = new Set(players.map((p) => p.name));
+    }
+
+    if (characterGuildsResponse?.ok) {
+      characterGuildLabels = new Map(Object.entries(await characterGuildsResponse.json()));
     }
 
     if (honorResponse.ok) {

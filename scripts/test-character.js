@@ -4,7 +4,7 @@ const fs = require('node:fs/promises');
 const { getClassName, getSpecName, normalizeScore, normalizeBosses } = require('./shared');
 
 async function main() {
-  const rawPlayers = await fs.readFile('./data/players.json', 'utf8');
+  const rawPlayers = await fs.readFile('./data/nostalgia_players.json', 'utf8');
   const players = JSON.parse(rawPlayers);
 
   const targetPlayer = players[0];

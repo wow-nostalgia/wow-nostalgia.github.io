@@ -18,7 +18,7 @@ const {
   findCharacterAliases
 } = require('./shared');
 
-const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
+const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'nostalgia_players.json');
 const POTION_STATS_FILE = path.join(__dirname, '..', 'data', 'potion-stats.json');
 const DATA_FILE = path.join(__dirname, '..', 'data', 'guild-data.json');
 
@@ -89,7 +89,7 @@ function detectLegionnaires(raidCounts, guildNames, aliasMap) {
 async function readPlayers(aliasMap) {
   const allPlayers = await readJson(PLAYERS_FILE);
   if (!Array.isArray(allPlayers)) {
-    throw new Error('players.json не містить масив гравців');
+    throw new Error('nostalgia_players.json не містить масив гравців');
   }
 
   const guildNames = new Set(allPlayers.map((p) => p.name));

@@ -460,8 +460,8 @@ function renderGuildVsLegionChart(rows, legionNames, guildRosterSize) {
   const captionEl = document.getElementById('guildVsLegionCaption');
   if (captionEl) {
     captionEl.textContent =
-      `Гільдія: ${guildRosterSize} в ростері (players.json), ${stats.guild.activePlayers} з активними логами · ` +
-      `Легіонери (є в логах, але не в players.json): ${stats.legion.activePlayers} гравців.`;
+      `Гільдія: ${guildRosterSize} в ростері (nostalgia_players.json), ${stats.guild.activePlayers} з активними логами · ` +
+      `Легіонери (є в логах, але не в nostalgia_players.json): ${stats.legion.activePlayers} гравців.`;
   }
 
   new Chart(document.getElementById('chartGuildVsLegion'), {
@@ -1137,7 +1137,7 @@ async function init() {
     setStatus('Завантаження даних...');
     const [guildResponse, playersResponse, potionResponse, healerResponse, personalResponse, ownersResponse, aliasesResponse] = await Promise.all([
       fetch('/data/guild-data.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now()),
+      fetch('/data/nostalgia_players.json?t=' + Date.now()),
       fetch('/data/potion-stats.json?t=' + Date.now()),
       fetch('/data/healer-rankings.json?t=' + Date.now()),
       fetch('/data/personal-stats.json?t=' + Date.now()),

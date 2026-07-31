@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Профіль — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../style.css?v=120">
+  <link rel="stylesheet" href="../style.css?v=121">
 </head>
 
 <body class="account-page">
@@ -93,6 +93,7 @@
                   <tr>
                     <th>Персонаж</th>
                     <th class="account-attendance-col">Рейдів</th>
+                    <th class="account-guild-col">Гільдія</th>
                     <th class="account-primary-col">Основний</th>
                     <th class="account-delete-col"></th>
                   </tr>
@@ -103,10 +104,18 @@
             <div class="account-chars-hints">
               <p class="account-chars-hint">Персонажі із цього списку доступні для софту предметів.</p>
               <p class="account-chars-hint">Ім'я основного персонажа відображається у підказці при наведенні на твіна гравця. Якщо не обрано — показується нік Discord. Це допомагає зрозуміти чий перс.</p>
+              <p class="account-chars-hint">Гільдія "Nostalgia" підтверджується офіцером — до підтвердження персонаж рахується як легіонер.</p>
             </div>
           </div>
 
           <p id="accountStatus"></p>
+
+          <div id="guildRequestsSection" class="account-admin-tools" hidden>
+            <h2>Заявки на вступ до Nostalgia</h2>
+            <p class="account-admin-hint">Персонажі, що обрали гільдію "Nostalgia" у профілі й чекають підтвердження.</p>
+            <ul id="guildRequestsList" class="account-default-officers-list"></ul>
+            <p id="guildRequestsStatus"></p>
+          </div>
         </div>
 
         <div id="adminTabPane" hidden>
@@ -164,8 +173,8 @@
   <script src="../scripts/nav.js?v=2"></script>
   <script src="../scripts/auth-shared.js?v=10"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
-  <script src="../scripts/ui-shared.js?v=13"></script>
-  <script src="../scripts/account.js?v=19"></script>
+  <script src="../scripts/ui-shared.js?v=14"></script>
+  <script src="../scripts/account.js?v=20"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

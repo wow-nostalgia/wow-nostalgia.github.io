@@ -16,6 +16,7 @@ const penaltyInstanceToggle = document.getElementById('penaltyInstanceToggle');
 const penaltyInstanceInput = document.getElementById('penaltyInstance');
 
 let guildMemberNames = new Set();
+let characterGuildLabels = new Map();
 let guildMemberNamesSorted = [];
 let battalionEntries = [];
 
@@ -213,17 +214,21 @@ async function init() {
 
   battalionSection.hidden = false;
 
-  const playersPromise = fetch('/data/players.json?t=' + Date.now())
+  const playersPromise = fetch('/data/nostalgia_players.json?t=' + Date.now())
     .then((res) => (res.ok ? res.json() : []))
     .catch(() => []);
+  const characterGuildsPromise = fetch('/data/character-guilds.json?t=' + Date.now())
+    .then((res) => (res.ok ? res.json() : {}))
+    .catch(() => ({}));
   const entriesPromise = apiCall('GET', '/penalty-battalion', { token: getSessionToken() }).catch((err) => {
     console.error(err);
     setStatus('Не вдалося завантажити Штрафбат.');
     return null;
   });
 
-  const [players, entries] = await Promise.all([playersPromise, entriesPromise]);
+  const [players, characterGuilds, entries] = await Promise.all([playersPromise, characterGuildsPromise, entriesPromise]);
   guildMemberNames = new Set(players.map((p) => p.name));
+  characterGuildLabels = new Map(Object.entries(characterGuilds));
   setGuildMemberNamesSorted(players);
 
   if (entries) {

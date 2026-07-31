@@ -17,6 +17,7 @@ const potionContentEl = document.getElementById('potionContent');
 let honorBoardCache = [];
 let sortState = { column: 'averagePotionsPerBoss', direction: 'desc' };
 let guildMemberNames = new Set();
+let characterGuildLabels = new Map();
 let characterOwnerNames = new Map();
 let bossesByRaidUrl = new Map();
 let rostersByRaidUrl = new Map();
@@ -205,9 +206,8 @@ function renderHonorBoard(players) {
       const nameStyle = color ? ` style="color:${color}"` : '';
       const iconHtml = rosterPlayer?.icon ? `<img class="raid-item-icon" src="${specIconUrl(rosterPlayer.icon)}" alt="">` : '';
 
-      const isGuild = guildMemberNames.has(player.name);
       const ownerName = characterOwnerNames.get(player.name);
-      const tooltipLabel = `${player.name} - ${isGuild ? 'Nostalgia' : 'Легіонер'}${ownerName ? ` (${ownerName})` : ''}`;
+      const tooltipLabel = `${player.name} - ${guildBadgeLabel(player.name)}${ownerName ? ` (${ownerName})` : ''}`;
 
       const nameHtml = `<span class="tooltipped" aria-label="${escapeHtml(tooltipLabel)}">${escapeHtml(player.name)}</span>`;
       return `<tr><td>${index + 1}</td><td><a class="honor-row-link" href="${escapeHtml(buildPlayerViewUrl(player.name))}"><span class="potion-name-wrap"${nameStyle}>${iconHtml}${nameHtml}</span></a></td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`;
@@ -266,14 +266,15 @@ function attachHealTankFilter() {
 async function loadPotionStats() {
   try {
     statusEl.textContent = 'Завантаження даних...';
-    const [response, honorBoardResponse, playersResponse, ownersResponse, personalStatsResponse, rostersResponse, aliasesResponse] = await Promise.all([
+    const [response, honorBoardResponse, playersResponse, ownersResponse, personalStatsResponse, rostersResponse, aliasesResponse, characterGuildsResponse] = await Promise.all([
       fetch('/data/potion-stats.json?t=' + Date.now()),
       fetch('/data/honor-board.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now()),
+      fetch('/data/nostalgia_players.json?t=' + Date.now()),
       fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null),
       fetch('/data/personal-stats.json?t=' + Date.now()).catch(() => null),
       fetch('/data/raid-rosters.json?t=' + Date.now()).catch(() => null),
-      fetch('/data/character-aliases.json?t=' + Date.now()).catch(() => null)
+      fetch('/data/character-aliases.json?t=' + Date.now()).catch(() => null),
+      fetch('/data/character-guilds.json?t=' + Date.now()).catch(() => null)
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
@@ -285,6 +286,10 @@ async function loadPotionStats() {
     if (playersResponse.ok) {
       const players = await playersResponse.json();
       guildMemberNames = new Set(players.map((p) => p.name));
+    }
+
+    if (characterGuildsResponse?.ok) {
+      characterGuildLabels = new Map(Object.entries(await characterGuildsResponse.json()));
     }
 
     if (ownersResponse?.ok) {
