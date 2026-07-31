@@ -2323,8 +2323,7 @@ body.raid-manager-detail-page .raid-items-filters select {
 }
 
 body.raid-manager-page .ranking-table-wrap,
-body.shard-queue-page .ranking-table-wrap,
-body.guild-characters-page .ranking-table-wrap {
+body.shard-queue-page .ranking-table-wrap {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -2332,8 +2331,7 @@ body.guild-characters-page .ranking-table-wrap {
 }
 
 body.raid-manager-page .raid-table,
-body.shard-queue-page .raid-table,
-body.guild-characters-page .raid-table {
+body.shard-queue-page .raid-table {
   width: 100%;
   border-collapse: collapse;
 }
@@ -2354,9 +2352,7 @@ body.guild-characters-page .raid-table {
 body.raid-manager-page .raid-table th,
 body.raid-manager-page .raid-table td,
 body.shard-queue-page .raid-table th,
-body.shard-queue-page .raid-table td,
-body.guild-characters-page .raid-table th,
-body.guild-characters-page .raid-table td {
+body.shard-queue-page .raid-table td {
   padding: 0.3rem 0.4rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
@@ -2365,15 +2361,13 @@ body.guild-characters-page .raid-table td {
 }
 
 body.raid-manager-page .raid-table th,
-body.shard-queue-page .raid-table th,
-body.guild-characters-page .raid-table th {
+body.shard-queue-page .raid-table th {
   color: var(--color-text-strong);
   font-weight: var(--font-weight-medium);
 }
 
 body.raid-manager-page .raid-table tbody tr:hover,
-body.shard-queue-page .raid-table tbody tr:hover,
-body.guild-characters-page .raid-table tbody tr:hover {
+body.shard-queue-page .raid-table tbody tr:hover {
   background-color: var(--color-hover);
 }
 
@@ -2959,8 +2953,7 @@ body.raid-manager-detail-page .raid-player-name-cell {
 
 body.raid-manager-detail-page .raid-tabs,
 body.account-page .raid-tabs,
-body.shard-queue-page .raid-tabs,
-body.guild-characters-page .raid-tabs {
+body.shard-queue-page .raid-tabs {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -2971,8 +2964,7 @@ body.guild-characters-page .raid-tabs {
 
 body.raid-manager-detail-page .raid-tab,
 body.account-page .raid-tab,
-body.shard-queue-page .raid-tab,
-body.guild-characters-page .raid-tab {
+body.shard-queue-page .raid-tab {
   background: none;
   border: none;
   padding: 0.5rem 0.9rem;
@@ -2986,15 +2978,13 @@ body.guild-characters-page .raid-tab {
 
 body.raid-manager-detail-page .raid-tab:hover,
 body.account-page .raid-tab:hover,
-body.shard-queue-page .raid-tab:hover,
-body.guild-characters-page .raid-tab:hover {
+body.shard-queue-page .raid-tab:hover {
   color: var(--color-text-strong);
 }
 
 body.raid-manager-detail-page .raid-tab--active,
 body.account-page .raid-tab--active,
-body.shard-queue-page .raid-tab--active,
-body.guild-characters-page .raid-tab--active {
+body.shard-queue-page .raid-tab--active {
   color: var(--color-text-strong);
   border-bottom-color: var(--color-link);
 }
@@ -3981,8 +3971,7 @@ body.account-page .account-character-name-cell {
   color: var(--color-text-strong);
 }
 
-body.account-page .account-character-actions,
-body.guild-characters-page .account-character-actions {
+body.account-page .account-character-actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -4110,8 +4099,7 @@ body.account-page .account-lang-toggle-btn--active {
   color: var(--color-surface-solid);
 }
 
-body.account-page .account-admin-tools,
-body.guild-characters-page .account-admin-tools {
+body.account-page .account-admin-tools {
   margin-top: 1.5rem;
 }
 
@@ -4120,8 +4108,7 @@ body.account-page .account-admin-tools + .account-admin-tools {
   border-top: 1px solid var(--color-border);
 }
 
-body.account-page .account-admin-hint,
-body.guild-characters-page .account-admin-hint {
+body.account-page .account-admin-hint {
   margin: 0 0 0.5rem;
   font-size: var(--font-size-base);
   color: var(--color-text-faint);
@@ -4140,16 +4127,14 @@ body.account-page .account-default-officers-add .raid-input-wrap {
   min-width: 0;
 }
 
-body.account-page .account-default-officers-list,
-body.guild-characters-page .account-default-officers-list {
+body.account-page .account-default-officers-list {
   list-style: none;
   padding: 0;
   margin: 0 0 0.5rem;
   max-width: 400px;
 }
 
-body.account-page .account-default-officer-item,
-body.guild-characters-page .account-default-officer-item {
+body.account-page .account-default-officer-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -4158,15 +4143,13 @@ body.guild-characters-page .account-default-officer-item {
   font-size: var(--font-size-base);
 }
 
-body.account-page .account-default-officers-empty,
-body.guild-characters-page .account-default-officers-empty {
+body.account-page .account-default-officers-empty {
   font-size: var(--font-size-base);
   color: var(--color-text-faint);
   padding: 0.35rem 0;
 }
 
-body.account-page .link-button-std,
-body.guild-characters-page .link-button-std {
+body.account-page .link-button-std {
   background: none;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
@@ -4176,20 +4159,17 @@ body.guild-characters-page .link-button-std {
   cursor: pointer;
 }
 
-body.account-page .link-button-std:hover,
-body.guild-characters-page .link-button-std:hover {
+body.account-page .link-button-std:hover {
   background-color: var(--color-hover);
 }
 
-body.account-page .link-button-std--danger,
-body.guild-characters-page .link-button-std--danger {
+body.account-page .link-button-std--danger {
   color: var(--color-danger);
   border-color: rgba(255, 107, 107, 0.4);
   background-color: rgba(255, 107, 107, 0.12);
 }
 
-body.account-page .link-button-std--danger:hover,
-body.guild-characters-page .link-button-std--danger:hover {
+body.account-page .link-button-std--danger:hover {
   background-color: rgba(255, 107, 107, 0.2);
 }
 
