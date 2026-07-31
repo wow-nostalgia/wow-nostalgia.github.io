@@ -61,7 +61,7 @@ function createPlayerBadge(name) {
   const isGuild = guildMemberNames.has(name);
   const badge = document.createElement('span');
   badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
-  badge.setAttribute('aria-label', isGuild ? 'Nostalgia' : 'Легіонер');
+  badge.setAttribute('aria-label', isGuild ? 'Ностальгія' : 'Легіонер');
   badge.textContent = isGuild ? 'N' : 'L';
   applyAutoTooltip(badge);
   return badge;
@@ -72,7 +72,7 @@ function createPlayerBadge(name) {
 function createPlayerBadgeHtml(name) {
   const isGuild = guildMemberNames.has(name);
   const cls = isGuild ? 'player-badge--guild' : 'player-badge--legion';
-  const title = isGuild ? 'Nostalgia' : 'Легіонер';
+  const title = isGuild ? 'Ностальгія' : 'Легіонер';
   const letter = isGuild ? 'N' : 'L';
   return `<span class="player-badge tooltipped ${cls}" aria-label="${title}">${letter}</span>`;
 }

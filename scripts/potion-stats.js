@@ -207,7 +207,7 @@ function renderHonorBoard(players) {
 
       const isGuild = guildMemberNames.has(player.name);
       const ownerName = characterOwnerNames.get(player.name);
-      const tooltipLabel = `${player.name} - ${isGuild ? 'Nostalgia' : 'Легіонер'}${ownerName ? ` (${ownerName})` : ''}`;
+      const tooltipLabel = `${player.name} - ${isGuild ? 'Ностальгія' : 'Легіонер'}${ownerName ? ` (${ownerName})` : ''}`;
 
       const nameHtml = `<span class="tooltipped" aria-label="${escapeHtml(tooltipLabel)}">${escapeHtml(player.name)}</span>`;
       return `<tr><td>${index + 1}</td><td><a class="honor-row-link" href="${escapeHtml(buildPlayerViewUrl(player.name))}"><span class="potion-name-wrap"${nameStyle}>${iconHtml}${nameHtml}</span></a></td><td>${player.raidsCount}</td><td>${player.averagePotionsPerBoss.toFixed(2)}</td></tr>`;
