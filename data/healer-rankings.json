@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-07-30T00:38:52.254Z",
+  "updatedAt": "2026-07-31T00:47:42.387Z",
   "specs": [
     {
       "class": "Paladin",
@@ -248,6 +248,10 @@
           "hps": 36801.7
         },
         {
+          "name": "Nutrillite",
+          "hps": 36726.4
+        },
+        {
           "name": "Садистка",
           "hps": 36714.8
         },
@@ -330,10 +334,6 @@
         {
           "name": "Juliet",
           "hps": 35268.7
-        },
-        {
-          "name": "Nutrillite",
-          "hps": 35263.1
         },
         {
           "name": "Humipal",
@@ -1518,6 +1518,10 @@
           "hps": 625.7
         },
         {
+          "name": "Fromhell",
+          "hps": 604.3
+        },
+        {
           "name": "Помогатор",
           "hps": 599.9
         },
@@ -1660,10 +1664,6 @@
         {
           "name": "Divadla",
           "hps": 439.5
-        },
-        {
-          "name": "Fromhell",
-          "hps": 436.2
         },
         {
           "name": "Dlgl",
@@ -4404,6 +4404,10 @@
           "hps": 20776.4
         },
         {
+          "name": "Чекуня",
+          "hps": 20732
+        },
+        {
           "name": "Elizabetq",
           "hps": 20731.6
         },
@@ -4450,10 +4454,6 @@
         {
           "name": "Арт",
           "hps": 20138.1
-        },
-        {
-          "name": "Чекуня",
-          "hps": 20127
         },
         {
           "name": "Янхана",
