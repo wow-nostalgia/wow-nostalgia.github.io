@@ -12,7 +12,7 @@ const {
 
 const POTION_STATS_FILE = path.join(__dirname, '..', 'data', 'potion-stats.json');
 const PERSONAL_STATS_FILE = path.join(__dirname, '..', 'data', 'personal-stats.json');
-const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'nostalgia_players.json');
+const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'honor-board.json');
 
 async function readJson(filePath) {

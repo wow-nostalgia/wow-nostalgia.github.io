@@ -60,13 +60,6 @@ import {
   handleListPrimaryCharacters
 } from './routes/auth.js';
 import {
-  handleSetCharacterGuild,
-  handleListCharacterGuildInfo,
-  handleListGuildRequests,
-  handleApproveGuildRequest,
-  handleRejectGuildRequest
-} from './routes/guild.js';
-import {
   listDefaultOfficers,
   addDefaultOfficer,
   removeDefaultOfficer,
@@ -120,9 +113,6 @@ async function routeAuth(request, env, parts) {
     }
     if (sub4 === 'primary' && method === 'DELETE') {
       return handleClearPrimaryCharacter(request, env);
-    }
-    if (sub4 === 'guild' && method === 'PUT') {
-      return handleSetCharacterGuild(request, env, decodeURIComponent(sub3));
     }
     if (!sub4 && method === 'DELETE') return handleRemoveCharacter(request, env, decodeURIComponent(sub3));
     throw new HttpError(405, 'Метод не підтримується');
@@ -264,20 +254,6 @@ async function routeShardQueue(request, env, parts, session) {
   throw new HttpError(404, 'Невідомий шлях');
 }
 
-async function routeGuildRequests(request, env, parts) {
-  const method = request.method;
-  const [characterName, action] = parts;
-
-  if (!characterName) {
-    if (method === 'GET') return handleListGuildRequests(request, env);
-    throw new HttpError(405, 'Метод не підтримується');
-  }
-
-  if (action === 'approve' && method === 'POST') return handleApproveGuildRequest(request, env, decodeURIComponent(characterName));
-  if (action === 'reject' && method === 'POST') return handleRejectGuildRequest(request, env, decodeURIComponent(characterName));
-  throw new HttpError(404, 'Невідомий шлях');
-}
-
 async function routePenaltyBattalion(request, env, parts, session) {
   const method = request.method;
   const [id] = parts;
@@ -353,16 +329,6 @@ async function route(request, env) {
   // Публічний (без логіну) — для бейджа "Основний" у статичній аналітиці.
   if (parts[2] === 'characters' && parts[3] === 'primary' && request.method === 'GET') {
     return handleListPrimaryCharacters(request, env);
-  }
-
-  // Публічний (без логіну) — для build-guild-rosters.js і дропдауна
-  // "Гільдія" в профілі.
-  if (parts[2] === 'characters' && parts[3] === 'guild-info' && request.method === 'GET') {
-    return handleListCharacterGuildInfo(request, env);
-  }
-
-  if (parts[2] === 'guild-requests') {
-    return routeGuildRequests(request, env, parts.slice(3));
   }
 
   if (parts[2] === 'raids') {

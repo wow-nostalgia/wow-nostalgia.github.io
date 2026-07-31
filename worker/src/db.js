@@ -300,15 +300,10 @@ export async function listPrimaryCharacterNames(db) {
 
 export async function listUserCharacters(db, discordId) {
   const { results } = await db
-    .prepare('SELECT character_name, is_primary, guild, guild_approved_at FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC')
+    .prepare('SELECT character_name, is_primary FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC')
     .bind(discordId)
     .all();
-  return results.map((r) => ({
-    characterName: r.character_name,
-    isPrimary: Boolean(r.is_primary),
-    guild: r.guild,
-    guildApproved: r.guild !== 'Nostalgia' || Boolean(r.guild_approved_at)
-  }));
+  return results.map((r) => ({ characterName: r.character_name, isPrimary: Boolean(r.is_primary) }));
 }
 
 export async function addUserCharacter(db, discordId, characterName) {
@@ -322,65 +317,6 @@ export async function addUserCharacter(db, discordId, characterName) {
 export async function removeUserCharacter(db, discordId, characterName) {
   await db.prepare('DELETE FROM user_characters WHERE discord_id = ? AND character_name = ?').bind(discordId, characterName).run();
   return listUserCharacters(db, discordId);
-}
-
-// Self-declared гільдія персонажа. guild_approved_at завжди скидається в
-// NULL при (пере)встановленні — навіть повторний вибір "Nostalgia" після
-// виходу вимагає нового підтвердження офіцера. Для будь-якого іншого
-// значення (в т.ч. '' — "Без гільдії") guild_approved_at лишається
-// нерелевантним: listCharacterGuildInfo фільтрує по ньому лише коли
-// guild = 'Nostalgia'.
-export async function setCharacterGuild(db, discordId, characterName, guild) {
-  await db
-    .prepare('UPDATE user_characters SET guild = ?, guild_updated_at = ?, guild_approved_at = NULL WHERE discord_id = ? AND character_name = ?')
-    .bind(guild, nowIso(), discordId, characterName)
-    .run();
-  return listUserCharacters(db, discordId);
-}
-
-// Публічно (без логіну) — для build-guild-rosters.js і для наповнення
-// дропдауна "Гільдія" в профілі. Непідтверджені заявки на Nostalgia сюди
-// не потрапляють (guild_approved_at IS NULL), тож build-скрипт їх просто
-// не бачить, доки офіцер не підтвердить.
-export async function listCharacterGuildInfo(db) {
-  const { results } = await db
-    .prepare(
-      `SELECT character_name, guild, guild_updated_at
-       FROM user_characters
-       WHERE guild_updated_at IS NOT NULL AND (guild != 'Nostalgia' OR guild_approved_at IS NOT NULL)`
-    )
-    .all();
-  return results;
-}
-
-// Офіцерська черга: заявки на вступ до Nostalgia, що ще не підтверджені.
-export async function listPendingGuildRequests(db) {
-  const { results } = await db
-    .prepare(
-      `SELECT uc.character_name, uc.guild_updated_at, ${displayNameSubquery('u')} AS requested_by
-       FROM user_characters uc
-       JOIN users u ON u.discord_id = uc.discord_id
-       WHERE uc.guild = 'Nostalgia' AND uc.guild_approved_at IS NULL
-       ORDER BY uc.guild_updated_at ASC`
-    )
-    .all();
-  return results;
-}
-
-export async function approveCharacterGuild(db, characterName) {
-  await db
-    .prepare("UPDATE user_characters SET guild_approved_at = ? WHERE character_name = ? AND guild = 'Nostalgia'")
-    .bind(nowIso(), characterName)
-    .run();
-}
-
-// Повний скид, не позначення "Без гільдії" — це була неперевірена заявка,
-// не підтверджений вихід з гільдії; гравець може подати повторно.
-export async function rejectCharacterGuild(db, characterName) {
-  await db
-    .prepare("UPDATE user_characters SET guild = NULL, guild_updated_at = NULL, guild_approved_at = NULL WHERE character_name = ? AND guild = 'Nostalgia'")
-    .bind(characterName)
-    .run();
 }
 
 // Глобальна унікальність персонажа (across усіх акаунтів) — на рівні

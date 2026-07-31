@@ -55,20 +55,13 @@ function applyAutoTooltip(el) {
 }
 
 // Бейдж гільдієць/легіонер. Очікує глобальну змінну guildMemberNames
-// (Set з іменами гільдії Nostalgia), яку кожна сторінка заповнює сама зі
-// свого data/nostalgia_players.json, і опційну characterGuildLabels
-// (Map: ім'я -> назва самодекларованої гільдії з data/character-guilds.json)
-// для тултіпа легіонерів з реальною гільдією замість загального "Легіонер".
-function guildBadgeLabel(name) {
-  if (guildMemberNames.has(name)) return 'Nostalgia';
-  return (typeof characterGuildLabels !== 'undefined' && characterGuildLabels.get(name)) || 'Легіонер';
-}
-
+// (Set з іменами гільдії), яку кожна сторінка заповнює сама зі свого
+// data/players.json.
 function createPlayerBadge(name) {
   const isGuild = guildMemberNames.has(name);
   const badge = document.createElement('span');
   badge.className = `player-badge ${isGuild ? 'player-badge--guild' : 'player-badge--legion'}`;
-  badge.setAttribute('aria-label', guildBadgeLabel(name));
+  badge.setAttribute('aria-label', isGuild ? 'Nostalgia' : 'Легіонер');
   badge.textContent = isGuild ? 'N' : 'L';
   applyAutoTooltip(badge);
   return badge;
@@ -79,8 +72,9 @@ function createPlayerBadge(name) {
 function createPlayerBadgeHtml(name) {
   const isGuild = guildMemberNames.has(name);
   const cls = isGuild ? 'player-badge--guild' : 'player-badge--legion';
+  const title = isGuild ? 'Nostalgia' : 'Легіонер';
   const letter = isGuild ? 'N' : 'L';
-  return `<span class="player-badge tooltipped ${cls}" aria-label="${escapeHtml(guildBadgeLabel(name))}">${letter}</span>`;
+  return `<span class="player-badge tooltipped ${cls}" aria-label="${title}">${letter}</span>`;
 }
 
 // Іконки ресурсів "Черга на уламки та кров" — кристал (уламки) і крапля

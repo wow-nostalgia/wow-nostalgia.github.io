@@ -25,9 +25,6 @@ const deleteCharacterModalBackdrop = document.getElementById('deleteCharacterMod
 const deleteCharacterModalText = document.getElementById('deleteCharacterModalText');
 const deleteCharacterConfirmBtn = document.getElementById('deleteCharacterConfirmBtn');
 const deleteCharacterCancelBtn = document.getElementById('deleteCharacterCancelBtn');
-const guildRequestsSection = document.getElementById('guildRequestsSection');
-const guildRequestsList = document.getElementById('guildRequestsList');
-const guildRequestsStatus = document.getElementById('guildRequestsStatus');
 
 function setAccountStatus(text) {
   accountStatus.textContent = text || '';
@@ -45,33 +42,19 @@ async function readErrorMessage(res) {
 // той самий патерн фетчингу/зіставлення по точному імені, що вже є в
 // guild-ranking.js/personal-analytics.js. Без бекенд-змін, чисто фронтенд.
 let guildMemberNames = new Set();
-let characterGuildLabels = new Map();
 let personalAnalyticsNames = new Set();
 let classColorMap = new Map();
 let raidAttendanceByName = new Map();
-// Зростаючий спільний список назв гільдій для дропдауна "Гільдія" - будь-яка
-// назва, вписана вручну кимось, стає опцією для всіх (окрім "Nostalgia",
-// вона й так вбудована опція).
-let knownGuildNames = [];
 
 async function loadCharacterStatsSources() {
   try {
-    const [players, personalStats, guildDataRes, potionStats, characterGuilds, guildInfoRes] = await Promise.all([
-      fetch('/data/nostalgia_players.json?t=' + Date.now()).then((r) => r.json()),
+    const [players, personalStats, guildDataRes, potionStats] = await Promise.all([
+      fetch('/data/players.json?t=' + Date.now()).then((r) => r.json()),
       fetch('/data/personal-stats.json?t=' + Date.now()).then((r) => r.json()),
       fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
-      fetch('/data/potion-stats.json?t=' + Date.now()).then((r) => r.json()),
-      fetch('/data/character-guilds.json?t=' + Date.now()).then((r) => r.json()).catch(() => ({})),
-      fetch(`${AUTH_API_BASE}/characters/guild-info`).catch(() => null)
+      fetch('/data/potion-stats.json?t=' + Date.now()).then((r) => r.json())
     ]);
     guildMemberNames = new Set(players.map((p) => p.name));
-    characterGuildLabels = new Map(Object.entries(characterGuilds));
-
-    if (guildInfoRes?.ok) {
-      const guildInfo = await guildInfoRes.json();
-      const names = new Set(Object.values(guildInfo).map((v) => v.guild).filter((g) => g && g !== 'Nostalgia'));
-      knownGuildNames = [...names].sort((a, b) => a.localeCompare(b, 'uk'));
-    }
     personalAnalyticsNames = new Set();
     for (const record of personalStats) {
       for (const player of record.players || []) {
@@ -112,114 +95,13 @@ function characterNameNode(name) {
   return link;
 }
 
-// Сентинел опції "+ Інша..." - завжди останній пункт дропдауна "Гільдія",
-// вибір якого відкриває поле вільного вводу поруч (див. buildGuildCell).
-const CUSTOM_GUILD_SENTINEL = '__custom__';
-
-// guild === null/undefined - поле ще не чіпали: показуємо дефолт лише
-// візуально (Nostalgia, якщо персонаж є в nostalgia_players.json, інакше
-// "Без гільдії"), нічого при цьому в БД не пишемо.
-function resolveGuildDropdownValue(name, guild) {
-  if (guild === null || guild === undefined) return guildMemberNames.has(name) ? 'Nostalgia' : '';
-  return guild;
-}
-
-function buildGuildCell(name, character) {
-  const td = document.createElement('td');
-  td.className = 'account-guild-cell';
-
-  const currentValue = resolveGuildDropdownValue(name, character.guild);
-  const isKnownOption = currentValue === 'Nostalgia' || currentValue === '' || knownGuildNames.includes(currentValue);
-
-  const select = document.createElement('select');
-  select.className = 'account-guild-select';
-  const options = [
-    { value: 'Nostalgia', label: 'Nostalgia' },
-    { value: '', label: 'Без гільдії' },
-    ...knownGuildNames.map((g) => ({ value: g, label: g })),
-    { value: CUSTOM_GUILD_SENTINEL, label: '+ Інша...' }
-  ];
-  for (const opt of options) {
-    const optionEl = document.createElement('option');
-    optionEl.value = opt.value;
-    optionEl.textContent = opt.label;
-    select.appendChild(optionEl);
-  }
-  select.value = isKnownOption ? currentValue : CUSTOM_GUILD_SENTINEL;
-
-  const customInput = document.createElement('input');
-  customInput.type = 'text';
-  customInput.className = 'account-guild-custom-input';
-  customInput.placeholder = 'Назва гільдії';
-  customInput.hidden = isKnownOption;
-  if (!isKnownOption) customInput.value = currentValue;
-
-  const pendingChip = document.createElement('span');
-  pendingChip.className = 'raid-chip tooltipped';
-  pendingChip.setAttribute('aria-label', 'Доки офіцер не підтвердить - персонаж рахується як легіонер');
-  pendingChip.textContent = 'Очікує підтвердження';
-  pendingChip.hidden = !(character.guild === 'Nostalgia' && !character.guildApproved);
-
-  async function saveGuild(guildValue) {
-    select.disabled = true;
-    customInput.disabled = true;
-    try {
-      const token = getSessionToken();
-      const res = await fetch(`${AUTH_API_BASE}/auth/me/characters/${encodeURIComponent(name)}/guild`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ guild: guildValue })
-      });
-      if (!res.ok) throw new Error(await readErrorMessage(res));
-      if (guildValue && guildValue !== 'Nostalgia' && !knownGuildNames.includes(guildValue)) {
-        knownGuildNames.push(guildValue);
-        knownGuildNames.sort((a, b) => a.localeCompare(b, 'uk'));
-      }
-      setAccountStatus('');
-      renderCharactersList(await res.json());
-    } catch (err) {
-      setAccountStatus(`Помилка: ${err.message}`);
-      select.disabled = false;
-      customInput.disabled = false;
-    }
-  }
-
-  select.addEventListener('change', () => {
-    if (select.value === CUSTOM_GUILD_SENTINEL) {
-      customInput.hidden = false;
-      customInput.value = '';
-      customInput.focus();
-      return;
-    }
-    saveGuild(select.value);
-  });
-
-  function commitCustomInput() {
-    const value = customInput.value.trim();
-    if (!value) return;
-    saveGuild(value);
-  }
-  customInput.addEventListener('blur', commitCustomInput);
-  customInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      commitCustomInput();
-    }
-  });
-
-  td.appendChild(select);
-  td.appendChild(customInput);
-  td.appendChild(pendingChip);
-  return td;
-}
-
 function renderCharactersList(characters) {
   charactersList.innerHTML = '';
 
   if (!characters.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 5;
+    td.colSpan = 4;
     td.textContent = 'Ще не додано жодного персонажа.';
     tr.appendChild(td);
     charactersList.appendChild(tr);
@@ -228,8 +110,7 @@ function renderCharactersList(characters) {
 
   const hasPrimary = characters.some((c) => c.isPrimary);
 
-  characters.forEach((character) => {
-    const { characterName: name, isPrimary } = character;
+  characters.forEach(({ characterName: name, isPrimary }) => {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
@@ -244,8 +125,6 @@ function renderCharactersList(characters) {
     attendanceTd.className = 'account-attendance-col';
     attendanceTd.textContent = String(raidAttendanceByName.get(name) || 0);
     tr.appendChild(attendanceTd);
-
-    tr.appendChild(buildGuildCell(name, character));
 
     const checkboxTd = document.createElement('td');
     checkboxTd.className = 'account-primary-checkbox-td';
@@ -473,70 +352,6 @@ async function loadDefaultOfficers() {
   }
 }
 
-function renderGuildRequests(requests) {
-  guildRequestsList.innerHTML = '';
-  if (!requests.length) {
-    const li = document.createElement('li');
-    li.className = 'account-default-officers-empty';
-    li.textContent = 'Заявок немає.';
-    guildRequestsList.appendChild(li);
-    return;
-  }
-
-  requests.forEach(({ character_name: characterName, requested_by: requestedBy }) => {
-    const li = document.createElement('li');
-    li.className = 'account-default-officer-item';
-
-    const label = document.createElement('span');
-    label.textContent = `${characterName} — заявив(ла) ${requestedBy}`;
-    li.appendChild(label);
-
-    const actions = document.createElement('span');
-    actions.className = 'account-character-actions';
-
-    const approveBtn = document.createElement('button');
-    approveBtn.type = 'button';
-    approveBtn.className = 'link-button-std';
-    approveBtn.textContent = 'Підтвердити';
-    approveBtn.addEventListener('click', () => respondToGuildRequest(characterName, 'approve'));
-    actions.appendChild(approveBtn);
-
-    const rejectBtn = document.createElement('button');
-    rejectBtn.type = 'button';
-    rejectBtn.className = 'link-button-std link-button-std--danger';
-    rejectBtn.textContent = 'Відхилити';
-    rejectBtn.addEventListener('click', () => respondToGuildRequest(characterName, 'reject'));
-    actions.appendChild(rejectBtn);
-
-    li.appendChild(actions);
-    guildRequestsList.appendChild(li);
-  });
-}
-
-async function respondToGuildRequest(characterName, action) {
-  try {
-    const res = await fetch(`${AUTH_API_BASE}/guild-requests/${encodeURIComponent(characterName)}/${action}`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${getSessionToken()}` }
-    });
-    if (!res.ok) throw new Error(await readErrorMessage(res));
-    guildRequestsStatus.textContent = '';
-    renderGuildRequests(await res.json());
-  } catch (err) {
-    guildRequestsStatus.textContent = `Помилка: ${err.message}`;
-  }
-}
-
-async function loadGuildRequests() {
-  try {
-    const res = await fetch(`${AUTH_API_BASE}/guild-requests`, { headers: { Authorization: `Bearer ${getSessionToken()}` } });
-    if (!res.ok) throw new Error(await readErrorMessage(res));
-    renderGuildRequests(await res.json());
-  } catch (err) {
-    guildRequestsStatus.textContent = `Помилка завантаження: ${err.message}`;
-  }
-}
-
 async function init() {
   loginBtn.href = discordLoginUrl('/account/');
 
@@ -555,11 +370,6 @@ async function init() {
     profileAvatar.src = user.avatar;
     profileAvatar.hidden = false;
   }
-  if (user.isGuildOfficer) {
-    guildRequestsSection.hidden = false;
-    loadGuildRequests();
-  }
-
   if (user.isAdmin) {
     accountTabs.hidden = false;
     initDefaultOfficersAutocomplete();

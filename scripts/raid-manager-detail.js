@@ -117,7 +117,6 @@ let myCharacters = [];
 let raidOfficerIds = new Set();
 let itemsCatalog = {};
 let guildMemberNames = new Set();
-let characterGuildLabels = new Map();
 let guildMemberNamesSorted = [];
 let characterOwnerNames = new Map();
 let personalAnalyticsNames = new Set();
@@ -704,8 +703,9 @@ function renderPotionLogTable(statsRaid) {
     }
     const nameEl = document.createElement('span');
     nameEl.textContent = player.name;
+    const isGuild = guildMemberNames.has(player.name);
     const ownerName = characterOwnerNames.get(player.name);
-    nameEl.setAttribute('aria-label', `${player.name} - ${guildBadgeLabel(player.name)}${ownerName ? ` (${ownerName})` : ''}`);
+    nameEl.setAttribute('aria-label', `${player.name} - ${isGuild ? 'Nostalgia' : 'Легіонер'}${ownerName ? ` (${ownerName})` : ''}`);
     bindTooltip(nameEl);
     nameWrap.appendChild(nameEl);
     nameTd.appendChild(nameWrap);
@@ -2051,12 +2051,11 @@ async function init() {
   // await нижче лише чекає на вже запущені запити в потрібному порядку.
   const staticDataPromise = Promise.all([
     fetch('/data/raid-items.json?t=' + Date.now()),
-    fetch('/data/nostalgia_players.json?t=' + Date.now()),
+    fetch('/data/players.json?t=' + Date.now()),
     fetch(apiUrl('/characters/owners')).catch(() => null),
     fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
     fetch('/data/honor-board.json?t=' + Date.now()).catch(() => null),
-    loadItemIconData(),
-    fetch('/data/character-guilds.json?t=' + Date.now()).catch(() => null)
+    loadItemIconData()
   ]);
 
   let raidError = null;
@@ -2071,15 +2070,12 @@ async function init() {
     .catch((err) => { console.error(err); return null; });
 
   try {
-    const [itemsRes, playersRes, ownersRes, guildDataRes, honorBoardRes, , characterGuildsRes] = await staticDataPromise;
+    const [itemsRes, playersRes, ownersRes, guildDataRes, honorBoardRes] = await staticDataPromise;
     itemsCatalog = await itemsRes.json();
     if (playersRes.ok) {
       const players = await playersRes.json();
       guildMemberNames = new Set(players.map((p) => p.name));
       setGuildMemberNamesSorted(players);
-    }
-    if (characterGuildsRes?.ok) {
-      characterGuildLabels = new Map(Object.entries(await characterGuildsRes.json()));
     }
     if (ownersRes?.ok) {
       characterOwnerNames = new Map(Object.entries(await ownersRes.json()));

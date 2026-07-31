@@ -4,8 +4,7 @@ const fs = require('node:fs/promises');
 const path = require('path');
 
 const LUA_FILE = path.join(__dirname, '..', 'GuildRosterExportMini.lua');
-const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'nostalgia_players.json');
-const PLAYERS_META_FILE = path.join(__dirname, '..', 'data', 'players-meta.json');
+const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
 
 const ENTRY_RE = /\["name"\]\s*=\s*"((?:[^"\\]|\\.)*)",\s*\r?\n\s*\["server"\]\s*=\s*"((?:[^"\\]|\\.)*)"/g;
 
@@ -29,17 +28,12 @@ async function updatePlayers() {
 
   await fs.writeFile(PLAYERS_FILE, JSON.stringify(players, null, 2) + '\n', 'utf8');
 
-  // Часова мітка ростеру — потрібна build-guild-rosters.js, щоб порівнювати
-  // свіжість цього Lua-експорту з self-declared "Гільдія" в профілі
-  // (див. scripts/build-guild-rosters.js).
-  await fs.writeFile(PLAYERS_META_FILE, JSON.stringify({ generatedAt: new Date().toISOString() }, null, 2) + '\n', 'utf8');
-
   console.log(`Готово. Знайдено ${players.length} гравців.`);
   console.log(`Список записано у: ${PLAYERS_FILE}`);
 }
 
 updatePlayers().catch((error) => {
-  console.error('Помилка оновлення nostalgia_players.json');
+  console.error('Помилка оновлення players.json');
   console.error(error.message);
   process.exit(1);
 });

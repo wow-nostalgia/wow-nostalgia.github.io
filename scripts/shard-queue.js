@@ -40,7 +40,6 @@ let userCharacterNamesLower = new Set();
 let rosterNames = [];
 let farmEligibleRosterNames = [];
 let guildMemberNames = new Set();
-let characterGuildLabels = new Map();
 let classColorMap = new Map();
 let nameClassMap = new Map();
 let characterOwnerNames = new Map();
@@ -126,18 +125,14 @@ confirmModalBackdrop.addEventListener('click', hideConfirmModal);
 
 async function loadRosterSources() {
   try {
-    const [playersRes, guildDataRes, ownersRes, characterGuildsRes] = await Promise.all([
-      fetch('/data/nostalgia_players.json?t=' + Date.now()),
+    const [playersRes, guildDataRes, ownersRes] = await Promise.all([
+      fetch('/data/players.json?t=' + Date.now()),
       fetch('/data/guild-data.json?t=' + Date.now()),
-      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null),
-      fetch('/data/character-guilds.json?t=' + Date.now()).catch(() => null)
+      fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null)
     ]);
     if (playersRes.ok) {
       const players = await playersRes.json();
       guildMemberNames = new Set(players.map((p) => p.name));
-    }
-    if (characterGuildsRes?.ok) {
-      characterGuildLabels = new Map(Object.entries(await characterGuildsRes.json()));
     }
     if (guildDataRes.ok) {
       const guildData = await guildDataRes.json();
