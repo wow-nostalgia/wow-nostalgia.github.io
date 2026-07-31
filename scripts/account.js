@@ -25,9 +25,6 @@ const deleteCharacterModalBackdrop = document.getElementById('deleteCharacterMod
 const deleteCharacterModalText = document.getElementById('deleteCharacterModalText');
 const deleteCharacterConfirmBtn = document.getElementById('deleteCharacterConfirmBtn');
 const deleteCharacterCancelBtn = document.getElementById('deleteCharacterCancelBtn');
-const guildRequestsSection = document.getElementById('guildRequestsSection');
-const guildRequestsList = document.getElementById('guildRequestsList');
-const guildRequestsStatus = document.getElementById('guildRequestsStatus');
 
 function setAccountStatus(text) {
   accountStatus.textContent = text || '';
@@ -473,70 +470,6 @@ async function loadDefaultOfficers() {
   }
 }
 
-function renderGuildRequests(requests) {
-  guildRequestsList.innerHTML = '';
-  if (!requests.length) {
-    const li = document.createElement('li');
-    li.className = 'account-default-officers-empty';
-    li.textContent = 'Заявок немає.';
-    guildRequestsList.appendChild(li);
-    return;
-  }
-
-  requests.forEach(({ character_name: characterName, requested_by: requestedBy }) => {
-    const li = document.createElement('li');
-    li.className = 'account-default-officer-item';
-
-    const label = document.createElement('span');
-    label.textContent = `${characterName} — заявив(ла) ${requestedBy}`;
-    li.appendChild(label);
-
-    const actions = document.createElement('span');
-    actions.className = 'account-character-actions';
-
-    const approveBtn = document.createElement('button');
-    approveBtn.type = 'button';
-    approveBtn.className = 'link-button-std';
-    approveBtn.textContent = 'Підтвердити';
-    approveBtn.addEventListener('click', () => respondToGuildRequest(characterName, 'approve'));
-    actions.appendChild(approveBtn);
-
-    const rejectBtn = document.createElement('button');
-    rejectBtn.type = 'button';
-    rejectBtn.className = 'link-button-std link-button-std--danger';
-    rejectBtn.textContent = 'Відхилити';
-    rejectBtn.addEventListener('click', () => respondToGuildRequest(characterName, 'reject'));
-    actions.appendChild(rejectBtn);
-
-    li.appendChild(actions);
-    guildRequestsList.appendChild(li);
-  });
-}
-
-async function respondToGuildRequest(characterName, action) {
-  try {
-    const res = await fetch(`${AUTH_API_BASE}/guild-requests/${encodeURIComponent(characterName)}/${action}`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${getSessionToken()}` }
-    });
-    if (!res.ok) throw new Error(await readErrorMessage(res));
-    guildRequestsStatus.textContent = '';
-    renderGuildRequests(await res.json());
-  } catch (err) {
-    guildRequestsStatus.textContent = `Помилка: ${err.message}`;
-  }
-}
-
-async function loadGuildRequests() {
-  try {
-    const res = await fetch(`${AUTH_API_BASE}/guild-requests`, { headers: { Authorization: `Bearer ${getSessionToken()}` } });
-    if (!res.ok) throw new Error(await readErrorMessage(res));
-    renderGuildRequests(await res.json());
-  } catch (err) {
-    guildRequestsStatus.textContent = `Помилка завантаження: ${err.message}`;
-  }
-}
-
 async function init() {
   loginBtn.href = discordLoginUrl('/account/');
 
@@ -555,11 +488,6 @@ async function init() {
     profileAvatar.src = user.avatar;
     profileAvatar.hidden = false;
   }
-  if (user.isGuildOfficer) {
-    guildRequestsSection.hidden = false;
-    loadGuildRequests();
-  }
-
   if (user.isAdmin) {
     accountTabs.hidden = false;
     initDefaultOfficersAutocomplete();
