@@ -259,7 +259,7 @@ function getRaidRolesByPlayer(personalStats) {
   const rolesByPlayerRaid = new Map();
 
   for (const record of personalStats || []) {
-    if (record.error) continue;
+    if (record.error || EXCLUDED_BOSSES.has(record.boss)) continue;
 
     for (const player of record.players || []) {
       if (!rolesByPlayerRaid.has(player.name)) rolesByPlayerRaid.set(player.name, new Map());
@@ -282,7 +282,7 @@ function countBossesByRaid(personalStats) {
   const counts = new Map();
 
   for (const record of personalStats || []) {
-    if (record.error || !record.boss) continue;
+    if (record.error || !record.boss || EXCLUDED_BOSSES.has(record.boss)) continue;
     counts.set(record.raidUrl, (counts.get(record.raidUrl) || 0) + 1);
   }
 
