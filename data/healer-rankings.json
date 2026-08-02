@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-08-01T00:42:05.906Z",
+  "updatedAt": "2026-08-02T00:41:32.083Z",
   "specs": [
     {
       "class": "Paladin",
@@ -2296,6 +2296,10 @@
           "hps": 2370
         },
         {
+          "name": "Алві",
+          "hps": 742.5
+        },
+        {
           "name": "Roon",
           "hps": 678
         },
@@ -2320,6 +2324,10 @@
         {
           "name": "Valsdru",
           "hps": 48569.7
+        },
+        {
+          "name": "Iki",
+          "hps": 46381.7
         },
         {
           "name": "Дровина",
@@ -2368,10 +2376,6 @@
         {
           "name": "Groot",
           "hps": 23836.4
-        },
-        {
-          "name": "Iki",
-          "hps": 23499.4
         },
         {
           "name": "Ferox",
