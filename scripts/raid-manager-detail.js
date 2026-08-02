@@ -1277,7 +1277,7 @@ function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove, allowSt
 
 // Групує резерви по вазі — окремий рядок на кожну вагу, щоб не плодити
 // купу однакових чіпсів "x1" поряд з кожним іменем.
-function buildReservesByWeight(reservers, penaltyDeductions, bonusContext = null) {
+function buildReservesByWeight(reservers, penaltyDeductions) {
   const wrap = document.createElement('div');
   wrap.className = 'raid-reserve-weight-list';
 
@@ -1322,9 +1322,6 @@ function buildReservesByWeight(reservers, penaltyDeductions, bonusContext = null
       nameSpan.style.color = classColorMap.get(partial.name) || 'var(--color-text-faint)';
       nameSpan.textContent = partial.name;
       namesSpan.appendChild(nameSpan);
-      if (bonusContext && bonusContext.reserveId === partial.id) {
-        namesSpan.appendChild(buildBonusControls(bonusContext));
-      }
       const p = penaltiesList.find((x) => x.player_name === partial.name);
       if (p && p.roll_penalty > 0) {
         const penSpan = document.createElement('span');
@@ -1345,9 +1342,6 @@ function buildReservesByWeight(reservers, penaltyDeductions, bonusContext = null
       nameSpan.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
       nameSpan.textContent = name;
       namesSpan.appendChild(nameSpan);
-      if (bonusContext && bonusContext.reserveId === id) {
-        namesSpan.appendChild(buildBonusControls(bonusContext));
-      }
       if (p && p.roll_penalty > 0) {
         const penSpan = document.createElement('span');
         penSpan.className = 'penalty-value--active';
@@ -1450,15 +1444,17 @@ function renderItemsTable() {
       }
       : null;
 
+    // Кнопка керування бонусною вагою - приклеєна до правого краю колонки
+    // "Предмет", а не до імені гравця в колонці софтів.
+    if (bonusContext) nameWrap.appendChild(buildBonusControls(bonusContext));
+
     if (raid.hidden_reserves && !isOfficerMode()) {
-      // Приховані резерви - імена інших не показуємо, тож кнопці нема біля
-      // кого стояти; додаємо її окремо, це єдиний вміст клітинки.
+      // Приховані резерви - імена інших не показуємо.
       reserversTd.textContent = '';
-      if (bonusContext) reserversTd.appendChild(buildBonusControls(bonusContext));
     } else if (!reservers.length) {
       reserversTd.textContent = '—';
     } else {
-      reserversTd.appendChild(buildReservesByWeight(reservers, penaltyDeductions, bonusContext));
+      reserversTd.appendChild(buildReservesByWeight(reservers, penaltyDeductions));
     }
 
     tr.appendChild(reserversTd);
