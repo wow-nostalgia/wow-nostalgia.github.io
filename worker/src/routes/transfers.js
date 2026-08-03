@@ -6,6 +6,7 @@ import {
   getWeightTransferByTo,
   createWeightTransfer,
   deleteWeightTransfer,
+  resetBonusWeightForPlayer,
   deleteAllReservesForPlayer,
   addRaidParticipant,
   insertAudit,
@@ -91,6 +92,10 @@ export async function handleDeleteTransfer(request, env, raidId, fromPlayer, ses
   }
 
   await deleteWeightTransfer(env.DB, raidId, fromPlayer);
+  // Бонусна вага, яку отримувач вже розподілив із переданого пулу, більше
+  // не має підстави - інакше вона лишається "мертвим" плюсом до рол-ваги
+  // назавжди, навіть після скасування передачі.
+  await resetBonusWeightForPlayer(env.DB, raidId, transfer.to_player);
   await insertAudit(env.DB, raidId, session.username, 'weight_transfer_cancel', {
     fromPlayer,
     toPlayer: transfer.to_player

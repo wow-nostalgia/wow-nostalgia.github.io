@@ -1,5 +1,5 @@
 import { HttpError, jsonResponse, readJson, capitalizeName } from '../util.js';
-import { getRaid, listBonusGrants, createBonusGrant, deleteBonusGrant, insertAudit } from '../db.js';
+import { getRaid, listBonusGrants, createBonusGrant, deleteBonusGrant, resetBonusWeightForPlayer, insertAudit } from '../db.js';
 import { requireRaidOfficer } from '../auth.js';
 
 async function loadRaidOr404(env, raidId) {
@@ -36,6 +36,7 @@ export async function handleDeleteBonusGrant(request, env, raidId, playerName, s
   await requireRaidOfficer(env.DB, raidId, raid, session);
 
   await deleteBonusGrant(env.DB, raidId, playerName);
+  await resetBonusWeightForPlayer(env.DB, raidId, playerName);
   await insertAudit(env.DB, raidId, session.username, 'bonus_grant_cancel', { playerName });
 
   return jsonResponse({ ok: true });
