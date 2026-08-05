@@ -292,7 +292,6 @@ function renderBanner() {
     settingsAllowMountSoftsInput.checked = Boolean(raid.allow_mount_softs);
   }
 
-  applyWeightLimits();
   applySoftFormLockState();
   applyOfficerFormLockState();
   applySettingsFormLockState();
@@ -378,9 +377,7 @@ function applySoftFormLockState() {
   softItemTrigger.disabled = locked;
   softForm.querySelector('button[type="submit"]').disabled = locked;
 
-  softWeightToggle.querySelectorAll('.raid-weight-toggle-btn').forEach((btn) => {
-    btn.disabled = locked || Number(btn.dataset.weight) > raid.soft_limit_total;
-  });
+  applyWeightLimit(softWeightToggle, softWeight, locked, remainingWeightFor(softPlayerNameInput.value.trim()));
 
   const transfersEnabled = (raid.transfer_weight_limit ?? 0) !== 0;
   const myReceived = getMyReceivedTransfer();
@@ -423,9 +420,7 @@ function applyOfficerFormLockState() {
   officerAssignForm.querySelector('button[type="submit"]').disabled = locked;
   bonusGrantOpenBtn.disabled = locked;
 
-  assignWeightToggle.querySelectorAll('.raid-weight-toggle-btn').forEach((btn) => {
-    btn.disabled = locked || Number(btn.dataset.weight) > raid.soft_limit_total;
-  });
+  applyWeightLimit(assignWeightToggle, assignWeight, locked, remainingWeightFor(assignPlayerNameInput.value.trim()));
 }
 
 function applySettingsFormLockState() {
@@ -438,13 +433,25 @@ function applySettingsFormLockState() {
   settingsForm.querySelector('button[type="submit"]').disabled = locked;
 }
 
-// Кнопки x2/x3 вимикаємо, якщо ліміт ваги рейду нижчий — обирати вагу,
-// яка одразу перевищить soft_limit_total, безглуздо.
-function applyWeightLimit(toggleEl, hiddenInput) {
-  const maxWeight = raid.soft_limit_total;
+// Скільки ваги гравець уже витратив на софти в цьому рейді (бонусна вага з
+// передач/грантів рахується окремим пулом і сюди не входить).
+function usedWeightForPlayer(playerName) {
+  if (!playerName) return 0;
+  return reserves
+    .filter((r) => r.player_name === playerName)
+    .reduce((sum, r) => sum + (r.weight || 0), 0);
+}
+
+function remainingWeightFor(playerName) {
+  return Math.max(0, raid.soft_limit_total - usedWeightForPlayer(playerName));
+}
+
+// Кнопки x2/x3 вимикаємо, якщо вони одразу перевищать залишок ваги гравця
+// (soft_limit_total мінус уже витрачене на інші софти/маунти — спільний пул).
+function applyWeightLimit(toggleEl, hiddenInput, locked, maxWeight) {
   const buttons = [...toggleEl.querySelectorAll('.raid-weight-toggle-btn')];
   buttons.forEach((btn) => {
-    btn.disabled = Number(btn.dataset.weight) > maxWeight;
+    btn.disabled = locked || Number(btn.dataset.weight) > maxWeight;
   });
 
   if (Number(hiddenInput.value) > maxWeight) {
@@ -452,11 +459,6 @@ function applyWeightLimit(toggleEl, hiddenInput) {
     hiddenInput.value = fallbackBtn.dataset.weight;
     buttons.forEach((b) => b.classList.toggle('raid-weight-toggle-btn--active', b === fallbackBtn));
   }
-}
-
-function applyWeightLimits() {
-  applyWeightLimit(softWeightToggle, softWeight);
-  applyWeightLimit(assignWeightToggle, assignWeight);
 }
 
 function setGuildMemberNamesSorted(players) {
@@ -1630,6 +1632,8 @@ async function removeReserve(reserve) {
     await loadReserves();
     renderPlayersTable();
     renderItemsTable();
+    applySoftFormLockState();
+    applyOfficerFormLockState();
   } catch (err) {
     setStatus(`Помилка: ${err.message}`, 'error');
   }
@@ -1703,6 +1707,7 @@ raidTabs.forEach((btn) => btn.addEventListener('click', () => setActiveTab(btn.d
 softPlayerNameInput.addEventListener('change', () => {
   localStorage.setItem(LS_CHAR_KEY, softPlayerNameInput.value);
   updateSoftPlayerNameColor();
+  applySoftFormLockState();
 });
 softBoss.addEventListener('change', () => populateItemPicker(softItem, softItemTrigger, softItemList, softBoss.value));
 assignBoss.addEventListener('change', () => populateItemPicker(assignItem, assignItemTrigger, assignItemList, assignBoss.value));
@@ -1713,7 +1718,9 @@ setupWeightToggle(assignWeightToggle, assignWeight);
 assignPlayerNameClear.addEventListener('click', () => {
   assignPlayerNameInput.value = '';
   assignPlayerNameInput.focus();
+  applyOfficerFormLockState();
 });
+assignPlayerNameInput.addEventListener('input', () => applyOfficerFormLockState());
 setupNameAutocomplete(assignPlayerNameInput, assignPlayerNameList);
 setupUserSearchAutocomplete(addOfficerInput, addOfficerList, addOfficer);
 potionsAddBtn.addEventListener('click', () => showPotionLogModal());
@@ -1744,6 +1751,8 @@ softForm.addEventListener('submit', async (event) => {
     await loadReserves();
     renderPlayersTable();
     renderItemsTable();
+    applySoftFormLockState();
+    applyOfficerFormLockState();
     setStatus('Софт додано.', 'success');
   } catch (err) {
     setStatus(`Помилка: ${err.message}`, 'error');
@@ -1767,6 +1776,8 @@ officerAssignForm.addEventListener('submit', async (event) => {
     await loadReserves();
     renderPlayersTable();
     renderItemsTable();
+    applySoftFormLockState();
+    applyOfficerFormLockState();
     setStatus(`Софт призначено гравцю ${playerName}.`, 'success');
   } catch (err) {
     setStatus(`Помилка: ${err.message}`, 'error');
