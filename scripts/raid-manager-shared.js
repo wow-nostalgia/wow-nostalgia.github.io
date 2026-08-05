@@ -39,7 +39,7 @@ let itemIconData = {};
 
 async function loadItemIconData() {
   try {
-    const res = await fetch('/data/item-icons.json');
+    const res = await fetch('/data/item-icons.json?t=' + Date.now());
     itemIconData = await res.json();
   } catch (err) {
     console.error(err);
