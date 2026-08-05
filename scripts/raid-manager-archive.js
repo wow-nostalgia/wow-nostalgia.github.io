@@ -239,6 +239,7 @@ createForm.addEventListener('submit', async (event) => {
       difficulty: document.getElementById('raidDifficulty').value,
       softLimitTotal: Number(document.getElementById('raidSoftLimitTotal').value),
       hiddenReserves: document.getElementById('raidHiddenReserves').checked,
+      allowMountSofts: document.getElementById('raidAllowMountSofts').checked,
       transferWeightLimit: Number(document.getElementById('raidTransferWeightLimit').value)
     };
 

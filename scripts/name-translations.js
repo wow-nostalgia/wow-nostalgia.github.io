@@ -25,6 +25,8 @@ const BOSS_NAMES_UK = {
 };
 
 const ITEM_NAMES_UK = {
+  "Invincible's Reins": "Повіддя Незборимого",
+  "Armored Bloodwing": "Броньований Кровокрил",
   "Cryptmaker": "Творець гробниць",
   "Band of the Bone Colossus": "Перстень кістяного колосса",
   "Frostbitten Fur Boots": "Обледенілі хутряні чоботи",

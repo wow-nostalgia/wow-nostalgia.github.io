@@ -49,6 +49,7 @@ export async function handleCreateRaid(request, env, session) {
   if (!Number.isInteger(softLimitTotal) || softLimitTotal < 1) throw new HttpError(400, 'Невалідний softLimitTotal');
 
   const hiddenReserves = body.hiddenReserves !== false;
+  const allowMountSofts = body.allowMountSofts === true;
 
   const transferWeightLimit = body.transferWeightLimit !== undefined && body.transferWeightLimit !== null
     ? Number(body.transferWeightLimit)
@@ -67,7 +68,8 @@ export async function handleCreateRaid(request, env, session) {
     softLimitTotal,
     hiddenReserves,
     leaderDiscordId: session.discordId,
-    transferWeightLimit
+    transferWeightLimit,
+    allowMountSofts
   });
 
   await insertAudit(env.DB, id, session.username, 'raid_create', { title, instance, difficulty });
@@ -110,6 +112,7 @@ export async function handleUpdateRaid(request, env, id, session) {
     if (v !== null && (!Number.isInteger(v) || v < 0)) throw new HttpError(400, 'Невалідний transferWeightLimit');
     fields.transfer_weight_limit = v;
   }
+  if (body.allowMountSofts !== undefined) fields.allow_mount_softs = body.allowMountSofts ? 1 : 0;
 
   const updated = await updateRaidSettings(env.DB, id, fields);
   if (Object.keys(fields).length) {

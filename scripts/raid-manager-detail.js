@@ -103,6 +103,7 @@ const cancelTransferCancelBtn = document.getElementById('cancelTransferCancelBtn
 const transferNotice = document.getElementById('transferNotice');
 const bonusPoolBanner = document.getElementById('bonusPoolBanner');
 const transferWeightLimitInput = document.getElementById('transferWeightLimitInput');
+const settingsAllowMountSoftsInput = document.getElementById('settingsAllowMountSoftsInput');
 const bonusGrantModal = document.getElementById('bonusGrantModal');
 const bonusGrantModalBackdrop = document.getElementById('bonusGrantModalBackdrop');
 const bonusGrantTableBody = document.getElementById('bonusGrantTableBody');
@@ -287,6 +288,9 @@ function renderBanner() {
   if (document.activeElement !== transferWeightLimitInput) {
     transferWeightLimitInput.value = (tl === null || tl === undefined || tl > 3) ? '0' : String(tl);
   }
+  if (document.activeElement !== settingsAllowMountSoftsInput) {
+    settingsAllowMountSoftsInput.checked = Boolean(raid.allow_mount_softs);
+  }
 
   applyWeightLimits();
   applySoftFormLockState();
@@ -430,6 +434,7 @@ function applySettingsFormLockState() {
   settingsTitleInput.disabled = locked;
   settingsSoftLimitInput.disabled = locked;
   transferWeightLimitInput.disabled = locked;
+  settingsAllowMountSoftsInput.disabled = locked;
   settingsForm.querySelector('button[type="submit"]').disabled = locked;
 }
 
@@ -913,7 +918,8 @@ function renderItemPickerOptions(listEl, hiddenInput, triggerBtn, items) {
 }
 
 function populateItemPicker(hiddenInput, triggerBtn, listEl, boss) {
-  const items = (itemsCatalog[boss] || {})[raid.difficulty] || [];
+  let items = (itemsCatalog[boss] || {})[raid.difficulty] || [];
+  if (!raid.allow_mount_softs) items = items.filter((item) => item.type !== 'Mount');
   renderItemPickerOptions(listEl, hiddenInput, triggerBtn, items);
   selectItemOption(hiddenInput, triggerBtn, items[0]);
   closeItemPicker(listEl);
@@ -1389,6 +1395,7 @@ function renderItemsTable() {
 
   const flat = buildFlatItemList().filter((item) => {
     if (bossFilter && item.boss !== bossFilter) return false;
+    if (item.type === 'Mount' && !raid.allow_mount_softs && !reserves.some((r) => r.item_id === item.id)) return false;
     if (raid.hidden_reserves && !isOfficerMode()) {
       if (!reserves.some((r) => r.item_id === item.id && r.discord_id === currentUser?.discordId)) return false;
     } else if (softedOnly && !reserves.some((r) => r.item_id === item.id)) return false;
@@ -1778,7 +1785,7 @@ settingsForm.addEventListener('submit', async (event) => {
   try {
     raid = await apiCall('PATCH', `/raids/${raidId}`, {
       token: getSessionToken(),
-      body: { title, softLimitTotal, transferWeightLimit }
+      body: { title, softLimitTotal, transferWeightLimit, allowMountSofts: settingsAllowMountSoftsInput.checked }
     });
     raidTitleHeading.textContent = stripDateFromTitle(raid.title);
     document.title = `${raid.title} — Рейд-менеджер`;

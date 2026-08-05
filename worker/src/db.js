@@ -14,15 +14,15 @@ function displayNameSubquery(alias) {
   return `COALESCE(${primaryCharacterSubquery(alias)}, ${alias}.username)`;
 }
 
-export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, hiddenReserves, leaderDiscordId, transferWeightLimit }) {
+export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, hiddenReserves, leaderDiscordId, transferWeightLimit, allowMountSofts }) {
   const ts = nowIso();
   const twl = (transferWeightLimit === undefined || transferWeightLimit === null) ? null : Number(transferWeightLimit);
   await db
     .prepare(
-      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, is_locked, hidden_reserves, officer_token, leader_discord_id, transfer_weight_limit, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, is_locked, hidden_reserves, officer_token, leader_discord_id, transfer_weight_limit, allow_mount_softs, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?)`
     )
-    .bind(id, title, instance, difficulty, softLimitTotal, hiddenReserves ? 1 : 0, generateToken(), leaderDiscordId, twl, ts, ts)
+    .bind(id, title, instance, difficulty, softLimitTotal, hiddenReserves ? 1 : 0, generateToken(), leaderDiscordId, twl, allowMountSofts ? 1 : 0, ts, ts)
     .run();
   return getRaid(db, id);
 }
