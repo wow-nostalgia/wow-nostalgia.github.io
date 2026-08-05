@@ -1,5 +1,230 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-08-05--20-33--Boronir--FreedomUA/",
+    "consumablesUrl": "https://uwu-logs.xyz/reports/26-08-05--20-33--Boronir--FreedomUA/consumables/",
+    "date": "2026-08-05",
+    "title": "https://uwu-logs.xyz/reports/26-08-05--20-33--Boronir--FreedomUA/",
+    "players": [
+      {
+        "name": "Morganna",
+        "total": 28,
+        "potionOfSpeed": 26,
+        "potionOfWildMagic": 2,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Diosa",
+        "total": 27,
+        "potionOfSpeed": 24,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 3
+      },
+      {
+        "name": "Чіта",
+        "total": 26,
+        "potionOfSpeed": 21,
+        "potionOfWildMagic": 5,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Zloetelo",
+        "total": 26,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 26,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Astyt",
+        "total": 24,
+        "potionOfSpeed": 18,
+        "potionOfWildMagic": 6,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Infernsham",
+        "total": 24,
+        "potionOfSpeed": 15,
+        "potionOfWildMagic": 9,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Мордрет",
+        "total": 22,
+        "potionOfSpeed": 22,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Blodsikerr",
+        "total": 22,
+        "potionOfSpeed": 22,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Selya",
+        "total": 22,
+        "potionOfSpeed": 22,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Fanatik",
+        "total": 21,
+        "potionOfSpeed": 21,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Vetala",
+        "total": 21,
+        "potionOfSpeed": 20,
+        "potionOfWildMagic": 1,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Zibrow",
+        "total": 21,
+        "potionOfSpeed": 21,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Chucknorris",
+        "total": 19,
+        "potionOfSpeed": 19,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Onyx",
+        "total": 18,
+        "potionOfSpeed": 18,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Морелло",
+        "total": 17,
+        "potionOfSpeed": 17,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Arfi",
+        "total": 17,
+        "potionOfSpeed": 17,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Kohaiibaka",
+        "total": 16,
+        "potionOfSpeed": 12,
+        "potionOfWildMagic": 4,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Magma",
+        "total": 13,
+        "potionOfSpeed": 6,
+        "potionOfWildMagic": 7,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Арау",
+        "total": 12,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 12,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Boronir",
+        "total": 1,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 1,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Вагончик",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Єва",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Цеглина",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Angie",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Bidjo",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Divadla",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Dofaminka",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Ivett",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Johnsky",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Metallheadxp",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      },
+      {
+        "name": "Xelli",
+        "total": 0,
+        "potionOfSpeed": 0,
+        "potionOfWildMagic": 0,
+        "potionOfInsaneStrength": 0
+      }
+    ]
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-08-03--20-12--Boromit--FreedomUA/",
     "consumablesUrl": "https://uwu-logs.xyz/reports/26-08-03--20-12--Boromit--FreedomUA/consumables/",
     "date": "2026-08-03",
