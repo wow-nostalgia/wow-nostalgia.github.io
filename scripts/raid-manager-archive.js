@@ -22,6 +22,8 @@ const raidInstanceInput = document.getElementById('raidInstance');
 const raidSoftLimitToggle = document.getElementById('raidSoftLimitToggle');
 const raidSoftLimitInput = document.getElementById('raidSoftLimitTotal');
 const raidTitleInput = document.getElementById('raidTitle');
+const raidAllowMountSoftsInput = document.getElementById('raidAllowMountSofts');
+const raidAllowMountSoftsLabel = document.getElementById('raidAllowMountSoftsLabel');
 
 const TITLE_INSTANCE_ABBR_UK = { ICC: "ЦЛК", RS: "РС" };
 const TITLE_DIFFICULTY_ABBR_UK = { "25H": "25ХМ", "25N": "25Н", "10H": "10ХМ", "10N": "10Н" };
@@ -184,6 +186,14 @@ function updateTitleIfAuto() {
   if (titleAutoFilled) raidTitleInput.value = generateTitle();
 }
 
+// Маунти є лише в лут-каталозі ICC (Lich King, Blood-Queen) - для Ruby
+// Sanctum опція не має сенсу.
+function updateMountSoftsVisibility() {
+  const supportsMounts = raidInstanceInput.value === 'ICC';
+  raidAllowMountSoftsLabel.hidden = !supportsMounts;
+  if (!supportsMounts) raidAllowMountSoftsInput.checked = false;
+}
+
 function setupToggleGroup(toggleEl, hiddenInput, datasetKey, onChange) {
   toggleEl.addEventListener('click', (event) => {
     const btn = event.target.closest('.raid-toggle-btn');
@@ -196,7 +206,10 @@ function setupToggleGroup(toggleEl, hiddenInput, datasetKey, onChange) {
   });
 }
 
-setupToggleGroup(raidInstanceToggle, raidInstanceInput, 'instance', updateTitleIfAuto);
+setupToggleGroup(raidInstanceToggle, raidInstanceInput, 'instance', () => {
+  updateTitleIfAuto();
+  updateMountSoftsVisibility();
+});
 setupToggleGroup(raidSoftLimitToggle, raidSoftLimitInput, 'value');
 
 document.getElementById('raidDifficulty').addEventListener('change', updateTitleIfAuto);
@@ -215,6 +228,7 @@ async function openCreateRaidModal() {
   titleAutoFilled = true;
   await loadTodayRaids();
   updateTitleIfAuto();
+  updateMountSoftsVisibility();
   createRaidModal.hidden = false;
 }
 

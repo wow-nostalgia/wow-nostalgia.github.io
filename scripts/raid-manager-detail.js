@@ -104,6 +104,7 @@ const transferNotice = document.getElementById('transferNotice');
 const bonusPoolBanner = document.getElementById('bonusPoolBanner');
 const transferWeightLimitInput = document.getElementById('transferWeightLimitInput');
 const settingsAllowMountSoftsInput = document.getElementById('settingsAllowMountSoftsInput');
+const settingsAllowMountSoftsLabel = document.getElementById('settingsAllowMountSoftsLabel');
 const bonusGrantModal = document.getElementById('bonusGrantModal');
 const bonusGrantModalBackdrop = document.getElementById('bonusGrantModalBackdrop');
 const bonusGrantTableBody = document.getElementById('bonusGrantTableBody');
@@ -288,6 +289,7 @@ function renderBanner() {
   if (document.activeElement !== transferWeightLimitInput) {
     transferWeightLimitInput.value = (tl === null || tl === undefined || tl > 3) ? '0' : String(tl);
   }
+  settingsAllowMountSoftsLabel.hidden = raid.instance !== 'ICC';
   if (document.activeElement !== settingsAllowMountSoftsInput) {
     settingsAllowMountSoftsInput.checked = Boolean(raid.allow_mount_softs);
   }
