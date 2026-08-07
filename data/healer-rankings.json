@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-08-06T00:39:11.255Z",
+  "updatedAt": "2026-08-07T02:12:09.452Z",
   "specs": [
     {
       "class": "Paladin",
@@ -1774,6 +1774,10 @@
           "hps": 366.6
         },
         {
+          "name": "Дівія",
+          "hps": 364.1
+        },
+        {
           "name": "Renouncing",
           "hps": 359.1
         },
@@ -1946,10 +1950,6 @@
           "hps": 204.4
         },
         {
-          "name": "Дівія",
-          "hps": 202.1
-        },
-        {
           "name": "Plague",
           "hps": 198.7
         },
@@ -2000,6 +2000,10 @@
         {
           "name": "Shakurio",
           "hps": 162.2
+        },
+        {
+          "name": "Таколбері",
+          "hps": 158.6
         },
         {
           "name": "Priestlik",
@@ -2340,6 +2344,10 @@
         {
           "name": "Дровина",
           "hps": 33378.6
+        },
+        {
+          "name": "Санако",
+          "hps": 28222.5
         },
         {
           "name": "Арау",
@@ -2688,10 +2696,6 @@
         {
           "name": "Hyacinth",
           "hps": 17879.4
-        },
-        {
-          "name": "Санако",
-          "hps": 17680.2
         },
         {
           "name": "Dombro",
@@ -3138,6 +3142,10 @@
           "hps": 12155.1
         },
         {
+          "name": "Alleviate",
+          "hps": 12002.7
+        },
+        {
           "name": "Koffein",
           "hps": 11861.4
         },
@@ -3240,10 +3248,6 @@
         {
           "name": "Druidessa",
           "hps": 9286
-        },
-        {
-          "name": "Alleviate",
-          "hps": 9165
         },
         {
           "name": "Травиночка",
@@ -4494,6 +4498,10 @@
         {
           "name": "Nova",
           "hps": 19989.4
+        },
+        {
+          "name": "Totemkopf",
+          "hps": 19952
         },
         {
           "name": "Жинкиня",
