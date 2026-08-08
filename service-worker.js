@@ -1,4 +1,6 @@
-const CACHE_NAME = 'nostalgia-static-v1';
+// Версію піднімати щоразу, коли треба примусово скинути кеш у всіх
+// користувачів: activate нижче видаляє всі кеші з іншим імʼям.
+const CACHE_NAME = 'nostalgia-static-v2';
 
 const APP_SHELL = [
   '/style.css',
@@ -10,8 +12,8 @@ const APP_SHELL = [
   '/scripts/auth-shared.js'
 ];
 
-// Розширення, які кешуємо cache-first. data/*.json свідомо НЕ входить —
-// ці файли оновлюються скрейпінгом і мають завжди йти в мережу.
+// Розширення, які кешуємо. data/*.json свідомо НЕ входить — ці файли
+// оновлюються скрейпінгом і мають завжди йти в мережу.
 const STATIC_EXTENSIONS = /\.(?:css|js|png|jpg|jpeg|svg|webp|woff2?|ttf)(?:\?.*)?$/;
 
 self.addEventListener('install', (event) => {
@@ -38,17 +40,31 @@ self.addEventListener('fetch', (event) => {
 
   if (!STATIC_EXTENSIONS.test(url.pathname)) return;
 
+  // stale-while-revalidate: віддаємо кеш одразу (швидко + офлайн), але
+  // паралельно завжди йдемо в мережу й оновлюємо запис. Попередній
+  // cache-first не ревалідував ніколи, тож одна стара відповідь у кеші
+  // (напр. відповідь CDN під час деплою) залишалась там назавжди, і
+  // кеш-бастинг через ?v= її не пробивав.
   event.respondWith(
     caches.match(request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(request).then((response) => {
+      const network = fetch(request).then(async (response) => {
         if (response.ok) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          const cache = await caches.open(CACHE_NAME);
+          await cache.put(request, response.clone());
         }
         return response;
       });
+
+      // Коли віддаємо з кеша, respondWith мережу вже не чекає — тримаємо
+      // воркера живим через waitUntil, інакше його можуть вимкнути до
+      // того, як оновлений запис ляже в кеш. Відмова мережі (офлайн) тут
+      // не критична: користувач уже отримав відповідь із кеша.
+      if (cached) {
+        event.waitUntil(network.catch(() => {}));
+        return cached;
+      }
+
+      return network;
     })
   );
 });
