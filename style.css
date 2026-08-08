@@ -3034,6 +3034,13 @@ body.raid-manager-detail-page .raid-filter-checkbox {
   cursor: pointer;
 }
 
+/* display:inline-flex вище перекриває атрибут [hidden] — без цього
+   element.hidden = true не ховає чекбокс. */
+body.raid-manager-page .raid-filter-checkbox[hidden],
+body.raid-manager-detail-page .raid-filter-checkbox[hidden] {
+  display: none;
+}
+
 body.raid-manager-page .raid-filter-checkbox input[type="checkbox"],
 body.raid-manager-detail-page .raid-filter-checkbox input[type="checkbox"] {
   accent-color: var(--color-link);
