@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-08-10T00:14:47.000Z",
+  "updatedAt": "2026-08-11T00:20:51.938Z",
   "specs": [
     {
       "class": "Paladin",
@@ -3242,16 +3242,16 @@
           "hps": 10798.3
         },
         {
+          "name": "Бастурма",
+          "hps": 10469.8
+        },
+        {
           "name": "Shroud",
           "hps": 10443.7
         },
         {
           "name": "Kykladry",
           "hps": 10335.6
-        },
-        {
-          "name": "Бастурма",
-          "hps": 10237.5
         },
         {
           "name": "Aurelia",
