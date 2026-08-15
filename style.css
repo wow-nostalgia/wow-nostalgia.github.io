@@ -2938,11 +2938,13 @@ body.raid-manager-detail-page .raid-items-table col:first-child {
   width: 25rem;
 }
 
-/* Кожен бос - окрема таблиця, між ними невеликий зазор. */
+/* Кожен бос - окрема таблиця, між ними зазор такий самий, як під лінією
+   вкладок (1rem). Відступ дає лише gap: margin-top у .ranking-table-wrap
+   тут знято, бо у flex-контейнері він не схлопується й додавався б згори. */
 body.raid-manager-detail-page .raid-items-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-6);
 }
 
 /* Нижня межа останнього рядка збіглася б з рамкою .ranking-table-wrap -
@@ -3009,6 +3011,20 @@ body.shard-queue-page .raid-tab--active {
 body.raid-manager-detail-page .raid-tables-grid .ranking-table-wrap {
   width: 100%;
   overflow-x: auto;
+}
+
+/* Зазор під лінією вкладок - однаковий на всіх вкладках: 0.75rem від
+   .raid-tabs + 0.25rem padding = 1rem (еталон - вкладка "Гравці"). Саме
+   padding, а не margin: margin схлопнувся б з відступом .raid-tabs. Раніше
+   зазор гуляв, бо кожна вкладка починалася зі свого елемента: .ranking-table-wrap
+   несе margin-top: 1rem, а .raid-audit-list чи рядок фільтрів - нічого. */
+body.raid-manager-detail-page .raid-tables-grid {
+  padding-top: 0.25rem;
+}
+
+body.raid-manager-detail-page .raid-tables-grid > div > :first-child,
+body.raid-manager-detail-page .raid-items-list > .ranking-table-wrap {
+  margin-top: 0;
 }
 
 
