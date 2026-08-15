@@ -3035,6 +3035,13 @@ body.raid-manager-detail-page .raid-items-boss-row:hover td {
   background-color: var(--color-surface-head);
 }
 
+body.raid-manager-detail-page .raid-items-boss-empty {
+  margin-left: var(--space-4);
+  color: var(--color-text-faint);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+}
+
 body.raid-manager-detail-page .raid-filter-checkbox {
   display: inline-flex;
   align-items: center;

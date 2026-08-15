@@ -675,7 +675,7 @@ function renderPotionLogTable(statsRaid) {
   wrap.className = 'ranking-table-wrap';
   const table = document.createElement('table');
   table.className = 'raid-table';
-  table.innerHTML = "<thead><tr><th>Ім'я</th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Insane Strength Potion</th><th>Потів/бос за всі рейди</th><th><abbr class=\"table-header-icon\" aria-label=\"Рейтинг сервера\">" + RANK_HEADER_ICON_SVG + "</abbr></th></tr></thead>";
+  table.innerHTML = "<thead><tr><th>Ім'я</th><th><abbr class=\"table-header-icon\" aria-label=\"Рейтинг сервера\">" + RANK_HEADER_ICON_SVG + "</abbr></th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Insane Strength Potion</th><th>Потів/бос за всі рейди</th></tr></thead>";
   // .tooltipped::after тут обрізається (той самий клипаючий-контейнер
   // патерн, що й .raid-tables-grid .ranking-table-wrap - див. ui-consistency
   // SKILL.md) - тому JS-тултіп, не CSS-клас.
@@ -717,6 +717,13 @@ function renderPotionLogTable(statsRaid) {
     nameWrap.appendChild(nameEl);
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
+
+    const playerSpec = findRosterPlayer(rosterEntry, player.name)?.spec;
+    const rankTd = document.createElement('td');
+    rankTd.className = 'raid-potion-rank-cell';
+    renderRankCell(rankTd, guildRankByNameSpec.get(`${player.name}::${playerSpec}`));
+    tr.appendChild(rankTd);
+
     [player.total, player.potionOfSpeed, player.potionOfWildMagic, player.potionOfInsaneStrength].forEach((value) => {
       const td = document.createElement('td');
       td.textContent = Number(value || 0);
@@ -728,12 +735,6 @@ function renderPotionLogTable(statsRaid) {
     potionTd.textContent = hbEntry ? hbEntry.averagePotionsPerBoss.toFixed(2) : '—';
     potionTd.className = 'penalty-potion-stat';
     tr.appendChild(potionTd);
-
-    const playerSpec = findRosterPlayer(rosterEntry, player.name)?.spec;
-    const rankTd = document.createElement('td');
-    rankTd.className = 'raid-potion-rank-cell';
-    renderRankCell(rankTd, guildRankByNameSpec.get(`${player.name}::${playerSpec}`));
-    tr.appendChild(rankTd);
 
     tbody.appendChild(tr);
   });
@@ -1405,24 +1406,39 @@ function renderItemsTable() {
     canAdd: usedBonusForItems < bonusPoolForItems
   };
 
+  // У режимі прихованих софтів не-офіцер бачить лише свої софти, тож
+  // порожній бос там не означає "ніхто не софтив" - позначку не ставимо.
+  const canTellEmpty = !raid.hidden_reserves || isOfficerMode();
+
   // Замість дропдауна з вибором боса - усі боси одразу, кожен своїм
   // заголовком. Бос лишається в списку навіть без жодного софта.
   bossesWithCatalog().forEach((boss) => {
-    raidItemsBody.appendChild(buildItemsBossHeaderRow(boss));
-
     const items = ((itemsCatalog[boss] || {})[raid.difficulty] || []).filter(isSofted);
+    raidItemsBody.appendChild(buildItemsBossHeaderRow(boss, canTellEmpty && items.length === 0));
+
     items.forEach((item) => {
       raidItemsBody.appendChild(buildItemRow(item, penaltyDeductions, bonusCtx));
     });
   });
 }
 
-function buildItemsBossHeaderRow(boss) {
+function buildItemsBossHeaderRow(boss, isEmpty) {
   const tr = document.createElement('tr');
   tr.className = 'raid-items-boss-row';
   const td = document.createElement('td');
   td.colSpan = 2;
-  td.textContent = translateBoss(boss);
+
+  const nameSpan = document.createElement('span');
+  nameSpan.textContent = translateBoss(boss);
+  td.appendChild(nameSpan);
+
+  if (isEmpty) {
+    const emptySpan = document.createElement('span');
+    emptySpan.className = 'raid-items-boss-empty';
+    emptySpan.textContent = 'Софти відсутні';
+    td.appendChild(emptySpan);
+  }
+
   tr.appendChild(td);
   return tr;
 }
