@@ -63,7 +63,6 @@ const settingsSoftLimitInput = document.getElementById('settingsSoftLimitInput')
 
 const itemsPane = document.getElementById('itemsPane');
 const itemsBossFilter = document.getElementById('itemsBossFilter');
-const itemsSoftedOnlyCheckbox = document.getElementById('itemsSoftedOnly');
 const raidItemsBody = document.getElementById('raidItemsBody');
 
 const potionsPane = document.getElementById('potionsPane');
@@ -1395,15 +1394,15 @@ function renderItemsTable() {
     bonusPoolBanner.hidden = true;
   }
 
-  const softedOnly = itemsSoftedOnlyCheckbox.checked;
-
+  // Показуємо лише засофчені предмети (раніше це був чекбокс "Тільки
+  // засофчені", тепер поведінка постійна). Окремий фільтр маунтів більше не
+  // потрібен: маунт без софтів і так не проходить умову нижче.
   const flat = buildFlatItemList().filter((item) => {
     if (bossFilter && item.boss !== bossFilter) return false;
-    if (item.type === 'Mount' && !raid.allow_mount_softs && !reserves.some((r) => r.item_id === item.id)) return false;
     if (raid.hidden_reserves && !isOfficerMode()) {
-      if (!reserves.some((r) => r.item_id === item.id && r.discord_id === currentUser?.discordId)) return false;
-    } else if (softedOnly && !reserves.some((r) => r.item_id === item.id)) return false;
-    return true;
+      return reserves.some((r) => r.item_id === item.id && r.discord_id === currentUser?.discordId);
+    }
+    return reserves.some((r) => r.item_id === item.id);
   });
 
   if (!flat.length) {
@@ -1737,7 +1736,6 @@ potionLogConfirmBtn.addEventListener('click', () => {
 potionLogCancelBtn.addEventListener('click', () => { potionLogModal.hidden = true; });
 potionLogModalBackdrop.addEventListener('click', () => { potionLogModal.hidden = true; });
 itemsBossFilter.addEventListener('change', renderItemsTable);
-itemsSoftedOnlyCheckbox.addEventListener('change', renderItemsTable);
 
 softForm.addEventListener('submit', async (event) => {
   event.preventDefault();
