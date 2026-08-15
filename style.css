@@ -3051,16 +3051,17 @@ body.raid-manager-detail-page .raid-search-input:focus {
   box-shadow: inset 0 0 0 1px var(--color-link);
 }
 
-/* Рядок-заголовок боса у таблиці предметів (замінив дропдаун-фільтр). */
+/* Рядок-заголовок боса у таблиці предметів (замінив дропдаун-фільтр).
+   Фон - як у рядків з предметами, тобто власного нема; вирізняється
+   лише жирністю. */
 body.raid-manager-detail-page .raid-items-boss-row td {
   padding-top: 0.6rem;
-  background-color: var(--color-surface-head);
   color: var(--color-text-strong);
   font-weight: 600;
 }
 
-body.raid-manager-detail-page .raid-items-boss-row:hover td {
-  background-color: var(--color-surface-head);
+body.raid-manager-detail-page .raid-items-boss-row:hover {
+  background-color: transparent;
 }
 
 body.raid-manager-detail-page .raid-items-boss-empty {
