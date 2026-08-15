@@ -1433,12 +1433,20 @@ function buildItemRow(item, penaltyDeductions, bonusCtx) {
   const nameTd = document.createElement('td');
   const nameWrap = document.createElement('span');
   nameWrap.className = 'raid-item-name-cell';
-  nameWrap.dataset.itemId = item.id;
-  nameWrap.appendChild(createItemIcon(item.id));
+
+  // data-item-id (тригер тултіпа) висить на внутрішньому span з іконкою та
+  // назвою, а не на .raid-item-name-cell: та розтягнута на всю ширину
+  // комірки під кнопку бонусної ваги, тому тултіп виринав би й на порожньому
+  // місці праворуч від назви.
+  const nameHit = document.createElement('span');
+  nameHit.className = 'raid-item-name-hit';
+  nameHit.dataset.itemId = item.id;
+  nameHit.appendChild(createItemIcon(item.id));
   const nameSpan = document.createElement('span');
   nameSpan.className = itemRarityClass(item.id);
   nameSpan.textContent = translateItem(item.name);
-  nameWrap.appendChild(nameSpan);
+  nameHit.appendChild(nameSpan);
+  nameWrap.appendChild(nameHit);
   nameTd.appendChild(nameWrap);
   tr.appendChild(nameTd);
 
