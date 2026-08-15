@@ -1372,7 +1372,10 @@ function renderItemsTable() {
   let bonusPoolForItems = 0;
   let usedBonusForItems = 0;
   if ((myReceivedForItems || myBonusGrantForItems) && currentUser) {
-    bonusPoolForItems = raid.transfer_weight_limit ?? raid.soft_limit_total;
+    // Пул за джерелом бонусу: передача ваги дає ліміт рейду, грант офіцера -
+    // завжди рівно +1 (та сама формула, що й у воркері, reserves.js).
+    bonusPoolForItems = (myReceivedForItems ? (raid.transfer_weight_limit ?? raid.soft_limit_total) : 0)
+      + (myBonusGrantForItems ? 1 : 0);
     usedBonusForItems = reserves
       .filter((r) => myNamesForItems.includes(r.player_name))
       .reduce((s, r) => s + (r.bonus_weight || 0), 0);

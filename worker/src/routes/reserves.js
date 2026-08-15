@@ -220,10 +220,15 @@ export async function handleUpdateBonusWeight(request, env, raidId, reserveId, s
   if (delta !== 1 && delta !== -1) throw new HttpError(400, 'delta має бути 1 або -1');
 
   if (delta === 1) {
-    const transferBonus = raid.transfer_weight_limit ?? raid.soft_limit_total;
+    // Пул рахуємо за джерелом бонусу, а не однією формулою на обидва:
+    // передача ваги дає ліміт рейду, грант офіцера - завжди рівно +1
+    // (див. migrations/0012_bonus_grants.sql). Раніше грант помилково
+    // отримував ліміт передачі й гравець міг розкинути +1 на кілька предметів.
+    const transferBonus = receivedTransfer ? (raid.transfer_weight_limit ?? raid.soft_limit_total) : 0;
+    const bonusLimit = transferBonus + (bonusGrant ? 1 : 0);
     const { totalBonus } = await sumBonusWeight(env.DB, raidId, reserve.player_name);
-    if (totalBonus + 1 > transferBonus) {
-      throw new HttpError(409, `Перевищено бонусний ліміт (${transferBonus})`);
+    if (totalBonus + 1 > bonusLimit) {
+      throw new HttpError(409, `Перевищено бонусний ліміт (${bonusLimit})`);
     }
   } else {
     if (reserve.bonus_weight < 1) throw new HttpError(409, "Бонусна вага вже 0");
