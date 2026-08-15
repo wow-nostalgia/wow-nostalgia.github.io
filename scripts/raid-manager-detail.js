@@ -62,7 +62,7 @@ const settingsTitleInput = document.getElementById('settingsTitleInput');
 const settingsSoftLimitInput = document.getElementById('settingsSoftLimitInput');
 
 const itemsPane = document.getElementById('itemsPane');
-const raidItemsBody = document.getElementById('raidItemsBody');
+const raidItemsList = document.getElementById('raidItemsList');
 
 const potionsPane = document.getElementById('potionsPane');
 const potionsAddBtn = document.getElementById('potionsAddBtn');
@@ -1364,7 +1364,7 @@ function buildReservesByWeight(reservers, penaltyDeductions) {
 }
 
 function renderItemsTable() {
-  raidItemsBody.innerHTML = '';
+  raidItemsList.innerHTML = '';
 
   const myReceivedForItems = getMyReceivedTransfer();
   const myBonusGrantForItems = getMyBonusGrant();
@@ -1410,16 +1410,38 @@ function renderItemsTable() {
   // порожній бос там не означає "ніхто не софтив" - позначку не ставимо.
   const canTellEmpty = !raid.hidden_reserves || isOfficerMode();
 
-  // Замість дропдауна з вибором боса - усі боси одразу, кожен своїм
-  // заголовком. Бос лишається в списку навіть без жодного софта.
+  // Замість дропдауна з вибором боса - усі боси одразу, кожен окремою
+  // таблицею. Бос лишається в списку навіть без жодного софта: тоді його
+  // таблиця складається з одного рядка-заголовка.
   bossesWithCatalog().forEach((boss) => {
     const items = ((itemsCatalog[boss] || {})[raid.difficulty] || []).filter(isSofted);
-    raidItemsBody.appendChild(buildItemsBossHeaderRow(boss, canTellEmpty && items.length === 0));
-
-    items.forEach((item) => {
-      raidItemsBody.appendChild(buildItemRow(item, penaltyDeductions, bonusCtx));
-    });
+    raidItemsList.appendChild(buildBossItemsTable(boss, items, canTellEmpty, penaltyDeductions, bonusCtx));
   });
+}
+
+function buildBossItemsTable(boss, items, canTellEmpty, penaltyDeductions, bonusCtx) {
+  const wrap = document.createElement('div');
+  wrap.className = 'ranking-table-wrap';
+
+  const table = document.createElement('table');
+  table.className = 'raid-table raid-items-table';
+
+  // Ширини колонок задає <colgroup>, а не перший рядок: заголовок боса
+  // йде через colspan=2 і при table-layout:fixed сам їх не визначає.
+  const colgroup = document.createElement('colgroup');
+  colgroup.appendChild(document.createElement('col'));
+  colgroup.appendChild(document.createElement('col'));
+  table.appendChild(colgroup);
+
+  const tbody = document.createElement('tbody');
+  tbody.appendChild(buildItemsBossHeaderRow(boss, canTellEmpty && items.length === 0));
+  items.forEach((item) => {
+    tbody.appendChild(buildItemRow(item, penaltyDeductions, bonusCtx));
+  });
+  table.appendChild(tbody);
+
+  wrap.appendChild(table);
+  return wrap;
 }
 
 function buildItemsBossHeaderRow(boss, isEmpty) {

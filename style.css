@@ -2928,15 +2928,27 @@ body.raid-manager-detail-page .raid-item-name-hit {
    сокира зимонародженого короля" (укр. переклад, довший за англ.
    оригінал "Glorenzelg, High-Blade of the Silver Hand") + іконка +
    відступи клітинки, з невеликим запасом. */
-body.raid-manager-detail-page #raidItemsTable {
+body.raid-manager-detail-page .raid-items-table {
   table-layout: fixed;
   width: 100%;
   min-width: 30rem;
 }
 
-body.raid-manager-detail-page #raidItemsTable th:first-child,
-body.raid-manager-detail-page #raidItemsTable td:first-child {
+body.raid-manager-detail-page .raid-items-table col:first-child {
   width: 25rem;
+}
+
+/* Кожен бос - окрема таблиця, між ними невеликий зазор. */
+body.raid-manager-detail-page .raid-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Нижня межа останнього рядка збіглася б з рамкою .ranking-table-wrap -
+   у суцільній таблиці цього не було видно, а тепер це подвійна лінія. */
+body.raid-manager-detail-page .raid-items-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 body.raid-manager-detail-page .raid-player-name-cell {
@@ -4242,12 +4254,11 @@ body.account-page .link-button-std--danger:hover {
    ці жорсткі значення - замість горизонтального скролу таблиця просто
    вужчає і контент переноситься. */
 @media (max-width: 544px) {
-  body.raid-manager-detail-page #raidItemsTable {
+  body.raid-manager-detail-page .raid-items-table {
     min-width: 0;
   }
 
-  body.raid-manager-detail-page #raidItemsTable th:first-child,
-  body.raid-manager-detail-page #raidItemsTable td:first-child {
+  body.raid-manager-detail-page .raid-items-table col:first-child {
     width: 45%;
   }
 }
