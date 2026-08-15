@@ -62,7 +62,6 @@ const settingsTitleInput = document.getElementById('settingsTitleInput');
 const settingsSoftLimitInput = document.getElementById('settingsSoftLimitInput');
 
 const itemsPane = document.getElementById('itemsPane');
-const itemsBossFilter = document.getElementById('itemsBossFilter');
 const raidItemsBody = document.getElementById('raidItemsBody');
 
 const potionsPane = document.getElementById('potionsPane');
@@ -1044,16 +1043,6 @@ function populateBossSelect(selectEl) {
   });
 }
 
-function renderItemsBossFilterOptions() {
-  itemsBossFilter.innerHTML = '';
-  bossesWithCatalog().forEach((boss) => {
-    const opt = document.createElement('option');
-    opt.value = boss;
-    opt.textContent = translateBoss(boss);
-    itemsBossFilter.appendChild(opt);
-  });
-}
-
 function groupReservesByPlayer(list) {
   const map = new Map();
   list.forEach((r) => {
@@ -1374,7 +1363,6 @@ function buildReservesByWeight(reservers, penaltyDeductions) {
 }
 
 function renderItemsTable() {
-  const bossFilter = itemsBossFilter.value;
   raidItemsBody.innerHTML = '';
 
   const myReceivedForItems = getMyReceivedTransfer();
@@ -1397,23 +1385,9 @@ function renderItemsTable() {
   // Показуємо лише засофчені предмети (раніше це був чекбокс "Тільки
   // засофчені", тепер поведінка постійна). Окремий фільтр маунтів більше не
   // потрібен: маунт без софтів і так не проходить умову нижче.
-  const flat = buildFlatItemList().filter((item) => {
-    if (bossFilter && item.boss !== bossFilter) return false;
-    if (raid.hidden_reserves && !isOfficerMode()) {
-      return reserves.some((r) => r.item_id === item.id && r.discord_id === currentUser?.discordId);
-    }
-    return reserves.some((r) => r.item_id === item.id);
-  });
-
-  if (!flat.length) {
-    const tr = document.createElement('tr');
-    const td = document.createElement('td');
-    td.colSpan = 2;
-    td.textContent = 'Нічого не знайдено.';
-    tr.appendChild(td);
-    raidItemsBody.appendChild(tr);
-    return;
-  }
+  const isSofted = (item) => (raid.hidden_reserves && !isOfficerMode()
+    ? reserves.some((r) => r.item_id === item.id && r.discord_id === currentUser?.discordId)
+    : reserves.some((r) => r.item_id === item.id));
 
   const penaltyDeductions = new Map();
   const groupedForPenalty = groupReservesByPlayer(reserves);
@@ -1424,53 +1398,80 @@ function renderItemsTable() {
     }
   }
 
-  flat.forEach((item) => {
-    const tr = document.createElement('tr');
+  const bonusCtx = {
+    myNames: myNamesForItems,
+    hasBonusPool: Boolean(myReceivedForItems || myBonusGrantForItems),
+    allowStackOnSameItem: Boolean(myReceivedForItems),
+    canAdd: usedBonusForItems < bonusPoolForItems
+  };
 
-    const nameTd = document.createElement('td');
-    const nameWrap = document.createElement('span');
-    nameWrap.className = 'raid-item-name-cell';
-    nameWrap.dataset.itemId = item.id;
-    nameWrap.appendChild(createItemIcon(item.id));
-    const nameSpan = document.createElement('span');
-    nameSpan.className = itemRarityClass(item.id);
-    nameSpan.textContent = translateItem(item.name);
-    nameWrap.appendChild(nameSpan);
-    nameTd.appendChild(nameWrap);
-    tr.appendChild(nameTd);
+  // Замість дропдауна з вибором боса - усі боси одразу, кожен своїм
+  // заголовком. Бос лишається в списку навіть без жодного софта.
+  bossesWithCatalog().forEach((boss) => {
+    raidItemsBody.appendChild(buildItemsBossHeaderRow(boss));
 
-    const reserversTd = document.createElement('td');
-    reserversTd.className = 'raid-softs-col';
-    const reservers = reserves.filter((r) => r.item_id === item.id);
-
-    const myReserveForItem = reservers.find((r) => myNamesForItems.includes(r.player_name));
-    const bonusContext = (myReceivedForItems || myBonusGrantForItems) && currentUser && !isRaidCompleted() && myReserveForItem
-      ? {
-        reserveId: myReserveForItem.id,
-        bonusWeight: myReserveForItem.bonus_weight || 0,
-        canAdd: usedBonusForItems < bonusPoolForItems,
-        canRemove: (myReserveForItem.bonus_weight || 0) > 0,
-        allowStackOnSameItem: Boolean(myReceivedForItems)
-      }
-      : null;
-
-    // Кнопка керування бонусною вагою - приклеєна до правого краю колонки
-    // "Предмет", а не до імені гравця в колонці софтів.
-    if (bonusContext) nameWrap.appendChild(buildBonusControls(bonusContext));
-
-    if (raid.hidden_reserves && !isOfficerMode()) {
-      // Приховані резерви - імена інших не показуємо.
-      reserversTd.textContent = '';
-    } else if (!reservers.length) {
-      reserversTd.textContent = '—';
-    } else {
-      reserversTd.appendChild(buildReservesByWeight(reservers, penaltyDeductions));
-    }
-
-    tr.appendChild(reserversTd);
-
-    raidItemsBody.appendChild(tr);
+    const items = ((itemsCatalog[boss] || {})[raid.difficulty] || []).filter(isSofted);
+    items.forEach((item) => {
+      raidItemsBody.appendChild(buildItemRow(item, penaltyDeductions, bonusCtx));
+    });
   });
+}
+
+function buildItemsBossHeaderRow(boss) {
+  const tr = document.createElement('tr');
+  tr.className = 'raid-items-boss-row';
+  const td = document.createElement('td');
+  td.colSpan = 2;
+  td.textContent = translateBoss(boss);
+  tr.appendChild(td);
+  return tr;
+}
+
+function buildItemRow(item, penaltyDeductions, bonusCtx) {
+  const tr = document.createElement('tr');
+
+  const nameTd = document.createElement('td');
+  const nameWrap = document.createElement('span');
+  nameWrap.className = 'raid-item-name-cell';
+  nameWrap.dataset.itemId = item.id;
+  nameWrap.appendChild(createItemIcon(item.id));
+  const nameSpan = document.createElement('span');
+  nameSpan.className = itemRarityClass(item.id);
+  nameSpan.textContent = translateItem(item.name);
+  nameWrap.appendChild(nameSpan);
+  nameTd.appendChild(nameWrap);
+  tr.appendChild(nameTd);
+
+  const reserversTd = document.createElement('td');
+  reserversTd.className = 'raid-softs-col';
+  const reservers = reserves.filter((r) => r.item_id === item.id);
+
+  const myReserveForItem = reservers.find((r) => bonusCtx.myNames.includes(r.player_name));
+  const bonusContext = bonusCtx.hasBonusPool && currentUser && !isRaidCompleted() && myReserveForItem
+    ? {
+      reserveId: myReserveForItem.id,
+      bonusWeight: myReserveForItem.bonus_weight || 0,
+      canAdd: bonusCtx.canAdd,
+      canRemove: (myReserveForItem.bonus_weight || 0) > 0,
+      allowStackOnSameItem: bonusCtx.allowStackOnSameItem
+    }
+    : null;
+
+  // Кнопка керування бонусною вагою - приклеєна до правого краю колонки
+  // "Предмет", а не до імені гравця в колонці софтів.
+  if (bonusContext) nameWrap.appendChild(buildBonusControls(bonusContext));
+
+  if (raid.hidden_reserves && !isOfficerMode()) {
+    // Приховані резерви - імена інших не показуємо.
+    reserversTd.textContent = '';
+  } else if (!reservers.length) {
+    reserversTd.textContent = '—';
+  } else {
+    reserversTd.appendChild(buildReservesByWeight(reservers, penaltyDeductions));
+  }
+
+  tr.appendChild(reserversTd);
+  return tr;
 }
 
 function describeAuditAction(entry) {
@@ -1735,7 +1736,6 @@ potionLogConfirmBtn.addEventListener('click', () => {
 });
 potionLogCancelBtn.addEventListener('click', () => { potionLogModal.hidden = true; });
 potionLogModalBackdrop.addEventListener('click', () => { potionLogModal.hidden = true; });
-itemsBossFilter.addEventListener('change', renderItemsTable);
 
 softForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -2126,7 +2126,6 @@ async function init() {
   populateItemPicker(softItem, softItemTrigger, softItemList, softBoss.value);
   populateBossSelect(assignBoss);
   populateItemPicker(assignItem, assignItemTrigger, assignItemList, assignBoss.value);
-  renderItemsBossFilterOptions();
 
   myCharacters = (await myCharactersPromise) || [];
   populateMyCharacters();
