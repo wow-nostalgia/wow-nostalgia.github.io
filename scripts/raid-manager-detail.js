@@ -108,6 +108,9 @@ const bonusGrantModalBackdrop = document.getElementById('bonusGrantModalBackdrop
 const bonusGrantTableBody = document.getElementById('bonusGrantTableBody');
 const bonusGrantSaveBtn = document.getElementById('bonusGrantSaveBtn');
 const bonusGrantCancelBtn = document.getElementById('bonusGrantCancelBtn');
+const noCharactersModal = document.getElementById('noCharactersModal');
+const noCharactersModalBackdrop = document.getElementById('noCharactersModalBackdrop');
+const noCharactersCloseBtn = document.getElementById('noCharactersCloseBtn');
 let currentTooltipItemId = null;
 
 let raidId = null;
@@ -955,8 +958,12 @@ document.addEventListener('click', () => {
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
+    noCharactersModal.hidden = true;
   }
 });
+
+noCharactersCloseBtn.addEventListener('click', () => { noCharactersModal.hidden = true; });
+noCharactersModalBackdrop.addEventListener('click', () => { noCharactersModal.hidden = true; });
 
 function positionItemTooltip(event) {
   const offset = 16;
@@ -2190,6 +2197,10 @@ async function init() {
   raidContent.hidden = false;
   setStatus('');
   initialRenderDone = true;
+
+  // Без персонажів у профілі софтити неможливо - показуємо підказку щоразу,
+  // поки їх нема. Для завершеного рейду сенсу нема: софтити там уже пізно.
+  if (!myCharacters.length && !isRaidCompleted()) noCharactersModal.hidden = false;
 
   setInterval(async () => {
     try {

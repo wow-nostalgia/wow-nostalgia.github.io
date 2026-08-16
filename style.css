@@ -4568,6 +4568,35 @@ body.raid-manager-detail-page .penalty-reason-text {
   line-height: var(--line-height-relaxed);
 }
 
+/* Хрестик закриття в куті картки. Іконка - Primer Octicons x-16.
+   Ховер нейтральний, не червоний: закриття тут не деструктивне, на
+   відміну від .account-delete-btn. Заголовку лишаємо місце під кнопку,
+   щоб довгий текст під неї не заповз. */
+.raid-modal-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  border: none;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-text-faint);
+  cursor: pointer;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.raid-modal-close:hover {
+  color: var(--color-text-strong);
+  background-color: var(--color-hover);
+}
+
+.raid-modal-box:has(.raid-modal-close) .raid-modal-title {
+  padding-right: 2rem;
+}
+
 .raid-modal-field {
   margin-bottom: 1rem;
 }

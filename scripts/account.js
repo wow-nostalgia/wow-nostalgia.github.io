@@ -25,6 +25,9 @@ const deleteCharacterModalBackdrop = document.getElementById('deleteCharacterMod
 const deleteCharacterModalText = document.getElementById('deleteCharacterModalText');
 const deleteCharacterConfirmBtn = document.getElementById('deleteCharacterConfirmBtn');
 const deleteCharacterCancelBtn = document.getElementById('deleteCharacterCancelBtn');
+const firstCharacterModal = document.getElementById('firstCharacterModal');
+const firstCharacterModalBackdrop = document.getElementById('firstCharacterModalBackdrop');
+const firstCharacterCloseBtn = document.getElementById('firstCharacterCloseBtn');
 
 function setAccountStatus(text) {
   accountStatus.textContent = text || '';
@@ -95,7 +98,12 @@ function characterNameNode(name) {
   return link;
 }
 
+// Скільки персонажів у списку зараз - щоб зрозуміти, чи щойно доданий був
+// першим (див. обробник addCharacterForm).
+let charactersCount = 0;
+
 function renderCharactersList(characters) {
+  charactersCount = characters.length;
   charactersList.innerHTML = '';
 
   if (!characters.length) {
@@ -200,6 +208,8 @@ addCharacterForm.addEventListener('submit', async (event) => {
   const characterName = characterNameInput.value.trim();
   if (!characterName) return;
 
+  const wasEmpty = charactersCount === 0;
+
   try {
     const token = getSessionToken();
     const res = await fetch(`${AUTH_API_BASE}/auth/me/characters`, {
@@ -211,9 +221,17 @@ addCharacterForm.addEventListener('submit', async (event) => {
     renderCharactersList(await res.json());
     characterNameInput.value = '';
     setAccountStatus('');
+    // Перший персонаж - підказуємо, що далі йти в рейди.
+    if (wasEmpty && charactersCount > 0) firstCharacterModal.hidden = false;
   } catch (err) {
     setAccountStatus(`Помилка: ${err.message}`);
   }
+});
+
+firstCharacterCloseBtn.addEventListener('click', () => { firstCharacterModal.hidden = true; });
+firstCharacterModalBackdrop.addEventListener('click', () => { firstCharacterModal.hidden = true; });
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') firstCharacterModal.hidden = true;
 });
 
 adminRemoveCharacterForm.addEventListener('submit', async (event) => {

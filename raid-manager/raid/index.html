@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейд — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=130">
+  <link rel="stylesheet" href="../../style.css?v=131">
 </head>
 
 <body class="raid-manager-detail-page">
@@ -347,6 +347,25 @@
     </div>
   </div>
 
+  <div id="noCharactersModal" class="raid-modal" hidden>
+    <div class="raid-modal-backdrop" id="noCharactersModalBackdrop"></div>
+    <div class="raid-modal-box">
+      <button type="button" class="raid-modal-close" id="noCharactersCloseBtn" aria-label="Закрити">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/>
+        </svg>
+      </button>
+      <h3 class="raid-modal-title">Спочатку додай персонажів</h3>
+      <p class="raid-modal-text">
+        Щоб софтити предмети, треба додати своїх персонажів у профілі. Після цього
+        вони будуть доступні для вибору в цьому та всіх наступних рейдах.
+      </p>
+      <div class="raid-modal-actions">
+        <a class="compare-btn" href="../../account/">Перейти у профіль</a>
+      </div>
+    </div>
+  </div>
+
   <script src="../../scripts/nav.js?v=2"></script>
   <script src="../../scripts/auth-shared.js?v=10"></script>
   <script src="../../scripts/wow-class-colors.js?v=1"></script>
@@ -354,7 +373,7 @@
   <script src="../../scripts/ui-shared.js?v=12"></script>
   <script src="../../scripts/raid-manager-shared.js?v=4"></script>
   <script src="../../scripts/name-translations.js?v=2"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=104"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=105"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
