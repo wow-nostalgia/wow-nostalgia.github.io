@@ -3996,6 +3996,19 @@ body.account-page .account-chars-hint {
   padding-top: 0.25rem;
 }
 
+/* Налаштування профілю (звукові сповіщення). Підказка тут ширша за
+   .account-chars-hint у колонці персонажів - блок на всю ширину. */
+body.account-page .account-prefs {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+body.account-page .account-prefs .account-chars-hint {
+  max-width: 40rem;
+  margin: 0.5rem 0 0;
+}
+
 body.account-page .account-characters-table {
   width: 100%;
   border-collapse: collapse;

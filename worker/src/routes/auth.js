@@ -14,7 +14,8 @@ import {
   removeCharacterByAnyOwner,
   listCharacterOwnerNames,
   listPrimaryCharacterNames,
-  isDefaultOfficer
+  isDefaultOfficer,
+  updateUserSoundNotifications
 } from '../db.js';
 import { requireSession } from '../auth.js';
 
@@ -38,7 +39,10 @@ function publicUser(user) {
   return {
     discordId: user.discord_id,
     username: user.username,
-    avatar: user.avatar
+    avatar: user.avatar,
+    // Колонки може не бути в старих рядках лише теоретично (NOT NULL DEFAULT 1),
+    // але ?? 1 страхує від undefined, якщо міграцію накотять не скрізь.
+    soundNotifications: Boolean(user.sound_notifications ?? 1)
   };
 }
 
@@ -90,6 +94,20 @@ export async function handleGetMe(request, env) {
     isAdmin: session.discordId === env.ADMIN_DISCORD_ID,
     isGuildOfficer: await isDefaultOfficer(env.DB, session.discordId)
   });
+}
+
+// Шлях навмисно узагальнений: наступні налаштування профілю ляжуть сюди ж,
+// без нового ендпоінта на кожен прапорець.
+export async function handleUpdatePreferences(request, env) {
+  const session = await requireSession(env.DB, request);
+  const body = await readJson(request);
+
+  if (typeof body.soundNotifications !== 'boolean') {
+    throw new HttpError(400, 'soundNotifications має бути true або false');
+  }
+
+  const user = await updateUserSoundNotifications(env.DB, session.discordId, body.soundNotifications);
+  return jsonResponse(publicUser(user));
 }
 
 export async function handleLogout(request, env) {

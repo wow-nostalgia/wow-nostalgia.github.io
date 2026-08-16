@@ -14,7 +14,7 @@ const APP_SHELL = [
 
 // Розширення, які кешуємо. data/*.json свідомо НЕ входить — ці файли
 // оновлюються скрейпінгом і мають завжди йти в мережу.
-const STATIC_EXTENSIONS = /\.(?:css|js|png|jpg|jpeg|svg|webp|woff2?|ttf)(?:\?.*)?$/;
+const STATIC_EXTENSIONS = /\.(?:css|js|png|jpg|jpeg|svg|webp|woff2?|ttf|mp3|ogg|wav)(?:\?.*)?$/;
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

@@ -275,6 +275,15 @@ export async function upsertUser(db, { discordId, username, avatar }) {
   return getUserByDiscordId(db, discordId);
 }
 
+export async function updateUserSoundNotifications(db, discordId, enabled) {
+  await db
+    .prepare('UPDATE users SET sound_notifications = ?, updated_at = ? WHERE discord_id = ?')
+    .bind(enabled ? 1 : 0, nowIso(), discordId)
+    .run();
+
+  return getUserByDiscordId(db, discordId);
+}
+
 // Публічна мапа "застовплений персонаж -> ім'я для тултіпа" (основний
 // персонаж власника, або username, якщо основного не позначено) — для
 // тултіпів у статичній аналітиці/таблиці гравців рейду. Без авторизації:

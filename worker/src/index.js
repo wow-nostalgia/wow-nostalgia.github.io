@@ -48,6 +48,7 @@ import {
 import {
   handleDiscordCallback,
   handleGetMe,
+  handleUpdatePreferences,
   handleLogout,
   handleSearchUsers,
   handleListCharacters,
@@ -101,6 +102,7 @@ async function routeAuth(request, env, parts) {
 
   if (sub === 'discord' && sub2 === 'callback' && method === 'POST') return handleDiscordCallback(request, env);
   if (sub === 'me' && !sub2 && method === 'GET') return handleGetMe(request, env);
+  if (sub === 'me' && sub2 === 'preferences' && method === 'PATCH') return handleUpdatePreferences(request, env);
 
   if (sub === 'me' && sub2 === 'characters') {
     if (!sub3) {

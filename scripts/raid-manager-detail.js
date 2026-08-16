@@ -368,6 +368,78 @@ function getMyBonusGrant() {
   return bonusGrants.find((g) => names.includes(g.player_name)) || null;
 }
 
+// ---- Звукові сповіщення ----
+//
+// Браузери не дають відтворити звук, поки в документі не було жесту
+// користувача, і окремого дозволу на це не існує (Chrome свідомо не робить
+// autoplay permission). Тому розблоковуємо аудіо першим будь-яким кліком
+// чи натисканням клавіші на сторінці - далі звук грає навіть у фоновій
+// вкладці. Якщо людина не клікнула жодного разу, play() тихо відхиляється.
+const NOTIFICATION_SOUNDS = {
+  transfer: '/sounds/transfer-received.mp3',
+  bonusGrant: '/sounds/bonus-grant.mp3'
+};
+
+let soundUnlocked = false;
+const soundCache = new Map();
+
+function unlockSounds() {
+  soundUnlocked = true;
+  document.removeEventListener('click', unlockSounds);
+  document.removeEventListener('keydown', unlockSounds);
+}
+document.addEventListener('click', unlockSounds);
+document.addEventListener('keydown', unlockSounds);
+
+function playNotificationSound(kind) {
+  if (!soundUnlocked || !currentUser?.soundNotifications) return;
+
+  const src = NOTIFICATION_SOUNDS[kind];
+  if (!src) return;
+
+  if (!soundCache.has(kind)) soundCache.set(kind, new Audio(src));
+  const audio = soundCache.get(kind);
+
+  // Той самий елемент може ще грати з попереднього разу - перемотуємо.
+  audio.currentTime = 0;
+  // Відсутній файл або блокування автоплею не мають ламати сторінку.
+  audio.play().catch(() => {});
+}
+
+// Стан на момент попереднього тіку поллінгу: звук має лунати на ПОЯВУ
+// нового бонусу, а не на його наявність, інакше сигнал повторювався б
+// кожні 10 секунд, поки передача активна. Ключ - created_at, щоб повторна
+// передача від того самого гравця теж рахувалась новою подією (id у цих
+// таблиць нема, ключ складений).
+let lastTransferKey = null;
+let lastBonusGrantKey = null;
+
+function transferKey() {
+  const t = getMyReceivedTransfer();
+  return t ? `${t.from_player}::${t.created_at}` : null;
+}
+
+function bonusGrantKey() {
+  const g = getMyBonusGrant();
+  return g ? `${g.player_name}::${g.created_at}` : null;
+}
+
+function syncNotificationState() {
+  lastTransferKey = transferKey();
+  lastBonusGrantKey = bonusGrantKey();
+}
+
+function checkNotifications() {
+  const transfer = transferKey();
+  const bonusGrant = bonusGrantKey();
+
+  if (transfer !== null && transfer !== lastTransferKey) playNotificationSound('transfer');
+  if (bonusGrant !== null && bonusGrant !== lastBonusGrantKey) playNotificationSound('bonusGrant');
+
+  lastTransferKey = transfer;
+  lastBonusGrantKey = bonusGrant;
+}
+
 // Лок блокує самософт лише для звичайних гравців — офіцери/лідер обходять
 // лок на бекенді (reserves.js). Завершення рейду (isRaidCompleted) блокує
 // форму для всіх без винятку, включно з лідером/офіцерами.
@@ -2198,6 +2270,10 @@ async function init() {
   setStatus('');
   initialRenderDone = true;
 
+  // Запам'ятовуємо стан бонусів на момент відкриття сторінки: те, що вже
+  // було до приходу гравця, не є новою подією і звучати не має.
+  syncNotificationState();
+
   // Без персонажів у профілі софтити неможливо - показуємо підказку щоразу,
   // поки їх нема. Для завершеного рейду сенсу нема: софтити там уже пізно.
   if (!myCharacters.length && !isRaidCompleted()) noCharactersModal.hidden = false;
@@ -2214,6 +2290,7 @@ async function init() {
       ]);
       applyShardQueueRaw(shardRaw);
       applyOfficers(officers);
+      checkNotifications();
       renderBanner();
       renderPlayersTable();
       renderItemsTable();

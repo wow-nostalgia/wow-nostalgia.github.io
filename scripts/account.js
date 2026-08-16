@@ -28,6 +28,7 @@ const deleteCharacterCancelBtn = document.getElementById('deleteCharacterCancelB
 const firstCharacterModal = document.getElementById('firstCharacterModal');
 const firstCharacterModalBackdrop = document.getElementById('firstCharacterModalBackdrop');
 const firstCharacterCloseBtn = document.getElementById('firstCharacterCloseBtn');
+const soundNotificationsInput = document.getElementById('soundNotificationsInput');
 
 function setAccountStatus(text) {
   accountStatus.textContent = text || '';
@@ -228,6 +229,28 @@ addCharacterForm.addEventListener('submit', async (event) => {
   }
 });
 
+soundNotificationsInput.addEventListener('change', async () => {
+  const enabled = soundNotificationsInput.checked;
+  soundNotificationsInput.disabled = true;
+
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/auth/me/preferences`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getSessionToken()}` },
+      body: JSON.stringify({ soundNotifications: enabled })
+    });
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    setAccountStatus('');
+  } catch (err) {
+    // Повертаємо чекбокс у попередній стан, щоб він не показував те, чого
+    // насправді не збережено.
+    soundNotificationsInput.checked = !enabled;
+    setAccountStatus(`Помилка: ${err.message}`);
+  } finally {
+    soundNotificationsInput.disabled = false;
+  }
+});
+
 firstCharacterCloseBtn.addEventListener('click', () => { firstCharacterModal.hidden = true; });
 firstCharacterModalBackdrop.addEventListener('click', () => { firstCharacterModal.hidden = true; });
 document.addEventListener('keydown', (event) => {
@@ -382,6 +405,7 @@ async function init() {
   }
 
   loggedInView.hidden = false;
+  soundNotificationsInput.checked = user.soundNotifications !== false;
   profileUsername.textContent = user.username;
   profileDiscordId.textContent = `Discord ID: ${user.discordId}`;
   if (user.avatar) {
