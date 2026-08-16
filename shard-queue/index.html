@@ -62,7 +62,10 @@
         <li>При досягненні максимуму - запис автоматично переїжджає на вкладку "Вже зібрано".</li>
       </ul>
 
-      <p id="loggedOutHint" hidden>Щоб самому записатись у чергу чи оновити прогрес, увійди через Discord.</p>
+      <div id="loginGate" hidden>
+        <p>Щоб переглянути чергу, увійди через Discord.</p>
+        <a class="compare-btn" id="loginGateBtn" href="#">Увійти</a>
+      </div>
 
       <div id="dayTabs" class="raid-tabs" role="tablist"></div>
 
@@ -115,7 +118,7 @@
   <script src="../scripts/auth-shared.js?v=10"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=12"></script>
-  <script src="../scripts/shard-queue.js?v=23"></script>
+  <script src="../scripts/shard-queue.js?v=24"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

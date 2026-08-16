@@ -8,7 +8,8 @@ const WEEKDAYS = ['Понеділок', 'Вівторок', 'Середа', 'Ч�
 // Фармити уламки/кров можуть лише танкові класи — так влаштований сам фарм.
 const FARM_ELIGIBLE_CLASSES = new Set(['Warrior', 'Death Knight', 'Paladin']);
 
-const loggedOutHint = document.getElementById('loggedOutHint');
+const loginGate = document.getElementById('loginGate');
+const loginGateBtn = document.getElementById('loginGateBtn');
 const dayTabs = document.getElementById('dayTabs');
 const queueContent = document.getElementById('queueContent');
 const queueStatus = document.getElementById('queueStatus');
@@ -1042,15 +1043,15 @@ function deleteEntry(entry) {
 // ---- Ініціалізація ----
 
 async function init() {
+  loginGateBtn.href = discordLoginUrl();
   user = await fetchCurrentUser();
 
   if (!user) {
-    loggedOutHint.hidden = false;
-    setQueueStatus('Увійди через Discord, щоб побачити чергу.');
+    loginGate.hidden = false;
     return;
   }
 
-  loggedOutHint.hidden = true;
+  loginGate.hidden = true;
 
   try {
     await loadRosterSources();
