@@ -40,6 +40,11 @@ self.addEventListener('fetch', (event) => {
 
   if (!STATIC_EXTENSIONS.test(url.pathname)) return;
 
+  // Range-запити (їх робить <audio>/new Audio для mp3) віддають 206 Partial
+  // Content, а Cache API такі відповіді класти не вміє. Пропускаємо їх повз
+  // SW - хай браузер сам говорить з мережею.
+  if (request.headers.has('range')) return;
+
   // stale-while-revalidate: віддаємо кеш одразу (швидко + офлайн), але
   // паралельно завжди йдемо в мережу й оновлюємо запис. Попередній
   // cache-first не ревалідував ніколи, тож одна стара відповідь у кеші
@@ -48,9 +53,16 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(request).then((cached) => {
       const network = fetch(request).then(async (response) => {
-        if (response.ok) {
-          const cache = await caches.open(CACHE_NAME);
-          await cache.put(request, response.clone());
+        // Тільки повні відповіді: 206 Partial Content Cache API не приймає й
+        // кидає TypeError. І сам запис у кеш не має валити відповідь -
+        // сторінці важливо отримати ресурс, кешування тут другорядне.
+        if (response.status === 200) {
+          try {
+            const cache = await caches.open(CACHE_NAME);
+            await cache.put(request, response.clone());
+          } catch {
+            // Квота вичерпана, приватний режим тощо - мовчки ігноруємо.
+          }
         }
         return response;
       });
