@@ -4009,6 +4009,58 @@ body.account-page .account-prefs .account-chars-hint {
   margin: 0.5rem 0 0;
 }
 
+body.account-page .account-volume-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+  font-size: var(--font-size-base);
+  color: var(--color-text-faint);
+}
+
+body.account-page .account-volume-row:has(:disabled) {
+  opacity: 0.45;
+}
+
+/* Першого <input type="range"> на сайті ще не було. Нативний вигляд у
+   різних браузерах різний, тому доріжку й повзунок малюємо самі. */
+body.account-page .account-volume-slider {
+  appearance: none;
+  width: 12rem;
+  height: 0.35rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-border-input);
+  cursor: pointer;
+}
+
+body.account-page .account-volume-slider:disabled {
+  cursor: not-allowed;
+}
+
+body.account-page .account-volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 0.9rem;
+  height: 0.9rem;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--color-link);
+}
+
+body.account-page .account-volume-slider::-moz-range-thumb {
+  width: 0.9rem;
+  height: 0.9rem;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--color-link);
+}
+
+body.account-page .account-volume-value {
+  min-width: 2.5rem;
+  color: var(--color-text-strong);
+  font-variant-numeric: tabular-nums;
+}
+
 body.account-page .account-characters-table {
   width: 100%;
   border-collapse: collapse;

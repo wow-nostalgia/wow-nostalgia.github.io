@@ -29,6 +29,13 @@ const firstCharacterModal = document.getElementById('firstCharacterModal');
 const firstCharacterModalBackdrop = document.getElementById('firstCharacterModalBackdrop');
 const firstCharacterCloseBtn = document.getElementById('firstCharacterCloseBtn');
 const soundNotificationsInput = document.getElementById('soundNotificationsInput');
+const soundVolumeInput = document.getElementById('soundVolumeInput');
+const soundVolumeValue = document.getElementById('soundVolumeValue');
+const soundVolumeTestBtn = document.getElementById('soundVolumeTestBtn');
+
+// Останнє успішно збережене значення - щоб відкотити повзунок, якщо PATCH
+// не пройшов.
+let lastSavedVolume = 70;
 
 function setAccountStatus(text) {
   accountStatus.textContent = text || '';
@@ -229,26 +236,69 @@ addCharacterForm.addEventListener('submit', async (event) => {
   }
 });
 
+async function savePreferences(patch) {
+  const res = await fetch(`${AUTH_API_BASE}/auth/me/preferences`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getSessionToken()}` },
+    body: JSON.stringify(patch)
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+}
+
+// Повзунок гучності має сенс лише коли звук увімкнено.
+function applySoundPrefsState() {
+  const enabled = soundNotificationsInput.checked;
+  soundVolumeInput.disabled = !enabled;
+  soundVolumeTestBtn.disabled = !enabled;
+}
+
+function renderVolumeValue() {
+  soundVolumeValue.textContent = `${soundVolumeInput.value}%`;
+}
+
 soundNotificationsInput.addEventListener('change', async () => {
   const enabled = soundNotificationsInput.checked;
   soundNotificationsInput.disabled = true;
+  applySoundPrefsState();
 
   try {
-    const res = await fetch(`${AUTH_API_BASE}/auth/me/preferences`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getSessionToken()}` },
-      body: JSON.stringify({ soundNotifications: enabled })
-    });
-    if (!res.ok) throw new Error(await readErrorMessage(res));
+    await savePreferences({ soundNotifications: enabled });
     setAccountStatus('');
   } catch (err) {
     // Повертаємо чекбокс у попередній стан, щоб він не показував те, чого
     // насправді не збережено.
     soundNotificationsInput.checked = !enabled;
+    applySoundPrefsState();
     setAccountStatus(`Помилка: ${err.message}`);
   } finally {
     soundNotificationsInput.disabled = false;
   }
+});
+
+// input - лише оновлення підпису (тягнеться безперервно під час руху),
+// збереження на change, тобто коли повзунок відпустили.
+soundVolumeInput.addEventListener('input', renderVolumeValue);
+
+soundVolumeInput.addEventListener('change', async () => {
+  const volume = Number(soundVolumeInput.value);
+
+  try {
+    await savePreferences({ soundVolume: volume });
+    lastSavedVolume = volume;
+    setAccountStatus('');
+  } catch (err) {
+    soundVolumeInput.value = lastSavedVolume;
+    renderVolumeValue();
+    setAccountStatus(`Помилка: ${err.message}`);
+  }
+});
+
+// Клік по кнопці сам розблоковує аудіо для сторінки, тож перевірка працює
+// навіть якщо гравець досі нічого не натискав.
+soundVolumeTestBtn.addEventListener('click', () => {
+  const audio = new Audio('/sounds/transfer-received.mp3');
+  audio.volume = Number(soundVolumeInput.value) / 100;
+  audio.play().catch(() => setAccountStatus('Не вдалося відтворити звук.'));
 });
 
 firstCharacterCloseBtn.addEventListener('click', () => { firstCharacterModal.hidden = true; });
@@ -406,6 +456,10 @@ async function init() {
 
   loggedInView.hidden = false;
   soundNotificationsInput.checked = user.soundNotifications !== false;
+  lastSavedVolume = user.soundVolume ?? 70;
+  soundVolumeInput.value = lastSavedVolume;
+  renderVolumeValue();
+  applySoundPrefsState();
   profileUsername.textContent = user.username;
   profileDiscordId.textContent = `Discord ID: ${user.discordId}`;
   if (user.avatar) {

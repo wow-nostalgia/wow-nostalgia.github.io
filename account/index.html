@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Профіль — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../style.css?v=132">
+  <link rel="stylesheet" href="../style.css?v=133">
 </head>
 
 <body class="account-page">
@@ -112,6 +112,12 @@
               <input type="checkbox" id="soundNotificationsInput">
               Отримувати звукові сповіщення
             </label>
+            <div class="account-volume-row">
+              <label for="soundVolumeInput">Гучність</label>
+              <input type="range" id="soundVolumeInput" class="account-volume-slider" min="0" max="100" step="5">
+              <span id="soundVolumeValue" class="account-volume-value"></span>
+              <button type="button" id="soundVolumeTestBtn" class="link-button-std">Перевірити</button>
+            </div>
             <p class="account-chars-hint">Звук лунає на сторінці рейду, коли тобі передали вагу або офіцер призначив бонусний софт. Працює, поки сторінка відкрита.</p>
           </div>
 
@@ -193,7 +199,7 @@
   <script src="../scripts/auth-shared.js?v=10"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=12"></script>
-  <script src="../scripts/account.js?v=21"></script>
+  <script src="../scripts/account.js?v=22"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

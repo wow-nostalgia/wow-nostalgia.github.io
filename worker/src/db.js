@@ -275,10 +275,18 @@ export async function upsertUser(db, { discordId, username, avatar }) {
   return getUserByDiscordId(db, discordId);
 }
 
-export async function updateUserSoundNotifications(db, discordId, enabled) {
+// Родовий апдейт налаштувань профілю - той самий патерн, що
+// updateRaidSettings: {колонка: значення} -> динамічний UPDATE.
+export async function updateUserPreferences(db, discordId, fields) {
+  const columns = Object.keys(fields);
+  if (!columns.length) return getUserByDiscordId(db, discordId);
+
+  const setClause = columns.map((col) => `${col} = ?`).join(', ');
+  const values = columns.map((col) => fields[col]);
+
   await db
-    .prepare('UPDATE users SET sound_notifications = ?, updated_at = ? WHERE discord_id = ?')
-    .bind(enabled ? 1 : 0, nowIso(), discordId)
+    .prepare(`UPDATE users SET ${setClause}, updated_at = ? WHERE discord_id = ?`)
+    .bind(...values, nowIso(), discordId)
     .run();
 
   return getUserByDiscordId(db, discordId);

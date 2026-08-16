@@ -15,11 +15,15 @@ import {
   listCharacterOwnerNames,
   listPrimaryCharacterNames,
   isDefaultOfficer,
-  updateUserSoundNotifications
+  updateUserPreferences
 } from '../db.js';
 import { requireSession } from '../auth.js';
 
 const SESSION_TTL_DAYS = 30;
+
+// Той самий дефолт, що в міграції 0017 — потрібен, якщо колонка чомусь
+// віддала NULL.
+const DEFAULT_SOUND_VOLUME = 70;
 
 // Discord вимагає точного збігу redirect_uri між /authorize і обміном code.
 // Клієнт рахує його від window.location.origin (прод і localhost — різні
@@ -40,9 +44,10 @@ function publicUser(user) {
     discordId: user.discord_id,
     username: user.username,
     avatar: user.avatar,
-    // Колонки може не бути в старих рядках лише теоретично (NOT NULL DEFAULT 1),
-    // але ?? 1 страхує від undefined, якщо міграцію накотять не скрізь.
-    soundNotifications: Boolean(user.sound_notifications ?? 1)
+    // Колонок може не бути лише теоретично (обидві NOT NULL DEFAULT), але ??
+    // страхує від undefined, якщо міграцію накотять не скрізь.
+    soundNotifications: Boolean(user.sound_notifications ?? 1),
+    soundVolume: user.sound_volume ?? DEFAULT_SOUND_VOLUME
   };
 }
 
@@ -101,12 +106,26 @@ export async function handleGetMe(request, env) {
 export async function handleUpdatePreferences(request, env) {
   const session = await requireSession(env.DB, request);
   const body = await readJson(request);
+  const fields = {};
 
-  if (typeof body.soundNotifications !== 'boolean') {
-    throw new HttpError(400, 'soundNotifications має бути true або false');
+  if (body.soundNotifications !== undefined) {
+    if (typeof body.soundNotifications !== 'boolean') {
+      throw new HttpError(400, 'soundNotifications має бути true або false');
+    }
+    fields.sound_notifications = body.soundNotifications ? 1 : 0;
   }
 
-  const user = await updateUserSoundNotifications(env.DB, session.discordId, body.soundNotifications);
+  if (body.soundVolume !== undefined) {
+    const volume = Number(body.soundVolume);
+    if (!Number.isInteger(volume) || volume < 0 || volume > 100) {
+      throw new HttpError(400, 'soundVolume має бути цілим числом 0-100');
+    }
+    fields.sound_volume = volume;
+  }
+
+  if (!Object.keys(fields).length) throw new HttpError(400, 'Немає що змінювати');
+
+  const user = await updateUserPreferences(env.DB, session.discordId, fields);
   return jsonResponse(publicUser(user));
 }
 
