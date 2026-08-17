@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-08-16T00:11:08.144Z",
+  "updatedAt": "2026-08-17T00:06:22.416Z",
   "specs": [
     {
       "class": "Paladin",
@@ -1092,6 +1092,10 @@
           "hps": 15867.5
         },
         {
+          "name": "Картаген",
+          "hps": 15682.9
+        },
+        {
           "name": "Huyutin",
           "hps": 15593
         },
@@ -1666,6 +1670,10 @@
           "hps": 470.9
         },
         {
+          "name": "Onlyshit",
+          "hps": 463.5
+        },
+        {
           "name": "Spacecreator",
           "hps": 453.9
         },
@@ -1700,10 +1708,6 @@
         {
           "name": "Куниметник",
           "hps": 432.6
-        },
-        {
-          "name": "Onlyshit",
-          "hps": 432.1
         },
         {
           "name": "Missprist",
@@ -2998,6 +3002,10 @@
           "hps": 14906.2
         },
         {
+          "name": "De",
+          "hps": 14735.2
+        },
+        {
           "name": "Shanika",
           "hps": 14667.1
         },
@@ -3104,10 +3112,6 @@
         {
           "name": "Elder",
           "hps": 13122.2
-        },
-        {
-          "name": "De",
-          "hps": 13082.5
         },
         {
           "name": "Yapi",
@@ -4460,6 +4464,10 @@
           "hps": 21465.1
         },
         {
+          "name": "Tempest",
+          "hps": 21393.1
+        },
+        {
           "name": "Monsterhil",
           "hps": 21230.6
         },
@@ -4554,10 +4562,6 @@
         {
           "name": "Янхана",
           "hps": 20102.2
-        },
-        {
-          "name": "Tempest",
-          "hps": 20060.7
         },
         {
           "name": "Nova",
