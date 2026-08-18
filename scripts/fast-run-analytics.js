@@ -335,12 +335,18 @@ function renderTable(summaries) {
   fastRunTableBody.innerHTML = '';
   for (const r of sorted) {
     const tr = document.createElement('tr');
-    tr.style.cursor = 'pointer';
-    tr.title = "Відкрити лог";
-    tr.addEventListener('click', () => openRaidLog(r.raidUrl));
 
     const tdDate = document.createElement('td');
-    tdDate.textContent = formatDateLabel(r.date);
+    if (r.raidUrl) {
+      const a = document.createElement('a');
+      a.href = r.raidUrl;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = formatDateLabel(r.date);
+      tdDate.appendChild(a);
+    } else {
+      tdDate.textContent = formatDateLabel(r.date);
+    }
     tr.appendChild(tdDate);
 
     const tdDur = document.createElement('td');
