@@ -67,9 +67,15 @@ function getSelectedDays() {
   return [...raidDurationDayFilter.querySelectorAll('input:checked')].map((cb) => Number(cb.value));
 }
 
+const FULL_CLEAR_BOSS_COUNT = 11;
+
+function isFullClear(r) {
+  return !r.error && r.durationMs != null && r.bossCount === FULL_CLEAR_BOSS_COUNT;
+}
+
 function buildPoints(summaries) {
   return summaries
-    .filter((r) => !r.error && r.durationMs != null)
+    .filter(isFullClear)
     .map((r) => ({
       date: r.date,
       value: r.durationMs / 1000,
@@ -83,7 +89,7 @@ function buildPoints(summaries) {
 function buildPointsByDay(summaries) {
   const byDay = new Map();
   for (const r of summaries) {
-    if (r.error || r.durationMs == null || !r.date) continue;
+    if (!isFullClear(r) || !r.date) continue;
     const dow = dayOfWeek(r.date);
     if (!byDay.has(dow)) byDay.set(dow, []);
     byDay.get(dow).push({
@@ -313,7 +319,7 @@ let sortCol = 'date';
 let sortDir = 'desc';
 
 function renderTable(summaries) {
-  const rows = summaries.filter((r) => !r.error && r.durationMs != null);
+  const rows = summaries.filter(isFullClear);
   const sorted = [...rows].sort((a, b) => {
     let valA, valB;
     if (sortCol === 'date') { valA = a.date || ''; valB = b.date || ''; }
@@ -404,13 +410,13 @@ async function init() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const summaries = await response.json();
 
-    const valid = summaries.filter((r) => !r.error && r.durationMs != null);
+    const valid = summaries.filter(isFullClear);
     if (!valid.length) {
-      setStatus('Немає даних про тривалість рейдів.');
+      setStatus('Немає даних про повні кліри (11 босів).');
       return;
     }
 
-    setStatus(`Рейдів: ${valid.length}`);
+    setStatus(`Повних клірів: ${valid.length}`);
 
     renderRaidDurationChart(summaries);
     renderTable(summaries);

@@ -75,14 +75,19 @@ function parseTotalDamage($) {
 
 // Use personal-stats.json as the source of valid ЦЛК raid URLs —
 // same population that powers "Сумарний DPS рейду"/"Час бою" charts.
+// Returns Map<normalizedUrl, bossCount>.
 async function readValidRaidUrls() {
   const raw = await fs.readFile(PERSONAL_STATS_FILE, 'utf8');
   const records = JSON.parse(raw);
-  const urls = new Set();
+  const bossesByUrl = new Map();
   for (const r of records) {
-    if (!r.error && r.boss) urls.add(normalizeUrl(r.raidUrl));
+    if (!r.error && r.boss) {
+      const url = normalizeUrl(r.raidUrl);
+      if (!bossesByUrl.has(url)) bossesByUrl.set(url, new Set());
+      bossesByUrl.get(url).add(r.boss);
+    }
   }
-  return [...urls];
+  return new Map([...bossesByUrl.entries()].map(([url, set]) => [url, set.size]));
 }
 
 async function readExisting() {
@@ -95,57 +100,65 @@ async function readExisting() {
 }
 
 async function main() {
-  const validUrls = await readValidRaidUrls();
+  const bossCountByUrl = await readValidRaidUrls();
   const existing = await readExisting();
 
+  const allUrls = [...bossCountByUrl.keys()];
   const existingUrls = new Set(existing.filter((r) => !r.error).map((r) => normalizeUrl(r.raidUrl)));
-  const toFetch = validUrls.filter((url) => !existingUrls.has(url));
+  const toFetch = allUrls.filter((url) => !existingUrls.has(url));
 
-  console.log(`Valid ЦЛК raids: ${validUrls.length}, cached: ${existing.length}, to fetch: ${toFetch.length}`);
-
-  if (toFetch.length === 0) {
-    console.log('Nothing new to fetch.');
-    return;
-  }
+  console.log(`Valid ЦЛК raids: ${allUrls.length}, cached: ${existing.length}, to fetch: ${toFetch.length}`);
 
   const newResults = [];
 
-  for (let i = 0; i < toFetch.length; i++) {
-    const raidUrl = toFetch[i];
-    console.log(`Fetching (${i + 1}/${toFetch.length}): ${raidUrl}`);
+  if (toFetch.length > 0) {
+    for (let i = 0; i < toFetch.length; i++) {
+      const raidUrl = toFetch[i];
+      console.log(`Fetching (${i + 1}/${toFetch.length}): ${raidUrl}`);
 
-    try {
-      const html = await fetchWithRetry(raidUrl);
-      const $ = cheerio.load(html);
-      const bodyText = $('body').text();
+      try {
+        const html = await fetchWithRetry(raidUrl);
+        const $ = cheerio.load(html);
+        const bodyText = $('body').text();
 
-      const durationMs = parseDurationMs(bodyText);
-      const totalDamage = parseTotalDamage($);
+        const durationMs = parseDurationMs(bodyText);
+        const totalDamage = parseTotalDamage($);
 
-      newResults.push({
-        raidUrl,
-        date: extractRaidDateFromUrl(raidUrl),
-        durationMs,
-        totalDamage
-      });
+        newResults.push({
+          raidUrl,
+          date: extractRaidDateFromUrl(raidUrl),
+          bossCount: bossCountByUrl.get(raidUrl) ?? null,
+          durationMs,
+          totalDamage
+        });
 
-      console.log(`  OK: duration=${durationMs != null ? `${durationMs}ms` : 'NOT FOUND'}, totalDamage=${totalDamage ?? 'NOT FOUND'}`);
-    } catch (error) {
-      newResults.push({
-        raidUrl,
-        date: extractRaidDateFromUrl(raidUrl),
-        durationMs: null,
-        totalDamage: null,
-        error: error.message
-      });
-      console.error(`  FAILED: ${error.message}`);
+        console.log(`  OK: bosses=${bossCountByUrl.get(raidUrl)}, duration=${durationMs != null ? `${durationMs}ms` : 'NOT FOUND'}, totalDamage=${totalDamage ?? 'NOT FOUND'}`);
+      } catch (error) {
+        newResults.push({
+          raidUrl,
+          date: extractRaidDateFromUrl(raidUrl),
+          bossCount: bossCountByUrl.get(raidUrl) ?? null,
+          durationMs: null,
+          totalDamage: null,
+          error: error.message
+        });
+        console.error(`  FAILED: ${error.message}`);
+      }
+
+      if (i < toFetch.length - 1) await sleep(REQUEST_DELAY_MS);
     }
-
-    if (i < toFetch.length - 1) await sleep(REQUEST_DELAY_MS);
   }
 
+  // Patch bossCount into existing cached entries (no HTTP needed)
   const fetchedUrls = new Set(toFetch);
-  const kept = existing.filter((r) => !fetchedUrls.has(normalizeUrl(r.raidUrl)));
+  const kept = existing
+    .filter((r) => !fetchedUrls.has(normalizeUrl(r.raidUrl)))
+    .map((r) => {
+      const url = normalizeUrl(r.raidUrl);
+      const bc = bossCountByUrl.get(url);
+      return bc !== undefined && r.bossCount !== bc ? { ...r, bossCount: bc } : r;
+    });
+
   const combined = [...kept, ...newResults].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
   await fs.writeFile(OUTPUT_FILE, JSON.stringify(combined, null, 2), 'utf8');
