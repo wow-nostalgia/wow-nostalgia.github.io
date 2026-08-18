@@ -8,7 +8,7 @@ const { sleep } = require('./shared');
 const PERSONAL_STATS_FILE = path.join(__dirname, '..', 'data', 'personal-stats.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'raid-summaries.json');
 
-const REQUEST_DELAY_MS = 2000;
+const REQUEST_DELAY_MS = 4000;
 const RETRY_DELAY_MS = 8000;
 const MAX_RETRIES = 3;
 
