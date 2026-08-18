@@ -1775,6 +1775,42 @@ body.analytics-page .analytics-chart-wrap canvas {
   height: 100% !important;
 }
 
+body.analytics-page #fastRunTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+body.analytics-page #fastRunTable th,
+body.analytics-page #fastRunTable td {
+  padding: 0.3rem 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+body.analytics-page #fastRunTable th {
+  color: var(--color-text-strong);
+  font-weight: var(--font-weight-medium);
+  background: var(--color-surface-head);
+  position: sticky;
+  top: 0;
+}
+
+body.analytics-page #fastRunTable td:nth-child(2),
+body.analytics-page #fastRunTable td:nth-child(3),
+body.analytics-page #fastRunTable th:nth-child(2),
+body.analytics-page #fastRunTable th:nth-child(3) {
+  text-align: right;
+}
+
+body.analytics-page #fastRunTable tbody tr:nth-child(even) {
+  background: var(--color-surface-stripe);
+}
+
+body.analytics-page #fastRunTable tbody tr:hover {
+  background: var(--color-hover);
+}
+
 /* =========================
    PERSONAL ANALYTICS
    ========================= */
