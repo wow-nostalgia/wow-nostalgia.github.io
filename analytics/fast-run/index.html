@@ -109,7 +109,7 @@
             <div class="analytics-card-header">
               <h2>Всі рейди</h2>
             </div>
-            <p class="analytics-card-caption">Клік по рядку — відкриває лог на uwu-logs.</p>
+            <p class="analytics-card-caption">Клік по даті — відкриває лог на uwu-logs.</p>
             <div style="overflow-x: auto;">
               <table id="fastRunTable" class="ranking-table" style="width:100%;">
                 <thead>
@@ -121,6 +121,11 @@
                 </thead>
                 <tbody id="fastRunTableBody"></tbody>
               </table>
+            </div>
+            <div id="fastRunPagination" class="raid-pagination" hidden>
+              <button type="button" id="fastRunPrevBtn" class="link-button-std">← Попередня</button>
+              <span id="fastRunPageInfo"></span>
+              <button type="button" id="fastRunNextBtn" class="link-button-std">Наступна →</button>
             </div>
           </div>
         </div>

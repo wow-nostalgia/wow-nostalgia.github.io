@@ -313,27 +313,44 @@ function renderRaidDurationChart(summaries) {
   }
 }
 
-// --- Sortable table ---
+// --- Sortable table with pagination ---
 
+const PAGE_SIZE = 20;
 let sortCol = 'date';
 let sortDir = 'desc';
+let currentPage = 0;
 
-function renderTable(summaries) {
+const fastRunPagination = document.getElementById('fastRunPagination');
+const fastRunPrevBtn = document.getElementById('fastRunPrevBtn');
+const fastRunNextBtn = document.getElementById('fastRunNextBtn');
+const fastRunPageInfo = document.getElementById('fastRunPageInfo');
+
+function getSorted(summaries) {
   const rows = summaries.filter(isFullClear);
-  const sorted = [...rows].sort((a, b) => {
+  return [...rows].sort((a, b) => {
     let valA, valB;
     if (sortCol === 'date') { valA = a.date || ''; valB = b.date || ''; }
     else if (sortCol === 'duration') { valA = a.durationMs; valB = b.durationMs; }
     else { valA = a.totalDamage ?? -1; valB = b.totalDamage ?? -1; }
-
-    const cmp = typeof valA === 'string'
-      ? valA.localeCompare(valB)
-      : (valA - valB);
+    const cmp = typeof valA === 'string' ? valA.localeCompare(valB) : (valA - valB);
     return sortDir === 'asc' ? cmp : -cmp;
   });
+}
+
+function renderPagination(total) {
+  const totalPages = Math.max(Math.ceil(total / PAGE_SIZE), 1);
+  fastRunPagination.hidden = totalPages <= 1;
+  fastRunPageInfo.textContent = `Сторінка ${currentPage + 1} з ${totalPages}`;
+  fastRunPrevBtn.disabled = currentPage === 0;
+  fastRunNextBtn.disabled = currentPage >= totalPages - 1;
+}
+
+function renderTable(summaries) {
+  const sorted = getSorted(summaries);
+  const page = sorted.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE);
 
   fastRunTableBody.innerHTML = '';
-  for (const r of sorted) {
+  for (const r of page) {
     const tr = document.createElement('tr');
 
     const tdDate = document.createElement('td');
@@ -359,6 +376,8 @@ function renderTable(summaries) {
 
     fastRunTableBody.appendChild(tr);
   }
+
+  renderPagination(sorted.length);
 }
 
 function updateSortIndicators() {
@@ -382,9 +401,19 @@ function setupTableSort(summaries) {
         sortCol = col;
         sortDir = col === 'date' ? 'desc' : 'asc';
       }
+      currentPage = 0;
       updateSortIndicators();
       renderTable(summaries);
     });
+  });
+  fastRunPrevBtn.addEventListener('click', () => {
+    if (currentPage === 0) return;
+    currentPage -= 1;
+    renderTable(summaries);
+  });
+  fastRunNextBtn.addEventListener('click', () => {
+    currentPage += 1;
+    renderTable(summaries);
   });
   updateSortIndicators();
 }

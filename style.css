@@ -1811,6 +1811,25 @@ body.analytics-page #fastRunTable tbody tr:hover {
   background: var(--color-hover);
 }
 
+body.analytics-page .link-button-std {
+  background: none;
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-md);
+  padding: 0.3rem 0.75rem;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+body.analytics-page .link-button-std:hover {
+  background-color: var(--color-hover);
+}
+
+body.analytics-page .link-button-std:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 /* =========================
    PERSONAL ANALYTICS
    ========================= */
