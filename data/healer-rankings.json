@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-08-19T00:04:29.935Z",
+  "updatedAt": "2026-08-20T00:13:42.919Z",
   "specs": [
     {
       "class": "Paladin",
@@ -234,6 +234,10 @@
         {
           "name": "Палідан",
           "hps": 37877.5
+        },
+        {
+          "name": "Ikisen",
+          "hps": 37807
         },
         {
           "name": "Ivett",
@@ -682,10 +686,6 @@
         {
           "name": "Moranna",
           "hps": 28548.8
-        },
-        {
-          "name": "Ikisen",
-          "hps": 28447
         },
         {
           "name": "Zaluzhna",
@@ -3780,6 +3780,10 @@
           "hps": 30697.8
         },
         {
+          "name": "Shamlilik",
+          "hps": 30567.1
+        },
+        {
           "name": "Sempaiibaka",
           "hps": 30433.8
         },
@@ -3910,6 +3914,10 @@
         {
           "name": "Bunx",
           "hps": 28277.8
+        },
+        {
+          "name": "Memory",
+          "hps": 28198.3
         },
         {
           "name": "Шамстар",
@@ -4278,10 +4286,6 @@
         {
           "name": "Xbuw",
           "hps": 23874.1
-        },
-        {
-          "name": "Memory",
-          "hps": 23808
         },
         {
           "name": "Сильмарилион",
