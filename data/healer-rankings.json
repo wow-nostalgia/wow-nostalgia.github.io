@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-08-21T00:16:36.476Z",
+  "updatedAt": "2026-08-22T00:10:08.656Z",
   "specs": [
     {
       "class": "Paladin",
@@ -1048,6 +1048,10 @@
           "hps": 17069
         },
         {
+          "name": "Vampirr",
+          "hps": 16972.6
+        },
+        {
           "name": "Kubita",
           "hps": 16923.9
         },
@@ -1154,10 +1158,6 @@
         {
           "name": "Поліна",
           "hps": 12304
-        },
-        {
-          "name": "Vampirr",
-          "hps": 12161.9
         },
         {
           "name": "Sonytix",
@@ -2248,6 +2248,10 @@
           "hps": 13231.5
         },
         {
+          "name": "Menopausa",
+          "hps": 13068.9
+        },
+        {
           "name": "Valsiine",
           "hps": 13003.8
         },
@@ -2298,10 +2302,6 @@
         {
           "name": "Ісус",
           "hps": 9511.6
-        },
-        {
-          "name": "Menopausa",
-          "hps": 8849
         },
         {
           "name": "Шдпц",
@@ -4030,6 +4030,10 @@
         {
           "name": "Merick",
           "hps": 26617.8
+        },
+        {
+          "name": "Sabaton",
+          "hps": 26608.4
         },
         {
           "name": "Strawberry",
