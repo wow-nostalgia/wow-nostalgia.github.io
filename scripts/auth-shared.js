@@ -146,7 +146,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const navPenaltyBattalion = document.getElementById('navPenaltyBattalion');
   if (navPenaltyBattalion) navPenaltyBattalion.hidden = !user?.isGuildOfficer;
-
-  const navFastRun = document.getElementById('navFastRun');
-  if (navFastRun) navFastRun.hidden = !user?.isGuildOfficer;
 });

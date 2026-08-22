@@ -1,7 +1,4 @@
 const fastRunSection = document.getElementById('fastRunSection');
-const loginGate = document.getElementById('loginGate');
-const loginGateBtn = document.getElementById('loginGateBtn');
-const notOfficerGate = document.getElementById('notOfficerGate');
 const fastRunStatus = document.getElementById('fastRunStatus');
 const raidDurationSplineSelect = document.getElementById('raidDurationSplineSelect');
 const raidDurationDayFilter = document.getElementById('raidDurationDayFilter');
@@ -419,20 +416,6 @@ function setupTableSort(summaries) {
 }
 
 async function init() {
-  loginGateBtn.href = discordLoginUrl();
-
-  const user = await fetchCurrentUser();
-
-  if (!user) {
-    loginGate.hidden = false;
-    return;
-  }
-
-  if (!user.isGuildOfficer) {
-    notOfficerGate.hidden = false;
-    return;
-  }
-
   fastRunSection.hidden = false;
 
   Chart.defaults.color = cssVar('--color-text');
