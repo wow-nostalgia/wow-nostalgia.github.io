@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-08-23T00:07:49.527Z",
+  "updatedAt": "2026-08-24T00:06:30.291Z",
   "specs": [
     {
       "class": "Paladin",
@@ -848,6 +848,10 @@
           "hps": 24148.4
         },
         {
+          "name": "Borodin",
+          "hps": 24099.7
+        },
+        {
           "name": "Патіфон",
           "hps": 23931.2
         },
@@ -878,6 +882,10 @@
         {
           "name": "Hora",
           "hps": 22644.4
+        },
+        {
+          "name": "Сашаа",
+          "hps": 22456.4
         },
         {
           "name": "Vulkanchik",
@@ -974,10 +982,6 @@
         {
           "name": "Mobil",
           "hps": 20663.4
-        },
-        {
-          "name": "Сашаа",
-          "hps": 20566.3
         },
         {
           "name": "Vampirr",
@@ -1454,6 +1458,10 @@
           "hps": 1127.8
         },
         {
+          "name": "Zexuz",
+          "hps": 1091.6
+        },
+        {
           "name": "Demiurg",
           "hps": 1088.7
         },
@@ -1616,10 +1624,6 @@
         {
           "name": "Делайна",
           "hps": 511.2
-        },
-        {
-          "name": "Zexuz",
-          "hps": 509.9
         },
         {
           "name": "Нексо",
