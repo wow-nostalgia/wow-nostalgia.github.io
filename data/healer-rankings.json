@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-08-24T00:06:30.291Z",
+  "updatedAt": "2026-08-25T00:06:44.834Z",
   "specs": [
     {
       "class": "Paladin",
@@ -798,6 +798,10 @@
         {
           "name": "Олень",
           "hps": 25630.7
+        },
+        {
+          "name": "Robohil",
+          "hps": 25389.9
         },
         {
           "name": "Вовабрат",
@@ -1874,6 +1878,10 @@
           "hps": 317
         },
         {
+          "name": "Кропива",
+          "hps": 315.5
+        },
+        {
           "name": "Prostoprist",
           "hps": 309.7
         },
@@ -2108,10 +2116,6 @@
         {
           "name": "Bart",
           "hps": 141.7
-        },
-        {
-          "name": "Кропива",
-          "hps": 125.8
         },
         {
           "name": "Братик",
@@ -3642,6 +3646,10 @@
           "hps": 859.4
         },
         {
+          "name": "Shoggot",
+          "hps": 822.4
+        },
+        {
           "name": "Turinthalion",
           "hps": 676.4
         },
@@ -4640,6 +4648,10 @@
           "hps": 19204.6
         },
         {
+          "name": "Lightning",
+          "hps": 19194.1
+        },
+        {
           "name": "Kharakternyk",
           "hps": 19048.9
         },
@@ -4738,10 +4750,6 @@
         {
           "name": "Hollymolly",
           "hps": 17592.6
-        },
-        {
-          "name": "Lightning",
-          "hps": 17492.7
         },
         {
           "name": "Шок",
