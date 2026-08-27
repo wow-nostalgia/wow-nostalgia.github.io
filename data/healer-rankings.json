@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-08-26T00:05:54.640Z",
+  "updatedAt": "2026-08-27T05:05:47.955Z",
   "specs": [
     {
       "class": "Paladin",
@@ -237,7 +237,7 @@
         },
         {
           "name": "Ikisen",
-          "hps": 37807
+          "hps": 37831.1
         },
         {
           "name": "Ivett",
@@ -2422,6 +2422,10 @@
           "hps": 26938.4
         },
         {
+          "name": "Совуня",
+          "hps": 26133
+        },
+        {
           "name": "Дерас",
           "hps": 26093.1
         },
@@ -2468,10 +2472,6 @@
         {
           "name": "Чіта",
           "hps": 23172.8
-        },
-        {
-          "name": "Совуня",
-          "hps": 23133.5
         },
         {
           "name": "Otherside",

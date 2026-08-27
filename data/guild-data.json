@@ -117,7 +117,7 @@
       "specIndex": 2,
       "overallRank": 50,
       "rankDelta": 0,
-      "overallScore": 83,
+      "overallScore": 82.98,
       "bosses": {
         "Lord Marrowgar": 15046.3,
         "Lady Deathwhisper": 15828.2,
@@ -169,7 +169,7 @@
       "specIndex": 2,
       "overallRank": 51,
       "rankDelta": 0,
-      "overallScore": 85.89,
+      "overallScore": 85.9,
       "bosses": {
         "Lord Marrowgar": 18910.9,
         "Lady Deathwhisper": 17495.9,
@@ -221,7 +221,7 @@
       "specIndex": 3,
       "overallRank": 138,
       "rankDelta": 0,
-      "overallScore": 32.94,
+      "overallScore": 32.93,
       "bosses": {
         "Lord Marrowgar": 22.4,
         "Lady Deathwhisper": 0.5,
@@ -273,7 +273,7 @@
       "specIndex": 2,
       "overallRank": 37,
       "rankDelta": 0,
-      "overallScore": 54.39,
+      "overallScore": 54.42,
       "bosses": {
         "Lord Marrowgar": 19011.7,
         "Lady Deathwhisper": 0,
@@ -323,8 +323,8 @@
       "class": "Rogue",
       "spec": "Combat",
       "specIndex": 2,
-      "overallRank": 153,
-      "rankDelta": 0,
+      "overallRank": 154,
+      "rankDelta": -1,
       "overallScore": 49.03,
       "bosses": {
         "Lord Marrowgar": 12207.3,
@@ -351,7 +351,7 @@
       "specIndex": 2,
       "overallRank": 41,
       "rankDelta": 0,
-      "overallScore": 95.24,
+      "overallScore": 95.25,
       "bosses": {
         "Lord Marrowgar": 24018.5,
         "Lady Deathwhisper": 20337.7,
@@ -375,9 +375,9 @@
       "class": "Mage",
       "spec": "Fire",
       "specIndex": 2,
-      "overallRank": 120,
-      "rankDelta": 0,
-      "overallScore": 76.91,
+      "overallRank": 121,
+      "rankDelta": -1,
+      "overallScore": 76.92,
       "bosses": {
         "Lord Marrowgar": 21363.5,
         "Lady Deathwhisper": 16735.2,
@@ -403,7 +403,7 @@
       "specIndex": 1,
       "overallRank": 24,
       "rankDelta": 0,
-      "overallScore": 89.91,
+      "overallScore": 89.89,
       "bosses": {
         "Lord Marrowgar": 521.4,
         "Lady Deathwhisper": 392.9,
@@ -429,7 +429,7 @@
       "specIndex": 2,
       "overallRank": 98,
       "rankDelta": 0,
-      "overallScore": 50.1,
+      "overallScore": 50.09,
       "bosses": {
         "Lord Marrowgar": 5590.2,
         "Lady Deathwhisper": 2944.8,
@@ -479,14 +479,14 @@
       "class": "Paladin",
       "spec": "Retribution",
       "specIndex": 3,
-      "overallRank": 13,
-      "rankDelta": 0,
+      "overallRank": 12,
+      "rankDelta": 1,
       "overallScore": 98.18,
       "bosses": {
         "Lord Marrowgar": 21273.5,
         "Lady Deathwhisper": 18605.6,
         "Deathbringer Saurfang": 22525.7,
-        "Festergut": 19766,
+        "Festergut": 19834,
         "Rotface": 20779.5,
         "Professor Putricide": 13505.4,
         "Blood Prince Council": 16152.8,
@@ -559,7 +559,7 @@
       "specIndex": 3,
       "overallRank": 81,
       "rankDelta": 0,
-      "overallScore": 79.65,
+      "overallScore": 79.63,
       "bosses": {
         "Lord Marrowgar": 17799.6,
         "Lady Deathwhisper": 15777,
@@ -585,7 +585,7 @@
       "specIndex": 2,
       "overallRank": 102,
       "rankDelta": 0,
-      "overallScore": 67.15,
+      "overallScore": 67.17,
       "bosses": {
         "Lord Marrowgar": 16416.8,
         "Lady Deathwhisper": 13436.4,
@@ -610,8 +610,8 @@
       "spec": "Feral Combat",
       "specIndex": 2,
       "overallRank": 155,
-      "rankDelta": -1,
-      "overallScore": 39.3,
+      "rankDelta": 0,
+      "overallScore": 39.29,
       "bosses": {
         "Lord Marrowgar": 13366,
         "Lady Deathwhisper": 11234.5,
@@ -637,7 +637,7 @@
       "specIndex": 2,
       "overallRank": 82,
       "rankDelta": 0,
-      "overallScore": 67.36,
+      "overallScore": 67.37,
       "bosses": {
         "Lord Marrowgar": 19864.7,
         "Lady Deathwhisper": 14274.4,
@@ -793,7 +793,7 @@
       "specIndex": 2,
       "overallRank": 60,
       "rankDelta": 0,
-      "overallScore": 78.26,
+      "overallScore": 78.24,
       "bosses": {
         "Lord Marrowgar": 16918.8,
         "Lady Deathwhisper": 14157.6,
@@ -871,7 +871,7 @@
       "specIndex": 2,
       "overallRank": 53,
       "rankDelta": 0,
-      "overallScore": 81.68,
+      "overallScore": 81.69,
       "bosses": {
         "Lord Marrowgar": 14535,
         "Lady Deathwhisper": 13952.8,
@@ -923,7 +923,7 @@
       "specIndex": 2,
       "overallRank": 18,
       "rankDelta": 0,
-      "overallScore": 85.48,
+      "overallScore": 85.49,
       "bosses": {
         "Lord Marrowgar": 5543.9,
         "Lady Deathwhisper": 6676.9,
@@ -949,7 +949,7 @@
       "specIndex": 3,
       "overallRank": 68,
       "rankDelta": 0,
-      "overallScore": 85.74,
+      "overallScore": 85.7,
       "bosses": {
         "Lord Marrowgar": 19164.2,
         "Lady Deathwhisper": 14791.2,
@@ -975,7 +975,7 @@
       "specIndex": 1,
       "overallRank": 17,
       "rankDelta": 0,
-      "overallScore": 96.41,
+      "overallScore": 96.42,
       "bosses": {
         "Lord Marrowgar": 20229.6,
         "Lady Deathwhisper": 19361.4,
@@ -1027,7 +1027,7 @@
       "specIndex": 1,
       "overallRank": 96,
       "rankDelta": 0,
-      "overallScore": 51.41,
+      "overallScore": 51.42,
       "bosses": {
         "Lord Marrowgar": 315.5,
         "Lady Deathwhisper": 1.4,
@@ -1053,7 +1053,7 @@
       "specIndex": 3,
       "overallRank": 36,
       "rankDelta": 0,
-      "overallScore": 92.18,
+      "overallScore": 92.16,
       "bosses": {
         "Lord Marrowgar": 17495.6,
         "Lady Deathwhisper": 15528.4,
@@ -1079,12 +1079,12 @@
       "specIndex": 1,
       "overallRank": 41,
       "rankDelta": 0,
-      "overallScore": 86.02,
+      "overallScore": 86.01,
       "bosses": {
         "Lord Marrowgar": 18874.6,
         "Lady Deathwhisper": 13939.5,
         "Deathbringer Saurfang": 19617,
-        "Festergut": 17062,
+        "Festergut": 17062.8,
         "Rotface": 18202.3,
         "Professor Putricide": 12220,
         "Blood Prince Council": 14423.1,
@@ -1157,7 +1157,7 @@
       "specIndex": 1,
       "overallRank": 36,
       "rankDelta": 0,
-      "overallScore": 84.52,
+      "overallScore": 84.53,
       "bosses": {
         "Lord Marrowgar": 4067.6,
         "Lady Deathwhisper": 3812,
@@ -1209,7 +1209,7 @@
       "specIndex": 1,
       "overallRank": 9,
       "rankDelta": 0,
-      "overallScore": 94.04,
+      "overallScore": 94.05,
       "bosses": {
         "Lord Marrowgar": 18032.9,
         "Lady Deathwhisper": 17596.3,
@@ -1235,7 +1235,7 @@
       "specIndex": 3,
       "overallRank": 179,
       "rankDelta": 0,
-      "overallScore": 26.64,
+      "overallScore": 26.62,
       "bosses": {
         "Lord Marrowgar": 36.7,
         "Lady Deathwhisper": 0,
@@ -1292,7 +1292,7 @@
         "Lord Marrowgar": 13024.2,
         "Lady Deathwhisper": 10872.8,
         "Deathbringer Saurfang": 17228.6,
-        "Festergut": 14054.9,
+        "Festergut": 14055.6,
         "Rotface": 15005,
         "Professor Putricide": 8548,
         "Blood Prince Council": 12062.4,
@@ -1391,7 +1391,7 @@
       "specIndex": 2,
       "overallRank": 74,
       "rankDelta": 0,
-      "overallScore": 72.08,
+      "overallScore": 72.09,
       "bosses": {
         "Lord Marrowgar": 20502.7,
         "Lady Deathwhisper": 15651,
@@ -1427,7 +1427,7 @@
         "Professor Putricide": 16486.3,
         "Blood Prince Council": 16752,
         "Blood-Queen Lana'thel": 30089.6,
-        "Sindragosa": 12522.1,
+        "Sindragosa": 12523.3,
         "The Lich King": 12641,
         "Toravon the Ice Watcher": 16448.8,
         "Halion": 14160.3,
@@ -1467,8 +1467,8 @@
       "class": "Mage",
       "spec": "Fire",
       "specIndex": 2,
-      "overallRank": 337,
-      "rankDelta": 0,
+      "overallRank": 338,
+      "rankDelta": -1,
       "overallScore": 26.71,
       "bosses": {
         "Lord Marrowgar": 13907.1,
@@ -1495,7 +1495,7 @@
       "specIndex": 1,
       "overallRank": 72,
       "rankDelta": 0,
-      "overallScore": 74.37,
+      "overallScore": 74.36,
       "bosses": {
         "Lord Marrowgar": 330.3,
         "Lady Deathwhisper": 224,
@@ -1521,7 +1521,7 @@
       "specIndex": 2,
       "overallRank": 40,
       "rankDelta": 0,
-      "overallScore": 95.74,
+      "overallScore": 95.75,
       "bosses": {
         "Lord Marrowgar": 23453.3,
         "Lady Deathwhisper": 17986.8,
@@ -1599,7 +1599,7 @@
       "specIndex": 1,
       "overallRank": 43,
       "rankDelta": 0,
-      "overallScore": 85.91,
+      "overallScore": 85.89,
       "bosses": {
         "Lord Marrowgar": 384.1,
         "Lady Deathwhisper": 283.7,
@@ -1625,7 +1625,7 @@
       "specIndex": 3,
       "overallRank": 136,
       "rankDelta": 0,
-      "overallScore": 69.89,
+      "overallScore": 69.87,
       "bosses": {
         "Lord Marrowgar": 16020.2,
         "Lady Deathwhisper": 14522.1,
@@ -1651,10 +1651,10 @@
       "specIndex": 2,
       "overallRank": 123,
       "rankDelta": 0,
-      "overallScore": 49.29,
+      "overallScore": 49.3,
       "bosses": {
-        "Lord Marrowgar": 16608.1,
-        "Lady Deathwhisper": 13677.3,
+        "Lord Marrowgar": 16611.5,
+        "Lady Deathwhisper": 13677.6,
         "Deathbringer Saurfang": 19692.7,
         "Festergut": 15263,
         "Rotface": 16037.5,
@@ -1677,7 +1677,7 @@
       "specIndex": 3,
       "overallRank": 2,
       "rankDelta": 0,
-      "overallScore": 99.03,
+      "overallScore": 99.02,
       "bosses": {
         "Lord Marrowgar": 65.6,
         "Lady Deathwhisper": 1,
@@ -1781,7 +1781,7 @@
       "specIndex": 3,
       "overallRank": 117,
       "rankDelta": 0,
-      "overallScore": 71.77,
+      "overallScore": 71.75,
       "bosses": {
         "Lord Marrowgar": 15316.3,
         "Lady Deathwhisper": 15398.1,
@@ -1859,12 +1859,12 @@
       "specIndex": 2,
       "overallRank": 103,
       "rankDelta": 0,
-      "overallScore": 58.79,
+      "overallScore": 58.8,
       "bosses": {
         "Lord Marrowgar": 20078,
         "Lady Deathwhisper": 11562.3,
         "Deathbringer Saurfang": 20613.7,
-        "Festergut": 18458.6,
+        "Festergut": 18459.4,
         "Rotface": 18996.9,
         "Professor Putricide": 11391.4,
         "Blood Prince Council": 13060.4,
@@ -1885,7 +1885,7 @@
       "specIndex": 2,
       "overallRank": 48,
       "rankDelta": 0,
-      "overallScore": 85.32,
+      "overallScore": 85.33,
       "bosses": {
         "Lord Marrowgar": 16288.7,
         "Lady Deathwhisper": 17412.8,
@@ -1911,7 +1911,7 @@
       "specIndex": 2,
       "overallRank": 206,
       "rankDelta": 0,
-      "overallScore": 3.71,
+      "overallScore": 3.7,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 3414.1,
@@ -1937,7 +1937,7 @@
       "specIndex": 3,
       "overallRank": 62,
       "rankDelta": 0,
-      "overallScore": 86.95,
+      "overallScore": 86.93,
       "bosses": {
         "Lord Marrowgar": 18202.2,
         "Lady Deathwhisper": 18068.1,
@@ -1989,7 +1989,7 @@
       "specIndex": 1,
       "overallRank": 145,
       "rankDelta": 0,
-      "overallScore": 56.91,
+      "overallScore": 56.89,
       "bosses": {
         "Lord Marrowgar": 12433.2,
         "Lady Deathwhisper": 10876.9,
@@ -2015,7 +2015,7 @@
       "specIndex": 3,
       "overallRank": 99,
       "rankDelta": 0,
-      "overallScore": 35.57,
+      "overallScore": 35.56,
       "bosses": {
         "Lord Marrowgar": 224.5,
         "Lady Deathwhisper": 8.2,
@@ -2119,7 +2119,7 @@
       "specIndex": 2,
       "overallRank": 115,
       "rankDelta": 0,
-      "overallScore": 79.7,
+      "overallScore": 79.71,
       "bosses": {
         "Lord Marrowgar": 19721.4,
         "Lady Deathwhisper": 15889.6,
@@ -2171,7 +2171,7 @@
       "specIndex": 3,
       "overallRank": 132,
       "rankDelta": 0,
-      "overallScore": 70.9,
+      "overallScore": 70.87,
       "bosses": {
         "Lord Marrowgar": 16766.2,
         "Lady Deathwhisper": 16062.4,
@@ -2197,7 +2197,7 @@
       "specIndex": 1,
       "overallRank": 111,
       "rankDelta": 0,
-      "overallScore": 63.78,
+      "overallScore": 63.77,
       "bosses": {
         "Lord Marrowgar": 258.6,
         "Lady Deathwhisper": 246.4,
@@ -2249,7 +2249,7 @@
       "specIndex": 1,
       "overallRank": 20,
       "rankDelta": 0,
-      "overallScore": 95.34,
+      "overallScore": 95.35,
       "bosses": {
         "Lord Marrowgar": 20825.2,
         "Lady Deathwhisper": 17130.2,
@@ -2327,7 +2327,7 @@
       "specIndex": 3,
       "overallRank": 114,
       "rankDelta": 0,
-      "overallScore": 72.17,
+      "overallScore": 72.15,
       "bosses": {
         "Lord Marrowgar": 14795.8,
         "Lady Deathwhisper": 13949.9,
@@ -2353,7 +2353,7 @@
       "specIndex": 3,
       "overallRank": 146,
       "rankDelta": 0,
-      "overallScore": 32.12,
+      "overallScore": 32.11,
       "bosses": {
         "Lord Marrowgar": 66.2,
         "Lady Deathwhisper": 0,
@@ -2405,7 +2405,7 @@
       "specIndex": 3,
       "overallRank": 182,
       "rankDelta": 0,
-      "overallScore": 59.04,
+      "overallScore": 59.02,
       "bosses": {
         "Lord Marrowgar": 15340.1,
         "Lady Deathwhisper": 12810.5,
@@ -2431,7 +2431,7 @@
       "specIndex": 1,
       "overallRank": 39,
       "rankDelta": 0,
-      "overallScore": 78.95,
+      "overallScore": 78.94,
       "bosses": {
         "Lord Marrowgar": 214.9,
         "Lady Deathwhisper": 203.1,
@@ -2483,7 +2483,7 @@
       "specIndex": 2,
       "overallRank": 65,
       "rankDelta": 0,
-      "overallScore": 78.01,
+      "overallScore": 78.02,
       "bosses": {
         "Lord Marrowgar": 16610.8,
         "Lady Deathwhisper": 17165.9,
@@ -2509,7 +2509,7 @@
       "specIndex": 3,
       "overallRank": 51,
       "rankDelta": 0,
-      "overallScore": 50.88,
+      "overallScore": 50.86,
       "bosses": {
         "Lord Marrowgar": 59.1,
         "Lady Deathwhisper": 0,
@@ -2535,7 +2535,7 @@
       "specIndex": 2,
       "overallRank": 19,
       "rankDelta": 0,
-      "overallScore": 85.29,
+      "overallScore": 85.31,
       "bosses": {
         "Lord Marrowgar": 5298.7,
         "Lady Deathwhisper": 7049.4,
@@ -2561,7 +2561,7 @@
       "specIndex": 3,
       "overallRank": 185,
       "rankDelta": 0,
-      "overallScore": 58.8,
+      "overallScore": 58.79,
       "bosses": {
         "Lord Marrowgar": 17100.9,
         "Lady Deathwhisper": 9671.8,
@@ -2613,7 +2613,7 @@
       "specIndex": 2,
       "overallRank": 50,
       "rankDelta": 0,
-      "overallScore": 84.63,
+      "overallScore": 84.64,
       "bosses": {
         "Lord Marrowgar": 24423.8,
         "Lady Deathwhisper": 17094.8,
@@ -2637,8 +2637,8 @@
       "class": "Druid",
       "spec": "Restoration",
       "specIndex": 3,
-      "overallRank": 268,
-      "rankDelta": 0,
+      "overallRank": 269,
+      "rankDelta": -1,
       "overallScore": 1.57,
       "bosses": {
         "Lord Marrowgar": 0,
@@ -2663,20 +2663,20 @@
       "class": "Druid",
       "spec": "Balance",
       "specIndex": 1,
-      "overallRank": 106,
-      "rankDelta": 0,
-      "overallScore": 67.6,
+      "overallRank": 99,
+      "rankDelta": 7,
+      "overallScore": 68.82,
       "bosses": {
         "Lord Marrowgar": 16212.5,
         "Lady Deathwhisper": 11280.4,
         "Deathbringer Saurfang": 20364.9,
         "Festergut": 16019.5,
-        "Rotface": 13604.3,
+        "Rotface": 14020.4,
         "Professor Putricide": 9823.8,
-        "Blood Prince Council": 7871.4,
+        "Blood Prince Council": 9117.1,
         "Blood-Queen Lana'thel": 17146.8,
         "Sindragosa": 9885.2,
-        "The Lich King": 8272.3,
+        "The Lich King": 8521.5,
         "Toravon the Ice Watcher": 13120.1,
         "Halion": 10112,
         "Anub'arak": 7923.2,
@@ -2743,7 +2743,7 @@
       "specIndex": 2,
       "overallRank": 98,
       "rankDelta": 0,
-      "overallScore": 68.21,
+      "overallScore": 68.22,
       "bosses": {
         "Lord Marrowgar": 16409.2,
         "Lady Deathwhisper": 16657,
@@ -2795,7 +2795,7 @@
       "specIndex": 1,
       "overallRank": 102,
       "rankDelta": 0,
-      "overallScore": 65.71,
+      "overallScore": 65.67,
       "bosses": {
         "Lord Marrowgar": 465.7,
         "Lady Deathwhisper": 199.3,
@@ -2925,7 +2925,7 @@
       "specIndex": 1,
       "overallRank": 112,
       "rankDelta": 0,
-      "overallScore": 63.65,
+      "overallScore": 63.63,
       "bosses": {
         "Lord Marrowgar": 370.8,
         "Lady Deathwhisper": 295.6,
@@ -2940,7 +2940,7 @@
         "Toravon the Ice Watcher": 176.3,
         "Halion": 71.8,
         "Anub'arak": 0,
-        "Valithria Dreamwalker": 37807.1
+        "Valithria Dreamwalker": 37831.1
       }
     },
     {
@@ -2951,7 +2951,7 @@
       "specIndex": 1,
       "overallRank": 21,
       "rankDelta": 0,
-      "overallScore": 77.42,
+      "overallScore": 77.44,
       "bosses": {
         "Lord Marrowgar": 18046.8,
         "Lady Deathwhisper": 17534.3,
@@ -2977,7 +2977,7 @@
       "specIndex": 2,
       "overallRank": 46,
       "rankDelta": 0,
-      "overallScore": 83.26,
+      "overallScore": 83.23,
       "bosses": {
         "Lord Marrowgar": 16039,
         "Lady Deathwhisper": 15233.1,
@@ -3029,7 +3029,7 @@
       "specIndex": 2,
       "overallRank": 76,
       "rankDelta": 0,
-      "overallScore": 76.04,
+      "overallScore": 76.06,
       "bosses": {
         "Lord Marrowgar": 19047.2,
         "Lady Deathwhisper": 15274.6,
@@ -3055,7 +3055,7 @@
       "specIndex": 1,
       "overallRank": 57,
       "rankDelta": 0,
-      "overallScore": 79.93,
+      "overallScore": 79.9,
       "bosses": {
         "Lord Marrowgar": 274.1,
         "Lady Deathwhisper": 268.5,
@@ -3131,9 +3131,9 @@
       "class": "Paladin",
       "spec": "Holy",
       "specIndex": 1,
-      "overallRank": 108,
-      "rankDelta": 0,
-      "overallScore": 64.4,
+      "overallRank": 109,
+      "rankDelta": -1,
+      "overallScore": 64.37,
       "bosses": {
         "Lord Marrowgar": 340,
         "Lady Deathwhisper": 229.1,
@@ -3159,7 +3159,7 @@
       "specIndex": 3,
       "overallRank": 55,
       "rankDelta": 0,
-      "overallScore": 88.49,
+      "overallScore": 88.47,
       "bosses": {
         "Lord Marrowgar": 18148.7,
         "Lady Deathwhisper": 18025.2,
@@ -3211,14 +3211,14 @@
       "specIndex": 2,
       "overallRank": 76,
       "rankDelta": 0,
-      "overallScore": 70.66,
+      "overallScore": 71.24,
       "bosses": {
         "Lord Marrowgar": 20699.9,
         "Lady Deathwhisper": 15907.4,
-        "Deathbringer Saurfang": 23643.7,
+        "Deathbringer Saurfang": 24343,
         "Festergut": 21691.3,
         "Rotface": 21691.8,
-        "Professor Putricide": 13022.8,
+        "Professor Putricide": 13251.9,
         "Blood Prince Council": 15331.1,
         "Blood-Queen Lana'thel": 26709.9,
         "Sindragosa": 12174.9,
@@ -3237,7 +3237,7 @@
       "specIndex": 1,
       "overallRank": 150,
       "rankDelta": 0,
-      "overallScore": 41.47,
+      "overallScore": 41.46,
       "bosses": {
         "Lord Marrowgar": 3542.7,
         "Lady Deathwhisper": 2945.1,
@@ -3261,20 +3261,20 @@
       "class": "Death Knight",
       "spec": "Unholy",
       "specIndex": 3,
-      "overallRank": 201,
-      "rankDelta": 0,
-      "overallScore": 30.62,
+      "overallRank": 142,
+      "rankDelta": 59,
+      "overallScore": 48.97,
       "bosses": {
-        "Lord Marrowgar": 14338.3,
+        "Lord Marrowgar": 14804.7,
         "Lady Deathwhisper": 0,
-        "Deathbringer Saurfang": 14860.1,
-        "Festergut": 12884.9,
+        "Deathbringer Saurfang": 16183.2,
+        "Festergut": 14061.9,
         "Rotface": 13717.5,
-        "Professor Putricide": 0,
+        "Professor Putricide": 9264.6,
         "Blood Prince Council": 8187.7,
         "Blood-Queen Lana'thel": 12708.1,
-        "Sindragosa": 0,
-        "The Lich King": 0,
+        "Sindragosa": 12221.6,
+        "The Lich King": 8339.1,
         "Toravon the Ice Watcher": 0,
         "Halion": 0,
         "Anub'arak": 0,
@@ -3497,7 +3497,7 @@
       "specIndex": 3,
       "overallRank": 140,
       "rankDelta": 0,
-      "overallScore": 67.87,
+      "overallScore": 67.84,
       "bosses": {
         "Lord Marrowgar": 14058.7,
         "Lady Deathwhisper": 14584.6,
@@ -3601,7 +3601,7 @@
       "specIndex": 2,
       "overallRank": 44,
       "rankDelta": 0,
-      "overallScore": 73.75,
+      "overallScore": 73.76,
       "bosses": {
         "Lord Marrowgar": 6179.1,
         "Lady Deathwhisper": 6980.5,
@@ -3627,7 +3627,7 @@
       "specIndex": 3,
       "overallRank": 87,
       "rankDelta": 0,
-      "overallScore": 81.67,
+      "overallScore": 81.63,
       "bosses": {
         "Lord Marrowgar": 19645.6,
         "Lady Deathwhisper": 12921.6,
@@ -3653,7 +3653,7 @@
       "specIndex": 2,
       "overallRank": 115,
       "rankDelta": 0,
-      "overallScore": 61.75,
+      "overallScore": 61.76,
       "bosses": {
         "Lord Marrowgar": 14311.1,
         "Lady Deathwhisper": 12362,
@@ -3679,7 +3679,7 @@
       "specIndex": 2,
       "overallRank": 87,
       "rankDelta": 0,
-      "overallScore": 55.42,
+      "overallScore": 55.41,
       "bosses": {
         "Lord Marrowgar": 4933.1,
         "Lady Deathwhisper": 2757.5,
@@ -3705,12 +3705,12 @@
       "specIndex": 3,
       "overallRank": 51,
       "rankDelta": 0,
-      "overallScore": 89.43,
+      "overallScore": 89.42,
       "bosses": {
         "Lord Marrowgar": 18459,
         "Lady Deathwhisper": 16431.4,
         "Deathbringer Saurfang": 19798.9,
-        "Festergut": 17757.6,
+        "Festergut": 17760.2,
         "Rotface": 17802.8,
         "Professor Putricide": 11149.4,
         "Blood Prince Council": 13255.4,
@@ -3835,7 +3835,7 @@
       "specIndex": 3,
       "overallRank": 94,
       "rankDelta": 0,
-      "overallScore": 76.79,
+      "overallScore": 76.76,
       "bosses": {
         "Lord Marrowgar": 16626.3,
         "Lady Deathwhisper": 14432.8,
@@ -3939,7 +3939,7 @@
       "specIndex": 1,
       "overallRank": 48,
       "rankDelta": 0,
-      "overallScore": 62.49,
+      "overallScore": 62.39,
       "bosses": {
         "Lord Marrowgar": 11860.5,
         "Lady Deathwhisper": 9851.8,
@@ -3963,19 +3963,19 @@
       "class": "Warlock",
       "spec": "Demonology",
       "specIndex": 2,
-      "overallRank": 20,
-      "rankDelta": 0,
-      "overallScore": 90.32,
+      "overallRank": 19,
+      "rankDelta": 1,
+      "overallScore": 91.4,
       "bosses": {
         "Lord Marrowgar": 16100.4,
         "Lady Deathwhisper": 15334,
         "Deathbringer Saurfang": 18034.8,
-        "Festergut": 16702.6,
+        "Festergut": 17166.2,
         "Rotface": 18145.2,
         "Professor Putricide": 14106.9,
         "Blood Prince Council": 14317.9,
-        "Blood-Queen Lana'thel": 21497.2,
-        "Sindragosa": 11369.1,
+        "Blood-Queen Lana'thel": 29002.8,
+        "Sindragosa": 12086.8,
         "The Lich King": 11840.3,
         "Toravon the Ice Watcher": 11010.9,
         "Halion": 12285.1,
@@ -3991,7 +3991,7 @@
       "specIndex": 3,
       "overallRank": 4,
       "rankDelta": 0,
-      "overallScore": 99.18,
+      "overallScore": 99.17,
       "bosses": {
         "Lord Marrowgar": 20122.4,
         "Lady Deathwhisper": 20060,
@@ -4017,7 +4017,7 @@
       "specIndex": 1,
       "overallRank": 77,
       "rankDelta": 0,
-      "overallScore": 39.46,
+      "overallScore": 39.38,
       "bosses": {
         "Lord Marrowgar": 11813.7,
         "Lady Deathwhisper": 0,
@@ -4043,7 +4043,7 @@
       "specIndex": 3,
       "overallRank": 171,
       "rankDelta": 0,
-      "overallScore": 28.34,
+      "overallScore": 28.32,
       "bosses": {
         "Lord Marrowgar": 36.1,
         "Lady Deathwhisper": 0,
@@ -4095,7 +4095,7 @@
       "specIndex": 1,
       "overallRank": 153,
       "rankDelta": 0,
-      "overallScore": 51.78,
+      "overallScore": 51.77,
       "bosses": {
         "Lord Marrowgar": 380.3,
         "Lady Deathwhisper": 126.2,
@@ -4121,7 +4121,7 @@
       "specIndex": 1,
       "overallRank": 46,
       "rankDelta": 0,
-      "overallScore": 80.47,
+      "overallScore": 80.49,
       "bosses": {
         "Lord Marrowgar": 4082.1,
         "Lady Deathwhisper": 3318.8,
@@ -4173,7 +4173,7 @@
       "specIndex": 1,
       "overallRank": 164,
       "rankDelta": 0,
-      "overallScore": 51.89,
+      "overallScore": 51.87,
       "bosses": {
         "Lord Marrowgar": 14520.1,
         "Lady Deathwhisper": 9350.2,
@@ -4251,7 +4251,7 @@
       "specIndex": 2,
       "overallRank": 89,
       "rankDelta": 0,
-      "overallScore": 66.82,
+      "overallScore": 66.8,
       "bosses": {
         "Lord Marrowgar": 15860.4,
         "Lady Deathwhisper": 11947.6,
@@ -4381,7 +4381,7 @@
       "specIndex": 2,
       "overallRank": 124,
       "rankDelta": 0,
-      "overallScore": 76.54,
+      "overallScore": 76.55,
       "bosses": {
         "Lord Marrowgar": 21064.1,
         "Lady Deathwhisper": 17928,
@@ -4407,7 +4407,7 @@
       "specIndex": 1,
       "overallRank": 162,
       "rankDelta": 0,
-      "overallScore": 48.92,
+      "overallScore": 48.89,
       "bosses": {
         "Lord Marrowgar": 281.1,
         "Lady Deathwhisper": 178.6,
@@ -4433,7 +4433,7 @@
       "specIndex": 1,
       "overallRank": 163,
       "rankDelta": 0,
-      "overallScore": 48.1,
+      "overallScore": 48.07,
       "bosses": {
         "Lord Marrowgar": 240.1,
         "Lady Deathwhisper": 193.3,
@@ -4458,7 +4458,7 @@
       "spec": "Feral Combat",
       "specIndex": 2,
       "overallRank": 169,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 34.95,
       "bosses": {
         "Lord Marrowgar": 14456,
@@ -4483,9 +4483,9 @@
       "class": "Rogue",
       "spec": "Combat",
       "specIndex": 2,
-      "overallRank": 63,
-      "rankDelta": 0,
-      "overallScore": 83.66,
+      "overallRank": 64,
+      "rankDelta": -1,
+      "overallScore": 83.67,
       "bosses": {
         "Lord Marrowgar": 17603.2,
         "Lady Deathwhisper": 16466.8,
@@ -4537,7 +4537,7 @@
       "specIndex": 2,
       "overallRank": 43,
       "rankDelta": 0,
-      "overallScore": 87.33,
+      "overallScore": 87.35,
       "bosses": {
         "Lord Marrowgar": 19187.2,
         "Lady Deathwhisper": 17143,
@@ -4563,7 +4563,7 @@
       "specIndex": 1,
       "overallRank": 42,
       "rankDelta": 0,
-      "overallScore": 85.56,
+      "overallScore": 85.59,
       "bosses": {
         "Lord Marrowgar": 19240.5,
         "Lady Deathwhisper": 18957.4,
@@ -4573,12 +4573,12 @@
         "Professor Putricide": 12966.9,
         "Blood Prince Council": 13323.9,
         "Blood-Queen Lana'thel": 23711.2,
-        "Sindragosa": 7789.1,
+        "Sindragosa": 7810.2,
         "The Lich King": 10567.4,
         "Toravon the Ice Watcher": 0,
         "Halion": 12865.5,
         "Anub'arak": 0,
-        "Valithria Dreamwalker": 1520.1
+        "Valithria Dreamwalker": 1521
       }
     },
     {
@@ -4719,7 +4719,7 @@
       "specIndex": 1,
       "overallRank": 72,
       "rankDelta": 0,
-      "overallScore": 61.8,
+      "overallScore": 61.81,
       "bosses": {
         "Lord Marrowgar": 109.8,
         "Lady Deathwhisper": 192.2,
@@ -4771,7 +4771,7 @@
       "specIndex": 3,
       "overallRank": 70,
       "rankDelta": 0,
-      "overallScore": 81.93,
+      "overallScore": 81.9,
       "bosses": {
         "Lord Marrowgar": 16471.8,
         "Lady Deathwhisper": 16527.8,
@@ -4797,7 +4797,7 @@
       "specIndex": 1,
       "overallRank": 121,
       "rankDelta": 0,
-      "overallScore": 60.47,
+      "overallScore": 60.45,
       "bosses": {
         "Lord Marrowgar": 227.5,
         "Lady Deathwhisper": 258.8,
@@ -4823,7 +4823,7 @@
       "specIndex": 1,
       "overallRank": 71,
       "rankDelta": 0,
-      "overallScore": 71.82,
+      "overallScore": 71.84,
       "bosses": {
         "Lord Marrowgar": 4305.1,
         "Lady Deathwhisper": 3448.5,
@@ -4875,7 +4875,7 @@
       "specIndex": 1,
       "overallRank": 176,
       "rankDelta": 0,
-      "overallScore": 23.86,
+      "overallScore": 23.85,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 542.6,
@@ -4925,9 +4925,9 @@
       "class": "Priest",
       "spec": "Shadow",
       "specIndex": 3,
-      "overallRank": 88,
-      "rankDelta": 0,
-      "overallScore": 78.46,
+      "overallRank": 89,
+      "rankDelta": -1,
+      "overallScore": 78.43,
       "bosses": {
         "Lord Marrowgar": 16214.1,
         "Lady Deathwhisper": 15961.5,
@@ -4953,7 +4953,7 @@
       "specIndex": 1,
       "overallRank": 269,
       "rankDelta": 0,
-      "overallScore": 7.83,
+      "overallScore": 7.82,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 0,
@@ -4979,7 +4979,7 @@
       "specIndex": 2,
       "overallRank": 85,
       "rankDelta": 0,
-      "overallScore": 55.9,
+      "overallScore": 55.87,
       "bosses": {
         "Lord Marrowgar": 4882.3,
         "Lady Deathwhisper": 3222.1,
@@ -5031,7 +5031,7 @@
       "specIndex": 3,
       "overallRank": 58,
       "rankDelta": 0,
-      "overallScore": 85.69,
+      "overallScore": 85.66,
       "bosses": {
         "Lord Marrowgar": 16563.1,
         "Lady Deathwhisper": 15590.9,
@@ -5057,7 +5057,7 @@
       "specIndex": 1,
       "overallRank": 216,
       "rankDelta": 0,
-      "overallScore": 32.46,
+      "overallScore": 32.44,
       "bosses": {
         "Lord Marrowgar": 316.6,
         "Lady Deathwhisper": 140.8,
@@ -5083,7 +5083,7 @@
       "specIndex": 2,
       "overallRank": 86,
       "rankDelta": 0,
-      "overallScore": 55.73,
+      "overallScore": 55.71,
       "bosses": {
         "Lord Marrowgar": 5304.1,
         "Lady Deathwhisper": 4512.6,
@@ -5135,7 +5135,7 @@
       "specIndex": 2,
       "overallRank": 54,
       "rankDelta": 0,
-      "overallScore": 83.65,
+      "overallScore": 83.67,
       "bosses": {
         "Lord Marrowgar": 22119.5,
         "Lady Deathwhisper": 18866,
@@ -5161,7 +5161,7 @@
       "specIndex": 1,
       "overallRank": 238,
       "rankDelta": 0,
-      "overallScore": 22.08,
+      "overallScore": 22.06,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 0,
@@ -5187,7 +5187,7 @@
       "specIndex": 3,
       "overallRank": 46,
       "rankDelta": 0,
-      "overallScore": 90.23,
+      "overallScore": 90.21,
       "bosses": {
         "Lord Marrowgar": 17402.1,
         "Lady Deathwhisper": 16752.1,
@@ -5213,7 +5213,7 @@
       "specIndex": 2,
       "overallRank": 68,
       "rankDelta": 0,
-      "overallScore": 76.76,
+      "overallScore": 76.77,
       "bosses": {
         "Lord Marrowgar": 15664.6,
         "Lady Deathwhisper": 15161.8,
@@ -5239,7 +5239,7 @@
       "specIndex": 2,
       "overallRank": 23,
       "rankDelta": 0,
-      "overallScore": 95.2,
+      "overallScore": 95.21,
       "bosses": {
         "Lord Marrowgar": 19881,
         "Lady Deathwhisper": 16801.9,
@@ -5265,7 +5265,7 @@
       "specIndex": 2,
       "overallRank": 21,
       "rankDelta": 0,
-      "overallScore": 93.26,
+      "overallScore": 93.27,
       "bosses": {
         "Lord Marrowgar": 20554.7,
         "Lady Deathwhisper": 18251.3,
@@ -5343,7 +5343,7 @@
       "specIndex": 3,
       "overallRank": 191,
       "rankDelta": 0,
-      "overallScore": 13.67,
+      "overallScore": 13.66,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 0,
@@ -5369,7 +5369,7 @@
       "specIndex": 1,
       "overallRank": 3,
       "rankDelta": 0,
-      "overallScore": 98.45,
+      "overallScore": 98.46,
       "bosses": {
         "Lord Marrowgar": 645.1,
         "Lady Deathwhisper": 1438.5,
@@ -5395,7 +5395,7 @@
       "specIndex": 3,
       "overallRank": 108,
       "rankDelta": 0,
-      "overallScore": 73.49,
+      "overallScore": 73.46,
       "bosses": {
         "Lord Marrowgar": 16873,
         "Lady Deathwhisper": 15646.9,
@@ -5419,20 +5419,20 @@
       "class": "Paladin",
       "spec": "Holy",
       "specIndex": 1,
-      "overallRank": 148,
-      "rankDelta": 0,
-      "overallScore": 52.74,
+      "overallRank": 135,
+      "rankDelta": 13,
+      "overallScore": 56.88,
       "bosses": {
-        "Lord Marrowgar": 347.8,
+        "Lord Marrowgar": 376.2,
         "Lady Deathwhisper": 226.7,
         "Deathbringer Saurfang": 272.6,
-        "Festergut": 156.1,
+        "Festergut": 210.5,
         "Rotface": 387.2,
-        "Professor Putricide": 146,
-        "Blood Prince Council": 160.6,
+        "Professor Putricide": 164.8,
+        "Blood Prince Council": 162.3,
         "Blood-Queen Lana'thel": 227,
         "Sindragosa": 91.7,
-        "The Lich King": 184.6,
+        "The Lich King": 190.8,
         "Toravon the Ice Watcher": 0,
         "Halion": 0,
         "Anub'arak": 0,
@@ -5452,7 +5452,7 @@
         "Lord Marrowgar": 8573.6,
         "Lady Deathwhisper": 0,
         "Deathbringer Saurfang": 9417.7,
-        "Festergut": 7554.4,
+        "Festergut": 7554.7,
         "Rotface": 9443.8,
         "Professor Putricide": 3830.1,
         "Blood Prince Council": 2894.9,
@@ -5499,7 +5499,7 @@
       "specIndex": 1,
       "overallRank": 125,
       "rankDelta": 0,
-      "overallScore": 51.79,
+      "overallScore": 51.78,
       "bosses": {
         "Lord Marrowgar": 2916,
         "Lady Deathwhisper": 3027.6,
@@ -5577,7 +5577,7 @@
       "specIndex": 2,
       "overallRank": 124,
       "rankDelta": 0,
-      "overallScore": 59.12,
+      "overallScore": 59.13,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 12818.6,
@@ -5627,16 +5627,16 @@
       "class": "Warlock",
       "spec": "Affliction",
       "specIndex": 1,
-      "overallRank": 28,
-      "rankDelta": 0,
-      "overallScore": 74.09,
+      "overallRank": 27,
+      "rankDelta": 1,
+      "overallScore": 75.06,
       "bosses": {
         "Lord Marrowgar": 17298.2,
         "Lady Deathwhisper": 15321.2,
         "Deathbringer Saurfang": 18314.3,
         "Festergut": 16980.1,
         "Rotface": 17841.3,
-        "Professor Putricide": 13680.6,
+        "Professor Putricide": 15003.4,
         "Blood Prince Council": 14542.4,
         "Blood-Queen Lana'thel": 21687.4,
         "Sindragosa": 12895.3,
@@ -5655,7 +5655,7 @@
       "specIndex": 2,
       "overallRank": 96,
       "rankDelta": 0,
-      "overallScore": 65.57,
+      "overallScore": 65.56,
       "bosses": {
         "Lord Marrowgar": 15279.6,
         "Lady Deathwhisper": 13220.1,
@@ -5733,7 +5733,7 @@
       "specIndex": 2,
       "overallRank": 37,
       "rankDelta": 0,
-      "overallScore": 90.46,
+      "overallScore": 90.47,
       "bosses": {
         "Lord Marrowgar": 28612.5,
         "Lady Deathwhisper": 20964.7,
@@ -5811,7 +5811,7 @@
       "specIndex": 3,
       "overallRank": 102,
       "rankDelta": 0,
-      "overallScore": 77.93,
+      "overallScore": 77.88,
       "bosses": {
         "Lord Marrowgar": 16468.8,
         "Lady Deathwhisper": 14236.3,
@@ -5837,7 +5837,7 @@
       "specIndex": 1,
       "overallRank": 19,
       "rankDelta": 0,
-      "overallScore": 95.47,
+      "overallScore": 95.48,
       "bosses": {
         "Lord Marrowgar": 19933.5,
         "Lady Deathwhisper": 18006.4,
@@ -5889,7 +5889,7 @@
       "specIndex": 1,
       "overallRank": 137,
       "rankDelta": 0,
-      "overallScore": 47.87,
+      "overallScore": 47.86,
       "bosses": {
         "Lord Marrowgar": 2850.9,
         "Lady Deathwhisper": 2935.2,
@@ -5941,7 +5941,7 @@
       "specIndex": 3,
       "overallRank": 106,
       "rankDelta": 0,
-      "overallScore": 61.92,
+      "overallScore": 61.93,
       "bosses": {
         "Lord Marrowgar": 16016.5,
         "Lady Deathwhisper": 14073,
@@ -5967,7 +5967,7 @@
       "specIndex": 2,
       "overallRank": 47,
       "rankDelta": 0,
-      "overallScore": 85.37,
+      "overallScore": 85.38,
       "bosses": {
         "Lord Marrowgar": 18786.2,
         "Lady Deathwhisper": 15567.8,
@@ -5993,7 +5993,7 @@
       "specIndex": 1,
       "overallRank": 92,
       "rankDelta": 0,
-      "overallScore": 68.01,
+      "overallScore": 68,
       "bosses": {
         "Lord Marrowgar": 728.6,
         "Lady Deathwhisper": 643.3,
@@ -6097,7 +6097,7 @@
       "specIndex": 1,
       "overallRank": 10,
       "rankDelta": 0,
-      "overallScore": 97.7,
+      "overallScore": 97.71,
       "bosses": {
         "Lord Marrowgar": 20806.9,
         "Lady Deathwhisper": 17768.7,
@@ -6149,7 +6149,7 @@
       "specIndex": 2,
       "overallRank": 142,
       "rankDelta": 0,
-      "overallScore": 54.17,
+      "overallScore": 54.18,
       "bosses": {
         "Lord Marrowgar": 15916.7,
         "Lady Deathwhisper": 14004.3,
@@ -6175,7 +6175,7 @@
       "specIndex": 2,
       "overallRank": 115,
       "rankDelta": 0,
-      "overallScore": 54.12,
+      "overallScore": 54.13,
       "bosses": {
         "Lord Marrowgar": 18763.2,
         "Lady Deathwhisper": 14407.6,
@@ -6199,9 +6199,9 @@
       "class": "Druid",
       "spec": "Restoration",
       "specIndex": 3,
-      "overallRank": 95,
-      "rankDelta": 0,
-      "overallScore": 35.89,
+      "overallRank": 96,
+      "rankDelta": -1,
+      "overallScore": 35.88,
       "bosses": {
         "Lord Marrowgar": 70.2,
         "Lady Deathwhisper": 0,
@@ -6251,9 +6251,9 @@
       "class": "Mage",
       "spec": "Fire",
       "specIndex": 2,
-      "overallRank": 101,
-      "rankDelta": 0,
-      "overallScore": 82.04,
+      "overallRank": 102,
+      "rankDelta": -1,
+      "overallScore": 82.05,
       "bosses": {
         "Lord Marrowgar": 21385.5,
         "Lady Deathwhisper": 16243.8,
@@ -6279,7 +6279,7 @@
       "specIndex": 1,
       "overallRank": 209,
       "rankDelta": 0,
-      "overallScore": 34.71,
+      "overallScore": 34.68,
       "bosses": {
         "Lord Marrowgar": 133.1,
         "Lady Deathwhisper": 135.2,
@@ -6305,7 +6305,7 @@
       "specIndex": 1,
       "overallRank": 8,
       "rankDelta": 0,
-      "overallScore": 94.38,
+      "overallScore": 94.37,
       "bosses": {
         "Lord Marrowgar": 19504.9,
         "Lady Deathwhisper": 17059.4,
@@ -6331,7 +6331,7 @@
       "specIndex": 3,
       "overallRank": 221,
       "rankDelta": 0,
-      "overallScore": 17.22,
+      "overallScore": 17.21,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 70,
@@ -6356,14 +6356,14 @@
       "spec": "Discipline",
       "specIndex": 1,
       "overallRank": 42,
-      "rankDelta": -1,
-      "overallScore": 78.13,
+      "rankDelta": 0,
+      "overallScore": 78.17,
       "bosses": {
         "Lord Marrowgar": 355.5,
         "Lady Deathwhisper": 270,
         "Deathbringer Saurfang": 295.2,
         "Festergut": 263.9,
-        "Rotface": 434.4,
+        "Rotface": 434.5,
         "Professor Putricide": 178.1,
         "Blood Prince Council": 159.6,
         "Blood-Queen Lana'thel": 211.5,
@@ -6409,7 +6409,7 @@
       "specIndex": 1,
       "overallRank": 33,
       "rankDelta": 0,
-      "overallScore": 69.87,
+      "overallScore": 69.75,
       "bosses": {
         "Lord Marrowgar": 14570.9,
         "Lady Deathwhisper": 10740.1,
@@ -6461,7 +6461,7 @@
       "specIndex": 2,
       "overallRank": 18,
       "rankDelta": 0,
-      "overallScore": 75,
+      "overallScore": 74.98,
       "bosses": {
         "Lord Marrowgar": 17951.1,
         "Lady Deathwhisper": 12603.1,
@@ -6487,7 +6487,7 @@
       "specIndex": 3,
       "overallRank": 105,
       "rankDelta": 0,
-      "overallScore": 41.23,
+      "overallScore": 41.24,
       "bosses": {
         "Lord Marrowgar": 127.3,
         "Lady Deathwhisper": 0,
@@ -6591,7 +6591,7 @@
       "specIndex": 2,
       "overallRank": 102,
       "rankDelta": 0,
-      "overallScore": 83.12,
+      "overallScore": 83.14,
       "bosses": {
         "Lord Marrowgar": 19986.2,
         "Lady Deathwhisper": 16259.8,
@@ -6643,7 +6643,7 @@
       "specIndex": 3,
       "overallRank": 49,
       "rankDelta": 0,
-      "overallScore": 88.42,
+      "overallScore": 88.39,
       "bosses": {
         "Lord Marrowgar": 18207.4,
         "Lady Deathwhisper": 16761.9,
@@ -6669,7 +6669,7 @@
       "specIndex": 1,
       "overallRank": 86,
       "rankDelta": 0,
-      "overallScore": 66.28,
+      "overallScore": 66.27,
       "bosses": {
         "Lord Marrowgar": 3510.1,
         "Lady Deathwhisper": 3322.8,
@@ -6695,12 +6695,12 @@
       "specIndex": 1,
       "overallRank": 55,
       "rankDelta": 0,
-      "overallScore": 59.62,
+      "overallScore": 59.63,
       "bosses": {
         "Lord Marrowgar": 15943.5,
         "Lady Deathwhisper": 13990.8,
         "Deathbringer Saurfang": 19220.4,
-        "Festergut": 16759.3,
+        "Festergut": 16760,
         "Rotface": 17595.4,
         "Professor Putricide": 10441.7,
         "Blood Prince Council": 12241,
@@ -6719,9 +6719,9 @@
       "class": "Warlock",
       "spec": "Demonology",
       "specIndex": 2,
-      "overallRank": 87,
-      "rankDelta": 1,
-      "overallScore": 67.63,
+      "overallRank": 88,
+      "rankDelta": -1,
+      "overallScore": 67.62,
       "bosses": {
         "Lord Marrowgar": 15012.8,
         "Lady Deathwhisper": 12011.7,
@@ -6773,7 +6773,7 @@
       "specIndex": 1,
       "overallRank": 43,
       "rankDelta": 0,
-      "overallScore": 60.83,
+      "overallScore": 60.76,
       "bosses": {
         "Lord Marrowgar": 11568.8,
         "Lady Deathwhisper": 9871.3,
@@ -6799,7 +6799,7 @@
       "specIndex": 2,
       "overallRank": 27,
       "rankDelta": 0,
-      "overallScore": 68.34,
+      "overallScore": 68.32,
       "bosses": {
         "Lord Marrowgar": 15661,
         "Lady Deathwhisper": 11571.3,
@@ -6851,7 +6851,7 @@
       "specIndex": 2,
       "overallRank": 108,
       "rankDelta": 0,
-      "overallScore": 81.8,
+      "overallScore": 81.81,
       "bosses": {
         "Lord Marrowgar": 20914.8,
         "Lady Deathwhisper": 12883.1,
@@ -6877,7 +6877,7 @@
       "specIndex": 1,
       "overallRank": 28,
       "rankDelta": 0,
-      "overallScore": 82.39,
+      "overallScore": 82.4,
       "bosses": {
         "Lord Marrowgar": 232.7,
         "Lady Deathwhisper": 429.9,
@@ -6903,7 +6903,7 @@
       "specIndex": 3,
       "overallRank": 106,
       "rankDelta": 0,
-      "overallScore": 73.76,
+      "overallScore": 73.75,
       "bosses": {
         "Lord Marrowgar": 13821.5,
         "Lady Deathwhisper": 15024,
@@ -6929,7 +6929,7 @@
       "specIndex": 2,
       "overallRank": 118,
       "rankDelta": 0,
-      "overallScore": 52.13,
+      "overallScore": 52.14,
       "bosses": {
         "Lord Marrowgar": 18571.3,
         "Lady Deathwhisper": 10077.3,
@@ -7007,7 +7007,7 @@
       "specIndex": 1,
       "overallRank": 57,
       "rankDelta": 0,
-      "overallScore": 78.83,
+      "overallScore": 78.84,
       "bosses": {
         "Lord Marrowgar": 4090.3,
         "Lady Deathwhisper": 3713.9,
@@ -7059,7 +7059,7 @@
       "specIndex": 2,
       "overallRank": 137,
       "rankDelta": 0,
-      "overallScore": 69.84,
+      "overallScore": 69.86,
       "bosses": {
         "Lord Marrowgar": 20899.4,
         "Lady Deathwhisper": 15490.8,
@@ -7085,7 +7085,7 @@
       "specIndex": 1,
       "overallRank": 31,
       "rankDelta": 0,
-      "overallScore": 92.4,
+      "overallScore": 92.41,
       "bosses": {
         "Lord Marrowgar": 19188.8,
         "Lady Deathwhisper": 16301,
@@ -7111,7 +7111,7 @@
       "specIndex": 3,
       "overallRank": 266,
       "rankDelta": 0,
-      "overallScore": 1.62,
+      "overallScore": 1.61,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 0,
@@ -7163,7 +7163,7 @@
       "specIndex": 3,
       "overallRank": 190,
       "rankDelta": 0,
-      "overallScore": 14.41,
+      "overallScore": 14.42,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 0,
@@ -7215,7 +7215,7 @@
       "specIndex": 2,
       "overallRank": 99,
       "rankDelta": 0,
-      "overallScore": 83.33,
+      "overallScore": 83.34,
       "bosses": {
         "Lord Marrowgar": 19670.9,
         "Lady Deathwhisper": 18944.7,
@@ -7267,7 +7267,7 @@
       "specIndex": 3,
       "overallRank": 43,
       "rankDelta": 0,
-      "overallScore": 53.63,
+      "overallScore": 53.64,
       "bosses": {
         "Lord Marrowgar": 41.3,
         "Lady Deathwhisper": 0,
@@ -7423,7 +7423,7 @@
       "specIndex": 3,
       "overallRank": 215,
       "rankDelta": 0,
-      "overallScore": 10.48,
+      "overallScore": 10.49,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 0,
@@ -7473,8 +7473,8 @@
       "class": "Rogue",
       "spec": "Combat",
       "specIndex": 2,
-      "overallRank": 160,
-      "rankDelta": 0,
+      "overallRank": 161,
+      "rankDelta": -1,
       "overallScore": 47.38,
       "bosses": {
         "Lord Marrowgar": 14607.7,
@@ -7501,7 +7501,7 @@
       "specIndex": 2,
       "overallRank": 81,
       "rankDelta": 0,
-      "overallScore": 70.76,
+      "overallScore": 70.77,
       "bosses": {
         "Lord Marrowgar": 16822.4,
         "Lady Deathwhisper": 13342.6,
@@ -7525,8 +7525,8 @@
       "class": "Rogue",
       "spec": "Combat",
       "specIndex": 2,
-      "overallRank": 182,
-      "rankDelta": 0,
+      "overallRank": 183,
+      "rankDelta": -1,
       "overallScore": 39.48,
       "bosses": {
         "Lord Marrowgar": 8851.7,
@@ -7605,7 +7605,7 @@
       "specIndex": 2,
       "overallRank": 62,
       "rankDelta": 0,
-      "overallScore": 80.21,
+      "overallScore": 80.22,
       "bosses": {
         "Lord Marrowgar": 21727.6,
         "Lady Deathwhisper": 19283.5,
@@ -7683,7 +7683,7 @@
       "specIndex": 1,
       "overallRank": 104,
       "rankDelta": 0,
-      "overallScore": 48.71,
+      "overallScore": 48.68,
       "bosses": {
         "Lord Marrowgar": 42.7,
         "Lady Deathwhisper": 50.5,
@@ -7761,7 +7761,7 @@
       "specIndex": 2,
       "overallRank": 60,
       "rankDelta": 0,
-      "overallScore": 81.21,
+      "overallScore": 81.23,
       "bosses": {
         "Lord Marrowgar": 22111.2,
         "Lady Deathwhisper": 21716.8,
@@ -7787,7 +7787,7 @@
       "specIndex": 2,
       "overallRank": 93,
       "rankDelta": 0,
-      "overallScore": 84.64,
+      "overallScore": 84.65,
       "bosses": {
         "Lord Marrowgar": 21640,
         "Lady Deathwhisper": 19038.9,
@@ -7948,7 +7948,7 @@
         "Lord Marrowgar": 15370.5,
         "Lady Deathwhisper": 15387.5,
         "Deathbringer Saurfang": 16534.5,
-        "Festergut": 15227.8,
+        "Festergut": 15228.4,
         "Rotface": 14827.4,
         "Professor Putricide": 11530.5,
         "Blood Prince Council": 3374.3,
@@ -7995,7 +7995,7 @@
       "specIndex": 2,
       "overallRank": 43,
       "rankDelta": 0,
-      "overallScore": 85.02,
+      "overallScore": 85.01,
       "bosses": {
         "Lord Marrowgar": 16722.6,
         "Lady Deathwhisper": 14824.2,
@@ -8151,7 +8151,7 @@
       "specIndex": 3,
       "overallRank": 47,
       "rankDelta": 0,
-      "overallScore": 82.35,
+      "overallScore": 82.37,
       "bosses": {
         "Lord Marrowgar": 19868.9,
         "Lady Deathwhisper": 16314.8,
@@ -8229,7 +8229,7 @@
       "specIndex": 1,
       "overallRank": 224,
       "rankDelta": 0,
-      "overallScore": 11.48,
+      "overallScore": 11.49,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 2809.5,
@@ -8281,7 +8281,7 @@
       "specIndex": 2,
       "overallRank": 116,
       "rankDelta": 0,
-      "overallScore": 61.66,
+      "overallScore": 61.65,
       "bosses": {
         "Lord Marrowgar": 14362.8,
         "Lady Deathwhisper": 13129.6,
@@ -8359,7 +8359,7 @@
       "specIndex": 2,
       "overallRank": 228,
       "rankDelta": 0,
-      "overallScore": 57.2,
+      "overallScore": 57.21,
       "bosses": {
         "Lord Marrowgar": 15710.4,
         "Lady Deathwhisper": 12498.7,
@@ -8385,7 +8385,7 @@
       "specIndex": 2,
       "overallRank": 124,
       "rankDelta": 0,
-      "overallScore": 77.03,
+      "overallScore": 77.04,
       "bosses": {
         "Lord Marrowgar": 20784.7,
         "Lady Deathwhisper": 17736.7,
@@ -8411,7 +8411,7 @@
       "specIndex": 1,
       "overallRank": 132,
       "rankDelta": 0,
-      "overallScore": 57.65,
+      "overallScore": 57.64,
       "bosses": {
         "Lord Marrowgar": 308.7,
         "Lady Deathwhisper": 235.8,
@@ -8541,7 +8541,7 @@
       "specIndex": 3,
       "overallRank": 67,
       "rankDelta": 0,
-      "overallScore": 54.42,
+      "overallScore": 54.44,
       "bosses": {
         "Lord Marrowgar": 83.2,
         "Lady Deathwhisper": 2.7,
@@ -8567,7 +8567,7 @@
       "specIndex": 2,
       "overallRank": 147,
       "rankDelta": 0,
-      "overallScore": 51.44,
+      "overallScore": 51.45,
       "bosses": {
         "Lord Marrowgar": 13674.1,
         "Lady Deathwhisper": 9172.3,
@@ -8593,7 +8593,7 @@
       "specIndex": 2,
       "overallRank": 77,
       "rankDelta": 0,
-      "overallScore": 87.99,
+      "overallScore": 88,
       "bosses": {
         "Lord Marrowgar": 21660.6,
         "Lady Deathwhisper": 20715.8,
@@ -8617,18 +8617,18 @@
       "class": "Death Knight",
       "spec": "Blood",
       "specIndex": 1,
-      "overallRank": 45,
-      "rankDelta": 0,
-      "overallScore": 80.55,
+      "overallRank": 44,
+      "rankDelta": 1,
+      "overallScore": 81.38,
       "bosses": {
         "Lord Marrowgar": 4089,
         "Lady Deathwhisper": 4002.5,
         "Deathbringer Saurfang": 4365.1,
         "Festergut": 5872.9,
         "Rotface": 3824.2,
-        "Professor Putricide": 3369.5,
+        "Professor Putricide": 3448.9,
         "Blood Prince Council": 1010.9,
-        "Blood-Queen Lana'thel": 3489,
+        "Blood-Queen Lana'thel": 3566,
         "Sindragosa": 3450.7,
         "The Lich King": 2799.1,
         "Toravon the Ice Watcher": 2831.3,
@@ -8669,8 +8669,8 @@
       "class": "Warrior",
       "spec": "Fury",
       "specIndex": 2,
-      "overallRank": 33,
-      "rankDelta": 1,
+      "overallRank": 34,
+      "rankDelta": -1,
       "overallScore": 96.29,
       "bosses": {
         "Lord Marrowgar": 24390,
@@ -8723,7 +8723,7 @@
       "specIndex": 1,
       "overallRank": 147,
       "rankDelta": 0,
-      "overallScore": 43.83,
+      "overallScore": 43.81,
       "bosses": {
         "Lord Marrowgar": 3082.1,
         "Lady Deathwhisper": 3371.7,
@@ -8775,7 +8775,7 @@
       "specIndex": 3,
       "overallRank": 87,
       "rankDelta": 0,
-      "overallScore": 67.7,
+      "overallScore": 67.71,
       "bosses": {
         "Lord Marrowgar": 16839.8,
         "Lady Deathwhisper": 13901.5,
@@ -8832,7 +8832,7 @@
         "Lord Marrowgar": 12654.1,
         "Lady Deathwhisper": 11963.8,
         "Deathbringer Saurfang": 13043.8,
-        "Festergut": 13341.9,
+        "Festergut": 13342.5,
         "Rotface": 12595.3,
         "Professor Putricide": 11077.4,
         "Blood Prince Council": 11266.8,
@@ -8842,7 +8842,7 @@
         "Toravon the Ice Watcher": 10999.4,
         "Halion": 0,
         "Anub'arak": 0,
-        "Valithria Dreamwalker": 215.2
+        "Valithria Dreamwalker": 215.4
       }
     },
     {
@@ -8853,7 +8853,7 @@
       "specIndex": 1,
       "overallRank": 223,
       "rankDelta": 0,
-      "overallScore": 4.94,
+      "overallScore": 4.96,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 0,
@@ -8879,7 +8879,7 @@
       "specIndex": 3,
       "overallRank": 33,
       "rankDelta": 0,
-      "overallScore": 92.48,
+      "overallScore": 92.46,
       "bosses": {
         "Lord Marrowgar": 18202.5,
         "Lady Deathwhisper": 18297.6,
@@ -8905,7 +8905,7 @@
       "specIndex": 3,
       "overallRank": 98,
       "rankDelta": 0,
-      "overallScore": 79.47,
+      "overallScore": 79.43,
       "bosses": {
         "Lord Marrowgar": 17837.4,
         "Lady Deathwhisper": 13618.5,
@@ -8931,7 +8931,7 @@
       "specIndex": 2,
       "overallRank": 40,
       "rankDelta": 0,
-      "overallScore": 88.42,
+      "overallScore": 88.43,
       "bosses": {
         "Lord Marrowgar": 17980,
         "Lady Deathwhisper": 19056.1,
@@ -8981,20 +8981,20 @@
       "class": "Warrior",
       "spec": "Fury",
       "specIndex": 2,
-      "overallRank": 202,
-      "rankDelta": 0,
-      "overallScore": 51.37,
+      "overallRank": 185,
+      "rankDelta": 17,
+      "overallScore": 54.02,
       "bosses": {
         "Lord Marrowgar": 15821,
-        "Lady Deathwhisper": 9794.6,
-        "Deathbringer Saurfang": 15148.8,
+        "Lady Deathwhisper": 12076.7,
+        "Deathbringer Saurfang": 15493.2,
         "Festergut": 14197.2,
         "Rotface": 14611.8,
         "Professor Putricide": 9695.8,
-        "Blood Prince Council": 8913,
-        "Blood-Queen Lana'thel": 15782.8,
-        "Sindragosa": 8908.2,
-        "The Lich King": 8192.8,
+        "Blood Prince Council": 9433.2,
+        "Blood-Queen Lana'thel": 16441.3,
+        "Sindragosa": 9703.4,
+        "The Lich King": 8509,
         "Toravon the Ice Watcher": 0,
         "Halion": 0,
         "Anub'arak": 0,
@@ -9009,7 +9009,7 @@
       "specIndex": 2,
       "overallRank": 86,
       "rankDelta": 0,
-      "overallScore": 65.69,
+      "overallScore": 65.71,
       "bosses": {
         "Lord Marrowgar": 18819.1,
         "Lady Deathwhisper": 16104,
@@ -9035,7 +9035,7 @@
       "specIndex": 1,
       "overallRank": 180,
       "rankDelta": 0,
-      "overallScore": 21.61,
+      "overallScore": 21.59,
       "bosses": {
         "Lord Marrowgar": 71.3,
         "Lady Deathwhisper": 0,
@@ -9061,7 +9061,7 @@
       "specIndex": 1,
       "overallRank": 177,
       "rankDelta": 0,
-      "overallScore": 27.66,
+      "overallScore": 27.65,
       "bosses": {
         "Lord Marrowgar": 2958.5,
         "Lady Deathwhisper": 2748,
@@ -9113,7 +9113,7 @@
       "specIndex": 3,
       "overallRank": 218,
       "rankDelta": 0,
-      "overallScore": 17.64,
+      "overallScore": 17.66,
       "bosses": {
         "Lord Marrowgar": 48.2,
         "Lady Deathwhisper": 0,
@@ -9191,7 +9191,7 @@
       "specIndex": 3,
       "overallRank": 93,
       "rankDelta": 0,
-      "overallScore": 66.07,
+      "overallScore": 66.08,
       "bosses": {
         "Lord Marrowgar": 17576.6,
         "Lady Deathwhisper": 10986.8,
@@ -9217,7 +9217,7 @@
       "specIndex": 1,
       "overallRank": 180,
       "rankDelta": 0,
-      "overallScore": 43.29,
+      "overallScore": 43.25,
       "bosses": {
         "Lord Marrowgar": 317,
         "Lady Deathwhisper": 165.5,
@@ -9269,7 +9269,7 @@
       "specIndex": 3,
       "overallRank": 50,
       "rankDelta": 0,
-      "overallScore": 88.23,
+      "overallScore": 88.35,
       "bosses": {
         "Lord Marrowgar": 18476.9,
         "Lady Deathwhisper": 15470.2,
@@ -9280,7 +9280,7 @@
         "Blood Prince Council": 16883.1,
         "Blood-Queen Lana'thel": 23208.3,
         "Sindragosa": 14918.8,
-        "The Lich King": 9659.9,
+        "The Lich King": 9845.8,
         "Toravon the Ice Watcher": 13702.7,
         "Halion": 12301.9,
         "Anub'arak": 6694.4,
@@ -9321,7 +9321,7 @@
       "specIndex": 1,
       "overallRank": 123,
       "rankDelta": 0,
-      "overallScore": 59.74,
+      "overallScore": 59.71,
       "bosses": {
         "Lord Marrowgar": 250,
         "Lady Deathwhisper": 281.8,
@@ -9373,7 +9373,7 @@
       "specIndex": 1,
       "overallRank": 89,
       "rankDelta": 0,
-      "overallScore": 44.82,
+      "overallScore": 44.83,
       "bosses": {
         "Lord Marrowgar": 11533,
         "Lady Deathwhisper": 10507.3,
@@ -9475,13 +9475,13 @@
       "class": "Mage",
       "spec": "Fire",
       "specIndex": 2,
-      "overallRank": 121,
-      "rankDelta": 0,
-      "overallScore": 76.81,
+      "overallRank": 120,
+      "rankDelta": 1,
+      "overallScore": 77.38,
       "bosses": {
         "Lord Marrowgar": 20917.9,
         "Lady Deathwhisper": 17712.6,
-        "Deathbringer Saurfang": 22195.7,
+        "Deathbringer Saurfang": 23190.3,
         "Festergut": 19008.9,
         "Rotface": 19316.6,
         "Professor Putricide": 13197.9,
@@ -9633,7 +9633,7 @@
       "specIndex": 3,
       "overallRank": 24,
       "rankDelta": 0,
-      "overallScore": 62.69,
+      "overallScore": 62.71,
       "bosses": {
         "Lord Marrowgar": 67.7,
         "Lady Deathwhisper": 0,
@@ -9648,7 +9648,7 @@
         "Toravon the Ice Watcher": 0,
         "Halion": 0,
         "Anub'arak": 0,
-        "Valithria Dreamwalker": 23133.5
+        "Valithria Dreamwalker": 26133
       }
     },
     {
@@ -9659,7 +9659,7 @@
       "specIndex": 1,
       "overallRank": 53,
       "rankDelta": 0,
-      "overallScore": 70.52,
+      "overallScore": 70.5,
       "bosses": {
         "Lord Marrowgar": 262.6,
         "Lady Deathwhisper": 210.8,
@@ -9711,7 +9711,7 @@
       "specIndex": 2,
       "overallRank": 41,
       "rankDelta": 0,
-      "overallScore": 74.45,
+      "overallScore": 74.44,
       "bosses": {
         "Lord Marrowgar": 5253.4,
         "Lady Deathwhisper": 4587.6,
@@ -9867,7 +9867,7 @@
       "specIndex": 1,
       "overallRank": 68,
       "rankDelta": 0,
-      "overallScore": 44.24,
+      "overallScore": 44.16,
       "bosses": {
         "Lord Marrowgar": 10562,
         "Lady Deathwhisper": 9988.8,
@@ -9945,7 +9945,7 @@
       "specIndex": 2,
       "overallRank": 118,
       "rankDelta": 0,
-      "overallScore": 77.64,
+      "overallScore": 77.65,
       "bosses": {
         "Lord Marrowgar": 22799.5,
         "Lady Deathwhisper": 17921.8,
@@ -10101,7 +10101,7 @@
       "specIndex": 3,
       "overallRank": 118,
       "rankDelta": 0,
-      "overallScore": 55.76,
+      "overallScore": 55.77,
       "bosses": {
         "Lord Marrowgar": 15929,
         "Lady Deathwhisper": 10841.7,
@@ -10127,7 +10127,7 @@
       "specIndex": 1,
       "overallRank": 47,
       "rankDelta": 0,
-      "overallScore": 80.46,
+      "overallScore": 80.48,
       "bosses": {
         "Lord Marrowgar": 4089.7,
         "Lady Deathwhisper": 3352.3,
@@ -10153,7 +10153,7 @@
       "specIndex": 1,
       "overallRank": 100,
       "rankDelta": 0,
-      "overallScore": 27.7,
+      "overallScore": 27.71,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 5890.6,
@@ -10179,7 +10179,7 @@
       "specIndex": 3,
       "overallRank": 95,
       "rankDelta": 0,
-      "overallScore": 42.46,
+      "overallScore": 42.48,
       "bosses": {
         "Lord Marrowgar": 61.8,
         "Lady Deathwhisper": 0,
@@ -10205,7 +10205,7 @@
       "specIndex": 3,
       "overallRank": 177,
       "rankDelta": 0,
-      "overallScore": 58.31,
+      "overallScore": 58.3,
       "bosses": {
         "Lord Marrowgar": 13046.9,
         "Lady Deathwhisper": 11802.5,
@@ -10335,7 +10335,7 @@
       "specIndex": 3,
       "overallRank": 130,
       "rankDelta": 0,
-      "overallScore": 28.38,
+      "overallScore": 28.37,
       "bosses": {
         "Lord Marrowgar": 49.2,
         "Lady Deathwhisper": 0,
@@ -10387,7 +10387,7 @@
       "specIndex": 3,
       "overallRank": 122,
       "rankDelta": 0,
-      "overallScore": 70.75,
+      "overallScore": 70.72,
       "bosses": {
         "Lord Marrowgar": 13756.1,
         "Lady Deathwhisper": 12749.3,
@@ -10413,7 +10413,7 @@
       "specIndex": 1,
       "overallRank": 40,
       "rankDelta": 0,
-      "overallScore": 63.75,
+      "overallScore": 63.63,
       "bosses": {
         "Lord Marrowgar": 15660.6,
         "Lady Deathwhisper": 12556.7,
@@ -10517,7 +10517,7 @@
       "specIndex": 1,
       "overallRank": 130,
       "rankDelta": 0,
-      "overallScore": 58.12,
+      "overallScore": 58.11,
       "bosses": {
         "Lord Marrowgar": 340.7,
         "Lady Deathwhisper": 249.9,
@@ -10569,7 +10569,7 @@
       "specIndex": 1,
       "overallRank": 9,
       "rankDelta": 0,
-      "overallScore": 96.56,
+      "overallScore": 96.57,
       "bosses": {
         "Lord Marrowgar": 479.9,
         "Lady Deathwhisper": 371.1,
@@ -10595,7 +10595,7 @@
       "specIndex": 3,
       "overallRank": 219,
       "rankDelta": 0,
-      "overallScore": 50.88,
+      "overallScore": 50.86,
       "bosses": {
         "Lord Marrowgar": 14332.8,
         "Lady Deathwhisper": 14456.3,
@@ -10621,7 +10621,7 @@
       "specIndex": 1,
       "overallRank": 27,
       "rankDelta": 0,
-      "overallScore": 93.78,
+      "overallScore": 93.79,
       "bosses": {
         "Lord Marrowgar": 20539.3,
         "Lady Deathwhisper": 14210.4,
@@ -10751,7 +10751,7 @@
       "specIndex": 2,
       "overallRank": 97,
       "rankDelta": 0,
-      "overallScore": 83.88,
+      "overallScore": 83.9,
       "bosses": {
         "Lord Marrowgar": 21153.7,
         "Lady Deathwhisper": 16270.4,
@@ -10829,7 +10829,7 @@
       "specIndex": 3,
       "overallRank": 156,
       "rankDelta": 0,
-      "overallScore": 63.05,
+      "overallScore": 63.03,
       "bosses": {
         "Lord Marrowgar": 13272.3,
         "Lady Deathwhisper": 13767.4,
@@ -10853,8 +10853,8 @@
       "class": "Paladin",
       "spec": "Retribution",
       "specIndex": 3,
-      "overallRank": 2,
-      "rankDelta": 0,
+      "overallRank": 3,
+      "rankDelta": -1,
       "overallScore": 99.88,
       "bosses": {
         "Lord Marrowgar": 21917.7,
@@ -10881,7 +10881,7 @@
       "specIndex": 3,
       "overallRank": 29,
       "rankDelta": 0,
-      "overallScore": 90.2,
+      "overallScore": 90.22,
       "bosses": {
         "Lord Marrowgar": 20836.6,
         "Lady Deathwhisper": 16673.2,
@@ -11011,7 +11011,7 @@
       "specIndex": 3,
       "overallRank": 60,
       "rankDelta": 0,
-      "overallScore": 76.96,
+      "overallScore": 76.99,
       "bosses": {
         "Lord Marrowgar": 19134.7,
         "Lady Deathwhisper": 15663.3,
@@ -11063,7 +11063,7 @@
       "specIndex": 2,
       "overallRank": 42,
       "rankDelta": 0,
-      "overallScore": 87.48,
+      "overallScore": 87.49,
       "bosses": {
         "Lord Marrowgar": 17261.1,
         "Lady Deathwhisper": 18188.8,
@@ -11087,8 +11087,8 @@
       "class": "Paladin",
       "spec": "Holy",
       "specIndex": 1,
-      "overallRank": 226,
-      "rankDelta": 0,
+      "overallRank": 225,
+      "rankDelta": 1,
       "overallScore": 28.69,
       "bosses": {
         "Lord Marrowgar": 0,
@@ -11115,10 +11115,10 @@
       "specIndex": 2,
       "overallRank": 17,
       "rankDelta": 0,
-      "overallScore": 85.65,
+      "overallScore": 86.07,
       "bosses": {
         "Lord Marrowgar": 6065,
-        "Lady Deathwhisper": 5587.6,
+        "Lady Deathwhisper": 6105.2,
         "Deathbringer Saurfang": 6220.5,
         "Festergut": 8774.1,
         "Rotface": 5712.9,
@@ -11141,12 +11141,12 @@
       "specIndex": 3,
       "overallRank": 26,
       "rankDelta": 0,
-      "overallScore": 94.49,
+      "overallScore": 94.5,
       "bosses": {
         "Lord Marrowgar": 19260.1,
         "Lady Deathwhisper": 17415.3,
         "Deathbringer Saurfang": 19274.7,
-        "Festergut": 18035.1,
+        "Festergut": 18052.9,
         "Rotface": 18947.6,
         "Professor Putricide": 14170.1,
         "Blood Prince Council": 15088.6,
@@ -11167,7 +11167,7 @@
       "specIndex": 1,
       "overallRank": 106,
       "rankDelta": 0,
-      "overallScore": 64.75,
+      "overallScore": 64.72,
       "bosses": {
         "Lord Marrowgar": 432.5,
         "Lady Deathwhisper": 216.2,
@@ -11193,7 +11193,7 @@
       "specIndex": 3,
       "overallRank": 91,
       "rankDelta": 0,
-      "overallScore": 80.57,
+      "overallScore": 80.54,
       "bosses": {
         "Lord Marrowgar": 18722.2,
         "Lady Deathwhisper": 14128.6,
@@ -11219,12 +11219,12 @@
       "specIndex": 1,
       "overallRank": 12,
       "rankDelta": 0,
-      "overallScore": 97.45,
+      "overallScore": 97.46,
       "bosses": {
         "Lord Marrowgar": 20781.3,
         "Lady Deathwhisper": 20311.5,
         "Deathbringer Saurfang": 21008.5,
-        "Festergut": 19265.4,
+        "Festergut": 19266.3,
         "Rotface": 19467.2,
         "Professor Putricide": 15701.6,
         "Blood Prince Council": 17608,
@@ -11271,7 +11271,7 @@
       "specIndex": 2,
       "overallRank": 15,
       "rankDelta": 0,
-      "overallScore": 76.84,
+      "overallScore": 76.86,
       "bosses": {
         "Lord Marrowgar": 19103.4,
         "Lady Deathwhisper": 15352.5,
@@ -11297,7 +11297,7 @@
       "specIndex": 3,
       "overallRank": 6,
       "rankDelta": 0,
-      "overallScore": 95.66,
+      "overallScore": 95.67,
       "bosses": {
         "Lord Marrowgar": 449.9,
         "Lady Deathwhisper": 457.4,
@@ -11323,7 +11323,7 @@
       "specIndex": 1,
       "overallRank": 87,
       "rankDelta": 0,
-      "overallScore": 53.99,
+      "overallScore": 53.98,
       "bosses": {
         "Lord Marrowgar": 333.5,
         "Lady Deathwhisper": 0,
@@ -11399,8 +11399,8 @@
       "class": "Paladin",
       "spec": "Retribution",
       "specIndex": 3,
-      "overallRank": 3,
-      "rankDelta": 0,
+      "overallRank": 2,
+      "rankDelta": 1,
       "overallScore": 99.88,
       "bosses": {
         "Lord Marrowgar": 20746.7,
@@ -11427,14 +11427,14 @@
       "specIndex": 1,
       "overallRank": 6,
       "rankDelta": 0,
-      "overallScore": 95.7,
+      "overallScore": 96.2,
       "bosses": {
-        "Lord Marrowgar": 20013.5,
+        "Lord Marrowgar": 20304.9,
         "Lady Deathwhisper": 16993,
         "Deathbringer Saurfang": 19284.5,
         "Festergut": 17164.4,
-        "Rotface": 17134.8,
-        "Professor Putricide": 14241.3,
+        "Rotface": 17567.5,
+        "Professor Putricide": 15439.8,
         "Blood Prince Council": 16258,
         "Blood-Queen Lana'thel": 24531.5,
         "Sindragosa": 13208,
@@ -11442,7 +11442,7 @@
         "Toravon the Ice Watcher": 0,
         "Halion": 12553.8,
         "Anub'arak": 0,
-        "Valithria Dreamwalker": 5053.9
+        "Valithria Dreamwalker": 5056.2
       }
     },
     {
@@ -11479,7 +11479,7 @@
       "specIndex": 1,
       "overallRank": 88,
       "rankDelta": 0,
-      "overallScore": 64.82,
+      "overallScore": 64.83,
       "bosses": {
         "Lord Marrowgar": 3570.4,
         "Lady Deathwhisper": 3484.6,
@@ -11503,9 +11503,9 @@
       "class": "Death Knight",
       "spec": "Unholy",
       "specIndex": 3,
-      "overallRank": 37,
-      "rankDelta": 0,
-      "overallScore": 86.51,
+      "overallRank": 36,
+      "rankDelta": 1,
+      "overallScore": 87.54,
       "bosses": {
         "Lord Marrowgar": 21579.3,
         "Lady Deathwhisper": 16558.3,
@@ -11515,7 +11515,7 @@
         "Professor Putricide": 14916.5,
         "Blood Prince Council": 14134.5,
         "Blood-Queen Lana'thel": 19338.8,
-        "Sindragosa": 13468.9,
+        "Sindragosa": 14601.8,
         "The Lich King": 11665.9,
         "Toravon the Ice Watcher": 14421.1,
         "Halion": 12641.5,
@@ -11555,13 +11555,13 @@
       "class": "Priest",
       "spec": "Shadow",
       "specIndex": 3,
-      "overallRank": 142,
-      "rankDelta": 0,
-      "overallScore": 66.99,
+      "overallRank": 141,
+      "rankDelta": 1,
+      "overallScore": 67.02,
       "bosses": {
         "Lord Marrowgar": 14738.9,
         "Lady Deathwhisper": 12124.8,
-        "Deathbringer Saurfang": 17223.2,
+        "Deathbringer Saurfang": 17309.9,
         "Festergut": 15085.5,
         "Rotface": 16448,
         "Professor Putricide": 11895.3,
@@ -11583,7 +11583,7 @@
       "specIndex": 3,
       "overallRank": 47,
       "rankDelta": 0,
-      "overallScore": 90.01,
+      "overallScore": 90,
       "bosses": {
         "Lord Marrowgar": 18661.7,
         "Lady Deathwhisper": 16067.1,
@@ -11609,7 +11609,7 @@
       "specIndex": 2,
       "overallRank": 21,
       "rankDelta": 0,
-      "overallScore": 72.07,
+      "overallScore": 72.08,
       "bosses": {
         "Lord Marrowgar": 17046.8,
         "Lady Deathwhisper": 9687.6,
@@ -11635,7 +11635,7 @@
       "specIndex": 3,
       "overallRank": 291,
       "rankDelta": 0,
-      "overallScore": 2.49,
+      "overallScore": 2.48,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 0,
@@ -11661,7 +11661,7 @@
       "specIndex": 2,
       "overallRank": 70,
       "rankDelta": 0,
-      "overallScore": 76.32,
+      "overallScore": 76.33,
       "bosses": {
         "Lord Marrowgar": 17046.6,
         "Lady Deathwhisper": 15579.1,
@@ -11817,7 +11817,7 @@
       "specIndex": 2,
       "overallRank": 90,
       "rankDelta": 0,
-      "overallScore": 84.85,
+      "overallScore": 84.86,
       "bosses": {
         "Lord Marrowgar": 23076.3,
         "Lady Deathwhisper": 18360.8,
@@ -11869,7 +11869,7 @@
       "specIndex": 3,
       "overallRank": 4,
       "rankDelta": 0,
-      "overallScore": 91.04,
+      "overallScore": 91.05,
       "bosses": {
         "Lord Marrowgar": 228.8,
         "Lady Deathwhisper": 48.3,
@@ -11921,7 +11921,7 @@
       "specIndex": 3,
       "overallRank": 24,
       "rankDelta": 0,
-      "overallScore": 94.89,
+      "overallScore": 94.88,
       "bosses": {
         "Lord Marrowgar": 17725.8,
         "Lady Deathwhisper": 15597.9,
@@ -11999,7 +11999,7 @@
       "specIndex": 3,
       "overallRank": 55,
       "rankDelta": 0,
-      "overallScore": 78.92,
+      "overallScore": 78.95,
       "bosses": {
         "Lord Marrowgar": 19873,
         "Lady Deathwhisper": 15865.7,
@@ -12025,7 +12025,7 @@
       "specIndex": 1,
       "overallRank": 5,
       "rankDelta": 0,
-      "overallScore": 96.37,
+      "overallScore": 96.38,
       "bosses": {
         "Lord Marrowgar": 18174.5,
         "Lady Deathwhisper": 15375.1,
@@ -12051,7 +12051,7 @@
       "specIndex": 2,
       "overallRank": 5,
       "rankDelta": 0,
-      "overallScore": 96.07,
+      "overallScore": 96.03,
       "bosses": {
         "Lord Marrowgar": 21237.9,
         "Lady Deathwhisper": 17165.5,
@@ -12102,8 +12102,8 @@
       "spec": "Fire",
       "specIndex": 2,
       "overallRank": 53,
-      "rankDelta": -1,
-      "overallScore": 93.88,
+      "rankDelta": 0,
+      "overallScore": 93.89,
       "bosses": {
         "Lord Marrowgar": 22465.1,
         "Lady Deathwhisper": 21375.4,
@@ -12155,7 +12155,7 @@
       "specIndex": 2,
       "overallRank": 22,
       "rankDelta": 0,
-      "overallScore": 98.14,
+      "overallScore": 98.13,
       "bosses": {
         "Lord Marrowgar": 25586.8,
         "Lady Deathwhisper": 22225.1,
@@ -12207,7 +12207,7 @@
       "specIndex": 3,
       "overallRank": 32,
       "rankDelta": 0,
-      "overallScore": 93.1,
+      "overallScore": 93.08,
       "bosses": {
         "Lord Marrowgar": 19145.5,
         "Lady Deathwhisper": 17241.3,
@@ -12233,7 +12233,7 @@
       "specIndex": 2,
       "overallRank": 89,
       "rankDelta": 0,
-      "overallScore": 54.02,
+      "overallScore": 54.01,
       "bosses": {
         "Lord Marrowgar": 4916.3,
         "Lady Deathwhisper": 3777,
@@ -12311,7 +12311,7 @@
       "specIndex": 2,
       "overallRank": 65,
       "rankDelta": 0,
-      "overallScore": 64.4,
+      "overallScore": 64.41,
       "bosses": {
         "Lord Marrowgar": 5548.7,
         "Lady Deathwhisper": 6014.8,
@@ -12441,7 +12441,7 @@
       "specIndex": 2,
       "overallRank": 119,
       "rankDelta": 0,
-      "overallScore": 79.14,
+      "overallScore": 79.15,
       "bosses": {
         "Lord Marrowgar": 18674,
         "Lady Deathwhisper": 15622.8,
@@ -12467,7 +12467,7 @@
       "specIndex": 1,
       "overallRank": 73,
       "rankDelta": 0,
-      "overallScore": 73.83,
+      "overallScore": 73.82,
       "bosses": {
         "Lord Marrowgar": 17667.6,
         "Lady Deathwhisper": 15438.9,
@@ -12545,7 +12545,7 @@
       "specIndex": 3,
       "overallRank": 72,
       "rankDelta": 0,
-      "overallScore": 84.25,
+      "overallScore": 84.21,
       "bosses": {
         "Lord Marrowgar": 19032.9,
         "Lady Deathwhisper": 17406.2,
@@ -12597,7 +12597,7 @@
       "specIndex": 2,
       "overallRank": 49,
       "rankDelta": 0,
-      "overallScore": 85.27,
+      "overallScore": 85.28,
       "bosses": {
         "Lord Marrowgar": 18669.6,
         "Lady Deathwhisper": 16394.1,
@@ -12623,7 +12623,7 @@
       "specIndex": 2,
       "overallRank": 25,
       "rankDelta": 0,
-      "overallScore": 82.69,
+      "overallScore": 82.7,
       "bosses": {
         "Lord Marrowgar": 5859.7,
         "Lady Deathwhisper": 6605.9,
@@ -12649,7 +12649,7 @@
       "specIndex": 3,
       "overallRank": 24,
       "rankDelta": 0,
-      "overallScore": 95.5,
+      "overallScore": 95.48,
       "bosses": {
         "Lord Marrowgar": 19007.5,
         "Lady Deathwhisper": 17111.6,
@@ -12673,20 +12673,20 @@
       "class": "Warrior",
       "spec": "Fury",
       "specIndex": 2,
-      "overallRank": 147,
-      "rankDelta": 0,
-      "overallScore": 65.85,
+      "overallRank": 142,
+      "rankDelta": 5,
+      "overallScore": 68.1,
       "bosses": {
         "Lord Marrowgar": 17297.8,
         "Lady Deathwhisper": 14747.5,
-        "Deathbringer Saurfang": 17324.8,
-        "Festergut": 16379.3,
+        "Deathbringer Saurfang": 18067.8,
+        "Festergut": 16617.8,
         "Rotface": 16935.2,
         "Professor Putricide": 12441.7,
         "Blood Prince Council": 12953.5,
         "Blood-Queen Lana'thel": 20952.8,
-        "Sindragosa": 10383.6,
-        "The Lich King": 10746.1,
+        "Sindragosa": 12272,
+        "The Lich King": 10770.3,
         "Toravon the Ice Watcher": 12340.2,
         "Halion": 10460.1,
         "Anub'arak": 0,
@@ -12753,7 +12753,7 @@
       "specIndex": 3,
       "overallRank": 15,
       "rankDelta": 0,
-      "overallScore": 95.72,
+      "overallScore": 95.73,
       "bosses": {
         "Lord Marrowgar": 23017,
         "Lady Deathwhisper": 20215.4,
@@ -12779,7 +12779,7 @@
       "specIndex": 3,
       "overallRank": 86,
       "rankDelta": 0,
-      "overallScore": 81.84,
+      "overallScore": 81.81,
       "bosses": {
         "Lord Marrowgar": 16780.4,
         "Lady Deathwhisper": 15489.1,
@@ -12805,7 +12805,7 @@
       "specIndex": 2,
       "overallRank": 52,
       "rankDelta": 0,
-      "overallScore": 81.89,
+      "overallScore": 81.9,
       "bosses": {
         "Lord Marrowgar": 17646.3,
         "Lady Deathwhisper": 17532.7,
@@ -12857,7 +12857,7 @@
       "specIndex": 2,
       "overallRank": 91,
       "rankDelta": 0,
-      "overallScore": 84.43,
+      "overallScore": 84.44,
       "bosses": {
         "Lord Marrowgar": 22917.7,
         "Lady Deathwhisper": 17142.7,
@@ -12909,7 +12909,7 @@
       "specIndex": 3,
       "overallRank": 26,
       "rankDelta": 0,
-      "overallScore": 82.95,
+      "overallScore": 82.96,
       "bosses": {
         "Lord Marrowgar": 197.4,
         "Lady Deathwhisper": 367.8,
@@ -12935,7 +12935,7 @@
       "specIndex": 3,
       "overallRank": 57,
       "rankDelta": 0,
-      "overallScore": 61.37,
+      "overallScore": 61.39,
       "bosses": {
         "Lord Marrowgar": 272.9,
         "Lady Deathwhisper": 68.1,
@@ -13012,7 +13012,7 @@
       "spec": "Unholy",
       "specIndex": 3,
       "overallRank": 10,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 98.38,
       "bosses": {
         "Lord Marrowgar": 23968.7,
@@ -13091,7 +13091,7 @@
       "specIndex": 2,
       "overallRank": 9,
       "rankDelta": 0,
-      "overallScore": 95.11,
+      "overallScore": 95.12,
       "bosses": {
         "Lord Marrowgar": 5952.6,
         "Lady Deathwhisper": 9749.7,
@@ -13117,7 +13117,7 @@
       "specIndex": 3,
       "overallRank": 4,
       "rankDelta": 0,
-      "overallScore": 99.71,
+      "overallScore": 99.7,
       "bosses": {
         "Lord Marrowgar": 20857.4,
         "Lady Deathwhisper": 18489.2,
@@ -13169,7 +13169,7 @@
       "specIndex": 1,
       "overallRank": 7,
       "rankDelta": 0,
-      "overallScore": 95.49,
+      "overallScore": 95.5,
       "bosses": {
         "Lord Marrowgar": 5521.2,
         "Lady Deathwhisper": 5136.7,
@@ -13195,7 +13195,7 @@
       "specIndex": 3,
       "overallRank": 101,
       "rankDelta": 0,
-      "overallScore": 63.35,
+      "overallScore": 63.37,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 15884.2,
@@ -13221,7 +13221,7 @@
       "specIndex": 1,
       "overallRank": 50,
       "rankDelta": 0,
-      "overallScore": 73.64,
+      "overallScore": 73.65,
       "bosses": {
         "Lord Marrowgar": 143.7,
         "Lady Deathwhisper": 116.2,
@@ -13247,7 +13247,7 @@
       "specIndex": 3,
       "overallRank": 137,
       "rankDelta": 0,
-      "overallScore": 67.41,
+      "overallScore": 67.39,
       "bosses": {
         "Lord Marrowgar": 14873,
         "Lady Deathwhisper": 15038.5,
@@ -13273,7 +13273,7 @@
       "specIndex": 1,
       "overallRank": 17,
       "rankDelta": 0,
-      "overallScore": 86.93,
+      "overallScore": 86.9,
       "bosses": {
         "Lord Marrowgar": 18206,
         "Lady Deathwhisper": 14433.2,
@@ -13325,7 +13325,7 @@
       "specIndex": 1,
       "overallRank": 173,
       "rankDelta": 0,
-      "overallScore": 29.36,
+      "overallScore": 29.37,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 0,
@@ -13403,7 +13403,7 @@
       "specIndex": 2,
       "overallRank": 212,
       "rankDelta": 0,
-      "overallScore": 59.25,
+      "overallScore": 59.26,
       "bosses": {
         "Lord Marrowgar": 16897,
         "Lady Deathwhisper": 11191.2,
@@ -13427,9 +13427,9 @@
       "class": "Druid",
       "spec": "Balance",
       "specIndex": 1,
-      "overallRank": 69,
-      "rankDelta": 1,
-      "overallScore": 74.47,
+      "overallRank": 71,
+      "rankDelta": -2,
+      "overallScore": 74.46,
       "bosses": {
         "Lord Marrowgar": 18607.8,
         "Lady Deathwhisper": 15868,
@@ -13559,7 +13559,7 @@
       "specIndex": 2,
       "overallRank": 21,
       "rankDelta": 0,
-      "overallScore": 96.07,
+      "overallScore": 96.08,
       "bosses": {
         "Lord Marrowgar": 26437.7,
         "Lady Deathwhisper": 20241.5,
@@ -13741,7 +13741,7 @@
       "specIndex": 1,
       "overallRank": 32,
       "rankDelta": 0,
-      "overallScore": 85.91,
+      "overallScore": 85.92,
       "bosses": {
         "Lord Marrowgar": 4052.9,
         "Lady Deathwhisper": 5000.7,
@@ -13767,7 +13767,7 @@
       "specIndex": 3,
       "overallRank": 19,
       "rankDelta": 0,
-      "overallScore": 93.31,
+      "overallScore": 93.32,
       "bosses": {
         "Lord Marrowgar": 21332.7,
         "Lady Deathwhisper": 18459.4,
@@ -13793,7 +13793,7 @@
       "specIndex": 1,
       "overallRank": 46,
       "rankDelta": 0,
-      "overallScore": 84.9,
+      "overallScore": 84.88,
       "bosses": {
         "Lord Marrowgar": 18431.2,
         "Lady Deathwhisper": 14211.2,
@@ -13819,7 +13819,7 @@
       "specIndex": 1,
       "overallRank": 115,
       "rankDelta": 0,
-      "overallScore": 62.42,
+      "overallScore": 62.41,
       "bosses": {
         "Lord Marrowgar": 379.4,
         "Lady Deathwhisper": 216.3,
@@ -13897,7 +13897,7 @@
       "specIndex": 2,
       "overallRank": 21,
       "rankDelta": 0,
-      "overallScore": 84.95,
+      "overallScore": 84.96,
       "bosses": {
         "Lord Marrowgar": 5419.6,
         "Lady Deathwhisper": 5846.9,
@@ -13923,7 +13923,7 @@
       "specIndex": 3,
       "overallRank": 41,
       "rankDelta": 0,
-      "overallScore": 91.74,
+      "overallScore": 91.72,
       "bosses": {
         "Lord Marrowgar": 20761.5,
         "Lady Deathwhisper": 15555.9,
@@ -13949,7 +13949,7 @@
       "specIndex": 2,
       "overallRank": 96,
       "rankDelta": 0,
-      "overallScore": 67.39,
+      "overallScore": 67.4,
       "bosses": {
         "Lord Marrowgar": 16333.6,
         "Lady Deathwhisper": 12901.7,
@@ -13975,7 +13975,7 @@
       "specIndex": 2,
       "overallRank": 23,
       "rankDelta": 0,
-      "overallScore": 70.94,
+      "overallScore": 70.95,
       "bosses": {
         "Lord Marrowgar": 15877.3,
         "Lady Deathwhisper": 15295.3,
@@ -14027,7 +14027,7 @@
       "specIndex": 2,
       "overallRank": 52,
       "rankDelta": 0,
-      "overallScore": 93.09,
+      "overallScore": 93.1,
       "bosses": {
         "Lord Marrowgar": 22535.6,
         "Lady Deathwhisper": 21564.8,
@@ -14079,7 +14079,7 @@
       "specIndex": 3,
       "overallRank": 6,
       "rankDelta": 0,
-      "overallScore": 98.83,
+      "overallScore": 98.82,
       "bosses": {
         "Lord Marrowgar": 19708.4,
         "Lady Deathwhisper": 19502.2,
@@ -14103,9 +14103,9 @@
       "class": "Druid",
       "spec": "Balance",
       "specIndex": 1,
-      "overallRank": 99,
-      "rankDelta": 0,
-      "overallScore": 68.53,
+      "overallRank": 100,
+      "rankDelta": -1,
+      "overallScore": 68.51,
       "bosses": {
         "Lord Marrowgar": 14896,
         "Lady Deathwhisper": 13403.4,
@@ -14131,7 +14131,7 @@
       "specIndex": 3,
       "overallRank": 110,
       "rankDelta": 0,
-      "overallScore": 32.89,
+      "overallScore": 32.91,
       "bosses": {
         "Lord Marrowgar": 0,
         "Lady Deathwhisper": 1.6,
@@ -14157,7 +14157,7 @@
       "specIndex": 1,
       "overallRank": 107,
       "rankDelta": 0,
-      "overallScore": 67.33,
+      "overallScore": 67.32,
       "bosses": {
         "Lord Marrowgar": 17594.7,
         "Lady Deathwhisper": 15568,
@@ -14235,7 +14235,7 @@
       "specIndex": 2,
       "overallRank": 30,
       "rankDelta": 0,
-      "overallScore": 91.33,
+      "overallScore": 91.34,
       "bosses": {
         "Lord Marrowgar": 18501.3,
         "Lady Deathwhisper": 18508.3,
@@ -14287,7 +14287,7 @@
       "specIndex": 2,
       "overallRank": 110,
       "rankDelta": 0,
-      "overallScore": 56.76,
+      "overallScore": 56.77,
       "bosses": {
         "Lord Marrowgar": 17181.5,
         "Lady Deathwhisper": 14297.7,
@@ -14339,7 +14339,7 @@
       "specIndex": 2,
       "overallRank": 70,
       "rankDelta": 0,
-      "overallScore": 78.03,
+      "overallScore": 78.04,
       "bosses": {
         "Lord Marrowgar": 17508.2,
         "Lady Deathwhisper": 14879.7,
@@ -14443,7 +14443,7 @@
       "specIndex": 2,
       "overallRank": 74,
       "rankDelta": 0,
-      "overallScore": 87.56,
+      "overallScore": 87.57,
       "bosses": {
         "Lord Marrowgar": 23000,
         "Lady Deathwhisper": 18904.7,
@@ -14495,7 +14495,7 @@
       "specIndex": 3,
       "overallRank": 57,
       "rankDelta": 0,
-      "overallScore": 88.29,
+      "overallScore": 88.25,
       "bosses": {
         "Lord Marrowgar": 18230.2,
         "Lady Deathwhisper": 16855.5,
@@ -14547,7 +14547,7 @@
       "specIndex": 1,
       "overallRank": 87,
       "rankDelta": 0,
-      "overallScore": 65.25,
+      "overallScore": 65.24,
       "bosses": {
         "Lord Marrowgar": 3942.6,
         "Lady Deathwhisper": 2906.7,
@@ -14566,7 +14566,7 @@
       }
     }
   ],
-  "lastUpdated": "2026-08-26T00:05:53.400Z",
+  "lastUpdated": "2026-08-27T05:05:46.395Z",
   "updateSummary": {
     "totalRows": 557,
     "failedPlayers": 0
