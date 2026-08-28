@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-08-27T05:05:47.955Z",
+  "updatedAt": "2026-08-28T07:24:22.767Z",
   "specs": [
     {
       "class": "Paladin",
@@ -4104,6 +4104,10 @@
           "hps": 26077.3
         },
         {
+          "name": "Даняцепнуха",
+          "hps": 26046.1
+        },
+        {
           "name": "Anger",
           "hps": 25931.9
         },
@@ -4370,10 +4374,6 @@
         {
           "name": "Elementary",
           "hps": 23026.2
-        },
-        {
-          "name": "Даняцепнуха",
-          "hps": 23022.5
         },
         {
           "name": "Junkpunk",
