@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-08-28T07:24:22.767Z",
+  "updatedAt": "2026-08-29T04:41:31.992Z",
   "specs": [
     {
       "class": "Paladin",
@@ -828,6 +828,10 @@
           "hps": 24478
         },
         {
+          "name": "Чітер",
+          "hps": 24454.8
+        },
+        {
           "name": "Deliell",
           "hps": 24354.6
         },
@@ -1186,10 +1190,6 @@
         {
           "name": "Ogge",
           "hps": 10432.8
-        },
-        {
-          "name": "Чітер",
-          "hps": 10359.5
         },
         {
           "name": "Holydoly",
@@ -1886,6 +1886,10 @@
           "hps": 309.7
         },
         {
+          "name": "Chelios",
+          "hps": 309.3
+        },
+        {
           "name": "Yoonko",
           "hps": 294.9
         },
@@ -2304,12 +2308,20 @@
           "hps": 11002.4
         },
         {
+          "name": "Annabelle",
+          "hps": 10473.6
+        },
+        {
           "name": "Luminara",
           "hps": 10341.5
         },
         {
           "name": "Ісус",
           "hps": 9511.6
+        },
+        {
+          "name": "Азмодан",
+          "hps": 9184.7
         },
         {
           "name": "Шдпц",
@@ -2358,10 +2370,6 @@
         {
           "name": "Хо'лі",
           "hps": 2617.7
-        },
-        {
-          "name": "Annabelle",
-          "hps": 2568.1
         },
         {
           "name": "Вагончик",
@@ -3278,8 +3286,16 @@
           "hps": 11085.8
         },
         {
+          "name": "Metalcore",
+          "hps": 11018.2
+        },
+        {
           "name": "Birmingham",
           "hps": 10955.5
+        },
+        {
+          "name": "Harvester",
+          "hps": 10815.7
         },
         {
           "name": "Paradox",
@@ -3356,6 +3372,10 @@
         {
           "name": "Koshenyatko",
           "hps": 7890.2
+        },
+        {
+          "name": "Мастерйода",
+          "hps": 7706.9
         },
         {
           "name": "Яхілю",
@@ -3670,10 +3690,6 @@
           "hps": 570.7
         },
         {
-          "name": "Мастерйода",
-          "hps": 527.6
-        },
-        {
           "name": "Starkon",
           "hps": 525.5
         },
@@ -3724,6 +3740,10 @@
         {
           "name": "Popkorn",
           "hps": 253.4
+        },
+        {
+          "name": "Grit",
+          "hps": 111.2
         },
         {
           "name": "Milana",
@@ -4620,6 +4640,10 @@
           "hps": 19886.6
         },
         {
+          "name": "Tero",
+          "hps": 19739.4
+        },
+        {
           "name": "Bastille",
           "hps": 19598.6
         },
@@ -4714,10 +4738,6 @@
         {
           "name": "Galiossham",
           "hps": 18132.4
-        },
-        {
-          "name": "Tero",
-          "hps": 18112.9
         },
         {
           "name": "Нойд",
