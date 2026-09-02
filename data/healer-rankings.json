@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-09-01T02:22:32.910Z",
+  "updatedAt": "2026-09-02T01:34:06.953Z",
   "specs": [
     {
       "class": "Paladin",
@@ -528,6 +528,10 @@
           "hps": 30663.5
         },
         {
+          "name": "Щока",
+          "hps": 30510.9
+        },
+        {
           "name": "Hpal",
           "hps": 30508.5
         },
@@ -718,10 +722,6 @@
         {
           "name": "Deadinsside",
           "hps": 27713.5
-        },
-        {
-          "name": "Щока",
-          "hps": 27711.7
         },
         {
           "name": "Ікарус",
