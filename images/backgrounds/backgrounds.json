@@ -26,5 +26,26 @@
     "thumb": "/images/backgrounds/thumbs/portal.webp",
     "title": "portal",
     "isDefault": false
+  },
+  {
+    "file": "Ulduar1.jpg",
+    "src": "/images/backgrounds/Ulduar1.jpg",
+    "thumb": "/images/backgrounds/thumbs/Ulduar1.webp",
+    "title": "Ulduar1",
+    "isDefault": false
+  },
+  {
+    "file": "Ulduar2.jpg",
+    "src": "/images/backgrounds/Ulduar2.jpg",
+    "thumb": "/images/backgrounds/thumbs/Ulduar2.webp",
+    "title": "Ulduar2",
+    "isDefault": false
+  },
+  {
+    "file": "Ulduar3.jpg",
+    "src": "/images/backgrounds/Ulduar3.jpg",
+    "thumb": "/images/backgrounds/thumbs/Ulduar3.webp",
+    "title": "Ulduar3",
+    "isDefault": false
   }
 ]
