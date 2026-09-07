@@ -7,24 +7,24 @@
     "isDefault": true
   },
   {
-    "file": "background_2.jpg",
-    "src": "/images/backgrounds/background_2.jpg",
-    "thumb": "/images/backgrounds/thumbs/background_2.webp",
-    "title": "background 2",
+    "file": "Illidan.jpg",
+    "src": "/images/backgrounds/Illidan.jpg",
+    "thumb": "/images/backgrounds/thumbs/Illidan.webp",
+    "title": "Illidan",
     "isDefault": false
   },
   {
-    "file": "background_3.jpg",
-    "src": "/images/backgrounds/background_3.jpg",
-    "thumb": "/images/backgrounds/thumbs/background_3.webp",
-    "title": "background 3",
+    "file": "Lich2.jpg",
+    "src": "/images/backgrounds/Lich2.jpg",
+    "thumb": "/images/backgrounds/thumbs/Lich2.webp",
+    "title": "Lich2",
     "isDefault": false
   },
   {
-    "file": "background_4.jpg",
-    "src": "/images/backgrounds/background_4.jpg",
-    "thumb": "/images/backgrounds/thumbs/background_4.webp",
-    "title": "background 4",
+    "file": "portal.jpg",
+    "src": "/images/backgrounds/portal.jpg",
+    "thumb": "/images/backgrounds/thumbs/portal.webp",
+    "title": "portal",
     "isDefault": false
   }
 ]
