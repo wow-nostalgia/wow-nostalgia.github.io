@@ -1,0 +1,30 @@
+[
+  {
+    "file": "default.jpg",
+    "src": "/images/backgrounds/default.jpg",
+    "thumb": "/images/backgrounds/thumbs/default.webp",
+    "title": "Стандартний",
+    "isDefault": true
+  },
+  {
+    "file": "background_2.jpg",
+    "src": "/images/backgrounds/background_2.jpg",
+    "thumb": "/images/backgrounds/thumbs/background_2.webp",
+    "title": "background 2",
+    "isDefault": false
+  },
+  {
+    "file": "background_3.jpg",
+    "src": "/images/backgrounds/background_3.jpg",
+    "thumb": "/images/backgrounds/thumbs/background_3.webp",
+    "title": "background 3",
+    "isDefault": false
+  },
+  {
+    "file": "background_4.jpg",
+    "src": "/images/backgrounds/background_4.jpg",
+    "thumb": "/images/backgrounds/thumbs/background_4.webp",
+    "title": "background 4",
+    "isDefault": false
+  }
+]

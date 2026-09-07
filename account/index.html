@@ -13,7 +13,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Профіль — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../style.css?v=133">
+  <link rel="stylesheet" href="../style.css?v=134">
+  <script src="/scripts/background.js?v=1"></script>
 </head>
 
 <body class="account-page">
@@ -122,6 +123,13 @@
             <p class="account-chars-hint">Звук лунає на сторінці рейду, коли тобі передали софти або офіцер призначив бонусний софт. Працює, поки сторінка відкрита.</p>
           </div>
 
+          <div class="account-prefs">
+            <h2>Вигляд</h2>
+            <div id="backgroundGrid" class="account-bg-grid"></div>
+            <p class="account-chars-hint">Фон зберігається в акаунті, тож буде однаковий у будь-якому браузері, де ти увійдеш. Після виходу з акаунту повертається стандартний.</p>
+            <p id="backgroundStatus" class="account-chars-hint"></p>
+          </div>
+
           <p id="accountStatus"></p>
         </div>
 
@@ -197,10 +205,10 @@
   </div>
 
   <script src="../scripts/nav.js?v=2"></script>
-  <script src="../scripts/auth-shared.js?v=11"></script>
+  <script src="../scripts/auth-shared.js?v=12"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=12"></script>
-  <script src="../scripts/account.js?v=22"></script>
+  <script src="../scripts/account.js?v=23"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

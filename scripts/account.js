@@ -32,6 +32,8 @@ const soundNotificationsInput = document.getElementById('soundNotificationsInput
 const soundVolumeInput = document.getElementById('soundVolumeInput');
 const soundVolumeValue = document.getElementById('soundVolumeValue');
 const soundVolumeTestBtn = document.getElementById('soundVolumeTestBtn');
+const backgroundGrid = document.getElementById('backgroundGrid');
+const backgroundStatus = document.getElementById('backgroundStatus');
 
 // Останнє успішно збережене значення - щоб відкотити повзунок, якщо PATCH
 // не пройшов.
@@ -301,6 +303,119 @@ soundVolumeTestBtn.addEventListener('click', () => {
   audio.play().catch(() => setAccountStatus('Не вдалося відтворити звук.'));
 });
 
+// --- Фон сайту ---------------------------------------------------------
+// Значення: null - стандартний фон, 'none' - без фону, інакше ім'я файлу з
+// images/backgrounds/. Застосування й кеш - у scripts/background.js.
+
+let backgroundChoices = [];
+let currentBackground = null;
+
+async function loadBackgroundChoices() {
+  // no-store, як у галереї: маніфест переписується скриптом при додаванні
+  // фонів, і CDN GitHub Pages інакше віддає старий список.
+  const res = await fetch(BACKGROUNDS_MANIFEST_URL, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+function createBackgroundCard({ value, title, thumb }) {
+  const card = document.createElement('button');
+  card.type = 'button';
+  card.className = 'account-bg-card';
+  card.dataset.background = value ?? '';
+  card.setAttribute('aria-pressed', String(value === currentBackground));
+  if (value === currentBackground) card.classList.add('account-bg-card--active');
+
+  if (thumb) {
+    const img = document.createElement('img');
+    img.className = 'account-bg-card__img';
+    img.src = thumb;
+    img.alt = '';
+    img.loading = 'lazy';
+    card.appendChild(img);
+  } else {
+    const placeholder = document.createElement('span');
+    placeholder.className = 'account-bg-card__img account-bg-card__img--empty';
+    card.appendChild(placeholder);
+  }
+
+  const caption = document.createElement('span');
+  caption.className = 'account-bg-card__title';
+  caption.textContent = title;
+  card.appendChild(caption);
+
+  return card;
+}
+
+function renderBackgroundGrid() {
+  backgroundGrid.innerHTML = '';
+
+  // Стандартний фон зберігаємо як null, а не як 'default.jpg': тоді сайт
+  // завжди показує те, що зараз лежить у CSS, навіть якщо файл колись
+  // заміниться на інший.
+  for (const item of backgroundChoices) {
+    backgroundGrid.appendChild(createBackgroundCard({
+      value: item.isDefault ? null : item.file,
+      title: item.title,
+      thumb: item.thumb
+    }));
+  }
+
+  backgroundGrid.appendChild(createBackgroundCard({ value: BACKGROUND_NONE, title: 'Без фону', thumb: null }));
+}
+
+async function selectBackground(value) {
+  if (value === currentBackground) return;
+
+  const previous = currentBackground;
+  currentBackground = value;
+  // Показуємо результат одразу — фон видно прямо за сторінкою профілю.
+  setBackground(value);
+  renderBackgroundGrid();
+  backgroundStatus.textContent = '';
+
+  try {
+    await savePreferences({ background: value });
+  } catch (err) {
+    currentBackground = previous;
+    setBackground(previous);
+    renderBackgroundGrid();
+    backgroundStatus.textContent = `Не вдалося зберегти: ${err.message}`;
+  }
+}
+
+backgroundGrid.addEventListener('click', (event) => {
+  const card = event.target.closest('.account-bg-card');
+  if (!card) return;
+  selectBackground(card.dataset.background || null);
+});
+
+async function initBackgrounds(user) {
+  currentBackground = user.background ?? null;
+
+  try {
+    backgroundChoices = await loadBackgroundChoices();
+  } catch (err) {
+    backgroundStatus.textContent = `Не вдалося завантажити список фонів: ${err.message}`;
+    return;
+  }
+
+  // Фон могли прибрати з репозиторію після того, як його хтось обрав —
+  // тоді в акаунті лишається мертве ім'я файлу. Мовчки повертаємо на
+  // стандартний, щоб профіль не показував активною неіснуючу картку.
+  const known = currentBackground === null
+    || currentBackground === BACKGROUND_NONE
+    || backgroundChoices.some((item) => item.file === currentBackground);
+
+  if (!known) {
+    currentBackground = null;
+    setBackground(null);
+    savePreferences({ background: null }).catch(() => { /* не критично, полагодиться при наступному виборі */ });
+  }
+
+  renderBackgroundGrid();
+}
+
 firstCharacterCloseBtn.addEventListener('click', () => { firstCharacterModal.hidden = true; });
 firstCharacterModalBackdrop.addEventListener('click', () => { firstCharacterModal.hidden = true; });
 document.addEventListener('keydown', (event) => {
@@ -460,6 +575,7 @@ async function init() {
   soundVolumeInput.value = lastSavedVolume;
   renderVolumeValue();
   applySoundPrefsState();
+  initBackgrounds(user);
   profileUsername.textContent = user.username;
   profileDiscordId.textContent = `Discord ID: ${user.discordId}`;
   if (user.avatar) {

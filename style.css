@@ -151,12 +151,19 @@ body {
   font-weight: var(--font-weight-normal);
 }
 
+/* Фон сайту. Значення підмінює scripts/background.js за вибором користувача
+   (профіль -> Вигляд); тут лишається стандартний фон для незалогінених і
+   для першого рендеру, поки скрипт ще не відпрацював. */
+:root {
+  --page-background: url("/images/backgrounds/default.jpg");
+}
+
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
-  background-image: url("./images/background.jpg");
+  background-image: var(--page-background);
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
@@ -4114,6 +4121,58 @@ body.account-page .account-volume-value {
   min-width: 2.5rem;
   color: var(--color-text-strong);
   font-variant-numeric: tabular-nums;
+}
+
+/* Вибір фону сайту. Картки-кнопки, а не <input type="radio">: клікабельна
+   зона - вся мініатюра, а стан групи однаково читається через aria-pressed. */
+body.account-page .account-bg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  max-width: 40rem;
+}
+
+body.account-page .account-bg-card {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-soft);
+  color: var(--color-text-faint);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+body.account-page .account-bg-card:hover {
+  border-color: var(--color-link);
+  color: var(--color-text-strong);
+}
+
+body.account-page .account-bg-card--active {
+  border-color: var(--color-accent-gold);
+  color: var(--color-text-strong);
+}
+
+body.account-page .account-bg-card__img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+/* "Без фону" - показуємо той самий колір, який лишиться під контентом. */
+body.account-page .account-bg-card__img--empty {
+  background-color: var(--color-page-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+body.account-page .account-bg-card__title {
+  display: block;
+  padding: 0.4rem 0.6rem;
+  font-size: var(--font-size-base);
 }
 
 body.account-page .account-characters-table {

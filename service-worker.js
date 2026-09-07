@@ -9,7 +9,8 @@ const APP_SHELL = [
   '/icons/icon-192.png',
   '/icons/icon-512.png',
   '/scripts/nav.js',
-  '/scripts/auth-shared.js'
+  '/scripts/auth-shared.js',
+  '/scripts/background.js'
 ];
 
 // Розширення, які кешуємо. data/*.json свідомо НЕ входить — ці файли

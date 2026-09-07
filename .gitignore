@@ -4,3 +4,13 @@ CLAUDE.md
 worker/node_modules/
 worker/.wrangler/
 worker/.dev.vars
+
+# sharp (потрібен лише локально для npm run build:backgrounds) тягне ~19 МБ
+# платформозалежних бінарників. Решта node_modules у репо лишається, але ці
+# збірки під Windows на ubuntu-раннерах усе одно непридатні — CI ставить свої
+# через npm ci з package-lock.json.
+node_modules/@img/
+node_modules/sharp/
+node_modules/.bin/
+node_modules/detect-libc/
+node_modules/semver/

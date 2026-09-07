@@ -61,6 +61,24 @@ async function logoutCurrentUser() {
     } catch { /* мовчки, токен все одно чистимо локально */ }
   }
   clearSessionToken();
+  // Фон — налаштування акаунту, а не пристрою: після виходу повертаємо
+  // стандартний, щоб наступний користувач за цим браузером не успадкував чужий.
+  setBackground(null);
+}
+
+// Джерело істини для фону — колонка users.background; localStorage лише кеш,
+// який тут доганяє сервер (напр. користувач змінив фон з іншого пристрою).
+function syncBackgroundFromUser(user) {
+  if (!user) {
+    // Токена нема — це справжній вихід, скидаємо кеш. Якщо ж токен на місці,
+    // а user порожній (мережа впала / Worker недоступний) — кеш лишаємо, щоб
+    // не блимати стандартним фоном на кожній офлайн-сторінці.
+    if (!getSessionToken()) setBackground(null);
+    return;
+  }
+
+  const value = user.background ?? null;
+  if (value !== getStoredBackground()) setBackground(value);
 }
 
 function renderAuthNav(user) {
@@ -142,6 +160,7 @@ function renderAuthNav(user) {
 
 document.addEventListener('DOMContentLoaded', async () => {
   const user = await fetchCurrentUser();
+  syncBackgroundFromUser(user);
   renderAuthNav(user);
 
   const navPenaltyBattalion = document.getElementById('navPenaltyBattalion');

@@ -8,7 +8,8 @@
     "update:players": "node scripts/update-players.js",
     "update:healers": "node scripts/update-healer-rankings.js",
     "update:raid": "node scripts/update-potion-stats.js && node scripts/update-personal-stats.js && node scripts/update-raid-rosters.js && node scripts/build-honor-board.js && node scripts/update-raid-summaries.js",
-    "build:honor-board": "node scripts/build-honor-board.js"
+    "build:honor-board": "node scripts/build-honor-board.js",
+    "build:backgrounds": "node scripts/build-backgrounds.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,8 @@
   "homepage": "https://github.com/wow-nostalgia/wow-nostalgia.github.io#readme",
   "dependencies": {
     "cheerio": "^1.2.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.4"
   }
 }

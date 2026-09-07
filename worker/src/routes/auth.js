@@ -34,6 +34,37 @@ const ALLOWED_REDIRECT_URIS = [
   'http://localhost:8080/account/callback/'
 ];
 
+const NO_BACKGROUND = 'none';
+const BACKGROUND_EXTENSIONS = /\.(jpe?g|png|webp|avif)$/i;
+// Worker не бачить вмісту images/backgrounds/ на GitHub Pages, тож звірити
+// значення зі списком реальних файлів тут неможливо — натомість не даємо
+// зберегти нічого, що змогло б вирватися з CSS url(...) чи з шляху папки.
+// Імена фонів кирилицею з пробілами допустимі: фронт підставляє їх через
+// encodeURIComponent, тому в CSS потрапляє лише percent-encoded ASCII.
+const BACKGROUND_FORBIDDEN = /[\u0000-\u001f\u007f/\\"'()<>`]/;
+
+function normalizeBackground(value) {
+  if (value === null) return null;
+
+  if (typeof value !== 'string') {
+    throw new HttpError(400, 'background має бути назвою файлу, "none" або null');
+  }
+
+  const name = value.trim();
+  if (!name) return null;
+  if (name === NO_BACKGROUND) return NO_BACKGROUND;
+
+  if (name.length > 120) throw new HttpError(400, 'Занадто довга назва фону');
+  if (name.startsWith('.') || BACKGROUND_FORBIDDEN.test(name)) {
+    throw new HttpError(400, 'Недопустима назва фону');
+  }
+  if (!BACKGROUND_EXTENSIONS.test(name)) {
+    throw new HttpError(400, 'Фон має бути зображенням (jpg, png, webp, avif)');
+  }
+
+  return name;
+}
+
 function discordAvatarUrl(discordId, avatarHash) {
   return avatarHash ? `https://cdn.discordapp.com/avatars/${discordId}/${avatarHash}.png` : null;
 }
@@ -47,7 +78,9 @@ function publicUser(user) {
     // Колонок може не бути лише теоретично (обидві NOT NULL DEFAULT), але ??
     // страхує від undefined, якщо міграцію накотять не скрізь.
     soundNotifications: Boolean(user.sound_notifications ?? 1),
-    soundVolume: user.sound_volume ?? DEFAULT_SOUND_VOLUME
+    soundVolume: user.sound_volume ?? DEFAULT_SOUND_VOLUME,
+    // null - стандартний фон, 'none' - без фону, інакше ім'я файлу.
+    background: user.background ?? null
   };
 }
 
@@ -121,6 +154,10 @@ export async function handleUpdatePreferences(request, env) {
       throw new HttpError(400, 'soundVolume має бути цілим числом 0-100');
     }
     fields.sound_volume = volume;
+  }
+
+  if (body.background !== undefined) {
+    fields.background = normalizeBackground(body.background);
   }
 
   if (!Object.keys(fields).length) throw new HttpError(400, 'Немає що змінювати');
