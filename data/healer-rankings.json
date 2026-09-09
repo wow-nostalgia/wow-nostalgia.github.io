@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-09-08T01:40:18.241Z",
+  "updatedAt": "2026-09-09T01:44:08.461Z",
   "specs": [
     {
       "class": "Paladin",
@@ -2006,6 +2006,10 @@
           "hps": 231
         },
         {
+          "name": "Джойді",
+          "hps": 228.3
+        },
+        {
           "name": "Pristik",
           "hps": 224.3
         },
@@ -2072,6 +2076,10 @@
         {
           "name": "Kiryha",
           "hps": 190.5
+        },
+        {
+          "name": "Wowsuchaheal",
+          "hps": 190.1
         },
         {
           "name": "Трольдц",
@@ -2304,6 +2312,10 @@
           "hps": 13231.5
         },
         {
+          "name": "Phoenixx",
+          "hps": 13172.7
+        },
+        {
           "name": "Axenta",
           "hps": 13058.3
         },
@@ -2314,10 +2326,6 @@
         {
           "name": "Powwder",
           "hps": 12903.7
-        },
-        {
-          "name": "Phoenixx",
-          "hps": 12880.7
         },
         {
           "name": "Daremyth",
@@ -2368,8 +2376,16 @@
           "hps": 9511.6
         },
         {
+          "name": "Norway",
+          "hps": 9351.5
+        },
+        {
           "name": "Покоління",
           "hps": 8925
+        },
+        {
+          "name": "Sadustka",
+          "hps": 8838.5
         },
         {
           "name": "Шдпц",
@@ -3478,6 +3494,10 @@
           "hps": 6513.9
         },
         {
+          "name": "Злагода",
+          "hps": 6137.3
+        },
+        {
           "name": "Farra",
           "hps": 5784.6
         },
@@ -3660,10 +3680,6 @@
         {
           "name": "Asaggi",
           "hps": 1565
-        },
-        {
-          "name": "Злагода",
-          "hps": 1556.1
         },
         {
           "name": "Ahullvaldin",
