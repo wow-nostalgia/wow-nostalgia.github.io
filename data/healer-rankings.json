@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-09-11T01:37:34.887Z",
+  "updatedAt": "2026-09-12T01:39:08.379Z",
   "specs": [
     {
       "class": "Paladin",
@@ -3566,6 +3566,10 @@
           "hps": 3390.2
         },
         {
+          "name": "Grit",
+          "hps": 3353.6
+        },
+        {
           "name": "Белаз",
           "hps": 3229.8
         },
@@ -3616,10 +3620,6 @@
         {
           "name": "Да",
           "hps": 2354.5
-        },
-        {
-          "name": "Grit",
-          "hps": 2224.5
         },
         {
           "name": "Filbert",
