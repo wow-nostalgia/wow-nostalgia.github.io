@@ -24601,12 +24601,504 @@
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-09-12--20-29--Norbimsxl--FreedomUA/",
-    "players": [],
-    "error": "Request failed with status 404"
+    "players": [
+      {
+        "name": "Бінго'бонго",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight"
+      },
+      {
+        "name": "Amffitaminka",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Skyfallion",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform"
+      },
+      {
+        "name": "Pitzkur",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence"
+      },
+      {
+        "name": "Norbimsxl",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura"
+      },
+      {
+        "name": "Більшенедам",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil"
+      },
+      {
+        "name": "Blackmore",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis"
+      },
+      {
+        "name": "Onyx",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain"
+      },
+      {
+        "name": "Angie",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain"
+      },
+      {
+        "name": "Chucknorris",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Didi",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall"
+      },
+      {
+        "name": "Kohaiibaka",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Полкилло",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Luterok",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight"
+      },
+      {
+        "name": "Дімочканекіт",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence"
+      },
+      {
+        "name": "Бульбошка",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform"
+      },
+      {
+        "name": "Astyt",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Zibrow",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Оби",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain"
+      },
+      {
+        "name": "Япєрдолю",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt"
+      },
+      {
+        "name": "Dandeli",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight"
+      },
+      {
+        "name": "Кумпіупіу",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship"
+      },
+      {
+        "name": "Vampiree",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Adelyaocean",
+        "class": "Rogue",
+        "spec": "Subtlety",
+        "icon": "ability_stealth"
+      },
+      {
+        "name": "Тотеміс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity"
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Unknown",
+        "icon": "class_warrior"
+      },
+      {
+        "name": "Чокомоколоко",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch"
+      },
+      {
+        "name": "Пельмешек",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Planethell",
+        "class": "Mage",
+        "spec": "Unknown",
+        "icon": "class_mage"
+      },
+      {
+        "name": "Jinx",
+        "class": "Death Knight",
+        "spec": "Unknown",
+        "icon": "class_deathknight"
+      },
+      {
+        "name": "Вольфрам",
+        "class": "Mage",
+        "spec": "Unknown",
+        "icon": "class_mage"
+      },
+      {
+        "name": "Дерас",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch"
+      },
+      {
+        "name": "Kipo",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity"
+      },
+      {
+        "name": "Sey",
+        "class": "Druid",
+        "spec": "Unknown",
+        "icon": "class_druid"
+      },
+      {
+        "name": "Артемаг",
+        "class": "Priest",
+        "spec": "Unknown",
+        "icon": "class_priest"
+      },
+      {
+        "name": "Timondudu",
+        "class": "Druid",
+        "spec": "Unknown",
+        "icon": "class_druid"
+      },
+      {
+        "name": "Мегатайтус",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude"
+      },
+      {
+        "name": "Purplehaze",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Ґулдан",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Ayriya",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Шионо",
+        "class": "Paladin",
+        "spec": "Unknown",
+        "icon": "class_paladin"
+      },
+      {
+        "name": "Prismatik",
+        "class": "Priest",
+        "spec": "Unknown",
+        "icon": "class_priest"
+      },
+      {
+        "name": "Веспер",
+        "class": "Druid",
+        "spec": "Unknown",
+        "icon": "class_druid"
+      },
+      {
+        "name": "Valknut",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Awesome",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Нєпісь",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Dll",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Moonbark",
+        "class": "Druid",
+        "spec": "Unknown",
+        "icon": "class_druid"
+      },
+      {
+        "name": "Сзчешка",
+        "class": "Rogue",
+        "spec": "Unknown",
+        "icon": "class_rogue"
+      }
+    ]
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-09-09--20-46--Nekthara--FreedomUA/",
-    "players": [],
-    "error": "Request failed with status 404"
+    "players": [
+      {
+        "name": "Balboa",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura"
+      },
+      {
+        "name": "Stugna",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship"
+      },
+      {
+        "name": "Vesper",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence"
+      },
+      {
+        "name": "Ксеноморф",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain"
+      },
+      {
+        "name": "Гризун",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Орвелл",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt"
+      },
+      {
+        "name": "Chargedeath",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Buffy",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Roach",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight"
+      },
+      {
+        "name": "Chucknorris",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Shafa",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil"
+      },
+      {
+        "name": "Коко",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence"
+      },
+      {
+        "name": "Hoover",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall"
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab"
+      },
+      {
+        "name": "Zibroww",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence"
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform"
+      },
+      {
+        "name": "Неверхууд",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall"
+      },
+      {
+        "name": "Совуня",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall"
+      },
+      {
+        "name": "Nekthara",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis"
+      },
+      {
+        "name": "Infernsham",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "icon": "spell_nature_lightning"
+      },
+      {
+        "name": "Kawaibaka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch"
+      },
+      {
+        "name": "Морелло",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Сильмарилион",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity"
+      },
+      {
+        "name": "Вагончик",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude"
+      },
+      {
+        "name": "Спалахуйчик",
+        "class": "Mage",
+        "spec": "Unknown",
+        "icon": "class_mage"
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Unknown",
+        "icon": "class_paladin"
+      },
+      {
+        "name": "Greenplanet",
+        "class": "Druid",
+        "spec": "Unknown",
+        "icon": "class_druid"
+      },
+      {
+        "name": "Strayker",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Пупуупуу",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Теоо",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Purplehaze",
+        "class": "Warlock",
+        "spec": "Destruction",
+        "icon": "spell_shadow_rainoffire"
+      },
+      {
+        "name": "Papanaohote",
+        "class": "Rogue",
+        "spec": "Unknown",
+        "icon": "class_rogue"
+      }
+    ]
   }
 ]
