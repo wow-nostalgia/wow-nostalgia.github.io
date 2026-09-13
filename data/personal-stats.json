@@ -1,10 +1,17 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-09-12--20-29--Norbimsxl--FreedomUA/",
+    "date": "2026-09-12",
+    "boss": null,
+    "players": [],
+    "error": "Request failed with status 404"
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-09-09--20-46--Nekthara--FreedomUA/",
     "date": "2026-09-09",
     "boss": null,
     "players": [],
-    "error": "fetch failed"
+    "error": "Request failed with status 404"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-09-06--20-38--Hyacinth--FreedomUA/",
@@ -64822,7 +64829,7 @@
     "date": "2026-06-21",
     "boss": null,
     "players": [],
-    "error": "fetch failed"
+    "error": "Request failed with status 404"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-06-20--20-29--Boro--FreedomUA/",
