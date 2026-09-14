@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Профіль — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../style.css?v=136">
+  <link rel="stylesheet" href="../style.css?v=137">
   <script src="/scripts/background.js?v=1"></script>
 </head>
 
@@ -162,6 +162,23 @@
             </form>
             <p id="adminCharacterStatus"></p>
           </div>
+
+          <div class="account-admin-tools">
+            <h2>Фони сайту</h2>
+            <p class="account-admin-hint">Скільки гравців обрали кожен фон. «Стандартний» також включає тих, хто ще нічого не обирав.</p>
+            <div class="ranking-table-wrap account-bg-stats-table-wrap">
+              <table class="account-bg-stats-table">
+                <thead>
+                  <tr>
+                    <th>Фон</th>
+                    <th class="account-bg-stats-count">Гравців</th>
+                  </tr>
+                </thead>
+                <tbody id="backgroundStatsList"></tbody>
+              </table>
+            </div>
+            <p id="backgroundStatsStatus"></p>
+          </div>
         </div>
       </div>
 
@@ -213,7 +230,7 @@
   <script src="../scripts/auth-shared.js?v=12"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=12"></script>
-  <script src="../scripts/account.js?v=24"></script>
+  <script src="../scripts/account.js?v=25"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

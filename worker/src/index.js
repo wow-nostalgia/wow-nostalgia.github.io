@@ -65,7 +65,8 @@ import {
   addDefaultOfficer,
   removeDefaultOfficer,
   getUserByDiscordId,
-  pruneOldRaidsIfOverLimit
+  pruneOldRaidsIfOverLimit,
+  countUsersByBackground
 } from './db.js';
 
 const ALLOWED_ORIGINS = ['https://wow-nostalgia.github.io', 'http://localhost:8080'];
@@ -290,6 +291,10 @@ async function routeAdmin(request, env, parts, session) {
 
   if (sub === 'prune-old-raids' && method === 'POST') {
     return handlePruneOldRaids(request, env, session);
+  }
+
+  if (sub === 'background-stats' && !sub2 && method === 'GET') {
+    return jsonResponse(await countUsersByBackground(env.DB));
   }
 
   if (sub === 'default-officers') {

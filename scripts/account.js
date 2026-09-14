@@ -37,6 +37,8 @@ const soundVolumeValue = document.getElementById('soundVolumeValue');
 const soundVolumeTestBtn = document.getElementById('soundVolumeTestBtn');
 const backgroundGrid = document.getElementById('backgroundGrid');
 const backgroundStatus = document.getElementById('backgroundStatus');
+const backgroundStatsList = document.getElementById('backgroundStatsList');
+const backgroundStatsStatus = document.getElementById('backgroundStatsStatus');
 
 // Останнє успішно збережене значення - щоб відкотити повзунок, якщо PATCH
 // не пройшов.
@@ -567,6 +569,63 @@ async function loadDefaultOfficers() {
   }
 }
 
+// Статистика фонів для адмін-панелі. Worker віддає лише пари
+// { background, count }; назви беремо з того самого маніфесту, що й сітка
+// вибору у "Налаштуваннях".
+function renderBackgroundStats(stats, choices) {
+  const counts = new Map(stats.map((row) => [row.background ?? null, row.count]));
+  const takeCount = (key) => {
+    const count = counts.get(key) || 0;
+    counts.delete(key);
+    return count;
+  };
+
+  const rows = choices.map((item) => ({
+    // Стандартний фон зберігається як NULL; явне 'default.jpg' можна
+    // записати лише в обхід UI, але рахуємо й його сюди ж.
+    title: item.title,
+    count: item.isDefault ? takeCount(null) + takeCount(item.file) : takeCount(item.file)
+  }));
+  rows.push({ title: 'Без фону', count: takeCount(BACKGROUND_NONE) });
+
+  // Решта — фони, які прибрали з репозиторію, а в акаунтах вони ще лишились
+  // (гравець не заходив у профіль, де вибір сам скидається). Показуємо, щоб
+  // ці гравці не зникали зі статистики мовчки.
+  for (const [file, count] of counts) {
+    rows.push({ title: `${file} (файл видалено)`, count });
+  }
+
+  rows.sort((a, b) => b.count - a.count);
+
+  backgroundStatsList.innerHTML = '';
+  for (const { title, count } of rows) {
+    const tr = document.createElement('tr');
+    const titleTd = document.createElement('td');
+    titleTd.textContent = title;
+    const countTd = document.createElement('td');
+    countTd.className = 'account-bg-stats-count';
+    countTd.textContent = String(count);
+    tr.append(titleTd, countTd);
+    backgroundStatsList.appendChild(tr);
+  }
+}
+
+async function loadBackgroundStats() {
+  try {
+    const [res, choices] = await Promise.all([
+      fetch(`${AUTH_API_BASE}/admin/background-stats`, {
+        headers: { Authorization: `Bearer ${getSessionToken()}` }
+      }),
+      backgroundChoices.length ? backgroundChoices : loadBackgroundChoices()
+    ]);
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    renderBackgroundStats(await res.json(), choices);
+    backgroundStatsStatus.textContent = '';
+  } catch (err) {
+    backgroundStatsStatus.textContent = `Помилка завантаження: ${err.message}`;
+  }
+}
+
 async function init() {
   loginBtn.href = discordLoginUrl('/account/');
 
@@ -598,7 +657,8 @@ async function init() {
     initDefaultOfficersAutocomplete();
   }
 
-  let defaultOfficersLoaded = false;
+  // Дані адмін-панелі тягнемо лише при першому відкритті вкладки.
+  let adminDataLoaded = false;
   accountTabs.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-tab]');
     if (!btn) return;
@@ -608,9 +668,10 @@ async function init() {
     accountTabPane.hidden = tab !== 'account';
     settingsTabPane.hidden = tab !== 'settings';
     adminTabPane.hidden = tab !== 'admin';
-    if (tab === 'admin' && !defaultOfficersLoaded) {
-      defaultOfficersLoaded = true;
+    if (tab === 'admin' && !adminDataLoaded) {
+      adminDataLoaded = true;
       loadDefaultOfficers();
+      loadBackgroundStats();
     }
   });
 

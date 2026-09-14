@@ -292,6 +292,16 @@ export async function updateUserPreferences(db, discordId, fields) {
   return getUserByDiscordId(db, discordId);
 }
 
+// Статистика фонів для адмін-панелі — лише агрегати, без жодних даних
+// акаунтів. background NULL означає і "обрав стандартний", і "ще не
+// обирав": обидва випадки зберігаються однаково (див. міграцію 0018).
+export async function countUsersByBackground(db) {
+  const { results } = await db
+    .prepare('SELECT background, COUNT(*) AS count FROM users GROUP BY background')
+    .all();
+  return results;
+}
+
 // Публічна мапа "застовплений персонаж -> ім'я для тултіпа" (основний
 // персонаж власника, або username, якщо основного не позначено) — для
 // тултіпів у статичній аналітиці/таблиці гравців рейду. Без авторизації:

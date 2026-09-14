@@ -4179,13 +4179,16 @@ body.account-page .account-bg-card__title {
   font-size: var(--font-size-base);
 }
 
-body.account-page .account-characters-table {
+body.account-page .account-characters-table,
+body.account-page .account-bg-stats-table {
   width: 100%;
   border-collapse: collapse;
 }
 
 body.account-page .account-characters-table th,
-body.account-page .account-characters-table td {
+body.account-page .account-characters-table td,
+body.account-page .account-bg-stats-table th,
+body.account-page .account-bg-stats-table td {
   padding: 0.4rem 0.6rem;
   border-bottom: 1px solid var(--color-border);
   text-align: left;
@@ -4193,14 +4196,29 @@ body.account-page .account-characters-table td {
   vertical-align: middle;
 }
 
-body.account-page .account-characters-table th {
+body.account-page .account-characters-table th,
+body.account-page .account-bg-stats-table th {
   color: var(--color-text-strong);
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-base);
 }
 
-body.account-page .account-characters-table tbody tr:hover {
+body.account-page .account-characters-table tbody tr:hover,
+body.account-page .account-bg-stats-table tbody tr:hover {
   background-color: var(--color-hover);
+}
+
+/* Статистика фонів в адмін-панелі: дві вузькі колонки, розтягувати таблицю
+   на всю ширину сторінки нема сенсу. */
+body.account-page .account-bg-stats-table-wrap {
+  max-width: 420px;
+}
+
+body.account-page .account-bg-stats-table .account-bg-stats-count {
+  width: 1%;
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 body.account-page .account-character-name-cell {
