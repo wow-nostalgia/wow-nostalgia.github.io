@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Профіль — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../style.css?v=135">
+  <link rel="stylesheet" href="../style.css?v=136">
   <script src="/scripts/background.js?v=1"></script>
 </head>
 
@@ -75,9 +75,10 @@
           </div>
         </div>
 
-        <div id="accountTabs" class="raid-tabs" role="tablist" hidden>
+        <div id="accountTabs" class="raid-tabs" role="tablist">
           <button type="button" class="raid-tab raid-tab--active" data-tab="account">Персонажі</button>
-          <button type="button" class="raid-tab" data-tab="admin">Адмін-панель</button>
+          <button type="button" class="raid-tab" data-tab="settings">Налаштування</button>
+          <button type="button" class="raid-tab" data-tab="admin" id="adminTabBtn" hidden>Адмін-панель</button>
         </div>
 
         <div id="accountTabPane">
@@ -108,6 +109,10 @@
             </div>
           </div>
 
+          <p id="accountStatus"></p>
+        </div>
+
+        <div id="settingsTabPane" hidden>
           <div class="account-prefs">
             <h2>Сповіщення</h2>
             <label class="raid-filter-checkbox" for="soundNotificationsInput">
@@ -130,7 +135,7 @@
             <p id="backgroundStatus" class="account-chars-hint"></p>
           </div>
 
-          <p id="accountStatus"></p>
+          <p id="settingsStatus"></p>
         </div>
 
         <div id="adminTabPane" hidden>
@@ -208,7 +213,7 @@
   <script src="../scripts/auth-shared.js?v=12"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=12"></script>
-  <script src="../scripts/account.js?v=23"></script>
+  <script src="../scripts/account.js?v=24"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

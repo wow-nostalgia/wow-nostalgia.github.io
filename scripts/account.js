@@ -11,7 +11,10 @@ const characterNameInput = document.getElementById('characterNameInput');
 const accountStatus = document.getElementById('accountStatus');
 const accountTabs = document.getElementById('accountTabs');
 const accountTabPane = document.getElementById('accountTabPane');
+const settingsTabPane = document.getElementById('settingsTabPane');
+const settingsStatus = document.getElementById('settingsStatus');
 const adminTabPane = document.getElementById('adminTabPane');
+const adminTabBtn = document.getElementById('adminTabBtn');
 const adminRemoveCharacterForm = document.getElementById('adminRemoveCharacterForm');
 const adminCharacterNameInput = document.getElementById('adminCharacterNameInput');
 const adminCharacterStatus = document.getElementById('adminCharacterStatus');
@@ -41,6 +44,12 @@ let lastSavedVolume = 70;
 
 function setAccountStatus(text) {
   accountStatus.textContent = text || '';
+}
+
+// Окремий статус для вкладки "Налаштування": #accountStatus лишився на
+// вкладці "Персонажі" і в момент помилки звуку був би прихований.
+function setSettingsStatus(text) {
+  settingsStatus.textContent = text || '';
 }
 
 async function readErrorMessage(res) {
@@ -265,13 +274,13 @@ soundNotificationsInput.addEventListener('change', async () => {
 
   try {
     await savePreferences({ soundNotifications: enabled });
-    setAccountStatus('');
+    setSettingsStatus('');
   } catch (err) {
     // Повертаємо чекбокс у попередній стан, щоб він не показував те, чого
     // насправді не збережено.
     soundNotificationsInput.checked = !enabled;
     applySoundPrefsState();
-    setAccountStatus(`Помилка: ${err.message}`);
+    setSettingsStatus(`Помилка: ${err.message}`);
   } finally {
     soundNotificationsInput.disabled = false;
   }
@@ -287,11 +296,11 @@ soundVolumeInput.addEventListener('change', async () => {
   try {
     await savePreferences({ soundVolume: volume });
     lastSavedVolume = volume;
-    setAccountStatus('');
+    setSettingsStatus('');
   } catch (err) {
     soundVolumeInput.value = lastSavedVolume;
     renderVolumeValue();
-    setAccountStatus(`Помилка: ${err.message}`);
+    setSettingsStatus(`Помилка: ${err.message}`);
   }
 });
 
@@ -300,7 +309,7 @@ soundVolumeInput.addEventListener('change', async () => {
 soundVolumeTestBtn.addEventListener('click', () => {
   const audio = new Audio('/sounds/transfer-received.mp3');
   audio.volume = Number(soundVolumeInput.value) / 100;
-  audio.play().catch(() => setAccountStatus('Не вдалося відтворити звук.'));
+  audio.play().catch(() => setSettingsStatus('Не вдалося відтворити звук.'));
 });
 
 // --- Фон сайту ---------------------------------------------------------
@@ -582,24 +591,28 @@ async function init() {
     profileAvatar.src = user.avatar;
     profileAvatar.hidden = false;
   }
+  // "Персонажі" й "Налаштування" — у всіх; "Адмін-панель" — лише адміну сайту
+  // (Worker однаково пускає в /admin/* тільки ADMIN_DISCORD_ID).
   if (user.isAdmin) {
-    accountTabs.hidden = false;
+    adminTabBtn.hidden = false;
     initDefaultOfficersAutocomplete();
-    let defaultOfficersLoaded = false;
-    accountTabs.addEventListener('click', (e) => {
-      const btn = e.target.closest('[data-tab]');
-      if (!btn) return;
-      accountTabs.querySelectorAll('.raid-tab').forEach((t) => t.classList.remove('raid-tab--active'));
-      btn.classList.add('raid-tab--active');
-      const tab = btn.dataset.tab;
-      accountTabPane.hidden = tab !== 'account';
-      adminTabPane.hidden = tab !== 'admin';
-      if (tab === 'admin' && !defaultOfficersLoaded) {
-        defaultOfficersLoaded = true;
-        loadDefaultOfficers();
-      }
-    });
   }
+
+  let defaultOfficersLoaded = false;
+  accountTabs.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-tab]');
+    if (!btn) return;
+    accountTabs.querySelectorAll('.raid-tab').forEach((t) => t.classList.remove('raid-tab--active'));
+    btn.classList.add('raid-tab--active');
+    const tab = btn.dataset.tab;
+    accountTabPane.hidden = tab !== 'account';
+    settingsTabPane.hidden = tab !== 'settings';
+    adminTabPane.hidden = tab !== 'admin';
+    if (tab === 'admin' && !defaultOfficersLoaded) {
+      defaultOfficersLoaded = true;
+      loadDefaultOfficers();
+    }
+  });
 
   await loadCharacterStatsSources();
 
