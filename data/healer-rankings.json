@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-09-15T02:00:03.714Z",
+  "updatedAt": "2026-09-16T01:59:32.302Z",
   "specs": [
     {
       "class": "Paladin",
@@ -65,7 +65,7 @@
         },
         {
           "name": "Anymore",
-          "hps": 43236.6
+          "hps": 43628.1
         },
         {
           "name": "Ок",
@@ -384,6 +384,10 @@
           "hps": 34175.3
         },
         {
+          "name": "Claude",
+          "hps": 34037.7
+        },
+        {
           "name": "Askeladd",
           "hps": 33719.6
         },
@@ -682,10 +686,6 @@
         {
           "name": "Milfar",
           "hps": 28854.1
-        },
-        {
-          "name": "Claude",
-          "hps": 28830.2
         },
         {
           "name": "Galios",
@@ -1914,6 +1914,10 @@
           "hps": 339.8
         },
         {
+          "name": "Zeddox",
+          "hps": 337.5
+        },
+        {
           "name": "Таколбері",
           "hps": 335.6
         },
@@ -1950,8 +1954,16 @@
           "hps": 322.3
         },
         {
+          "name": "Wowsuchaheal",
+          "hps": 318.5
+        },
+        {
           "name": "Sadpriest",
           "hps": 317
+        },
+        {
+          "name": "Holywine",
+          "hps": 313.2
         },
         {
           "name": "Prostoprist",
@@ -1968,10 +1980,6 @@
         {
           "name": "Твоясучка",
           "hps": 291.2
-        },
-        {
-          "name": "Holywine",
-          "hps": 289.4
         },
         {
           "name": "Босорканя",
@@ -2004,10 +2012,6 @@
         {
           "name": "Totowka",
           "hps": 246.7
-        },
-        {
-          "name": "Zeddox",
-          "hps": 245
         },
         {
           "name": "Прістовка",
@@ -2096,10 +2100,6 @@
         {
           "name": "Kiryha",
           "hps": 190.5
-        },
-        {
-          "name": "Wowsuchaheal",
-          "hps": 190.1
         },
         {
           "name": "Трольдц",
@@ -3230,6 +3230,10 @@
           "hps": 13778.8
         },
         {
+          "name": "Shroud",
+          "hps": 13739.3
+        },
+        {
           "name": "Lilwayne",
           "hps": 13643
         },
@@ -3312,10 +3316,6 @@
         {
           "name": "Michelangelo",
           "hps": 12645.3
-        },
-        {
-          "name": "Shroud",
-          "hps": 12620.5
         },
         {
           "name": "Ciroukr",
@@ -3738,6 +3738,10 @@
           "hps": 1288.4
         },
         {
+          "name": "Джонтриволта",
+          "hps": 1271.6
+        },
+        {
           "name": "Tasim",
           "hps": 1226.3
         },
@@ -3888,10 +3892,6 @@
         {
           "name": "Milana",
           "hps": 89
-        },
-        {
-          "name": "Джонтриволта",
-          "hps": 14.6
         }
       ]
     },
@@ -4536,6 +4536,10 @@
           "hps": 23284.7
         },
         {
+          "name": "Elementis",
+          "hps": 23178.6
+        },
+        {
           "name": "Kipo",
           "hps": 23176.2
         },
@@ -4936,6 +4940,10 @@
           "hps": 17296.9
         },
         {
+          "name": "Shockira",
+          "hps": 17271.5
+        },
+        {
           "name": "Eliza",
           "hps": 17059.3
         },
@@ -4994,10 +5002,6 @@
         {
           "name": "Vkutok",
           "hps": 15370.6
-        },
-        {
-          "name": "Elementis",
-          "hps": 15183.1
         },
         {
           "name": "Констан",
