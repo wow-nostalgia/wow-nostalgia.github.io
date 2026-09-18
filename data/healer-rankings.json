@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-09-17T02:02:23.864Z",
+  "updatedAt": "2026-09-18T01:46:51.829Z",
   "specs": [
     {
       "class": "Paladin",
@@ -2618,6 +2618,10 @@
           "hps": 21944.5
         },
         {
+          "name": "Дирокол",
+          "hps": 21880.4
+        },
+        {
           "name": "Verba",
           "hps": 21731.4
         },
@@ -2644,10 +2648,6 @@
         {
           "name": "Ялинка",
           "hps": 21123.2
-        },
-        {
-          "name": "Дирокол",
-          "hps": 21065.5
         },
         {
           "name": "Сенполия",
@@ -4208,6 +4208,10 @@
           "hps": 26617.8
         },
         {
+          "name": "Leweorka",
+          "hps": 26601.3
+        },
+        {
           "name": "Strawberry",
           "hps": 26568
         },
@@ -4258,10 +4262,6 @@
         {
           "name": "Wildheal",
           "hps": 26152.4
-        },
-        {
-          "name": "Leweorka",
-          "hps": 26091.9
         },
         {
           "name": "Dezl",
