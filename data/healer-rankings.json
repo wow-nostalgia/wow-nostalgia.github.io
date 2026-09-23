@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-09-22T02:09:39.310Z",
+  "updatedAt": "2026-09-23T01:59:30.948Z",
   "specs": [
     {
       "class": "Paladin",
@@ -3454,6 +3454,10 @@
           "hps": 10335.6
         },
         {
+          "name": "Кібердру",
+          "hps": 9671.3
+        },
+        {
           "name": "Kyskys",
           "hps": 9487.3
         },
@@ -3504,10 +3508,6 @@
         {
           "name": "Koshenyatko",
           "hps": 7890.2
-        },
-        {
-          "name": "Кібердру",
-          "hps": 7855.5
         },
         {
           "name": "Мастерйода",
