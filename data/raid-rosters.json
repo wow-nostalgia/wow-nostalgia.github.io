@@ -25518,5 +25518,178 @@
         "icon": "spell_nature_healingtouch"
       }
     ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-09-23--20-46--Luxlemorne--FreedomUA",
+    "players": [
+      {
+        "name": "Пакатак",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis"
+      },
+      {
+        "name": "Dolia",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform"
+      },
+      {
+        "name": "Wasovsky",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Arfi",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab"
+      },
+      {
+        "name": "Комфик",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform"
+      },
+      {
+        "name": "Metallheadxm",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Буренка",
+        "class": "Shaman",
+        "spec": "Enhancement",
+        "icon": "spell_nature_lightningshield"
+      },
+      {
+        "name": "Zloetelo",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall"
+      },
+      {
+        "name": "Tecc",
+        "class": "Shaman",
+        "spec": "Elemental",
+        "icon": "spell_nature_lightning"
+      },
+      {
+        "name": "Luxlemorne",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Mrclown",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence"
+      },
+      {
+        "name": "Лизунчік",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura"
+      },
+      {
+        "name": "Sealtiel",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt"
+      },
+      {
+        "name": "Nekthara",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis"
+      },
+      {
+        "name": "Sim",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight"
+      },
+      {
+        "name": "Квадробер",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage"
+      },
+      {
+        "name": "Кумбабах",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Диспетчерз",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence"
+      },
+      {
+        "name": "Мелісера",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain"
+      },
+      {
+        "name": "Darkrunner",
+        "class": "Hunter",
+        "spec": "Beast Mastery",
+        "icon": "ability_hunter_beasttaming"
+      },
+      {
+        "name": "Knee",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02"
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab"
+      },
+      {
+        "name": "Вагончик",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude"
+      },
+      {
+        "name": "Emris",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch"
+      },
+      {
+        "name": "Гектор",
+        "class": "Warrior",
+        "spec": "Unknown",
+        "icon": "class_warrior"
+      },
+      {
+        "name": "Discocum",
+        "class": "Paladin",
+        "spec": "Unknown",
+        "icon": "class_paladin"
+      },
+      {
+        "name": "Esca",
+        "class": "Warrior",
+        "spec": "Unknown",
+        "icon": "class_warrior"
+      },
+      {
+        "name": "Красапета",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity"
+      }
+    ]
   }
 ]
