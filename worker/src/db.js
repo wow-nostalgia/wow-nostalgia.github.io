@@ -179,6 +179,11 @@ export async function applyPenaltyBattalionIfMatched(db, raid, playerName) {
   const softPenalty = Math.min(raid.soft_limit_total, entry.soft_penalty);
   await upsertRaidPenalty(db, raid.id, playerName, entry.roll_penalty, softPenalty, entry.reason || 'Штрафбат');
   await deletePenaltyBattalionEntry(db, entry.id);
+  // Вкладка "Штрафи" будується від списку учасників, а він поповнюється лише
+  // успішним софтом. Без цього рядка штраф, застосований при невдалій спробі
+  // (напр. штраф дорівнює ліміту рейду - доступних софтів нуль), не побачив
+  // би ні офіцер, ні сам гравець.
+  await addRaidParticipant(db, raid.id, playerName);
 }
 
 export async function createReserve(db, { raidId, playerName, itemId, boss, weight, assignedByOfficer, discordId }) {

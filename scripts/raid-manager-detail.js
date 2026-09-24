@@ -1389,7 +1389,9 @@ function buildReservesByWeight(reservers) {
 
     const visibleNames = entry.visible;
     visibleNames.forEach(({ name }, i) => {
-      const p = penaltiesList.find((x) => x.player_name === name);
+      // Без pending: мінус до ролу показуємо лише коли штраф уже застосований
+      // до рейду, інакше поруч з іменем висіло б число, якого в рейді ще нема.
+      const p = penaltiesList.find((x) => x.player_name === name && !x.pending);
       const nameSpan = document.createElement('span');
       nameSpan.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
       nameSpan.textContent = name;
@@ -1949,7 +1951,13 @@ async function savePenalty(playerName, rollPenalty, softPenalty, reason) {
 function renderPenaltiesTable() {
   raidPenaltiesBody.innerHTML = '';
 
-  if (!penaltiesList.length) {
+  // pending - відкладений штраф зі Штрафбату, який у цей рейд ще не
+  // застосований. Він потрібен лише щоб погасити кнопки ваги в формі софту;
+  // у таблиці офіцера його показувати не можна - редагування такого рядка
+  // створило б справжній штраф раніше часу.
+  const rows = penaltiesList.filter((p) => !p.pending);
+
+  if (!rows.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
     td.colSpan = 4;
@@ -1961,7 +1969,7 @@ function renderPenaltiesTable() {
 
   const officerMode = isOfficerMode() && !isRaidCompleted();
 
-  for (const { player_name, roll_penalty, soft_penalty, reason } of penaltiesList) {
+  for (const { player_name, roll_penalty, soft_penalty, reason } of rows) {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');

@@ -199,7 +199,7 @@ async function routeRaids(request, env, parts, session) {
 
   if (sub === 'penalties') {
     const playerName = parts[2] ? decodeURIComponent(parts[2]) : null;
-    if (!playerName && method === 'GET') return handleListPenalties(request, env, raidId);
+    if (!playerName && method === 'GET') return handleListPenalties(request, env, raidId, session);
     if (playerName && method === 'PUT') return handleUpsertPenalty(request, env, raidId, playerName, session);
     throw new HttpError(405, 'Метод не підтримується');
   }
