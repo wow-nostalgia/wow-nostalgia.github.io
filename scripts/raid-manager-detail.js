@@ -249,7 +249,7 @@ function renderBanner() {
   const chips = [
     translateInstance(raid.instance, INSTANCE_LABELS),
     translateDifficulty(raid.difficulty, DIFFICULTY_LABELS),
-    `Ліміт ваги: ${raid.soft_limit_total}`,
+    `Ліміт софтів: ${raid.soft_limit_total}`,
     `Лідер: ${raid.leader_display_name || '—'}`,
     formatDateKyiv(raid.created_at)
   ];
@@ -537,7 +537,7 @@ function renderSoftPenaltyNotice(playerName) {
   const reason = penaltiesList.find((p) => p.player_name === playerName)?.reason;
   const limit = softLimitFor(playerName);
   softPenaltyNotice.hidden = false;
-  softPenaltyNotice.textContent = `Штраф -${penalty}: твій ліміт ваги ${limit} замість ${raid.soft_limit_total}.`
+  softPenaltyNotice.textContent = `Штраф -${penalty}: тобі доступно ${limit} ${softsWord(limit)} замість ${raid.soft_limit_total}.`
     + (reason ? ` Причина: ${reason}` : '');
 }
 
@@ -1335,7 +1335,7 @@ function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove, allowSt
     addBtn.type = 'button';
     addBtn.className = 'raid-transfer-btn raid-transfer-btn--add';
     addBtn.textContent = '+';
-    addBtn.setAttribute('aria-label', 'Додати бонусну вагу');
+    addBtn.setAttribute('aria-label', 'Додати бонусний софт');
     addBtn.addEventListener('click', () => changeBonusWeight(reserveId, 1));
     bindTooltip(addBtn);
     bonusSpan.appendChild(addBtn);
@@ -1346,7 +1346,7 @@ function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove, allowSt
     removeBtn.type = 'button';
     removeBtn.className = 'raid-remove-btn';
     removeBtn.textContent = '−';
-    removeBtn.setAttribute('aria-label', 'Прибрати бонусну вагу');
+    removeBtn.setAttribute('aria-label', 'Прибрати бонусний софт');
     removeBtn.addEventListener('click', () => changeBonusWeight(reserveId, -1));
     bindTooltip(removeBtn);
     bonusSpan.appendChild(removeBtn);
@@ -1434,7 +1434,7 @@ function renderItemsTable() {
       .reduce((s, r) => s + (r.bonus_weight || 0), 0);
     bonusPoolBanner.hidden = false;
     const bonusSource = myReceivedForItems ? `від ${myReceivedForItems.from_player}` : 'від офіцера';
-    bonusPoolBanner.textContent = `Бонусна вага ${bonusSource}: ${usedBonusForItems}/${bonusPoolForItems} використано.`;
+    bonusPoolBanner.textContent = `Бонусні софти ${bonusSource}: ${usedBonusForItems}/${bonusPoolForItems} використано.`;
   } else {
     bonusPoolBanner.hidden = true;
   }
@@ -1576,7 +1576,7 @@ function describeAuditAction(entry) {
     case 'soft_remove': return hideSoftDetails ? 'видалив софт' : `видалив софт ${d.boss ? translateBoss(d.boss) : ''}`.trim();
     case 'soft_remove_all': return 'очистив усі свої софти';
     case 'soft_penalty_trim': {
-      const what = d.to === 0 ? 'зняв софт' : `зменшив вагу софту до ${formatWeight(d.to)}`;
+      const what = d.to === 0 ? 'зняв софт' : `зменшив софт до ${formatWeight(d.to)}`;
       return hideSoftDetails
         ? `${what} через штраф`
         : `${what} гравцю ${d.playerName} через штраф${d.boss ? ` (${translateBoss(d.boss)})` : ''}`;
@@ -1588,16 +1588,16 @@ function describeAuditAction(entry) {
     case 'item_received': return d.received ? 'позначив предмет отриманим' : 'скасував "отримано"';
     case 'officer_bonus_weight':
       return hideSoftDetails
-        ? `${d.delta > 0 ? 'додав' : 'прибрав'} офіцерську вагу`
-        : `${d.delta > 0 ? 'додав' : 'прибрав'} офіцерську вагу гравцю ${d.playerName} (${translateBoss(d.boss)})`;
+        ? `${d.delta > 0 ? 'додав' : 'прибрав'} офіцерський софт`
+        : `${d.delta > 0 ? 'додав' : 'прибрав'} офіцерський софт гравцю ${d.playerName} (${translateBoss(d.boss)})`;
     case 'hide_reserves': return "увімкнув режим прихованих софтів";
     case 'show_reserves': return "вимкнув режим прихованих софтів";
     case 'complete': return 'завершив рейд';
     case 'reactivate': return 'реактивував рейд';
     case 'officer_add': return `додав офіцера ${d.username || d.discordId}`;
     case 'officer_remove': return `видалив офіцера ${d.discordId}`;
-    case 'weight_transfer': return `передав вагу гравцю ${d.toPlayer}`;
-    case 'weight_transfer_cancel': return `скасував передачу ваги від ${d.fromPlayer} до ${d.toPlayer}`;
+    case 'weight_transfer': return `передав софти гравцю ${d.toPlayer}`;
+    case 'weight_transfer_cancel': return `скасував передачу софтів від ${d.fromPlayer} до ${d.toPlayer}`;
     case 'bonus_grant':
       return hideSoftDetails ? 'призначив бонусний софт' : `призначив бонусний софт гравцю ${d.playerName}`;
     case 'bonus_grant_cancel':

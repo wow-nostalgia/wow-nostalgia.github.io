@@ -32,7 +32,7 @@ export async function handleCreateTransfer(request, env, raidId, session) {
 
   const transferLimit = raid.transfer_weight_limit;
   if (transferLimit !== null && transferLimit === 0) {
-    throw new HttpError(403, 'Передача ваги вимкнена для цього рейду');
+    throw new HttpError(403, 'Передача софтів вимкнена для цього рейду');
   }
 
   const body = await readJson(request);
@@ -41,7 +41,7 @@ export async function handleCreateTransfer(request, env, raidId, session) {
 
   if (!fromPlayer) throw new HttpError(400, "Потрібне ім'я гравця-донора");
   if (!toPlayer) throw new HttpError(400, "Потрібне ім'я гравця-одержувача");
-  if (fromPlayer === toPlayer) throw new HttpError(400, 'Не можна передати вагу самому собі');
+  if (fromPlayer === toPlayer) throw new HttpError(400, 'Не можна передати софти самому собі');
 
   // Перевіряємо право на fromPlayer: або офіцер, або власник claim
   const officerMode = await isRaidOfficer(env.DB, raidId, raid, session.discordId);
@@ -59,12 +59,12 @@ export async function handleCreateTransfer(request, env, raidId, session) {
 
   const existingFrom = await getWeightTransferByFrom(env.DB, raidId, fromPlayer);
   if (existingFrom) {
-    throw new HttpError(409, `${fromPlayer} вже передав вагу гравцю ${existingFrom.to_player}`);
+    throw new HttpError(409, `${fromPlayer} вже передав софти гравцю ${existingFrom.to_player}`);
   }
 
   const existingTo = await getWeightTransferByTo(env.DB, raidId, toPlayer);
   if (existingTo) {
-    throw new HttpError(409, `${toPlayer} вже отримує вагу від ${existingTo.from_player}`);
+    throw new HttpError(409, `${toPlayer} вже отримує софти від ${existingTo.from_player}`);
   }
 
   // Видаляємо всі softs від fromPlayer і додаємо його до учасників рейду

@@ -49,6 +49,16 @@ export function bearerToken(request) {
 
 // Імена гравців завжди з великої літери, незалежно від того, як ввів сам
 // гравець — впливає на однаковість відображення й на UNIQUE-збіги в БД.
+// "1 софт", "2 софти", "0 софтів" - ліміти маленькі (0-3), тож повні
+// правила відмінювання для 11-14 не потрібні. Дублює softsWord() у
+// scripts/raid-manager-shared.js: спільного коду між воркером і фронтом
+// у проєкті немає.
+export function softsWord(count) {
+  if (count === 1) return 'софт';
+  if (count >= 2 && count <= 4) return 'софти';
+  return 'софтів';
+}
+
 export function capitalizeName(name) {
   return name.charAt(0).toUpperCase() + name.slice(1);
 }

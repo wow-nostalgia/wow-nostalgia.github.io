@@ -26,6 +26,15 @@ function formatWeight(weight) {
   return `х${weight}`;
 }
 
+// "1 софт", "2 софти", "0 софтів" - без цього в текстах вилазить
+// "доступно 2 софт". Ліміти тут маленькі (0-3), тож повні правила
+// відмінювання для 11-14 не потрібні.
+function softsWord(count) {
+  if (count === 1) return 'софт';
+  if (count >= 2 && count <= 4) return 'софти';
+  return 'софтів';
+}
+
 const ITEM_RARITY_CLASS_BY_QUALITY = {
   0: 'raid-rarity--common',
   1: 'raid-rarity--common',

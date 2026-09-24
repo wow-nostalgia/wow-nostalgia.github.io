@@ -1,4 +1,4 @@
-import { HttpError, jsonResponse, readJson, capitalizeName } from '../util.js';
+import { HttpError, jsonResponse, readJson, capitalizeName, softsWord } from '../util.js';
 import {
   getRaid,
   listReserves,
@@ -64,7 +64,7 @@ export async function handleCreateReserve(request, env, raidId, session) {
   // Гравець, що передав вагу іншому, не може більше нічого засофтити
   const ownTransfer = await getWeightTransferByFrom(env.DB, raidId, playerName);
   if (ownTransfer) {
-    throw new HttpError(409, `${playerName} передав вагу гравцю ${ownTransfer.to_player} і не може засофтити предмети`);
+    throw new HttpError(409, `${playerName} передав свої софти гравцю ${ownTransfer.to_player} і більше не може софтити`);
   }
 
   // Застосовуємо "відкладений" штраф зі Штрафбату ДО перевірки ліміту:
@@ -78,8 +78,8 @@ export async function handleCreateReserve(request, env, raidId, session) {
 
   if (totalWeight + weight > softLimit) {
     throw new HttpError(409, softPenalty > 0
-      ? `Перевищено ліміт ваги: ${softLimit} замість ${raid.soft_limit_total} через штраф -${softPenalty}`
-      : `Перевищено ліміт ваги (${softLimit})`);
+      ? `Через штраф тобі доступно ${softLimit} ${softsWord(softLimit)} замість ${raid.soft_limit_total}`
+      : `Ти вже використав усі софти (${softLimit})`);
   }
 
   if (access.shouldMint) {
@@ -176,7 +176,7 @@ export async function handleOfficerAssign(request, env, raidId, session) {
 
   const ownTransferOfficer = await getWeightTransferByFrom(env.DB, raidId, playerName);
   if (ownTransferOfficer) {
-    throw new HttpError(409, `${playerName} передав вагу гравцю ${ownTransferOfficer.to_player} і не може отримувати нові softs`);
+    throw new HttpError(409, `${playerName} передав свої софти гравцю ${ownTransferOfficer.to_player} і не може отримувати нові`);
   }
 
   await applyPenaltyBattalionIfMatched(env.DB, raid, playerName);
@@ -185,10 +185,12 @@ export async function handleOfficerAssign(request, env, raidId, session) {
   const softPenalty = await getSoftPenalty(env.DB, raidId, playerName);
   const softLimit = Math.max(0, raid.soft_limit_total - softPenalty);
 
+  // Це повідомлення читає офіцер, а не сам гравець, тому звертання в
+  // третій особі, на відміну від самософту вище.
   if (totalWeight + weight > softLimit) {
     throw new HttpError(409, softPenalty > 0
-      ? `Перевищено ліміт ваги: ${softLimit} замість ${raid.soft_limit_total} через штраф -${softPenalty}`
-      : `Перевищено ліміт ваги (${softLimit})`);
+      ? `Гравцю ${playerName} через штраф доступно ${softLimit} ${softsWord(softLimit)} замість ${raid.soft_limit_total}`
+      : `${playerName} вже використав усі софти (${softLimit})`);
   }
 
   let reserve;
@@ -224,7 +226,7 @@ export async function handleUpdateBonusWeight(request, env, raidId, reserveId, s
   const receivedTransfer = await getWeightTransferByTo(env.DB, raidId, reserve.player_name);
   const bonusGrant = await getBonusGrant(env.DB, raidId, reserve.player_name);
   if (!receivedTransfer && !bonusGrant) {
-    throw new HttpError(409, `${reserve.player_name} не отримував передачу ваги або бонусний софт`);
+    throw new HttpError(409, `${reserve.player_name} не отримував ні переданих, ні бонусних софтів`);
   }
 
   await checkPlayerAccess(env.DB, raidId, raid, session, reserve.player_name);
@@ -245,7 +247,7 @@ export async function handleUpdateBonusWeight(request, env, raidId, reserveId, s
       throw new HttpError(409, `Перевищено бонусний ліміт (${bonusLimit})`);
     }
   } else {
-    if (reserve.bonus_weight < 1) throw new HttpError(409, "Бонусна вага вже 0");
+    if (reserve.bonus_weight < 1) throw new HttpError(409, "Бонусних софтів уже немає");
   }
 
   const updated = await updateReserveBonusWeight(env.DB, raidId, reserveId, delta);
