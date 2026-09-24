@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейд — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=137">
+  <link rel="stylesheet" href="../../style.css?v=138">
   <script src="/scripts/background.js?v=1"></script>
 </head>
 
@@ -106,6 +106,7 @@
                 <button type="submit" class="compare-btn">Засофтити</button>
                 <button type="button" id="transferWeightBtn" class="compare-btn" hidden>Передати софт</button>
               </div>
+              <p id="softPenaltyNotice" class="raid-penalty-notice" hidden></p>
               <p id="transferNotice" class="raid-transfer-notice" hidden></p>
             </form>
             <p id="raidStatus">Завантаження...</p>
@@ -375,7 +376,7 @@
   <script src="../../scripts/ui-shared.js?v=12"></script>
   <script src="../../scripts/raid-manager-shared.js?v=4"></script>
   <script src="../../scripts/name-translations.js?v=2"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=107"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=108"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

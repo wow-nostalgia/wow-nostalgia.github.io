@@ -210,6 +210,64 @@ export async function setReserveReceived(db, raidId, reserveId, received) {
   return getReserveById(db, raidId, reserveId);
 }
 
+export async function getSoftPenalty(db, raidId, playerName) {
+  const row = await db
+    .prepare('SELECT soft_penalty FROM raid_penalties WHERE raid_id = ? AND player_name = ?')
+    .bind(raidId, playerName)
+    .first();
+  return row ? row.soft_penalty : 0;
+}
+
+// Персональний ліміт ваги: базовий ліміт рейду мінус штраф гравця. Бонусна
+// вага (передачі/гранти) сюди не входить — вона окремий пул із власним
+// лімітом (див. handleUpdateBonusWeight).
+export async function getEffectiveSoftLimit(db, raid, playerName) {
+  const penalty = await getSoftPenalty(db, raid.id, playerName);
+  return Math.max(0, raid.soft_limit_total - penalty);
+}
+
+export async function setReserveWeight(db, raidId, reserveId, weight) {
+  await db
+    .prepare('UPDATE soft_reserves SET weight = ?, updated_at = ? WHERE id = ? AND raid_id = ?')
+    .bind(weight, nowIso(), reserveId, raidId)
+    .run();
+}
+
+// Вирівнює вже поставлені софти під новий (зменшений) ліміт — коли офіцер
+// виставив штраф уже після того, як гравець набрав вагу.
+//
+// Ріжемо вагу з кінця (найпізніші софти), а не видаляємо предмет цілком:
+// weight має CHECK (weight IN (1,2,3)), тож коли вага впала б до нуля —
+// софт видаляється. Завдяки цьому втрата дорівнює саме розміру штрафу, а
+// не вазі випадково останнього предмета.
+//
+// Повертає список змін для аудиту: { itemId, boss, from, to } (to = 0 —
+// софт видалено).
+export async function enforceSoftPenaltyLimit(db, raid, playerName) {
+  const limit = await getEffectiveSoftLimit(db, raid, playerName);
+  const { results } = await db
+    .prepare('SELECT * FROM soft_reserves WHERE raid_id = ? AND player_name = ? ORDER BY created_at ASC')
+    .bind(raid.id, playerName)
+    .all();
+
+  let used = results.reduce((sum, r) => sum + (r.weight || 0), 0);
+  const changes = [];
+
+  for (let i = results.length - 1; i >= 0 && used > limit; i--) {
+    const reserve = results[i];
+    const from = reserve.weight || 0;
+    const to = Math.max(0, from - (used - limit));
+
+    if (to === 0) await deleteReserveById(db, raid.id, reserve.id);
+    else await setReserveWeight(db, raid.id, reserve.id, to);
+
+    used -= from - to;
+    changes.push({ itemId: reserve.item_id, boss: reserve.boss, from, to });
+  }
+
+  return changes;
+}
+
 export async function sumPlayerWeight(db, raidId, playerName) {
   const row = await db
     .prepare('SELECT COALESCE(SUM(weight), 0) AS total FROM soft_reserves WHERE raid_id = ? AND player_name = ?')

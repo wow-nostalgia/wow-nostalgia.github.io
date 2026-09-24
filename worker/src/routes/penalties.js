@@ -1,5 +1,11 @@
 import { HttpError, jsonResponse, readJson } from '../util.js';
-import { getRaid, getRaidParticipantsWithPenalties, upsertRaidPenalty } from '../db.js';
+import {
+  getRaid,
+  getRaidParticipantsWithPenalties,
+  upsertRaidPenalty,
+  enforceSoftPenaltyLimit,
+  insertAudit
+} from '../db.js';
 import { requireRaidOfficer } from '../auth.js';
 
 async function loadRaidOr404(env, id) {
@@ -25,5 +31,14 @@ export async function handleUpsertPenalty(request, env, raidId, playerName, sess
   const reason = String(body.reason || '').trim().slice(0, 500);
 
   await upsertRaidPenalty(env.DB, raidId, playerName, rollPenalty, softPenalty, reason);
+
+  // Гравець міг набрати вагу ще до штрафу — вирівнюємо вже поставлені софти
+  // під новий ліміт. Кожну зміну пишемо в аудит окремо, щоб гравець бачив,
+  // що саме зрізало і чому.
+  const changes = await enforceSoftPenaltyLimit(env.DB, raid, playerName);
+  for (const change of changes) {
+    await insertAudit(env.DB, raidId, session.username, 'soft_penalty_trim', { playerName, ...change });
+  }
+
   return jsonResponse(await getRaidParticipantsWithPenalties(env.DB, raidId));
 }

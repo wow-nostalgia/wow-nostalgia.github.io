@@ -99,6 +99,7 @@ const cancelTransferModalText = document.getElementById('cancelTransferModalText
 const cancelTransferConfirmBtn = document.getElementById('cancelTransferConfirmBtn');
 const cancelTransferCancelBtn = document.getElementById('cancelTransferCancelBtn');
 const transferNotice = document.getElementById('transferNotice');
+const softPenaltyNotice = document.getElementById('softPenaltyNotice');
 const bonusPoolBanner = document.getElementById('bonusPoolBanner');
 const transferWeightLimitInput = document.getElementById('transferWeightLimitInput');
 const settingsAllowMountSoftsInput = document.getElementById('settingsAllowMountSoftsInput');
@@ -455,7 +456,9 @@ function applySoftFormLockState() {
   softItemTrigger.disabled = locked;
   softForm.querySelector('button[type="submit"]').disabled = locked;
 
-  applyWeightLimit(softWeightToggle, softWeight, locked, remainingWeightFor(softPlayerNameInput.value.trim()));
+  const softPlayerName = softPlayerNameInput.value.trim();
+  applyWeightLimit(softWeightToggle, softWeight, locked, remainingWeightFor(softPlayerName));
+  renderSoftPenaltyNotice(softPlayerName);
 
   const transfersEnabled = (raid.transfer_weight_limit ?? 0) !== 0;
   const myReceived = getMyReceivedTransfer();
@@ -520,8 +523,38 @@ function usedWeightForPlayer(playerName) {
     .reduce((sum, r) => sum + (r.weight || 0), 0);
 }
 
+// Пояснення під формою: без нього гравець бачив би просто неактивну кнопку
+// х3 і не розумів чому.
+function renderSoftPenaltyNotice(playerName) {
+  const penalty = softPenaltyFor(playerName);
+
+  if (!penalty) {
+    softPenaltyNotice.hidden = true;
+    softPenaltyNotice.textContent = '';
+    return;
+  }
+
+  const reason = penaltiesList.find((p) => p.player_name === playerName)?.reason;
+  const limit = softLimitFor(playerName);
+  softPenaltyNotice.hidden = false;
+  softPenaltyNotice.textContent = `Штраф -${penalty}: твій ліміт ваги ${limit} замість ${raid.soft_limit_total}.`
+    + (reason ? ` Причина: ${reason}` : '');
+}
+
+function softPenaltyFor(playerName) {
+  if (!playerName) return 0;
+  return penaltiesList.find((p) => p.player_name === playerName)?.soft_penalty ?? 0;
+}
+
+// Персональний ліміт: штраф зменшує саме доступну вагу, тому кнопки ваги
+// гаснуть одразу після вибору імені, ще до спроби засофтити. Ту саму
+// формулу дублює сервер (reserves.js) - він лишається джерелом істини.
+function softLimitFor(playerName) {
+  return Math.max(0, raid.soft_limit_total - softPenaltyFor(playerName));
+}
+
 function remainingWeightFor(playerName) {
-  return Math.max(0, raid.soft_limit_total - usedWeightForPlayer(playerName));
+  return Math.max(0, softLimitFor(playerName) - usedWeightForPlayer(playerName));
 }
 
 // Кнопки x2/x3 вимикаємо, якщо вони одразу перевищать залишок ваги гравця
@@ -1136,28 +1169,6 @@ function groupReservesByPlayer(list) {
   return map;
 }
 
-// "Мінус до софту" - штраф у вагових одиницях, не в кількості предметів.
-// З'їдаємо softPenalty вагу з кінця списку речей гравця: предмет, чиєї ваги
-// вистачає щоб покрити залишок штрафу - гаситься повністю (сірий), інакше
-// у нього лишається (вага - штраф), відображається звичайним кольором,
-// але з червоним чіпсом.
-function computeSoftPenaltyDeductions(orderedReserves, softPenalty) {
-  const deductions = new Map(); // reserveId -> { deduct, fullyPenalized }
-  let remaining = softPenalty;
-  for (let i = orderedReserves.length - 1; i >= 0 && remaining > 0; i--) {
-    const r = orderedReserves[i];
-    const weight = (r.weight || 0) + (r.bonus_weight || 0) + (r.officer_bonus_weight || 0);
-    if (weight <= remaining) {
-      deductions.set(r.id, { deduct: weight, fullyPenalized: true });
-      remaining -= weight;
-    } else {
-      deductions.set(r.id, { deduct: remaining, fullyPenalized: false });
-      remaining = 0;
-    }
-  }
-  return deductions;
-}
-
 // Той самий набір імен, що потрапляє у таб "Гравці" - засофчені +
 // учасники передач софту (можуть мати 0 власних софтів).
 function getPlayersWithSoftsSet() {
@@ -1262,25 +1273,17 @@ function renderPlayersTable() {
     }
 
     const playerReserves = grouped.get(name);
-    const softPenalty = penaltiesList.find((p) => p.player_name === name)?.soft_penalty ?? 0;
-    const penaltyDeductions = computeSoftPenaltyDeductions(playerReserves, softPenalty);
 
     playerReserves.forEach((r) => {
       const itemSpan = document.createElement('span');
       itemSpan.className = 'raid-reserve-item';
       itemSpan.dataset.itemId = r.item_id;
 
-      const deduction = penaltyDeductions.get(r.id);
       const effectiveWeight = (r.weight || 0) + (r.bonus_weight || 0) + (r.officer_bonus_weight || 0);
 
       const weightBadge = document.createElement('span');
-      if (deduction && !deduction.fullyPenalized) {
-        weightBadge.className = 'raid-weight-badge raid-weight-badge--penalized';
-        weightBadge.textContent = formatWeight(effectiveWeight - deduction.deduct);
-      } else {
-        weightBadge.className = 'raid-weight-badge';
-        weightBadge.textContent = formatWeight(effectiveWeight);
-      }
+      weightBadge.className = 'raid-weight-badge';
+      weightBadge.textContent = formatWeight(effectiveWeight);
       itemSpan.appendChild(weightBadge);
 
       const itemInfo = findItemInfo(r.item_id, r.boss);
@@ -1289,10 +1292,6 @@ function renderPlayersTable() {
       nameEl.className = `${itemRarityClass(r.item_id)}${r.is_received ? ' raid-item-received' : ''}`;
       nameEl.textContent = ` ${itemInfo ? translateItem(itemInfo.name) : `#${r.item_id}`}`;
       itemSpan.appendChild(nameEl);
-
-      if (deduction && deduction.fullyPenalized) {
-        itemSpan.classList.add('raid-reserve-item--penalized');
-      }
 
       if (manageable) {
         const delBtn = document.createElement('button');
@@ -1358,68 +1357,40 @@ function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove, allowSt
 
 // Групує резерви по вазі — окремий рядок на кожну вагу, щоб не плодити
 // купу однакових чіпсів "x1" поряд з кожним іменем.
-function buildReservesByWeight(reservers, penaltyDeductions) {
+function buildReservesByWeight(reservers) {
   const wrap = document.createElement('div');
   wrap.className = 'raid-reserve-weight-list';
 
   const byWeight = new Map();
-  const partialRows = [];
   reservers.forEach((r) => {
     const effectiveWeight = (r.weight || 0) + (r.bonus_weight || 0) + (r.officer_bonus_weight || 0);
-    const deduction = penaltyDeductions.get(r.id);
-
-    // Часткове "з'їдання" ваги штрафом - речі не вистачило ваги іншим
-    // гравцям на цю ж вагу, показуємо окремим рядком зі зменшеним чіпсом,
-    // а не ховаємо всю вагу цілком.
-    if (deduction && !deduction.fullyPenalized && r.player_name !== null) {
-      partialRows.push({ weight: effectiveWeight - deduction.deduct, name: r.player_name, id: r.id });
-      return;
-    }
 
     if (!byWeight.has(effectiveWeight)) byWeight.set(effectiveWeight, { visible: [], hidden: 0 });
     if (r.player_name !== null) {
-      byWeight.get(effectiveWeight).visible.push({ name: r.player_name, id: r.id, fullyPenalized: !!(deduction && deduction.fullyPenalized) });
+      byWeight.get(effectiveWeight).visible.push({ name: r.player_name, id: r.id });
     } else byWeight.get(effectiveWeight).hidden++;
   });
 
-  const rows = [...byWeight.keys()].map((weight) => ({ weight, entry: byWeight.get(weight), partial: null }))
-    .concat(partialRows.map((p) => ({ weight: p.weight, entry: null, partial: p })))
+  const rows = [...byWeight.keys()]
+    .map((weight) => ({ weight, entry: byWeight.get(weight) }))
     .sort((a, b) => a.weight - b.weight);
 
-  rows.forEach(({ weight, entry, partial }) => {
+  rows.forEach(({ weight, entry }) => {
     const row = document.createElement('div');
     row.className = 'raid-reserve-weight-row';
 
     const weightBadge = document.createElement('span');
-    weightBadge.className = partial ? 'raid-weight-badge raid-weight-badge--penalized' : 'raid-weight-badge';
+    weightBadge.className = 'raid-weight-badge';
     weightBadge.textContent = formatWeight(weight);
     row.appendChild(weightBadge);
 
     const namesSpan = document.createElement('span');
     namesSpan.className = 'raid-reserve-weight-names';
 
-    if (partial) {
-      const nameSpan = document.createElement('span');
-      nameSpan.style.color = classColorMap.get(partial.name) || 'var(--color-text-faint)';
-      nameSpan.textContent = partial.name;
-      namesSpan.appendChild(nameSpan);
-      const p = penaltiesList.find((x) => x.player_name === partial.name);
-      if (p && p.roll_penalty > 0) {
-        const penSpan = document.createElement('span');
-        penSpan.className = 'penalty-value--active';
-        penSpan.textContent = ` (-${p.roll_penalty})`;
-        namesSpan.appendChild(penSpan);
-      }
-      row.appendChild(namesSpan);
-      wrap.appendChild(row);
-      return;
-    }
-
     const visibleNames = entry.visible;
-    visibleNames.forEach(({ name, id, fullyPenalized }, i) => {
+    visibleNames.forEach(({ name }, i) => {
       const p = penaltiesList.find((x) => x.player_name === name);
       const nameSpan = document.createElement('span');
-      if (fullyPenalized) nameSpan.className = 'raid-reserve-item--penalized';
       nameSpan.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
       nameSpan.textContent = name;
       namesSpan.appendChild(nameSpan);
@@ -1475,15 +1446,6 @@ function renderItemsTable() {
     ? reserves.some((r) => r.item_id === item.id && r.discord_id === currentUser?.discordId)
     : reserves.some((r) => r.item_id === item.id));
 
-  const penaltyDeductions = new Map();
-  const groupedForPenalty = groupReservesByPlayer(reserves);
-  for (const [pName, pReserves] of groupedForPenalty) {
-    const softPenalty = penaltiesList.find((p) => p.player_name === pName)?.soft_penalty ?? 0;
-    if (softPenalty > 0) {
-      computeSoftPenaltyDeductions(pReserves, softPenalty).forEach((v, id) => penaltyDeductions.set(id, v));
-    }
-  }
-
   const bonusCtx = {
     myNames: myNamesForItems,
     hasBonusPool: Boolean(myReceivedForItems || myBonusGrantForItems),
@@ -1500,11 +1462,11 @@ function renderItemsTable() {
   // таблиця складається з одного рядка-заголовка.
   bossesWithCatalog().forEach((boss) => {
     const items = ((itemsCatalog[boss] || {})[raid.difficulty] || []).filter(isSofted);
-    raidItemsList.appendChild(buildBossItemsTable(boss, items, canTellEmpty, penaltyDeductions, bonusCtx));
+    raidItemsList.appendChild(buildBossItemsTable(boss, items, canTellEmpty, bonusCtx));
   });
 }
 
-function buildBossItemsTable(boss, items, canTellEmpty, penaltyDeductions, bonusCtx) {
+function buildBossItemsTable(boss, items, canTellEmpty, bonusCtx) {
   const wrap = document.createElement('div');
   wrap.className = 'ranking-table-wrap';
 
@@ -1521,7 +1483,7 @@ function buildBossItemsTable(boss, items, canTellEmpty, penaltyDeductions, bonus
   const tbody = document.createElement('tbody');
   tbody.appendChild(buildItemsBossHeaderRow(boss, canTellEmpty && items.length === 0));
   items.forEach((item) => {
-    tbody.appendChild(buildItemRow(item, penaltyDeductions, bonusCtx));
+    tbody.appendChild(buildItemRow(item, bonusCtx));
   });
   table.appendChild(tbody);
 
@@ -1550,7 +1512,7 @@ function buildItemsBossHeaderRow(boss, isEmpty) {
   return tr;
 }
 
-function buildItemRow(item, penaltyDeductions, bonusCtx) {
+function buildItemRow(item, bonusCtx) {
   const tr = document.createElement('tr');
 
   const nameTd = document.createElement('td');
@@ -1598,7 +1560,7 @@ function buildItemRow(item, penaltyDeductions, bonusCtx) {
   } else if (!reservers.length) {
     reserversTd.textContent = '—';
   } else {
-    reserversTd.appendChild(buildReservesByWeight(reservers, penaltyDeductions));
+    reserversTd.appendChild(buildReservesByWeight(reservers));
   }
 
   tr.appendChild(reserversTd);
@@ -1613,6 +1575,12 @@ function describeAuditAction(entry) {
     case 'soft_add': return hideSoftDetails ? 'софтнув' : `софтнув ${translateBoss(d.boss)} (${formatWeight(d.weight)})`;
     case 'soft_remove': return hideSoftDetails ? 'видалив софт' : `видалив софт ${d.boss ? translateBoss(d.boss) : ''}`.trim();
     case 'soft_remove_all': return 'очистив усі свої софти';
+    case 'soft_penalty_trim': {
+      const what = d.to === 0 ? 'зняв софт' : `зменшив вагу софту до ${formatWeight(d.to)}`;
+      return hideSoftDetails
+        ? `${what} через штраф`
+        : `${what} гравцю ${d.playerName} через штраф${d.boss ? ` (${translateBoss(d.boss)})` : ''}`;
+    }
     case 'officer_assign': return hideSoftDetails ? 'призначив софт гравцю' : `призначив софт гравцю ${d.playerName} (${translateBoss(d.boss)})`;
     case 'lock': return 'заблокував рейд';
     case 'unlock': return 'розблокував рейд';
@@ -1879,13 +1847,18 @@ softForm.addEventListener('submit', async (event) => {
 
   try {
     await apiCall('POST', `/raids/${raidId}/reserves`, { token: getSessionToken(), body: { playerName, itemId, boss, weight } });
-    await loadReserves();
+    await Promise.all([loadReserves(), loadPenalties()]);
     renderPlayersTable();
     renderItemsTable();
     applySoftFormLockState();
     applyOfficerFormLockState();
     setStatus('Софт додано.', 'success');
   } catch (err) {
+    // Саме цей запит міг перенести штраф зі Штрафбату в рейд (перший софт
+    // гравця), тож перечитуємо штрафи й після відмови - інакше гравець не
+    // побачить, звідки взявся зменшений ліміт.
+    await loadPenalties();
+    applySoftFormLockState();
     setStatus(`Помилка: ${err.message}`, 'error');
   }
 });
@@ -1904,13 +1877,15 @@ officerAssignForm.addEventListener('submit', async (event) => {
       token: getSessionToken(),
       body: { playerName, itemId, boss, weight }
     });
-    await loadReserves();
+    await Promise.all([loadReserves(), loadPenalties()]);
     renderPlayersTable();
     renderItemsTable();
     applySoftFormLockState();
     applyOfficerFormLockState();
     setStatus(`Софт призначено гравцю ${playerName}.`, 'success');
   } catch (err) {
+    await loadPenalties();
+    applyOfficerFormLockState();
     setStatus(`Помилка: ${err.message}`, 'error');
   }
 });
@@ -1958,8 +1933,14 @@ async function savePenalty(playerName, rollPenalty, softPenalty, reason) {
       token: getSessionToken(),
       body: { rollPenalty, softPenalty, reason }
     });
+    // Штраф міг зрізати вагу вже поставлених софтів - перечитуємо їх, щоб
+    // таблиці не показували стару вагу до наступного оновлення сторінки.
+    await loadReserves();
     renderPenaltiesTable();
+    renderPlayersTable();
     renderItemsTable();
+    applySoftFormLockState();
+    applyOfficerFormLockState();
   } catch (err) {
     setStatus(`Помилка: ${err.message}`, 'error');
   }

@@ -3281,11 +3281,6 @@ body.raid-manager-detail-page .raid-reserve-item {
   white-space: nowrap;
 }
 
-body.raid-manager-detail-page .raid-reserve-item--penalized {
-  opacity: 0.35;
-  filter: grayscale(1);
-}
-
 body.raid-manager-detail-page .raid-reserve-weight-row {
   display: flex;
   align-items: baseline;
@@ -3455,10 +3450,6 @@ body.raid-manager-detail-page .raid-weight-badge {
   line-height: 18px;
   color: var(--color-surface-solid);
   background-color: var(--color-link);
-}
-
-body.raid-manager-detail-page .raid-weight-badge--penalized {
-  background-color: var(--color-danger);
 }
 
 /* WoW game constants — фіксовані кольори якості предметів/грошей клієнта
@@ -4680,6 +4671,23 @@ body.raid-manager-detail-page .penalty-reason-text {
   border-left: 3px solid var(--color-text-faint);
   color: var(--color-text-soft);
   font-size: var(--font-size-base);
+}
+
+/* Повідомлення про штраф біля форми софту — той самий блок-нотатка, що й
+   .raid-transfer-notice, але застережливого кольору: гравець має розуміти,
+   чому йому недоступна повна вага. */
+.raid-penalty-notice {
+  margin: 0 0 0.6rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background: rgba(240, 173, 78, 0.12);
+  border-left: 3px solid var(--color-warning);
+  color: var(--color-text-soft);
+  font-size: var(--font-size-base);
+}
+
+body.raid-manager-detail-page .raid-soft-form .raid-penalty-notice {
+  grid-column: 2;
 }
 
 .raid-transfer-limit-row {
