@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-09-23T01:59:30.948Z",
+  "updatedAt": "2026-09-24T01:58:09.991Z",
   "specs": [
     {
       "class": "Paladin",
@@ -844,6 +844,10 @@
           "hps": 25351.8
         },
         {
+          "name": "Kapril",
+          "hps": 25188.9
+        },
+        {
           "name": "Saizel",
           "hps": 25052.7
         },
@@ -860,6 +864,10 @@
           "hps": 24744.8
         },
         {
+          "name": "Sealtiel",
+          "hps": 24543.8
+        },
+        {
           "name": "Янекожаний",
           "hps": 24478
         },
@@ -874,10 +882,6 @@
         {
           "name": "Єва",
           "hps": 24314.3
-        },
-        {
-          "name": "Sealtiel",
-          "hps": 24258
         },
         {
           "name": "Толерантний",
@@ -3455,7 +3459,7 @@
         },
         {
           "name": "Кібердру",
-          "hps": 9671.3
+          "hps": 9671.4
         },
         {
           "name": "Kyskys",
