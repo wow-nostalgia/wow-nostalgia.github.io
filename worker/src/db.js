@@ -990,7 +990,7 @@ export async function createBuffQueueEntry(db, { dayId, boss, buffTypeId, player
   return getBuffQueueEntry(db, result.meta.last_row_id);
 }
 
-// done_at пишемо лише при переході в done: вкладка "Виконано" сортується й
+// done_at пишемо лише при переході в done: вкладка "Архів" сортується й
 // показує саме цю дату, а updated_at міг би змінитись пізніше.
 export async function setBuffQueueEntryStatus(db, id, status) {
   const ts = nowIso();

@@ -80,7 +80,7 @@ export async function handleUpdateShardQueueDay(request, env, dayId, session) {
 
   // Анулювати не можна, доки в дні лишається хоч один активний рядок
   // (беклог-записи цього дня в підрахунок не йдуть — вони анулюванню не
-  // заважають, лишаються видимими на вкладці "Вже зібрано" й далі).
+  // заважають, лишаються видимими на вкладці "Архів" й далі).
   if (fields.isActive === false && day.is_active) {
     const entries = await listShardQueueEntriesByDay(env.DB, dayId);
     const hasActive = entries.some((e) => e.progress < RESOURCE_CAPS[e.resource_type]);
@@ -247,7 +247,7 @@ export async function handleDeleteShardQueueEntry(request, env, entryId, session
   const officer = await requireOwnerOrOfficer(env.DB, session, entry.player_name, 'Немає прав видаляти цей рядок');
 
   const cap = RESOURCE_CAPS[entry.resource_type];
-  if (entry.progress >= cap) throw new HttpError(400, 'Записи в "Вже зібрано" не видаляються');
+  if (entry.progress >= cap) throw new HttpError(400, 'Записи в "Архіві" не видаляються');
 
   await deleteShardQueueEntry(env.DB, entryId);
   await insertShardQueueAudit(env.DB, officer ? session.username : entry.player_name, 'entry_delete', {

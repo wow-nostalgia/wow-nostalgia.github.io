@@ -5183,7 +5183,7 @@ body.buff-queue-page .buff-queue-boss .ranking-table-wrap {
 }
 
 /* auto-fill, а не auto-fit: колонка посилення завжди однакової ширини,
-   навіть якщо в блоці вона одна (у "Виконано" часто так і буває). */
+   навіть якщо в блоці вона одна (в "Архіві" часто так і буває). */
 body.buff-queue-page .buff-queue-type-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));

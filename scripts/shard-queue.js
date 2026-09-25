@@ -234,7 +234,7 @@ function renderDayTabs() {
   backlogBtn.type = 'button';
   backlogBtn.className = 'raid-tab' + (activeTab?.type === 'backlog' ? ' raid-tab--active' : '');
   backlogBtn.dataset.tabType = 'backlog';
-  backlogBtn.textContent = 'Вже зібрано';
+  backlogBtn.textContent = 'Архів';
   dayTabs.appendChild(backlogBtn);
 
   const auditBtn = document.createElement('button');

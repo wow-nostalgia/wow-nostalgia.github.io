@@ -77,7 +77,7 @@ let settingsStatusEl = null;
 let dataSignature = '';
 let isDragging = false;
 let renamingTypeId = null;
-// Сторінки таблиць "Виконано" окремо для кожної пари бос+посилення.
+// Сторінки таблиць "Архіву" окремо для кожної пари бос+посилення.
 const donePages = new Map();
 // Вибір у формах запису переживає перемальовування (автооновлення, інші дії).
 const signupState = { character: '', boss: '', buffTypeId: '' };
@@ -362,7 +362,7 @@ function tabButton(type, label, extra = {}) {
 function renderDayTabs() {
   dayTabs.innerHTML = '';
   activeDays().forEach((day) => dayTabs.appendChild(tabButton('day', day.label, { dayId: day.id })));
-  dayTabs.appendChild(tabButton('done', 'Виконано'));
+  dayTabs.appendChild(tabButton('done', 'Архів'));
   dayTabs.appendChild(tabButton('audit', 'Історія дій'));
   if (isOfficer()) dayTabs.appendChild(tabButton('settings', 'Налаштування'));
 }
@@ -818,7 +818,7 @@ function enableDragReorder(tbody, dayId, boss, buffTypeId) {
   });
 }
 
-// ---- Вкладка "Виконано" ----
+// ---- Вкладка "Архів" ----
 
 function renderDoneView() {
   const done = entries.filter((e) => e.status === 'done');
@@ -1297,7 +1297,7 @@ function buildBossesSettings() {
 
   const hint = document.createElement('p');
   hint.className = 'shard-queue-hint';
-  hint.textContent = 'Прихований бос зникає з вкладок днів і форм запису, але його історія лишається у "Виконано".';
+  hint.textContent = 'Прихований бос зникає з вкладок днів і форм запису, але його історія лишається в "Архіві".';
   section.appendChild(hint);
 
   const list = document.createElement('ul');
@@ -1349,7 +1349,7 @@ async function changeStatus(entry, status) {
 function confirmDone(entry) {
   showConfirmModal({
     title: 'Посилення виконано?',
-    text: `${entry.player_name} — "${typeLabel(entry.buff_type_id)}", ${bossLabel(entry.boss)}. Запис переїде на вкладку "Виконано".`,
+    text: `${entry.player_name} — "${typeLabel(entry.buff_type_id)}", ${bossLabel(entry.boss)}. Запис переїде в "Архів".`,
     confirmLabel: 'Так',
     cancelLabel: 'Відмінити',
     onConfirm: () => changeStatus(entry, 'done')
