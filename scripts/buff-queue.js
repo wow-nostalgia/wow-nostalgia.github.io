@@ -483,6 +483,29 @@ function typeGrid(typeCount) {
   return grid;
 }
 
+// Іконки заклинань посилень — з того ж CDN Wowhead, що й іконки предметів
+// на сторінці рейду. Тип посилення — довільна назва з налаштувань, тож
+// іконку шукаємо за назвою; у нового типу без відповідності іконки немає.
+const BUFF_TYPE_ICONS = {
+  'істерія': 'spell_deathknight_bladedarmor',
+  'придання сил': 'spell_holy_powerinfusion'
+};
+
+function typeHeading(type, className) {
+  const heading = document.createElement('h3');
+  if (className) heading.className = className;
+  const icon = BUFF_TYPE_ICONS[type.label.trim().toLocaleLowerCase('uk')];
+  if (icon) {
+    const img = document.createElement('img');
+    img.className = 'raid-item-icon';
+    img.src = `https://wow.zamimg.com/images/wow/icons/small/${icon}.jpg`;
+    img.alt = '';
+    heading.appendChild(img);
+  }
+  heading.appendChild(document.createTextNode(type.label));
+  return heading;
+}
+
 function buildBoard(typeList, columns) {
   const board = document.createElement('div');
   board.className = 'buff-queue-board';
@@ -493,9 +516,7 @@ function buildBoard(typeList, columns) {
   typeList.forEach((type) => {
     const col = document.createElement('div');
     col.className = 'buff-queue-type-col';
-    const heading = document.createElement('h3');
-    heading.textContent = type.label;
-    col.append(heading, buildQueueTable(columns, true));
+    col.append(typeHeading(type), buildQueueTable(columns, true));
     grid.appendChild(col);
   });
   head.appendChild(grid);
@@ -508,10 +529,7 @@ function buildBoard(typeList, columns) {
 function typeColumn(type) {
   const column = document.createElement('div');
   column.className = 'buff-queue-type-col';
-  const label = document.createElement('h3');
-  label.className = 'buff-queue-type-col-label';
-  label.textContent = type.label;
-  column.appendChild(label);
+  column.appendChild(typeHeading(type, 'buff-queue-type-col-label'));
   return column;
 }
 

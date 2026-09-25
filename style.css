@@ -5245,7 +5245,15 @@ body.buff-queue-page .buff-queue-board-head .buff-queue-type-col {
 }
 
 /* Назва посилення — окрема смуга з лінією під нею, над назвами колонок. */
+/* Назва посилення з іконкою заклинання (.raid-item-icon) перед нею. */
+body.buff-queue-page .buff-queue-board-head h3,
+body.buff-queue-page .buff-queue-type-col-label {
+  align-items: center;
+  gap: var(--space-2);
+}
+
 body.buff-queue-page .buff-queue-board-head h3 {
+  display: flex;
   margin: 0;
   padding: 0.35rem 0.4rem;
   border-bottom: 1px solid var(--color-border-mid);
@@ -5323,7 +5331,7 @@ body.buff-queue-page .buff-queue-table tbody tr:last-child td {
   }
 
   body.buff-queue-page .buff-queue-type-col-label {
-    display: block;
+    display: flex;
   }
 
   /* Спільної шапки тут немає, тож і фіксовані ширини не потрібні: з ними
