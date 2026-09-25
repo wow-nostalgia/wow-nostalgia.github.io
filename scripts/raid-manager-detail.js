@@ -199,7 +199,7 @@ async function loadShardQueueIcons() {
 }
 
 // "Черга на посилення" для вкладки "Предмети": хто з черги на кожного боса
-// (день — той самий день тижня рейду, як в уламків) і під яким номером.
+// (день — див. applyBuffQueueRaw) і під яким номером.
 // Номер — позиція в таблиці черги на сторінці черги (Очікує + Посилений,
 // за priority_rank), а не серед присутніх у рейді.
 async function fetchBuffQueueRaw() {
@@ -219,8 +219,13 @@ async function fetchBuffQueueRaw() {
 function applyBuffQueueRaw(raw) {
   if (!raw) return;
   const { days, types, entries } = raw;
+  // Одна активна вкладка дня в черзі — вона діє для всіх рейдів, у який би
+  // день рейд не створили. Кілька — строго за днем тижня рейду (як в уламків).
+  const activeDays = days.filter((d) => d.is_active);
   const weekday = kyivWeekdayLabel(raid.created_at);
-  const matchedDay = days.find((d) => d.is_active && weekday && normalizeWeekday(d.label) === normalizeWeekday(weekday));
+  const matchedDay = activeDays.length === 1
+    ? activeDays[0]
+    : activeDays.find((d) => weekday && normalizeWeekday(d.label) === normalizeWeekday(weekday));
 
   const map = new Map();
   if (matchedDay) {
