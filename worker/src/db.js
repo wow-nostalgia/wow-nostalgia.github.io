@@ -833,3 +833,211 @@ export async function listShardQueueAudit(db, limit = 250) {
   return results;
 }
 
+// ---- Черга на посилення (гільдійна, не прив'язана до raid_id) ----
+// Та сама жива черга, що й на уламки, але черга окрема на кожну трійку
+// "день + бос + тип посилення" (див. migrations/0019_buff_queue.sql).
+
+export async function listBuffQueueDays(db) {
+  const { results } = await db.prepare('SELECT * FROM buff_queue_days ORDER BY sort_order ASC').all();
+  return results;
+}
+
+export async function getBuffQueueDay(db, id) {
+  return db.prepare('SELECT * FROM buff_queue_days WHERE id = ?').bind(id).first();
+}
+
+export async function createBuffQueueDay(db, label) {
+  const ts = nowIso();
+  const row = await db.prepare('SELECT COALESCE(MAX(sort_order), 0) AS maxOrder FROM buff_queue_days').first();
+  const result = await db
+    .prepare('INSERT INTO buff_queue_days (label, sort_order, is_active, created_at, updated_at) VALUES (?, ?, 1, ?, ?)')
+    .bind(label, row.maxOrder + 1, ts, ts)
+    .run();
+  return getBuffQueueDay(db, result.meta.last_row_id);
+}
+
+// Спільний частковий апдейт для днів і типів посилень: обидві таблиці мають
+// однакові поля label/is_active. Ім'я таблиці приходить лише з коду нижче,
+// не від користувача.
+async function updateLabelActiveRow(db, table, id, { label, isActive } = {}) {
+  const fields = [];
+  const values = [];
+  if (label !== undefined) {
+    fields.push('label = ?');
+    values.push(label);
+  }
+  if (isActive !== undefined) {
+    fields.push('is_active = ?');
+    values.push(isActive ? 1 : 0);
+  }
+  if (fields.length) {
+    await db
+      .prepare(`UPDATE ${table} SET ${fields.join(', ')}, updated_at = ? WHERE id = ?`)
+      .bind(...values, nowIso(), id)
+      .run();
+  }
+  return db.prepare(`SELECT * FROM ${table} WHERE id = ?`).bind(id).first();
+}
+
+export async function updateBuffQueueDay(db, id, fields) {
+  return updateLabelActiveRow(db, 'buff_queue_days', id, fields);
+}
+
+export async function listBuffQueueTypes(db) {
+  const { results } = await db.prepare('SELECT * FROM buff_queue_types ORDER BY sort_order ASC').all();
+  return results;
+}
+
+export async function getBuffQueueType(db, id) {
+  return db.prepare('SELECT * FROM buff_queue_types WHERE id = ?').bind(id).first();
+}
+
+export async function createBuffQueueType(db, label) {
+  const ts = nowIso();
+  const row = await db.prepare('SELECT COALESCE(MAX(sort_order), 0) AS maxOrder FROM buff_queue_types').first();
+  const result = await db
+    .prepare('INSERT INTO buff_queue_types (label, sort_order, is_active, created_at, updated_at) VALUES (?, ?, 1, ?, ?)')
+    .bind(label, row.maxOrder + 1, ts, ts)
+    .run();
+  return getBuffQueueType(db, result.meta.last_row_id);
+}
+
+export async function updateBuffQueueType(db, id, fields) {
+  return updateLabelActiveRow(db, 'buff_queue_types', id, fields);
+}
+
+export async function listBuffQueueBosses(db) {
+  const { results } = await db.prepare('SELECT * FROM buff_queue_bosses ORDER BY sort_order ASC').all();
+  return results;
+}
+
+export async function getBuffQueueBoss(db, boss) {
+  return db.prepare('SELECT * FROM buff_queue_bosses WHERE boss = ?').bind(boss).first();
+}
+
+export async function setBuffQueueBossActive(db, boss, isActive) {
+  await db
+    .prepare('UPDATE buff_queue_bosses SET is_active = ?, updated_at = ? WHERE boss = ?')
+    .bind(isActive ? 1 : 0, nowIso(), boss)
+    .run();
+  return getBuffQueueBoss(db, boss);
+}
+
+export async function listBuffQueueEntries(db) {
+  const { results } = await db
+    .prepare('SELECT * FROM buff_queue_entries ORDER BY day_id ASC, boss ASC, buff_type_id ASC, priority_rank ASC')
+    .all();
+  return results;
+}
+
+export async function getBuffQueueEntry(db, id) {
+  return db.prepare('SELECT * FROM buff_queue_entries WHERE id = ?').bind(id).first();
+}
+
+// Невиконаний запис гравця на "бос + посилення" на будь-який день — для
+// точного 409 "уже в черзі, день X" до того, як спрацює частковий
+// UNIQUE-індекс (той лишається останньою страховкою від гонки запитів).
+export async function findActiveBuffQueueEntry(db, playerName, boss, buffTypeId) {
+  return db
+    .prepare("SELECT * FROM buff_queue_entries WHERE player_name = ? AND boss = ? AND buff_type_id = ? AND status <> 'done'")
+    .bind(playerName, boss, buffTypeId)
+    .first();
+}
+
+// Чи лишились у дня/типу/боса невиконані записи — щоб не приховати те, на
+// що люди ще стоять у черзі. column приходить лише з коду нижче.
+async function hasActiveBuffQueueEntries(db, column, value) {
+  const row = await db
+    .prepare(`SELECT 1 FROM buff_queue_entries WHERE ${column} = ? AND status <> 'done' LIMIT 1`)
+    .bind(value)
+    .first();
+  return Boolean(row);
+}
+
+export function buffQueueDayHasActiveEntries(db, dayId) {
+  return hasActiveBuffQueueEntries(db, 'day_id', dayId);
+}
+
+export function buffQueueTypeHasActiveEntries(db, buffTypeId) {
+  return hasActiveBuffQueueEntries(db, 'buff_type_id', buffTypeId);
+}
+
+export function buffQueueBossHasActiveEntries(db, boss) {
+  return hasActiveBuffQueueEntries(db, 'boss', boss);
+}
+
+async function nextBuffQueueRank(db, dayId, boss, buffTypeId) {
+  const row = await db
+    .prepare(
+      `SELECT COALESCE(MAX(priority_rank), -1) AS maxRank FROM buff_queue_entries
+       WHERE day_id = ? AND boss = ? AND buff_type_id = ? AND status <> 'done'`
+    )
+    .bind(dayId, boss, buffTypeId)
+    .first();
+  return row.maxRank + 1;
+}
+
+export async function createBuffQueueEntry(db, { dayId, boss, buffTypeId, playerName }) {
+  const ts = nowIso();
+  const rank = await nextBuffQueueRank(db, dayId, boss, buffTypeId);
+  const result = await db
+    .prepare(
+      `INSERT INTO buff_queue_entries (day_id, boss, buff_type_id, player_name, status, priority_rank, created_at, updated_at)
+       VALUES (?, ?, ?, ?, 'waiting', ?, ?, ?)`
+    )
+    .bind(dayId, boss, buffTypeId, playerName, rank, ts, ts)
+    .run();
+  return getBuffQueueEntry(db, result.meta.last_row_id);
+}
+
+// done_at пишемо лише при переході в done: вкладка "Виконано" сортується й
+// показує саме цю дату, а updated_at міг би змінитись пізніше.
+export async function setBuffQueueEntryStatus(db, id, status) {
+  const ts = nowIso();
+  await db
+    .prepare('UPDATE buff_queue_entries SET status = ?, updated_at = ?, done_at = ? WHERE id = ?')
+    .bind(status, ts, status === 'done' ? ts : null, id)
+    .run();
+  return getBuffQueueEntry(db, id);
+}
+
+// Перенос на інший день — завжди в кінець черги дня-призначення (та сама
+// поведінка, що в черзі на уламки).
+export async function moveBuffQueueEntryDay(db, id, newDayId) {
+  const entry = await getBuffQueueEntry(db, id);
+  const rank = await nextBuffQueueRank(db, newDayId, entry.boss, entry.buff_type_id);
+  await db
+    .prepare('UPDATE buff_queue_entries SET day_id = ?, priority_rank = ?, updated_at = ? WHERE id = ?')
+    .bind(newDayId, rank, nowIso(), id)
+    .run();
+  return getBuffQueueEntry(db, id);
+}
+
+export async function reorderBuffQueueEntries(db, orderedIds) {
+  const ts = nowIso();
+  await Promise.all(
+    orderedIds.map((id, index) =>
+      db.prepare('UPDATE buff_queue_entries SET priority_rank = ?, updated_at = ? WHERE id = ?').bind(index, ts, id).run()
+    )
+  );
+}
+
+export async function deleteBuffQueueEntry(db, id) {
+  await db.prepare('DELETE FROM buff_queue_entries WHERE id = ?').bind(id).run();
+}
+
+export async function insertBuffQueueAudit(db, actorName, action, detail) {
+  await db
+    .prepare('INSERT INTO buff_queue_audit_log (actor_name, action, detail_json, created_at) VALUES (?, ?, ?, ?)')
+    .bind(actorName, action, JSON.stringify(detail || {}), nowIso())
+    .run();
+}
+
+export async function listBuffQueueAudit(db, limit = 250) {
+  const { results } = await db
+    .prepare('SELECT * FROM buff_queue_audit_log ORDER BY created_at DESC LIMIT ?')
+    .bind(limit)
+    .all();
+  return results;
+}
+

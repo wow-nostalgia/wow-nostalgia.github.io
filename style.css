@@ -2479,7 +2479,8 @@ body.raid-manager-detail-page .raid-copy-link-wrap {
 }
 
 body.raid-manager-detail-page .raid-chip,
-body.raid-manager-page .raid-chip {
+body.raid-manager-page .raid-chip,
+body.buff-queue-page .raid-chip {
   padding: 0 7px;
   border-radius: var(--radius-pill);
   font-size: var(--font-size-sm);
@@ -2492,7 +2493,8 @@ body.raid-manager-page .raid-chip {
 }
 
 body.raid-manager-detail-page .raid-chip--active,
-body.raid-manager-page .raid-chip--active {
+body.raid-manager-page .raid-chip--active,
+body.buff-queue-page .raid-chip--active {
   color: var(--color-success);
   border-color: rgba(99, 212, 113, 0.4);
   background-color: rgba(99, 212, 113, 0.12);
@@ -4970,4 +4972,114 @@ body.shard-queue-page .shard-queue-hint {
 
 body.shard-queue-page .shard-queue-status--error {
   color: var(--color-danger);
+}
+
+/* --- Черга на посилення (body.buff-queue-page) ---
+   Сторінка має ОБИДВА класи на <body>: shard-queue-page + buff-queue-page.
+   Увесь вигляд черги (таблиці, форми, вкладки, модалки, керування днями)
+   успадковується від правил черги на уламки вище, а тут — лише те, чого
+   там немає: сітка "бос x посилення", статуси й кнопки дій. */
+
+body.buff-queue-page .buff-queue-signup {
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+/* Форма запису на чотири поля (персонаж, бос, посилення, кнопка) —
+   ширша за двоколонкову .account-form; на вузьких екранах у стовпчик. */
+body.buff-queue-page .buff-queue-signup-form {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1fr) minmax(10rem, 1.4fr) minmax(8rem, 1fr) auto;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+  max-width: 820px;
+}
+
+@media (max-width: 720px) {
+  body.buff-queue-page .buff-queue-signup-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+body.buff-queue-page .buff-queue-boss {
+  margin: var(--space-4) 0;
+}
+
+/* Бос без жодного запису — один рядок замість порожніх таблиць. */
+body.buff-queue-page .buff-queue-boss--empty {
+  margin: 0;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+body.buff-queue-page .buff-queue-boss--empty h2 {
+  margin: 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text-soft);
+}
+
+body.buff-queue-page .buff-queue-boss--empty .shard-queue-hint {
+  margin-left: auto;
+  font-weight: var(--font-weight-normal);
+}
+
+/* auto-fill, а не auto-fit: колонка посилення завжди однакової ширини,
+   навіть якщо в блоці вона одна (у "Виконано" часто так і буває). */
+body.buff-queue-page .buff-queue-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+  gap: var(--space-4);
+}
+
+body.buff-queue-page .buff-queue-type-col {
+  min-width: 0;
+}
+
+body.buff-queue-page .buff-queue-type-col h3 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-soft);
+}
+
+/* Хто посилений прямо зараз — видно одним поглядом по таблиці. */
+body.buff-queue-page .buff-queue-row--buffed {
+  background-color: rgba(99, 212, 113, 0.06);
+}
+
+/* Статус-кнопка + перенос + кошик в одній клітинці: за нестачі місця
+   іконки переносяться на новий рядок, а не виштовхуються за край таблиці. */
+body.buff-queue-page .buff-queue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+body.buff-queue-page .buff-queue-actions .link-button-std {
+  white-space: nowrap;
+}
+
+/* Той самий патерн, що .link-button-std--danger, але для підтвердження. */
+body.buff-queue-page .buff-queue-btn--success {
+  color: var(--color-success);
+  border-color: rgba(99, 212, 113, 0.4);
+  background-color: rgba(99, 212, 113, 0.12);
+}
+
+body.buff-queue-page .buff-queue-btn--success:hover {
+  background-color: rgba(99, 212, 113, 0.2);
+}
+
+/* Кнопка переносу бере базу .account-delete-btn, але наведення — не
+   "небезпечне" червоне, а звичайне посилання. */
+body.buff-queue-page .buff-queue-icon-btn:hover {
+  color: var(--color-link);
+  background-color: var(--color-hover);
+}
+
+body.buff-queue-page .buff-queue-rename-form {
+  grid-template-columns: 1fr auto auto;
+  flex: 1;
 }

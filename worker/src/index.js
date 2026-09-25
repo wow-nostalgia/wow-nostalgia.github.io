@@ -46,6 +46,23 @@ import {
   handleListShardQueueAudit
 } from './routes/shard-queue.js';
 import {
+  handleListBuffQueueDays,
+  handleCreateBuffQueueDay,
+  handleUpdateBuffQueueDay,
+  handleListBuffQueueTypes,
+  handleCreateBuffQueueType,
+  handleUpdateBuffQueueType,
+  handleListBuffQueueBosses,
+  handleUpdateBuffQueueBoss,
+  handleListBuffQueue,
+  handleCreateBuffQueueEntry,
+  handleUpdateBuffQueueStatus,
+  handleReorderBuffQueue,
+  handleMoveBuffQueueEntryDay,
+  handleDeleteBuffQueueEntry,
+  handleListBuffQueueAudit
+} from './routes/buff-queue.js';
+import {
   handleDiscordCallback,
   handleGetMe,
   handleUpdatePreferences,
@@ -257,6 +274,56 @@ async function routeShardQueue(request, env, parts, session) {
   throw new HttpError(404, 'Невідомий шлях');
 }
 
+async function routeBuffQueue(request, env, parts, session) {
+  const method = request.method;
+  const [sub, sub2, sub3] = parts;
+
+  if (sub === 'days') {
+    if (!sub2) {
+      if (method === 'GET') return handleListBuffQueueDays(request, env);
+      if (method === 'POST') return handleCreateBuffQueueDay(request, env, session);
+      throw new HttpError(405, 'Метод не підтримується');
+    }
+    if (method === 'PATCH') return handleUpdateBuffQueueDay(request, env, Number(sub2), session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
+
+  if (sub === 'types') {
+    if (!sub2) {
+      if (method === 'GET') return handleListBuffQueueTypes(request, env);
+      if (method === 'POST') return handleCreateBuffQueueType(request, env, session);
+      throw new HttpError(405, 'Метод не підтримується');
+    }
+    if (method === 'PATCH') return handleUpdateBuffQueueType(request, env, Number(sub2), session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
+
+  if (sub === 'bosses') {
+    if (!sub2 && method === 'GET') return handleListBuffQueueBosses(request, env);
+    if (sub2 && method === 'PATCH') return handleUpdateBuffQueueBoss(request, env, decodeURIComponent(sub2), session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
+
+  if (sub === 'entries') {
+    if (!sub2) {
+      if (method === 'GET') return handleListBuffQueue(request, env);
+      if (method === 'POST') return handleCreateBuffQueueEntry(request, env, session);
+      throw new HttpError(405, 'Метод не підтримується');
+    }
+    const entryId = Number(sub2);
+    if (sub3 === 'status' && method === 'PATCH') return handleUpdateBuffQueueStatus(request, env, entryId, session);
+    if (sub3 === 'day' && method === 'PATCH') return handleMoveBuffQueueEntryDay(request, env, entryId, session);
+    if (!sub3 && method === 'DELETE') return handleDeleteBuffQueueEntry(request, env, entryId, session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
+
+  if (sub === 'reorder' && method === 'PATCH') return handleReorderBuffQueue(request, env, session);
+
+  if (sub === 'audit' && method === 'GET') return handleListBuffQueueAudit(request, env);
+
+  throw new HttpError(404, 'Невідомий шлях');
+}
+
 async function routePenaltyBattalion(request, env, parts, session) {
   const method = request.method;
   const [id] = parts;
@@ -356,6 +423,11 @@ async function route(request, env) {
   if (parts[2] === 'penalty-battalion') {
     const session = await requireSession(env.DB, request);
     return routePenaltyBattalion(request, env, parts.slice(3), session);
+  }
+
+  if (parts[2] === 'buff-queue') {
+    const session = await requireSession(env.DB, request);
+    return routeBuffQueue(request, env, parts.slice(3), session);
   }
 
   throw new HttpError(404, 'Невідомий шлях');
