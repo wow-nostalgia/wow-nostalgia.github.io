@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="uk-UA">
 
 <head>
@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейтинг DPS</title>
-  <link rel="stylesheet" href="../style.css?v=144">
+  <link rel="stylesheet" href="../style.css?v=145">
   <script src="/scripts/background.js?v=1"></script>
 </head>
 
@@ -58,12 +58,10 @@
 
     <div class="container-inner">
 
-      <h1>Рейтинг DPS</h1>
-
-      <ul>
-        <li>Рейтинг DPS з сайту <a href="https://uwu-logs.xyz/" target="_blank" rel="noopener noreferrer">uwu-logs.xyz</a> куди ми завантажуємо логи наших рейдів.</li>
-        <li>Тут присутні гравці гільдії + легіонери (5+ рейдів з нами).</li>
-      </ul>
+      <div class="page-title-row">
+        <h1>Рейтинг DPS</h1>
+        <button type="button" class="link-button-std page-info-btn" id="infoBtn" aria-haspopup="dialog" aria-controls="infoModal"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg>Інфо</button>
+      </div>
 
       <div class="potion-view-switch" role="tablist" aria-label="Режим перегляду рейтингу">
         <button class="potion-view-btn active" type="button" role="tab" data-view="character" aria-selected="true">
@@ -164,6 +162,20 @@
           <a href="https://www.youtube.com/@Vampirickiss" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
         </span>
       </footer>
+    </div>
+  </div>
+
+  <div id="infoModal" class="raid-modal" hidden>
+    <div class="raid-modal-backdrop" id="infoModalBackdrop"></div>
+    <div class="raid-modal-box" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
+      <button type="button" class="raid-modal-close" id="infoModalCloseBtn" aria-label="Закрити">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/></svg>
+      </button>
+      <h3 class="raid-modal-title" id="infoModalTitle">Рейтинг DPS</h3>
+      <ul class="page-info-list">
+        <li>Рейтинг DPS з сайту <a href="https://uwu-logs.xyz/" target="_blank" rel="noopener noreferrer">uwu-logs.xyz</a> куди ми завантажуємо логи наших рейдів.</li>
+        <li>Тут присутні гравці гільдії + легіонери (5+ рейдів з нами).</li>
+      </ul>
     </div>
   </div>
 
