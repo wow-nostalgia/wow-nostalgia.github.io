@@ -5224,14 +5224,31 @@ body.buff-queue-page .buff-queue-board-head {
   top: var(--topbar-offset, 0);
   z-index: var(--z-dropdown);
   margin: var(--space-3) 0;
-  padding: 0.45rem 0.6rem 0;
+  padding: 0.45rem 0.6rem;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
   background-color: var(--color-surface-solid);
 }
 
+/* Кожне посилення — окрема панель зі своїм фоном (і в шапці, і в кожному
+   босі), між панелями — проміжок сітки: так колонки різних посилень не
+   зливаються. Горизонтальних відступів у панелі немає — їх дають клітинки
+   таблиці, тож вирівнювання шапка/боси не ламається. У шапці фон трохи
+   світліший, щоб вона читалась як шапка. */
+body.buff-queue-page .buff-queue-type-col {
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-stripe);
+}
+
+body.buff-queue-page .buff-queue-board-head .buff-queue-type-col {
+  background-color: var(--color-surface-head);
+}
+
+/* Назва посилення — окрема смуга з лінією під нею, над назвами колонок. */
 body.buff-queue-page .buff-queue-board-head h3 {
-  margin: 0 0 var(--space-1);
+  margin: 0;
+  padding: 0.35rem 0.4rem;
+  border-bottom: 1px solid var(--color-border-mid);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-strong);
@@ -5239,12 +5256,13 @@ body.buff-queue-page .buff-queue-board-head h3 {
 
 body.buff-queue-page .buff-queue-board-head .raid-table th {
   border-bottom: none;
-  color: var(--color-text-soft);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-faint);
 }
 
 /* Черги посилень у блоці боса — таблиці без власних рамок і шапок. */
 body.buff-queue-page .buff-queue-boss .buff-queue-type-grid {
-  padding: 0.3rem 0.6rem 0.4rem;
+  padding: 0.4rem 0.6rem;
 }
 
 /* Одна колонка на кожне посилення, завжди в один ряд — щоб збігатися зі
@@ -5263,7 +5281,8 @@ body.buff-queue-page .buff-queue-type-col {
    спільної шапки немає (див. @media нижче). */
 body.buff-queue-page .buff-queue-type-col-label {
   display: none;
-  margin: 0 0 var(--space-2);
+  margin: 0;
+  padding: 0.35rem 0.4rem 0.15rem;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-soft);
