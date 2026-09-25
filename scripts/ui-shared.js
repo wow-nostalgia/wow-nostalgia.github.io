@@ -289,3 +289,26 @@ function applyCharacterAliases(records, aliasMap) {
 
   return records;
 }
+
+// Попап "Інфо" біля заголовка сторінки (черги на уламки й на посилення):
+// короткий опис інструмента живе тут, а не під заголовком, щоб не займати
+// місце на сторінці. Відкривається кнопкою, закривається хрестиком, кліком
+// по фону чи Escape. На сторінках без #infoBtn нічого не робить.
+function bindInfoModal() {
+  const btn = document.getElementById('infoBtn');
+  const modal = document.getElementById('infoModal');
+  if (!btn || !modal) return;
+
+  const close = () => {
+    modal.hidden = true;
+    btn.focus();
+  };
+  btn.addEventListener('click', () => { modal.hidden = false; });
+  document.getElementById('infoModalCloseBtn').addEventListener('click', close);
+  document.getElementById('infoModalBackdrop').addEventListener('click', close);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !modal.hidden) close();
+  });
+}
+
+bindInfoModal();
