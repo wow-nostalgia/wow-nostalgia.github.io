@@ -569,11 +569,9 @@ function buildBossBlock(day, boss, typeList, columns) {
 
   // Боси без жодного запису — лише рядок-заголовок, інакше 12 порожніх
   // блоків з таблицями розтягнули б сторінку на кілька екранів.
+  // Лічильник той самий, що в босів із записами, — "У черзі: 0".
   if (!all.length) {
-    const hint = document.createElement('span');
-    hint.className = 'shard-queue-hint';
-    hint.textContent = 'Ще ніхто не записався';
-    const section = buildBossFrame(boss, [hint]);
+    const section = buildBossFrame(boss, [bossChip('У черзі: 0', false)]);
     section.classList.add('buff-queue-boss--empty');
     return section;
   }
