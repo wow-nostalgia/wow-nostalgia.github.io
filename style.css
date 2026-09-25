@@ -5087,14 +5087,14 @@ body.buff-queue-page .buff-queue-audit-filters {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem 1rem;
+  gap: 0.75rem;
   margin-bottom: 0.75rem;
 }
 
 body.buff-queue-page .buff-queue-audit-filter {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-3);
   color: var(--color-text-soft);
 }
 
@@ -5107,7 +5107,12 @@ body.buff-queue-page .buff-queue-audit-filters .link-button-std {
 
 body.buff-queue-page .buff-queue-audit-filter select,
 body.buff-queue-page .buff-queue-audit-filters input[type="date"] {
-  width: 11rem;
+  width: 10rem;
+}
+
+/* "Скинути" — у тому ж рядку, притиснута до правого краю. */
+body.buff-queue-page .buff-queue-audit-filters .link-button-std {
+  margin-left: auto;
 }
 
 body.buff-queue-page .buff-queue-audit-filters input[type="date"] {
