@@ -530,9 +530,9 @@ function buildQueueRow(day, entry, index, officer) {
   const icons = document.createElement('span');
   icons.className = 'buff-queue-row-icons';
   if (officer && entry.status === 'waiting') {
-    actions.appendChild(textButton('link-button-std', 'Посилити зараз', () => changeStatus(entry, 'buffed')));
+    actions.appendChild(textButton('link-button-std', 'Посилити', () => changeStatus(entry, 'buffed')));
   } else if (officer && entry.status === 'buffed') {
-    actions.appendChild(textButton('link-button-std buff-queue-btn--success', 'Посилення виконано', () => confirmDone(entry)));
+    actions.appendChild(textButton('link-button-std buff-queue-btn--success', 'Прибрати', () => confirmDone(entry)));
     icons.appendChild(iconButton('account-delete-btn buff-queue-icon-btn', 'Скасувати посилення — повернути в "Очікує"', ICON_UNDO, () => changeStatus(entry, 'waiting')));
   }
   if (canTouchEntry(entry)) {
