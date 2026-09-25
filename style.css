@@ -2509,7 +2509,8 @@ body.raid-manager-page .raid-chip--completed {
 }
 
 body.raid-manager-page .link-button-std,
-body.shard-queue-page .link-button-std {
+body.shard-queue-page .link-button-std,
+body.ranking-page .link-button-std {
   background: none;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
@@ -2520,7 +2521,8 @@ body.shard-queue-page .link-button-std {
 }
 
 body.raid-manager-page .link-button-std:hover,
-body.shard-queue-page .link-button-std:hover {
+body.shard-queue-page .link-button-std:hover,
+body.ranking-page .link-button-std:hover {
   background-color: var(--color-hover);
 }
 
