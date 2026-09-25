@@ -3130,6 +3130,31 @@ body.raid-manager-detail-page .raid-items-boss-row:hover {
   background-color: transparent;
 }
 
+/* Рядок боса: назва (+ "Софти відсутні") ліворуч, черга на посилення —
+   праворуч; на вузькому екрані список переноситься під назву. */
+body.raid-manager-detail-page .raid-items-boss-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+body.raid-manager-detail-page .raid-items-buff-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  margin-left: auto;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+body.raid-manager-detail-page .raid-items-buff-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
 body.raid-manager-detail-page .raid-items-boss-empty {
   margin-left: var(--space-4);
   color: var(--color-text-faint);
@@ -4860,6 +4885,57 @@ body.raid-manager-detail-page .raid-soft-form .raid-penalty-notice {
   background: rgba(34, 197, 94, 0.15);
   color: var(--color-accent-emerald);
   border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* --- Іконка посилення з номером у черзі (createBuffQueueIcon у
+   ui-shared.js; глобально — вкладка "Предмети" рейду й будь-яка інша
+   сторінка, що покаже чергу) --- */
+
+/* Номер — у правому нижньому куті поверх іконки, як лічильник стаку в
+   WoW: дрібна біла цифра з темною обводкою, читається на будь-якій іконці. */
+.buff-queue-icon {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+}
+
+.buff-queue-icon img {
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.buff-queue-icon--no-image {
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-soft);
+}
+
+/* Уже посилений — зелена рамка, як колір "Посилений" у самій черзі. */
+.buff-queue-icon--buffed img,
+.buff-queue-icon--buffed.buff-queue-icon--no-image {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 1px var(--color-success);
+}
+
+.buff-queue-icon-num {
+  position: absolute;
+  right: -4px;
+  bottom: -5px;
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  color: var(--color-on-accent);
+  text-shadow:
+    -1px -1px 0 rgba(0, 0, 0, 0.9),
+    1px -1px 0 rgba(0, 0, 0, 0.9),
+    -1px 1px 0 rgba(0, 0, 0, 0.9),
+    1px 1px 0 rgba(0, 0, 0, 0.9);
+  pointer-events: none;
 }
 
 /* --- Заголовок сторінки з кнопкою "Інфо" (глобально: черги, Штрафбат,

@@ -141,6 +141,7 @@ let raidRosters = null;
 let activeTab = 'players';
 let honorBoard = [];
 let shardQueueIconsByName = new Map(); // player_name -> Set('shard' | 'blood')
+let buffQueueByBoss = new Map(); // boss -> [{ playerName, position, buffed, typeLabel, typeIndex }]
 let personalStatsPromise = null;
 let initialRenderDone = false;
 
@@ -195,6 +196,73 @@ function applyShardQueueRaw(raw) {
 
 async function loadShardQueueIcons() {
   applyShardQueueRaw(await fetchShardQueueRaw());
+}
+
+// "Черга на посилення" для вкладки "Предмети": хто з черги на кожного боса
+// (день — той самий день тижня рейду, як в уламків) і під яким номером.
+// Номер — позиція в таблиці черги на сторінці черги (Очікує + Посилений,
+// за priority_rank), а не серед присутніх у рейді.
+async function fetchBuffQueueRaw() {
+  try {
+    const [days, types, entries] = await Promise.all([
+      apiCall('GET', '/buff-queue/days', { token: getSessionToken() }),
+      apiCall('GET', '/buff-queue/types', { token: getSessionToken() }),
+      apiCall('GET', '/buff-queue/entries', { token: getSessionToken() })
+    ]);
+    return { days, types, entries };
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
+function applyBuffQueueRaw(raw) {
+  if (!raw) return;
+  const { days, types, entries } = raw;
+  const weekday = kyivWeekdayLabel(raid.created_at);
+  const matchedDay = days.find((d) => d.is_active && weekday && normalizeWeekday(d.label) === normalizeWeekday(weekday));
+
+  const map = new Map();
+  if (matchedDay) {
+    const queues = new Map(); // "бос|тип" -> записи черги
+    entries
+      .filter((e) => e.day_id === matchedDay.id && e.status !== 'done')
+      .forEach((e) => {
+        const key = `${e.boss}|${e.buff_type_id}`;
+        if (!queues.has(key)) queues.set(key, []);
+        queues.get(key).push(e);
+      });
+
+    queues.forEach((list) => {
+      list.sort((a, b) => a.priority_rank - b.priority_rank);
+      list.forEach((e, index) => {
+        const typeIndex = types.findIndex((t) => t.id === e.buff_type_id);
+        if (typeIndex === -1) return;
+        if (!map.has(e.boss)) map.set(e.boss, []);
+        map.get(e.boss).push({
+          playerName: e.player_name,
+          position: index + 1,
+          buffed: e.status === 'buffed',
+          typeLabel: types[typeIndex].label,
+          typeIndex
+        });
+      });
+    });
+    // Порядок у рядку боса: посилення як у налаштуваннях черги, далі номер.
+    map.forEach((list) => list.sort((a, b) => a.typeIndex - b.typeIndex || a.position - b.position));
+  }
+  buffQueueByBoss = map;
+}
+
+// "Присутні в рейді" для черги посилень: хто софтив у цьому рейді або
+// передав свій софт іншому гравцю. У режимі прихованих софтів сервер не
+// віддає звичайному гравцю чужих імен — тоді тут лише його персонажі й
+// передавачі, тож черговість нічого не розкриває побічно.
+function raidPresentNamesLower() {
+  const names = new Set();
+  reserves.forEach((r) => { if (r.player_name) names.add(r.player_name.toLocaleLowerCase('uk')); });
+  weightTransfers.forEach((t) => names.add(t.from_player.toLocaleLowerCase('uk')));
+  return names;
 }
 
 function setStatus(text, type = 'info') {
@@ -1462,13 +1530,14 @@ function renderItemsTable() {
   // Замість дропдауна з вибором боса - усі боси одразу, кожен окремою
   // таблицею. Бос лишається в списку навіть без жодного софта: тоді його
   // таблиця складається з одного рядка-заголовка.
+  const presentNames = raidPresentNamesLower();
   bossesWithCatalog().forEach((boss) => {
     const items = ((itemsCatalog[boss] || {})[raid.difficulty] || []).filter(isSofted);
-    raidItemsList.appendChild(buildBossItemsTable(boss, items, canTellEmpty, bonusCtx));
+    raidItemsList.appendChild(buildBossItemsTable(boss, items, canTellEmpty, bonusCtx, presentNames));
   });
 }
 
-function buildBossItemsTable(boss, items, canTellEmpty, bonusCtx) {
+function buildBossItemsTable(boss, items, canTellEmpty, bonusCtx, presentNames) {
   const wrap = document.createElement('div');
   wrap.className = 'ranking-table-wrap';
 
@@ -1483,7 +1552,7 @@ function buildBossItemsTable(boss, items, canTellEmpty, bonusCtx) {
   table.appendChild(colgroup);
 
   const tbody = document.createElement('tbody');
-  tbody.appendChild(buildItemsBossHeaderRow(boss, canTellEmpty && items.length === 0));
+  tbody.appendChild(buildItemsBossHeaderRow(boss, canTellEmpty && items.length === 0, presentNames));
   items.forEach((item) => {
     tbody.appendChild(buildItemRow(item, bonusCtx));
   });
@@ -1493,25 +1562,54 @@ function buildBossItemsTable(boss, items, canTellEmpty, bonusCtx) {
   return wrap;
 }
 
-function buildItemsBossHeaderRow(boss, isEmpty) {
+function buildItemsBossHeaderRow(boss, isEmpty, presentNames) {
   const tr = document.createElement('tr');
   tr.className = 'raid-items-boss-row';
   const td = document.createElement('td');
   td.colSpan = 2;
+  const head = document.createElement('div');
+  head.className = 'raid-items-boss-head';
 
   const nameSpan = document.createElement('span');
   nameSpan.textContent = translateBoss(boss);
-  td.appendChild(nameSpan);
+  head.appendChild(nameSpan);
 
   if (isEmpty) {
     const emptySpan = document.createElement('span');
     emptySpan.className = 'raid-items-boss-empty';
     emptySpan.textContent = 'Софти відсутні';
-    td.appendChild(emptySpan);
+    head.appendChild(emptySpan);
   }
 
+  const buffList = buildBossBuffQueueList(boss, presentNames);
+  if (buffList) head.appendChild(buffList);
+
+  td.appendChild(head);
   tr.appendChild(td);
   return tr;
+}
+
+// Праворуч у рядку боса — хто з присутніх у рейді стоїть у черзі на
+// посилення на цього боса: іконка посилення з номером у черзі + ім'я.
+function buildBossBuffQueueList(boss, presentNames) {
+  const queued = (buffQueueByBoss.get(boss) || [])
+    .filter((q) => presentNames.has(q.playerName.toLocaleLowerCase('uk')));
+  if (!queued.length) return null;
+
+  const list = document.createElement('span');
+  list.className = 'raid-items-buff-list';
+  queued.forEach((q) => {
+    const item = document.createElement('span');
+    item.className = 'raid-items-buff-item';
+    const tooltip = `${translateBuffType(q.typeLabel)} — №${q.position} у черзі${q.buffed ? ', посилений' : ''}`;
+    item.appendChild(createBuffQueueIcon(q.typeLabel, q.position, tooltip, q.buffed));
+    const name = document.createElement('span');
+    name.textContent = q.playerName;
+    name.style.color = classColorMap.get(q.playerName) || 'var(--color-text-faint)';
+    item.appendChild(name);
+    list.appendChild(item);
+  });
+  return list;
 }
 
 function buildItemRow(item, bonusCtx) {
@@ -2200,6 +2298,7 @@ async function init() {
   const bonusGrantsPromise = loadBonusGrants();
   const penaltiesPromise = loadPenalties();
   const shardQueueRawPromise = fetchShardQueueRaw();
+  const buffQueueRawPromise = fetchBuffQueueRaw();
   const myCharactersPromise = apiCall('GET', '/auth/me/characters', { token: getSessionToken() })
     .catch((err) => { console.error(err); return null; });
 
@@ -2255,6 +2354,7 @@ async function init() {
   await bonusGrantsPromise;
   await penaltiesPromise;
   applyShardQueueRaw(await shardQueueRawPromise);
+  applyBuffQueueRaw(await buffQueueRawPromise);
   renderPlayersTable();
   renderItemsTable();
 
@@ -2272,15 +2372,17 @@ async function init() {
 
   setInterval(async () => {
     try {
-      const [, , , , shardRaw, officers] = await Promise.all([
+      const [, , , , shardRaw, officers, buffRaw] = await Promise.all([
         loadRaid(),
         loadReserves(),
         loadTransfers(),
         loadBonusGrants(),
         fetchShardQueueRaw(),
-        fetchOfficers()
+        fetchOfficers(),
+        fetchBuffQueueRaw()
       ]);
       applyShardQueueRaw(shardRaw);
+      applyBuffQueueRaw(buffRaw);
       applyOfficers(officers);
       checkNotifications();
       renderBanner();

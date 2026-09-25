@@ -484,22 +484,16 @@ function typeGrid(typeCount) {
   return grid;
 }
 
-// Іконки заклинань посилень — з того ж CDN Wowhead, що й іконки предметів
-// на сторінці рейду. Тип посилення — довільна назва з налаштувань, тож
-// іконку шукаємо за назвою; у нового типу без відповідності іконки немає.
-const BUFF_TYPE_ICONS = {
-  'істерія': 'spell_deathknight_bladedarmor',
-  'надання сил': 'spell_holy_powerinfusion'
-};
-
+// Назва посилення з іконкою заклинання (словник іконок — BUFF_TYPE_ICONS у
+// ui-shared.js, спільний зі сторінкою рейду).
 function typeHeading(type, className) {
   const heading = document.createElement('h3');
   if (className) heading.className = className;
-  const icon = BUFF_TYPE_ICONS[type.label.trim().toLocaleLowerCase('uk')];
-  if (icon) {
+  const iconUrl = buffTypeIconUrl(type.label);
+  if (iconUrl) {
     const img = document.createElement('img');
     img.className = 'raid-item-icon';
-    img.src = `https://wow.zamimg.com/images/wow/icons/small/${icon}.jpg`;
+    img.src = iconUrl;
     img.alt = '';
     heading.appendChild(img);
   }

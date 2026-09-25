@@ -98,6 +98,45 @@ function createResourceIcon(resourceType, title) {
   return wrap;
 }
 
+// Іконки заклинань "Черги на посилення" — з того ж CDN Wowhead, що й іконки
+// предметів на сторінці рейду. Спільні для сторінки черги (buff-queue.js) і
+// вкладки "Предмети" рейду (raid-manager-detail.js). Тип посилення — довільна
+// назва з налаштувань черги, тож іконку шукаємо за назвою; у типу без
+// відповідності іконки немає.
+const BUFF_TYPE_ICONS = {
+  'істерія': 'spell_deathknight_bladedarmor',
+  'надання сил': 'spell_holy_powerinfusion'
+};
+
+function buffTypeIconUrl(label) {
+  const icon = BUFF_TYPE_ICONS[String(label).trim().toLocaleLowerCase('uk')];
+  return icon ? `https://wow.zamimg.com/images/wow/icons/small/${icon}.jpg` : null;
+}
+
+// Іконка посилення з номером у черзі в правому нижньому куті — як лічильник
+// стаку в WoW. buffed — гравець уже посилений (зелена рамка). Посилення без
+// відомої іконки — порожній квадратик, щоб номер усе одно було видно.
+function createBuffQueueIcon(label, position, tooltip, buffed) {
+  const wrap = document.createElement('span');
+  wrap.className = 'buff-queue-icon' + (buffed ? ' buff-queue-icon--buffed' : '');
+  const url = buffTypeIconUrl(label);
+  if (url) {
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = '';
+    wrap.appendChild(img);
+  } else {
+    wrap.classList.add('buff-queue-icon--no-image');
+  }
+  const num = document.createElement('span');
+  num.className = 'buff-queue-icon-num';
+  num.textContent = String(position);
+  wrap.appendChild(num);
+  wrap.setAttribute('aria-label', tooltip);
+  applyAutoTooltip(wrap);
+  return wrap;
+}
+
 const SCORE_TIERS = [
   { min: 90, medal: '🥇' },
   { min: 80, medal: '🥈' },
