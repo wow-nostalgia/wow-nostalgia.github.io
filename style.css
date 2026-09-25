@@ -4862,23 +4862,27 @@ body.raid-manager-detail-page .raid-soft-form .raid-penalty-notice {
 
 /* --- Черга на уламки і кров (body.shard-queue-page) --- */
 
-/* Заголовок сторінки черги з кнопкою "Інфо" праворуч — пара центрується
-   разом, як і сам h1. Відступи рядка — ті самі, що в h1. Діє й на
-   сторінці посилень: вона теж має клас shard-queue-page. */
+/* Заголовок сторінки черги: назва по центру, кнопка "Інфо" біля правого
+   краю. Три колонки (порожня | назва | кнопка) з однаковими крайніми —
+   назва лишається рівно по центру, а на вузькому екрані кнопка не
+   налазить на текст. Відступи рядка — ті самі, що в h1. Діє й на сторінці
+   посилень: вона теж має клас shard-queue-page. */
 body.shard-queue-page .page-title-row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: center;
   gap: var(--space-3);
   margin: 0.5rem 0 0.75rem;
 }
 
 body.shard-queue-page .page-title-row h1 {
+  grid-column: 2;
   margin: 0;
 }
 
 body.shard-queue-page .page-info-btn {
+  grid-column: 3;
+  justify-self: end;
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
