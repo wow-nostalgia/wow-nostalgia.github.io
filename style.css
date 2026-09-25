@@ -4892,7 +4892,9 @@ body.raid-manager-detail-page .raid-soft-form .raid-penalty-notice {
    сторінка, що покаже чергу) --- */
 
 /* Номер — у правому нижньому куті поверх іконки, як лічильник стаку в
-   WoW: дрібна біла цифра з темною обводкою, читається на будь-якій іконці. */
+   WoW: дрібна біла цифра з темною обводкою, читається на будь-якій іконці.
+   Строго в межах іконки: таблиці вкладки "Предмети" мають overflow-x:auto,
+   і номер, що виступав за край, давав рядку боса смугу прокрутки. */
 .buff-queue-icon {
   position: relative;
   display: inline-flex;
@@ -4924,8 +4926,8 @@ body.raid-manager-detail-page .raid-soft-form .raid-penalty-notice {
 
 .buff-queue-icon-num {
   position: absolute;
-  right: -4px;
-  bottom: -5px;
+  right: 1px;
+  bottom: 0;
   font-size: 0.8rem;
   font-weight: var(--font-weight-semibold);
   line-height: 1;
