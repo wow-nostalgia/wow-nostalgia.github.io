@@ -34,6 +34,18 @@ const moveDayModalSelect = document.getElementById('moveDayModalSelect');
 const moveDayModalConfirmBtn = document.getElementById('moveDayModalConfirmBtn');
 const moveDayModalCancelBtn = document.getElementById('moveDayModalCancelBtn');
 
+const addOtherModal = document.getElementById('addOtherModal');
+const addOtherModalBackdrop = document.getElementById('addOtherModalBackdrop');
+const addOtherModalText = document.getElementById('addOtherModalText');
+const addOtherModalForm = document.getElementById('addOtherModalForm');
+const addOtherName = document.getElementById('addOtherName');
+const addOtherNameList = document.getElementById('addOtherNameList');
+const addOtherBoss = document.getElementById('addOtherBoss');
+const addOtherType = document.getElementById('addOtherType');
+const addOtherModalError = document.getElementById('addOtherModalError');
+const addOtherModalConfirmBtn = document.getElementById('addOtherModalConfirmBtn');
+const addOtherModalCancelBtn = document.getElementById('addOtherModalCancelBtn');
+
 const confirmModal = document.getElementById('confirmModal');
 const confirmModalBackdrop = document.getElementById('confirmModalBackdrop');
 const confirmModalTitle = document.getElementById('confirmModalTitle');
@@ -63,7 +75,7 @@ let renamingTypeId = null;
 // Сторінки таблиць "Виконано" окремо для кожної пари бос+посилення.
 const donePages = new Map();
 // Вибір у формах запису переживає перемальовування (автооновлення, інші дії).
-const signupState = { character: '', boss: '', buffTypeId: '', officerName: '' };
+const signupState = { character: '', boss: '', buffTypeId: '' };
 
 function setQueueStatus(text, isError) {
   queueStatus.textContent = text || '';
@@ -273,7 +285,7 @@ async function refreshAll() {
 // Не перемальовуємо сторінку під руками користувача: відкрита модалка,
 // перетягування, фокус у полі чи дропдауні, перейменування посилення.
 function isUserBusy() {
-  if (!confirmModal.hidden || !moveDayModal.hidden || isDragging || renamingTypeId !== null) return true;
+  if (!confirmModal.hidden || !moveDayModal.hidden || !addOtherModal.hidden || isDragging || renamingTypeId !== null) return true;
   const focused = document.activeElement;
   return Boolean(focused && queueContent.contains(focused) && /^(INPUT|SELECT|TEXTAREA)$/.test(focused.tagName));
 }
@@ -528,15 +540,22 @@ function bossAndTypeSelects() {
   return { bossSelect, typeSelect };
 }
 
+// Один рядок запису для всіх — "записатись самому". Офіцер записує чужих
+// персонажів через окремий попап (кнопка в кінці рядка), а не другою
+// формою під першою: дві однакові на вигляд форми лише засмічували сторінку.
 function buildSignupForms(day) {
   const wrap = document.createElement('div');
   wrap.className = 'shard-queue-add-forms buff-queue-signup';
 
   if (!activeBosses().length || !activeTypes().length) return wrap;
 
+  const addOtherBtn = isOfficer()
+    ? textButton('compare-btn', 'Додати чужого персонажа', () => openAddOtherModal(day))
+    : null;
+
   if (userCharacters.length) {
     const form = document.createElement('form');
-    form.className = 'buff-queue-signup-form';
+    form.className = 'buff-queue-signup-form' + (addOtherBtn ? ' buff-queue-signup-form--officer' : '');
 
     // Колір імені в дропдауні — як у черзі на уламки: кожна опція фарбується
     // явно, інакше вона успадкувала б колір поточно обраного персонажа.
@@ -561,6 +580,7 @@ function buildSignupForms(day) {
     btn.textContent = 'Записатись';
 
     form.append(charSelect, bossSelect, typeSelect, btn);
+    if (addOtherBtn) form.appendChild(addOtherBtn);
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       createEntry(day.id, bossSelect.value, Number(typeSelect.value), charSelect.value, form);
@@ -571,46 +591,75 @@ function buildSignupForms(day) {
     hint.className = 'shard-queue-hint';
     hint.innerHTML = 'Щоб записатись самому, спершу додай персонажа на сторінці <a href="../account/">"Акаунт"</a>.';
     wrap.appendChild(hint);
-  }
-
-  if (isOfficer()) {
-    const form = document.createElement('form');
-    form.className = 'buff-queue-signup-form';
-
-    const inputWrap = document.createElement('div');
-    inputWrap.className = 'raid-input-wrap';
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.autocomplete = 'off';
-    input.placeholder = "Ім'я персонажа";
-    input.setAttribute('aria-label', "Ім'я персонажа");
-    input.value = signupState.officerName;
-    input.addEventListener('input', () => { signupState.officerName = input.value; });
-    const list = document.createElement('div');
-    list.className = 'raid-autocomplete-list';
-    inputWrap.append(input, list);
-    setupNameAutocomplete(input, list, rosterNames);
-
-    const { bossSelect, typeSelect } = bossAndTypeSelects();
-
-    const btn = document.createElement('button');
-    btn.type = 'submit';
-    btn.className = 'compare-btn';
-    btn.textContent = 'Додати персонажа';
-
-    form.append(inputWrap, bossSelect, typeSelect, btn);
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const name = input.value.trim();
-      if (!name) return;
-      const ok = await createEntry(day.id, bossSelect.value, Number(typeSelect.value), name, form);
-      if (ok) signupState.officerName = '';
-    });
-    wrap.appendChild(form);
+    if (addOtherBtn) wrap.appendChild(addOtherBtn);
   }
 
   return wrap;
 }
+
+// ---- Попап "Додати чужого персонажа" (лише офіцери) ----
+
+function fillSelect(select, options, selectedValue) {
+  select.innerHTML = '';
+  options.forEach(({ value, label }) => {
+    const opt = document.createElement('option');
+    opt.value = value;
+    opt.textContent = label;
+    select.appendChild(opt);
+  });
+  if (options.some((o) => o.value === selectedValue)) select.value = selectedValue;
+}
+
+function openAddOtherModal(day) {
+  addOtherModal._dayId = day.id;
+  addOtherModalText.textContent = `Запис на день "${day.label}".`;
+  addOtherName.value = '';
+  addOtherModalError.textContent = '';
+  // Бос і посилення підставляємо ті, що вже обрані в рядку запису: офіцер
+  // зазвичай записує кількох гравців на одне й те саме.
+  fillSelect(addOtherBoss, activeBosses().map((b) => ({ value: b.boss, label: bossLabel(b.boss) })), signupState.boss);
+  fillSelect(addOtherType, activeTypes().map((t) => ({ value: String(t.id), label: t.label })), signupState.buffTypeId);
+  addOtherModal.hidden = false;
+  setTimeout(() => addOtherName.focus(), 0);
+}
+
+function hideAddOtherModal() {
+  addOtherModal.hidden = true;
+  addOtherModal._dayId = null;
+  addOtherNameList.innerHTML = '';
+  addOtherNameList.classList.remove('is-open');
+}
+
+// Помилку показуємо в самому попапі, а не в рядку статусу під ним: інакше
+// її не видно, і офіцер не розуміє, чому нічого не додалось.
+addOtherModalForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const playerName = addOtherName.value.trim();
+  if (!playerName) {
+    addOtherModalError.textContent = "Вкажи ім'я персонажа.";
+    return;
+  }
+
+  addOtherModalConfirmBtn.disabled = true;
+  try {
+    await apiRequest('POST', '/entries', {
+      dayId: addOtherModal._dayId,
+      boss: addOtherBoss.value,
+      buffTypeId: Number(addOtherType.value),
+      playerName
+    });
+    hideAddOtherModal();
+    setQueueStatus('');
+    await refreshAll();
+  } catch (err) {
+    addOtherModalError.textContent = `Помилка: ${err.message}`;
+  } finally {
+    addOtherModalConfirmBtn.disabled = false;
+  }
+});
+addOtherModalCancelBtn.addEventListener('click', hideAddOtherModal);
+addOtherModalBackdrop.addEventListener('click', hideAddOtherModal);
+addOtherName.addEventListener('input', () => { addOtherModalError.textContent = ''; });
 
 function setupNameAutocomplete(inputEl, listEl, names) {
   function closeList() {
@@ -630,7 +679,6 @@ function setupNameAutocomplete(inputEl, listEl, names) {
       item.addEventListener('mousedown', (e) => {
         e.preventDefault();
         inputEl.value = name;
-        signupState.officerName = name;
         closeList();
       });
       listEl.appendChild(item);
@@ -1210,6 +1258,8 @@ async function init() {
 
   try {
     await loadRosterSources();
+    // Після завантаження ростера: функція запам'ятовує масив імен на момент виклику.
+    setupNameAutocomplete(addOtherName, addOtherNameList, rosterNames);
     await loadOwnCharacters();
     await refreshAll();
   } catch (err) {

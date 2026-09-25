@@ -21,6 +21,17 @@ const moveDayModalSelect = document.getElementById('moveDayModalSelect');
 const moveDayModalConfirmBtn = document.getElementById('moveDayModalConfirmBtn');
 const moveDayModalCancelBtn = document.getElementById('moveDayModalCancelBtn');
 
+const addOtherModal = document.getElementById('addOtherModal');
+const addOtherModalBackdrop = document.getElementById('addOtherModalBackdrop');
+const addOtherModalText = document.getElementById('addOtherModalText');
+const addOtherModalForm = document.getElementById('addOtherModalForm');
+const addOtherName = document.getElementById('addOtherName');
+const addOtherNameList = document.getElementById('addOtherNameList');
+const addOtherResource = document.getElementById('addOtherResource');
+const addOtherModalError = document.getElementById('addOtherModalError');
+const addOtherModalConfirmBtn = document.getElementById('addOtherModalConfirmBtn');
+const addOtherModalCancelBtn = document.getElementById('addOtherModalCancelBtn');
+
 const confirmModal = document.getElementById('confirmModal');
 const confirmModalBackdrop = document.getElementById('confirmModalBackdrop');
 const confirmModalTitle = document.getElementById('confirmModalTitle');
@@ -622,41 +633,69 @@ function buildAddForms(day, resourceType) {
     wrap.appendChild(hint);
   }
 
+  // Чужих персонажів офіцер додає через попап, а не другою формою під
+  // власною: дві схожі форми в кожному блоці лише засмічували сторінку.
   if (isOfficer()) {
-    const form = document.createElement('form');
-    form.className = 'account-form';
-
-    const inputWrap = document.createElement('div');
-    inputWrap.className = 'raid-input-wrap';
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.autocomplete = 'off';
-    input.placeholder = "Ім'я персонажа";
-    const list = document.createElement('div');
-    list.className = 'raid-autocomplete-list';
-    inputWrap.appendChild(input);
-    inputWrap.appendChild(list);
-    form.appendChild(inputWrap);
-
     const btn = document.createElement('button');
-    btn.type = 'submit';
+    btn.type = 'button';
     btn.className = 'compare-btn';
-    btn.textContent = 'Додати персонажа';
-    form.appendChild(btn);
-
-    setupNameAutocomplete(input, list, farmEligibleRosterNames);
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const name = input.value.trim();
-      if (!name) return;
-      createEntry(day.id, resourceType, name, form);
-    });
-
-    wrap.appendChild(form);
+    btn.textContent = 'Додати чужого персонажа';
+    btn.addEventListener('click', () => openAddOtherModal(day, resourceType));
+    wrap.appendChild(btn);
   }
 
   return wrap;
 }
+
+// ---- Попап "Додати чужого персонажа" (лише офіцери) ----
+
+function openAddOtherModal(day, resourceType) {
+  addOtherModal._dayId = day.id;
+  addOtherModalText.textContent = `Запис на день "${day.label}".`;
+  addOtherName.value = '';
+  addOtherModalError.textContent = '';
+  // Ресурс — той блок, з якого відкрили попап; офіцер може змінити.
+  addOtherResource.value = resourceType;
+  addOtherModal.hidden = false;
+  setTimeout(() => addOtherName.focus(), 0);
+}
+
+function hideAddOtherModal() {
+  addOtherModal.hidden = true;
+  addOtherModal._dayId = null;
+  addOtherNameList.innerHTML = '';
+  addOtherNameList.classList.remove('is-open');
+}
+
+// Помилку показуємо в самому попапі: рядок статусу сторінки під ним не видно.
+addOtherModalForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const playerName = addOtherName.value.trim();
+  if (!playerName) {
+    addOtherModalError.textContent = "Вкажи ім'я персонажа.";
+    return;
+  }
+
+  addOtherModalConfirmBtn.disabled = true;
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/shard-queue/entries`, {
+      method: 'POST',
+      headers: authHeaders(true),
+      body: JSON.stringify({ dayId: addOtherModal._dayId, resourceType: addOtherResource.value, playerName })
+    });
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    hideAddOtherModal();
+    setQueueStatus('');
+    await refreshAll();
+  } catch (err) {
+    addOtherModalError.textContent = `Помилка: ${err.message}`;
+  } finally {
+    addOtherModalConfirmBtn.disabled = false;
+  }
+});
+addOtherModalCancelBtn.addEventListener('click', hideAddOtherModal);
+addOtherModalBackdrop.addEventListener('click', hideAddOtherModal);
+addOtherName.addEventListener('input', () => { addOtherModalError.textContent = ''; });
 
 function setupNameAutocomplete(inputEl, listEl, names) {
   function closeList() {
@@ -1055,6 +1094,8 @@ async function init() {
 
   try {
     await loadRosterSources();
+    // Після завантаження ростера: функція запам'ятовує масив імен на момент виклику.
+    setupNameAutocomplete(addOtherName, addOtherNameList, farmEligibleRosterNames);
     await loadOwnCharacters();
     await refreshAll();
   } catch (err) {

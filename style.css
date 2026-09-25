@@ -4996,10 +4996,23 @@ body.buff-queue-page .buff-queue-signup-form {
   max-width: 820px;
 }
 
+/* У офіцера в кінці рядка ще кнопка попапу "Додати чужого персонажа". */
+body.buff-queue-page .buff-queue-signup-form--officer {
+  grid-template-columns: minmax(8rem, 1fr) minmax(10rem, 1.4fr) minmax(8rem, 1fr) auto auto;
+  max-width: none;
+}
+
 @media (max-width: 720px) {
-  body.buff-queue-page .buff-queue-signup-form {
+  body.buff-queue-page .buff-queue-signup-form,
+  body.buff-queue-page .buff-queue-signup-form--officer {
     grid-template-columns: 1fr;
   }
+}
+
+/* Попап "Додати чужого персонажа" (обидві черги): поки помилки немає — не
+   займаємо місце порожнім абзацом. shard-queue-page є на обох сторінках. */
+body.shard-queue-page #addOtherModalError:empty {
+  display: none;
 }
 
 body.buff-queue-page .buff-queue-boss {
