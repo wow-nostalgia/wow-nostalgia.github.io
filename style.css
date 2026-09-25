@@ -5052,27 +5052,37 @@ body.buff-queue-page .buff-queue-signup-form--officer {
   }
 }
 
-/* Фільтри "Історії дій": підписи над полями, щоб рядок не розтягувався.
-   Поле дати — той самий вигляд, що в select сторінки (body.shard-queue-page
-   select), color-scheme — щоб іконка календаря була видна на темному тлі. */
+/* Фільтри "Історії дій": підпис у рядку з полем, як у .ranking-controls
+   ("Рейтинг DPS"). Поле дати — той самий вигляд, що в select сторінки
+   (body.shard-queue-page select), color-scheme — щоб іконка календаря була
+   видна на темному тлі. Висота й ширина задані явно для всіх полів: без
+   цього поле дати виходить вищим за select (через іконку календаря), а
+   ширина кожного поля залежить від його вмісту. */
 body.buff-queue-page .buff-queue-audit-filters {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 0.5rem 0.75rem;
+  align-items: center;
+  gap: 0.75rem 1rem;
   margin-bottom: 0.75rem;
 }
 
 body.buff-queue-page .buff-queue-audit-filter {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-faint);
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--color-text-soft);
 }
 
-body.buff-queue-page .buff-queue-audit-filter select {
-  min-width: 11rem;
+body.buff-queue-page .buff-queue-audit-filter select,
+body.buff-queue-page .buff-queue-audit-filters input[type="date"],
+body.buff-queue-page .buff-queue-audit-filters .link-button-std {
+  box-sizing: border-box;
+  height: 2rem;
+}
+
+body.buff-queue-page .buff-queue-audit-filter select,
+body.buff-queue-page .buff-queue-audit-filters input[type="date"] {
+  width: 11rem;
 }
 
 body.buff-queue-page .buff-queue-audit-filters input[type="date"] {
@@ -5098,8 +5108,7 @@ body.buff-queue-page .buff-queue-audit-filters input[type="date"]:focus {
 }
 
 body.buff-queue-page .buff-queue-audit-filters .link-button-std {
-  align-self: flex-end;
-  padding: 5px 12px;
+  padding: 0 12px;
 }
 
 body.buff-queue-page .buff-queue-audit-filters .link-button-std:disabled {
@@ -5108,13 +5117,20 @@ body.buff-queue-page .buff-queue-audit-filters .link-button-std:disabled {
 }
 
 @media (max-width: 720px) {
+  /* Кожен фільтр на весь рядок; підписи однакової ширини, щоб поля
+     стояли рівною колонкою. */
   body.buff-queue-page .buff-queue-audit-filter {
-    flex: 1 1 calc(50% - 0.75rem);
+    flex: 1 1 100%;
+  }
+
+  body.buff-queue-page .buff-queue-audit-filter > span {
+    flex: 0 0 3rem;
   }
 
   body.buff-queue-page .buff-queue-audit-filter select,
   body.buff-queue-page .buff-queue-audit-filters input[type="date"] {
-    width: 100%;
+    flex: 1 1 auto;
+    width: auto;
     min-width: 0;
   }
 }
