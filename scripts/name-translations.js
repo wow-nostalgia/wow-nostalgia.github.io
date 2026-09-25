@@ -379,6 +379,14 @@ const SPEC_NAMES_UK = {
   "Fury": "Лють"
 };
 
+// Посилення з "Черги на посилення". Їх назви офіцери задають у налаштуваннях
+// українською, тож словник у зворотний бік: українська назва (нижній
+// регістр) → англійська. Посилення, якого тут немає, показується як є.
+const BUFF_TYPE_NAMES_EN = {
+  "істерія": "Hysteria",
+  "надання сил": "Power Infusion"
+};
+
 const INSTANCE_LABELS_EN = { ICC: "Icecrown Citadel", RS: "Ruby Sanctum" };
 const DIFFICULTY_LABELS_EN = { "10N": "10 Normal", "10H": "10 Heroic", "25N": "25 Normal", "25H": "25 Heroic" };
 
@@ -414,6 +422,11 @@ function bossAbbr(name) {
   const entry = BOSS_ABBR[name];
   if (entry) return entry[getNameLanguage()] || entry.en;
   return (translateBoss(name) || name).slice(0, 3).toUpperCase();
+}
+
+function translateBuffType(label) {
+  if (getNameLanguage() === "uk") return label;
+  return BUFF_TYPE_NAMES_EN[String(label).trim().toLocaleLowerCase("uk")] || label;
 }
 
 function translateItem(name) {

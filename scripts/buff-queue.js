@@ -1,4 +1,4 @@
-// Черга на посилення (Істерія, Придання Сил, ...) — побудована за зразком
+// Черга на посилення (Істерія, Надання Сил, ...) — побудована за зразком
 // shard-queue.js: той самий Discord-auth, та сама жива черга, ті самі
 // вкладки днів. Відмінності:
 //   - черга окрема на кожну трійку "день + бос ЦЛК + тип посилення";
@@ -134,7 +134,8 @@ function dayLabel(dayId) {
 }
 
 function typeLabel(typeId) {
-  return types.find((t) => t.id === typeId)?.label || '?';
+  const label = types.find((t) => t.id === typeId)?.label;
+  return label ? translateBuffType(label) : '?';
 }
 
 function bossLabel(boss) {
@@ -488,7 +489,7 @@ function typeGrid(typeCount) {
 // іконку шукаємо за назвою; у нового типу без відповідності іконки немає.
 const BUFF_TYPE_ICONS = {
   'істерія': 'spell_deathknight_bladedarmor',
-  'придання сил': 'spell_holy_powerinfusion'
+  'надання сил': 'spell_holy_powerinfusion'
 };
 
 function typeHeading(type, className) {
@@ -502,7 +503,7 @@ function typeHeading(type, className) {
     img.alt = '';
     heading.appendChild(img);
   }
-  heading.appendChild(document.createTextNode(type.label));
+  heading.appendChild(document.createTextNode(translateBuffType(type.label)));
   return heading;
 }
 
@@ -705,7 +706,7 @@ function buildSelect(options, selectedValue, onChange) {
 
 function bossAndTypeSelects() {
   const bossOptions = activeBosses().map((b) => ({ value: b.boss, label: bossLabel(b.boss) }));
-  const typeOptions = activeTypes().map((t) => ({ value: String(t.id), label: t.label }));
+  const typeOptions = activeTypes().map((t) => ({ value: String(t.id), label: translateBuffType(t.label) }));
   const bossSelect = buildSelect(bossOptions, signupState.boss, (v) => { signupState.boss = v; });
   const typeSelect = buildSelect(typeOptions, signupState.buffTypeId, (v) => { signupState.buffTypeId = v; });
   bossSelect.setAttribute('aria-label', 'Бос');
@@ -791,7 +792,7 @@ function openAddOtherModal(day) {
   // Бос і посилення підставляємо ті, що вже обрані в рядку запису: офіцер
   // зазвичай записує кількох гравців на одне й те саме.
   fillSelect(addOtherBoss, activeBosses().map((b) => ({ value: b.boss, label: bossLabel(b.boss) })), signupState.boss);
-  fillSelect(addOtherType, activeTypes().map((t) => ({ value: String(t.id), label: t.label })), signupState.buffTypeId);
+  fillSelect(addOtherType, activeTypes().map((t) => ({ value: String(t.id), label: translateBuffType(t.label) })), signupState.buffTypeId);
   addOtherModal.hidden = false;
   setTimeout(() => addOtherName.focus(), 0);
 }
@@ -1013,11 +1014,11 @@ function describeAuditAction(entry) {
       return parts.join(', ') || `оновив день "${dayLabel(d.dayId)}"`;
     }
     case 'type_create':
-      return `додав посилення "${d.label}"`;
+      return `додав посилення "${translateBuffType(d.label)}"`;
     case 'type_update': {
       const parts = [];
       if (d.label !== undefined && d.label !== d.previousLabel) parts.push(`перейменував посилення "${d.previousLabel}" на "${d.label}"`);
-      if (d.isActive !== undefined) parts.push(`${d.isActive ? 'повернув' : 'приховав'} посилення "${d.label || d.previousLabel}"`);
+      if (d.isActive !== undefined) parts.push(`${d.isActive ? 'повернув' : 'приховав'} посилення "${translateBuffType(d.label || d.previousLabel)}"`);
       return parts.join(', ') || `оновив посилення "${d.previousLabel}"`;
     }
     case 'boss_update':
