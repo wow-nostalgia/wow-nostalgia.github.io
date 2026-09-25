@@ -1033,11 +1033,30 @@ export async function insertBuffQueueAudit(db, actorName, action, detail) {
     .run();
 }
 
-export async function listBuffQueueAudit(db, limit = 250) {
-  const { results } = await db
-    .prepare('SELECT * FROM buff_queue_audit_log ORDER BY created_at DESC LIMIT ?')
-    .bind(limit)
-    .all();
+// Фільтри необов'язкові. from/to — ISO-моменти (межі доби за Києвом рахує
+// фронт), порівнюються як рядки: created_at теж ISO в UTC. actions —
+// масив action; statusTo додатково звужує status_update до переходу "в ...".
+export async function listBuffQueueAudit(db, { from, to, actor, actions, statusTo } = {}, limit = 250) {
+  const where = [];
+  const binds = [];
+  if (from) { where.push('created_at >= ?'); binds.push(from); }
+  if (to) { where.push('created_at < ?'); binds.push(to); }
+  if (actor) { where.push('actor_name = ?'); binds.push(actor); }
+  if (actions?.length) {
+    where.push(`action IN (${actions.map(() => '?').join(', ')})`);
+    binds.push(...actions);
+  }
+  if (statusTo) { where.push("json_extract(detail_json, '$.to') = ?"); binds.push(statusTo); }
+
+  const sql = `SELECT * FROM buff_queue_audit_log${where.length ? ` WHERE ${where.join(' AND ')}` : ''} ORDER BY created_at DESC LIMIT ?`;
+  const { results } = await db.prepare(sql).bind(...binds, limit).all();
   return results;
+}
+
+export async function listBuffQueueAuditActors(db) {
+  const { results } = await db
+    .prepare('SELECT DISTINCT actor_name FROM buff_queue_audit_log ORDER BY actor_name COLLATE NOCASE')
+    .all();
+  return results.map((r) => r.actor_name);
 }
 

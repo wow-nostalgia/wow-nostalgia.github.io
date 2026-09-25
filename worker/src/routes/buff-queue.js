@@ -25,6 +25,7 @@ import {
   deleteBuffQueueEntry,
   insertBuffQueueAudit,
   listBuffQueueAudit,
+  listBuffQueueAuditActors,
   isDefaultOfficer,
   listUserCharacters
 } from '../db.js';
@@ -366,7 +367,38 @@ export async function handleDeleteBuffQueueEntry(request, env, entryId, session)
 
 // ---- Аудит ----
 
+// Категорії фільтра "Подія" на фронті → які action (і перехід статусу) під ними.
+const AUDIT_CATEGORIES = {
+  entry_create: { actions: ['entry_create'] },
+  buffed: { actions: ['status_update'], statusTo: 'buffed' },
+  done: { actions: ['status_update'], statusTo: 'done' },
+  unbuffed: { actions: ['status_update'], statusTo: 'waiting' },
+  entry_delete: { actions: ['entry_delete'] },
+  entry_move_day: { actions: ['entry_move_day'] },
+  entries_reorder: { actions: ['entries_reorder'] },
+  settings: { actions: ['day_create', 'day_update', 'type_create', 'type_update', 'boss_update'] }
+};
+
+const ISO_MOMENT = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/;
+
 export async function handleListBuffQueueAudit(request, env) {
-  const entries = await listBuffQueueAudit(env.DB);
-  return jsonResponse(entries.map((e) => ({ ...e, detail: JSON.parse(e.detail_json) })));
+  const params = new URL(request.url).searchParams;
+  const from = params.get('from') || '';
+  const to = params.get('to') || '';
+  const actor = (params.get('actor') || '').trim();
+  const category = params.get('category') || '';
+
+  if ((from && !ISO_MOMENT.test(from)) || (to && !ISO_MOMENT.test(to))) {
+    throw new HttpError(400, 'Невалідна дата фільтра');
+  }
+  if (category && !AUDIT_CATEGORIES[category]) throw new HttpError(400, 'Невідомий тип події');
+
+  const [entries, actors] = await Promise.all([
+    listBuffQueueAudit(env.DB, { from, to, actor, ...(AUDIT_CATEGORIES[category] || {}) }),
+    listBuffQueueAuditActors(env.DB)
+  ]);
+  return jsonResponse({
+    entries: entries.map((e) => ({ ...e, detail: JSON.parse(e.detail_json) })),
+    actors
+  });
 }

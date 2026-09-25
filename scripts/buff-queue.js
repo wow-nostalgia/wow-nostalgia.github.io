@@ -62,7 +62,10 @@ let types = [];
 let bosses = [];
 let entries = [];
 let auditEntries = [];
+let auditActors = [];
 let auditPage = 0;
+// Фільтри історії живуть, поки відкрита сторінка (не скидаються між вкладками).
+const auditFilter = { from: '', to: '', actor: '', category: '' };
 let userCharacters = [];
 let userCharacterNamesLower = new Set();
 let rosterNames = [];
@@ -251,12 +254,51 @@ async function loadQueueData() {
   dataSignature = JSON.stringify([days, types, bosses, entries]);
 }
 
+// Зсув часу Києва від UTC (мс) у момент ts — з урахуванням переходу на літній час.
+function kyivOffsetMs(ts) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Kyiv', hourCycle: 'h23',
+    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'
+  }).formatToParts(new Date(ts));
+  const get = (type) => Number(parts.find((p) => p.type === type).value);
+  return Date.UTC(get('year'), get('month') - 1, get('day'), get('hour'), get('minute'), get('second')) - ts;
+}
+
+// Північ дати "YYYY-MM-DD" (+dayShift днів) за Києвом — як ISO-момент в UTC,
+// у тому ж форматі, що created_at у БД.
+function kyivMidnightIso(dateStr, dayShift = 0) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const localMidnight = Date.UTC(y, m - 1, d + dayShift);
+  let ts = localMidnight - kyivOffsetMs(localMidnight);
+  ts = localMidnight - kyivOffsetMs(ts);
+  return new Date(ts).toISOString();
+}
+
+function auditQueryString() {
+  const params = new URLSearchParams();
+  if (auditFilter.from) params.set('from', kyivMidnightIso(auditFilter.from));
+  if (auditFilter.to) params.set('to', kyivMidnightIso(auditFilter.to, 1));
+  if (auditFilter.actor) params.set('actor', auditFilter.actor);
+  if (auditFilter.category) params.set('category', auditFilter.category);
+  const query = params.toString();
+  return query ? `?${query}` : '';
+}
+
+let auditRequestSeq = 0;
+
 async function loadAudit() {
+  const seq = ++auditRequestSeq;
   try {
-    auditEntries = await apiRequest('GET', '/audit');
+    const data = await apiRequest('GET', `/audit${auditQueryString()}`);
+    // Швидко змінені фільтри: застарілу відповідь відкидаємо.
+    if (seq !== auditRequestSeq) return false;
+    auditEntries = data.entries;
+    auditActors = data.actors;
     auditPage = 0;
+    return true;
   } catch (err) {
-    setQueueStatus(`Помилка завантаження історії: ${err.message}`, true);
+    if (seq === auditRequestSeq) setQueueStatus(`Помилка завантаження історії: ${err.message}`, true);
+    return false;
   }
 }
 
@@ -920,13 +962,102 @@ function describeAuditAction(entry) {
   }
 }
 
+// Категорії мають збігатися з AUDIT_CATEGORIES у worker/src/routes/buff-queue.js.
+const AUDIT_CATEGORY_OPTIONS = [
+  ['entry_create', 'Запис у чергу'],
+  ['buffed', 'Посилення'],
+  ['done', 'Виконано'],
+  ['unbuffed', 'Скасування посилення'],
+  ['entry_delete', 'Прибрано з черги'],
+  ['entry_move_day', 'Перенесено на інший день'],
+  ['entries_reorder', 'Зміна порядку'],
+  ['settings', 'Налаштування']
+];
+
+function filterField(labelText, control) {
+  const label = document.createElement('label');
+  label.className = 'buff-queue-audit-filter';
+  const caption = document.createElement('span');
+  caption.textContent = labelText;
+  label.append(caption, control);
+  return label;
+}
+
+function filterSelect(value, placeholder, options) {
+  const select = document.createElement('select');
+  [['', placeholder], ...options].forEach(([optValue, optLabel]) => {
+    const opt = document.createElement('option');
+    opt.value = optValue;
+    opt.textContent = optLabel;
+    select.appendChild(opt);
+  });
+  select.value = value;
+  return select;
+}
+
+function filterDate(value) {
+  const input = document.createElement('input');
+  input.type = 'date';
+  input.value = value;
+  return input;
+}
+
+function buildAuditFilters(listHost) {
+  const bar = document.createElement('div');
+  bar.className = 'buff-queue-audit-filters';
+
+  const fromInput = filterDate(auditFilter.from);
+  const toInput = filterDate(auditFilter.to);
+  // Ім'я з фільтра могло зникнути зі списку (напр. після зміни даних) — лишаємо його видимим.
+  const actorNames = auditFilter.actor && !auditActors.includes(auditFilter.actor)
+    ? [auditFilter.actor, ...auditActors]
+    : auditActors;
+  const actorSelect = filterSelect(auditFilter.actor, 'Усі', actorNames.map((n) => [n, n]));
+  const categorySelect = filterSelect(auditFilter.category, 'Усі події', AUDIT_CATEGORY_OPTIONS);
+  const resetBtn = textButton('link-button-std', 'Скинути', () => {
+    fromInput.value = toInput.value = actorSelect.value = categorySelect.value = '';
+    applyFilters();
+  });
+
+  // Перемальовуємо лише список, не рядок фільтрів — інакше поле дати
+  // губило б фокус посеред введення року.
+  async function applyFilters() {
+    auditFilter.from = fromInput.value;
+    auditFilter.to = toInput.value;
+    auditFilter.actor = actorSelect.value;
+    auditFilter.category = categorySelect.value;
+    resetBtn.disabled = !Object.values(auditFilter).some(Boolean);
+    setQueueStatus('');
+    if (await loadAudit()) renderAuditList(listHost);
+  }
+
+  [fromInput, toInput, actorSelect, categorySelect].forEach((el) => el.addEventListener('change', applyFilters));
+  resetBtn.disabled = !Object.values(auditFilter).some(Boolean);
+
+  bar.append(
+    filterField('З', fromInput),
+    filterField('По', toInput),
+    filterField('Хто', actorSelect),
+    filterField('Подія', categorySelect),
+    resetBtn
+  );
+  return bar;
+}
+
 function renderAuditView() {
   const section = document.createElement('section');
   section.className = 'shard-queue-resource-block';
 
   const heading = document.createElement('h2');
   heading.textContent = 'Історія дій';
-  section.appendChild(heading);
+  const listHost = document.createElement('div');
+  section.append(heading, buildAuditFilters(listHost), listHost);
+  renderAuditList(listHost);
+  queueContent.appendChild(section);
+}
+
+function renderAuditList(host) {
+  host.innerHTML = '';
 
   const totalPages = Math.max(Math.ceil(auditEntries.length / AUDIT_PAGE_SIZE), 1);
   auditPage = Math.min(Math.max(auditPage, 0), totalPages - 1);
@@ -935,7 +1066,7 @@ function renderAuditView() {
   const list = document.createElement('div');
   list.className = 'raid-audit-list';
   if (!pageEntries.length) {
-    list.textContent = 'Історія порожня.';
+    list.textContent = Object.values(auditFilter).some(Boolean) ? 'За цими фільтрами подій немає.' : 'Історія порожня.';
   } else {
     pageEntries.forEach((entry) => {
       const row = document.createElement('div');
@@ -949,15 +1080,14 @@ function renderAuditView() {
       list.appendChild(row);
     });
   }
-  section.appendChild(list);
+  host.appendChild(list);
 
   if (totalPages > 1) {
-    section.appendChild(buildPagination(auditPage, totalPages, (next) => {
+    host.appendChild(buildPagination(auditPage, totalPages, (next) => {
       auditPage = next;
-      renderQueueContent();
+      renderAuditList(host);
     }));
   }
-  queueContent.appendChild(section);
 }
 
 // ---- Налаштування (лише офіцери) ----
