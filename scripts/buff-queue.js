@@ -386,27 +386,56 @@ function renderDayView(dayId) {
   bossList.forEach((boss) => queueContent.appendChild(buildBossBlock(day, boss.boss, typeList)));
 }
 
-function buildBossBlock(day, boss, typeList) {
-  const section = document.createElement('section');
-  section.className = 'shard-queue-resource-block buff-queue-boss';
+function bossChip(text, active) {
+  const chip = document.createElement('span');
+  chip.className = 'raid-chip' + (active ? ' raid-chip--active' : '');
+  chip.textContent = text;
+  return chip;
+}
 
+// Блок боса — одна рамка, як у вкладці "Предмети" на сторінці рейду:
+// ім'я боса рядком-заголовком усередині рамки, під ним черги посилень.
+// Праворуч у заголовку — скільки людей у черзі й скільки посилені зараз,
+// щоб бачити, на якому босі йде рейд, не гортаючи таблиці.
+function buildBossFrame(boss, chips) {
+  const section = document.createElement('section');
+  section.className = 'buff-queue-boss';
+
+  const header = document.createElement('div');
+  header.className = 'buff-queue-boss-header';
   const heading = document.createElement('h2');
   heading.textContent = bossLabel(boss);
-  section.appendChild(heading);
+  header.appendChild(heading);
 
+  const chipsWrap = document.createElement('span');
+  chipsWrap.className = 'buff-queue-boss-chips';
+  chips.forEach((chip) => chipsWrap.appendChild(chip));
+  header.appendChild(chipsWrap);
+
+  section.appendChild(header);
+  return section;
+}
+
+function buildBossBlock(day, boss, typeList) {
   const queues = typeList.map((type) => ({ type, list: queueFor(day.id, boss, type.id) }));
+  const all = queues.flatMap((q) => q.list);
 
-  // Боси без жодного запису — компактним рядком, інакше 12 порожніх блоків
-  // з таблицями розтягнули б сторінку на кілька екранів.
-  if (queues.every((q) => !q.list.length)) {
-    section.classList.add('buff-queue-boss--empty');
+  // Боси без жодного запису — лише рядок-заголовок, інакше 12 порожніх
+  // блоків з таблицями розтягнули б сторінку на кілька екранів.
+  if (!all.length) {
     const hint = document.createElement('span');
     hint.className = 'shard-queue-hint';
     hint.textContent = 'Ще ніхто не записався';
-    heading.appendChild(hint);
+    const section = buildBossFrame(boss, [hint]);
+    section.classList.add('buff-queue-boss--empty');
     return section;
   }
 
+  const buffedCount = all.filter((e) => e.status === 'buffed').length;
+  const chips = [bossChip(`У черзі: ${all.length}`, false)];
+  if (buffedCount) chips.push(bossChip(`Посилених: ${buffedCount}`, true));
+
+  const section = buildBossFrame(boss, chips);
   const grid = document.createElement('div');
   grid.className = 'buff-queue-type-grid';
   queues.forEach(({ type, list }) => grid.appendChild(buildQueueColumn(day, boss, type, list)));
@@ -752,11 +781,7 @@ function renderDoneView() {
     const bossDone = done.filter((e) => e.boss === boss);
     if (!bossDone.length) return;
 
-    const section = document.createElement('section');
-    section.className = 'shard-queue-resource-block shard-queue-resource-block--backlog buff-queue-boss';
-    const heading = document.createElement('h2');
-    heading.textContent = bossLabel(boss);
-    section.appendChild(heading);
+    const section = buildBossFrame(boss, [bossChip(`Виконано: ${bossDone.length}`, false)]);
 
     const grid = document.createElement('div');
     grid.className = 'buff-queue-type-grid';

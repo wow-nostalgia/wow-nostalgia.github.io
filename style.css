@@ -5015,26 +5015,61 @@ body.shard-queue-page #addOtherModalError:empty {
   display: none;
 }
 
+/* Блок боса — рамка як у вкладці "Предмети" на сторінці рейду: ті самі
+   рамка, радіус і фон, що в .ranking-table-wrap. Одна рамка на боса. */
 body.buff-queue-page .buff-queue-boss {
-  margin: var(--space-4) 0;
+  margin: var(--space-3) 0;
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-table);
 }
 
-/* Бос без жодного запису — один рядок замість порожніх таблиць. */
-body.buff-queue-page .buff-queue-boss--empty {
-  margin: 0;
-  padding: var(--space-2) 0;
+/* Рядок-заголовок боса — як .raid-items-boss-row: жирне ім'я й лінія під
+   ним; праворуч лічильники-чіпи. */
+body.buff-queue-page .buff-queue-boss-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0.45rem 0.6rem;
   border-bottom: 1px solid var(--color-border);
 }
 
-body.buff-queue-page .buff-queue-boss--empty h2 {
+body.buff-queue-page .buff-queue-boss-header h2 {
   margin: 0;
   font-size: var(--font-size-base);
-  color: var(--color-text-soft);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-strong);
 }
 
-body.buff-queue-page .buff-queue-boss--empty .shard-queue-hint {
+body.buff-queue-page .buff-queue-boss-chips {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
   margin-left: auto;
-  font-weight: var(--font-weight-normal);
+}
+
+/* Бос без жодного запису — лише рядок-заголовок, тісніше до сусідів. */
+body.buff-queue-page .buff-queue-boss--empty {
+  margin: var(--space-2) 0;
+}
+
+body.buff-queue-page .buff-queue-boss--empty .buff-queue-boss-header {
+  border-bottom: none;
+}
+
+/* Черги посилень усередині рамки боса — без власних рамок, інакше рамка
+   в рамці. */
+body.buff-queue-page .buff-queue-boss .buff-queue-type-grid {
+  padding: 0.5rem 0.6rem 0.6rem;
+}
+
+body.buff-queue-page .buff-queue-boss .ranking-table-wrap {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 /* auto-fill, а не auto-fit: колонка посилення завжди однакової ширини,
