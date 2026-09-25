@@ -5091,6 +5091,18 @@ body.buff-queue-page .buff-queue-type-col h3 {
   color: var(--color-text-soft);
 }
 
+/* Статус рядка іконкою: годинник "Очікує" — приглушений, галочка
+   "Посилений" — колір успіху, як і в .raid-chip--active. */
+body.buff-queue-page .buff-queue-status-icon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-faint);
+}
+
+body.buff-queue-page .buff-queue-status-icon--buffed {
+  color: var(--color-success);
+}
+
 /* Хто посилений прямо зараз — видно одним поглядом по таблиці. */
 body.buff-queue-page .buff-queue-row--buffed {
   background-color: rgba(99, 212, 113, 0.06);
