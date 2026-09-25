@@ -1132,8 +1132,11 @@ function hasActiveEntries(predicate) {
 }
 
 function renderSettingsView() {
-  queueContent.appendChild(buildDaysSettings());
-  queueContent.appendChild(buildTypesSettings());
+  // Дні й типи посилень — короткі списки, тож поруч у дві колонки.
+  const grid = document.createElement('div');
+  grid.className = 'buff-queue-settings-grid';
+  grid.append(buildDaysSettings(), buildTypesSettings());
+  queueContent.appendChild(grid);
   queueContent.appendChild(buildBossesSettings());
   settingsStatusEl = document.createElement('p');
   queueContent.appendChild(settingsStatusEl);

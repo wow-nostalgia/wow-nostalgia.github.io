@@ -5052,6 +5052,31 @@ body.buff-queue-page .buff-queue-signup-form--officer {
   }
 }
 
+/* Налаштування: "Керування днями" і "Типи посилень" поруч. Вертикальні
+   відступи блоків замінює gap сітки; на вузькому екрані — одна колонка. */
+body.buff-queue-page .buff-queue-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
+  align-items: start;
+}
+
+body.buff-queue-page .buff-queue-settings-grid .shard-queue-manage {
+  margin: 0;
+}
+
+body.buff-queue-page .buff-queue-settings-grid .account-form input[type="text"],
+body.buff-queue-page .buff-queue-settings-grid .account-form select {
+  min-width: 0;
+}
+
+@media (max-width: 720px) {
+  body.buff-queue-page .buff-queue-settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Фільтри "Історії дій": підпис у рядку з полем, як у .ranking-controls
    ("Рейтинг DPS"). Поле дати — той самий вигляд, що в select сторінки
    (body.shard-queue-page select), color-scheme — щоб іконка календаря була
