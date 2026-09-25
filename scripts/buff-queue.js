@@ -166,7 +166,7 @@ function iconButton(className, label, iconHtml, onClick) {
   btn.setAttribute('aria-label', label);
   btn.innerHTML = iconHtml;
   btn.addEventListener('click', onClick);
-  // JS-тултіп: .ranking-table-wrap тут з overflow-x:auto і обрізав би CSS-підказку.
+  // JS-тултіп (#raidBtnTooltip), як і в решті рядка черги.
   bindTooltip(btn);
   return btn;
 }
@@ -427,8 +427,111 @@ function renderDayView(dayId) {
     return;
   }
 
-  bossList.forEach((boss) => queueContent.appendChild(buildBossBlock(day, boss.boss, typeList)));
+  const columns = queueColumns(isOfficer());
+  const board = buildBoard(typeList, columns);
+  bossList.forEach((boss) => board.appendChild(buildBossBlock(day, boss.boss, typeList, columns)));
+  queueContent.appendChild(board);
 }
+
+// ---- Спільна шапка для всіх босів ----
+// Назви посилень і колонок — один раз над усіма босами (прилипає під
+// топбаром при прокрутці), а не в кожному блоці боса: так кожен бос займає
+// на 2–3 рядки менше. Щоб рядки стояли рівно під шапкою, у шапці й у
+// кожного боса ті самі колонки сітки й та сама фіксована ширина колонок
+// таблиці (colgroup + table-layout: fixed). На вузькому екрані посилення
+// йдуть одне під одним, тож там шапку ховаємо, а назву посилення
+// показуємо біля кожної черги (.buff-queue-type-col-label).
+
+// [ключ колонки (клас col → ширина в CSS), заголовок]
+function queueColumns(officer) {
+  return officer
+    ? [['drag', ''], ['index', '№'], ['name', "Ім'я"], ['status', 'Статус'], ['actions', 'Дія']]
+    : [['index', '№'], ['name', "Ім'я"], ['status', 'Статус'], ['icons', '']];
+}
+
+const DONE_COLUMNS = [['name', "Ім'я"], ['day', 'День'], ['date', 'Дата']];
+
+function buildQueueTable(columns, withHead) {
+  const table = document.createElement('table');
+  table.className = 'raid-table buff-queue-table';
+  const colgroup = document.createElement('colgroup');
+  columns.forEach(([key]) => {
+    const col = document.createElement('col');
+    col.className = `buff-queue-col--${key}`;
+    colgroup.appendChild(col);
+  });
+  table.appendChild(colgroup);
+
+  if (withHead) {
+    const headRow = document.createElement('tr');
+    columns.forEach(([, label]) => {
+      const th = document.createElement('th');
+      th.textContent = label;
+      headRow.appendChild(th);
+    });
+    const thead = document.createElement('thead');
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+  }
+  return table;
+}
+
+function typeGrid(typeCount) {
+  const grid = document.createElement('div');
+  grid.className = 'buff-queue-type-grid';
+  grid.style.setProperty('--buff-type-count', String(typeCount));
+  return grid;
+}
+
+function buildBoard(typeList, columns) {
+  const board = document.createElement('div');
+  board.className = 'buff-queue-board';
+
+  const head = document.createElement('div');
+  head.className = 'buff-queue-board-head';
+  const grid = typeGrid(typeList.length);
+  typeList.forEach((type) => {
+    const col = document.createElement('div');
+    col.className = 'buff-queue-type-col';
+    const heading = document.createElement('h3');
+    heading.textContent = type.label;
+    col.append(heading, buildQueueTable(columns, true));
+    grid.appendChild(col);
+  });
+  head.appendChild(grid);
+  board.appendChild(head);
+  return board;
+}
+
+// Колонка черги в блоці боса: назва посилення (видно лише на вузькому
+// екрані) + таблиця без власної шапки.
+function typeColumn(type) {
+  const column = document.createElement('div');
+  column.className = 'buff-queue-type-col';
+  const label = document.createElement('h3');
+  label.className = 'buff-queue-type-col-label';
+  label.textContent = type.label;
+  column.appendChild(label);
+  return column;
+}
+
+function emptyRow(colSpan, text) {
+  const tr = document.createElement('tr');
+  tr.className = 'buff-queue-empty-row';
+  const td = document.createElement('td');
+  td.colSpan = colSpan;
+  td.textContent = text;
+  tr.appendChild(td);
+  return tr;
+}
+
+// Топбар липкий, тож шапка черги прилипає під ним, а не під краєм вікна.
+function syncTopbarOffset() {
+  const topbar = document.querySelector('.topbar');
+  document.body.style.setProperty('--topbar-offset', `${topbar ? topbar.offsetHeight : 0}px`);
+}
+window.addEventListener('resize', syncTopbarOffset);
+syncTopbarOffset();
 
 function bossChip(text, active) {
   const chip = document.createElement('span');
@@ -460,7 +563,7 @@ function buildBossFrame(boss, chips) {
   return section;
 }
 
-function buildBossBlock(day, boss, typeList) {
+function buildBossBlock(day, boss, typeList, columns) {
   const queues = typeList.map((type) => ({ type, list: queueFor(day.id, boss, type.id) }));
   const all = queues.flatMap((q) => q.list);
 
@@ -480,53 +583,23 @@ function buildBossBlock(day, boss, typeList) {
   if (buffedCount) chips.push(bossChip(`Посилених: ${buffedCount}`, true));
 
   const section = buildBossFrame(boss, chips);
-  const grid = document.createElement('div');
-  grid.className = 'buff-queue-type-grid';
-  queues.forEach(({ type, list }) => grid.appendChild(buildQueueColumn(day, boss, type, list)));
+  const grid = typeGrid(typeList.length);
+  queues.forEach(({ type, list }) => grid.appendChild(buildQueueColumn(day, boss, type, list, columns)));
   section.appendChild(grid);
   return section;
 }
 
-function buildQueueColumn(day, boss, type, list) {
-  const column = document.createElement('div');
-  column.className = 'buff-queue-type-col';
-
-  const heading = document.createElement('h3');
-  heading.textContent = type.label;
-  column.appendChild(heading);
-
+function buildQueueColumn(day, boss, type, list, columns) {
+  const column = typeColumn(type);
   const officer = isOfficer();
-  const wrap = document.createElement('div');
-  wrap.className = 'ranking-table-wrap';
-  const table = document.createElement('table');
-  table.className = 'raid-table';
-
-  const headRow = document.createElement('tr');
-  const headers = officer ? ['', '№', "Ім'я", 'Статус', 'Дія'] : ['№', "Ім'я", 'Статус', ''];
-  headers.forEach((label) => {
-    const th = document.createElement('th');
-    th.textContent = label;
-    headRow.appendChild(th);
-  });
-  const thead = document.createElement('thead');
-  thead.appendChild(headRow);
-  table.appendChild(thead);
+  const table = buildQueueTable(columns, false);
 
   const tbody = document.createElement('tbody');
-  if (!list.length) {
-    const tr = document.createElement('tr');
-    const td = document.createElement('td');
-    td.colSpan = headers.length;
-    td.textContent = 'Черга порожня.';
-    tr.appendChild(td);
-    tbody.appendChild(tr);
-  }
-
+  if (!list.length) tbody.appendChild(emptyRow(columns.length, 'Черга порожня.'));
   list.forEach((entry, index) => tbody.appendChild(buildQueueRow(day, entry, index, officer)));
 
   table.appendChild(tbody);
-  wrap.appendChild(table);
-  column.appendChild(wrap);
+  column.appendChild(table);
 
   if (officer && list.length > 1) enableDragReorder(tbody, day.id, boss, type.id);
   return column;
@@ -830,6 +903,12 @@ function renderDoneView() {
     return;
   }
 
+  // Колонки — усі посилення, що є в архіві (включно з прихованими), у
+  // порядку налаштувань. У боса, де якогось посилення не було, — порожня
+  // клітинка, щоб колонки не з'їжджали відносно спільної шапки.
+  const doneTypes = types.filter((t) => done.some((e) => e.buff_type_id === t.id));
+  const board = buildBoard(doneTypes, DONE_COLUMNS);
+
   // Порядок босів — як у налаштуваннях, включно з прихованими: історія
   // лишається видимою, навіть якщо боса вже прибрали з вкладок днів.
   bosses.forEach(({ boss }) => {
@@ -838,47 +917,30 @@ function renderDoneView() {
 
     const section = buildBossFrame(boss, [bossChip(`Виконано: ${bossDone.length}`, false)]);
 
-    const grid = document.createElement('div');
-    grid.className = 'buff-queue-type-grid';
-    types.forEach((type) => {
+    const grid = typeGrid(doneTypes.length);
+    doneTypes.forEach((type) => {
       const list = bossDone
         .filter((e) => e.buff_type_id === type.id)
         .sort((a, b) => (a.done_at < b.done_at ? 1 : -1));
-      if (list.length) grid.appendChild(buildDoneColumn(boss, type, list));
+      grid.appendChild(buildDoneColumn(boss, type, list));
     });
     section.appendChild(grid);
-    queueContent.appendChild(section);
+    board.appendChild(section);
   });
+  queueContent.appendChild(board);
 }
 
 function buildDoneColumn(boss, type, list) {
-  const column = document.createElement('div');
-  column.className = 'buff-queue-type-col';
-
-  const heading = document.createElement('h3');
-  heading.textContent = type.label;
-  column.appendChild(heading);
+  const column = typeColumn(type);
 
   const key = `${boss}|${type.id}`;
   const totalPages = Math.max(Math.ceil(list.length / DONE_PAGE_SIZE), 1);
   const page = Math.min(donePages.get(key) || 0, totalPages - 1);
   const pageRows = list.slice(page * DONE_PAGE_SIZE, (page + 1) * DONE_PAGE_SIZE);
 
-  const wrap = document.createElement('div');
-  wrap.className = 'ranking-table-wrap';
-  const table = document.createElement('table');
-  table.className = 'raid-table';
-  const thead = document.createElement('thead');
-  const headRow = document.createElement('tr');
-  ["Ім'я", 'День', 'Дата'].forEach((label) => {
-    const th = document.createElement('th');
-    th.textContent = label;
-    headRow.appendChild(th);
-  });
-  thead.appendChild(headRow);
-  table.appendChild(thead);
-
+  const table = buildQueueTable(DONE_COLUMNS, false);
   const tbody = document.createElement('tbody');
+  if (!list.length) tbody.appendChild(emptyRow(DONE_COLUMNS.length, '—'));
   pageRows.forEach((entry) => {
     const tr = document.createElement('tr');
     const nameTd = document.createElement('td');
@@ -891,8 +953,7 @@ function buildDoneColumn(boss, type, list) {
     tbody.appendChild(tr);
   });
   table.appendChild(tbody);
-  wrap.appendChild(table);
-  column.appendChild(wrap);
+  column.appendChild(table);
 
   if (totalPages > 1) {
     column.appendChild(buildPagination(page, totalPages, (next) => {

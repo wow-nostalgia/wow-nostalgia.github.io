@@ -5214,25 +5214,44 @@ body.buff-queue-page .buff-queue-boss--empty .buff-queue-boss-header {
   border-bottom: none;
 }
 
-/* Черги посилень усередині рамки боса — без власних рамок, інакше рамка
-   в рамці. */
+/* Спільна шапка (назви посилень + колонок) над усіма босами — прилипає під
+   топбаром (--topbar-offset рахує buff-queue.js). Рамка, радіус і
+   горизонтальні відступи — ті самі, що в блоці боса, тож колонки шапки
+   стоять рівно над колонками кожного боса. Фон непрозорий, щоб рядки під
+   нею не просвічували при прокрутці. */
+body.buff-queue-page .buff-queue-board-head {
+  position: sticky;
+  top: var(--topbar-offset, 0);
+  z-index: var(--z-dropdown);
+  margin: var(--space-3) 0;
+  padding: 0.45rem 0.6rem 0;
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-solid);
+}
+
+body.buff-queue-page .buff-queue-board-head h3 {
+  margin: 0 0 var(--space-1);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-strong);
+}
+
+body.buff-queue-page .buff-queue-board-head .raid-table th {
+  border-bottom: none;
+  color: var(--color-text-soft);
+}
+
+/* Черги посилень у блоці боса — таблиці без власних рамок і шапок. */
 body.buff-queue-page .buff-queue-boss .buff-queue-type-grid {
-  padding: 0.5rem 0.6rem 0.6rem;
+  padding: 0.3rem 0.6rem 0.4rem;
 }
 
-body.buff-queue-page .buff-queue-boss .ranking-table-wrap {
-  margin: 0;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-/* auto-fill, а не auto-fit: колонка посилення завжди однакової ширини,
-   навіть якщо в блоці вона одна (в "Архіві" часто так і буває). */
+/* Одна колонка на кожне посилення, завжди в один ряд — щоб збігатися зі
+   спільною шапкою. Кількість посилень ставить JS (--buff-type-count). */
 body.buff-queue-page .buff-queue-type-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+  grid-template-columns: repeat(var(--buff-type-count, 2), minmax(0, 1fr));
   gap: var(--space-4);
 }
 
@@ -5240,11 +5259,68 @@ body.buff-queue-page .buff-queue-type-col {
   min-width: 0;
 }
 
-body.buff-queue-page .buff-queue-type-col h3 {
+/* Назва посилення біля кожної черги — лише на вузькому екрані, де
+   спільної шапки немає (див. @media нижче). */
+body.buff-queue-page .buff-queue-type-col-label {
+  display: none;
   margin: 0 0 var(--space-2);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-soft);
+}
+
+/* Фіксовані ширини колонок — однакові в шапці й у кожного боса. */
+body.buff-queue-page .buff-queue-table {
+  table-layout: fixed;
+}
+
+body.buff-queue-page .buff-queue-col--drag { width: 1.75rem; }
+body.buff-queue-page .buff-queue-col--index { width: 2.25rem; }
+body.buff-queue-page .buff-queue-col--status { width: 4.5rem; }
+body.buff-queue-page .buff-queue-col--actions { width: 10rem; }
+body.buff-queue-page .buff-queue-col--icons { width: 4.5rem; }
+body.buff-queue-page .buff-queue-col--day { width: 7rem; }
+body.buff-queue-page .buff-queue-col--date { width: 6.5rem; }
+
+body.buff-queue-page .buff-queue-table td {
+  overflow-wrap: anywhere;
+}
+
+body.buff-queue-page .buff-queue-empty-row td {
+  color: var(--color-text-faint);
+}
+
+body.buff-queue-page .buff-queue-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 720px) {
+  body.buff-queue-page .buff-queue-board-head {
+    display: none;
+  }
+
+  body.buff-queue-page .buff-queue-type-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.buff-queue-page .buff-queue-type-col-label {
+    display: block;
+  }
+
+  /* Спільної шапки тут немає, тож і фіксовані ширини не потрібні: з ними
+     на вузькому екрані ім'я стискалось і рвалося по літерах. Авто-розкладка
+     віддає імені місце, а іконки дій за потреби переносить рядком нижче. */
+  body.buff-queue-page .buff-queue-table {
+    table-layout: auto;
+  }
+
+  body.buff-queue-page .buff-queue-table col {
+    width: auto;
+  }
+
+  body.buff-queue-page .buff-queue-table td {
+    overflow-wrap: normal;
+  }
 }
 
 /* Статус рядка іконкою: годинник "Очікує" — приглушений, галочка
