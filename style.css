@@ -5105,6 +5105,15 @@ body.buff-queue-page .buff-queue-actions {
   gap: var(--space-1);
 }
 
+/* Іконки (скасування, перенос, кошик) — біля правого краю колонки черги:
+   "Дія" — остання колонка, тож її правий край і є край таблиці. */
+body.buff-queue-page .buff-queue-row-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: auto;
+}
+
 body.buff-queue-page .buff-queue-actions .link-button-std {
   white-space: nowrap;
 }

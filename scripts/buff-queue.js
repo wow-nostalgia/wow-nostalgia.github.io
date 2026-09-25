@@ -525,18 +525,23 @@ function buildQueueRow(day, entry, index, officer) {
   const actionTd = document.createElement('td');
   const actions = document.createElement('div');
   actions.className = 'buff-queue-actions';
+  // Іконки — окремою групою біля правого краю колонки, щоб кошик і
+  // скасування стояли рівним стовпчиком незалежно від ширини текстової кнопки.
+  const icons = document.createElement('span');
+  icons.className = 'buff-queue-row-icons';
   if (officer && entry.status === 'waiting') {
     actions.appendChild(textButton('link-button-std', 'Посилити зараз', () => changeStatus(entry, 'buffed')));
   } else if (officer && entry.status === 'buffed') {
     actions.appendChild(textButton('link-button-std buff-queue-btn--success', 'Посилення виконано', () => confirmDone(entry)));
-    actions.appendChild(iconButton('account-delete-btn buff-queue-icon-btn', 'Скасувати посилення — повернути в "Очікує"', ICON_UNDO, () => changeStatus(entry, 'waiting')));
+    icons.appendChild(iconButton('account-delete-btn buff-queue-icon-btn', 'Скасувати посилення — повернути в "Очікує"', ICON_UNDO, () => changeStatus(entry, 'waiting')));
   }
   if (canTouchEntry(entry)) {
     if (activeDays().some((d) => d.id !== day.id)) {
-      actions.appendChild(iconButton('account-delete-btn buff-queue-icon-btn', 'Перенести на інший день', ICON_MOVE, () => openMoveDayModal(entry, day)));
+      icons.appendChild(iconButton('account-delete-btn buff-queue-icon-btn', 'Перенести на інший день', ICON_MOVE, () => openMoveDayModal(entry, day)));
     }
-    actions.appendChild(iconButton('account-delete-btn', 'Прибрати з черги', ICON_TRASH, () => deleteEntry(entry)));
+    icons.appendChild(iconButton('account-delete-btn', 'Прибрати з черги', ICON_TRASH, () => deleteEntry(entry)));
   }
+  if (icons.childElementCount) actions.appendChild(icons);
   actionTd.appendChild(actions);
   tr.appendChild(actionTd);
 
