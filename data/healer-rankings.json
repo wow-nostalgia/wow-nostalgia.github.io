@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-09-26T02:06:42.031Z",
+  "updatedAt": "2026-09-27T01:56:57.197Z",
   "specs": [
     {
       "class": "Paladin",
@@ -785,7 +785,7 @@
         },
         {
           "name": "Borodin",
-          "hps": 27032.3
+          "hps": 27033.4
         },
         {
           "name": "Trojan",
@@ -1372,6 +1372,10 @@
         {
           "name": "Incorrect",
           "hps": 5773.6
+        },
+        {
+          "name": "Totowka",
+          "hps": 5626.2
         },
         {
           "name": "Мегатайтус",
@@ -2026,10 +2030,6 @@
           "hps": 258.5
         },
         {
-          "name": "Totowka",
-          "hps": 246.7
-        },
-        {
           "name": "Ianmekal",
           "hps": 242.3
         },
@@ -2212,6 +2212,10 @@
         {
           "name": "Facelesprist",
           "hps": 142.1
+        },
+        {
+          "name": "Бумбай",
+          "hps": 110.1
         },
         {
           "name": "Братик",
@@ -3282,6 +3286,10 @@
           "hps": 13491.6
         },
         {
+          "name": "Шурік",
+          "hps": 13491.4
+        },
+        {
           "name": "Falinrash",
           "hps": 13420.9
         },
@@ -3790,10 +3798,6 @@
           "hps": 1183.2
         },
         {
-          "name": "Шурік",
-          "hps": 1176.6
-        },
-        {
           "name": "Потаповна",
           "hps": 1122.7
         },
@@ -3920,6 +3924,10 @@
         {
           "name": "Tanti",
           "hps": 308.7
+        },
+        {
+          "name": "Ріпванвінкль",
+          "hps": 279.5
         },
         {
           "name": "Lausanne",
@@ -5146,6 +5154,10 @@
         {
           "name": "Shamanishka",
           "hps": 8875.1
+        },
+        {
+          "name": "Minimaus",
+          "hps": 8835.6
         },
         {
           "name": "Аарсиль",
