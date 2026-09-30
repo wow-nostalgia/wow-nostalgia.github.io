@@ -1,5 +1,12 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-09-27--20-43--Nekthara--FreedomUA",
+    "date": "2026-09-27",
+    "boss": null,
+    "players": [],
+    "error": "Request failed with status 502"
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-09-26--20-33--Borolgin--FreedomUA",
     "date": "2026-09-26",
     "boss": "Lord Marrowgar",
@@ -76682,7 +76689,7 @@
     "date": "2026-06-21",
     "boss": null,
     "players": [],
-    "error": "No fights-container found (corrupted or empty report)"
+    "error": "Request failed with status 502"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-06-20--20-29--Boro--FreedomUA/",
@@ -90133,7 +90140,7 @@
     "date": "2026-05-09",
     "boss": null,
     "players": [],
-    "error": "No fights-container found (corrupted or empty report)"
+    "error": "Request failed with status 502"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-05-03--20-31--Boro--FreedomUA/",
