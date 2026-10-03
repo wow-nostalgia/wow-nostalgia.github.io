@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-10-02T02:45:13.392Z",
+  "updatedAt": "2026-10-03T02:31:14.248Z",
   "specs": [
     {
       "class": "Paladin",
@@ -1366,6 +1366,10 @@
           "hps": 6731.8
         },
         {
+          "name": "Чаклунібун",
+          "hps": 6701.1
+        },
+        {
           "name": "Skyggejomfru",
           "hps": 6678.4
         },
@@ -1768,10 +1772,6 @@
         {
           "name": "Nuvoin",
           "hps": 473.4
-        },
-        {
-          "name": "Чаклунібун",
-          "hps": 472.2
         },
         {
           "name": "Arho",
@@ -4460,6 +4460,10 @@
           "hps": 24986.1
         },
         {
+          "name": "Oyenestirol",
+          "hps": 24960.8
+        },
+        {
           "name": "Журбінка",
           "hps": 24914.3
         },
@@ -4474,10 +4478,6 @@
         {
           "name": "Podarunok",
           "hps": 24849.3
-        },
-        {
-          "name": "Oyenestirol",
-          "hps": 24785.4
         },
         {
           "name": "Shumixa",
@@ -4812,6 +4812,10 @@
           "hps": 20813.2
         },
         {
+          "name": "Тібальтт",
+          "hps": 20803.9
+        },
+        {
           "name": "Sharur",
           "hps": 20790.4
         },
@@ -4846,10 +4850,6 @@
         {
           "name": "Harakternik",
           "hps": 20354.3
-        },
-        {
-          "name": "Тібальтт",
-          "hps": 20318.9
         },
         {
           "name": "Arimakishou",
