@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Гільдійська аналітика</title>
-  <link rel="stylesheet" href="../style.css?v=155">
+  <link rel="stylesheet" href="../style.css?v=156">
   <script src="/scripts/background.js?v=1"></script>
 </head>
 
@@ -77,8 +77,7 @@
           </div>
           <p class="analytics-card-caption">Сума DPS усіх гравців рейду (дамаг-спеки, танки і хіли) по обраному босу ЦЛК, по датах рейдів.</p>
           <div class="ranking-controls">
-            <label for="bossSumOverTimeSelect">Бос</label>
-            <select id="bossSumOverTimeSelect"></select>
+            <select id="bossSumOverTimeSelect" aria-label="Бос"></select>
 
             <label for="bossSumOverTimeSplineSelect">Тип лінії</label>
             <select id="bossSumOverTimeSplineSelect">
@@ -98,6 +97,8 @@
               <label class="analytics-day-check"><input type="checkbox" value="6"><span>СБ</span></label>
               <label class="analytics-day-check"><input type="checkbox" value="0"><span>НД</span></label>
             </div>
+
+            <select id="bossSumYearSelect" class="analytics-year-select" aria-label="Період"></select>
           </div>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossSumOverTime"></canvas>
@@ -111,8 +112,7 @@
           </div>
           <p class="analytics-card-caption">Тривалість вбивчого пулу по обраному босу ЦЛК, по датах рейдів.</p>
           <div class="ranking-controls">
-            <label for="bossDurationOverTimeSelect">Бос</label>
-            <select id="bossDurationOverTimeSelect"></select>
+            <select id="bossDurationOverTimeSelect" aria-label="Бос"></select>
 
             <label for="bossDurationOverTimeSplineSelect">Тип лінії</label>
             <select id="bossDurationOverTimeSplineSelect">
@@ -132,6 +132,8 @@
               <label class="analytics-day-check"><input type="checkbox" value="6"><span>СБ</span></label>
               <label class="analytics-day-check"><input type="checkbox" value="0"><span>НД</span></label>
             </div>
+
+            <select id="bossDurationYearSelect" class="analytics-year-select" aria-label="Період"></select>
           </div>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossDurationOverTime"></canvas>
@@ -309,9 +311,9 @@
   <script src="../scripts/nav.js?v=2"></script>
   <script src="../scripts/auth-shared.js?v=12"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
-  <script src="../scripts/ui-shared.js?v=14"></script>
+  <script src="../scripts/ui-shared.js?v=15"></script>
   <script src="../scripts/name-translations.js"></script>
-  <script src="../scripts/analytics.js?v=22"></script>
+  <script src="../scripts/analytics.js?v=23"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

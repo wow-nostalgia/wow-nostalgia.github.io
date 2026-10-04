@@ -6,6 +6,8 @@ const bossSumDayFilter = document.getElementById('bossSumDayFilter');
 const bossDurationOverTimeSelect = document.getElementById('bossDurationOverTimeSelect');
 const bossDurationOverTimeSplineSelect = document.getElementById('bossDurationOverTimeSplineSelect');
 const bossDurationDayFilter = document.getElementById('bossDurationDayFilter');
+const bossSumYearSelect = document.getElementById('bossSumYearSelect');
+const bossDurationYearSelect = document.getElementById('bossDurationYearSelect');
 
 const ROLE_BY_SPEC = {
   Blood: 'Tank',
@@ -1057,7 +1059,8 @@ function renderBossMetricMultiDayChart({
   });
 }
 
-function renderBossSumOverTimeChart(personalStats, boss) {
+function renderBossSumOverTimeChart(allPersonalStats, boss) {
+  const personalStats = filterByYear(allPersonalStats, bossSumYearSelect.value);
   const selectedDays = getSelectedDays();
 
   if (selectedDays.length <= 1) {
@@ -1088,7 +1091,8 @@ function renderBossSumOverTimeChart(personalStats, boss) {
   }
 }
 
-function renderBossDurationOverTimeChart(personalStats, boss) {
+function renderBossDurationOverTimeChart(allPersonalStats, boss) {
+  const personalStats = filterByYear(allPersonalStats, bossDurationYearSelect.value);
   const selectedDays = [...bossDurationDayFilter.querySelectorAll('input:checked')].map((cb) => Number(cb.value));
   const splineMode = bossDurationOverTimeSplineSelect.value;
 
@@ -1184,6 +1188,10 @@ async function init() {
       });
     };
 
+    const statsDates = personalStats.map((record) => record.date);
+    populateYearSelect(bossSumYearSelect, statsDates);
+    populateYearSelect(bossDurationYearSelect, statsDates);
+
     populateBossSelect(bossSumOverTimeSelect);
 
     if (bossesWithHistory.length) {
@@ -1202,6 +1210,10 @@ async function init() {
       renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
     });
 
+    bossSumYearSelect.addEventListener('change', () => {
+      renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
+    });
+
     populateBossSelect(bossDurationOverTimeSelect);
 
     if (bossesWithHistory.length) {
@@ -1217,6 +1229,10 @@ async function init() {
     });
 
     bossDurationDayFilter.addEventListener('change', () => {
+      renderBossDurationOverTimeChart(personalStats, bossDurationOverTimeSelect.value);
+    });
+
+    bossDurationYearSelect.addEventListener('change', () => {
       renderBossDurationOverTimeChart(personalStats, bossDurationOverTimeSelect.value);
     });
 

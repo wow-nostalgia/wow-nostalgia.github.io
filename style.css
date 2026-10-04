@@ -805,6 +805,14 @@ footer span {
   align-items: center;
 }
 
+/* Фільтр "Період" (роки) — без підпису й вужчий за інші списки
+   .ranking-controls (min-width 180px): найдовший пункт — "Всі роки". Так
+   увесь рядок фільтрів графіка вміщається в один рядок. */
+.ranking-controls select.analytics-year-select {
+  min-width: 0;
+  width: 8.5rem;
+}
+
 .analytics-day-check {
   display: flex;
   align-items: center;
@@ -3720,7 +3728,8 @@ body.raid-manager-detail-page .raid-rarity--epic { color: var(--wow-quality-epic
   }
 
   .ranking-controls select,
-  .ranking-controls input[type="text"] {
+  .ranking-controls input[type="text"],
+  .ranking-controls select.analytics-year-select {
     width: 100%;
     min-width: 0;
   }

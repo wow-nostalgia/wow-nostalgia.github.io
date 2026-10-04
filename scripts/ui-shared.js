@@ -137,6 +137,42 @@ function createBuffQueueIcon(label, position, tooltip, buffed) {
   return wrap;
 }
 
+// Фільтр "Період" для графіків по датах рейдів ("Гільдійська аналітика",
+// "Фаст-ран аналітика"). Пункти — роки, що є в даних, плюс поточний
+// календарний рік (за Києвом, він же за замовчуванням, навіть якщо рейдів
+// у ньому ще немає), від новішого до старішого, і "Всі роки" (value "").
+// Дати — ISO "YYYY-MM-DD".
+function currentKyivYear() {
+  return new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Kyiv', year: 'numeric' }).format(new Date());
+}
+
+function populateYearSelect(selectEl, dates) {
+  const currentYear = currentKyivYear();
+  const years = new Set([currentYear]);
+  dates.forEach((date) => {
+    const year = String(date || '').slice(0, 4);
+    if (/^\d{4}$/.test(year)) years.add(year);
+  });
+  selectEl.innerHTML = '';
+  [...years].sort((a, b) => b.localeCompare(a)).forEach((year) => {
+    const option = document.createElement('option');
+    option.value = year;
+    option.textContent = year;
+    selectEl.appendChild(option);
+  });
+  const allOption = document.createElement('option');
+  allOption.value = '';
+  allOption.textContent = 'Всі роки';
+  selectEl.appendChild(allOption);
+  selectEl.value = currentYear;
+}
+
+// year — значення з populateYearSelect ("" — усі роки).
+function filterByYear(items, year) {
+  if (!year) return items;
+  return items.filter((item) => String(item.date || '').startsWith(`${year}-`));
+}
+
 const SCORE_TIERS = [
   { min: 90, medal: '🥇' },
   { min: 80, medal: '🥈' },

@@ -2,6 +2,7 @@ const fastRunSection = document.getElementById('fastRunSection');
 const fastRunStatus = document.getElementById('fastRunStatus');
 const raidDurationSplineSelect = document.getElementById('raidDurationSplineSelect');
 const raidDurationDayFilter = document.getElementById('raidDurationDayFilter');
+const raidDurationYearSelect = document.getElementById('raidDurationYearSelect');
 const fastRunTableBody = document.getElementById('fastRunTableBody');
 
 const DAY_LABELS = ['НД', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
@@ -103,7 +104,9 @@ function buildPointsByDay(summaries) {
   return byDay;
 }
 
-function renderRaidDurationChart(summaries) {
+// Період фільтрує лише графік — таблиця "Всі рейди" завжди показує всі рейди.
+function renderRaidDurationChart(allSummaries) {
+  const summaries = filterByYear(allSummaries, raidDurationYearSelect.value);
   const selectedDays = getSelectedDays();
   const splineMode = raidDurationSplineSelect.value;
   const spline = SPLINE_MODES[splineMode] || SPLINE_MODES.smoothNoPoints;
@@ -436,12 +439,14 @@ async function init() {
 
     setStatus(`Повних клірів: ${valid.length}`);
 
+    populateYearSelect(raidDurationYearSelect, valid.map((r) => r.date));
     renderRaidDurationChart(summaries);
     renderTable(summaries);
     setupTableSort(summaries);
 
     raidDurationSplineSelect.addEventListener('change', () => renderRaidDurationChart(summaries));
     raidDurationDayFilter.addEventListener('change', () => renderRaidDurationChart(summaries));
+    raidDurationYearSelect.addEventListener('change', () => renderRaidDurationChart(summaries));
   } catch (err) {
     setStatus(`Помилка завантаження: ${err.message}`);
     console.error(err);
