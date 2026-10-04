@@ -74,15 +74,6 @@
             </div>
             <p class="analytics-card-caption">Загальна тривалість рейду (від першого пулу до останнього кілу) по датах. Підказка містить Загальну шкоду. Клік по точці — відкриває лог на uwu-logs.</p>
             <div class="ranking-controls">
-              <label for="raidDurationSplineSelect">Тип лінії</label>
-              <select id="raidDurationSplineSelect">
-                <option value="smooth">Плавна</option>
-                <option value="smoothNoPoints" selected>Плавна без точок</option>
-                <option value="linear">Пряма</option>
-                <option value="linearNoPoints">Пряма без точок</option>
-                <option value="trend">Лінія тренду</option>
-              </select>
-
               <div class="analytics-day-filter" id="raidDurationDayFilter">
                 <label class="analytics-day-check"><input type="checkbox" value="1"><span>ПН</span></label>
                 <label class="analytics-day-check"><input type="checkbox" value="2"><span>ВТ</span></label>
@@ -94,6 +85,15 @@
               </div>
 
               <select id="raidDurationYearSelect" class="analytics-year-select" aria-label="Період"></select>
+
+              <label for="raidDurationSplineSelect">Крива</label>
+              <select id="raidDurationSplineSelect">
+                <option value="smooth">Плавна</option>
+                <option value="smoothNoPoints" selected>Плавна без точок</option>
+                <option value="linear">Пряма</option>
+                <option value="linearNoPoints">Пряма без точок</option>
+                <option value="trend">Лінія тренду</option>
+              </select>
             </div>
             <div class="analytics-chart-wrap">
               <canvas id="chartRaidDuration"></canvas>

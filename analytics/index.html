@@ -79,15 +79,6 @@
           <div class="ranking-controls">
             <select id="bossSumOverTimeSelect" aria-label="Бос"></select>
 
-            <label for="bossSumOverTimeSplineSelect">Тип лінії</label>
-            <select id="bossSumOverTimeSplineSelect">
-              <option value="smooth">Плавна</option>
-              <option value="smoothNoPoints" selected>Плавна без точок</option>
-              <option value="linear">Пряма</option>
-              <option value="linearNoPoints">Пряма без точок</option>
-              <option value="trend">Лінія тренду</option>
-            </select>
-
             <div class="analytics-day-filter" id="bossSumDayFilter">
               <label class="analytics-day-check"><input type="checkbox" value="1"><span>ПН</span></label>
               <label class="analytics-day-check"><input type="checkbox" value="2"><span>ВТ</span></label>
@@ -99,6 +90,15 @@
             </div>
 
             <select id="bossSumYearSelect" class="analytics-year-select" aria-label="Період"></select>
+
+            <label for="bossSumOverTimeSplineSelect">Крива</label>
+            <select id="bossSumOverTimeSplineSelect">
+              <option value="smooth">Плавна</option>
+              <option value="smoothNoPoints" selected>Плавна без точок</option>
+              <option value="linear">Пряма</option>
+              <option value="linearNoPoints">Пряма без точок</option>
+              <option value="trend">Лінія тренду</option>
+            </select>
           </div>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossSumOverTime"></canvas>
@@ -114,15 +114,6 @@
           <div class="ranking-controls">
             <select id="bossDurationOverTimeSelect" aria-label="Бос"></select>
 
-            <label for="bossDurationOverTimeSplineSelect">Тип лінії</label>
-            <select id="bossDurationOverTimeSplineSelect">
-              <option value="smooth">Плавна</option>
-              <option value="smoothNoPoints" selected>Плавна без точок</option>
-              <option value="linear">Пряма</option>
-              <option value="linearNoPoints">Пряма без точок</option>
-              <option value="trend">Лінія тренду</option>
-            </select>
-
             <div class="analytics-day-filter" id="bossDurationDayFilter">
               <label class="analytics-day-check"><input type="checkbox" value="1"><span>ПН</span></label>
               <label class="analytics-day-check"><input type="checkbox" value="2"><span>ВТ</span></label>
@@ -134,6 +125,15 @@
             </div>
 
             <select id="bossDurationYearSelect" class="analytics-year-select" aria-label="Період"></select>
+
+            <label for="bossDurationOverTimeSplineSelect">Крива</label>
+            <select id="bossDurationOverTimeSplineSelect">
+              <option value="smooth">Плавна</option>
+              <option value="smoothNoPoints" selected>Плавна без точок</option>
+              <option value="linear">Пряма</option>
+              <option value="linearNoPoints">Пряма без точок</option>
+              <option value="trend">Лінія тренду</option>
+            </select>
           </div>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossDurationOverTime"></canvas>
