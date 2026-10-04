@@ -14,7 +14,14 @@ function isSafeUrl(url) {
 
 function extractLogUploaderName(raidUrl) {
   const match = String(raidUrl || '').match(/--([^-/]+)--FreedomUA\/?.*$/);
-  return match ? match[1] : 'Невідомо';
+  if (!match) return 'Невідомо';
+  // Кириличні імена в скопійованому посиланні закодовані як URL
+  // (%D0%86%D0%BB... замість "Ілідантроль") — повертаємо читабельний вигляд.
+  try {
+    return decodeURIComponent(match[1]);
+  } catch {
+    return match[1];
+  }
 }
 
 function formatPotionLogLabel(statsRaid) {
