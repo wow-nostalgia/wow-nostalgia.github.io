@@ -3340,7 +3340,28 @@ body.raid-manager-detail-page .raid-weight-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem 0.75rem;
+  gap: 0.4rem;
+}
+
+/* Кнопка призначення й іконка бонусного софту переносяться лише разом. */
+body.raid-manager-detail-page .raid-weight-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Вужчий padding, щоб x1/x2/x3 + кнопка + іконка вміщались в один рядок
+   офіцерської панелі на десктопі. */
+body.raid-manager-detail-page .raid-weight-actions .compare-btn {
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+}
+
+/* Коли рядок кнопок переноситься, підпис лишається навпроти першого рядка,
+   а не по центру обох: (висота кнопки 34px - line-height 24px) / 2. */
+body.raid-manager-detail-page .raid-soft-form .raid-weight-label {
+  align-self: start;
+  padding-top: 0.3125rem;
 }
 
 /* Перебиває глобальне .compare-btn { width: 100% } з мобільного медіа-запиту
