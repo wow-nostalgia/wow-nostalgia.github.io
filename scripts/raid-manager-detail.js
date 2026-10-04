@@ -1740,6 +1740,23 @@ async function loadRaid() {
   raid = await apiCall('GET', `/raids/${raidId}`, { token: getSessionToken() });
 }
 
+// Одним запитом (Worker: /raids/{id}/snapshot) усе, що раніше було 10
+// окремими запитами при відкритті сторінки й на кожному оновленні: рейд,
+// софти, офіцери, передачі, бонуси, черги на уламки й на посилення. Кожен
+// запит — окремий запуск Worker'а в ліміт безкоштовного тарифу. Повертає
+// офіцерів — їх застосовує викликач (applyOfficers перемальовує панель).
+async function loadSnapshot() {
+  const snapshot = await apiCall('GET', `/raids/${raidId}/snapshot`, { token: getSessionToken() });
+  raid = snapshot.raid;
+  reserves = snapshot.reserves;
+  weightTransfers = snapshot.transfers;
+  bonusGrants = snapshot.bonusGrants;
+  // Черги прив'язані до дня тижня рейду — тож лише після raid.
+  applyShardQueueRaw(snapshot.shardQueue);
+  applyBuffQueueRaw(snapshot.buffQueue);
+  return snapshot.officers;
+}
+
 async function loadReserves() {
   reserves = await apiCall('GET', `/raids/${raidId}/reserves`, { token: getSessionToken() });
 }
@@ -2296,14 +2313,8 @@ async function init() {
   ]);
 
   let raidError = null;
-  const raidPromise = loadRaid().catch((err) => { raidError = err; });
-  const officersPromise = fetchOfficers();
-  const reservesPromise = loadReserves();
-  const transfersPromise = loadTransfers();
-  const bonusGrantsPromise = loadBonusGrants();
+  const snapshotPromise = loadSnapshot().catch((err) => { raidError = err; return null; });
   const penaltiesPromise = loadPenalties();
-  const shardQueueRawPromise = fetchShardQueueRaw();
-  const buffQueueRawPromise = fetchBuffQueueRaw();
   const myCharactersPromise = apiCall('GET', '/auth/me/characters', { token: getSessionToken() })
     .catch((err) => { console.error(err); return null; });
 
@@ -2332,7 +2343,7 @@ async function init() {
     console.error(err);
   }
 
-  await raidPromise;
+  const officers = await snapshotPromise;
   if (raidError) {
     setStatus(`Рейд не знайдено: ${raidError.message}`, 'error');
     return;
@@ -2341,7 +2352,7 @@ async function init() {
   raidTitleHeading.textContent = raid.title;
   document.title = `${raid.title} — Рейд-менеджер`;
 
-  applyOfficers(await officersPromise);
+  applyOfficers(officers);
   renderBanner();
   officerPanel.hidden = !isOfficerMode();
   renderBenchmarkPanel();
@@ -2354,12 +2365,7 @@ async function init() {
   myCharacters = (await myCharactersPromise) || [];
   populateMyCharacters();
 
-  await reservesPromise;
-  await transfersPromise;
-  await bonusGrantsPromise;
   await penaltiesPromise;
-  applyShardQueueRaw(await shardQueueRawPromise);
-  applyBuffQueueRaw(await buffQueueRawPromise);
   renderPlayersTable();
   renderItemsTable();
 
@@ -2375,37 +2381,60 @@ async function init() {
   // поки їх нема. Для завершеного рейду сенсу нема: софтити там уже пізно.
   if (!myCharacters.length && !isRaidCompleted()) noCharactersModal.hidden = false;
 
-  setInterval(async () => {
-    try {
-      const [, , , , shardRaw, officers, buffRaw] = await Promise.all([
-        loadRaid(),
-        loadReserves(),
-        loadTransfers(),
-        loadBonusGrants(),
-        fetchShardQueueRaw(),
-        fetchOfficers(),
-        fetchBuffQueueRaw()
-      ]);
-      applyShardQueueRaw(shardRaw);
-      applyBuffQueueRaw(buffRaw);
-      applyOfficers(officers);
-      checkNotifications();
-      renderBanner();
-      renderPlayersTable();
-      renderItemsTable();
-      applySoftFormLockState();
-      if (activeTab === 'audit') await loadAudit();
-      // Штрафи: перебудовує весь tbody, тож пропускаємо, поки офіцер
-      // тримає фокус усередині таблиці (набирає суму/причину) - інакше
-      // поллінг зніс би незбережений ввід разом з фокусом.
-      if (activeTab === 'penalties' && !raidPenaltiesBody.contains(document.activeElement)) {
-        await loadAndRenderPenalties();
-      }
-      if (activeTab === 'potions') await loadPotionsTab();
-    } catch (err) {
-      console.error(err);
+  schedulePoll();
+  document.addEventListener('visibilitychange', () => {
+    // Сховали вкладку — переходимо на рідкий інтервал; повернулись — одразу
+    // свіжі дані, далі знову кожні 10 с.
+    if (document.hidden) {
+      schedulePoll();
+      return;
     }
-  }, 10000);
+    pollRaid().finally(schedulePoll);
+  });
+}
+
+// Автооновлення сторінки рейду. Активна вкладка — кожні 10 с. У фоні — раз
+// на хвилину: гравець у грі, сайт у фоновій вкладці, і звук про передачу чи
+// бонусний софт усе одно має прийти (хоч і з затримкою до хвилини).
+const POLL_VISIBLE_MS = 10000;
+const POLL_HIDDEN_MS = 60000;
+let pollTimer = null;
+let pollInFlight = false;
+
+function schedulePoll() {
+  clearTimeout(pollTimer);
+  pollTimer = setTimeout(async () => {
+    await pollRaid();
+    schedulePoll();
+  }, document.hidden ? POLL_HIDDEN_MS : POLL_VISIBLE_MS);
+}
+
+async function pollRaid() {
+  // Повернення у вкладку посеред запланованого оновлення — не дублюємо запит.
+  if (pollInFlight) return;
+  pollInFlight = true;
+  try {
+    applyOfficers(await loadSnapshot());
+    checkNotifications();
+    renderBanner();
+    renderPlayersTable();
+    renderItemsTable();
+    applySoftFormLockState();
+    // Дані окремих вкладок — лише коли їх видно: у фоні вистачає snapshot.
+    if (document.hidden) return;
+    if (activeTab === 'audit') await loadAudit();
+    // Штрафи: перебудовує весь tbody, тож пропускаємо, поки офіцер
+    // тримає фокус усередині таблиці (набирає суму/причину) - інакше
+    // поллінг зніс би незбережений ввід разом з фокусом.
+    if (activeTab === 'penalties' && !raidPenaltiesBody.contains(document.activeElement)) {
+      await loadAndRenderPenalties();
+    }
+    if (activeTab === 'potions') await loadPotionsTab();
+  } catch (err) {
+    console.error(err);
+  } finally {
+    pollInFlight = false;
+  }
 }
 
 init();
