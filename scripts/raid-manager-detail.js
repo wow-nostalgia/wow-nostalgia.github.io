@@ -140,7 +140,7 @@ let potionStatsRaids = null;
 let raidRosters = null;
 let activeTab = 'players';
 let honorBoard = [];
-let shardQueueIconsByName = new Map(); // player_name -> Set('shard' | 'blood')
+let shardQueueIconsByName = new Map(); // player_name -> Map('shard' | 'blood' -> № у черзі)
 let buffQueueByBoss = new Map(); // boss -> [{ playerName, position, buffed, typeLabel, typeIndex }]
 let personalStatsPromise = null;
 let initialRenderDone = false;
@@ -184,13 +184,17 @@ function applyShardQueueRaw(raw) {
   if (!matchedDay) return;
 
   const caps = { shard: 50, blood: 2 };
+  // Номер — позиція в таблиці черги на сторінці черги (активні за priority_rank).
   const map = new Map();
-  entries
-    .filter((e) => e.day_id === matchedDay.id && e.progress < caps[e.resource_type])
-    .forEach((e) => {
-      if (!map.has(e.player_name)) map.set(e.player_name, new Set());
-      map.get(e.player_name).add(e.resource_type);
-    });
+  ['shard', 'blood'].forEach((resourceType) => {
+    entries
+      .filter((e) => e.day_id === matchedDay.id && e.resource_type === resourceType && e.progress < caps[resourceType])
+      .sort((a, b) => a.priority_rank - b.priority_rank)
+      .forEach((e, index) => {
+        if (!map.has(e.player_name)) map.set(e.player_name, new Map());
+        map.get(e.player_name).set(resourceType, index + 1);
+      });
+  });
   shardQueueIconsByName = map;
 }
 
@@ -1314,7 +1318,7 @@ function renderPlayersTable() {
       const labels = { shard: 'Уламки', blood: 'Кров' };
       ['shard', 'blood'].forEach((resourceType) => {
         if (queuedResources.has(resourceType)) {
-          nameWrap.appendChild(createResourceIcon(resourceType, `У черзі на ${labels[resourceType]} на сьогодні`));
+          nameWrap.appendChild(createResourceIcon(resourceType, `${labels[resourceType]} — №${queuedResources.get(resourceType)} у черзі`));
         }
       });
     }
