@@ -144,6 +144,36 @@ async function routeAuth(request, env, parts) {
   throw new HttpError(404, 'Невідомий шлях');
 }
 
+// Усе, що сторінка рейду оновлює кожні 10 с, — одним запитом замість 10
+// окремих (кожен запит — окремий запуск Worker'а в ліміт безкоштовного
+// тарифу й окрема перевірка сесії в D1). Викликаємо ті самі обробники, що й
+// окремі ендпоінти, тож правила доступу (приховані софти тощо) ідентичні.
+// Як і на фронті раніше: збій передач/бонусів — порожній список, збій черг —
+// null; рейд, софти й офіцери обов'язкові (404 тощо віддаємо як є).
+async function handleRaidSnapshot(request, env, raidId, session) {
+  const body = async (responsePromise) => (await responsePromise).json();
+  const optional = (responsePromise, fallback) => body(responsePromise).catch(() => fallback);
+
+  const [raid, reserves, officers, transfers, bonusGrants, shardQueue, buffQueue] = await Promise.all([
+    body(handleGetRaid(request, env, raidId, session)),
+    body(handleListReserves(request, env, raidId, session)),
+    body(handleListOfficers(request, env, raidId, session)),
+    optional(handleListTransfers(request, env, raidId), []),
+    optional(handleListBonusGrants(request, env, raidId), []),
+    Promise.all([
+      body(handleListShardQueueDays(request, env)),
+      body(handleListShardQueue(request, env))
+    ]).then(([days, entries]) => ({ days, entries })).catch(() => null),
+    Promise.all([
+      body(handleListBuffQueueDays(request, env)),
+      body(handleListBuffQueueTypes(request, env)),
+      body(handleListBuffQueue(request, env))
+    ]).then(([days, types, entries]) => ({ days, types, entries })).catch(() => null)
+  ]);
+
+  return jsonResponse({ raid, reserves, officers, transfers, bonusGrants, shardQueue, buffQueue });
+}
+
 async function routeRaids(request, env, parts, session) {
   const method = request.method;
   const raidId = parts[0];
@@ -162,6 +192,7 @@ async function routeRaids(request, env, parts, session) {
     throw new HttpError(405, 'Метод не підтримується');
   }
 
+  if (sub === 'snapshot' && method === 'GET') return handleRaidSnapshot(request, env, raidId, session);
   if (sub === 'lock' && method === 'POST') return handleLock(request, env, raidId, true, session);
   if (sub === 'unlock' && method === 'POST') return handleLock(request, env, raidId, false, session);
   if (sub === 'toggle-hidden' && method === 'POST') return handleToggleHiddenReserves(request, env, raidId, session);
