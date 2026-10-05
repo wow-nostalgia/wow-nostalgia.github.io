@@ -28,7 +28,7 @@ function publicRaid(raid) {
   return rest;
 }
 
-async function loadRaidOr404(env, id) {
+export async function loadRaidOr404(env, id) {
   const raid = await getRaid(env.DB, id);
   if (!raid) throw new HttpError(404, 'Рейд не знайдено');
   return raid;

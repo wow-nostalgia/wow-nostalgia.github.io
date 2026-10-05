@@ -29,16 +29,22 @@ async function loadRaidOr404(env, raidId) {
 
 export async function handleListReserves(request, env, raidId, session) {
   const raid = await loadRaidOr404(env, raidId);
+  return jsonResponse(await listVisibleReserves(env, raid, session));
+}
+
+// Софти рейду з урахуванням прихованого режиму — спільне для
+// GET /reserves і snapshot сторінки рейду (там raid уже завантажений).
+export async function listVisibleReserves(env, raid, session) {
+  const raidId = raid.id;
   const reserves = await listReserves(env.DB, raidId);
 
-  if (!raid.hidden_reserves) return jsonResponse(reserves);
+  if (!raid.hidden_reserves) return reserves;
 
-  if (await isRaidOfficer(env.DB, raidId, raid, session.discordId)) return jsonResponse(reserves);
+  if (await isRaidOfficer(env.DB, raidId, raid, session.discordId)) return reserves;
 
   // Приховуємо імена чужих гравців: своє ім'я залишається, чужі → player_name: null
   const ownNames = await getClaimedPlayerNames(env.DB, raidId, session.discordId);
-  const filtered = reserves.map((r) => (ownNames.has(r.player_name) ? r : { ...r, player_name: null }));
-  return jsonResponse(filtered);
+  return reserves.map((r) => (ownNames.has(r.player_name) ? r : { ...r, player_name: null }));
 }
 
 export async function handleCreateReserve(request, env, raidId, session) {

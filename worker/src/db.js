@@ -930,6 +930,13 @@ export async function listBuffQueueEntries(db) {
   return results;
 }
 
+// Лише невиконані записи (без архіву) і без ORDER BY — для snapshot сторінки
+// рейду, що сортує сам: сортування в SQL подвоювало rows_read у D1.
+export async function listActiveBuffQueueEntries(db) {
+  const { results } = await db.prepare("SELECT * FROM buff_queue_entries WHERE status <> 'done'").all();
+  return results;
+}
+
 export async function getBuffQueueEntry(db, id) {
   return db.prepare('SELECT * FROM buff_queue_entries WHERE id = ?').bind(id).first();
 }

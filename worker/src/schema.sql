@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS user_characters (
   created_at TEXT NOT NULL,
   PRIMARY KEY (discord_id, character_name)
 );
+-- Основний персонаж (display_name) — підзапит у списках офіцерів/власників.
+CREATE INDEX IF NOT EXISTS idx_user_characters_primary ON user_characters(discord_id, is_primary);
 
 CREATE TABLE IF NOT EXISTS sessions (
   token TEXT PRIMARY KEY,
@@ -65,6 +67,8 @@ CREATE TABLE IF NOT EXISTS soft_reserves (
 );
 CREATE INDEX IF NOT EXISTS idx_soft_reserves_raid ON soft_reserves(raid_id);
 CREATE INDEX IF NOT EXISTS idx_soft_reserves_player ON soft_reserves(raid_id, player_name);
+-- Софти рейду в порядку створення без окремого сортування (менше rows_read).
+CREATE INDEX IF NOT EXISTS idx_soft_reserves_raid_created ON soft_reserves(raid_id, created_at);
 
 CREATE TABLE IF NOT EXISTS audit_log (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

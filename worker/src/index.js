@@ -13,7 +13,9 @@ import {
   handleToggleHiddenReserves,
   handleSetPotionLog,
   handleDeleteRaid,
-  handlePruneOldRaids
+  handlePruneOldRaids,
+  publicRaid,
+  loadRaidOr404
 } from './routes/raids.js';
 import {
   handleListReserves,
@@ -22,7 +24,8 @@ import {
   handleDeleteAllForPlayer,
   handleToggleReceived,
   handleOfficerAssign,
-  handleUpdateBonusWeight
+  handleUpdateBonusWeight,
+  listVisibleReserves
 } from './routes/reserves.js';
 import { handleListAudit } from './routes/audit.js';
 import { handleListTransfers, handleCreateTransfer, handleDeleteTransfer } from './routes/transfers.js';
@@ -83,7 +86,15 @@ import {
   removeDefaultOfficer,
   getUserByDiscordId,
   pruneOldRaidsIfOverLimit,
-  countUsersByBackground
+  countUsersByBackground,
+  listRaidOfficers,
+  listWeightTransfers,
+  listBonusGrants,
+  listShardQueueDays,
+  listShardQueueEntries,
+  listBuffQueueDays,
+  listBuffQueueTypes,
+  listActiveBuffQueueEntries
 } from './db.js';
 
 const ALLOWED_ORIGINS = ['https://wow-nostalgia.github.io', 'http://localhost:8080'];
@@ -144,34 +155,35 @@ async function routeAuth(request, env, parts) {
   throw new HttpError(404, 'Невідомий шлях');
 }
 
-// Усе, що сторінка рейду оновлює кожні 10 с, — одним запитом замість 10
-// окремих (кожен запит — окремий запуск Worker'а в ліміт безкоштовного
-// тарифу й окрема перевірка сесії в D1). Викликаємо ті самі обробники, що й
-// окремі ендпоінти, тож правила доступу (приховані софти тощо) ідентичні.
-// Як і на фронті раніше: збій передач/бонусів — порожній список, збій черг —
-// null; рейд, софти й офіцери обов'язкові (404 тощо віддаємо як є).
+// Усе, що сторінка рейду оновлює, — одним запитом замість 10 окремих
+// (кожен запит — окремий запуск Worker'а в ліміт безкоштовного тарифу й
+// окрема перевірка сесії в D1). Рейд читаємо один раз і далі йдемо прямо в
+// db-функції — ліміт D1 рахує прочитані рядки, тож без повторних getRaid.
+// Правила доступу (приховані софти) — спільний listVisibleReserves.
+// Черги — лише з ?queues=1 (фронт просить їх раз на хвилину), і в черзі
+// посилень лише невиконані записи: архів сторінці рейду не потрібен.
+// Як і раніше: збій передач/бонусів — порожній список, збій черг — null.
 async function handleRaidSnapshot(request, env, raidId, session) {
-  const body = async (responsePromise) => (await responsePromise).json();
-  const optional = (responsePromise, fallback) => body(responsePromise).catch(() => fallback);
+  const raid = await loadRaidOr404(env, raidId);
+  const withQueues = new URL(request.url).searchParams.get('queues') === '1';
+  const db = env.DB;
 
-  const [raid, reserves, officers, transfers, bonusGrants, shardQueue, buffQueue] = await Promise.all([
-    body(handleGetRaid(request, env, raidId, session)),
-    body(handleListReserves(request, env, raidId, session)),
-    body(handleListOfficers(request, env, raidId, session)),
-    optional(handleListTransfers(request, env, raidId), []),
-    optional(handleListBonusGrants(request, env, raidId), []),
-    Promise.all([
-      body(handleListShardQueueDays(request, env)),
-      body(handleListShardQueue(request, env))
-    ]).then(([days, entries]) => ({ days, entries })).catch(() => null),
-    Promise.all([
-      body(handleListBuffQueueDays(request, env)),
-      body(handleListBuffQueueTypes(request, env)),
-      body(handleListBuffQueue(request, env))
-    ]).then(([days, types, entries]) => ({ days, types, entries })).catch(() => null)
+  const [reserves, officers, transfers, bonusGrants, shardQueue, buffQueue] = await Promise.all([
+    listVisibleReserves(env, raid, session),
+    listRaidOfficers(db, raidId),
+    listWeightTransfers(db, raidId).catch(() => []),
+    listBonusGrants(db, raidId).catch(() => []),
+    withQueues
+      ? Promise.all([listShardQueueDays(db), listShardQueueEntries(db)])
+        .then(([days, entries]) => ({ days, entries })).catch(() => null)
+      : undefined,
+    withQueues
+      ? Promise.all([listBuffQueueDays(db), listBuffQueueTypes(db), listActiveBuffQueueEntries(db)])
+        .then(([days, types, entries]) => ({ days, types, entries })).catch(() => null)
+      : undefined
   ]);
 
-  return jsonResponse({ raid, reserves, officers, transfers, bonusGrants, shardQueue, buffQueue });
+  return jsonResponse({ raid: publicRaid(raid), reserves, officers, transfers, bonusGrants, shardQueue, buffQueue });
 }
 
 async function routeRaids(request, env, parts, session) {
