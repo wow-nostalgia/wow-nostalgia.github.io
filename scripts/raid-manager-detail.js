@@ -1749,8 +1749,16 @@ async function loadRaid() {
 // софти, офіцери, передачі, бонуси, черги на уламки й на посилення. Кожен
 // запит — окремий запуск Worker'а в ліміт безкоштовного тарифу. Повертає
 // офіцерів — їх застосовує викликач (applyOfficers перемальовує панель).
+// Черги на уламки й посилення під час рейду майже не змінюються, а читати
+// їх з бази дорого (ліміт D1 на прочитані рядки) — тож у snapshot вони
+// приходять не частіше ніж раз на хвилину і лише в активній вкладці.
+const QUEUES_REFRESH_MS = 60000;
+let queuesLoadedAt = 0;
+
 async function loadSnapshot() {
-  const snapshot = await apiCall('GET', `/raids/${raidId}/snapshot`, { token: getSessionToken() });
+  const withQueues = !queuesLoadedAt || (!document.hidden && Date.now() - queuesLoadedAt >= QUEUES_REFRESH_MS);
+  const snapshot = await apiCall('GET', `/raids/${raidId}/snapshot${withQueues ? '?queues=1' : ''}`, { token: getSessionToken() });
+  if (withQueues) queuesLoadedAt = Date.now();
   raid = snapshot.raid;
   reserves = snapshot.reserves;
   weightTransfers = snapshot.transfers;
@@ -1900,6 +1908,8 @@ statusToggleBtn.addEventListener('click', async () => {
     renderBanner();
     await loadOfficers();
     renderPlayersTable();
+    // Завершений рейд не опитується; відновлений — знову так.
+    schedulePoll();
   } catch (err) {
     alert(err.message);
   }
@@ -2388,25 +2398,34 @@ async function init() {
   schedulePoll();
   document.addEventListener('visibilitychange', () => {
     // Сховали вкладку — переходимо на рідкий інтервал; повернулись — одразу
-    // свіжі дані, далі знову кожні 10 с.
+    // свіжі дані, далі знову кожні 20 с.
     if (document.hidden) {
+      hiddenSince = Date.now();
       schedulePoll();
       return;
     }
+    hiddenSince = null;
+    if (isRaidCompleted()) return;
     pollRaid().finally(schedulePoll);
   });
 }
 
-// Автооновлення сторінки рейду. Активна вкладка — кожні 10 с. У фоні — раз
+// Автооновлення сторінки рейду. Активна вкладка — кожні 20 с. У фоні — раз
 // на хвилину: гравець у грі, сайт у фоновій вкладці, і звук про передачу чи
-// бонусний софт усе одно має прийти (хоч і з затримкою до хвилини).
-const POLL_VISIBLE_MS = 10000;
+// бонусний софт усе одно має прийти (хоч і з затримкою до хвилини). Забута
+// фонова вкладка (понад 4 год) і завершений рейд не опитуються зовсім —
+// повернення у вкладку одразу оновлює дані й відновлює опитування.
+const POLL_VISIBLE_MS = 20000;
 const POLL_HIDDEN_MS = 60000;
+const POLL_HIDDEN_MAX_MS = 4 * 60 * 60 * 1000;
 let pollTimer = null;
 let pollInFlight = false;
+let hiddenSince = document.hidden ? Date.now() : null;
 
 function schedulePoll() {
   clearTimeout(pollTimer);
+  if (isRaidCompleted()) return;
+  if (document.hidden && hiddenSince !== null && Date.now() - hiddenSince >= POLL_HIDDEN_MAX_MS) return;
   pollTimer = setTimeout(async () => {
     await pollRaid();
     schedulePoll();
