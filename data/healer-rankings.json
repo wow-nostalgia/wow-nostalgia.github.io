@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-10-06T03:28:13.947Z",
+  "updatedAt": "2026-10-07T02:54:49.531Z",
   "specs": [
     {
       "class": "Paladin",
@@ -1910,6 +1910,10 @@
           "hps": 379.9
         },
         {
+          "name": "Timonx",
+          "hps": 379.6
+        },
+        {
           "name": "Відьма",
           "hps": 379.4
         },
@@ -2432,12 +2436,20 @@
           "hps": 12159.1
         },
         {
+          "name": "Samogonka",
+          "hps": 12084
+        },
+        {
           "name": "Prostovadim",
           "hps": 11897
         },
         {
           "name": "Plague",
           "hps": 11107.4
+        },
+        {
+          "name": "Owsla",
+          "hps": 11018.2
         },
         {
           "name": "Holylike",
@@ -2718,6 +2730,10 @@
           "hps": 21123.2
         },
         {
+          "name": "Galadrielle",
+          "hps": 21017.8
+        },
+        {
           "name": "Сенполия",
           "hps": 21001
         },
@@ -2732,10 +2748,6 @@
         {
           "name": "Godej",
           "hps": 20867.9
-        },
-        {
-          "name": "Galadrielle",
-          "hps": 20840.8
         },
         {
           "name": "Rubi",
@@ -3072,6 +3084,10 @@
         {
           "name": "Айс",
           "hps": 16505.1
+        },
+        {
+          "name": "Захиляю",
+          "hps": 16487.7
         },
         {
           "name": "Melris",
@@ -3964,6 +3980,10 @@
         {
           "name": "Freydis",
           "hps": 345.5
+        },
+        {
+          "name": "Chupachups",
+          "hps": 320.8
         },
         {
           "name": "Tanti",
@@ -5126,6 +5146,10 @@
         {
           "name": "Vkutok",
           "hps": 15370.6
+        },
+        {
+          "name": "В'уханя",
+          "hps": 15170.7
         },
         {
           "name": "Констан",
