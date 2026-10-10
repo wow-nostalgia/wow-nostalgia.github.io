@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-10-09T03:30:50.678Z",
+  "updatedAt": "2026-10-10T02:56:24.527Z",
   "specs": [
     {
       "class": "Paladin",
@@ -1040,6 +1040,10 @@
           "hps": 20663.4
         },
         {
+          "name": "Oswitlin",
+          "hps": 20390.8
+        },
+        {
           "name": "Vampirr",
           "hps": 20335.1
         },
@@ -1054,6 +1058,10 @@
         {
           "name": "Zlykabober",
           "hps": 19985.5
+        },
+        {
+          "name": "Dwalin",
+          "hps": 19768
         },
         {
           "name": "Mirzoo",
@@ -2348,6 +2356,10 @@
           "hps": 16547.2
         },
         {
+          "name": "Annabelle",
+          "hps": 15914.7
+        },
+        {
           "name": "Tenra",
           "hps": 15852.7
         },
@@ -2428,6 +2440,10 @@
           "hps": 12365
         },
         {
+          "name": "Davis",
+          "hps": 12265.6
+        },
+        {
           "name": "Адкромлас",
           "hps": 12182.1
         },
@@ -2458,10 +2474,6 @@
         {
           "name": "Бб",
           "hps": 11002.4
-        },
-        {
-          "name": "Annabelle",
-          "hps": 10473.6
         },
         {
           "name": "Luminara",
@@ -3878,6 +3890,10 @@
           "hps": 1052
         },
         {
+          "name": "Гілкодуб",
+          "hps": 1009.9
+        },
+        {
           "name": "Каное",
           "hps": 988.5
         },
@@ -3904,10 +3920,6 @@
         {
           "name": "Havroshka",
           "hps": 873.6
-        },
-        {
-          "name": "Гілкодуб",
-          "hps": 859.4
         },
         {
           "name": "Shoggot",
@@ -4380,6 +4392,10 @@
           "hps": 26195
         },
         {
+          "name": "Oyenestirol",
+          "hps": 26183
+        },
+        {
           "name": "Wildheal",
           "hps": 26152.4
         },
@@ -4490,10 +4506,6 @@
         {
           "name": "Trymyskill",
           "hps": 24986.1
-        },
-        {
-          "name": "Oyenestirol",
-          "hps": 24960.8
         },
         {
           "name": "Журбінка",
@@ -4936,6 +4948,10 @@
           "hps": 19739.4
         },
         {
+          "name": "Микитка",
+          "hps": 19621.1
+        },
+        {
           "name": "Bastille",
           "hps": 19598.6
         },
@@ -5066,10 +5082,6 @@
         {
           "name": "Го'ел",
           "hps": 17753.9
-        },
-        {
-          "name": "Микитка",
-          "hps": 17707.6
         },
         {
           "name": "Auchenai",
