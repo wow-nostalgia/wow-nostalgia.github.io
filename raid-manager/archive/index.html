@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейди — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=157">
+  <link rel="stylesheet" href="../../style.css?v=158">
   <script src="/scripts/background.js?v=1"></script>
 </head>
 
@@ -135,16 +135,22 @@
           <option value="10N">10 Звичайний</option>
         </select>
 
-        <label>Кількість софтів</label>
-        <div class="raid-toggle-group" id="raidSoftLimitToggle" role="group" aria-label="Кількість софтів">
-          <button type="button" class="raid-toggle-btn" data-value="1">1</button>
-          <button type="button" class="raid-toggle-btn" data-value="2">2</button>
-          <button type="button" class="raid-toggle-btn raid-toggle-btn--active" data-value="3">3</button>
-        </div>
-        <input type="hidden" id="raidSoftLimitTotal" value="3">
+        <div class="raid-create-row">
+          <div class="raid-create-field">
+            <label>Кількість софтів</label>
+            <div class="raid-toggle-group" id="raidSoftLimitToggle" role="group" aria-label="Кількість софтів">
+              <button type="button" class="raid-toggle-btn" data-value="1">1</button>
+              <button type="button" class="raid-toggle-btn" data-value="2">2</button>
+              <button type="button" class="raid-toggle-btn raid-toggle-btn--active" data-value="3">3</button>
+            </div>
+            <input type="hidden" id="raidSoftLimitTotal" value="3">
+          </div>
 
-        <label for="raidTitle">Назва рейду</label>
-        <input type="text" id="raidTitle" required placeholder="Напр. ЦЛК 25 ХМ — 29.06">
+          <div class="raid-create-field raid-create-field--grow">
+            <label for="raidTitle">Назва рейду</label>
+            <input type="text" id="raidTitle" required placeholder="Напр. ЦЛК 25 ХМ — 29.06">
+          </div>
+        </div>
 
         <label class="raid-filter-checkbox" for="raidAllowMountSofts" id="raidAllowMountSoftsLabel">
           <input type="checkbox" id="raidAllowMountSofts" checked>

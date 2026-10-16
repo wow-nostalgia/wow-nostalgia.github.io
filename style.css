@@ -2573,6 +2573,25 @@ body.raid-manager-page #createRaidModal .raid-modal-actions {
   grid-column: 1;
 }
 
+/* "Кількість софтів" і "Назва рейду" - в один ряд; на вузькому екрані
+   назва переноситься під тогл. */
+body.raid-manager-page #createRaidModal .raid-create-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+}
+
+body.raid-manager-page #createRaidModal .raid-create-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+body.raid-manager-page #createRaidModal .raid-create-field--grow {
+  flex: 1 1 15rem;
+  min-width: 0;
+}
+
 body.raid-manager-page #addPenaltyModal .raid-create-form {
   grid-template-columns: 1fr;
 }
@@ -2593,6 +2612,7 @@ body.raid-manager-page #createRaidModal {
 }
 
 body.raid-manager-page #createRaidModal .raid-modal-box {
+  width: min(90vw, 30rem);
   max-height: calc(100vh - 6.5rem);
   overflow-y: auto;
 }
