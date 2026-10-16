@@ -223,7 +223,16 @@ setupToggleGroup(raidInstanceToggle, raidInstanceInput, 'instance', () => {
 setupToggleGroup(raidSoftLimitToggle, raidSoftLimitInput, 'value');
 
 document.getElementById('raidDifficulty').addEventListener('change', updateTitleIfAuto);
-raidLkOnlyInput.addEventListener('change', updateTitleIfAuto);
+// Рейд лише на Ліча — за замовчуванням 1 софт; 2 і 3 лідер може обрати сам.
+raidLkOnlyInput.addEventListener('change', () => {
+  if (raidLkOnlyInput.checked) {
+    raidSoftLimitInput.value = '1';
+    raidSoftLimitToggle.querySelectorAll('.raid-toggle-btn').forEach((b) => {
+      b.classList.toggle('raid-toggle-btn--active', b.dataset.value === '1');
+    });
+  }
+  updateTitleIfAuto();
+});
 raidTitleInput.addEventListener('input', () => { titleAutoFilled = false; });
 
 function applyNameLanguageToCreateForm() {
