@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-10-15T02:14:20.450Z",
+  "updatedAt": "2026-10-16T01:56:38.698Z",
   "specs": [
     {
       "class": "Paladin",
@@ -1094,6 +1094,10 @@
         {
           "name": "Маршал",
           "hps": 19388.3
+        },
+        {
+          "name": "Mutinywithin",
+          "hps": 19383
         },
         {
           "name": "Battlepal",
