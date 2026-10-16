@@ -1911,7 +1911,11 @@ function showCopyLinkTooltip(text) {
 
 copyLinkBtn.addEventListener('click', async () => {
   try {
-    await navigator.clipboard.writeText(window.location.href);
+    // Markdown-посилання для Discord: там воно показується назвою рейду.
+    // Квадратні дужки в назві екрануємо, щоб не зламати розмітку.
+    const url = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(raidId)}`;
+    const title = raid.title.replace(/[[\]]/g, '\\$&');
+    await navigator.clipboard.writeText(`[${title}](${url})`);
     showCopyLinkTooltip('Скопійовано!');
   } catch {
     showCopyLinkTooltip('Не вдалося скопіювати');
