@@ -14,15 +14,15 @@ function displayNameSubquery(alias) {
   return `COALESCE(${primaryCharacterSubquery(alias)}, ${alias}.username)`;
 }
 
-export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, hiddenReserves, leaderDiscordId, transferWeightLimit, allowMountSofts }) {
+export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, hiddenReserves, leaderDiscordId, transferWeightLimit, allowMountSofts, lkOnly }) {
   const ts = nowIso();
   const twl = (transferWeightLimit === undefined || transferWeightLimit === null) ? null : Number(transferWeightLimit);
   await db
     .prepare(
-      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, is_locked, hidden_reserves, officer_token, leader_discord_id, transfer_weight_limit, allow_mount_softs, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, is_locked, hidden_reserves, officer_token, leader_discord_id, transfer_weight_limit, allow_mount_softs, lk_only, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
-    .bind(id, title, instance, difficulty, softLimitTotal, hiddenReserves ? 1 : 0, generateToken(), leaderDiscordId, twl, allowMountSofts ? 1 : 0, ts, ts)
+    .bind(id, title, instance, difficulty, softLimitTotal, hiddenReserves ? 1 : 0, generateToken(), leaderDiscordId, twl, allowMountSofts ? 1 : 0, lkOnly ? 1 : 0, ts, ts)
     .run();
   return getRaid(db, id);
 }
@@ -201,6 +201,17 @@ export async function createReserve(db, { raidId, playerName, itemId, boss, weig
 
 export async function deleteReserveById(db, raidId, reserveId) {
   await db.prepare('DELETE FROM soft_reserves WHERE raid_id = ? AND id = ?').bind(raidId, reserveId).run();
+}
+
+// "Тільки Король-ліч": прибираємо софти на предмети, яких немає в луті Ліча.
+// Каталогу луту у воркері немає — id предметів Ліча надсилає сторінка рейду.
+export async function deleteReservesExceptItems(db, raidId, keepItemIds) {
+  const placeholders = keepItemIds.map(() => '?').join(', ');
+  const { meta } = await db
+    .prepare(`DELETE FROM soft_reserves WHERE raid_id = ? AND item_id NOT IN (${placeholders})`)
+    .bind(raidId, ...keepItemIds)
+    .run();
+  return meta.changes || 0;
 }
 
 export async function deleteAllReservesForPlayer(db, raidId, playerName) {

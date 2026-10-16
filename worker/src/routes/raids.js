@@ -16,6 +16,7 @@ import {
   deleteRaid,
   deleteAllTransfersForRaid,
   resetAllBonusWeightsForRaid,
+  deleteReservesExceptItems,
   pruneOldRaidsIfOverLimit
 } from '../db.js';
 import { requireRaidOfficer, requireLeader } from '../auth.js';
@@ -50,6 +51,7 @@ export async function handleCreateRaid(request, env, session) {
 
   const hiddenReserves = body.hiddenReserves !== false;
   const allowMountSofts = body.allowMountSofts === true;
+  const lkOnly = instance === 'ICC' && body.lkOnly === true;
 
   const transferWeightLimit = body.transferWeightLimit !== undefined && body.transferWeightLimit !== null
     ? Number(body.transferWeightLimit)
@@ -69,7 +71,8 @@ export async function handleCreateRaid(request, env, session) {
     hiddenReserves,
     leaderDiscordId: session.discordId,
     transferWeightLimit,
-    allowMountSofts
+    allowMountSofts,
+    lkOnly
   });
 
   await insertAudit(env.DB, id, session.username, 'raid_create', { title, instance, difficulty });
@@ -114,9 +117,26 @@ export async function handleUpdateRaid(request, env, id, session) {
   }
   if (body.allowMountSofts !== undefined) fields.allow_mount_softs = body.allowMountSofts ? 1 : 0;
 
+  // "Тільки Король-ліч" (лише ЦЛК). Під час увімкнення видаляємо софти на
+  // предмети не з луту Ліча — спільні з іншими босами (токени тощо) лишаються.
+  let lkItemIds = null;
+  if (body.lkOnly !== undefined) {
+    fields.lk_only = raid.instance === 'ICC' && body.lkOnly ? 1 : 0;
+    if (fields.lk_only && !raid.lk_only) {
+      lkItemIds = Array.isArray(body.lkItemIds) ? body.lkItemIds.map(Number) : [];
+      if (!lkItemIds.length || !lkItemIds.every(Number.isInteger)) {
+        throw new HttpError(400, 'Невалідний lkItemIds');
+      }
+    }
+  }
+
   const updated = await updateRaidSettings(env.DB, id, fields);
   if (Object.keys(fields).length) {
     await insertAudit(env.DB, id, session.username, 'settings_change', fields);
+  }
+
+  if (lkItemIds && await deleteReservesExceptItems(env.DB, id, lkItemIds) > 0) {
+    await insertAudit(env.DB, id, session.username, 'lk_only_cleanup', {});
   }
 
   if (fields.transfer_weight_limit === 0) {

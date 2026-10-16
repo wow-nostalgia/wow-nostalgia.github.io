@@ -104,6 +104,15 @@ const bonusPoolBanner = document.getElementById('bonusPoolBanner');
 const transferWeightLimitInput = document.getElementById('transferWeightLimitInput');
 const settingsAllowMountSoftsInput = document.getElementById('settingsAllowMountSoftsInput');
 const settingsAllowMountSoftsLabel = document.getElementById('settingsAllowMountSoftsLabel');
+const settingsLkOnlyInput = document.getElementById('settingsLkOnlyInput');
+const settingsLkOnlyLabel = document.getElementById('settingsLkOnlyLabel');
+const settingsLkOnlyText = document.getElementById('settingsLkOnlyText');
+const lkOnlyConfirmModal = document.getElementById('lkOnlyConfirmModal');
+const lkOnlyConfirmBackdrop = document.getElementById('lkOnlyConfirmBackdrop');
+const lkOnlyConfirmTitle = document.getElementById('lkOnlyConfirmTitle');
+const lkOnlyConfirmText = document.getElementById('lkOnlyConfirmText');
+const lkOnlyConfirmBtn = document.getElementById('lkOnlyConfirmBtn');
+const lkOnlyCancelBtn = document.getElementById('lkOnlyCancelBtn');
 const bonusGrantModal = document.getElementById('bonusGrantModal');
 const bonusGrantModalBackdrop = document.getElementById('bonusGrantModalBackdrop');
 const bonusGrantTableBody = document.getElementById('bonusGrantTableBody');
@@ -307,8 +316,18 @@ function findItemInfo(itemId, boss) {
   return modes.find((i) => i.id === itemId);
 }
 
+const LICH_KING = 'The Lich King';
+
+// "Тільки Король-ліч": решта босів ЦЛК зникає зі списків і з вкладки
+// "Предмети". Спільні предмети (токени тощо) є в луті Ліча, тож їхні софти
+// так і лишаються видно в його рядку.
 function bossesWithCatalog() {
-  return bossesForInstance(raid.instance).filter((b) => itemsCatalog[b]);
+  const bosses = bossesForInstance(raid.instance).filter((b) => itemsCatalog[b]);
+  return raid.lk_only ? bosses.filter((b) => b === LICH_KING) : bosses;
+}
+
+function lichKingItemIds() {
+  return ((itemsCatalog[LICH_KING] || {})[raid.difficulty] || []).map((item) => item.id);
 }
 
 function buildFlatItemList() {
@@ -371,6 +390,11 @@ function renderBanner() {
   settingsAllowMountSoftsLabel.hidden = raid.instance !== 'ICC';
   if (document.activeElement !== settingsAllowMountSoftsInput) {
     settingsAllowMountSoftsInput.checked = Boolean(raid.allow_mount_softs);
+  }
+  settingsLkOnlyLabel.hidden = raid.instance !== 'ICC';
+  settingsLkOnlyText.textContent = `Тільки ${translateBoss(LICH_KING)}`;
+  if (document.activeElement !== settingsLkOnlyInput) {
+    settingsLkOnlyInput.checked = Boolean(raid.lk_only);
   }
 
   applySoftFormLockState();
@@ -588,6 +612,7 @@ function applySettingsFormLockState() {
   settingsSoftLimitInput.disabled = locked;
   transferWeightLimitInput.disabled = locked;
   settingsAllowMountSoftsInput.disabled = locked;
+  settingsLkOnlyInput.disabled = locked;
   settingsForm.querySelector('button[type="submit"]').disabled = locked;
 }
 
@@ -1694,6 +1719,7 @@ function describeAuditAction(entry) {
     case 'lock': return 'заблокував рейд';
     case 'unlock': return 'розблокував рейд';
     case 'settings_change': return 'змінив налаштування рейду';
+    case 'lk_only_cleanup': return 'видалив софти босів окрім Ліча';
     case 'item_received': return d.received ? 'позначив предмет отриманим' : 'скасував "отримано"';
     case 'officer_bonus_weight':
       return hideSoftDetails
@@ -2026,6 +2052,55 @@ officerAssignForm.addEventListener('submit', async (event) => {
   }
 });
 
+// Список босів у формах софту залежить від "Тільки Король-ліч".
+function repopulateBossSelects() {
+  populateBossSelect(softBoss);
+  populateItemPicker(softItem, softItemTrigger, softItemList, softBoss.value);
+  populateBossSelect(assignBoss);
+  populateItemPicker(assignItem, assignItemTrigger, assignItemList, assignBoss.value);
+}
+
+async function saveRaidSettings(body) {
+  const lkOnlyBefore = Boolean(raid.lk_only);
+  try {
+    raid = await apiCall('PATCH', `/raids/${raidId}`, { token: getSessionToken(), body });
+    raidTitleHeading.textContent = stripDateFromTitle(raid.title);
+    document.title = `${raid.title} — Рейд-менеджер`;
+    if (Boolean(raid.lk_only) !== lkOnlyBefore) {
+      // Увімкнення могло видалити софти на сервері — одразу свіжі дані.
+      await loadReserves();
+      repopulateBossSelects();
+      renderPlayersTable();
+      renderItemsTable();
+    }
+    renderBanner();
+    setStatus('Налаштування збережено.', 'success');
+  } catch (err) {
+    setStatus(`Помилка: ${err.message}`, 'error');
+  }
+}
+
+let pendingSettingsBody = null;
+
+function hideLkOnlyConfirm() {
+  lkOnlyConfirmModal.hidden = true;
+  pendingSettingsBody = null;
+}
+
+lkOnlyConfirmBtn.addEventListener('click', async () => {
+  if (!pendingSettingsBody) return;
+  const body = pendingSettingsBody;
+  lkOnlyConfirmBtn.disabled = true;
+  try {
+    await saveRaidSettings(body);
+  } finally {
+    lkOnlyConfirmBtn.disabled = false;
+    hideLkOnlyConfirm();
+  }
+});
+lkOnlyCancelBtn.addEventListener('click', hideLkOnlyConfirm);
+lkOnlyConfirmBackdrop.addEventListener('click', hideLkOnlyConfirm);
+
 settingsForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
@@ -2034,19 +2109,32 @@ settingsForm.addEventListener('submit', async (event) => {
   if (!title || !Number.isInteger(softLimitTotal) || softLimitTotal < 1) return;
 
   const transferWeightLimit = Number(transferWeightLimitInput.value);
+  const body = { title, softLimitTotal, transferWeightLimit, allowMountSofts: settingsAllowMountSoftsInput.checked };
 
-  try {
-    raid = await apiCall('PATCH', `/raids/${raidId}`, {
-      token: getSessionToken(),
-      body: { title, softLimitTotal, transferWeightLimit, allowMountSofts: settingsAllowMountSoftsInput.checked }
-    });
-    raidTitleHeading.textContent = stripDateFromTitle(raid.title);
-    document.title = `${raid.title} — Рейд-менеджер`;
-    renderBanner();
-    setStatus('Налаштування збережено.', 'success');
-  } catch (err) {
-    setStatus(`Помилка: ${err.message}`, 'error');
+  if (raid.instance === 'ICC') {
+    body.lkOnly = settingsLkOnlyInput.checked;
+    if (body.lkOnly && !raid.lk_only) {
+      const lkItemIds = lichKingItemIds();
+      if (!lkItemIds.length) {
+        setStatus('Помилка: не вдалося завантажити лут Короля-ліча.', 'error');
+        return;
+      }
+      body.lkItemIds = lkItemIds;
+      // Софти на предмети не з луту Ліча при ввімкненні видаляються —
+      // попереджаємо, якщо такі є.
+      const keep = new Set(lkItemIds);
+      const toDelete = reserves.filter((r) => !keep.has(r.item_id)).length;
+      if (toDelete) {
+        pendingSettingsBody = body;
+        lkOnlyConfirmTitle.textContent = `Тільки ${translateBoss(LICH_KING)}`;
+        lkOnlyConfirmText.textContent = `Софти на предмети інших босів буде видалено (${toDelete}). Софти на предмети ${translateBoss(LICH_KING)} лишаться. Продовжити?`;
+        lkOnlyConfirmModal.hidden = false;
+        return;
+      }
+    }
   }
+
+  await saveRaidSettings(body);
 });
 
 async function loadPenalties() {
@@ -2437,7 +2525,10 @@ async function pollRaid() {
   if (pollInFlight) return;
   pollInFlight = true;
   try {
+    const lkOnlyBefore = Boolean(raid.lk_only);
     applyOfficers(await loadSnapshot());
+    // Лідер перемкнув "Тільки Король-ліч" — оновлюємо список босів у формах.
+    if (Boolean(raid.lk_only) !== lkOnlyBefore) repopulateBossSelects();
     checkNotifications();
     renderBanner();
     renderPlayersTable();

@@ -24,6 +24,8 @@ const raidSoftLimitInput = document.getElementById('raidSoftLimitTotal');
 const raidTitleInput = document.getElementById('raidTitle');
 const raidAllowMountSoftsInput = document.getElementById('raidAllowMountSofts');
 const raidAllowMountSoftsLabel = document.getElementById('raidAllowMountSoftsLabel');
+const raidLkOnlyInput = document.getElementById('raidLkOnly');
+const raidLkOnlyLabel = document.getElementById('raidLkOnlyLabel');
 
 const TITLE_INSTANCE_ABBR_UK = { ICC: "ЦЛК", RS: "РС" };
 const TITLE_DIFFICULTY_ABBR_UK = { "25H": "25ХМ", "25N": "25Н", "10H": "10ХМ", "10N": "10Н" };
@@ -190,8 +192,13 @@ function updateTitleIfAuto() {
 // Sanctum опція не має сенсу.
 function updateMountSoftsVisibility() {
   const supportsMounts = raidInstanceInput.value === 'ICC';
+  // Повернулись на ЦЛК після Рубінового — маунти знову за замовчуванням увімкнені.
+  if (supportsMounts && raidAllowMountSoftsLabel.hidden) raidAllowMountSoftsInput.checked = true;
   raidAllowMountSoftsLabel.hidden = !supportsMounts;
   if (!supportsMounts) raidAllowMountSoftsInput.checked = false;
+  // "Тільки Король-ліч" — теж лише для ЦЛК.
+  raidLkOnlyLabel.hidden = !supportsMounts;
+  if (!supportsMounts) raidLkOnlyInput.checked = false;
 }
 
 function setupToggleGroup(toggleEl, hiddenInput, datasetKey, onChange) {
@@ -222,6 +229,7 @@ function applyNameLanguageToCreateForm() {
   document.getElementById('raidDifficulty').querySelectorAll('option').forEach((opt) => {
     opt.textContent = translateDifficulty(opt.value, DIFFICULTY_LABELS);
   });
+  document.getElementById('raidLkOnlyText').textContent = `Тільки ${translateBoss('The Lich King')}`;
 }
 
 async function openCreateRaidModal() {
@@ -254,6 +262,7 @@ createForm.addEventListener('submit', async (event) => {
       softLimitTotal: Number(document.getElementById('raidSoftLimitTotal').value),
       hiddenReserves: document.getElementById('raidHiddenReserves').checked,
       allowMountSofts: document.getElementById('raidAllowMountSofts').checked,
+      lkOnly: raidLkOnlyInput.checked,
       transferWeightLimit: Number(document.getElementById('raidTransferWeightLimit').value)
     };
 

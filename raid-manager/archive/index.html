@@ -147,13 +147,18 @@
         <input type="text" id="raidTitle" required placeholder="Напр. ЦЛК 25 ХМ — 29.06">
 
         <label class="raid-filter-checkbox" for="raidHiddenReserves">
-          <input type="checkbox" id="raidHiddenReserves" checked>
+          <input type="checkbox" id="raidHiddenReserves">
           Приховати софти
         </label>
 
         <label class="raid-filter-checkbox" for="raidAllowMountSofts" id="raidAllowMountSoftsLabel">
-          <input type="checkbox" id="raidAllowMountSofts">
+          <input type="checkbox" id="raidAllowMountSofts" checked>
           Дозволити софтити маунтів
+        </label>
+
+        <label class="raid-filter-checkbox" for="raidLkOnly" id="raidLkOnlyLabel">
+          <input type="checkbox" id="raidLkOnly">
+          <span id="raidLkOnlyText">Тільки Король-ліч</span>
         </label>
 
         <label for="raidTransferWeightLimit">Ліміт передачі софтів</label>
@@ -188,7 +193,7 @@
   <script src="../../scripts/ui-shared.js?v=15"></script>
   <script src="../../scripts/raid-manager-shared.js?v=5"></script>
   <script src="../../scripts/name-translations.js?v=2"></script>
-  <script src="../../scripts/raid-manager-archive.js?v=12"></script>
+  <script src="../../scripts/raid-manager-archive.js?v=13"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
