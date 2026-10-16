@@ -1,5 +1,12 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-10-15--19-38--Luxlemorne--FreedomUA",
+    "date": "2026-10-15",
+    "boss": null,
+    "players": [],
+    "error": "Request failed with status 502"
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-10-11--20-36--Boro--FreedomUA/",
     "date": "2026-10-11",
     "boss": "Lord Marrowgar",
@@ -88521,7 +88528,7 @@
     "date": "2026-06-21",
     "boss": null,
     "players": [],
-    "error": "Request failed with status 404"
+    "error": "Request failed with status 502"
   },
   {
     "raidUrl": "https://uwu-logs.xyz/reports/26-06-20--20-29--Boro--FreedomUA/",
