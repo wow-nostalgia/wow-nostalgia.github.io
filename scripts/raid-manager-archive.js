@@ -178,7 +178,10 @@ function generateTitle() {
   const dd = String(now.getDate()).padStart(2, '0');
   const mm = String(now.getMonth() + 1).padStart(2, '0');
   const yyyy = now.getFullYear();
-  const inst = TITLE_INSTANCE_ABBR_UK[instance] || instance;
+  // Рейд лише на Ліча — у назві "Король-ліч" замість "ЦЛК"; номер рахується як для ЦЛК.
+  const inst = instance === 'ICC' && raidLkOnlyInput.checked
+    ? 'Король-ліч'
+    : (TITLE_INSTANCE_ABBR_UK[instance] || instance);
   const diff = TITLE_DIFFICULTY_ABBR_UK[difficulty] || difficulty;
   const seq = weekRaids.filter((r) => r.instance === instance && r.difficulty === difficulty).length + 1;
   return `${inst} ${diff} #${seq} - ${dd}.${mm}.${yyyy}`;
@@ -220,6 +223,7 @@ setupToggleGroup(raidInstanceToggle, raidInstanceInput, 'instance', () => {
 setupToggleGroup(raidSoftLimitToggle, raidSoftLimitInput, 'value');
 
 document.getElementById('raidDifficulty').addEventListener('change', updateTitleIfAuto);
+raidLkOnlyInput.addEventListener('change', updateTitleIfAuto);
 raidTitleInput.addEventListener('input', () => { titleAutoFilled = false; });
 
 function applyNameLanguageToCreateForm() {
