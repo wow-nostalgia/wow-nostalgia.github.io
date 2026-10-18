@@ -810,7 +810,15 @@ footer span {
    увесь рядок фільтрів графіка вміщається в один рядок. */
 .ranking-controls select.analytics-year-select {
   min-width: 0;
-  width: 8.5rem;
+  width: 6.5rem;
+  padding-right: 2rem;
+}
+
+/* Підпис "Крива" і його список переносяться лише разом. */
+.analytics-curve-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .analytics-day-check {
@@ -3773,6 +3781,11 @@ body.raid-manager-detail-page .raid-rarity--epic { color: var(--wow-quality-epic
   .ranking-controls select.analytics-year-select {
     width: 100%;
     min-width: 0;
+  }
+
+  /* На мобільному — як решта: підпис над списком на всю ширину. */
+  .analytics-curve-control {
+    display: contents;
   }
 
   body.personal-analytics-page .player-controls-grid,

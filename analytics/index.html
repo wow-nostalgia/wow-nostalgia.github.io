@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Гільдійська аналітика</title>
-  <link rel="stylesheet" href="../style.css?v=158">
+  <link rel="stylesheet" href="../style.css?v=159">
   <script src="/scripts/background.js?v=1"></script>
 </head>
 
@@ -91,13 +91,15 @@
 
             <select id="bossSumYearSelect" class="analytics-year-select" aria-label="Період"></select>
 
-            <label for="bossSumOverTimeSplineSelect">Крива</label>
-            <select id="bossSumOverTimeSplineSelect">
-              <option value="smooth">Плавна</option>
-              <option value="smoothNoPoints" selected>Плавна без крапок</option>
-              <option value="linearNoPoints">Пряма без крапок</option>
-              <option value="trend">Лінія тренду</option>
-            </select>
+            <span class="analytics-curve-control">
+              <label for="bossSumOverTimeSplineSelect">Крива</label>
+              <select id="bossSumOverTimeSplineSelect">
+                <option value="smooth">Плавна</option>
+                <option value="smoothNoPoints" selected>Плавна без крапок</option>
+                <option value="linearNoPoints">Пряма без крапок</option>
+                <option value="trend">Лінія тренду</option>
+              </select>
+            </span>
           </div>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossSumOverTime"></canvas>
@@ -125,13 +127,15 @@
 
             <select id="bossDurationYearSelect" class="analytics-year-select" aria-label="Період"></select>
 
-            <label for="bossDurationOverTimeSplineSelect">Крива</label>
-            <select id="bossDurationOverTimeSplineSelect">
-              <option value="smooth">Плавна</option>
-              <option value="smoothNoPoints" selected>Плавна без крапок</option>
-              <option value="linearNoPoints">Пряма без крапок</option>
-              <option value="trend">Лінія тренду</option>
-            </select>
+            <span class="analytics-curve-control">
+              <label for="bossDurationOverTimeSplineSelect">Крива</label>
+              <select id="bossDurationOverTimeSplineSelect">
+                <option value="smooth">Плавна</option>
+                <option value="smoothNoPoints" selected>Плавна без крапок</option>
+                <option value="linearNoPoints">Пряма без крапок</option>
+                <option value="trend">Лінія тренду</option>
+              </select>
+            </span>
           </div>
           <div class="analytics-chart-wrap">
             <canvas id="chartBossDurationOverTime"></canvas>
