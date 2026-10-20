@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-10-19T01:51:05.879Z",
+  "updatedAt": "2026-10-20T02:26:25.325Z",
   "specs": [
     {
       "class": "Paladin",
@@ -3738,6 +3738,10 @@
           "hps": 6465.5
         },
         {
+          "name": "Eco",
+          "hps": 5982.9
+        },
+        {
           "name": "Farra",
           "hps": 5784.6
         },
@@ -3812,10 +3816,6 @@
         {
           "name": "Манхоольм",
           "hps": 2839.5
-        },
-        {
-          "name": "Назарик",
-          "hps": 2803.3
         },
         {
           "name": "Romallka",
@@ -5310,6 +5310,10 @@
         {
           "name": "Kimiko",
           "hps": 13054
+        },
+        {
+          "name": "Marcelina",
+          "hps": 13045.4
         },
         {
           "name": "Radium",
