@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-10-21T02:05:54.135Z",
+  "updatedAt": "2026-10-22T02:13:51.993Z",
   "specs": [
     {
       "class": "Paladin",
@@ -516,6 +516,10 @@
           "hps": 31737.4
         },
         {
+          "name": "Орвелл",
+          "hps": 31717.9
+        },
+        {
           "name": "Metallheadxp",
           "hps": 31579.3
         },
@@ -714,10 +718,6 @@
         {
           "name": "Зозулечка",
           "hps": 28609.9
-        },
-        {
-          "name": "Орвелл",
-          "hps": 28598.7
         },
         {
           "name": "Anafilakciya",
@@ -5028,6 +5028,10 @@
           "hps": 20017.6
         },
         {
+          "name": "Nasic",
+          "hps": 20007.4
+        },
+        {
           "name": "Nova",
           "hps": 19989.4
         },
@@ -5150,10 +5154,6 @@
         {
           "name": "Kostoprav",
           "hps": 18016.5
-        },
-        {
-          "name": "Nasic",
-          "hps": 17991.3
         },
         {
           "name": "Lazyspirit",
