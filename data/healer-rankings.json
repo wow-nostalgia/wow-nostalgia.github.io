@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-10-22T02:13:51.993Z",
+  "updatedAt": "2026-10-23T02:02:40.125Z",
   "specs": [
     {
       "class": "Paladin",
@@ -3462,6 +3462,10 @@
           "hps": 13118.5
         },
         {
+          "name": "Белаз",
+          "hps": 13114.1
+        },
+        {
           "name": "Yapi",
           "hps": 13033.7
         },
@@ -3804,10 +3808,6 @@
         {
           "name": "Kekulbek",
           "hps": 3390.2
-        },
-        {
-          "name": "Белаз",
-          "hps": 3229.8
         },
         {
           "name": "Timondudu",
