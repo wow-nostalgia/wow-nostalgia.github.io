@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-10-23T02:02:40.125Z",
+  "updatedAt": "2026-10-24T02:11:21.831Z",
   "specs": [
     {
       "class": "Paladin",
@@ -3226,6 +3226,10 @@
           "hps": 15978.2
         },
         {
+          "name": "Колишній",
+          "hps": 15832.2
+        },
+        {
           "name": "Тетерок",
           "hps": 15824.9
         },
@@ -3927,7 +3931,7 @@
         },
         {
           "name": "Костуба",
-          "hps": 1417.1
+          "hps": 1417.5
         },
         {
           "name": "Babamicha",
@@ -3944,6 +3948,10 @@
         {
           "name": "Vatsuo",
           "hps": 1288.4
+        },
+        {
+          "name": "Feralkit",
+          "hps": 1231.3
         },
         {
           "name": "Tasim",
@@ -4064,10 +4072,6 @@
         {
           "name": "Azirov",
           "hps": 428.9
-        },
-        {
-          "name": "Колишній",
-          "hps": 397
         },
         {
           "name": "Flame",
