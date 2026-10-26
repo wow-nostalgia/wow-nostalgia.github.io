@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-10-25T01:49:59.346Z",
+  "updatedAt": "2026-10-26T01:42:32.278Z",
   "specs": [
     {
       "class": "Paladin",
@@ -90,6 +90,10 @@
         {
           "name": "Мейбл",
           "hps": 41954.5
+        },
+        {
+          "name": "Metallheadxp",
+          "hps": 41951.1
         },
         {
           "name": "Dalinar",
@@ -308,6 +312,10 @@
           "hps": 36389.8
         },
         {
+          "name": "Neyolo",
+          "hps": 36243.5
+        },
+        {
           "name": "Boma",
           "hps": 36235.2
         },
@@ -330,10 +338,6 @@
         {
           "name": "Салямі",
           "hps": 35816.7
-        },
-        {
-          "name": "Neyolo",
-          "hps": 35568.3
         },
         {
           "name": "Thanos",
@@ -518,10 +522,6 @@
         {
           "name": "Орвелл",
           "hps": 31717.9
-        },
-        {
-          "name": "Metallheadxp",
-          "hps": 31579.3
         },
         {
           "name": "Apostol",
@@ -1008,6 +1008,10 @@
           "hps": 21579.7
         },
         {
+          "name": "Dwalin",
+          "hps": 21534.4
+        },
+        {
           "name": "Аеліна",
           "hps": 21506.4
         },
@@ -1086,10 +1090,6 @@
         {
           "name": "Zlykabober",
           "hps": 19985.5
-        },
-        {
-          "name": "Dwalin",
-          "hps": 19768
         },
         {
           "name": "Mirzoo",
@@ -3566,6 +3566,10 @@
           "hps": 12366.6
         },
         {
+          "name": "Dobruy",
+          "hps": 12344.7
+        },
+        {
           "name": "Джонтриволта",
           "hps": 12329.3
         },
@@ -3774,6 +3778,10 @@
           "hps": 5784.6
         },
         {
+          "name": "Drakonlore",
+          "hps": 5003.7
+        },
+        {
           "name": "Fanatka",
           "hps": 4904.4
         },
@@ -3952,10 +3960,6 @@
         {
           "name": "Wilddruid",
           "hps": 1317
-        },
-        {
-          "name": "Dobruy",
-          "hps": 1288.8
         },
         {
           "name": "Vatsuo",
