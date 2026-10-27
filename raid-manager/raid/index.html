@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейд — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=159">
+  <link rel="stylesheet" href="../../style.css?v=160">
   <script src="/scripts/background.js?v=1"></script>
 </head>
 
@@ -311,8 +311,12 @@
       <h3 class="raid-modal-title">Передати софт</h3>
       <p id="transferModalText" class="raid-modal-text"></p>
       <div id="transferToPlayerRow" class="raid-modal-field">
-        <label for="transferToPlayerSelect">Кому передати</label>
-        <select id="transferToPlayerSelect"></select>
+        <label for="transferToPlayerInput">Кому передати</label>
+        <div class="raid-input-wrap">
+          <input type="text" id="transferToPlayerInput" autocomplete="off" placeholder="Гравець гільдії або легіонер">
+          <button type="button" class="raid-input-clear" id="transferToPlayerClear" aria-label="Очистити">&times;</button>
+          <div class="raid-autocomplete-list" id="transferToPlayerList"></div>
+        </div>
       </div>
       <div class="raid-modal-actions">
         <button type="button" id="transferConfirmBtn" class="compare-btn">Передати</button>
@@ -396,7 +400,7 @@
   <script src="../../scripts/ui-shared.js?v=15"></script>
   <script src="../../scripts/raid-manager-shared.js?v=5"></script>
   <script src="../../scripts/name-translations.js?v=3"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=117"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=118"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

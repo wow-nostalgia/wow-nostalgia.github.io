@@ -88,8 +88,9 @@ const itemTooltipEl = document.getElementById('raidItemTooltip');
 const transferModal = document.getElementById('transferModal');
 const transferModalBackdrop = document.getElementById('transferModalBackdrop');
 const transferModalText = document.getElementById('transferModalText');
-const transferToPlayerRow = document.getElementById('transferToPlayerRow');
-const transferToPlayerSelect = document.getElementById('transferToPlayerSelect');
+const transferToPlayerInput = document.getElementById('transferToPlayerInput');
+const transferToPlayerClear = document.getElementById('transferToPlayerClear');
+const transferToPlayerList = document.getElementById('transferToPlayerList');
 const transferConfirmBtn = document.getElementById('transferConfirmBtn');
 const transferCancelModalBtn = document.getElementById('transferCancelModalBtn');
 const transferWeightBtn = document.getElementById('transferWeightBtn');
@@ -383,10 +384,14 @@ function renderBanner() {
   if (document.activeElement !== settingsTitleInput) settingsTitleInput.value = raid.title;
   if (document.activeElement !== settingsSoftLimitInput) settingsSoftLimitInput.value = raid.soft_limit_total;
 
-  const tl = raid.transfer_weight_limit;
+  // Не заданий ліміт передачі (старі рейди) означає "як ліміт софтів" —
+  // показуємо фактичне значення, а не "Заборонено": інакше збереження
+  // налаштувань мовчки вимикало б передачі.
+  const tl = raid.transfer_weight_limit ?? raid.soft_limit_total;
   if (document.activeElement !== transferWeightLimitInput) {
-    transferWeightLimitInput.value = (tl === null || tl === undefined || tl > 3) ? '0' : String(tl);
+    transferWeightLimitInput.value = String(Math.min(tl, 3));
   }
+  syncTransferLimitOptions();
   settingsAllowMountSoftsLabel.hidden = raid.instance !== 'ICC';
   if (document.activeElement !== settingsAllowMountSoftsInput) {
     settingsAllowMountSoftsInput.checked = Boolean(raid.allow_mount_softs);
@@ -655,6 +660,26 @@ function softLimitFor(playerName) {
   return Math.max(0, raid.soft_limit_total - softPenaltyFor(playerName));
 }
 
+// Скільки софтів дає передача: не більше за ліміт передачі, ліміт софтів
+// рейду і власний ліміт донора зі штрафом. Дублює getTransferBonus з
+// worker/src/db.js — сервер лишається джерелом істини.
+// Ліміт передачі не може бути більшим за ліміт софтів: зайві варіанти
+// вимикаємо, а вибраний — опускаємо до ліміту софтів.
+function syncTransferLimitOptions() {
+  const softLimit = Number(settingsSoftLimitInput.value) || raid.soft_limit_total;
+  [...transferWeightLimitInput.options].forEach((opt) => {
+    opt.disabled = Number(opt.value) > softLimit;
+  });
+  if (Number(transferWeightLimitInput.value) > softLimit) {
+    transferWeightLimitInput.value = String(Math.min(softLimit, 3));
+  }
+}
+
+function transferBonusFor(fromPlayer) {
+  const base = Math.min(raid.transfer_weight_limit ?? raid.soft_limit_total, raid.soft_limit_total);
+  return Math.max(0, Math.min(base, softLimitFor(fromPlayer)));
+}
+
 function remainingWeightFor(playerName) {
   return Math.max(0, softLimitFor(playerName) - usedWeightForPlayer(playerName));
 }
@@ -680,7 +705,7 @@ function setGuildMemberNamesSorted(players) {
 
 // Той самий патерн, що в personal-analytics.js: підказки гільдії, але вільний
 // текст лишається доступним (легіонера можна вписати вручну, він не в списку).
-function setupNameAutocomplete(inputEl, listEl) {
+function setupNameAutocomplete(inputEl, listEl, getNames = () => guildMemberNamesSorted) {
   function closeList() {
     listEl.classList.remove('is-open');
     listEl.innerHTML = '';
@@ -688,9 +713,10 @@ function setupNameAutocomplete(inputEl, listEl) {
 
   function openList() {
     const query = inputEl.value.trim().toLocaleLowerCase('uk');
+    const names = getNames();
     const matches = query
-      ? guildMemberNamesSorted.filter((name) => name.toLocaleLowerCase('uk').includes(query))
-      : guildMemberNamesSorted;
+      ? names.filter((name) => name.toLocaleLowerCase('uk').includes(query))
+      : names;
 
     listEl.innerHTML = '';
 
@@ -1531,7 +1557,7 @@ function renderItemsTable() {
   if ((myReceivedForItems || myBonusGrantForItems) && currentUser) {
     // Пул за джерелом бонусу: передача ваги дає ліміт рейду, грант офіцера -
     // завжди рівно +1 (та сама формула, що й у воркері, reserves.js).
-    bonusPoolForItems = (myReceivedForItems ? (raid.transfer_weight_limit ?? raid.soft_limit_total) : 0)
+    bonusPoolForItems = (myReceivedForItems ? transferBonusFor(myReceivedForItems.from_player) : 0)
       + (myBonusGrantForItems ? 1 : 0);
     usedBonusForItems = reserves
       .filter((r) => myNamesForItems.includes(r.player_name))
@@ -1720,6 +1746,10 @@ function describeAuditAction(entry) {
     case 'unlock': return 'розблокував рейд';
     case 'settings_change': return 'змінив налаштування рейду';
     case 'lk_only_cleanup': return 'видалив софти босів окрім Ліча';
+    case 'bonus_trim':
+      return hideSoftDetails
+        ? 'зменшив бонусні софти під новий ліміт'
+        : `зменшив бонусні софти гравцю ${d.playerName} до ${d.to} під новий ліміт`;
     case 'item_received': return d.received ? 'позначив предмет отриманим' : 'скасував "отримано"';
     case 'officer_bonus_weight':
       return hideSoftDetails
@@ -1815,30 +1845,34 @@ async function loadBonusGrants() {
   }
 }
 
-function showTransferModal() {
-  const names = myCharNames();
-  if (!names.length) return;
+// Кому можна передати: ростер гільдії + усі видимі учасники рейду
+// (легіонери), без власних персонажів і тих, хто вже бере участь у передачі.
+// Раніше список будувався лише з софтів рейду — у режимі прихованих софтів
+// чужі імена там null, і модалка падала; а гравця, що ще не софтив, не можна
+// було обрати зовсім. Вільний текст теж дозволений (легіонер не в ростері).
+function transferTakenNamesLower() {
+  return new Set([
+    ...myCharNames(),
+    ...weightTransfers.map((t) => t.from_player),
+    ...weightTransfers.map((t) => t.to_player)
+  ].map((n) => n.toLocaleLowerCase('uk')));
+}
 
-  const myNamesLower = new Set(names.map((n) => n.toLowerCase()));
-  const takenLower = new Set([
-    ...weightTransfers.map((t) => t.from_player.toLowerCase()),
-    ...weightTransfers.map((t) => t.to_player.toLowerCase()),
-  ]);
-  const eligible = [...new Set(reserves.map((r) => r.player_name))]
-    .filter((n) => !myNamesLower.has(n.toLowerCase()) && !takenLower.has(n.toLowerCase()))
+function transferCandidateNames() {
+  const taken = transferTakenNamesLower();
+  const names = new Set(guildMemberNamesSorted);
+  reserves.forEach((r) => { if (r.player_name) names.add(r.player_name); });
+  return [...names]
+    .filter((n) => !taken.has(n.toLocaleLowerCase('uk')))
     .sort((a, b) => a.localeCompare(b, 'uk'));
+}
 
-  transferToPlayerSelect.innerHTML = '';
-  eligible.forEach((n) => {
-    const opt = document.createElement('option');
-    opt.value = n;
-    opt.textContent = n;
-    transferToPlayerSelect.appendChild(opt);
-  });
-  transferToPlayerRow.hidden = eligible.length === 0;
-
+function showTransferModal() {
+  if (!myCharNames().length) return;
+  transferToPlayerInput.value = '';
   transferModalText.textContent = "Обери кому ти хочеш передати свої софти - відповідний гравець отримає сповіщення";
   transferModal.hidden = false;
+  transferToPlayerInput.focus();
 }
 
 function deleteTransfer(fromPlayer) {
@@ -2290,9 +2324,17 @@ function renderPenaltiesTable() {
 }
 
 transferConfirmBtn.addEventListener('click', async () => {
-  const toPlayer = transferToPlayerSelect.value;
+  const toPlayer = transferToPlayerInput.value.trim();
   const fromPlayer = softPlayerNameInput.value;
-  if (!fromPlayer || !toPlayer) return;
+  if (!fromPlayer) return;
+  if (!toPlayer) {
+    alert("Вкажи ім'я гравця, якому передаєш софти");
+    return;
+  }
+  if (transferTakenNamesLower().has(toPlayer.toLocaleLowerCase('uk'))) {
+    alert(`${toPlayer} не може отримати софти: це твій персонаж або він уже бере участь у передачі`);
+    return;
+  }
 
   transferConfirmBtn.disabled = true;
   try {
@@ -2316,6 +2358,12 @@ transferConfirmBtn.addEventListener('click', async () => {
 transferCancelModalBtn.addEventListener('click', () => { transferModal.hidden = true; });
 transferModalBackdrop.addEventListener('click', () => { transferModal.hidden = true; });
 transferWeightBtn.addEventListener('click', () => showTransferModal());
+settingsSoftLimitInput.addEventListener('input', syncTransferLimitOptions);
+setupNameAutocomplete(transferToPlayerInput, transferToPlayerList, transferCandidateNames);
+transferToPlayerClear.addEventListener('click', () => {
+  transferToPlayerInput.value = '';
+  transferToPlayerInput.focus();
+});
 
 function showBonusGrantModal() {
   const names = [...getPlayersWithSoftsSet()].sort((a, b) => a.localeCompare(b, 'uk'));

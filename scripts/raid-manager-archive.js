@@ -220,13 +220,25 @@ setupToggleGroup(raidInstanceToggle, raidInstanceInput, 'instance', () => {
   updateTitleIfAuto();
   updateMountSoftsVisibility();
 });
-setupToggleGroup(raidSoftLimitToggle, raidSoftLimitInput, 'value');
+// Ліміт передачі не може бути більшим за ліміт софтів: зайві варіанти
+// вимикаємо, а вибраний — опускаємо до ліміту софтів.
+function syncTransferLimitOptions() {
+  const select = document.getElementById('raidTransferWeightLimit');
+  const softLimit = Number(raidSoftLimitInput.value);
+  [...select.options].forEach((opt) => {
+    opt.disabled = Number(opt.value) > softLimit;
+  });
+  if (Number(select.value) > softLimit) select.value = String(softLimit);
+}
+
+setupToggleGroup(raidSoftLimitToggle, raidSoftLimitInput, 'value', syncTransferLimitOptions);
 
 document.getElementById('raidDifficulty').addEventListener('change', updateTitleIfAuto);
 // Рейд лише на Ліча — за замовчуванням 1 софт; 2 і 3 лідер може обрати сам.
 raidLkOnlyInput.addEventListener('change', () => {
   if (raidLkOnlyInput.checked) {
     raidSoftLimitInput.value = '1';
+    syncTransferLimitOptions();
     raidSoftLimitToggle.querySelectorAll('.raid-toggle-btn').forEach((b) => {
       b.classList.toggle('raid-toggle-btn--active', b.dataset.value === '1');
     });

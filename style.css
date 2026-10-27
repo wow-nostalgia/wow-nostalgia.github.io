@@ -2923,6 +2923,13 @@ body.shard-queue-page .raid-autocomplete-list.is-open {
   animation: primer-dropdown-in 0.12s cubic-bezier(0, 0.1, 0.1, 1) backwards;
 }
 
+/* У модалці передачі софтів список підказок вбудований, а не поверх: інакше
+   він накривав кнопку "Передати", і клік по ній вибирав ім'я зі списку. */
+body.raid-manager-detail-page #transferModal .raid-autocomplete-list {
+  position: static;
+  max-height: 12rem;
+}
+
 body.raid-manager-detail-page .raid-autocomplete-item,
 body.raid-manager-page .raid-autocomplete-item,
 body.account-page .raid-autocomplete-item,
