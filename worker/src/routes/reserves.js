@@ -17,7 +17,8 @@ import {
   getWeightTransferByTo,
   getBonusGrant,
   applyPenaltyBattalionIfMatched,
-  getSoftPenalty
+  getSoftPenalty,
+  getBonusPool
 } from '../db.js';
 import { checkPlayerAccess, requireRaidOfficer, isRaidOfficer } from '../auth.js';
 
@@ -242,12 +243,9 @@ export async function handleUpdateBonusWeight(request, env, raidId, reserveId, s
   if (delta !== 1 && delta !== -1) throw new HttpError(400, 'delta має бути 1 або -1');
 
   if (delta === 1) {
-    // Пул рахуємо за джерелом бонусу, а не однією формулою на обидва:
-    // передача ваги дає ліміт рейду, грант офіцера - завжди рівно +1
-    // (див. migrations/0012_bonus_grants.sql). Раніше грант помилково
-    // отримував ліміт передачі й гравець міг розкинути +1 на кілька предметів.
-    const transferBonus = receivedTransfer ? (raid.transfer_weight_limit ?? raid.soft_limit_total) : 0;
-    const bonusLimit = transferBonus + (bonusGrant ? 1 : 0);
+    // Пул за джерелами: передача (обмежена лімітом софтів рейду й штрафом
+    // донора) + грант офіцера рівно +1 — див. getBonusPool у db.js.
+    const bonusLimit = await getBonusPool(env.DB, raid, reserve.player_name);
     const { totalBonus } = await sumBonusWeight(env.DB, raidId, reserve.player_name);
     if (totalBonus + 1 > bonusLimit) {
       throw new HttpError(409, `Перевищено бонусний ліміт (${bonusLimit})`);

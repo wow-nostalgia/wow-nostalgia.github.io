@@ -17,6 +17,7 @@ import {
   deleteAllTransfersForRaid,
   resetAllBonusWeightsForRaid,
   deleteReservesExceptItems,
+  enforceAllBonusPools,
   pruneOldRaidsIfOverLimit
 } from '../db.js';
 import { requireRaidOfficer, requireLeader } from '../auth.js';
@@ -59,6 +60,8 @@ export async function handleCreateRaid(request, env, session) {
   if (transferWeightLimit !== null && (!Number.isInteger(transferWeightLimit) || transferWeightLimit < 0)) {
     throw new HttpError(400, 'Невалідний transferWeightLimit');
   }
+  // Передати можна не більше, ніж сам ліміт софтів рейду.
+  const cappedTransferLimit = transferWeightLimit === null ? null : Math.min(transferWeightLimit, softLimitTotal);
 
   const id = generateRaidId();
 
@@ -70,7 +73,7 @@ export async function handleCreateRaid(request, env, session) {
     softLimitTotal,
     hiddenReserves,
     leaderDiscordId: session.discordId,
-    transferWeightLimit,
+    transferWeightLimit: cappedTransferLimit,
     allowMountSofts,
     lkOnly
   });
@@ -117,6 +120,12 @@ export async function handleUpdateRaid(request, env, id, session) {
   }
   if (body.allowMountSofts !== undefined) fields.allow_mount_softs = body.allowMountSofts ? 1 : 0;
 
+  // Ліміт передачі не більший за ліміт софтів — зокрема коли знизили лише
+  // ліміт софтів, а збережений ліміт передачі лишився старим.
+  const newSoftLimit = fields.soft_limit_total ?? raid.soft_limit_total;
+  const newTransferLimit = 'transfer_weight_limit' in fields ? fields.transfer_weight_limit : raid.transfer_weight_limit;
+  if (newTransferLimit !== null && newTransferLimit > newSoftLimit) fields.transfer_weight_limit = newSoftLimit;
+
   // "Тільки Король-ліч" (лише ЦЛК). Під час увімкнення видаляємо софти на
   // предмети не з луту Ліча — спільні з іншими босами (токени тощо) лишаються.
   let lkItemIds = null;
@@ -142,6 +151,12 @@ export async function handleUpdateRaid(request, env, id, session) {
   if (fields.transfer_weight_limit === 0) {
     await deleteAllTransfersForRaid(env.DB, id);
     await resetAllBonusWeightsForRaid(env.DB, id);
+  }
+
+  // Знизили ліміт софтів чи передачі — уже розподілені бонуси обрізаємо під
+  // новий пул (раніше вони лишались більшими за ліміт до кінця рейду).
+  for (const change of await enforceAllBonusPools(env.DB, updated)) {
+    await insertAudit(env.DB, id, session.username, 'bonus_trim', change);
   }
 
   return jsonResponse(publicRaid(updated));

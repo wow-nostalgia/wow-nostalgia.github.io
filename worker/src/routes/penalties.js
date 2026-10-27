@@ -6,7 +6,8 @@ import {
   enforceSoftPenaltyLimit,
   insertAudit,
   listUserCharacters,
-  findPenaltyBattalionEntry
+  findPenaltyBattalionEntry,
+  enforceAllBonusPools
 } from '../db.js';
 import { requireRaidOfficer } from '../auth.js';
 
@@ -79,6 +80,10 @@ export async function handleUpsertPenalty(request, env, raidId, playerName, sess
   const changes = await enforceSoftPenaltyLimit(env.DB, raid, playerName);
   for (const change of changes) {
     await insertAudit(env.DB, raidId, session.username, 'soft_penalty_trim', { playerName, ...change });
+  }
+  // Штраф донора зменшує й те, що він передав, — обрізаємо бонус отримувача.
+  for (const change of await enforceAllBonusPools(env.DB, raid)) {
+    await insertAudit(env.DB, raidId, session.username, 'bonus_trim', change);
   }
 
   return jsonResponse(await getRaidParticipantsWithPenalties(env.DB, raidId));

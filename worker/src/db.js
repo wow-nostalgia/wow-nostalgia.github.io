@@ -690,6 +690,64 @@ export async function sumBonusWeight(db, raidId, playerName) {
   return { totalBonus: row.total };
 }
 
+// Скільки софтів дає передача: не більше за ліміт передачі, ліміт софтів
+// рейду і власний ліміт донора з урахуванням його штрафу — передати можна
+// лише те, що донор сам міг би засофтити. Ту саму формулу дублює фронт
+// (transferBonusFor у raid-manager-detail.js).
+export async function getTransferBonus(db, raid, fromPlayer) {
+  const base = Math.min(raid.transfer_weight_limit ?? raid.soft_limit_total, raid.soft_limit_total);
+  const donorLimit = await getEffectiveSoftLimit(db, raid, fromPlayer);
+  return Math.max(0, Math.min(base, donorLimit));
+}
+
+// Бонусний пул гравця за джерелами: передача + грант офіцера (рівно +1).
+export async function getBonusPool(db, raid, playerName) {
+  const transfer = await getWeightTransferByTo(db, raid.id, playerName);
+  const grant = await getBonusGrant(db, raid.id, playerName);
+  return (transfer ? await getTransferBonus(db, raid, transfer.from_player) : 0) + (grant ? 1 : 0);
+}
+
+// Обрізає вже розподілену бонусну вагу під поточний пул (знизили ліміт
+// софтів/передачі або оштрафували донора). Ріжемо з найпізніших софтів.
+// Повертає { from, to } для аудиту або null, якщо обрізати не треба.
+export async function enforceBonusPool(db, raid, playerName) {
+  const pool = await getBonusPool(db, raid, playerName);
+  const { results } = await db
+    .prepare('SELECT id, bonus_weight FROM soft_reserves WHERE raid_id = ? AND player_name = ? AND bonus_weight > 0 ORDER BY created_at ASC')
+    .bind(raid.id, playerName)
+    .all();
+  const total = results.reduce((sum, r) => sum + r.bonus_weight, 0);
+  if (total <= pool) return null;
+
+  let excess = total - pool;
+  for (let i = results.length - 1; i >= 0 && excess > 0; i--) {
+    const cut = Math.min(results[i].bonus_weight, excess);
+    await db
+      .prepare('UPDATE soft_reserves SET bonus_weight = bonus_weight - ?, updated_at = ? WHERE id = ? AND raid_id = ?')
+      .bind(cut, nowIso(), results[i].id, raid.id)
+      .run();
+    excess -= cut;
+  }
+  return { from: total, to: pool };
+}
+
+// Те саме для всіх отримувачів бонусів рейду.
+export async function enforceAllBonusPools(db, raid) {
+  const { results } = await db
+    .prepare(
+      `SELECT to_player AS player_name FROM raid_weight_transfers WHERE raid_id = ?
+       UNION SELECT player_name FROM raid_bonus_grants WHERE raid_id = ?`
+    )
+    .bind(raid.id, raid.id)
+    .all();
+  const changes = [];
+  for (const { player_name: playerName } of results) {
+    const change = await enforceBonusPool(db, raid, playerName);
+    if (change) changes.push({ playerName, ...change });
+  }
+  return changes;
+}
+
 export async function updateReserveBonusWeight(db, raidId, reserveId, delta) {
   await db
     .prepare('UPDATE soft_reserves SET bonus_weight = bonus_weight + ?, updated_at = ? WHERE id = ? AND raid_id = ?')

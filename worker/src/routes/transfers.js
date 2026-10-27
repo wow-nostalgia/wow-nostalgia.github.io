@@ -11,7 +11,8 @@ import {
   addRaidParticipant,
   insertAudit,
   createClaim,
-  getClaimOwner
+  getClaimOwner,
+  applyPenaltyBattalionIfMatched
 } from '../db.js';
 import { isRaidOfficer, requireOwnCharacter } from '../auth.js';
 
@@ -66,6 +67,10 @@ export async function handleCreateTransfer(request, env, raidId, session) {
   if (existingTo) {
     throw new HttpError(409, `${toPlayer} вже отримує софти від ${existingTo.from_player}`);
   }
+
+  // Відкладений штраф зі Штрафбату — до передачі: донор, що ще не софтив,
+  // інакше передав би повний ліміт повз штраф (бонус рахується від нього).
+  await applyPenaltyBattalionIfMatched(env.DB, raid, fromPlayer);
 
   // Видаляємо всі softs від fromPlayer і додаємо його до учасників рейду
   await deleteAllReservesForPlayer(env.DB, raidId, fromPlayer);
