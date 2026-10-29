@@ -13,6 +13,13 @@ const REQUEST_DELAY_MS = 1800;
 const RETRY_DELAY_MS = 8000;
 const MAX_RETRIES = 3;
 
+// Логи, що завжди падають на uwu-logs (404 / порожній звіт): записи з error
+// інакше перезапитуються щоразу. Поти й склади рейду з них беруться окремо.
+const SKIP_RAID_URLS = new Set([
+  'https://uwu-logs.xyz/reports/26-06-21--20-37--Boroheal--FreedomUA/',
+  'https://uwu-logs.xyz/reports/26-05-09--20-18--Boro--FreedomUA/'
+]);
+
 function sleepBetweenRequests() {
   return sleep(REQUEST_DELAY_MS);
 }
@@ -135,7 +142,8 @@ async function main() {
 
   const existingUrls = new Set([
     ...existing.filter((r) => !r.error).map((r) => normalizeUrl(r.raidUrl)),
-    ...Object.keys(knownMerges).map(normalizeUrl)
+    ...Object.keys(knownMerges).map(normalizeUrl),
+    ...SKIP_RAID_URLS
   ]);
   const toFetch = raidLogs.filter((url) => !existingUrls.has(normalizeUrl(url)));
 
