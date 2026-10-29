@@ -330,6 +330,11 @@ export async function getUserByDiscordId(db, discordId) {
   return db.prepare('SELECT * FROM users WHERE discord_id = ?').bind(discordId).first();
 }
 
+// Гучність звукових сповіщень за замовчуванням, %. Колонка в базі має
+// DEFAULT 70 з міграції 0017 (у SQLite його не змінити без перебудови
+// таблиці), тож новим користувачам значення пишемо явно.
+export const DEFAULT_SOUND_VOLUME = 50;
+
 export async function upsertUser(db, { discordId, username, avatar }) {
   const ts = nowIso();
   const existing = await getUserByDiscordId(db, discordId);
@@ -341,8 +346,8 @@ export async function upsertUser(db, { discordId, username, avatar }) {
       .run();
   } else {
     await db
-      .prepare('INSERT INTO users (discord_id, username, avatar, character_name, created_at, updated_at) VALUES (?, ?, ?, NULL, ?, ?)')
-      .bind(discordId, username, avatar, ts, ts)
+      .prepare('INSERT INTO users (discord_id, username, avatar, character_name, sound_volume, created_at, updated_at) VALUES (?, ?, ?, NULL, ?, ?, ?)')
+      .bind(discordId, username, avatar, DEFAULT_SOUND_VOLUME, ts, ts)
       .run();
   }
 

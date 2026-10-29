@@ -639,7 +639,7 @@ async function init() {
 
   loggedInView.hidden = false;
   soundNotificationsInput.checked = user.soundNotifications !== false;
-  lastSavedVolume = user.soundVolume ?? 70;
+  lastSavedVolume = user.soundVolume ?? 50;
   soundVolumeInput.value = lastSavedVolume;
   renderVolumeValue();
   applySoundPrefsState();

@@ -509,7 +509,7 @@ function playNotificationSound(kind) {
 
   // Гучність із профілю (0-100). Виставляємо щоразу, бо currentUser може
   // оновитись між сигналами.
-  audio.volume = Math.min(100, Math.max(0, currentUser.soundVolume ?? 70)) / 100;
+  audio.volume = Math.min(100, Math.max(0, currentUser.soundVolume ?? 50)) / 100;
   // Той самий елемент може ще грати з попереднього разу - перемотуємо.
   audio.currentTime = 0;
   // Відсутній файл або блокування автоплею не мають ламати сторінку.

@@ -15,15 +15,13 @@ import {
   listCharacterOwnerNames,
   listPrimaryCharacterNames,
   isDefaultOfficer,
-  updateUserPreferences
+  updateUserPreferences,
+  DEFAULT_SOUND_VOLUME
 } from '../db.js';
 import { requireSession } from '../auth.js';
 
 const SESSION_TTL_DAYS = 30;
 
-// Той самий дефолт, що в міграції 0017 — потрібен, якщо колонка чомусь
-// віддала NULL.
-const DEFAULT_SOUND_VOLUME = 70;
 
 // Discord вимагає точного збігу redirect_uri між /authorize і обміном code.
 // Клієнт рахує його від window.location.origin (прод і localhost — різні
