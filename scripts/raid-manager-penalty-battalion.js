@@ -829,6 +829,10 @@ async function init() {
   document.querySelectorAll('.officer-only').forEach((el) => { el.hidden = !isOfficer; });
   battalionSection.hidden = false;
 
+  // Посилання на вкладку: #templates / #audit (напр. зі сторінки рейду).
+  const hashTab = document.querySelector(`.raid-tab[data-tab="${CSS.escape(location.hash.slice(1))}"]`);
+  if (hashTab) hashTab.click();
+
   const playersPromise = fetch('/data/players.json?t=' + Date.now())
     .then((res) => (res.ok ? res.json() : []))
     .catch(() => []);

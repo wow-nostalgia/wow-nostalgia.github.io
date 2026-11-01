@@ -459,6 +459,11 @@ function renderBenchmarkPanel() {
   link.href = '../../index.html#rules25hero';
   link.textContent = 'тут';
   note.appendChild(link);
+  note.appendChild(document.createTextNode('. Зі штрафною політикою можна ознайомитись '));
+  const penaltiesLink = document.createElement('a');
+  penaltiesLink.href = '../penalty-battalion/#templates';
+  penaltiesLink.textContent = 'тут';
+  note.appendChild(penaltiesLink);
   note.appendChild(document.createTextNode('.'));
   benchmarkPanel.appendChild(note);
 }
