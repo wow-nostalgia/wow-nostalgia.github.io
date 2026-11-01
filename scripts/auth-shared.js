@@ -89,7 +89,7 @@ function renderAuthNav(user) {
   const lang = localStorage.getItem('nameLanguage') || 'uk';
   const langBtn = document.createElement('button');
   langBtn.type = 'button';
-  langBtn.className = 'nav__link nav__lang-btn tooltipped tooltipped--s';
+  langBtn.className = 'nav__link nav__lang-btn tooltipped tooltipped--s tooltipped--sw';
   langBtn.setAttribute('data-tooltip', 'Назви босів, предметів, класів і спеків');
   langBtn.setAttribute('aria-label', lang === 'uk' ? 'Мова: Українська' : 'Language: English');
   const flagImg = document.createElement('img');

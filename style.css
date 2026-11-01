@@ -738,6 +738,21 @@ footer span {
   transform: translate(-50%, 0);
 }
 
+/* Разом із --s: текст під елементом, але вирівняний по його правому краю,
+   а не по центру. Для кнопок біля правого краю екрана (мова в шапці) —
+   інакше довгий, хай і невидимий, ::after виходив за вікно і давав
+   горизонтальний скрол сторінки. Стрілка лишається по центру кнопки. */
+.tooltipped--sw::after {
+  left: auto;
+  right: 0;
+  transform: translate(0, 4px);
+}
+
+.tooltipped--sw:hover::after,
+.tooltipped--sw:focus-visible::after {
+  transform: translate(0, 0);
+}
+
 
 /* =========================
    RANKING PAGE
