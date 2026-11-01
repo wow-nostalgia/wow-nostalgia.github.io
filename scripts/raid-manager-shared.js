@@ -192,17 +192,19 @@ function buildPenaltyChip(entry, onRemove) {
   return chip;
 }
 
-// Кнопка "+" в кінці списку чіпів. disabledLabel — кнопка неактивна, з
-// поясненням чому.
+// Кнопка "+" в кінці списку чіпів. disabledLabel — кнопка неактивна, а
+// підказка пояснює чому. aria-disabled, а не disabled: на disabled-кнопці
+// браузер не дає подій миші, і підказка не з'явилась би.
 function buildPenaltyAddButton(onClick, disabledLabel = null) {
   const addBtn = document.createElement('button');
   addBtn.type = 'button';
   addBtn.className = 'penalty-add-btn';
   addBtn.innerHTML = PENALTY_ADD_ICON;
-  addBtn.disabled = Boolean(disabledLabel);
+  if (disabledLabel) addBtn.setAttribute('aria-disabled', 'true');
   addBtn.setAttribute('aria-label', disabledLabel || 'Додати штраф');
   bindTooltip(addBtn);
   addBtn.addEventListener('click', () => {
+    if (disabledLabel) return;
     hideBtnTooltip();
     onClick();
   });

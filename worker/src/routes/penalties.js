@@ -11,6 +11,7 @@ import {
   findPenaltyBattalionEntries,
   enforceAllBonusPools,
   sumRaidRollPenalty,
+  getWeightTransferByFrom,
   MAX_ROLL_PENALTY
 } from '../db.js';
 import { requireRaidOfficer } from '../auth.js';
@@ -89,6 +90,12 @@ export async function handleAddPenalty(request, env, raidId, session) {
   const body = await readJson(request);
   const playerName = capitalizeName(String(body.playerName || '').trim());
   if (!playerName) throw new HttpError(400, "Потрібне ім'я гравця");
+
+  // Донор уже віддав свої софти — штраф перерахував би бонус отримувача.
+  const transfer = await getWeightTransferByFrom(env.DB, raidId, playerName);
+  if (transfer) {
+    throw new HttpError(409, `${playerName} передав свої софти гравцю ${transfer.to_player} — штрафувати його не можна`);
+  }
 
   const { template, count } = await loadTemplateForApply(env, body);
   const templateInstance = instanceForBoss(template.boss);

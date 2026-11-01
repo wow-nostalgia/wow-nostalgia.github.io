@@ -2340,7 +2340,11 @@ function renderPenaltiesTable() {
     (entries || []).forEach((entry) => list.appendChild(buildPenaltyChip(entry, officerMode ? () => removePenalty(entry.id) : null)));
 
     if (officerMode) {
-      list.appendChild(buildPenaltyAddButton(() => openPenaltyModal(player_name)));
+      const donorTransfer = weightTransfers.find((t) => t.from_player === player_name);
+      list.appendChild(buildPenaltyAddButton(
+        () => openPenaltyModal(player_name),
+        donorTransfer ? `Гравець передав свої софти ${donorTransfer.to_player} — штрафувати його не можна` : null
+      ));
     } else if (!(entries || []).length) {
       const none = document.createElement('span');
       none.className = 'penalty-value--none';

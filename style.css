@@ -4867,8 +4867,10 @@ body.raid-manager-page .penalty-add-btn:hover {
   border-style: solid;
 }
 
-/* Ліміти штрафів гравця вичерпано (Штрафбат). */
-body.raid-manager-page .penalty-add-btn:disabled {
+/* Штраф дати не можна (ліміти вичерпано / гравець передав софти) — причина
+   в підказці, тому aria-disabled, а не disabled. */
+body.raid-manager-detail-page .penalty-add-btn[aria-disabled="true"],
+body.raid-manager-page .penalty-add-btn[aria-disabled="true"] {
   opacity: 0.4;
   cursor: not-allowed;
   background: none;
