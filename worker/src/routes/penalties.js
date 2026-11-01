@@ -12,6 +12,7 @@ import {
   enforceAllBonusPools,
   sumRaidRollPenalty,
   getWeightTransferByFrom,
+  softPenaltyReason,
   MAX_ROLL_PENALTY
 } from '../db.js';
 import { requireRaidOfficer } from '../auth.js';
@@ -50,6 +51,7 @@ async function pendingPenaltiesForCaller(env, raid, session, rows) {
       roll_penalty: Math.min(MAX_ROLL_PENALTY, roll),
       soft_penalty: Math.min(raid.soft_limit_total, soft),
       reason: reasons.join(', ') || 'Штрафбат',
+      soft_reason: softPenaltyReason([...(existing?.entries || []), ...entries]),
       entries: existing?.entries || [],
       pending: true
     });

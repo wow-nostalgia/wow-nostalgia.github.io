@@ -117,6 +117,14 @@ export async function listRaidPenaltyEntries(db, raidId) {
   return results;
 }
 
+// Причини штрафів до софту — для пояснення гравцю, чому в нього менше софтів
+// (штрафи до ролу на софти не впливають). Повтори: "Вайп рейду ×2".
+export function softPenaltyReason(entries) {
+  const counts = new Map();
+  entries.filter((e) => e.soft_penalty > 0 && e.reason).forEach((e) => counts.set(e.reason, (counts.get(e.reason) || 0) + 1));
+  return [...counts].map(([reason, n]) => (n > 1 ? `${reason} ×${n}` : reason)).join(', ');
+}
+
 // Учасники рейду з підсумком штрафів і списком записів (entries). Гравець зі
 // штрафом, але без запису в raid_participants (штраф поставили до першого
 // софту), теж потрапляє в список.
@@ -139,6 +147,7 @@ export async function getRaidParticipantsWithPenalties(db, raidId) {
   }
   for (const row of rows.values()) {
     row.reason = row.entries.map((e) => e.reason).filter(Boolean).join(', ');
+    row.soft_reason = softPenaltyReason(row.entries);
     // Автозастосування зі Штрафбату не блокується лімітом — обрізаємо суму.
     row.roll_penalty = Math.min(MAX_ROLL_PENALTY, row.roll_penalty);
   }

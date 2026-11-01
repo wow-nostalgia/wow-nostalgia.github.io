@@ -653,7 +653,8 @@ function renderSoftPenaltyNotice(playerName) {
     return;
   }
 
-  const reason = penaltiesList.find((p) => p.player_name === playerName)?.reason;
+  // Лише штрафи до софту — штрафи до ролу на кількість софтів не впливають.
+  const reason = penaltiesList.find((p) => p.player_name === playerName)?.soft_reason;
   const limit = softLimitFor(playerName);
   softPenaltyNotice.hidden = false;
   softPenaltyNotice.textContent = `Штраф -${penalty}: тобі доступно ${limit} ${softsWord(limit)} замість ${raid.soft_limit_total}.`
