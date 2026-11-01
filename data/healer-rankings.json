@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-11-01T02:51:30.176Z",
+  "updatedAt": "2026-11-01T23:25:45.860Z",
   "specs": [
     {
       "class": "Paladin",
@@ -3094,6 +3094,10 @@
           "hps": 17654
         },
         {
+          "name": "Moonshade",
+          "hps": 17611.6
+        },
+        {
           "name": "Elisande",
           "hps": 17594.6
         },
@@ -3160,10 +3164,6 @@
         {
           "name": "Іліданчик",
           "hps": 17011.7
-        },
-        {
-          "name": "Moonshade",
-          "hps": 17004
         },
         {
           "name": "Ally",
