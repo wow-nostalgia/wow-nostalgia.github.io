@@ -4,7 +4,7 @@ const battalionSection = document.getElementById('battalionSection');
 const battalionStatus = document.getElementById('battalionStatus');
 const battalionBody = document.getElementById('battalionBody');
 const templatesStatus = document.getElementById('templatesStatus');
-const templatesBody = document.getElementById('templatesBody');
+const templatesGroups = document.getElementById('templatesGroups');
 const pendingPane = document.getElementById('pendingPane');
 const templatesPane = document.getElementById('templatesPane');
 const auditPane = document.getElementById('auditPane');
@@ -307,34 +307,72 @@ addPenaltyForm.addEventListener('submit', async (event) => {
 
 // ---- Шаблони штрафів ----
 
+// Кожен тип штрафу (загальний / бос) — окрема секція, як боси на вкладці
+// "Предмети" сторінки рейду: рядок-заголовок і шаблони під ним.
 function renderTemplatesTable() {
-  templatesBody.innerHTML = '';
+  templatesGroups.innerHTML = '';
   templatesStatus.textContent = penaltyTemplates.length
     ? `Усього шаблонів: ${penaltyTemplates.length}`
     : 'Шаблонів ще немає.';
   if (!penaltyTemplates.length) return;
 
+  const groups = new Map();
   sortPenaltyTemplates(penaltyTemplates).forEach((template) => {
-    const tr = document.createElement('tr');
-    tr.appendChild(textCell(penaltyBossLabel(template.boss)));
-    tr.appendChild(textCell(template.reason));
-    tr.appendChild(textCell(formatTemplateValue(template)));
+    const key = template.boss || '';
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(template);
+  });
 
-    if (isOfficer) {
-      const actionsTd = document.createElement('td');
-      actionsTd.className = 'archive-delete-td penalty-template-actions';
-      actionsTd.appendChild(iconButton('archive-delete-btn penalty-edit-btn', 'Редагувати', PENCIL_ICON, () => openTemplateModal(template)));
-      actionsTd.appendChild(iconButton('archive-delete-btn', 'Видалити', TRASH_ICON, () => {
-        showConfirm(
-          'Видалити шаблон?',
-          `${penaltyBossLabel(template.boss)}: ${template.reason}. Уже застосовані штрафи лишаться без змін.`,
-          () => deleteTemplate(template.id)
-        );
-      }));
-      tr.appendChild(actionsTd);
-    }
+  groups.forEach((templates, boss) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'ranking-table-wrap';
+    const table = document.createElement('table');
+    table.className = 'raid-table penalty-template-table';
 
-    templatesBody.appendChild(tr);
+    // Ширини колонок задає <colgroup>: рядок-заголовок іде через colspan і
+    // при table-layout:fixed сам їх не визначає.
+    const colgroup = document.createElement('colgroup');
+    ['penalty-col-reason', 'penalty-col-value', ...(isOfficer ? ['penalty-col-actions'] : [])].forEach((cls) => {
+      const col = document.createElement('col');
+      col.className = cls;
+      colgroup.appendChild(col);
+    });
+    table.appendChild(colgroup);
+
+    const tbody = document.createElement('tbody');
+    const headRow = document.createElement('tr');
+    headRow.className = 'penalty-group-head';
+    const headCell = document.createElement('td');
+    headCell.colSpan = isOfficer ? 3 : 2;
+    headCell.textContent = penaltyBossLabel(boss || null);
+    headRow.appendChild(headCell);
+    tbody.appendChild(headRow);
+
+    templates.forEach((template) => {
+      const tr = document.createElement('tr');
+      tr.appendChild(textCell(template.reason));
+      tr.appendChild(textCell(formatTemplateValue(template)));
+
+      if (isOfficer) {
+        const actionsTd = document.createElement('td');
+        actionsTd.className = 'penalty-template-actions';
+        actionsTd.appendChild(iconButton('archive-delete-btn penalty-edit-btn', 'Редагувати', PENCIL_ICON, () => openTemplateModal(template)));
+        actionsTd.appendChild(iconButton('archive-delete-btn', 'Видалити', TRASH_ICON, () => {
+          showConfirm(
+            'Видалити шаблон?',
+            `${penaltyBossLabel(template.boss)}: ${template.reason}. Уже застосовані штрафи лишаться без змін.`,
+            () => deleteTemplate(template.id)
+          );
+        }));
+        tr.appendChild(actionsTd);
+      }
+
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+    templatesGroups.appendChild(wrap);
   });
 }
 

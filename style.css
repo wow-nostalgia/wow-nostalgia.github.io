@@ -2710,13 +2710,11 @@ body.raid-manager-page .archive-delete-td {
 
 /* Таблиці Штрафбату: фіксована розкладка — ширина колонок задана, довгі
    причини переносяться, і таблиця не вилазить за обгортку (без скролбару). */
-body.raid-manager-page #battalionTable,
-body.raid-manager-page #templatesTable {
+body.raid-manager-page #battalionTable {
   table-layout: fixed;
 }
 
-body.raid-manager-page #battalionTable td,
-body.raid-manager-page #templatesTable td {
+body.raid-manager-page #battalionTable td {
   overflow-wrap: anywhere;
 }
 
@@ -2726,15 +2724,49 @@ body.raid-manager-page #battalionTable th:nth-child(2) { width: 18%; }
 body.raid-manager-page #battalionTable th:nth-child(4) { width: 8.5rem; }
 body.raid-manager-page #battalionTable th:nth-child(5) { width: 11rem; }
 
-/* Шаблони: Бос | Причина (решта) | Штраф | дії */
-body.raid-manager-page #templatesTable th:nth-child(1) { width: 22%; }
-body.raid-manager-page #templatesTable th:nth-child(3) { width: 8.5rem; }
+/* Шаблони штрафів: окрема секція на кожен тип штрафу (як боси на вкладці
+   "Предмети"). Причина | Штраф | дії (редагувати + видалити). */
+body.raid-manager-page .penalty-template-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
 
-/* Шаблони штрафів: дві іконки (редагувати + видалити) в одній клітинці. */
-body.raid-manager-page #templatesTable .archive-delete-th,
+body.raid-manager-page .penalty-template-groups > .ranking-table-wrap {
+  margin-top: 0;
+}
+
+body.raid-manager-page .penalty-template-table {
+  table-layout: fixed;
+}
+
+body.raid-manager-page .penalty-template-table td {
+  overflow-wrap: anywhere;
+}
+
+body.raid-manager-page .penalty-template-table .penalty-col-value { width: 8.5rem; }
+body.raid-manager-page .penalty-template-table .penalty-col-actions { width: 5.25rem; }
+
 body.raid-manager-page .penalty-template-actions {
-  width: 5.25rem;
+  text-align: center;
+  padding: 0;
   white-space: nowrap;
+}
+
+/* Нижня межа останнього рядка збіглася б з рамкою секції. */
+body.raid-manager-page .penalty-template-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Рядок-заголовок типу штрафу — як .raid-items-boss-row на сторінці рейду. */
+body.raid-manager-page .penalty-group-head td {
+  padding-top: 0.6rem;
+  color: var(--color-text-strong);
+  font-weight: 600;
+}
+
+body.raid-manager-page .penalty-template-table tbody tr.penalty-group-head:hover {
+  background-color: transparent;
 }
 
 /* На телефоні шість колонок відкладених штрафів не вмістити без каші з
@@ -2742,8 +2774,7 @@ body.raid-manager-page .penalty-template-actions {
    шаблони (чотири колонки) вміщуються. */
 @media (max-width: 544px) {
   body.raid-manager-page #battalionTable { min-width: 36rem; }
-  body.raid-manager-page #templatesTable th:nth-child(1) { width: 26%; }
-  body.raid-manager-page #templatesTable th:nth-child(3) { width: 5.5rem; }
+  body.raid-manager-page .penalty-template-table .penalty-col-value { width: 5.5rem; }
 }
 
 body.raid-manager-page .penalty-edit-btn:hover {
