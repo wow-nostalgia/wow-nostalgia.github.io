@@ -675,6 +675,11 @@ async function init() {
     }
   });
 
+  // Посилання з підказок головної: /account/#settings — одразу "Налаштування".
+  if (window.location.hash === '#settings') {
+    accountTabs.querySelector('[data-tab="settings"]')?.click();
+  }
+
   await loadCharacterStatsSources();
 
   try {

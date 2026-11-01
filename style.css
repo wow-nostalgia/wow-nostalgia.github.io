@@ -251,6 +251,170 @@ body.index-page .container-inner > .intro-text {
   margin-bottom: 0;
 }
 
+/* Карусель підказок "Чи знаєш ти?" (scripts/index-tips.js). Слайди лежать
+   один на одному в одній клітинці grid — висота блоку = найвищий слайд, і
+   сторінка не стрибає при перемиканні. */
+body.index-page .index-tips {
+  position: relative;
+  padding: 1rem 1.25rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+body.index-page .index-tips[hidden] {
+  display: none;
+}
+
+body.index-page .index-tips__slides {
+  display: grid;
+}
+
+body.index-page .index-tips__slide {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding-right: 4.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s;
+}
+
+body.index-page .index-tips__slide.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+body.index-page .index-tips__icon {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.1rem;
+  color: var(--color-link);
+}
+
+body.index-page .index-tips__title {
+  margin: 0 0 0.3rem;
+  color: var(--color-text-strong);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+body.index-page .index-tips__text {
+  margin: 0 0 0.6rem;
+  color: var(--color-text);
+  line-height: var(--line-height-relaxed);
+}
+
+body.index-page .index-tips__link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+body.index-page .index-tips__top {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.15rem;
+}
+
+body.index-page .index-tips__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  border: none;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+body.index-page .index-tips__btn:hover {
+  color: var(--color-text-strong);
+  background-color: var(--color-hover);
+}
+
+body.index-page .index-tips__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+body.index-page .index-tips__dots {
+  display: flex;
+  align-items: center;
+}
+
+/* Кнопка-крапка: клікабельна область більша за видиму крапку. */
+body.index-page .index-tips__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+body.index-page .index-tips__dot::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--color-border-strong);
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+body.index-page .index-tips__dot:hover::before {
+  background-color: var(--color-text-muted);
+}
+
+body.index-page .index-tips__dot[aria-current="true"]::before {
+  background-color: var(--color-link);
+  transform: scale(1.25);
+}
+
+body.index-page .index-tips__counter {
+  min-width: 2.5rem;
+  color: var(--color-text-faint);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+@media (max-width: 544px) {
+  body.index-page .index-tips {
+    padding: 0.85rem 0.875rem 0.5rem;
+  }
+
+  /* Іконку теми ховаємо — тексту потрібна вся ширина; кнопки вгорі
+     звільняють місце лише під заголовком. */
+  body.index-page .index-tips__icon {
+    display: none;
+  }
+
+  body.index-page .index-tips__slide {
+    padding-right: 0;
+  }
+
+  body.index-page .index-tips__title {
+    padding-right: 4.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.index-page .index-tips__slide,
+  body.index-page .index-tips__dot::before {
+    transition: none;
+  }
+}
+
 body.account-page .container-inner {
   gap: var(--space-6);
 }
@@ -2572,7 +2736,8 @@ body.raid-manager-page .raid-chip--completed {
 
 body.raid-manager-page .link-button-std,
 body.shard-queue-page .link-button-std,
-body.ranking-page .link-button-std {
+body.ranking-page .link-button-std,
+body.index-page .link-button-std {
   background: none;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
@@ -2584,7 +2749,8 @@ body.ranking-page .link-button-std {
 
 body.raid-manager-page .link-button-std:hover,
 body.shard-queue-page .link-button-std:hover,
-body.ranking-page .link-button-std:hover {
+body.ranking-page .link-button-std:hover,
+body.index-page .link-button-std:hover {
   background-color: var(--color-hover);
 }
 

@@ -28,4 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
   } else if (blocks[0]) {
     activateBlock(blocks[0]);
   }
+
+  // Посилання на блок з цієї ж сторінки (напр. з підказки "Софт-рол") —
+  // сторінка не перезавантажується, тож відкриваємо блок тут.
+  window.addEventListener('hashchange', () => {
+    const block = blocks.find((b) => b.id === window.location.hash.slice(1));
+    if (!block) return;
+    activateBlock(block);
+    block.querySelector('.heading')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 });
