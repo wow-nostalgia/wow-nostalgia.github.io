@@ -253,7 +253,7 @@ function renderBattalionTable() {
     nameTd.appendChild(toggleBtn);
     tr.appendChild(nameTd);
 
-    tr.appendChild(penaltyTotalCell(group.rollPenalty));
+    tr.appendChild(penaltyTotalCell(Math.min(MAX_ROLL_PENALTY, group.rollPenalty)));
     tr.appendChild(penaltyTotalCell(group.softPenalty));
     tr.appendChild(textCell(translateInstance(group.instance, INSTANCE_LABELS)));
 

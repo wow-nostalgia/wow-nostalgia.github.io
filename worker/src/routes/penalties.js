@@ -9,10 +9,12 @@ import {
   insertAudit,
   listUserCharacters,
   findPenaltyBattalionEntries,
-  enforceAllBonusPools
+  enforceAllBonusPools,
+  sumRaidRollPenalty,
+  MAX_ROLL_PENALTY
 } from '../db.js';
 import { requireRaidOfficer } from '../auth.js';
-import { instanceForBoss, templatePenalty, loadTemplateForApply } from './penalty-templates.js';
+import { instanceForBoss, templatePenalty, loadTemplateForApply, assertRollPenaltyLimit } from './penalty-templates.js';
 
 async function loadRaidOr404(env, id) {
   const raid = await getRaid(env.DB, id);
@@ -44,7 +46,7 @@ async function pendingPenaltiesForCaller(env, raid, session, rows) {
 
     pending.push({
       player_name: characterName,
-      roll_penalty: roll,
+      roll_penalty: Math.min(MAX_ROLL_PENALTY, roll),
       soft_penalty: Math.min(raid.soft_limit_total, soft),
       reason: reasons.join(', ') || 'Штрафбат',
       entries: existing?.entries || [],
@@ -95,6 +97,7 @@ export async function handleAddPenalty(request, env, raidId, session) {
   }
 
   const { rollPenalty, softPenalty } = templatePenalty(template);
+  assertRollPenaltyLimit(playerName, await sumRaidRollPenalty(env.DB, raidId, playerName), rollPenalty * count);
   await addRaidPenaltyEntries(env.DB, raidId, playerName, {
     templateId: template.id,
     boss: template.boss,

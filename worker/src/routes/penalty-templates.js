@@ -8,7 +8,8 @@ import {
   deletePenaltyTemplate,
   insertPenaltyAudit,
   listPenaltyAudit,
-  listPenaltyAuditActors
+  listPenaltyAuditActors,
+  MAX_ROLL_PENALTY
 } from '../db.js';
 
 // Ті самі списки, що ICC_BOSSES/RS_BOSSES у scripts/raid-manager-shared.js.
@@ -25,6 +26,13 @@ export function instanceForBoss(boss) {
   if (ICC_BOSSES.includes(boss)) return 'ICC';
   if (RS_BOSSES.includes(boss)) return 'RS';
   return null;
+}
+
+// Новий штраф не має вивести суму мінусів до ролу за MAX_ROLL_PENALTY.
+export function assertRollPenaltyLimit(playerName, currentRoll, addedRoll) {
+  if (addedRoll > 0 && currentRoll + addedRoll > MAX_ROLL_PENALTY) {
+    throw new HttpError(400, `Мінус до ролу не може перевищувати ${MAX_ROLL_PENALTY}: у ${playerName} уже −${currentRoll}, а цей штраф додасть ще −${addedRoll}`);
+  }
 }
 
 // Значення штрафу, яке шаблон дає гравцю: { rollPenalty, softPenalty }.

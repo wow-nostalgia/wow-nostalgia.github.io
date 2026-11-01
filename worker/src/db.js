@@ -4,6 +4,9 @@ function nowIso() {
   return new Date().toISOString();
 }
 
+// Сумарний мінус до ролу гравця (у рейді / в інстансі Штрафбату) — не більше.
+export const MAX_ROLL_PENALTY = 100;
+
 // Персонаж, явно позначений як "Основний" у профілі (user_characters.is_primary).
 // Якщо такого нема — фолбек на username.
 function primaryCharacterSubquery(alias) {
@@ -133,8 +136,19 @@ export async function getRaidParticipantsWithPenalties(db, raidId) {
   }
   for (const row of rows.values()) {
     row.reason = row.entries.map((e) => e.reason).filter(Boolean).join(', ');
+    // Автозастосування зі Штрафбату не блокується лімітом — обрізаємо суму.
+    row.roll_penalty = Math.min(MAX_ROLL_PENALTY, row.roll_penalty);
   }
   return [...rows.values()];
+}
+
+// Сума мінусів до ролу гравця (без обрізання) — для перевірки ліміту.
+export async function sumRaidRollPenalty(db, raidId, playerName) {
+  const row = await db
+    .prepare('SELECT COALESCE(SUM(roll_penalty), 0) AS total FROM raid_penalty_entries WHERE raid_id = ? AND player_name = ?')
+    .bind(raidId, playerName)
+    .first();
+  return row.total;
 }
 
 export async function addRaidPenaltyEntries(db, raidId, playerName, { templateId, boss, reason, rollPenalty, softPenalty }, count, createdBy) {
@@ -203,6 +217,14 @@ export async function addPenaltyBattalionEntries(db, { playerName, instance, tem
   );
   await db.batch(Array.from({ length: count }, () =>
     stmt.bind(playerName, instance, templateId, boss, rollPenalty, softPenalty, reason, addedBy, ts)));
+}
+
+export async function sumBattalionRollPenalty(db, playerName, instance) {
+  const row = await db
+    .prepare('SELECT COALESCE(SUM(roll_penalty), 0) AS total FROM penalty_battalion WHERE player_name = ? AND instance = ?')
+    .bind(playerName, instance)
+    .first();
+  return row.total;
 }
 
 export async function getPenaltyBattalionEntry(db, id) {

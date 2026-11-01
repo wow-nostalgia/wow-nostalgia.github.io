@@ -99,6 +99,9 @@ async function apiCall(method, path, { token, body } = {}) {
 
 // ---- Шаблони штрафів — спільне для Штрафбату й сторінки рейду ----
 
+// Сумарний мінус до ролу гравця — не більше (так само обмежує воркер).
+const MAX_ROLL_PENALTY = 100;
+
 // "−10 до ролу", "−1 до софту" (обидва — через кому; нуль не пишемо).
 function formatPenaltyValue(rollPenalty, softPenalty) {
   const parts = [];

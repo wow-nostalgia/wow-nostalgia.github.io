@@ -5,9 +5,10 @@ import {
   addPenaltyBattalionEntries,
   deletePenaltyBattalionEntry,
   getPenaltyBattalionEntry,
-  insertPenaltyAudit
+  insertPenaltyAudit,
+  sumBattalionRollPenalty
 } from '../db.js';
-import { instanceForBoss, templatePenalty, loadTemplateForApply } from './penalty-templates.js';
+import { instanceForBoss, templatePenalty, loadTemplateForApply, assertRollPenaltyLimit } from './penalty-templates.js';
 
 const INSTANCES = new Set(['ICC', 'RS']);
 
@@ -31,6 +32,7 @@ export async function handleAddPenaltyBattalionEntry(request, env, session) {
   if (!INSTANCES.has(instance)) throw new HttpError(400, 'instance має бути ICC або RS');
 
   const { rollPenalty, softPenalty } = templatePenalty(template);
+  assertRollPenaltyLimit(playerName, await sumBattalionRollPenalty(env.DB, playerName, instance), rollPenalty * count);
   await addPenaltyBattalionEntries(env.DB, {
     playerName,
     instance,
