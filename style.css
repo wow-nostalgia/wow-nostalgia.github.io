@@ -2733,11 +2733,53 @@ body.raid-manager-page #battalionTable td {
   overflow-wrap: anywhere;
 }
 
-/* Відкладені: Ім'я | Бос | Причина (решта) | Штраф | Інстанс | дії */
-body.raid-manager-page #battalionTable th:nth-child(1) { width: 18%; }
-body.raid-manager-page #battalionTable th:nth-child(2) { width: 18%; }
-body.raid-manager-page #battalionTable th:nth-child(4) { width: 8.5rem; }
-body.raid-manager-page #battalionTable th:nth-child(5) { width: 11rem; }
+/* Відкладені: Ім'я (решта) | Мінус до ролу | Мінус до софту | Інстанс | дії.
+   Рядок гравця розгортається в картку з чіпами штрафів. */
+body.raid-manager-page #battalionTable th:nth-child(2),
+body.raid-manager-page #battalionTable th:nth-child(3) { width: 7.5rem; }
+body.raid-manager-page #battalionTable th:nth-child(4) { width: 11rem; }
+
+body.raid-manager-page .battalion-summary-row {
+  cursor: pointer;
+}
+
+body.raid-manager-page .battalion-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+body.raid-manager-page .battalion-expand-icon {
+  flex-shrink: 0;
+  color: var(--color-text-faint);
+  transition: transform var(--transition-fast);
+}
+
+body.raid-manager-page .battalion-expand-btn[aria-expanded="true"] .battalion-expand-icon {
+  transform: rotate(90deg);
+}
+
+/* Розгорнутий рядок і його картка — одне ціле: без лінії між ними. */
+body.raid-manager-page .battalion-summary-row--expanded td {
+  border-bottom: none;
+}
+
+body.raid-manager-page .battalion-card-row td {
+  padding: 0.15rem 0.6rem 0.75rem 1.95rem;
+}
+
+body.raid-manager-page #battalionTable tbody tr.battalion-card-row:hover {
+  background-color: transparent;
+}
 
 /* Шаблони штрафів: окрема секція на кожен тип штрафу (як боси на вкладці
    "Предмети"). Причина | Штраф | дії (редагувати + видалити). */
@@ -2784,11 +2826,14 @@ body.raid-manager-page .penalty-template-table tbody tr.penalty-group-head:hover
   background-color: transparent;
 }
 
-/* На телефоні шість колонок відкладених штрафів не вмістити без каші з
-   переносів — там таблиця лишається ширшою за екран і гортається вбік,
-   шаблони (чотири колонки) вміщуються. */
+/* На телефоні колонки відкладених штрафів вужчі, а таблиця все одно трохи
+   ширша за екран і гортається вбік; шаблони вміщуються. */
 @media (max-width: 544px) {
-  body.raid-manager-page #battalionTable { min-width: 36rem; }
+  body.raid-manager-page #battalionTable { min-width: 28rem; }
+  body.raid-manager-page #battalionTable th:nth-child(2),
+  body.raid-manager-page #battalionTable th:nth-child(3) { width: 4.5rem; }
+  body.raid-manager-page #battalionTable th:nth-child(4) { width: 7.5rem; }
+  body.raid-manager-page .battalion-card-row td { padding-left: 0.6rem; }
   body.raid-manager-page .penalty-template-table .penalty-col-value { width: 5.5rem; }
 }
 
@@ -4718,12 +4763,14 @@ body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(3) { width: 8%; }
 /* Причини (4-та, остання колонка) - без явної ширини, table-layout:fixed
    віддає їй весь залишок (~69%) - максимум простору під довгий текст. */
 
-body.raid-manager-detail-page .penalty-value--active {
+body.raid-manager-detail-page .penalty-value--active,
+body.raid-manager-page .penalty-value--active {
   color: var(--color-danger);
   font-weight: var(--font-weight-medium);
 }
 
-body.raid-manager-detail-page .penalty-value--none {
+body.raid-manager-detail-page .penalty-value--none,
+body.raid-manager-page .penalty-value--none {
   color: var(--color-text-faint);
 }
 
@@ -4734,14 +4781,16 @@ body.raid-manager-detail-page .penalty-potion-stat {
 }
 
 /* Застосовані штрафи гравця — чіпи (накопичуються) + кнопка "+" офіцера. */
-body.raid-manager-detail-page .penalty-chip-list {
+body.raid-manager-detail-page .penalty-chip-list,
+body.raid-manager-page .penalty-chip-list {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.35rem;
 }
 
-body.raid-manager-detail-page .penalty-chip {
+body.raid-manager-detail-page .penalty-chip,
+body.raid-manager-page .penalty-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -4756,7 +4805,8 @@ body.raid-manager-detail-page .penalty-chip {
   overflow-wrap: anywhere;
 }
 
-body.raid-manager-detail-page .penalty-chip-remove {
+body.raid-manager-detail-page .penalty-chip-remove,
+body.raid-manager-page .penalty-chip-remove {
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
@@ -4772,12 +4822,14 @@ body.raid-manager-detail-page .penalty-chip-remove {
   cursor: pointer;
 }
 
-body.raid-manager-detail-page .penalty-chip-remove:hover {
+body.raid-manager-detail-page .penalty-chip-remove:hover,
+body.raid-manager-page .penalty-chip-remove:hover {
   color: var(--color-danger);
   background-color: rgba(255, 107, 107, 0.2);
 }
 
-body.raid-manager-detail-page .penalty-add-btn {
+body.raid-manager-detail-page .penalty-add-btn,
+body.raid-manager-page .penalty-add-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -4791,7 +4843,8 @@ body.raid-manager-detail-page .penalty-add-btn {
   cursor: pointer;
 }
 
-body.raid-manager-detail-page .penalty-add-btn:hover {
+body.raid-manager-detail-page .penalty-add-btn:hover,
+body.raid-manager-page .penalty-add-btn:hover {
   background-color: var(--color-hover);
   border-style: solid;
 }

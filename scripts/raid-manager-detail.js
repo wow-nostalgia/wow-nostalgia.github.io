@@ -2207,9 +2207,6 @@ async function loadAndRenderPenalties() {
 
 // ---- Штрафи: лише з шаблонів (сторінка Штрафбату), накопичуються ----
 
-const PENALTY_ADD_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"/></svg>';
-const PENALTY_REMOVE_ICON = '<svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/></svg>';
-
 let penaltyTemplates = [];
 let penaltyModalPlayer = null;
 
@@ -2288,36 +2285,6 @@ penaltyConfirmBtn.addEventListener('click', async () => {
 penaltyCancelBtn.addEventListener('click', closePenaltyModal);
 penaltyModalBackdrop.addEventListener('click', closePenaltyModal);
 
-function penaltyTotalCell(value) {
-  const td = document.createElement('td');
-  td.textContent = value > 0 ? `-${value}` : '—';
-  td.className = value > 0 ? 'penalty-value--active' : 'penalty-value--none';
-  return td;
-}
-
-// Чіп застосованого штрафу: "Бос: причина (−5 до ролу)" + хрестик для офіцера.
-function buildPenaltyChip(entry, editable) {
-  const chip = document.createElement('span');
-  chip.className = 'penalty-chip';
-  const boss = entry.boss ? `${translateBoss(entry.boss)}: ` : '';
-  chip.appendChild(document.createTextNode(`${boss}${entry.reason || 'Без причини'} (${formatPenaltyValue(entry.roll_penalty, entry.soft_penalty)})`));
-
-  if (editable) {
-    const removeBtn = document.createElement('button');
-    removeBtn.type = 'button';
-    removeBtn.className = 'penalty-chip-remove';
-    removeBtn.innerHTML = PENALTY_REMOVE_ICON;
-    removeBtn.setAttribute('aria-label', 'Зняти штраф');
-    bindTooltip(removeBtn);
-    removeBtn.addEventListener('click', () => {
-      hideBtnTooltip();
-      removePenalty(entry.id);
-    });
-    chip.appendChild(removeBtn);
-  }
-  return chip;
-}
-
 function renderPenaltiesTable() {
   raidPenaltiesBody.innerHTML = '';
 
@@ -2365,20 +2332,10 @@ function renderPenaltiesTable() {
     const listTd = document.createElement('td');
     const list = document.createElement('div');
     list.className = 'penalty-chip-list';
-    (entries || []).forEach((entry) => list.appendChild(buildPenaltyChip(entry, officerMode)));
+    (entries || []).forEach((entry) => list.appendChild(buildPenaltyChip(entry, officerMode ? () => removePenalty(entry.id) : null)));
 
     if (officerMode) {
-      const addBtn = document.createElement('button');
-      addBtn.type = 'button';
-      addBtn.className = 'penalty-add-btn';
-      addBtn.innerHTML = PENALTY_ADD_ICON;
-      addBtn.setAttribute('aria-label', 'Додати штраф');
-      bindTooltip(addBtn);
-      addBtn.addEventListener('click', () => {
-        hideBtnTooltip();
-        openPenaltyModal(player_name);
-      });
-      list.appendChild(addBtn);
+      list.appendChild(buildPenaltyAddButton(() => openPenaltyModal(player_name)));
     } else if (!(entries || []).length) {
       const none = document.createElement('span');
       none.className = 'penalty-value--none';

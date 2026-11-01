@@ -44,6 +44,7 @@ const confirmModalConfirmBtn = document.getElementById('confirmModalConfirmBtn')
 const confirmModalCancelBtn = document.getElementById('confirmModalCancelBtn');
 
 const PENCIL_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"/></svg>';
+const CHEVRON_ICON = '<svg class="battalion-expand-icon" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"/></svg>';
 const TRASH_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z"/></svg>';
 
 // guildMemberNames читає createPlayerBadge (ui-shared.js).
@@ -201,48 +202,119 @@ confirmModalBackdrop.addEventListener('click', hideConfirm);
 
 // ---- Відкладені штрафи ----
 
+// Розгорнуті картки ("гравець|інстанс") — переживають перемальовування.
+const expandedBattalionRows = new Set();
+
+// Один рядок на гравця в кожному інстансі: штрафи застосовуються в рейді
+// саме цього інстансу, тож і суми рахуємо окремо.
+function groupBattalionEntries() {
+  const groups = new Map();
+  battalionEntries.forEach((entry) => {
+    const key = `${entry.player_name}|${entry.instance}`;
+    if (!groups.has(key)) {
+      groups.set(key, { key, playerName: entry.player_name, instance: entry.instance, rollPenalty: 0, softPenalty: 0, entries: [] });
+    }
+    const group = groups.get(key);
+    group.rollPenalty += entry.roll_penalty || 0;
+    group.softPenalty += entry.soft_penalty || 0;
+    group.entries.push(entry);
+  });
+  const instanceRank = (instance) => (instance === 'ICC' ? 0 : 1);
+  return [...groups.values()].sort((a, b) =>
+    a.playerName.localeCompare(b.playerName, 'uk') || instanceRank(a.instance) - instanceRank(b.instance));
+}
+
 function renderBattalionTable() {
   battalionBody.innerHTML = '';
-  battalionStatus.textContent = battalionEntries.length
-    ? `Усього записів: ${battalionEntries.length}`
+  const groups = groupBattalionEntries();
+  const playerCount = new Set(groups.map((g) => g.playerName)).size;
+  battalionStatus.textContent = playerCount
+    ? `Усього гравців: ${playerCount}`
     : 'Штрафбат порожній.';
-  if (!battalionEntries.length) return;
+  if (!groups.length) return;
 
-  battalionEntries.forEach((entry) => {
+  const colCount = isOfficer ? 5 : 4;
+  groups.forEach((group) => {
+    const expanded = expandedBattalionRows.has(group.key);
+
     const tr = document.createElement('tr');
+    tr.className = 'battalion-summary-row';
+    if (expanded) tr.classList.add('battalion-summary-row--expanded');
 
     const nameTd = document.createElement('td');
-    nameTd.appendChild(createPlayerBadge(entry.player_name));
-    nameTd.appendChild(document.createTextNode(' ' + entry.player_name));
+    const toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    toggleBtn.className = 'battalion-expand-btn';
+    toggleBtn.setAttribute('aria-expanded', String(expanded));
+    toggleBtn.innerHTML = CHEVRON_ICON;
+    toggleBtn.appendChild(createPlayerBadge(group.playerName));
+    toggleBtn.appendChild(document.createTextNode(group.playerName));
+    nameTd.appendChild(toggleBtn);
     tr.appendChild(nameTd);
 
-    // Старі записи (до шаблонів) без боса й шаблону — лише причина.
-    tr.appendChild(textCell(entry.template_id || entry.boss ? penaltyBossLabel(entry.boss) : '—'));
-    tr.appendChild(textCell(entry.reason || '—'));
-    tr.appendChild(textCell(formatPenaltyValue(entry.roll_penalty, entry.soft_penalty)));
-    tr.appendChild(textCell(translateInstance(entry.instance, INSTANCE_LABELS)));
+    tr.appendChild(penaltyTotalCell(group.rollPenalty));
+    tr.appendChild(penaltyTotalCell(group.softPenalty));
+    tr.appendChild(textCell(translateInstance(group.instance, INSTANCE_LABELS)));
 
     if (isOfficer) {
       const actionsTd = document.createElement('td');
       actionsTd.className = 'archive-delete-td';
-      actionsTd.appendChild(iconButton('archive-delete-btn', 'Видалити', TRASH_ICON, () => {
-        showConfirm('Видалити зі Штрафбату?', `${entry.player_name}: ${entry.reason || 'штраф'}`, () => deleteEntry(entry.id));
+      // Клік по кошику не має розгортати рядок.
+      actionsTd.addEventListener('click', (event) => event.stopPropagation());
+      actionsTd.appendChild(iconButton('archive-delete-btn', 'Видалити всі штрафи', TRASH_ICON, () => {
+        showConfirm(
+          'Видалити зі Штрафбату?',
+          `Усі штрафи ${group.playerName} (${group.entries.length}) для інстансу ${translateInstance(group.instance, INSTANCE_LABELS)}.`,
+          () => deleteEntries(group.entries.map((e) => e.id))
+        );
       }));
       tr.appendChild(actionsTd);
     }
 
+    // Розгортання — клік будь-де в рядку; кнопка з ім'ям дає те саме з клавіатури.
+    tr.addEventListener('click', () => {
+      if (expandedBattalionRows.has(group.key)) expandedBattalionRows.delete(group.key);
+      else expandedBattalionRows.add(group.key);
+      renderBattalionTable();
+    });
     battalionBody.appendChild(tr);
+
+    if (expanded) battalionBody.appendChild(buildBattalionCard(group, colCount));
   });
 }
 
-async function deleteEntry(id) {
+// Картка гравця — чіпи штрафів, як на вкладці "Штрафи" рейду.
+function buildBattalionCard(group, colCount) {
+  const tr = document.createElement('tr');
+  tr.className = 'battalion-card-row';
+  const td = document.createElement('td');
+  td.colSpan = colCount;
+
+  const list = document.createElement('div');
+  list.className = 'penalty-chip-list';
+  group.entries.forEach((entry) => {
+    list.appendChild(buildPenaltyChip(entry, isOfficer ? () => deleteEntries([entry.id]) : null));
+  });
+  if (isOfficer) {
+    list.appendChild(buildPenaltyAddButton(() => openAddPenaltyModal(group.playerName, group.instance)));
+  }
+
+  td.appendChild(list);
+  tr.appendChild(td);
+  return tr;
+}
+
+// Видаляє записи по одному (наявний DELETE); у відповідь — актуальний список.
+async function deleteEntries(ids) {
   try {
-    battalionEntries = await apiCall('DELETE', `/penalty-battalion/${id}`, { token: getSessionToken() });
-    renderBattalionTable();
+    for (const id of ids) {
+      battalionEntries = await apiCall('DELETE', `/penalty-battalion/${id}`, { token: getSessionToken() });
+    }
   } catch (err) {
     console.error(err);
     showMessageModal(`Не вдалося видалити запис: ${err.message}`);
   }
+  renderBattalionTable();
 }
 
 // Список штрафів — загальні шаблони і шаблони босів обраного інстансу.
@@ -251,13 +323,15 @@ function fillPenaltyTemplatesForInstance() {
   addPenaltyForm.querySelector('button[type="submit"]').disabled = count === 0;
 }
 
-function openAddPenaltyModal() {
+// "+" у картці гравця відкриває форму з його ім'ям та інстансом.
+function openAddPenaltyModal(playerName = '', instance = 'ICC') {
   if (!penaltyTemplates.length) {
     showMessageModal('Спершу створи шаблон на вкладці "Шаблони штрафів".');
     return;
   }
   addPenaltyForm.reset();
-  setToggleValue(penaltyInstanceToggle, penaltyInstanceInput, 'instance', 'ICC');
+  penaltyPlayerNameInput.value = playerName;
+  setToggleValue(penaltyInstanceToggle, penaltyInstanceInput, 'instance', instance);
   fillPenaltyTemplatesForInstance();
   addPenaltyModal.hidden = false;
 }
@@ -266,7 +340,7 @@ function closeAddPenaltyModal() {
   addPenaltyModal.hidden = true;
 }
 
-addPenaltyOpenBtn.addEventListener('click', openAddPenaltyModal);
+addPenaltyOpenBtn.addEventListener('click', () => openAddPenaltyModal());
 addPenaltyCancelBtn.addEventListener('click', closeAddPenaltyModal);
 addPenaltyModalBackdrop.addEventListener('click', closeAddPenaltyModal);
 
