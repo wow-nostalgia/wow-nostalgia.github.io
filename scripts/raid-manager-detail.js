@@ -136,6 +136,7 @@ let raid = null;
 let currentUser = null;
 let myCharacters = [];
 let raidOfficerIds = new Set();
+let raidOfficers = [];
 let itemsCatalog = {};
 let guildMemberNames = new Set();
 let guildMemberNamesSorted = [];
@@ -1040,6 +1041,7 @@ function fetchOfficers() {
 }
 
 function applyOfficers(officers) {
+  raidOfficers = officers;
   raidOfficerIds = new Set(officers.map((o) => o.discord_id));
   officersTab.hidden = !isOfficerMode();
   renderOfficersPanel(officers);
@@ -1056,13 +1058,39 @@ function usernameWithDisplayName(username, displayName) {
   return username === displayName ? username : `${username} - ${displayName}`;
 }
 
+// Друга колонка — персонажі офіцера з його профілю (characters: "A|B"), що
+// засофтили в цьому рейді або передали/отримали софти: видно, хто з
+// офіцерів у рейді і на кому.
+function officerCharactersCell(characters) {
+  const inRaid = getPlayersWithSoftsSet();
+  const names = (characters || '').split('|')
+    .filter((name) => inRaid.has(name))
+    .sort((a, b) => a.localeCompare(b, 'uk'));
+
+  const cell = document.createElement('span');
+  cell.className = 'raid-officer-characters';
+  if (!names.length) {
+    cell.classList.add('penalty-value--none');
+    cell.textContent = '—';
+    return cell;
+  }
+  names.forEach((name, index) => {
+    if (index) cell.appendChild(document.createTextNode(', '));
+    const nameEl = document.createElement('span');
+    nameEl.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
+    nameEl.textContent = name;
+    cell.appendChild(nameEl);
+  });
+  return cell;
+}
+
 function renderOfficersPanel(officers) {
   addOfficerSection.hidden = !isLeader();
   addOfficerInput.disabled = isRaidCompleted();
   officersList.innerHTML = '';
 
   const leaderLi = document.createElement('li');
-  leaderLi.className = 'raid-list-item';
+  leaderLi.className = 'raid-list-item raid-officer-item';
   const leaderNameWrap = document.createElement('span');
   leaderNameWrap.className = 'raid-list-item-name';
   leaderNameWrap.appendChild(createPlayerBadge(raid.leader_display_name));
@@ -1070,6 +1098,7 @@ function renderOfficersPanel(officers) {
     document.createTextNode(`${usernameWithDisplayName(raid.leader_username, raid.leader_display_name)} (Лідер)`)
   );
   leaderLi.appendChild(leaderNameWrap);
+  leaderLi.appendChild(officerCharactersCell(raid.leader_characters));
   officersList.appendChild(leaderLi);
 
   if (!officers.length) {
@@ -1082,12 +1111,13 @@ function renderOfficersPanel(officers) {
 
   officers.forEach((officer) => {
     const li = document.createElement('li');
-    li.className = 'raid-list-item';
+    li.className = 'raid-list-item raid-officer-item';
     const nameWrap = document.createElement('span');
     nameWrap.className = 'raid-list-item-name';
     nameWrap.appendChild(createPlayerBadge(officer.display_name));
     nameWrap.appendChild(document.createTextNode(usernameWithDisplayName(officer.username, officer.display_name)));
     li.appendChild(nameWrap);
+    li.appendChild(officerCharactersCell(officer.characters));
 
     if (isLeader()) {
       const removeBtn = document.createElement('button');
@@ -1323,6 +1353,8 @@ function getPlayersWithSoftsSet() {
 
 function renderPlayersTable() {
   raidPlayersBody.innerHTML = '';
+  // Друга колонка "Офіцерів" залежить від того, хто засофтив.
+  if (isOfficerMode()) renderOfficersPanel(raidOfficers);
 
   const grouped = groupReservesByPlayer(reserves);
 

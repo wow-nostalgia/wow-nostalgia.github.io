@@ -20,6 +20,12 @@ function displayNameSubquery(alias) {
   return `COALESCE(${primaryCharacterSubquery(alias)}, ${alias}.username)`;
 }
 
+// Усі персонажі з профілю користувача одним рядком "A|B|C" — сторінка рейду
+// показує, на кому з них офіцер/лідер у цьому рейді.
+function charactersSubquery(discordIdExpr) {
+  return `(SELECT GROUP_CONCAT(character_name, '|') FROM user_characters WHERE discord_id = ${discordIdExpr})`;
+}
+
 export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, hiddenReserves, leaderDiscordId, transferWeightLimit, allowMountSofts, lkOnly }) {
   const ts = nowIso();
   const twl = (transferWeightLimit === undefined || transferWeightLimit === null) ? null : Number(transferWeightLimit);
@@ -55,7 +61,8 @@ export async function getRaid(db, id) {
   return db
     .prepare(
       `SELECT r.*, u.username AS leader_username, u.avatar AS leader_avatar,
-              ${displayNameSubquery('u')} AS leader_display_name
+              ${displayNameSubquery('u')} AS leader_display_name,
+              ${charactersSubquery('r.leader_discord_id')} AS leader_characters
        FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
        WHERE r.id = ?`
     )
@@ -642,7 +649,8 @@ export async function listRaidOfficers(db, raidId) {
   const { results } = await db
     .prepare(
       `SELECT u.discord_id, u.username, u.avatar,
-              ${displayNameSubquery('u')} AS display_name
+              ${displayNameSubquery('u')} AS display_name,
+              ${charactersSubquery('u.discord_id')} AS characters
        FROM raid_officers ro
        JOIN users u ON u.discord_id = ro.discord_id
        WHERE ro.raid_id = ? ORDER BY ro.added_at ASC`

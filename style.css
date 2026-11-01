@@ -2503,6 +2503,16 @@ body.raid-manager-detail-page .raid-list-item-name {
   gap: 0.35rem;
 }
 
+/* Офіцери: Discord-ім'я | персонажі в цьому рейді | (кнопка лідера). */
+body.raid-manager-detail-page .raid-officer-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+}
+
+body.raid-manager-detail-page .raid-officer-characters {
+  overflow-wrap: anywhere;
+}
+
 body.raid-manager-detail-page .container-inner {
   gap: var(--space-6);
 }
