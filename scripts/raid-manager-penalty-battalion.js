@@ -31,6 +31,12 @@ const templateModalTitle = document.getElementById('templateModalTitle');
 const templateForm = document.getElementById('templateForm');
 const templateBossSelect = document.getElementById('templateBossSelect');
 const templateReasonInput = document.getElementById('templateReason');
+// Причина — textarea з переносом, але без нових рядків: Enter зберігає шаблон.
+templateReasonInput.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter') return;
+  event.preventDefault();
+  templateForm.requestSubmit();
+});
 const templateTypeToggle = document.getElementById('templateTypeToggle');
 const templateTypeInput = document.getElementById('templateType');
 const templateValueInput = document.getElementById('templateValue');
@@ -555,7 +561,7 @@ templateForm.addEventListener('submit', async (event) => {
   try {
     const body = {
       boss: templateBossSelect.value || null,
-      reason: templateReasonInput.value.trim(),
+      reason: templateReasonInput.value.replace(/\s+/g, ' ').trim(),
       penaltyType: templateTypeInput.value,
       value: Number(templateValueInput.value)
     };

@@ -2283,8 +2283,16 @@ body.raid-manager-page .raid-create-form {
    "Інстанс"), а текстове поле/дропдаун тягнуться на всю цю ширину —
    так усі праві краї вирівнюються по тому ж краю, що й тогли. */
 body.raid-manager-page .raid-create-form select,
-body.raid-manager-page .raid-create-form input[type="text"] {
+body.raid-manager-page .raid-create-form input[type="text"],
+body.raid-manager-page .raid-create-form textarea {
   width: 100%;
+}
+
+/* Причина шаблону штрафу — кілька рядків з переносом, щоб її було видно всю. */
+body.raid-manager-page .raid-create-form textarea {
+  font-family: inherit;
+  line-height: 1.4;
+  resize: none;
 }
 
 body.raid-manager-page .raid-toggle-group {
@@ -2347,6 +2355,7 @@ body.raid-manager-detail-page .raid-no-characters-hint {
 body.raid-manager-page .raid-create-form select,
 body.raid-manager-page .raid-create-form input[type="text"],
 body.raid-manager-page .raid-create-form input[type="number"],
+body.raid-manager-page .raid-create-form textarea,
 body.raid-manager-detail-page .raid-soft-form select,
 body.raid-manager-detail-page .raid-soft-form input[type="text"],
 body.raid-manager-detail-page .raid-soft-form input[type="number"],
@@ -2378,6 +2387,7 @@ body.raid-manager-page .buff-queue-audit-filter select {
 
 body.raid-manager-page .raid-create-form select:hover,
 body.raid-manager-page .raid-create-form input:hover,
+body.raid-manager-page .raid-create-form textarea:hover,
 body.raid-manager-detail-page .raid-soft-form select:hover,
 body.raid-manager-detail-page .raid-soft-form input:hover,
 body.raid-manager-detail-page .raid-input-wrap input[type="text"]:hover,
@@ -2391,6 +2401,7 @@ body.raid-manager-detail-page .raid-item-picker-trigger:hover {
 
 body.raid-manager-page .raid-create-form select:focus,
 body.raid-manager-page .raid-create-form input:focus,
+body.raid-manager-page .raid-create-form textarea:focus,
 body.raid-manager-detail-page .raid-soft-form select:focus,
 body.raid-manager-detail-page .raid-soft-form input:focus,
 body.raid-manager-detail-page .raid-input-wrap input[type="text"]:focus,
