@@ -2625,12 +2625,19 @@ body.raid-manager-page #createRaidModal .raid-create-field--grow {
   min-width: 0;
 }
 
-body.raid-manager-page #addPenaltyModal .raid-create-form {
+body.raid-manager-page #addPenaltyModal .raid-create-form,
+body.raid-manager-page #templateModal .raid-create-form {
   grid-template-columns: 1fr;
 }
 
-body.raid-manager-page #addPenaltyModal .raid-modal-actions {
+body.raid-manager-page #addPenaltyModal .raid-modal-actions,
+body.raid-manager-page #templateModal .raid-modal-actions {
   grid-column: 1;
+}
+
+/* Шаблон штрафу: назва типу (бос) і причина — на всю ширину ширшої картки. */
+body.raid-manager-page #templateModal .raid-modal-box {
+  width: min(90vw, 32rem);
 }
 
 /* Форма довша за інші модалки - на невисоких вікнах align-items:center
