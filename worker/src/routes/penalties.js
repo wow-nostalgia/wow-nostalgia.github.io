@@ -38,7 +38,7 @@ async function pendingPenaltiesForCaller(env, raid, session, rows) {
   const pending = [];
 
   for (const { characterName } of characters) {
-    const entries = await findPenaltyBattalionEntries(env.DB, characterName, raid.instance);
+    const entries = await findPenaltyBattalionEntries(env.DB, characterName, raid);
     if (!entries.length) continue;
 
     const existing = byName.get(characterName);

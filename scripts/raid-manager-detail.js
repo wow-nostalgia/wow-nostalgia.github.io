@@ -2652,22 +2652,30 @@ async function pollRaid() {
   pollInFlight = true;
   try {
     const lkOnlyBefore = Boolean(raid.lk_only);
+    const updatedBefore = raid.updated_at;
     applyOfficers(await loadSnapshot());
     // Лідер перемкнув "Тільки Король-ліч" — оновлюємо список босів у формах.
     if (Boolean(raid.lk_only) !== lkOnlyBefore) repopulateBossSelects();
+    // Штрафи в snapshot не входять (зайві читання D1): воркер оновлює
+    // raids.updated_at при кожній зміні штрафів — тоді й перечитуємо, на якій
+    // би вкладці не був гравець (мінуси біля імен у "Гравцях"/"Предметах",
+    // ліміт ваги у формі софту).
+    const penaltiesChanged = raid.updated_at !== updatedBefore;
+    if (penaltiesChanged) await loadPenalties();
     checkNotifications();
     renderBanner();
     renderPlayersTable();
     renderItemsTable();
     applySoftFormLockState();
+    if (penaltiesChanged) applyOfficerFormLockState();
     // Дані окремих вкладок — лише коли їх видно: у фоні вистачає snapshot.
     if (document.hidden) return;
     if (activeTab === 'audit') await loadAudit();
     // Штрафи: перебудовує весь tbody, тож пропускаємо, поки офіцер
-    // тримає фокус усередині таблиці (набирає суму/причину) - інакше
-    // поллінг зніс би незбережений ввід разом з фокусом.
+    // тримає фокус усередині таблиці - інакше поллінг зніс би фокус.
     if (activeTab === 'penalties' && !raidPenaltiesBody.contains(document.activeElement)) {
-      await loadAndRenderPenalties();
+      if (penaltiesChanged) renderPenaltiesTable();
+      else await loadAndRenderPenalties();
     }
     if (activeTab === 'potions') await loadPotionsTab();
   } catch (err) {

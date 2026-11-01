@@ -174,14 +174,24 @@ export async function sumRaidRollPenalty(db, raidId, playerName) {
   return row.total;
 }
 
+// Будь-яка зміна штрафів рейду оновлює raids.updated_at: сторінка рейду
+// порівнює його при кожному оновленні й перечитує штрафи лише коли він
+// змінився (рядок рейду читається й так — без зайвих читань D1).
+function touchRaidStmt(db, raidId, ts) {
+  return db.prepare('UPDATE raids SET updated_at = ? WHERE id = ?').bind(ts, raidId);
+}
+
 export async function addRaidPenaltyEntries(db, raidId, playerName, { templateId, boss, reason, rollPenalty, softPenalty }, count, createdBy) {
   const ts = nowIso();
   const stmt = db.prepare(
     `INSERT INTO raid_penalty_entries (raid_id, player_name, template_id, boss, reason, roll_penalty, soft_penalty, created_by, created_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
   );
-  await db.batch(Array.from({ length: count }, () =>
-    stmt.bind(raidId, playerName, templateId ?? null, boss ?? null, reason, rollPenalty, softPenalty, createdBy, ts)));
+  await db.batch([
+    ...Array.from({ length: count }, () =>
+      stmt.bind(raidId, playerName, templateId ?? null, boss ?? null, reason, rollPenalty, softPenalty, createdBy, ts)),
+    touchRaidStmt(db, raidId, ts)
+  ]);
 }
 
 export async function getRaidPenaltyEntry(db, raidId, entryId) {
@@ -189,7 +199,10 @@ export async function getRaidPenaltyEntry(db, raidId, entryId) {
 }
 
 export async function deleteRaidPenaltyEntry(db, raidId, entryId) {
-  await db.prepare('DELETE FROM raid_penalty_entries WHERE raid_id = ? AND id = ?').bind(raidId, entryId).run();
+  await db.batch([
+    db.prepare('DELETE FROM raid_penalty_entries WHERE raid_id = ? AND id = ?').bind(raidId, entryId),
+    touchRaidStmt(db, raidId, nowIso())
+  ]);
 }
 
 // ---- Шаблони штрафів ----
@@ -287,10 +300,13 @@ export async function deletePenaltyBattalionEntry(db, id) {
   await db.prepare('DELETE FROM penalty_battalion WHERE id = ?').bind(id).run();
 }
 
-export async function findPenaltyBattalionEntries(db, playerName, instance) {
+// Відкладені штрафи гравця, що стосуються цього рейду: того ж інстансу і
+// додані в Штрафбат не пізніше, ніж створено рейд. Штраф діє лише на майбутні
+// рейди — у вже створений (навіть ще не початий) рейд він не потрапляє.
+export async function findPenaltyBattalionEntries(db, playerName, raid) {
   const { results } = await db
-    .prepare('SELECT * FROM penalty_battalion WHERE player_name = ? AND instance = ? ORDER BY created_at ASC, id ASC')
-    .bind(playerName, instance)
+    .prepare('SELECT * FROM penalty_battalion WHERE player_name = ? AND instance = ? AND created_at <= ? ORDER BY created_at ASC, id ASC')
+    .bind(playerName, raid.instance, raid.created_at)
     .all();
   return results;
 }
@@ -299,7 +315,7 @@ export async function findPenaltyBattalionEntries(db, playerName, instance) {
 // офіцером, передачі) гравця в рейді того ж інстансу всі його записи
 // Штрафбату переходять у рейд і додаються до вже наявних штрафів.
 export async function applyPenaltyBattalionIfMatched(db, raid, playerName) {
-  const entries = await findPenaltyBattalionEntries(db, playerName, raid.instance);
+  const entries = await findPenaltyBattalionEntries(db, playerName, raid);
   if (!entries.length) return;
 
   for (const entry of entries) {
