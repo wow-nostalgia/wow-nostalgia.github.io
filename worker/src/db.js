@@ -101,84 +101,139 @@ export async function addRaidParticipant(db, raidId, playerName) {
     .run();
 }
 
-export async function getRaidParticipantsWithPenalties(db, raidId) {
+// ---- Штрафи в рейді: окремі записи, підсумок гравця — їх сума ----
+
+export async function listRaidPenaltyEntries(db, raidId) {
   const { results } = await db
-    .prepare(
-      `SELECT rp.player_name,
-              COALESCE(pen.roll_penalty, 0) AS roll_penalty,
-              COALESCE(pen.soft_penalty, 0) AS soft_penalty,
-              COALESCE(pen.reason, '') AS reason
-       FROM raid_participants rp
-       LEFT JOIN raid_penalties pen
-         ON pen.raid_id = rp.raid_id AND pen.player_name = rp.player_name
-       WHERE rp.raid_id = ?
-       ORDER BY rp.joined_at ASC`
-    )
+    .prepare('SELECT * FROM raid_penalty_entries WHERE raid_id = ? ORDER BY created_at ASC, id ASC')
     .bind(raidId)
     .all();
   return results;
 }
 
-export async function upsertRaidPenalty(db, raidId, playerName, rollPenalty, softPenalty, reason) {
+// Учасники рейду з підсумком штрафів і списком записів (entries). Гравець зі
+// штрафом, але без запису в raid_participants (штраф поставили до першого
+// софту), теж потрапляє в список.
+export async function getRaidParticipantsWithPenalties(db, raidId) {
+  const [{ results: participants }, entries] = await Promise.all([
+    db.prepare('SELECT player_name FROM raid_participants WHERE raid_id = ? ORDER BY joined_at ASC').bind(raidId).all(),
+    listRaidPenaltyEntries(db, raidId)
+  ]);
+  const rows = new Map(participants.map(({ player_name }) => [player_name, {
+    player_name, roll_penalty: 0, soft_penalty: 0, reason: '', entries: []
+  }]));
+  for (const entry of entries) {
+    if (!rows.has(entry.player_name)) {
+      rows.set(entry.player_name, { player_name: entry.player_name, roll_penalty: 0, soft_penalty: 0, reason: '', entries: [] });
+    }
+    const row = rows.get(entry.player_name);
+    row.roll_penalty += entry.roll_penalty;
+    row.soft_penalty += entry.soft_penalty;
+    row.entries.push(entry);
+  }
+  for (const row of rows.values()) {
+    row.reason = row.entries.map((e) => e.reason).filter(Boolean).join(', ');
+  }
+  return [...rows.values()];
+}
+
+export async function addRaidPenaltyEntries(db, raidId, playerName, { templateId, boss, reason, rollPenalty, softPenalty }, count, createdBy) {
+  const ts = nowIso();
+  const stmt = db.prepare(
+    `INSERT INTO raid_penalty_entries (raid_id, player_name, template_id, boss, reason, roll_penalty, soft_penalty, created_by, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  );
+  await db.batch(Array.from({ length: count }, () =>
+    stmt.bind(raidId, playerName, templateId ?? null, boss ?? null, reason, rollPenalty, softPenalty, createdBy, ts)));
+}
+
+export async function getRaidPenaltyEntry(db, raidId, entryId) {
+  return db.prepare('SELECT * FROM raid_penalty_entries WHERE raid_id = ? AND id = ?').bind(raidId, entryId).first();
+}
+
+export async function deleteRaidPenaltyEntry(db, raidId, entryId) {
+  await db.prepare('DELETE FROM raid_penalty_entries WHERE raid_id = ? AND id = ?').bind(raidId, entryId).run();
+}
+
+// ---- Шаблони штрафів ----
+
+export async function listPenaltyTemplates(db) {
+  const { results } = await db.prepare('SELECT * FROM penalty_templates ORDER BY id ASC').all();
+  return results;
+}
+
+export async function getPenaltyTemplate(db, id) {
+  return db.prepare('SELECT * FROM penalty_templates WHERE id = ?').bind(id).first();
+}
+
+export async function createPenaltyTemplate(db, { boss, reason, penaltyType, value, createdBy }) {
+  const ts = nowIso();
   await db
     .prepare(
-      `INSERT INTO raid_penalties (raid_id, player_name, roll_penalty, soft_penalty, reason)
-       VALUES (?, ?, ?, ?, ?)
-       ON CONFLICT(raid_id, player_name) DO UPDATE SET
-         roll_penalty = excluded.roll_penalty,
-         soft_penalty = excluded.soft_penalty,
-         reason = excluded.reason`
+      `INSERT INTO penalty_templates (boss, reason, penalty_type, value, created_by, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`
     )
-    .bind(raidId, playerName, rollPenalty, softPenalty, reason)
+    .bind(boss, reason, penaltyType, value, createdBy, ts, ts)
     .run();
+}
+
+export async function updatePenaltyTemplate(db, id, { boss, reason, penaltyType, value }) {
+  await db
+    .prepare('UPDATE penalty_templates SET boss = ?, reason = ?, penalty_type = ?, value = ?, updated_at = ? WHERE id = ?')
+    .bind(boss, reason, penaltyType, value, nowIso(), id)
+    .run();
+}
+
+export async function deletePenaltyTemplate(db, id) {
+  await db.prepare('DELETE FROM penalty_templates WHERE id = ?').bind(id).run();
 }
 
 // ---- Штрафбат (відкладені штрафи, не прив'язані до конкретного рейду) ----
 
 export async function listPenaltyBattalion(db) {
-  const { results } = await db.prepare('SELECT * FROM penalty_battalion ORDER BY created_at DESC').all();
+  const { results } = await db.prepare('SELECT * FROM penalty_battalion ORDER BY created_at DESC, id DESC').all();
   return results;
 }
 
-export async function addPenaltyBattalionEntry(db, { playerName, instance, rollPenalty, softPenalty, reason, addedBy }) {
-  await db
-    .prepare(
-      `INSERT INTO penalty_battalion (player_name, instance, roll_penalty, soft_penalty, reason, added_by, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
-    )
-    .bind(playerName, instance, rollPenalty, softPenalty, reason, addedBy, nowIso())
-    .run();
+export async function addPenaltyBattalionEntries(db, { playerName, instance, templateId, boss, rollPenalty, softPenalty, reason, addedBy }, count) {
+  const ts = nowIso();
+  const stmt = db.prepare(
+    `INSERT INTO penalty_battalion (player_name, instance, template_id, boss, roll_penalty, soft_penalty, reason, added_by, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  );
+  await db.batch(Array.from({ length: count }, () =>
+    stmt.bind(playerName, instance, templateId, boss, rollPenalty, softPenalty, reason, addedBy, ts)));
 }
 
 export async function deletePenaltyBattalionEntry(db, id) {
   await db.prepare('DELETE FROM penalty_battalion WHERE id = ?').bind(id).run();
 }
 
-export async function findPenaltyBattalionEntry(db, playerName, instance) {
-  return db
-    .prepare('SELECT * FROM penalty_battalion WHERE player_name = ? AND instance = ? ORDER BY created_at ASC LIMIT 1')
+export async function findPenaltyBattalionEntries(db, playerName, instance) {
+  const { results } = await db
+    .prepare('SELECT * FROM penalty_battalion WHERE player_name = ? AND instance = ? ORDER BY created_at ASC, id ASC')
     .bind(playerName, instance)
-    .first();
+    .all();
+  return results;
 }
 
-export async function hasRaidPenalty(db, raidId, playerName) {
-  return Boolean(
-    await db.prepare('SELECT 1 FROM raid_penalties WHERE raid_id = ? AND player_name = ?').bind(raidId, playerName).first()
-  );
-}
-
-// Автозастосування "відкладеного" штрафу: спрацьовує при першому софті
-// гравця в новому рейді того ж інстансу, що вказаний у Штрафбаті. Якщо в
-// рейді вже є будь-який штраф для гравця (напр. офіцер уже щось вписав
-// вручну) - не перезаписуємо, запис лишається на майбутнє.
+// Автозастосування відкладених штрафів: при першому софті (призначенні софту
+// офіцером, передачі) гравця в рейді того ж інстансу всі його записи
+// Штрафбату переходять у рейд і додаються до вже наявних штрафів.
 export async function applyPenaltyBattalionIfMatched(db, raid, playerName) {
-  const entry = await findPenaltyBattalionEntry(db, playerName, raid.instance);
-  if (!entry) return;
-  if (await hasRaidPenalty(db, raid.id, playerName)) return;
+  const entries = await findPenaltyBattalionEntries(db, playerName, raid.instance);
+  if (!entries.length) return;
 
-  const softPenalty = Math.min(raid.soft_limit_total, entry.soft_penalty);
-  await upsertRaidPenalty(db, raid.id, playerName, entry.roll_penalty, softPenalty, entry.reason || 'Штрафбат');
-  await deletePenaltyBattalionEntry(db, entry.id);
+  for (const entry of entries) {
+    await addRaidPenaltyEntries(db, raid.id, playerName, {
+      templateId: entry.template_id,
+      boss: entry.boss,
+      reason: entry.reason || 'Штрафбат',
+      rollPenalty: entry.roll_penalty,
+      softPenalty: entry.soft_penalty
+    }, 1, 'Штрафбат');
+    await deletePenaltyBattalionEntry(db, entry.id);
+  }
   // Вкладка "Штрафи" будується від списку учасників, а він поповнюється лише
   // успішним софтом. Без цього рядка штраф, застосований при невдалій спробі
   // (напр. штраф дорівнює ліміту рейду - доступних софтів нуль), не побачив
@@ -228,10 +283,10 @@ export async function setReserveReceived(db, raidId, reserveId, received) {
 
 export async function getSoftPenalty(db, raidId, playerName) {
   const row = await db
-    .prepare('SELECT soft_penalty FROM raid_penalties WHERE raid_id = ? AND player_name = ?')
+    .prepare('SELECT COALESCE(SUM(soft_penalty), 0) AS total FROM raid_penalty_entries WHERE raid_id = ? AND player_name = ?')
     .bind(raidId, playerName)
     .first();
-  return row ? row.soft_penalty : 0;
+  return row ? row.total : 0;
 }
 
 // Персональний ліміт ваги: базовий ліміт рейду мінус штраф гравця. Бонусна
@@ -566,11 +621,12 @@ export async function isDefaultOfficer(db, discordId) {
 }
 
 export async function deleteRaid(db, raidId) {
-  // raid_participants і raid_penalties не мають ON DELETE CASCADE в схемі
+  // raid_participants, raid_penalties і raid_penalty_entries не мають ON DELETE CASCADE
   // (заведені в 0005_add_penalties.sql без FK) — каскад на них не спрацює,
   // тому чистимо їх явно. Решта таблиць з raid_id мають коректний FK.
   await db.prepare('DELETE FROM raid_participants WHERE raid_id = ?').bind(raidId).run();
   await db.prepare('DELETE FROM raid_penalties WHERE raid_id = ?').bind(raidId).run();
+  await db.prepare('DELETE FROM raid_penalty_entries WHERE raid_id = ?').bind(raidId).run();
   return db.prepare('DELETE FROM raids WHERE id = ?').bind(raidId).run();
 }
 

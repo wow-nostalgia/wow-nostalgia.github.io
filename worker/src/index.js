@@ -30,7 +30,13 @@ import {
 import { handleListAudit } from './routes/audit.js';
 import { handleListTransfers, handleCreateTransfer, handleDeleteTransfer } from './routes/transfers.js';
 import { handleListBonusGrants, handleCreateBonusGrant, handleDeleteBonusGrant } from './routes/bonus-grants.js';
-import { handleListPenalties, handleUpsertPenalty } from './routes/penalties.js';
+import { handleListPenalties, handleAddPenalty, handleDeletePenalty } from './routes/penalties.js';
+import {
+  handleListPenaltyTemplates,
+  handleCreatePenaltyTemplate,
+  handleUpdatePenaltyTemplate,
+  handleDeletePenaltyTemplate
+} from './routes/penalty-templates.js';
 import {
   handleListPenaltyBattalion,
   handleAddPenaltyBattalionEntry,
@@ -258,9 +264,11 @@ async function routeRaids(request, env, parts, session) {
   }
 
   if (sub === 'penalties') {
-    const playerName = parts[2] ? decodeURIComponent(parts[2]) : null;
-    if (!playerName && method === 'GET') return handleListPenalties(request, env, raidId, session);
-    if (playerName && method === 'PUT') return handleUpsertPenalty(request, env, raidId, playerName, session);
+    // /penalties (GET список, POST застосувати шаблон), /penalties/{entryId} (DELETE)
+    const entryId = parts[2] ? Number(parts[2]) : null;
+    if (!entryId && method === 'GET') return handleListPenalties(request, env, raidId, session);
+    if (!entryId && method === 'POST') return handleAddPenalty(request, env, raidId, session);
+    if (entryId && method === 'DELETE') return handleDeletePenalty(request, env, raidId, entryId, session);
     throw new HttpError(405, 'Метод не підтримується');
   }
 
@@ -367,6 +375,21 @@ async function routeBuffQueue(request, env, parts, session) {
   throw new HttpError(404, 'Невідомий шлях');
 }
 
+async function routePenaltyTemplates(request, env, parts, session) {
+  const method = request.method;
+  const [id] = parts;
+
+  if (!id) {
+    if (method === 'GET') return handleListPenaltyTemplates(request, env, session);
+    if (method === 'POST') return handleCreatePenaltyTemplate(request, env, session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
+
+  if (method === 'PUT') return handleUpdatePenaltyTemplate(request, env, Number(id), session);
+  if (method === 'DELETE') return handleDeletePenaltyTemplate(request, env, Number(id), session);
+  throw new HttpError(405, 'Метод не підтримується');
+}
+
 async function routePenaltyBattalion(request, env, parts, session) {
   const method = request.method;
   const [id] = parts;
@@ -466,6 +489,11 @@ async function route(request, env) {
   if (parts[2] === 'penalty-battalion') {
     const session = await requireSession(env.DB, request);
     return routePenaltyBattalion(request, env, parts.slice(3), session);
+  }
+
+  if (parts[2] === 'penalty-templates') {
+    const session = await requireSession(env.DB, request);
+    return routePenaltyTemplates(request, env, parts.slice(3), session);
   }
 
   if (parts[2] === 'buff-queue') {
