@@ -2733,10 +2733,10 @@ body.raid-manager-page #battalionTable td {
   overflow-wrap: anywhere;
 }
 
-/* Відкладені: Ім'я (решта) | Мінус до ролу | Мінус до софту | Інстанс | дії.
+/* Відкладені: Ім'я (решта) | Рол | Софт | Інстанс | дії.
    Рядок гравця розгортається в картку з чіпами штрафів. */
 body.raid-manager-page #battalionTable th:nth-child(2),
-body.raid-manager-page #battalionTable th:nth-child(3) { width: 7.5rem; }
+body.raid-manager-page #battalionTable th:nth-child(3) { width: 5rem; }
 body.raid-manager-page #battalionTable th:nth-child(4) { width: 11rem; }
 
 body.raid-manager-page .battalion-summary-row {
@@ -2829,9 +2829,9 @@ body.raid-manager-page .penalty-template-table tbody tr.penalty-group-head:hover
 /* На телефоні колонки відкладених штрафів вужчі, а таблиця все одно трохи
    ширша за екран і гортається вбік; шаблони вміщуються. */
 @media (max-width: 544px) {
-  body.raid-manager-page #battalionTable { min-width: 28rem; }
+  body.raid-manager-page #battalionTable { min-width: 26rem; }
   body.raid-manager-page #battalionTable th:nth-child(2),
-  body.raid-manager-page #battalionTable th:nth-child(3) { width: 4.5rem; }
+  body.raid-manager-page #battalionTable th:nth-child(3) { width: 3.5rem; }
   body.raid-manager-page #battalionTable th:nth-child(4) { width: 7.5rem; }
   body.raid-manager-page .battalion-card-row td { padding-left: 0.6rem; }
   body.raid-manager-page .penalty-template-table .penalty-col-value { width: 5.5rem; }
