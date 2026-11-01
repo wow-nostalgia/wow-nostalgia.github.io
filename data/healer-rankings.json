@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-10-31T03:02:01.966Z",
+  "updatedAt": "2026-11-01T02:51:30.176Z",
   "specs": [
     {
       "class": "Paladin",
@@ -700,6 +700,10 @@
           "hps": 29085.8
         },
         {
+          "name": "Зозулечка",
+          "hps": 29021.4
+        },
+        {
           "name": "Ангер",
           "hps": 28955.6
         },
@@ -722,10 +726,6 @@
         {
           "name": "Kampett",
           "hps": 28679.1
-        },
-        {
-          "name": "Зозулечка",
-          "hps": 28609.9
         },
         {
           "name": "Anafilakciya",
@@ -870,6 +870,10 @@
         {
           "name": "Олень",
           "hps": 25630.7
+        },
+        {
+          "name": "Mutinywithin",
+          "hps": 25483.6
         },
         {
           "name": "Robohil",
@@ -1112,10 +1116,6 @@
           "hps": 19388.3
         },
         {
-          "name": "Mutinywithin",
-          "hps": 19383
-        },
-        {
           "name": "Battlepal",
           "hps": 19169.4
         },
@@ -1350,6 +1350,10 @@
         {
           "name": "Goodyoufeer",
           "hps": 6092.4
+        },
+        {
+          "name": "Zavsklada",
+          "hps": 5637.5
         },
         {
           "name": "Sfor",
@@ -1774,6 +1778,10 @@
           "hps": 559.3
         },
         {
+          "name": "Methodix",
+          "hps": 554.4
+        },
+        {
           "name": "Oppenheimer",
           "hps": 552
         },
@@ -1952,10 +1960,6 @@
         {
           "name": "Byki",
           "hps": 401.7
-        },
-        {
-          "name": "Methodlx",
-          "hps": 395.8
         },
         {
           "name": "Вісімрук",
@@ -2324,6 +2328,10 @@
         {
           "name": "Бумбай",
           "hps": 110.1
+        },
+        {
+          "name": "Алая'чаша",
+          "hps": 109
         },
         {
           "name": "Братик",
@@ -3174,6 +3182,10 @@
           "hps": 16781
         },
         {
+          "name": "Шурік",
+          "hps": 16752.9
+        },
+        {
           "name": "Greenu",
           "hps": 16741.3
         },
@@ -3470,10 +3482,6 @@
           "hps": 13494.2
         },
         {
-          "name": "Шурік",
-          "hps": 13491.4
-        },
-        {
           "name": "Falinrash",
           "hps": 13420.9
         },
@@ -3722,6 +3730,10 @@
           "hps": 9487.3
         },
         {
+          "name": "Pittypit",
+          "hps": 9479.7
+        },
+        {
           "name": "Karoffka",
           "hps": 9403.9
         },
@@ -3795,7 +3807,7 @@
         },
         {
           "name": "Gubor",
-          "hps": 6693.6
+          "hps": 6693.8
         },
         {
           "name": "Celtae",

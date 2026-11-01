@@ -23,6 +23,18 @@
       "overallScore": 4.07
     }
   },
+  "Варр": {
+    "canonical": "Ілідантроль",
+    "detectedAt": "2026-11-01T02:51:28.928Z",
+    "reason": "guild-data-collision",
+    "evidence": {
+      "server": "FreedomUA",
+      "class": "Warrior",
+      "specIndex": 2,
+      "overallRank": 3,
+      "overallScore": 99.73
+    }
+  },
   "Жеканежека": {
     "canonical": "Дімочканекіт",
     "detectedAt": "2026-10-05T02:36:31.412Z",
