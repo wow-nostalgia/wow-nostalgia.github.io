@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Штрафбат — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=161">
+  <link rel="stylesheet" href="../../style.css?v=163">
   <script src="/scripts/background.js?v=1"></script>
 </head>
 
@@ -72,6 +72,7 @@
         <div class="raid-tabs" role="tablist">
           <button type="button" class="raid-tab raid-tab--active" data-tab="pending">Відкладені штрафи</button>
           <button type="button" class="raid-tab" data-tab="templates">Шаблони штрафів</button>
+          <button type="button" class="raid-tab" data-tab="audit">Історія змін</button>
         </div>
 
         <div id="pendingPane">
@@ -111,7 +112,7 @@
             <table id="templatesTable" class="raid-table">
               <thead>
                 <tr>
-                  <th>Бос</th>
+                  <th>Тип штрафу</th>
                   <th>Причина</th>
                   <th>Штраф</th>
                   <th class="archive-delete-th officer-only" hidden></th>
@@ -120,6 +121,11 @@
               <tbody id="templatesBody"></tbody>
             </table>
           </div>
+        </div>
+
+        <div id="auditPane" hidden>
+          <div id="auditFilters" class="buff-queue-audit-filters"></div>
+          <div id="auditList"></div>
         </div>
       </div>
 
@@ -133,6 +139,8 @@
       </footer>
     </div>
   </div>
+
+  <div id="raidBtnTooltip" hidden></div>
 
   <div id="addPenaltyModal" class="raid-modal" hidden>
     <div class="raid-modal-backdrop" id="addPenaltyModalBackdrop"></div>
@@ -240,7 +248,7 @@
   <script src="../../scripts/ui-shared.js?v=16"></script>
   <script src="../../scripts/raid-manager-shared.js?v=6"></script>
   <script src="../../scripts/name-translations.js?v=3"></script>
-  <script src="../../scripts/raid-manager-penalty-battalion.js?v=4"></script>
+  <script src="../../scripts/raid-manager-penalty-battalion.js?v=6"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

@@ -7,6 +7,9 @@ const templatesStatus = document.getElementById('templatesStatus');
 const templatesBody = document.getElementById('templatesBody');
 const pendingPane = document.getElementById('pendingPane');
 const templatesPane = document.getElementById('templatesPane');
+const auditPane = document.getElementById('auditPane');
+const auditFiltersEl = document.getElementById('auditFilters');
+const auditListEl = document.getElementById('auditList');
 
 const addPenaltyOpenBtn = document.getElementById('addPenaltyOpenBtn');
 const addPenaltyModal = document.getElementById('addPenaltyModal');
@@ -132,18 +135,28 @@ document.querySelectorAll('.raid-tab').forEach((tab) => {
     document.querySelectorAll('.raid-tab').forEach((t) => t.classList.toggle('raid-tab--active', t === tab));
     pendingPane.hidden = tab.dataset.tab !== 'pending';
     templatesPane.hidden = tab.dataset.tab !== 'templates';
+    auditPane.hidden = tab.dataset.tab !== 'audit';
+    // Історію завжди перечитуємо: зміни могли щойно статися на інших вкладках.
+    if (tab.dataset.tab === 'audit') reloadAudit();
   });
 });
 
 // ---- Спільні елементи таблиць ----
 
+// Підказка — JS (#raidBtnTooltip, bindTooltip), а не CSS .tooltipped: кнопки
+// стоять в останній колонці таблиці з overflow-x:auto, і невидимий
+// .tooltipped::after розширював область прокрутки — з'являвся скролбар.
 function iconButton(className, label, iconHtml, onClick) {
   const btn = document.createElement('button');
   btn.type = 'button';
-  btn.className = `${className} tooltipped`;
+  btn.className = className;
   btn.setAttribute('aria-label', label);
   btn.innerHTML = iconHtml;
-  btn.addEventListener('click', onClick);
+  bindTooltip(btn);
+  btn.addEventListener('click', () => {
+    hideBtnTooltip();
+    onClick();
+  });
   return btn;
 }
 
@@ -408,6 +421,229 @@ async function deleteTemplate(id) {
   } catch (err) {
     console.error(err);
     showMessageModal(`Не вдалося видалити шаблон: ${err.message}`);
+  }
+}
+
+// ---- Історія змін (шаблони й відкладені штрафи) ----
+
+const AUDIT_PAGE_SIZE = 20;
+const AUDIT_ACTION_OPTIONS = [
+  ['template_create', 'Створення шаблону'],
+  ['template_update', 'Зміна шаблону'],
+  ['template_delete', 'Видалення шаблону'],
+  ['battalion_add', 'Додано у Штрафбат'],
+  ['battalion_delete', 'Прибрано зі Штрафбату'],
+  ['battalion_apply', 'Застосовано в рейді']
+];
+
+const auditFilter = { from: '', to: '', actor: '', action: '' };
+let auditEntries = [];
+let auditActors = [];
+let auditPage = 0;
+let auditRequestSeq = 0;
+
+// Зсув часу Києва від UTC (мс) у момент ts — з урахуванням переходу на літній час.
+function kyivOffsetMs(ts) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Kyiv', hourCycle: 'h23',
+    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'
+  }).formatToParts(new Date(ts));
+  const get = (type) => Number(parts.find((part) => part.type === type).value);
+  return Date.UTC(get('year'), get('month') - 1, get('day'), get('hour'), get('minute'), get('second')) - ts;
+}
+
+// Північ дати "YYYY-MM-DD" (+dayShift днів) за Києвом — як ISO-момент в UTC.
+function kyivMidnightIso(dateStr, dayShift = 0) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const localMidnight = Date.UTC(y, m - 1, d + dayShift);
+  let ts = localMidnight - kyivOffsetMs(localMidnight);
+  ts = localMidnight - kyivOffsetMs(ts);
+  return new Date(ts).toISOString();
+}
+
+function auditQueryString() {
+  const params = new URLSearchParams();
+  if (auditFilter.from) params.set('from', kyivMidnightIso(auditFilter.from));
+  if (auditFilter.to) params.set('to', kyivMidnightIso(auditFilter.to, 1));
+  if (auditFilter.actor) params.set('actor', auditFilter.actor);
+  if (auditFilter.action) params.set('action', auditFilter.action);
+  const query = params.toString();
+  return query ? `?${query}` : '';
+}
+
+async function loadAudit() {
+  const seq = ++auditRequestSeq;
+  try {
+    const data = await apiCall('GET', `/penalty-templates/audit${auditQueryString()}`, { token: getSessionToken() });
+    // Швидко змінені фільтри: застарілу відповідь відкидаємо.
+    if (seq !== auditRequestSeq) return false;
+    auditEntries = data.entries;
+    auditActors = data.actors;
+    auditPage = 0;
+    return true;
+  } catch (err) {
+    if (seq === auditRequestSeq) showMessageModal(`Не вдалося завантажити історію: ${err.message}`);
+    return false;
+  }
+}
+
+async function reloadAudit() {
+  if (await loadAudit()) {
+    buildAuditFilters();
+    renderAuditList();
+  }
+}
+
+function filterField(labelText, control) {
+  const label = document.createElement('label');
+  label.className = 'buff-queue-audit-filter';
+  const caption = document.createElement('span');
+  caption.textContent = labelText;
+  label.append(caption, control);
+  return label;
+}
+
+function filterSelect(value, placeholder, options) {
+  const select = document.createElement('select');
+  [['', placeholder], ...options].forEach(([optValue, optLabel]) => {
+    const opt = document.createElement('option');
+    opt.value = optValue;
+    opt.textContent = optLabel;
+    select.appendChild(opt);
+  });
+  select.value = value;
+  return select;
+}
+
+function filterDate(value) {
+  const input = document.createElement('input');
+  input.type = 'date';
+  input.value = value;
+  return input;
+}
+
+// Рядок фільтрів будується один раз на відкриття вкладки; зміна фільтра
+// перемальовує лише список — інакше поле дати губило б фокус.
+function buildAuditFilters() {
+  auditFiltersEl.innerHTML = '';
+  const fromInput = filterDate(auditFilter.from);
+  const toInput = filterDate(auditFilter.to);
+  const actorNames = auditFilter.actor && !auditActors.includes(auditFilter.actor)
+    ? [auditFilter.actor, ...auditActors]
+    : auditActors;
+  const actorSelect = filterSelect(auditFilter.actor, 'Усі', actorNames.map((n) => [n, n]));
+  const actionSelect = filterSelect(auditFilter.action, 'Усі події', AUDIT_ACTION_OPTIONS);
+  const resetBtn = document.createElement('button');
+  resetBtn.type = 'button';
+  resetBtn.className = 'link-button-std';
+  resetBtn.textContent = 'Скинути';
+  resetBtn.addEventListener('click', () => {
+    fromInput.value = toInput.value = actorSelect.value = actionSelect.value = '';
+    applyFilters();
+  });
+
+  async function applyFilters() {
+    auditFilter.from = fromInput.value;
+    auditFilter.to = toInput.value;
+    auditFilter.actor = actorSelect.value;
+    auditFilter.action = actionSelect.value;
+    resetBtn.disabled = !Object.values(auditFilter).some(Boolean);
+    if (await loadAudit()) renderAuditList();
+  }
+
+  [fromInput, toInput, actorSelect, actionSelect].forEach((el) => el.addEventListener('change', applyFilters));
+  resetBtn.disabled = !Object.values(auditFilter).some(Boolean);
+
+  auditFiltersEl.append(
+    filterField('З', fromInput),
+    filterField('По', toInput),
+    filterField('Хто', actorSelect),
+    filterField('Подія', actionSelect),
+    resetBtn
+  );
+}
+
+// Шаблон / штраф одним рядком: "Халіон — Смерть від леза (−5 до ролу)".
+function describePenalty(d) {
+  const value = d.penaltyType
+    ? formatTemplateValue({ penalty_type: d.penaltyType, value: d.value })
+    : formatPenaltyValue(d.rollPenalty, d.softPenalty);
+  return `${penaltyBossLabel(d.boss)} — ${d.reason} (${value})`;
+}
+
+// Лише змінені параметри шаблону: "значення −5 → −10 до ролу".
+function describeTemplateChanges(before, after) {
+  const changes = [];
+  if ((before.boss || null) !== (after.boss || null)) {
+    changes.push(`бос ${penaltyBossLabel(before.boss)} → ${penaltyBossLabel(after.boss)}`);
+  }
+  if (before.reason !== after.reason) changes.push(`причина "${before.reason}" → "${after.reason}"`);
+  if (before.penaltyType !== after.penaltyType || before.value !== after.value) {
+    const fmt = (t) => formatTemplateValue({ penalty_type: t.penaltyType, value: t.value });
+    changes.push(`штраф ${fmt(before)} → ${fmt(after)}`);
+  }
+  return changes.join('; ') || 'без змін';
+}
+
+function describeAuditAction(entry) {
+  const d = entry.detail || {};
+  const instance = d.instance ? `, ${translateInstance(d.instance, INSTANCE_LABELS)}` : '';
+  switch (entry.action) {
+    case 'template_create': return `створив шаблон: ${describePenalty(d)}`;
+    case 'template_update': return `змінив шаблон ${penaltyBossLabel(d.before.boss)} — ${d.before.reason}: ${describeTemplateChanges(d.before, d.after)}`;
+    case 'template_delete': return `видалив шаблон: ${describePenalty(d)}`;
+    case 'battalion_add': return `додав у Штрафбат ${d.playerName}: ${describePenalty(d)}${d.count > 1 ? ` ×${d.count}` : ''}${instance}`;
+    case 'battalion_delete': return `прибрав зі Штрафбату ${d.playerName}: ${describePenalty(d)}${instance}`;
+    case 'battalion_apply': return `штраф ${d.playerName} застосовано в рейді "${d.raidTitle}": ${describePenalty(d)}`;
+    default: return entry.action;
+  }
+}
+
+function renderAuditList() {
+  auditListEl.innerHTML = '';
+
+  const totalPages = Math.max(Math.ceil(auditEntries.length / AUDIT_PAGE_SIZE), 1);
+  auditPage = Math.min(Math.max(auditPage, 0), totalPages - 1);
+  const pageEntries = auditEntries.slice(auditPage * AUDIT_PAGE_SIZE, (auditPage + 1) * AUDIT_PAGE_SIZE);
+
+  const list = document.createElement('div');
+  list.className = 'raid-audit-list';
+  if (!pageEntries.length) {
+    list.textContent = Object.values(auditFilter).some(Boolean) ? 'За цими фільтрами подій немає.' : 'Історія порожня.';
+  } else {
+    pageEntries.forEach((entry) => {
+      const row = document.createElement('div');
+      row.className = 'raid-audit-row';
+      const time = document.createElement('span');
+      time.className = 'raid-audit-time';
+      time.textContent = formatDateTimeKyiv(entry.created_at);
+      const text = document.createElement('span');
+      text.textContent = ` ${entry.actor_name} — ${describeAuditAction(entry)}`;
+      row.append(time, text);
+      list.appendChild(row);
+    });
+  }
+  auditListEl.appendChild(list);
+
+  if (totalPages > 1) {
+    const pagination = document.createElement('div');
+    pagination.className = 'raid-pagination';
+    const prevBtn = document.createElement('button');
+    prevBtn.type = 'button';
+    prevBtn.className = 'link-button-std';
+    prevBtn.textContent = '← Попередня';
+    prevBtn.disabled = auditPage === 0;
+    prevBtn.addEventListener('click', () => { auditPage -= 1; renderAuditList(); });
+    const info = document.createElement('span');
+    info.textContent = `Сторінка ${auditPage + 1} з ${totalPages}`;
+    const nextBtn = document.createElement('button');
+    nextBtn.type = 'button';
+    nextBtn.className = 'link-button-std';
+    nextBtn.textContent = 'Наступна →';
+    nextBtn.disabled = auditPage >= totalPages - 1;
+    nextBtn.addEventListener('click', () => { auditPage += 1; renderAuditList(); });
+    pagination.append(prevBtn, info, nextBtn);
+    auditListEl.appendChild(pagination);
   }
 }
 
