@@ -19,6 +19,7 @@ const addPenaltyForm = document.getElementById('addPenaltyForm');
 const penaltyPlayerNameInput = document.getElementById('penaltyPlayerName');
 const penaltyPlayerNameList = document.getElementById('penaltyPlayerNameList');
 const penaltyTemplateSelect = document.getElementById('penaltyTemplateSelect');
+const penaltyInstanceLabel = document.getElementById('penaltyInstanceLabel');
 const penaltyInstanceToggle = document.getElementById('penaltyInstanceToggle');
 const penaltyInstanceInput = document.getElementById('penaltyInstance');
 const penaltyCountInput = document.getElementById('penaltyCount');
@@ -323,15 +324,18 @@ function fillPenaltyTemplatesForInstance() {
   addPenaltyForm.querySelector('button[type="submit"]').disabled = count === 0;
 }
 
-// "+" у картці гравця відкриває форму з його ім'ям та інстансом.
-function openAddPenaltyModal(playerName = '', instance = 'ICC') {
+// "+" у картці гравця відкриває форму з його ім'ям та інстансом картки —
+// перемикач інстансу тоді не показуємо.
+function openAddPenaltyModal(playerName = '', instance = null) {
   if (!penaltyTemplates.length) {
     showMessageModal('Спершу створи шаблон на вкладці "Шаблони штрафів".');
     return;
   }
   addPenaltyForm.reset();
   penaltyPlayerNameInput.value = playerName;
-  setToggleValue(penaltyInstanceToggle, penaltyInstanceInput, 'instance', instance);
+  setToggleValue(penaltyInstanceToggle, penaltyInstanceInput, 'instance', instance || 'ICC');
+  penaltyInstanceLabel.hidden = Boolean(instance);
+  penaltyInstanceToggle.hidden = Boolean(instance);
   fillPenaltyTemplatesForInstance();
   addPenaltyModal.hidden = false;
 }
