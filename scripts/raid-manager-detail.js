@@ -1984,7 +1984,10 @@ statusToggleBtn.addEventListener('click', async () => {
     raid = await apiCall('POST', `/raids/${raidId}/${action}`, { token: getSessionToken() });
     renderBanner();
     await loadOfficers();
+    // Кнопки редагування в усіх вкладках залежать від статусу рейду.
     renderPlayersTable();
+    renderItemsTable();
+    renderPenaltiesTable();
     // Завершений рейд не опитується; відновлений — знову так.
     schedulePoll();
   } catch (err) {
