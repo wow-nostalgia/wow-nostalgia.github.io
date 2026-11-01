@@ -19,7 +19,6 @@ const addPenaltyForm = document.getElementById('addPenaltyForm');
 const penaltyPlayerNameInput = document.getElementById('penaltyPlayerName');
 const penaltyPlayerNameList = document.getElementById('penaltyPlayerNameList');
 const penaltyTemplateSelect = document.getElementById('penaltyTemplateSelect');
-const penaltyInstanceLabel = document.getElementById('penaltyInstanceLabel');
 const penaltyInstanceToggle = document.getElementById('penaltyInstanceToggle');
 const penaltyInstanceInput = document.getElementById('penaltyInstance');
 const penaltyCountInput = document.getElementById('penaltyCount');
@@ -125,7 +124,7 @@ function setToggleValue(toggleEl, hiddenInput, datasetKey, value) {
   });
 }
 
-setupToggleGroup(penaltyInstanceToggle, penaltyInstanceInput, 'instance');
+setupToggleGroup(penaltyInstanceToggle, penaltyInstanceInput, 'instance', () => fillPenaltyTemplatesForInstance());
 setupToggleGroup(templateTypeToggle, templateTypeInput, 'type', applyTemplateValueLimits);
 
 // ---- Вкладки ----
@@ -246,19 +245,11 @@ async function deleteEntry(id) {
   }
 }
 
-// Інстанс задає бос шаблону; перемикач потрібен лише для загального.
-function selectedPenaltyTemplate() {
-  return penaltyTemplates.find((t) => String(t.id) === penaltyTemplateSelect.value) || null;
+// Список штрафів — загальні шаблони і шаблони босів обраного інстансу.
+function fillPenaltyTemplatesForInstance() {
+  const count = fillPenaltyTemplateSelect(penaltyTemplateSelect, penaltyTemplates, penaltyInstanceInput.value);
+  addPenaltyForm.querySelector('button[type="submit"]').disabled = count === 0;
 }
-
-function syncPenaltyInstanceVisibility() {
-  const template = selectedPenaltyTemplate();
-  const general = Boolean(template) && !template.boss;
-  penaltyInstanceLabel.hidden = !general;
-  penaltyInstanceToggle.hidden = !general;
-}
-
-penaltyTemplateSelect.addEventListener('change', syncPenaltyInstanceVisibility);
 
 function openAddPenaltyModal() {
   if (!penaltyTemplates.length) {
@@ -266,9 +257,8 @@ function openAddPenaltyModal() {
     return;
   }
   addPenaltyForm.reset();
-  fillPenaltyTemplateSelect(penaltyTemplateSelect, penaltyTemplates);
   setToggleValue(penaltyInstanceToggle, penaltyInstanceInput, 'instance', 'ICC');
-  syncPenaltyInstanceVisibility();
+  fillPenaltyTemplatesForInstance();
   addPenaltyModal.hidden = false;
 }
 

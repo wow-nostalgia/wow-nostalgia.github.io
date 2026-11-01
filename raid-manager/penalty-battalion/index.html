@@ -146,15 +146,15 @@
           <div class="raid-autocomplete-list" id="penaltyPlayerNameList"></div>
         </div>
 
-        <label for="penaltyTemplateSelect">Штраф</label>
-        <select id="penaltyTemplateSelect" required></select>
-
-        <label id="penaltyInstanceLabel">Інстанс</label>
+        <label>Інстанс</label>
         <div class="raid-toggle-group" id="penaltyInstanceToggle" role="group" aria-label="Інстанс">
           <button type="button" class="raid-toggle-btn raid-toggle-btn--active" data-instance="ICC">Льодяна Цитадель</button>
           <button type="button" class="raid-toggle-btn" data-instance="RS">Рубінове Святилище</button>
         </div>
         <input type="hidden" id="penaltyInstance" value="ICC">
+
+        <label for="penaltyTemplateSelect">Штраф</label>
+        <select id="penaltyTemplateSelect" required></select>
 
         <label for="penaltyCount">Кількість</label>
         <input type="number" id="penaltyCount" min="1" max="10" step="1" value="1" required>
@@ -236,7 +236,7 @@
   <script src="../../scripts/ui-shared.js?v=16"></script>
   <script src="../../scripts/raid-manager-shared.js?v=6"></script>
   <script src="../../scripts/name-translations.js?v=3"></script>
-  <script src="../../scripts/raid-manager-penalty-battalion.js?v=7"></script>
+  <script src="../../scripts/raid-manager-penalty-battalion.js?v=8"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
