@@ -46,17 +46,5 @@
       "overallRank": 11,
       "overallScore": 98.21
     }
-  },
-  "Кумбабах": {
-    "canonical": "Рмт",
-    "detectedAt": "2026-07-31T07:33:30.651Z",
-    "reason": "guild-data-collision",
-    "evidence": {
-      "server": "FreedomUA",
-      "class": "Mage",
-      "specIndex": 2,
-      "overallRank": 92,
-      "overallScore": 83.85
-    }
   }
 }

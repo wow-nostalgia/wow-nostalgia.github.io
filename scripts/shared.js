@@ -80,7 +80,12 @@ function resolveCharacterAlias(name, aliasMap) {
 // іменами (зовнішнє API резолвить по фізичному персонажу). Сам rank без
 // другого підтвердження ненадійний - персонажі без реальних даних (score 0)
 // масово діляться однією "хвостовою" позицією.
-function findCharacterAliases(freshRows, { guildMemberNames, mostRecentRaidDateByName }) {
+//
+// classesByName (Map<ім'я, Set<клас>> з raid-rosters.json) - класи імен у
+// рейд-логах: ім'я могли звільнити й зайняти інший персонаж (маг Рмт став
+// Кумбабахом, а "Рмт" узяв паладин), тож різні класи в логах означають
+// різних персонажів, і такі імена не склеюємо.
+function findCharacterAliases(freshRows, { guildMemberNames, mostRecentRaidDateByName, classesByName = new Map() }) {
   const groups = new Map();
   for (const row of freshRows) {
     if (row.overallRank === null || row.overallRank === undefined) continue;
@@ -102,11 +107,20 @@ function findCharacterAliases(freshRows, { guildMemberNames, mostRecentRaidDateB
     const allMatch = rows.every((r) => r.overallScore === score && JSON.stringify(r.bosses) === bossesJson);
     if (!allMatch) continue;
 
+    const logClasses = new Set(names.flatMap((n) => [...(classesByName.get(n) || [])]));
+    if (logClasses.size > 1) continue;
+
     const inRoster = names.filter((n) => guildMemberNames.has(n));
 
     let canonical;
     if (inRoster.length === 1) {
       canonical = inRoster[0];
+      // Ростер може бути застарілим (експорт до перейменування): якщо ім'я з
+      // ростера вже має рейди, а інше ім'я - новіші, ростер і логи
+      // суперечать одне одному - не вгадувати. Ім'я з ростера без рейдів -
+      // це свіже нове ім'я, йому віримо.
+      const rosterDate = mostRecentRaidDateByName.get(canonical) || '';
+      if (rosterDate && names.some((n) => (mostRecentRaidDateByName.get(n) || '') > rosterDate)) continue;
     } else {
       const byRecency = names
         .map((n) => ({ name: n, date: mostRecentRaidDateByName.get(n) || '' }))

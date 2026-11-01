@@ -20,6 +20,7 @@ const {
 
 const PLAYERS_FILE = path.join(__dirname, '..', 'data', 'players.json');
 const POTION_STATS_FILE = path.join(__dirname, '..', 'data', 'potion-stats.json');
+const RAID_ROSTERS_FILE = path.join(__dirname, '..', 'data', 'raid-rosters.json');
 const DATA_FILE = path.join(__dirname, '..', 'data', 'guild-data.json');
 
 const REQUEST_DELAY_MS = 1500;
@@ -74,6 +75,22 @@ async function mostRecentRaidDateByName() {
   }
 
   return dates;
+}
+
+async function classesByNameFromRosters() {
+  const rosters = await readJson(RAID_ROSTERS_FILE).catch(() => []);
+  const classes = new Map();
+
+  for (const raid of rosters) {
+    for (const player of raid.players || []) {
+      const name = String(player.name || '').trim();
+      if (!name || !player.class) continue;
+      if (!classes.has(name)) classes.set(name, new Set());
+      classes.get(name).add(player.class);
+    }
+  }
+
+  return classes;
 }
 
 // "Легіонери" — гравці поза гільдією, яких знаходимо автоматично: хто
@@ -280,7 +297,8 @@ async function updateGuildData() {
   // overallScore/bosses - це один персонаж під двома іменами.
   const guildMemberNames = new Set((await readJson(PLAYERS_FILE)).map((p) => p.name));
   const raidDates = await mostRecentRaidDateByName();
-  const newAliases = findCharacterAliases(updatedRows, { guildMemberNames, mostRecentRaidDateByName: raidDates });
+  const classesByName = await classesByNameFromRosters();
+  const newAliases = findCharacterAliases(updatedRows, { guildMemberNames, mostRecentRaidDateByName: raidDates, classesByName });
 
   if (newAliases.size > 0) {
     for (const [oldName, alias] of newAliases) {
