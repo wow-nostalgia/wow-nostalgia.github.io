@@ -205,6 +205,39 @@ export async function addPenaltyBattalionEntries(db, { playerName, instance, tem
     stmt.bind(playerName, instance, templateId, boss, rollPenalty, softPenalty, reason, addedBy, ts)));
 }
 
+export async function getPenaltyBattalionEntry(db, id) {
+  return db.prepare('SELECT * FROM penalty_battalion WHERE id = ?').bind(id).first();
+}
+
+// ---- Історія змін Штрафбату (шаблони + відкладені штрафи) ----
+
+export async function insertPenaltyAudit(db, actorName, action, detail) {
+  await db
+    .prepare('INSERT INTO penalty_audit_log (actor_name, action, detail_json, created_at) VALUES (?, ?, ?, ?)')
+    .bind(actorName, action, JSON.stringify(detail || {}), nowIso())
+    .run();
+}
+
+export async function listPenaltyAudit(db, { from, to, actor, action } = {}, limit = 250) {
+  const where = [];
+  const binds = [];
+  if (from) { where.push('created_at >= ?'); binds.push(from); }
+  if (to) { where.push('created_at < ?'); binds.push(to); }
+  if (actor) { where.push('actor_name = ?'); binds.push(actor); }
+  if (action) { where.push('action = ?'); binds.push(action); }
+
+  const sql = `SELECT * FROM penalty_audit_log${where.length ? ` WHERE ${where.join(' AND ')}` : ''} ORDER BY created_at DESC, id DESC LIMIT ?`;
+  const { results } = await db.prepare(sql).bind(...binds, limit).all();
+  return results;
+}
+
+export async function listPenaltyAuditActors(db) {
+  const { results } = await db
+    .prepare('SELECT DISTINCT actor_name FROM penalty_audit_log ORDER BY actor_name COLLATE NOCASE')
+    .all();
+  return results.map((r) => r.actor_name);
+}
+
 export async function deletePenaltyBattalionEntry(db, id) {
   await db.prepare('DELETE FROM penalty_battalion WHERE id = ?').bind(id).run();
 }
@@ -233,6 +266,15 @@ export async function applyPenaltyBattalionIfMatched(db, raid, playerName) {
       softPenalty: entry.soft_penalty
     }, 1, 'Штрафбат');
     await deletePenaltyBattalionEntry(db, entry.id);
+    await insertPenaltyAudit(db, 'Автоматично', 'battalion_apply', {
+      playerName,
+      instance: entry.instance,
+      boss: entry.boss,
+      reason: entry.reason,
+      rollPenalty: entry.roll_penalty,
+      softPenalty: entry.soft_penalty,
+      raidTitle: raid.title
+    });
   }
   // Вкладка "Штрафи" будується від списку учасників, а він поповнюється лише
   // успішним софтом. Без цього рядка штраф, застосований при невдалій спробі

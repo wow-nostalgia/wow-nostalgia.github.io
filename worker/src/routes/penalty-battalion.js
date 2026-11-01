@@ -1,6 +1,12 @@
 import { HttpError, jsonResponse, readJson, capitalizeName } from '../util.js';
 import { requireGlobalOfficer } from '../auth.js';
-import { listPenaltyBattalion, addPenaltyBattalionEntries, deletePenaltyBattalionEntry } from '../db.js';
+import {
+  listPenaltyBattalion,
+  addPenaltyBattalionEntries,
+  deletePenaltyBattalionEntry,
+  getPenaltyBattalionEntry,
+  insertPenaltyAudit
+} from '../db.js';
 import { instanceForBoss, templatePenalty, loadTemplateForApply } from './penalty-templates.js';
 
 const INSTANCES = new Set(['ICC', 'RS']);
@@ -35,12 +41,26 @@ export async function handleAddPenaltyBattalionEntry(request, env, session) {
     reason: template.reason,
     addedBy: session.discordId
   }, count);
+  await insertPenaltyAudit(env.DB, session.username, 'battalion_add', {
+    playerName, instance, boss: template.boss, reason: template.reason, rollPenalty, softPenalty, count
+  });
 
   return jsonResponse(await listPenaltyBattalion(env.DB), 201);
 }
 
 export async function handleDeletePenaltyBattalionEntry(request, env, id, session) {
   await requireGlobalOfficer(env.DB, session);
+  const entry = await getPenaltyBattalionEntry(env.DB, id);
   await deletePenaltyBattalionEntry(env.DB, id);
+  if (entry) {
+    await insertPenaltyAudit(env.DB, session.username, 'battalion_delete', {
+      playerName: entry.player_name,
+      instance: entry.instance,
+      boss: entry.boss,
+      reason: entry.reason,
+      rollPenalty: entry.roll_penalty,
+      softPenalty: entry.soft_penalty
+    });
+  }
   return jsonResponse(await listPenaltyBattalion(env.DB));
 }

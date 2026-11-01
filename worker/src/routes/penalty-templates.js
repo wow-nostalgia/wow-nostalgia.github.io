@@ -5,7 +5,10 @@ import {
   getPenaltyTemplate,
   createPenaltyTemplate,
   updatePenaltyTemplate,
-  deletePenaltyTemplate
+  deletePenaltyTemplate,
+  insertPenaltyAudit,
+  listPenaltyAudit,
+  listPenaltyAuditActors
 } from '../db.js';
 
 // Ті самі списки, що ICC_BOSSES/RS_BOSSES у scripts/raid-manager-shared.js.
@@ -29,6 +32,10 @@ export function templatePenalty(template) {
   return template.penalty_type === 'roll'
     ? { rollPenalty: template.value, softPenalty: 0 }
     : { rollPenalty: 0, softPenalty: template.value };
+}
+
+function templateFields(template) {
+  return { boss: template.boss, reason: template.reason, penaltyType: template.penalty_type, value: template.value };
 }
 
 function parseTemplateBody(body) {
@@ -62,14 +69,21 @@ export async function handleCreatePenaltyTemplate(request, env, session) {
   await requireGlobalOfficer(env.DB, session);
   const fields = parseTemplateBody(await readJson(request));
   await createPenaltyTemplate(env.DB, { ...fields, createdBy: session.discordId });
+  await insertPenaltyAudit(env.DB, session.username, 'template_create', fields);
   return jsonResponse(await listPenaltyTemplates(env.DB), 201);
 }
 
 export async function handleUpdatePenaltyTemplate(request, env, id, session) {
   await requireGlobalOfficer(env.DB, session);
-  if (!(await getPenaltyTemplate(env.DB, id))) throw new HttpError(404, 'Шаблон не знайдено');
+  const existing = await getPenaltyTemplate(env.DB, id);
+  if (!existing) throw new HttpError(404, 'Шаблон не знайдено');
   const fields = parseTemplateBody(await readJson(request));
   await updatePenaltyTemplate(env.DB, id, fields);
+  // Повні "до" й "після" — клієнт показує лише змінені параметри.
+  await insertPenaltyAudit(env.DB, session.username, 'template_update', {
+    before: templateFields(existing),
+    after: fields
+  });
   return jsonResponse(await listPenaltyTemplates(env.DB));
 }
 
@@ -77,7 +91,9 @@ export async function handleUpdatePenaltyTemplate(request, env, id, session) {
 // шаблону їх не чіпає.
 export async function handleDeletePenaltyTemplate(request, env, id, session) {
   await requireGlobalOfficer(env.DB, session);
+  const existing = await getPenaltyTemplate(env.DB, id);
   await deletePenaltyTemplate(env.DB, id);
+  if (existing) await insertPenaltyAudit(env.DB, session.username, 'template_delete', templateFields(existing));
   return jsonResponse(await listPenaltyTemplates(env.DB));
 }
 
@@ -92,4 +108,34 @@ export async function loadTemplateForApply(env, body) {
   if (!Number.isInteger(count) || count < 1 || count > 10) throw new HttpError(400, 'Кількість — від 1 до 10');
 
   return { template, count };
+}
+
+// ---- Історія змін (вкладка "Історія змін" Штрафбату) ----
+
+const AUDIT_ACTIONS = new Set([
+  'template_create', 'template_update', 'template_delete',
+  'battalion_add', 'battalion_delete', 'battalion_apply'
+]);
+const ISO_MOMENT = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/;
+
+export async function handleListPenaltyAudit(request, env) {
+  const params = new URL(request.url).searchParams;
+  const from = params.get('from') || '';
+  const to = params.get('to') || '';
+  const actor = (params.get('actor') || '').trim();
+  const action = params.get('action') || '';
+
+  if ((from && !ISO_MOMENT.test(from)) || (to && !ISO_MOMENT.test(to))) {
+    throw new HttpError(400, 'Невалідна дата фільтра');
+  }
+  if (action && !AUDIT_ACTIONS.has(action)) throw new HttpError(400, 'Невідомий тип події');
+
+  const [entries, actors] = await Promise.all([
+    listPenaltyAudit(env.DB, { from, to, actor, action }),
+    listPenaltyAuditActors(env.DB)
+  ]);
+  return jsonResponse({
+    entries: entries.map((e) => ({ ...e, detail: JSON.parse(e.detail_json) })),
+    actors
+  });
 }

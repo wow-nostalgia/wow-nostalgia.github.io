@@ -35,7 +35,8 @@ import {
   handleListPenaltyTemplates,
   handleCreatePenaltyTemplate,
   handleUpdatePenaltyTemplate,
-  handleDeletePenaltyTemplate
+  handleDeletePenaltyTemplate,
+  handleListPenaltyAudit
 } from './routes/penalty-templates.js';
 import {
   handleListPenaltyBattalion,
@@ -378,6 +379,8 @@ async function routeBuffQueue(request, env, parts, session) {
 async function routePenaltyTemplates(request, env, parts, session) {
   const method = request.method;
   const [id] = parts;
+
+  if (id === 'audit' && method === 'GET') return handleListPenaltyAudit(request, env);
 
   if (!id) {
     if (method === 'GET') return handleListPenaltyTemplates(request, env, session);
