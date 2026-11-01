@@ -387,3 +387,40 @@ function bindInfoModal() {
 }
 
 bindInfoModal();
+
+// Повідомлення у стилі сайту замість нативного alert(): той самий .raid-modal,
+// що й інші попапи. Розмітку створюємо один раз на першому виклику, тож
+// сторінкам не треба нічого додавати в HTML.
+let messageModalEl = null;
+
+function showMessageModal(text, title = 'Повідомлення') {
+  if (!messageModalEl) {
+    messageModalEl = document.createElement('div');
+    messageModalEl.className = 'raid-modal';
+    messageModalEl.hidden = true;
+    messageModalEl.innerHTML = `
+      <div class="raid-modal-backdrop"></div>
+      <div class="raid-modal-box" role="alertdialog" aria-modal="true">
+        <button type="button" class="raid-modal-close" aria-label="Закрити">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/></svg>
+        </button>
+        <h3 class="raid-modal-title"></h3>
+        <p class="raid-modal-text"></p>
+        <div class="raid-modal-actions">
+          <button type="button" class="compare-btn">OK</button>
+        </div>
+      </div>`;
+    const close = () => { messageModalEl.hidden = true; };
+    messageModalEl.querySelector('.raid-modal-backdrop').addEventListener('click', close);
+    messageModalEl.querySelector('.raid-modal-close').addEventListener('click', close);
+    messageModalEl.querySelector('.compare-btn').addEventListener('click', close);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !messageModalEl.hidden) close();
+    });
+    document.body.appendChild(messageModalEl);
+  }
+  messageModalEl.querySelector('.raid-modal-title').textContent = title;
+  messageModalEl.querySelector('.raid-modal-text').textContent = text;
+  messageModalEl.hidden = false;
+  messageModalEl.querySelector('.compare-btn').focus();
+}

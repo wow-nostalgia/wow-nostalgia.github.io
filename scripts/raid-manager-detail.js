@@ -1004,7 +1004,7 @@ async function setPotionLog(raidUrl) {
     potionsClearBtn.hidden = !isOfficerMode() || !raid.potion_log_url;
     renderPotionLogTable(findPotionLogEntry(raid.potion_log_url));
   } catch (err) {
-    alert(err.message);
+    showMessageModal(err.message);
   }
 }
 
@@ -1095,7 +1095,7 @@ function renderOfficersPanel(officers) {
           await loadOfficers();
           renderBanner();
         } catch (err) {
-          alert(err.message);
+          showMessageModal(err.message);
         }
       });
       li.appendChild(removeBtn);
@@ -1111,7 +1111,7 @@ async function addOfficer(user) {
     await loadOfficers();
     renderBanner();
   } catch (err) {
-    alert(err.message);
+    showMessageModal(err.message);
   }
 }
 
@@ -1906,7 +1906,7 @@ cancelTransferConfirmBtn.addEventListener('click', async () => {
     renderItemsTable();
     applySoftFormLockState();
   } catch (err) {
-    alert(err.message);
+    showMessageModal(err.message);
   } finally {
     cancelTransferConfirmBtn.disabled = false;
   }
@@ -1974,7 +1974,7 @@ lockToggleBtn.addEventListener('click', async () => {
     raid = await apiCall('POST', `/raids/${raidId}/${raid.is_locked ? 'unlock' : 'lock'}`, { token: getSessionToken() });
     renderBanner();
   } catch (err) {
-    alert(err.message);
+    showMessageModal(err.message);
   }
 });
 
@@ -1988,7 +1988,7 @@ statusToggleBtn.addEventListener('click', async () => {
     // Завершений рейд не опитується; відновлений — знову так.
     schedulePoll();
   } catch (err) {
-    alert(err.message);
+    showMessageModal(err.message);
   }
 });
 
@@ -2001,7 +2001,7 @@ hiddenReservesToggle.addEventListener('change', async () => {
     renderItemsTable();
   } catch (err) {
     hiddenReservesToggle.checked = !hiddenReservesToggle.checked; // rollback
-    alert(err.message);
+    showMessageModal(err.message);
   }
 });
 
@@ -2251,7 +2251,7 @@ async function openPenaltyModal(playerName) {
   await loadPenaltyTemplates();
   // Лише загальні шаблони й шаблони босів інстансу цього рейду.
   if (!fillPenaltyTemplateSelect(penaltyTemplateSelect, penaltyTemplates, raid.instance)) {
-    alert('Немає шаблонів штрафів для цього інстансу. Їх створюють офіцери гільдії на сторінці "Штрафбат" → "Шаблони штрафів".');
+    showMessageModal('Немає шаблонів штрафів для цього інстансу. Їх створюють офіцери гільдії на сторінці "Штрафбат" → "Шаблони штрафів".');
     return;
   }
   penaltyModalPlayer = playerName;
@@ -2269,7 +2269,7 @@ penaltyConfirmBtn.addEventListener('click', async () => {
   if (!penaltyModalPlayer) return;
   const count = Number(penaltyCountInput.value);
   if (!Number.isInteger(count) || count < 1 || count > 10) {
-    alert('Кількість — від 1 до 10');
+    showMessageModal('Кількість — від 1 до 10');
     return;
   }
   penaltyConfirmBtn.disabled = true;
@@ -2277,7 +2277,7 @@ penaltyConfirmBtn.addEventListener('click', async () => {
     await addPenalty(penaltyModalPlayer, Number(penaltyTemplateSelect.value), count);
     closePenaltyModal();
   } catch (err) {
-    alert(`Не вдалося додати штраф: ${err.message}`);
+    showMessageModal(`Не вдалося додати штраф: ${err.message}`);
   } finally {
     penaltyConfirmBtn.disabled = false;
   }
@@ -2394,11 +2394,11 @@ transferConfirmBtn.addEventListener('click', async () => {
   const fromPlayer = softPlayerNameInput.value;
   if (!fromPlayer) return;
   if (!toPlayer) {
-    alert("Вкажи ім'я гравця, якому передаєш софти");
+    showMessageModal("Вкажи ім'я гравця, якому передаєш софти");
     return;
   }
   if (transferTakenNamesLower().has(toPlayer.toLocaleLowerCase('uk'))) {
-    alert(`${toPlayer} не може отримати софти: це твій персонаж або він уже бере участь у передачі`);
+    showMessageModal(`${toPlayer} не може отримати софти: це твій персонаж або він уже бере участь у передачі`);
     return;
   }
 
@@ -2415,7 +2415,7 @@ transferConfirmBtn.addEventListener('click', async () => {
     renderItemsTable();
     applySoftFormLockState();
   } catch (err) {
-    alert(err.message);
+    showMessageModal(err.message);
   } finally {
     transferConfirmBtn.disabled = false;
   }

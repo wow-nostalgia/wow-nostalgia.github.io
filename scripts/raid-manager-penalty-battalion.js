@@ -229,7 +229,7 @@ async function deleteEntry(id) {
     renderBattalionTable();
   } catch (err) {
     console.error(err);
-    alert(`Не вдалося видалити запис: ${err.message}`);
+    showMessageModal(`Не вдалося видалити запис: ${err.message}`);
   }
 }
 
@@ -249,7 +249,7 @@ penaltyTemplateSelect.addEventListener('change', syncPenaltyInstanceVisibility);
 
 function openAddPenaltyModal() {
   if (!penaltyTemplates.length) {
-    alert('Спершу створи шаблон на вкладці "Шаблони штрафів".');
+    showMessageModal('Спершу створи шаблон на вкладці "Шаблони штрафів".');
     return;
   }
   addPenaltyForm.reset();
@@ -286,7 +286,7 @@ addPenaltyForm.addEventListener('submit', async (event) => {
     closeAddPenaltyModal();
   } catch (err) {
     console.error(err);
-    alert(`Не вдалося додати запис: ${err.message}`);
+    showMessageModal(`Не вдалося додати запис: ${err.message}`);
   } finally {
     submitBtn.disabled = false;
   }
@@ -395,7 +395,7 @@ templateForm.addEventListener('submit', async (event) => {
     closeTemplateModal();
   } catch (err) {
     console.error(err);
-    alert(`Не вдалося зберегти шаблон: ${err.message}`);
+    showMessageModal(`Не вдалося зберегти шаблон: ${err.message}`);
   } finally {
     templateSubmitBtn.disabled = false;
   }
@@ -407,7 +407,7 @@ async function deleteTemplate(id) {
     renderTemplatesTable();
   } catch (err) {
     console.error(err);
-    alert(`Не вдалося видалити шаблон: ${err.message}`);
+    showMessageModal(`Не вдалося видалити шаблон: ${err.message}`);
   }
 }
 

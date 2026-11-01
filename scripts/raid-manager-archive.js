@@ -295,7 +295,7 @@ createForm.addEventListener('submit', async (event) => {
     window.location.href = `../raid/?id=${encodeURIComponent(raid.id)}`;
   } catch (err) {
     console.error(err);
-    alert(`Не вдалося створити рейд: ${err.message}`);
+    showMessageModal(`Не вдалося створити рейд: ${err.message}`);
     submitBtn.disabled = false;
   }
 });
