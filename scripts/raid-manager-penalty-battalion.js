@@ -297,7 +297,11 @@ function buildBattalionCard(group, colCount) {
     list.appendChild(buildPenaltyChip(entry, isOfficer ? () => deleteEntries([entry.id]) : null));
   });
   if (isOfficer) {
-    list.appendChild(buildPenaltyAddButton(() => openAddPenaltyModal(group.playerName, group.instance)));
+    const exhausted = group.rollPenalty >= MAX_ROLL_PENALTY && group.softPenalty >= MAX_SOFT_PENALTY;
+    list.appendChild(buildPenaltyAddButton(
+      () => openAddPenaltyModal(group.playerName, group.instance),
+      exhausted ? `Ліміти вичерпано: −${MAX_ROLL_PENALTY} до ролу і −${MAX_SOFT_PENALTY} до софту` : null
+    ));
   }
 
   td.appendChild(list);
@@ -318,11 +322,59 @@ async function deleteEntries(ids) {
   renderBattalionTable();
 }
 
-// Список штрафів — загальні шаблони і шаблони босів обраного інстансу.
-function fillPenaltyTemplatesForInstance() {
-  const count = fillPenaltyTemplateSelect(penaltyTemplateSelect, penaltyTemplates, penaltyInstanceInput.value);
-  addPenaltyForm.querySelector('button[type="submit"]').disabled = count === 0;
+// Скільки ще вміщується до лімітів гравця в інстансі: { roll, soft }.
+function remainingPenaltyRoom(playerName, instance) {
+  const name = playerName.trim().toLocaleLowerCase('uk');
+  let roll = 0;
+  let soft = 0;
+  battalionEntries.forEach((entry) => {
+    if (entry.instance !== instance || entry.player_name.toLocaleLowerCase('uk') !== name) return;
+    roll += entry.roll_penalty || 0;
+    soft += entry.soft_penalty || 0;
+  });
+  return { roll: Math.max(0, MAX_ROLL_PENALTY - roll), soft: Math.max(0, MAX_SOFT_PENALTY - soft) };
 }
+
+// Скільки разів шаблон ще влазить у залишок ліміту.
+function templateFitCount(template, room) {
+  const left = template.penalty_type === 'roll' ? room.roll : room.soft;
+  return Math.floor(left / template.value);
+}
+
+// Список штрафів — загальні шаблони і шаблони босів обраного інстансу, що
+// ще влазять у ліміти гравця (−100 до ролу, −3 до софту).
+function fillPenaltyTemplatesForInstance() {
+  const room = remainingPenaltyRoom(penaltyPlayerNameInput.value, penaltyInstanceInput.value);
+  const previous = penaltyTemplateSelect.value;
+  const fitting = penaltyTemplates.filter((t) => templateFitCount(t, room) > 0);
+  const count = fillPenaltyTemplateSelect(penaltyTemplateSelect, fitting, penaltyInstanceInput.value);
+
+  if (!count) {
+    const opt = document.createElement('option');
+    opt.value = '';
+    opt.disabled = true;
+    opt.selected = true;
+    opt.textContent = 'Немає штрафів, що влазять у ліміти гравця';
+    penaltyTemplateSelect.appendChild(opt);
+  } else if ([...penaltyTemplateSelect.options].some((o) => o.value === previous)) {
+    penaltyTemplateSelect.value = previous;
+  }
+  addPenaltyForm.querySelector('button[type="submit"]').disabled = count === 0;
+  syncPenaltyCountMax(room);
+}
+
+// "Кількість" — не більше, ніж обраний штраф ще влазить у ліміт (і не більше 10).
+function syncPenaltyCountMax(room = remainingPenaltyRoom(penaltyPlayerNameInput.value, penaltyInstanceInput.value)) {
+  const template = penaltyTemplates.find((t) => String(t.id) === penaltyTemplateSelect.value);
+  const max = template ? Math.min(10, templateFitCount(template, room)) : 10;
+  penaltyCountInput.max = String(max);
+  if (Number(penaltyCountInput.value) > max) penaltyCountInput.value = String(max);
+}
+
+penaltyTemplateSelect.addEventListener('change', () => syncPenaltyCountMax());
+// Вибір з автодоповнення не дає події input — перераховуємо й після blur.
+penaltyPlayerNameInput.addEventListener('input', fillPenaltyTemplatesForInstance);
+penaltyPlayerNameInput.addEventListener('blur', () => setTimeout(fillPenaltyTemplatesForInstance, 150));
 
 // "+" у картці гравця відкриває форму з його ім'ям та інстансом картки —
 // перемикач інстансу тоді не показуємо.

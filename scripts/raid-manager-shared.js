@@ -101,6 +101,8 @@ async function apiCall(method, path, { token, body } = {}) {
 
 // Сумарний мінус до ролу гравця — не більше (так само обмежує воркер).
 const MAX_ROLL_PENALTY = 100;
+// Сумарний мінус до софту гравця в інстансі Штрафбату.
+const MAX_SOFT_PENALTY = 3;
 
 // "−10 до ролу", "−1 до софту" (обидва — через кому; нуль не пишемо).
 function formatPenaltyValue(rollPenalty, softPenalty) {
@@ -190,13 +192,15 @@ function buildPenaltyChip(entry, onRemove) {
   return chip;
 }
 
-// Кнопка "+" в кінці списку чіпів.
-function buildPenaltyAddButton(onClick) {
+// Кнопка "+" в кінці списку чіпів. disabledLabel — кнопка неактивна, з
+// поясненням чому.
+function buildPenaltyAddButton(onClick, disabledLabel = null) {
   const addBtn = document.createElement('button');
   addBtn.type = 'button';
   addBtn.className = 'penalty-add-btn';
   addBtn.innerHTML = PENALTY_ADD_ICON;
-  addBtn.setAttribute('aria-label', 'Додати штраф');
+  addBtn.disabled = Boolean(disabledLabel);
+  addBtn.setAttribute('aria-label', disabledLabel || 'Додати штраф');
   bindTooltip(addBtn);
   addBtn.addEventListener('click', () => {
     hideBtnTooltip();

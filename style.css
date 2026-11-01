@@ -4849,6 +4849,14 @@ body.raid-manager-page .penalty-add-btn:hover {
   border-style: solid;
 }
 
+/* Ліміти штрафів гравця вичерпано (Штрафбат). */
+body.raid-manager-page .penalty-add-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: none;
+  border-style: dashed;
+}
+
 /* На мобільних прибираємо min-width таблиці: колонка штрафів — чіпи, вони
    переносяться, тож горизонтальний скрол не потрібен. */
 @media (max-width: 544px) {

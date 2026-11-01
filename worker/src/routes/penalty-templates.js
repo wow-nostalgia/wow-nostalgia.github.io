@@ -9,7 +9,8 @@ import {
   insertPenaltyAudit,
   listPenaltyAudit,
   listPenaltyAuditActors,
-  MAX_ROLL_PENALTY
+  MAX_ROLL_PENALTY,
+  MAX_SOFT_PENALTY
 } from '../db.js';
 
 // Ті самі списки, що ICC_BOSSES/RS_BOSSES у scripts/raid-manager-shared.js.
@@ -28,11 +29,19 @@ export function instanceForBoss(boss) {
   return null;
 }
 
-// Новий штраф не має вивести суму мінусів до ролу за MAX_ROLL_PENALTY.
-export function assertRollPenaltyLimit(playerName, currentRoll, addedRoll) {
-  if (addedRoll > 0 && currentRoll + addedRoll > MAX_ROLL_PENALTY) {
-    throw new HttpError(400, `Мінус до ролу не може перевищувати ${MAX_ROLL_PENALTY}: у ${playerName} уже −${currentRoll}, а цей штраф додасть ще −${addedRoll}`);
+// Новий штраф не має вивести суму мінусів гравця за ліміт.
+function assertPenaltyLimit(playerName, label, max, current, added) {
+  if (added > 0 && current + added > max) {
+    throw new HttpError(400, `${label} не може перевищувати ${max}: у ${playerName} уже −${current}, а цей штраф додасть ще −${added}`);
   }
+}
+
+export function assertRollPenaltyLimit(playerName, currentRoll, addedRoll) {
+  assertPenaltyLimit(playerName, 'Мінус до ролу', MAX_ROLL_PENALTY, currentRoll, addedRoll);
+}
+
+export function assertSoftPenaltyLimit(playerName, currentSoft, addedSoft) {
+  assertPenaltyLimit(playerName, 'Мінус до софту', MAX_SOFT_PENALTY, currentSoft, addedSoft);
 }
 
 // Значення штрафу, яке шаблон дає гравцю: { rollPenalty, softPenalty }.

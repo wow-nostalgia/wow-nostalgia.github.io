@@ -6,6 +6,9 @@ function nowIso() {
 
 // Сумарний мінус до ролу гравця (у рейді / в інстансі Штрафбату) — не більше.
 export const MAX_ROLL_PENALTY = 100;
+// Сумарний мінус до софту гравця в інстансі Штрафбату (= максимальний ліміт
+// софтів рейду). У самому рейді діє ліміт софтів цього рейду.
+export const MAX_SOFT_PENALTY = 3;
 
 // Персонаж, явно позначений як "Основний" у профілі (user_characters.is_primary).
 // Якщо такого нема — фолбек на username.
@@ -219,12 +222,12 @@ export async function addPenaltyBattalionEntries(db, { playerName, instance, tem
     stmt.bind(playerName, instance, templateId, boss, rollPenalty, softPenalty, reason, addedBy, ts)));
 }
 
-export async function sumBattalionRollPenalty(db, playerName, instance) {
-  const row = await db
-    .prepare('SELECT COALESCE(SUM(roll_penalty), 0) AS total FROM penalty_battalion WHERE player_name = ? AND instance = ?')
+// Суми відкладених мінусів гравця в інстансі: { roll, soft }.
+export async function sumBattalionPenalties(db, playerName, instance) {
+  return db
+    .prepare('SELECT COALESCE(SUM(roll_penalty), 0) AS roll, COALESCE(SUM(soft_penalty), 0) AS soft FROM penalty_battalion WHERE player_name = ? AND instance = ?')
     .bind(playerName, instance)
     .first();
-  return row.total;
 }
 
 export async function getPenaltyBattalionEntry(db, id) {
