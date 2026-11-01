@@ -15,7 +15,8 @@ import {
   handleDeleteRaid,
   handlePruneOldRaids,
   publicRaid,
-  loadRaidOr404
+  loadRaidOr404,
+  canSeeOfficers
 } from './routes/raids.js';
 import {
   handleListReserves,
@@ -95,6 +96,7 @@ import {
   pruneOldRaidsIfOverLimit,
   countUsersByBackground,
   listRaidOfficers,
+  getUserCharactersJoined,
   listWeightTransfers,
   listBonusGrants,
   listShardQueueDays,
@@ -190,7 +192,20 @@ async function handleRaidSnapshot(request, env, raidId, session) {
       : undefined
   ]);
 
-  return jsonResponse({ raid: publicRaid(raid), reserves, officers, transfers, bonusGrants, shardQueue, buffQueue });
+  // Офіцери (з персонажами) і персонажі лідера — лише лідеру й офіцерам рейду.
+  const officerView = canSeeOfficers(raid, officers, session);
+  const leaderCharacters = officerView ? await getUserCharactersJoined(db, raid.leader_discord_id) : null;
+
+  return jsonResponse({
+    raid: publicRaid(raid),
+    reserves,
+    officers: officerView ? officers : [],
+    leaderCharacters,
+    transfers,
+    bonusGrants,
+    shardQueue,
+    buffQueue
+  });
 }
 
 async function routeRaids(request, env, parts, session) {

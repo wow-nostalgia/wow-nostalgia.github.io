@@ -137,6 +137,8 @@ let currentUser = null;
 let myCharacters = [];
 let raidOfficerIds = new Set();
 let raidOfficers = [];
+// Персонажі лідера з профілю ("A|B") — сервер віддає лише офіцерам рейду.
+let leaderCharacters = null;
 let itemsCatalog = {};
 let guildMemberNames = new Set();
 let guildMemberNamesSorted = [];
@@ -1098,7 +1100,7 @@ function renderOfficersPanel(officers) {
     document.createTextNode(`${usernameWithDisplayName(raid.leader_username, raid.leader_display_name)} (Лідер)`)
   );
   leaderLi.appendChild(leaderNameWrap);
-  leaderLi.appendChild(officerCharactersCell(raid.leader_characters));
+  leaderLi.appendChild(officerCharactersCell(leaderCharacters));
   officersList.appendChild(leaderLi);
 
   if (!officers.length) {
@@ -1870,6 +1872,7 @@ async function loadSnapshot() {
   reserves = snapshot.reserves;
   weightTransfers = snapshot.transfers;
   bonusGrants = snapshot.bonusGrants;
+  leaderCharacters = snapshot.leaderCharacters;
   // Черги прив'язані до дня тижня рейду — тож лише після raid.
   applyShardQueueRaw(snapshot.shardQueue);
   applyBuffQueueRaw(snapshot.buffQueue);

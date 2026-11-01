@@ -189,9 +189,16 @@ export async function handleSetStatus(request, env, id, status, session) {
   return jsonResponse(publicRaid(updated));
 }
 
-export async function handleListOfficers(request, env, id) {
-  await loadRaidOr404(env, id);
-  return jsonResponse(await listRaidOfficers(env.DB, id));
+// Список офіцерів (з їхніми персонажами) бачать лише лідер і офіцери рейду;
+// решта отримує порожній список — їм він не потрібен.
+export function canSeeOfficers(raid, officers, session) {
+  return raid.leader_discord_id === session.discordId || officers.some((o) => o.discord_id === session.discordId);
+}
+
+export async function handleListOfficers(request, env, id, session) {
+  const raid = await loadRaidOr404(env, id);
+  const officers = await listRaidOfficers(env.DB, id);
+  return jsonResponse(canSeeOfficers(raid, officers, session) ? officers : []);
 }
 
 export async function handleAddOfficer(request, env, id, session) {
