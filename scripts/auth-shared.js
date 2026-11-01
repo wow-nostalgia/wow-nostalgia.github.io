@@ -163,6 +163,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   syncBackgroundFromUser(user);
   renderAuthNav(user);
 
+  // Штрафбат бачать усі залогінені (гравці — лише перегляд).
   const navPenaltyBattalion = document.getElementById('navPenaltyBattalion');
-  if (navPenaltyBattalion) navPenaltyBattalion.hidden = !user?.isGuildOfficer;
+  if (navPenaltyBattalion) navPenaltyBattalion.hidden = !user;
 });

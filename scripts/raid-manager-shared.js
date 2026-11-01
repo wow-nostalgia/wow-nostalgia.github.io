@@ -96,3 +96,57 @@ async function apiCall(method, path, { token, body } = {}) {
   return data;
 }
 
+
+// ---- Шаблони штрафів — спільне для Штрафбату й сторінки рейду ----
+
+// "−10 до ролу", "−1 до софту" (обидва — через кому; нуль не пишемо).
+function formatPenaltyValue(rollPenalty, softPenalty) {
+  const parts = [];
+  if (rollPenalty > 0) parts.push(`−${rollPenalty} до ролу`);
+  if (softPenalty > 0) parts.push(`−${softPenalty} до софту`);
+  return parts.join(', ') || '—';
+}
+
+function formatTemplateValue(template) {
+  return template.penalty_type === 'roll'
+    ? formatPenaltyValue(template.value, 0)
+    : formatPenaltyValue(0, template.value);
+}
+
+// Бос шаблону для показу: загальний шаблон — "Загальний".
+function penaltyBossLabel(boss) {
+  return boss ? translateBoss(boss) : 'Загальний';
+}
+
+// Загальні першими, далі боси в порядку проходження (ЦЛК, потім РС), у
+// межах боса — за причиною.
+function sortPenaltyTemplates(templates) {
+  const order = [...ICC_BOSSES, ...RS_BOSSES];
+  const rank = (boss) => (boss ? order.indexOf(boss) + 1 : 0);
+  return [...templates].sort((a, b) => rank(a.boss) - rank(b.boss) || a.reason.localeCompare(b.reason, 'uk'));
+}
+
+// Дропдаун вибору шаблону з групами за босами. instance — лише загальні й
+// боси цього інстансу (сторінка рейду); null — усі шаблони (Штрафбат).
+// Повертає кількість доступних шаблонів.
+function fillPenaltyTemplateSelect(selectEl, templates, instance = null) {
+  selectEl.innerHTML = '';
+  const bosses = instance ? bossesForInstance(instance) : null;
+  const available = sortPenaltyTemplates(templates).filter((t) => !t.boss || !bosses || bosses.includes(t.boss));
+
+  const groups = new Map();
+  available.forEach((t) => {
+    const label = penaltyBossLabel(t.boss);
+    if (!groups.has(label)) {
+      const group = document.createElement('optgroup');
+      group.label = label;
+      groups.set(label, group);
+      selectEl.appendChild(group);
+    }
+    const opt = document.createElement('option');
+    opt.value = String(t.id);
+    opt.textContent = `${t.reason} (${formatTemplateValue(t)})`;
+    groups.get(label).appendChild(opt);
+  });
+  return available.length;
+}

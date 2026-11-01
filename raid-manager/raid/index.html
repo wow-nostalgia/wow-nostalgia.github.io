@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейд — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=160">
+  <link rel="stylesheet" href="../../style.css?v=161">
   <script src="/scripts/background.js?v=1"></script>
 </head>
 
@@ -231,7 +231,7 @@
                     <th>Ім'я</th>
                     <th>Мінус до ролу</th>
                     <th>Мінус до софту</th>
-                    <th>Причини</th>
+                    <th>Штрафи</th>
                   </tr>
                 </thead>
                 <tbody id="raidPenaltiesBody"></tbody>
@@ -301,6 +301,25 @@
       <div class="raid-modal-actions">
         <button type="button" id="lkOnlyConfirmBtn" class="compare-btn">Видалити й зберегти</button>
         <button type="button" id="lkOnlyCancelBtn" class="link-button-std">Скасувати</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="penaltyModal" class="raid-modal" hidden>
+    <div class="raid-modal-backdrop" id="penaltyModalBackdrop"></div>
+    <div class="raid-modal-box">
+      <h3 class="raid-modal-title" id="penaltyModalTitle"></h3>
+      <div class="raid-modal-field">
+        <label for="penaltyTemplateSelect">Шаблон штрафу</label>
+        <select id="penaltyTemplateSelect"></select>
+      </div>
+      <div class="raid-modal-field">
+        <label for="penaltyCountInput">Кількість</label>
+        <input type="number" id="penaltyCountInput" min="1" max="10" step="1" value="1">
+      </div>
+      <div class="raid-modal-actions">
+        <button type="button" id="penaltyConfirmBtn" class="compare-btn">Застосувати</button>
+        <button type="button" id="penaltyCancelBtn" class="link-button-std">Скасувати</button>
       </div>
     </div>
   </div>
@@ -394,13 +413,13 @@
   </div>
 
   <script src="../../scripts/nav.js?v=2"></script>
-  <script src="../../scripts/auth-shared.js?v=12"></script>
+  <script src="../../scripts/auth-shared.js?v=13"></script>
   <script src="../../scripts/wow-class-colors.js?v=1"></script>
   <script src="../../scripts/potion-shared.js?v=3"></script>
   <script src="../../scripts/ui-shared.js?v=15"></script>
-  <script src="../../scripts/raid-manager-shared.js?v=5"></script>
+  <script src="../../scripts/raid-manager-shared.js?v=6"></script>
   <script src="../../scripts/name-translations.js?v=3"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=119"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=120"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

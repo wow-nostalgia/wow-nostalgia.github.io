@@ -102,6 +102,13 @@ const cancelTransferCancelBtn = document.getElementById('cancelTransferCancelBtn
 const transferNotice = document.getElementById('transferNotice');
 const softPenaltyNotice = document.getElementById('softPenaltyNotice');
 const bonusPoolBanner = document.getElementById('bonusPoolBanner');
+const penaltyModal = document.getElementById('penaltyModal');
+const penaltyModalBackdrop = document.getElementById('penaltyModalBackdrop');
+const penaltyModalTitle = document.getElementById('penaltyModalTitle');
+const penaltyTemplateSelect = document.getElementById('penaltyTemplateSelect');
+const penaltyCountInput = document.getElementById('penaltyCountInput');
+const penaltyConfirmBtn = document.getElementById('penaltyConfirmBtn');
+const penaltyCancelBtn = document.getElementById('penaltyCancelBtn');
 const transferWeightLimitInput = document.getElementById('transferWeightLimitInput');
 const settingsAllowMountSoftsInput = document.getElementById('settingsAllowMountSoftsInput');
 const settingsAllowMountSoftsLabel = document.getElementById('settingsAllowMountSoftsLabel');
@@ -1735,6 +1742,12 @@ function describeAuditAction(entry) {
     case 'soft_add': return hideSoftDetails ? 'софтнув' : `софтнув ${translateBoss(d.boss)} (${formatWeight(d.weight)})`;
     case 'soft_remove': return hideSoftDetails ? 'видалив софт' : `видалив софт ${d.boss ? translateBoss(d.boss) : ''}`.trim();
     case 'soft_remove_all': return 'очистив усі свої софти';
+    case 'penalty_add': {
+      const times = d.count > 1 ? ` ×${d.count}` : '';
+      return `оштрафував ${d.playerName}: ${d.boss ? `${translateBoss(d.boss)}: ` : ''}${d.reason} (${formatPenaltyValue(d.rollPenalty, d.softPenalty)})${times}`;
+    }
+    case 'penalty_remove':
+      return `зняв штраф з ${d.playerName}: ${d.reason || 'без причини'} (${formatPenaltyValue(d.rollPenalty, d.softPenalty)})`;
     case 'soft_penalty_trim': {
       const what = d.to === 0 ? 'зняв софт' : `зменшив софт до ${formatWeight(d.to)}`;
       return hideSoftDetails
@@ -2189,23 +2202,117 @@ async function loadAndRenderPenalties() {
   renderPenaltiesTable();
 }
 
-async function savePenalty(playerName, rollPenalty, softPenalty, reason) {
+// ---- Штрафи: лише з шаблонів (сторінка Штрафбату), накопичуються ----
+
+const PENALTY_ADD_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"/></svg>';
+const PENALTY_REMOVE_ICON = '<svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/></svg>';
+
+let penaltyTemplates = [];
+let penaltyModalPlayer = null;
+
+async function loadPenaltyTemplates() {
   try {
-    penaltiesList = await apiCall('PUT', `/raids/${raidId}/penalties/${encodeURIComponent(playerName)}`, {
-      token: getSessionToken(),
-      body: { rollPenalty, softPenalty, reason }
-    });
-    // Штраф міг зрізати вагу вже поставлених софтів - перечитуємо їх, щоб
-    // таблиці не показували стару вагу до наступного оновлення сторінки.
-    await loadReserves();
-    renderPenaltiesTable();
-    renderPlayersTable();
-    renderItemsTable();
-    applySoftFormLockState();
-    applyOfficerFormLockState();
+    penaltyTemplates = await apiCall('GET', '/penalty-templates', { token: getSessionToken() });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// Штраф міг зрізати вагу вже поставлених софтів (і бонуси отримувачів) —
+// перечитуємо їх, щоб таблиці не показували стару вагу до наступного оновлення.
+async function afterPenaltyChange(list) {
+  penaltiesList = list;
+  await loadReserves();
+  renderPenaltiesTable();
+  renderPlayersTable();
+  renderItemsTable();
+  applySoftFormLockState();
+  applyOfficerFormLockState();
+}
+
+async function addPenalty(playerName, templateId, count) {
+  const list = await apiCall('POST', `/raids/${raidId}/penalties`, {
+    token: getSessionToken(),
+    body: { playerName, templateId, count }
+  });
+  await afterPenaltyChange(list);
+}
+
+async function removePenalty(entryId) {
+  try {
+    const list = await apiCall('DELETE', `/raids/${raidId}/penalties/${entryId}`, { token: getSessionToken() });
+    await afterPenaltyChange(list);
   } catch (err) {
     setStatus(`Помилка: ${err.message}`, 'error');
   }
+}
+
+async function openPenaltyModal(playerName) {
+  await loadPenaltyTemplates();
+  // Лише загальні шаблони й шаблони босів інстансу цього рейду.
+  if (!fillPenaltyTemplateSelect(penaltyTemplateSelect, penaltyTemplates, raid.instance)) {
+    alert('Немає шаблонів штрафів для цього інстансу. Їх створюють офіцери гільдії на сторінці "Штрафбат" → "Шаблони штрафів".');
+    return;
+  }
+  penaltyModalPlayer = playerName;
+  penaltyModalTitle.textContent = `Штраф: ${playerName}`;
+  penaltyCountInput.value = '1';
+  penaltyModal.hidden = false;
+}
+
+function closePenaltyModal() {
+  penaltyModal.hidden = true;
+  penaltyModalPlayer = null;
+}
+
+penaltyConfirmBtn.addEventListener('click', async () => {
+  if (!penaltyModalPlayer) return;
+  const count = Number(penaltyCountInput.value);
+  if (!Number.isInteger(count) || count < 1 || count > 10) {
+    alert('Кількість — від 1 до 10');
+    return;
+  }
+  penaltyConfirmBtn.disabled = true;
+  try {
+    await addPenalty(penaltyModalPlayer, Number(penaltyTemplateSelect.value), count);
+    closePenaltyModal();
+  } catch (err) {
+    alert(`Не вдалося додати штраф: ${err.message}`);
+  } finally {
+    penaltyConfirmBtn.disabled = false;
+  }
+});
+penaltyCancelBtn.addEventListener('click', closePenaltyModal);
+penaltyModalBackdrop.addEventListener('click', closePenaltyModal);
+
+function penaltyTotalCell(value) {
+  const td = document.createElement('td');
+  td.textContent = value > 0 ? `-${value}` : '—';
+  td.className = value > 0 ? 'penalty-value--active' : 'penalty-value--none';
+  return td;
+}
+
+// Чіп застосованого штрафу: "Бос: причина (−5 до ролу)" + хрестик для офіцера.
+function buildPenaltyChip(entry, editable) {
+  const chip = document.createElement('span');
+  chip.className = 'penalty-chip';
+  const boss = entry.boss ? `${translateBoss(entry.boss)}: ` : '';
+  chip.appendChild(document.createTextNode(`${boss}${entry.reason || 'Без причини'} (${formatPenaltyValue(entry.roll_penalty, entry.soft_penalty)})`));
+
+  if (editable) {
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'penalty-chip-remove';
+    removeBtn.innerHTML = PENALTY_REMOVE_ICON;
+    removeBtn.setAttribute('aria-label', 'Зняти штраф');
+    bindTooltip(removeBtn);
+    removeBtn.addEventListener('click', () => {
+      hideBtnTooltip();
+      removePenalty(entry.id);
+    });
+    chip.appendChild(removeBtn);
+  }
+  return chip;
 }
 
 function renderPenaltiesTable() {
@@ -2213,8 +2320,7 @@ function renderPenaltiesTable() {
 
   // pending - відкладений штраф зі Штрафбату, який у цей рейд ще не
   // застосований. Він потрібен лише щоб погасити кнопки ваги в формі софту;
-  // у таблиці офіцера його показувати не можна - редагування такого рядка
-  // створило б справжній штраф раніше часу.
+  // у таблиці офіцера показуємо лише вже застосовані штрафи.
   const rows = penaltiesList.filter((p) => !p.pending);
 
   if (!rows.length) {
@@ -2229,7 +2335,7 @@ function renderPenaltiesTable() {
 
   const officerMode = isOfficerMode() && !isRaidCompleted();
 
-  for (const { player_name, roll_penalty, soft_penalty, reason } of rows) {
+  for (const { player_name, roll_penalty, soft_penalty, entries } of rows) {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
@@ -2250,75 +2356,35 @@ function renderPenaltiesTable() {
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
+    tr.appendChild(penaltyTotalCell(roll_penalty));
+    tr.appendChild(penaltyTotalCell(soft_penalty));
+
+    const listTd = document.createElement('td');
+    const list = document.createElement('div');
+    list.className = 'penalty-chip-list';
+    (entries || []).forEach((entry) => list.appendChild(buildPenaltyChip(entry, officerMode)));
+
     if (officerMode) {
-      const rollInput = document.createElement('input');
-      rollInput.type = 'number';
-      rollInput.min = '0';
-      rollInput.step = '5';
-      rollInput.value = String(roll_penalty);
-      rollInput.className = 'penalty-input' + (roll_penalty > 0 ? ' penalty-input--nonzero' : '');
-
-      const softInput = document.createElement('input');
-      softInput.type = 'number';
-      softInput.min = '0';
-      softInput.max = String(raid.soft_limit_total);
-      softInput.step = '1';
-      softInput.value = String(soft_penalty);
-      softInput.className = 'penalty-input' + (soft_penalty > 0 ? ' penalty-input--nonzero' : '');
-
-      const reasonInput = document.createElement('input');
-      reasonInput.type = 'text';
-      reasonInput.value = reason || '';
-      reasonInput.className = 'penalty-reason-input';
-      reasonInput.maxLength = 500;
-      reasonInput.placeholder = 'Причина...';
-
-      const save = () => {
-        rollInput.classList.toggle('penalty-input--nonzero', Number(rollInput.value) > 0);
-        softInput.classList.toggle('penalty-input--nonzero', Number(softInput.value) > 0);
-        savePenalty(player_name, Number(rollInput.value), Number(softInput.value), reasonInput.value);
-      };
-      rollInput.addEventListener('change', save);
-      softInput.addEventListener('change', save);
-      reasonInput.addEventListener('change', save);
-
-      const rollTd = document.createElement('td');
-      rollTd.appendChild(rollInput);
-      const softTd = document.createElement('td');
-      softTd.appendChild(softInput);
-      const reasonTd = document.createElement('td');
-      reasonTd.appendChild(reasonInput);
-      tr.appendChild(rollTd);
-      tr.appendChild(softTd);
-      tr.appendChild(reasonTd);
-    } else {
-      const rollTd = document.createElement('td');
-      if (roll_penalty > 0) {
-        rollTd.textContent = `-${roll_penalty}`;
-        rollTd.className = 'penalty-value--active';
-      } else {
-        rollTd.textContent = '—';
-        rollTd.className = 'penalty-value--none';
-      }
-
-      const softTd = document.createElement('td');
-      if (soft_penalty > 0) {
-        softTd.textContent = `-${soft_penalty}`;
-        softTd.className = 'penalty-value--active';
-      } else {
-        softTd.textContent = '—';
-        softTd.className = 'penalty-value--none';
-      }
-
-      const reasonTd = document.createElement('td');
-      reasonTd.textContent = reason || '';
-      reasonTd.className = 'penalty-reason-text';
-
-      tr.appendChild(rollTd);
-      tr.appendChild(softTd);
-      tr.appendChild(reasonTd);
+      const addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'penalty-add-btn';
+      addBtn.innerHTML = PENALTY_ADD_ICON;
+      addBtn.setAttribute('aria-label', 'Додати штраф');
+      bindTooltip(addBtn);
+      addBtn.addEventListener('click', () => {
+        hideBtnTooltip();
+        openPenaltyModal(player_name);
+      });
+      list.appendChild(addBtn);
+    } else if (!(entries || []).length) {
+      const none = document.createElement('span');
+      none.className = 'penalty-value--none';
+      none.textContent = '—';
+      list.appendChild(none);
     }
 
+    listTd.appendChild(list);
+    tr.appendChild(listTd);
     raidPenaltiesBody.appendChild(tr);
   }
 }

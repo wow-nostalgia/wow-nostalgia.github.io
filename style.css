@@ -2278,6 +2278,12 @@ body.raid-manager-page .raid-toggle-group {
   gap: 0.4rem;
 }
 
+/* display:flex вище перекриває атрибут hidden (перемикач інстансу Штрафбату
+   ховається для шаблону боса). */
+body.raid-manager-page .raid-toggle-group[hidden] {
+  display: none;
+}
+
 body.raid-manager-page .raid-toggle-btn {
   padding: 0.35rem 0.7rem;
   border: 1px solid var(--color-border-input);
@@ -2698,6 +2704,18 @@ body.raid-manager-page .archive-delete-td {
   padding: 0;
 }
 
+/* Шаблони штрафів: дві іконки (редагувати + видалити) в одній клітинці. */
+body.raid-manager-page #templatesTable .archive-delete-th,
+body.raid-manager-page .penalty-template-actions {
+  width: 5.25rem;
+  white-space: nowrap;
+}
+
+body.raid-manager-page .penalty-edit-btn:hover {
+  color: var(--color-link);
+  background-color: var(--color-hover);
+}
+
 /* "Stretched link" — весь рядок клікабельний через розтягнутий ::after
    справжнього <a>, а не onclick на <tr> (недоступно з клавіатури/скрінрідера,
    ламає відкриття в новій вкладці). .archive-delete-btn піднятий z-index'ом
@@ -3080,6 +3098,7 @@ body.raid-manager-detail-page .raid-player-name-cell {
 }
 
 body.raid-manager-detail-page .raid-tabs,
+body.raid-manager-page .raid-tabs,
 body.account-page .raid-tabs,
 body.shard-queue-page .raid-tabs {
   display: flex;
@@ -3091,6 +3110,7 @@ body.shard-queue-page .raid-tabs {
 }
 
 body.raid-manager-detail-page .raid-tab,
+body.raid-manager-page .raid-tab,
 body.account-page .raid-tab,
 body.shard-queue-page .raid-tab {
   background: none;
@@ -3105,12 +3125,14 @@ body.shard-queue-page .raid-tab {
 }
 
 body.raid-manager-detail-page .raid-tab:hover,
+body.raid-manager-page .raid-tab:hover,
 body.account-page .raid-tab:hover,
 body.shard-queue-page .raid-tab:hover {
   color: var(--color-text-strong);
 }
 
 body.raid-manager-detail-page .raid-tab--active,
+body.raid-manager-page .raid-tab--active,
 body.account-page .raid-tab--active,
 body.shard-queue-page .raid-tab--active {
   color: var(--color-text-strong);
@@ -3320,8 +3342,9 @@ body.raid-manager-detail-page #raidPlayersTable td:first-child {
   text-align: right;
 }
 
-body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(n+2):nth-child(-n+4),
-body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(n+2):nth-child(-n+4) {
+/* Суми штрафів — праворуч (числа), чіпи штрафів — ліворуч. */
+body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(n+2):nth-child(-n+3),
+body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(n+2):nth-child(-n+3) {
   text-align: right;
 }
 
@@ -3437,15 +3460,24 @@ body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:
 }
 
 body.raid-manager-page #createRaidOpenBtn.compare-btn,
-body.raid-manager-page #addPenaltyOpenBtn.compare-btn {
+body.raid-manager-page #addPenaltyOpenBtn.compare-btn,
+body.raid-manager-page #addTemplateOpenBtn.compare-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
 }
 
+/* Кнопки додавання у Штрафбаті гравцям (лише перегляд) сховані — inline-flex
+   вище інакше перекрив би атрибут hidden. */
+body.raid-manager-page #addPenaltyOpenBtn.compare-btn[hidden],
+body.raid-manager-page #addTemplateOpenBtn.compare-btn[hidden] {
+  display: none;
+}
+
 body.raid-manager-page .raid-create-form button[type="submit"].compare-btn,
 body.raid-manager-page #createRaidOpenBtn.compare-btn,
 body.raid-manager-page #addPenaltyOpenBtn.compare-btn,
+body.raid-manager-page #addTemplateOpenBtn.compare-btn,
 body.ranking-page #compareBtn.compare-btn,
 body.raid-manager-detail-page #transferConfirmBtn.compare-btn,
 body.raid-manager-detail-page #potionsAddBtn.compare-btn,
@@ -3458,6 +3490,7 @@ body.raid-manager-detail-page #bonusGrantSaveBtn.compare-btn {
 body.raid-manager-page .raid-create-form button[type="submit"].compare-btn:hover:not(:disabled),
 body.raid-manager-page #createRaidOpenBtn.compare-btn:hover:not(:disabled),
 body.raid-manager-page #addPenaltyOpenBtn.compare-btn:hover:not(:disabled),
+body.raid-manager-page #addTemplateOpenBtn.compare-btn:hover:not(:disabled),
 body.ranking-page #compareBtn.compare-btn:hover:not(:disabled),
 body.raid-manager-detail-page #transferConfirmBtn.compare-btn:hover:not(:disabled),
 body.raid-manager-detail-page #potionsAddBtn.compare-btn:hover:not(:disabled),
@@ -4602,22 +4635,6 @@ body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(3) { width: 8%; }
 /* Причини (4-та, остання колонка) - без явної ширини, table-layout:fixed
    віддає їй весь залишок (~69%) - максимум простору під довгий текст. */
 
-body.raid-manager-detail-page .penalty-input {
-  width: 5rem;
-  padding: 0.25rem 0.375rem;
-  font-size: var(--font-size-base);
-  text-align: center;
-  background-color: rgba(12, 21, 33, 0.88);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  color: var(--color-text);
-}
-
-body.raid-manager-detail-page .penalty-input:focus {
-  outline: 2px solid var(--color-link);
-  outline-offset: 1px;
-}
-
 body.raid-manager-detail-page .penalty-value--active {
   color: var(--color-danger);
   font-weight: var(--font-weight-medium);
@@ -4633,40 +4650,71 @@ body.raid-manager-detail-page .penalty-potion-stat {
   white-space: nowrap;
 }
 
-body.raid-manager-detail-page .penalty-input--nonzero {
-  color: var(--color-danger);
-  font-weight: var(--font-weight-medium);
+/* Застосовані штрафи гравця — чіпи (накопичуються) + кнопка "+" офіцера. */
+body.raid-manager-detail-page .penalty-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
 }
 
-body.raid-manager-detail-page .penalty-reason-input {
-  width: 100%;
-  min-width: 8rem;
-  padding: 0.25rem 0.375rem;
-  font-size: var(--font-size-base);
-  background-color: rgba(12, 21, 33, 0.88);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+body.raid-manager-detail-page .penalty-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  max-width: 100%;
+  padding: 0.1rem 0.55rem;
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 107, 107, 0.12);
   color: var(--color-text);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
-body.raid-manager-detail-page .penalty-reason-input:focus {
-  outline: 2px solid var(--color-link);
-  outline-offset: 1px;
+body.raid-manager-detail-page .penalty-chip-remove {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-right: -0.3rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text-faint);
+  cursor: pointer;
 }
 
-body.raid-manager-detail-page .penalty-reason-text {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-base);
-  overflow-wrap: break-word;
-  word-break: break-word;
+body.raid-manager-detail-page .penalty-chip-remove:hover {
+  color: var(--color-danger);
+  background-color: rgba(255, 107, 107, 0.2);
 }
 
-/* На min-width:34rem виправдано розраховувати на десктоп-ширину, але
-   .penalty-input (5rem = 80px) і .penalty-reason-input (min-width 8rem)
-   ширші за свої 8%/15% колонки, тому вилазять і наповзають на сусідні
-   клітинки навіть у межах цих 34rem (не лише через брак viewport-ширини).
-   На мобільних прибираємо min-width таблиці й даємо інпутам заповнювати
-   свою (тепер трохи ширшу) колонку замість фіксованого px. */
+body.raid-manager-detail-page .penalty-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 1px dashed var(--color-border-mid);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-link);
+  cursor: pointer;
+}
+
+body.raid-manager-detail-page .penalty-add-btn:hover {
+  background-color: var(--color-hover);
+  border-style: solid;
+}
+
+/* На мобільних прибираємо min-width таблиці: колонка штрафів — чіпи, вони
+   переносяться, тож горизонтальний скрол не потрібен. */
 @media (max-width: 544px) {
   body.raid-manager-detail-page #raidPenaltiesTable {
     min-width: 0;
@@ -4674,14 +4722,14 @@ body.raid-manager-detail-page .penalty-reason-text {
 
   body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(1),
   body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(1) {
-    width: 38%;
+    width: 30%;
   }
 
   body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(2),
   body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(2),
   body.raid-manager-detail-page #raidPenaltiesTable th:nth-child(3),
   body.raid-manager-detail-page #raidPenaltiesTable td:nth-child(3) {
-    width: 16%;
+    width: 14%;
   }
 
   body.raid-manager-detail-page #raidPenaltiesTable .raid-player-name-cell {
@@ -4689,15 +4737,6 @@ body.raid-manager-detail-page .penalty-reason-text {
     overflow-wrap: anywhere;
   }
 
-  body.raid-manager-detail-page #raidPenaltiesTable .penalty-input {
-    width: 100%;
-    min-width: 0;
-    padding: 0.25rem 0.2rem;
-  }
-
-  body.raid-manager-detail-page #raidPenaltiesTable .penalty-reason-input {
-    min-width: 0;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4917,7 +4956,8 @@ body.raid-manager-detail-page .raid-soft-form .raid-penalty-notice {
 }
 
 .raid-modal-field select,
-.raid-modal-field input[type="text"] {
+.raid-modal-field input[type="text"],
+.raid-modal-field input[type="number"] {
   width: 100%;
   padding: 0.4rem 0.6rem;
   border: 1px solid var(--color-border-input);

@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Штрафбат — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=160">
+  <link rel="stylesheet" href="../../style.css?v=161">
   <script src="/scripts/background.js?v=1"></script>
 </head>
 
@@ -68,34 +68,58 @@
         <a class="compare-btn" id="loginGateBtn" href="#">Увійти</a>
       </div>
 
-      <div id="notOfficerGate" hidden>
-        <p>Ця сторінка доступна лише офіцерам гільдії.</p>
-      </div>
-
       <div id="battalionSection" hidden>
-        <div class="archive-status-row">
-          <p id="battalionStatus">Завантаження...</p>
-          <button type="button" id="addPenaltyOpenBtn" class="compare-btn">
-            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
-              <path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"/>
-            </svg>
-            Додати гравця
-          </button>
+        <div class="raid-tabs" role="tablist">
+          <button type="button" class="raid-tab raid-tab--active" data-tab="pending">Відкладені штрафи</button>
+          <button type="button" class="raid-tab" data-tab="templates">Шаблони штрафів</button>
         </div>
-        <div class="ranking-table-wrap">
-          <table id="battalionTable" class="raid-table">
-            <thead>
-              <tr>
-                <th>Ім'я</th>
-                <th>Мінус до ролу</th>
-                <th>Мінус до софту</th>
-                <th>Інстанс</th>
-                <th>Причина</th>
-                <th class="archive-delete-th"></th>
-              </tr>
-            </thead>
-            <tbody id="battalionBody"></tbody>
-          </table>
+
+        <div id="pendingPane">
+          <div class="archive-status-row">
+            <p id="battalionStatus">Завантаження...</p>
+            <button type="button" id="addPenaltyOpenBtn" class="compare-btn" hidden>
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"/></svg>
+              Додати гравця
+            </button>
+          </div>
+          <div class="ranking-table-wrap">
+            <table id="battalionTable" class="raid-table">
+              <thead>
+                <tr>
+                  <th>Ім'я</th>
+                  <th>Бос</th>
+                  <th>Причина</th>
+                  <th>Штраф</th>
+                  <th>Інстанс</th>
+                  <th class="archive-delete-th officer-only" hidden></th>
+                </tr>
+              </thead>
+              <tbody id="battalionBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="templatesPane" hidden>
+          <div class="archive-status-row">
+            <p id="templatesStatus">Завантаження...</p>
+            <button type="button" id="addTemplateOpenBtn" class="compare-btn" hidden>
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"/></svg>
+              Додати шаблон
+            </button>
+          </div>
+          <div class="ranking-table-wrap">
+            <table id="templatesTable" class="raid-table">
+              <thead>
+                <tr>
+                  <th>Бос</th>
+                  <th>Причина</th>
+                  <th>Штраф</th>
+                  <th class="archive-delete-th officer-only" hidden></th>
+                </tr>
+              </thead>
+              <tbody id="templatesBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -126,27 +150,66 @@
           <div class="raid-autocomplete-list" id="penaltyPlayerNameList"></div>
         </div>
 
-        <label>Інстанс</label>
+        <label for="penaltyTemplateSelect">Штраф</label>
+        <select id="penaltyTemplateSelect" required></select>
+
+        <label id="penaltyInstanceLabel">Інстанс</label>
         <div class="raid-toggle-group" id="penaltyInstanceToggle" role="group" aria-label="Інстанс">
           <button type="button" class="raid-toggle-btn raid-toggle-btn--active" data-instance="ICC">Льодяна Цитадель</button>
           <button type="button" class="raid-toggle-btn" data-instance="RS">Рубінове Святилище</button>
         </div>
         <input type="hidden" id="penaltyInstance" value="ICC">
 
-        <label for="penaltyRollPenalty">Мінус до ролу</label>
-        <input type="number" id="penaltyRollPenalty" min="0" step="5" value="0">
-
-        <label for="penaltySoftPenalty">Мінус до софту</label>
-        <input type="number" id="penaltySoftPenalty" min="0" value="0">
-
-        <label for="penaltyReason">Причина</label>
-        <input type="text" id="penaltyReason" placeholder="Необов'язково">
+        <label for="penaltyCount">Кількість</label>
+        <input type="number" id="penaltyCount" min="1" max="10" step="1" value="1" required>
 
         <div class="raid-modal-actions">
           <button type="submit" class="compare-btn">Додати</button>
           <button type="button" id="addPenaltyCancelBtn" class="link-button-std">Скасувати</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <div id="templateModal" class="raid-modal" hidden>
+    <div class="raid-modal-backdrop" id="templateModalBackdrop"></div>
+    <div class="raid-modal-box">
+      <h3 class="raid-modal-title" id="templateModalTitle">Новий шаблон</h3>
+
+      <form id="templateForm" class="raid-create-form">
+        <label for="templateBossSelect">Бос</label>
+        <select id="templateBossSelect"></select>
+
+        <label for="templateReason">Причина</label>
+        <input type="text" id="templateReason" required maxlength="200" placeholder="Напр. Духи на Леді">
+
+        <label>Тип штрафу</label>
+        <div class="raid-toggle-group" id="templateTypeToggle" role="group" aria-label="Тип штрафу">
+          <button type="button" class="raid-toggle-btn raid-toggle-btn--active" data-type="roll">Мінус до ролу</button>
+          <button type="button" class="raid-toggle-btn" data-type="soft">Мінус до софту</button>
+        </div>
+        <input type="hidden" id="templateType" value="roll">
+
+        <label for="templateValue">Значення</label>
+        <input type="number" id="templateValue" required>
+
+        <div class="raid-modal-actions">
+          <button type="submit" class="compare-btn" id="templateSubmitBtn">Створити</button>
+          <button type="button" id="templateCancelBtn" class="link-button-std">Скасувати</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="raid-modal" hidden>
+    <div class="raid-modal-backdrop" id="confirmModalBackdrop"></div>
+    <div class="raid-modal-box">
+      <h3 class="raid-modal-title" id="confirmModalTitle"></h3>
+      <p class="raid-modal-text" id="confirmModalText"></p>
+      <div class="raid-modal-actions">
+        <button type="button" id="confirmModalConfirmBtn" class="compare-btn">Видалити</button>
+        <button type="button" id="confirmModalCancelBtn" class="link-button-std">Скасувати</button>
+      </div>
     </div>
   </div>
 
@@ -158,20 +221,26 @@
       </button>
       <h3 class="raid-modal-title" id="infoModalTitle">Штрафбат</h3>
       <ul class="page-info-list">
+        <li>"Шаблони штрафів" — типові помилки на босах і загальні порушення
+          з покаранням (мінус до ролу або до софту). Штрафи у Штрафбаті й у
+          рейдах обираються лише з цих шаблонів.</li>
         <li>Коли гравець зі Штрафбату наступного разу додасть софт у рейді
-          вказаного інстансу — штраф проставиться автоматично на табі
-          "Штрафи" цього рейду.</li>
+          вказаного інстансу — усі його відкладені штрафи проставляться
+          автоматично на табі "Штрафи" цього рейду.</li>
         <li>Після застосування запис зникає — покарання одноразове.</li>
+        <li>Штрафи в рейді накопичуються: різні помилки гравця сумуються.</li>
+        <li>Додавати й змінювати записи можуть офіцери гільдії, решта гравців
+          бачить сторінку лише для перегляду.</li>
       </ul>
     </div>
   </div>
 
   <script src="../../scripts/nav.js?v=2"></script>
-  <script src="../../scripts/auth-shared.js?v=12"></script>
+  <script src="../../scripts/auth-shared.js?v=13"></script>
   <script src="../../scripts/ui-shared.js?v=15"></script>
-  <script src="../../scripts/raid-manager-shared.js?v=5"></script>
-  <script src="../../scripts/name-translations.js?v=2"></script>
-  <script src="../../scripts/raid-manager-penalty-battalion.js?v=2"></script>
+  <script src="../../scripts/raid-manager-shared.js?v=6"></script>
+  <script src="../../scripts/name-translations.js?v=3"></script>
+  <script src="../../scripts/raid-manager-penalty-battalion.js?v=3"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
