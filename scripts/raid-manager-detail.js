@@ -1103,6 +1103,9 @@ function renderOfficersPanel(officers) {
   leaderLi.appendChild(officerCharactersCell(leaderCharacters));
   officersList.appendChild(leaderLi);
 
+  // Лідер часто є й серед офіцерів (сід офіцерів гільдії) — другий рядок зайвий.
+  officers = officers.filter((officer) => officer.discord_id !== raid.leader_discord_id);
+
   if (!officers.length) {
     const li = document.createElement('li');
     li.className = 'raid-list-item';
