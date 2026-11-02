@@ -153,9 +153,14 @@ body {
 
 /* Фон сайту. Значення підмінює scripts/background.js за вибором користувача
    (профіль -> Налаштування -> Фон сайту); тут лишається стандартний фон для незалогінених і
-   для першого рендеру, поки скрипт ще не відпрацював. */
+   для першого рендеру, поки скрипт ще не відпрацював. AVIF/WebP-копії
+   генерує scripts/build-backgrounds.js; порядок той самий, що в background.js. */
 :root {
-  --page-background: url("/images/backgrounds/default.jpg");
+  --page-background: image-set(
+    url("/images/backgrounds/optimized/default.avif") type("image/avif"),
+    url("/images/backgrounds/optimized/default.webp") type("image/webp"),
+    url("/images/backgrounds/default.jpg")
+  );
 }
 
 body::before {

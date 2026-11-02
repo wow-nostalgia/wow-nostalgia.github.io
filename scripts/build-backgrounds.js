@@ -3,6 +3,12 @@
 // Генерує маніфест фонів сайту + мініатюри для сітки вибору у профілі.
 // Аналог build-gallery.js, але з ресайзом: оригінали фонів важать сотні
 // кілобайт, а на сторінці профілю їх показується десяток одночасно.
+//
+// Плюс AVIF/WebP-копії кожного фону в повному розмірі (optimized/): фон
+// вантажиться на кожній сторінці, а ці формати в 3-5 разів легші за JPEG.
+// scripts/background.js і style.css підставляють їх через image-set() з
+// оригіналом як останнім варіантом. Розмір не зменшуємо: background-size:
+// cover на вертикальному екрані телефона й так тягне всю висоту картинки.
 
 const fs = require('node:fs/promises');
 const path = require('path');
@@ -10,11 +16,14 @@ const sharp = require('sharp');
 
 const BACKGROUNDS_DIR = path.join(__dirname, '..', 'images', 'backgrounds');
 const THUMBS_DIR = path.join(BACKGROUNDS_DIR, 'thumbs');
+const OPTIMIZED_DIR = path.join(BACKGROUNDS_DIR, 'optimized');
 const OUTPUT_FILE = path.join(BACKGROUNDS_DIR, 'backgrounds.json');
 
 const DEFAULT_FILE = 'default.jpg';
 const THUMB_WIDTH = 480;
 const THUMB_QUALITY = 70;
+const AVIF_QUALITY = 50;
+const WEBP_QUALITY = 75;
 
 const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
 
@@ -37,16 +46,20 @@ function encodePath(fileName) {
   return encodeURIComponent(fileName).replace(/%2F/g, '/');
 }
 
-function thumbName(fileName) {
-  return `${path.basename(fileName, path.extname(fileName))}.webp`;
+function baseName(fileName) {
+  return path.basename(fileName, path.extname(fileName));
 }
 
-// Мініатюру перегенеровуємо лише якщо оригінал новіший — інакше кожен
+function thumbName(fileName) {
+  return `${baseName(fileName)}.webp`;
+}
+
+// Похідний файл перегенеровуємо лише якщо оригінал новіший — інакше кожен
 // прогін переписував би всі файли й засмічував git diff.
-async function needsThumb(sourcePath, thumbPath) {
+async function needsRebuild(sourcePath, targetPath) {
   try {
-    const [source, thumb] = await Promise.all([fs.stat(sourcePath), fs.stat(thumbPath)]);
-    return source.mtimeMs > thumb.mtimeMs;
+    const [source, target] = await Promise.all([fs.stat(sourcePath), fs.stat(targetPath)]);
+    return source.mtimeMs > target.mtimeMs;
   } catch {
     return true;
   }
@@ -56,7 +69,7 @@ async function buildThumb(fileName) {
   const sourcePath = path.join(BACKGROUNDS_DIR, fileName);
   const thumbPath = path.join(THUMBS_DIR, thumbName(fileName));
 
-  if (!(await needsThumb(sourcePath, thumbPath))) return false;
+  if (!(await needsRebuild(sourcePath, thumbPath))) return false;
 
   await sharp(sourcePath)
     .resize({ width: THUMB_WIDTH, withoutEnlargement: true })
@@ -66,12 +79,38 @@ async function buildThumb(fileName) {
   return true;
 }
 
-// Мініатюри без оригіналу лишаються після видалення/перейменування фону —
-// прибираємо, щоб папка не накопичувала сміття.
-async function pruneOrphanThumbs(keepNames) {
+// Імена мусять збігатися з тими, що будує backgroundImageValue() у
+// scripts/background.js: optimized/<ім'я без розширення>.avif|.webp.
+function optimizedNames(fileName) {
+  return [`${baseName(fileName)}.avif`, `${baseName(fileName)}.webp`];
+}
+
+async function buildOptimized(fileName) {
+  const sourcePath = path.join(BACKGROUNDS_DIR, fileName);
+  const [avifName, webpName] = optimizedNames(fileName);
+  let built = 0;
+
+  const avifPath = path.join(OPTIMIZED_DIR, avifName);
+  if (await needsRebuild(sourcePath, avifPath)) {
+    await sharp(sourcePath).avif({ quality: AVIF_QUALITY }).toFile(avifPath);
+    built += 1;
+  }
+
+  const webpPath = path.join(OPTIMIZED_DIR, webpName);
+  if (await needsRebuild(sourcePath, webpPath)) {
+    await sharp(sourcePath).webp({ quality: WEBP_QUALITY }).toFile(webpPath);
+    built += 1;
+  }
+
+  return built;
+}
+
+// Похідні файли без оригіналу лишаються після видалення/перейменування
+// фону — прибираємо, щоб папка не накопичувала сміття.
+async function pruneOrphans(dir, keepNames) {
   let entries;
   try {
-    entries = await fs.readdir(THUMBS_DIR, { withFileTypes: true });
+    entries = await fs.readdir(dir, { withFileTypes: true });
   } catch {
     return 0;
   }
@@ -79,7 +118,7 @@ async function pruneOrphanThumbs(keepNames) {
   let removed = 0;
   for (const entry of entries) {
     if (!entry.isFile() || keepNames.has(entry.name)) continue;
-    await fs.unlink(path.join(THUMBS_DIR, entry.name));
+    await fs.unlink(path.join(dir, entry.name));
     removed += 1;
   }
 
@@ -111,12 +150,15 @@ async function buildBackgroundsManifest() {
   }
 
   await fs.mkdir(THUMBS_DIR, { recursive: true });
+  await fs.mkdir(OPTIMIZED_DIR, { recursive: true });
 
   const manifest = [];
   let built = 0;
+  let optimized = 0;
 
   for (const fileName of files) {
     if (await buildThumb(fileName)) built += 1;
+    optimized += await buildOptimized(fileName);
 
     manifest.push({
       file: fileName,
@@ -127,11 +169,12 @@ async function buildBackgroundsManifest() {
     });
   }
 
-  const removed = await pruneOrphanThumbs(new Set(files.map(thumbName)));
+  const removed = await pruneOrphans(THUMBS_DIR, new Set(files.map(thumbName)))
+    + await pruneOrphans(OPTIMIZED_DIR, new Set(files.flatMap(optimizedNames)));
 
   await fs.writeFile(OUTPUT_FILE, JSON.stringify(manifest, null, 2), 'utf8');
 
-  console.log(`Готово. Фонів: ${manifest.length}, згенеровано мініатюр: ${built}, прибрано зайвих: ${removed}.`);
+  console.log(`Готово. Фонів: ${manifest.length}, згенеровано мініатюр: ${built}, AVIF/WebP-копій: ${optimized}, прибрано зайвих: ${removed}.`);
   console.log(`Маніфест записано у: ${OUTPUT_FILE}`);
 }
 

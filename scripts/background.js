@@ -29,16 +29,27 @@ function storeBackground(value) {
   } catch { /* мовчки: без кешу фон просто підтягнеться з /auth/me */ }
 }
 
-// value: null - стандартний фон, 'none' - без фону, інакше ім'я файлу.
+// AVIF/WebP-копії генерує scripts/build-backgrounds.js в optimized/ під тим
+// самим іменем без розширення; браузер бере перший формат, який підтримує,
+// а оригінал лишається останнім варіантом. Той самий порядок - у style.css.
 // encodeURIComponent обов'язковий: імена фонів бувають кирилицею з пробілами,
 // і саме він гарантує, що в CSS url() потрапить лише percent-encoded ASCII.
+function backgroundImageValue(fileName) {
+  const base = encodeURIComponent(fileName.replace(/\.[^.]+$/, ''));
+  const optimized = `${BACKGROUNDS_BASE}optimized/${base}`;
+  return `image-set(url("${optimized}.avif") type("image/avif"), `
+    + `url("${optimized}.webp") type("image/webp"), `
+    + `url("${BACKGROUNDS_BASE}${encodeURIComponent(fileName)}"))`;
+}
+
+// value: null - стандартний фон, 'none' - без фону, інакше ім'я файлу.
 function applyBackground(value) {
   const root = document.documentElement;
 
   if (value === BACKGROUND_NONE) {
     root.style.setProperty('--page-background', 'none');
   } else if (value) {
-    root.style.setProperty('--page-background', `url("${BACKGROUNDS_BASE}${encodeURIComponent(value)}")`);
+    root.style.setProperty('--page-background', backgroundImageValue(value));
   } else {
     root.style.removeProperty('--page-background');
   }
