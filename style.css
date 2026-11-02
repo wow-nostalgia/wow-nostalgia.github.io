@@ -5342,6 +5342,11 @@ dialog.raid-modal > .raid-modal-box {
   line-height: var(--line-height-relaxed);
 }
 
+/* Другорядна примітка під полями (напр. "керування — у профілі"). */
+.raid-modal-text--small {
+  font-size: var(--font-size-sm);
+}
+
 /* Хрестик закриття в куті картки. Іконка - Primer Octicons x-16.
    Ховер нейтральний, не червоний: закриття тут не деструктивне, на
    відміну від .account-delete-btn. Заголовку лишаємо місце під кнопку,

@@ -127,9 +127,14 @@ const bonusGrantModalBackdrop = document.getElementById('bonusGrantModalBackdrop
 const bonusGrantTableBody = document.getElementById('bonusGrantTableBody');
 const bonusGrantSaveBtn = document.getElementById('bonusGrantSaveBtn');
 const bonusGrantCancelBtn = document.getElementById('bonusGrantCancelBtn');
-const noCharactersModal = document.getElementById('noCharactersModal');
-const noCharactersModalBackdrop = document.getElementById('noCharactersModalBackdrop');
-const noCharactersCloseBtn = document.getElementById('noCharactersCloseBtn');
+const addCharacterModal = document.getElementById('addCharacterModal');
+const addCharacterModalBackdrop = document.getElementById('addCharacterModalBackdrop');
+const addCharacterForm = document.getElementById('addCharacterForm');
+const addCharacterModalTitle = document.getElementById('addCharacterModalTitle');
+const addCharacterModalText = document.getElementById('addCharacterModalText');
+const addCharacterInput = document.getElementById('addCharacterInput');
+const addCharacterConfirmBtn = document.getElementById('addCharacterConfirmBtn');
+const addCharacterCancelBtn = document.getElementById('addCharacterCancelBtn');
 let currentTooltipItemId = null;
 
 let raidId = null;
@@ -573,7 +578,8 @@ function applySoftFormLockState() {
   const myTransfer = getMyTransfer();
   const locked = isRaidCompleted() || (raid.is_locked && !isOfficerMode()) || Boolean(myTransfer);
 
-  softPlayerNameInput.disabled = locked || !myCharacters.length;
+  // Без персонажів список лишається активним: у ньому пункт "Додати персонажа".
+  softPlayerNameInput.disabled = locked;
   softBoss.disabled = locked;
   softItemTrigger.disabled = locked;
   softForm.querySelector('button[type="submit"]').disabled = locked;
@@ -1251,8 +1257,6 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-noCharactersCloseBtn.addEventListener('click', () => { closeModal(noCharactersModal); });
-noCharactersModalBackdrop.addEventListener('click', () => { closeModal(noCharactersModal); });
 
 function positionItemTooltip(event) {
   const offset = 16;
@@ -1309,9 +1313,24 @@ function updateSoftPlayerNameColor() {
   softPlayerNameInput.style.color = color || 'var(--color-text-faint)';
 }
 
+// Останній пункт списку "Мій персонаж" — не персонаж, а дія: відкриває
+// попап швидкого додавання (основне місце для цього — профіль).
+const ADD_CHARACTER_OPTION = '__add_character__';
+let lastSoftPlayerName = '';
+
 function populateMyCharacters() {
   softPlayerNameInput.innerHTML = '';
   noCharactersHint.hidden = myCharacters.length > 0;
+
+  // Без персонажів список інакше одразу стояв би на "Додати" — і вибрати
+  // його вдруге було б неможливо (change не спрацює).
+  if (!myCharacters.length) {
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = '— немає персонажів —';
+    placeholder.disabled = true;
+    softPlayerNameInput.appendChild(placeholder);
+  }
 
   myCharacters.forEach(({ characterName: name }) => {
     const opt = document.createElement('option');
@@ -1322,13 +1341,69 @@ function populateMyCharacters() {
     softPlayerNameInput.appendChild(opt);
   });
 
+  const addOpt = document.createElement('option');
+  addOpt.value = ADD_CHARACTER_OPTION;
+  addOpt.textContent = '+ Додати персонажа…';
+  addOpt.style.color = 'var(--color-link)';
+  softPlayerNameInput.appendChild(addOpt);
+
   const saved = localStorage.getItem(LS_CHAR_KEY);
-  if (saved && softPlayerNameInput.querySelector(`option[value="${CSS.escape(saved)}"]`)) {
+  if (saved && myCharacters.some((c) => c.characterName === saved)) {
     softPlayerNameInput.value = saved;
+  } else {
+    softPlayerNameInput.selectedIndex = 0;
   }
+  lastSoftPlayerName = softPlayerNameInput.value;
   updateSoftPlayerNameColor();
   applySoftFormLockState();
 }
+
+// firstCharacter: відкрито автоматично, бо персонажів ще нема.
+function openAddCharacterModal({ firstCharacter = false } = {}) {
+  addCharacterModalTitle.textContent = firstCharacter ? 'Спочатку додай персонажа' : 'Додати персонажа';
+  addCharacterModalText.textContent = firstCharacter
+    ? "Щоб софтити предмети, потрібен хоча б один твій персонаж. Впиши ім'я точно як у грі — він збережеться в профілі й буде доступний у всіх рейдах."
+    : "Впиши ім'я точно як у грі. Персонаж збережеться в профілі й буде доступний у всіх рейдах.";
+  addCharacterInput.value = '';
+  openModal(addCharacterModal);
+}
+
+function closeAddCharacterModal() {
+  closeModal(addCharacterModal);
+}
+
+addCharacterForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const characterName = addCharacterInput.value.trim();
+  if (!characterName) return;
+
+  addCharacterConfirmBtn.disabled = true;
+  setModalBusy(addCharacterModal, true);
+  try {
+    const list = await apiCall('POST', '/auth/me/characters', {
+      token: getSessionToken(),
+      body: { characterName }
+    });
+    // Сервер сам виправляє регістр імені — шукаємо доданого без нього.
+    const lower = characterName.toLocaleLowerCase('uk');
+    const added = list.find((c) => c.characterName.toLocaleLowerCase('uk') === lower);
+    myCharacters = list;
+    if (added) localStorage.setItem(LS_CHAR_KEY, added.characterName);
+    closeAddCharacterModal();
+    populateMyCharacters();
+    renderPlayersTable();
+    renderItemsTable();
+  } catch (err) {
+    showMessageModal(err.message);
+  } finally {
+    addCharacterConfirmBtn.disabled = false;
+    setModalBusy(addCharacterModal, false);
+  }
+});
+
+addCharacterCancelBtn.addEventListener('click', closeAddCharacterModal);
+addCharacterModalBackdrop.addEventListener('click', closeAddCharacterModal);
+onModalCancel(addCharacterModal, closeAddCharacterModal);
 
 function populateBossSelect(selectEl) {
   selectEl.innerHTML = '';
@@ -2076,6 +2151,12 @@ raidTabs.forEach((btn) => btn.addEventListener('click', () => setActiveTab(btn.d
 syncTabs(raidTabsList);
 
 softPlayerNameInput.addEventListener('change', () => {
+  if (softPlayerNameInput.value === ADD_CHARACTER_OPTION) {
+    softPlayerNameInput.value = lastSoftPlayerName;
+    openAddCharacterModal();
+    return;
+  }
+  lastSoftPlayerName = softPlayerNameInput.value;
   localStorage.setItem(LS_CHAR_KEY, softPlayerNameInput.value);
   updateSoftPlayerNameColor();
   applySoftFormLockState();
@@ -2627,9 +2708,10 @@ async function init() {
   // було до приходу гравця, не є новою подією і звучати не має.
   syncNotificationState();
 
-  // Без персонажів у профілі софтити неможливо - показуємо підказку щоразу,
-  // поки їх нема. Для завершеного рейду сенсу нема: софтити там уже пізно.
-  if (!myCharacters.length && !isRaidCompleted()) openModal(noCharactersModal);
+  // Без персонажів у профілі софтити неможливо - пропонуємо додати одразу
+  // тут, щоразу, поки їх нема. Для завершеного рейду сенсу нема: софтити там
+  // уже пізно.
+  if (!myCharacters.length && !isRaidCompleted()) openAddCharacterModal({ firstCharacter: true });
 
   schedulePoll();
   document.addEventListener('visibilitychange', () => {
