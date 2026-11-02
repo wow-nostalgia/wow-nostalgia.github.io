@@ -2769,7 +2769,8 @@ body.index-page .link-button-std:hover {
 }
 
 body.raid-manager-page .link-button-std:disabled,
-body.shard-queue-page .link-button-std:disabled {
+body.shard-queue-page .link-button-std:disabled,
+body.account-page .link-button-std:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
