@@ -5215,6 +5215,49 @@ body.raid-manager-detail-page .raid-soft-form .raid-penalty-notice {
   display: none;
 }
 
+/* .raid-modal на <dialog> (showModal): сам dialog - прозорий шар на весь
+   екран у top layer, картка .raid-modal-box усередині, як і раніше. UA-стилі
+   <dialog> (рамка, відступи, фон, max-розміри) скидаємо, а display: flex
+   вище перебив би приховування закритого dialog - повертаємо його явно.
+   Якщо картка вища за вікно, прокручується сам dialog (margin: auto у
+   картки замість align-items: center, щоб верх не обрізався), а
+   overscroll-behavior не пускає прокрутку на сторінку під модалкою. */
+dialog.raid-modal {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 1rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+dialog.raid-modal:not([open]) {
+  display: none;
+}
+
+dialog.raid-modal::backdrop {
+  background: transparent;
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+/* Затемнення лишається нашим div (клік по ньому закриває модалку), але
+   fixed - щоб не прокручувалось разом із довгою карткою. */
+dialog.raid-modal > .raid-modal-backdrop {
+  position: fixed;
+}
+
+dialog.raid-modal > .raid-modal-box {
+  margin: auto;
+}
+
 .raid-modal-backdrop {
   position: absolute;
   inset: 0;

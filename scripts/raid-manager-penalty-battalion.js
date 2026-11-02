@@ -106,11 +106,18 @@ function setupNameAutocomplete(inputEl, listEl) {
     listEl.classList.add('is-open');
   }
 
+  // click, а не focus: showModal() сам ставить фокус у це поле, і список
+  // відкривався б одразу, перекриваючи кнопки форми.
   inputEl.addEventListener('input', openList);
-  inputEl.addEventListener('focus', openList);
+  inputEl.addEventListener('click', openList);
   inputEl.addEventListener('blur', () => setTimeout(closeList, 100));
   inputEl.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeList();
+    // Відкритий список закриваємо першим Escape, не чіпаючи модалку
+    // (preventDefault скасовує закриття <dialog> цим натисканням).
+    if (event.key === 'Escape' && listEl.classList.contains('is-open')) {
+      event.preventDefault();
+      closeList();
+    }
   });
 }
 
@@ -186,26 +193,29 @@ function showConfirm(title, text, action) {
   confirmModalTitle.textContent = title;
   confirmModalText.textContent = text;
   confirmAction = action;
-  confirmModal.hidden = false;
+  openModal(confirmModal);
 }
 
 function hideConfirm() {
-  confirmModal.hidden = true;
+  closeModal(confirmModal);
   confirmAction = null;
 }
 
 confirmModalConfirmBtn.addEventListener('click', async () => {
   if (!confirmAction) return;
   confirmModalConfirmBtn.disabled = true;
+  setModalBusy(confirmModal, true);
   try {
     await confirmAction();
   } finally {
     confirmModalConfirmBtn.disabled = false;
+    setModalBusy(confirmModal, false);
     hideConfirm();
   }
 });
 confirmModalCancelBtn.addEventListener('click', hideConfirm);
 confirmModalBackdrop.addEventListener('click', hideConfirm);
+onModalCancel(confirmModal, hideConfirm);
 
 // ---- Відкладені штрафи ----
 
@@ -395,22 +405,26 @@ function openAddPenaltyModal(playerName = '', instance = null) {
   penaltyInstanceLabel.hidden = Boolean(instance);
   penaltyInstanceToggle.hidden = Boolean(instance);
   fillPenaltyTemplatesForInstance();
-  addPenaltyModal.hidden = false;
+  openModal(addPenaltyModal);
+  // Ім'я вже підставлене з картки — одразу до вибору штрафу.
+  if (playerName) penaltyTemplateSelect.focus();
 }
 
 function closeAddPenaltyModal() {
-  addPenaltyModal.hidden = true;
+  closeModal(addPenaltyModal);
 }
 
 addPenaltyOpenBtn.addEventListener('click', () => openAddPenaltyModal());
 addPenaltyCancelBtn.addEventListener('click', closeAddPenaltyModal);
 addPenaltyModalBackdrop.addEventListener('click', closeAddPenaltyModal);
+onModalCancel(addPenaltyModal, closeAddPenaltyModal);
 
 addPenaltyForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   const submitBtn = addPenaltyForm.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
+  setModalBusy(addPenaltyModal, true);
 
   try {
     const body = {
@@ -428,6 +442,7 @@ addPenaltyForm.addEventListener('submit', async (event) => {
     showMessageModal(`Не вдалося додати запис: ${err.message}`);
   } finally {
     submitBtn.disabled = false;
+    setModalBusy(addPenaltyModal, false);
   }
 });
 
@@ -543,20 +558,22 @@ function openTemplateModal(template = null) {
   setToggleValue(templateTypeToggle, templateTypeInput, 'type', template?.penalty_type || 'roll');
   templateValueInput.value = template ? String(template.value) : '';
   applyTemplateValueLimits();
-  templateModal.hidden = false;
+  openModal(templateModal);
 }
 
 function closeTemplateModal() {
-  templateModal.hidden = true;
+  closeModal(templateModal);
 }
 
 addTemplateOpenBtn.addEventListener('click', () => openTemplateModal());
 templateCancelBtn.addEventListener('click', closeTemplateModal);
 templateModalBackdrop.addEventListener('click', closeTemplateModal);
+onModalCancel(templateModal, closeTemplateModal);
 
 templateForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   templateSubmitBtn.disabled = true;
+  setModalBusy(templateModal, true);
 
   try {
     const body = {
@@ -575,6 +592,7 @@ templateForm.addEventListener('submit', async (event) => {
     showMessageModal(`Не вдалося зберегти шаблон: ${err.message}`);
   } finally {
     templateSubmitBtn.disabled = false;
+    setModalBusy(templateModal, false);
   }
 });
 

@@ -11,8 +11,17 @@
 // джерелом тексту в обох випадках.
 const btnTooltipEl = document.getElementById('raidBtnTooltip');
 
+// Модалка-<dialog> малюється в top layer поверх усього документа, тож тултіп,
+// що лежить у <body>, під нею не видно. На час показу переносимо його в
+// модалку, де стоїть елемент (position: fixed лишається відносно вікна).
+function moveTooltipNear(tooltipEl, anchorEl) {
+  const host = anchorEl.closest('dialog[open]') || document.body;
+  if (tooltipEl.parentElement !== host) host.appendChild(tooltipEl);
+}
+
 function showBtnTooltip(el) {
   if (!btnTooltipEl) return;
+  moveTooltipNear(btnTooltipEl, el);
   btnTooltipEl.textContent = el.getAttribute('aria-label') || '';
   btnTooltipEl.hidden = false;
   const rect = el.getBoundingClientRect();
@@ -365,6 +374,46 @@ function applyCharacterAliases(records, aliasMap) {
   return records;
 }
 
+// Модалки .raid-modal переводимо на <dialog> + showModal(): браузер сам
+// робить сторінку позаду недоступною, тримає фокус усередині, закриває по
+// Escape і повертає фокус на кнопку, що відкрила. Поки перехід не завершено,
+// хелпери розуміють і старі <div hidden>-модалки.
+function openModal(modal) {
+  if (modal instanceof HTMLDialogElement) {
+    if (!modal.open) modal.showModal();
+  } else {
+    modal.hidden = false;
+  }
+}
+
+function closeModal(modal) {
+  if (modal instanceof HTMLDialogElement) {
+    modal.close();
+  } else {
+    modal.hidden = true;
+  }
+}
+
+function isModalOpen(modal) {
+  return modal instanceof HTMLDialogElement ? modal.open : !modal.hidden;
+}
+
+// Escape на <dialog> веде через ту саму функцію, що й "Скасувати"/хрестик,
+// щоб стан форми чи підтвердження скидався однаково. Поки триває запит
+// (setModalBusy), Escape ігноруємо — модалка не зникає посеред дії.
+function onModalCancel(modal, handler) {
+  modal.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    if (modal.getAttribute('aria-busy') === 'true') return;
+    handler();
+  });
+}
+
+function setModalBusy(modal, busy) {
+  if (busy) modal.setAttribute('aria-busy', 'true');
+  else modal.removeAttribute('aria-busy');
+}
+
 // Попап "Інфо" біля заголовка сторінки (черги на уламки й на посилення):
 // короткий опис інструмента живе тут, а не під заголовком, щоб не займати
 // місце на сторінці. Відкривається кнопкою, закривається хрестиком, кліком
@@ -375,15 +424,19 @@ function bindInfoModal() {
   if (!btn || !modal) return;
 
   const close = () => {
-    modal.hidden = true;
+    closeModal(modal);
     btn.focus();
   };
-  btn.addEventListener('click', () => { modal.hidden = false; });
+  btn.addEventListener('click', () => openModal(modal));
   document.getElementById('infoModalCloseBtn').addEventListener('click', close);
   document.getElementById('infoModalBackdrop').addEventListener('click', close);
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !modal.hidden) close();
-  });
+  if (modal instanceof HTMLDialogElement) {
+    onModalCancel(modal, close);
+  } else {
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isModalOpen(modal)) close();
+    });
+  }
 }
 
 bindInfoModal();
@@ -395,32 +448,33 @@ let messageModalEl = null;
 
 function showMessageModal(text, title = 'Повідомлення') {
   if (!messageModalEl) {
-    messageModalEl = document.createElement('div');
+    // role="alertdialog" на самому <dialog> дозволений і точніший за
+    // вбудований role="dialog": це повідомлення, що вимагає реакції.
+    messageModalEl = document.createElement('dialog');
     messageModalEl.className = 'raid-modal';
-    messageModalEl.hidden = true;
+    messageModalEl.setAttribute('role', 'alertdialog');
+    messageModalEl.setAttribute('aria-labelledby', 'messageModalTitle');
+    messageModalEl.setAttribute('aria-describedby', 'messageModalText');
     messageModalEl.innerHTML = `
       <div class="raid-modal-backdrop"></div>
-      <div class="raid-modal-box" role="alertdialog" aria-modal="true">
+      <div class="raid-modal-box">
         <button type="button" class="raid-modal-close" aria-label="Закрити">
           <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/></svg>
         </button>
-        <h3 class="raid-modal-title"></h3>
-        <p class="raid-modal-text"></p>
+        <h3 class="raid-modal-title" id="messageModalTitle"></h3>
+        <p class="raid-modal-text" id="messageModalText"></p>
         <div class="raid-modal-actions">
           <button type="button" class="compare-btn">OK</button>
         </div>
       </div>`;
-    const close = () => { messageModalEl.hidden = true; };
+    const close = () => closeModal(messageModalEl);
     messageModalEl.querySelector('.raid-modal-backdrop').addEventListener('click', close);
     messageModalEl.querySelector('.raid-modal-close').addEventListener('click', close);
     messageModalEl.querySelector('.compare-btn').addEventListener('click', close);
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !messageModalEl.hidden) close();
-    });
     document.body.appendChild(messageModalEl);
   }
   messageModalEl.querySelector('.raid-modal-title').textContent = title;
   messageModalEl.querySelector('.raid-modal-text').textContent = text;
-  messageModalEl.hidden = false;
+  openModal(messageModalEl);
   messageModalEl.querySelector('.compare-btn').focus();
 }
