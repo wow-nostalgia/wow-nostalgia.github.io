@@ -1,13 +1,10 @@
 const statusEl = document.getElementById('analyticsStatus');
 const lastUpdatedText = document.getElementById('lastUpdatedText');
-const bossSumOverTimeSelect = document.getElementById('bossSumOverTimeSelect');
-const bossSumOverTimeSplineSelect = document.getElementById('bossSumOverTimeSplineSelect');
-const bossSumDayFilter = document.getElementById('bossSumDayFilter');
-const bossDurationOverTimeSelect = document.getElementById('bossDurationOverTimeSelect');
-const bossDurationOverTimeSplineSelect = document.getElementById('bossDurationOverTimeSplineSelect');
-const bossDurationDayFilter = document.getElementById('bossDurationDayFilter');
-const bossSumYearSelect = document.getElementById('bossSumYearSelect');
-const bossDurationYearSelect = document.getElementById('bossDurationYearSelect');
+// Спільні фільтри картки "Сумарний DPS і час бою" — діють на обидва графіки.
+const bossOverTimeSelect = document.getElementById('bossOverTimeSelect');
+const bossOverTimeSplineSelect = document.getElementById('bossOverTimeSplineSelect');
+const bossOverTimeDayFilter = document.getElementById('bossOverTimeDayFilter');
+const bossOverTimeYearSelect = document.getElementById('bossOverTimeYearSelect');
 
 const ROLE_BY_SPEC = {
   Blood: 'Tank',
@@ -736,7 +733,7 @@ function dayOfWeek(isoDate) {
 }
 
 function getSelectedDays() {
-  return [...bossSumDayFilter.querySelectorAll('input:checked')].map((cb) => Number(cb.value));
+  return [...bossOverTimeDayFilter.querySelectorAll('input:checked')].map((cb) => Number(cb.value));
 }
 
 function sumDps(record) {
@@ -1059,10 +1056,7 @@ function renderBossMetricMultiDayChart({
   });
 }
 
-function renderBossSumOverTimeChart(allPersonalStats, boss) {
-  const personalStats = filterByYear(allPersonalStats, bossSumYearSelect.value);
-  const selectedDays = getSelectedDays();
-
+function renderBossSumOverTimeChart(personalStats, boss, selectedDays, splineMode) {
   if (selectedDays.length <= 1) {
     let points;
     if (selectedDays.length === 0) {
@@ -1074,7 +1068,7 @@ function renderBossSumOverTimeChart(allPersonalStats, boss) {
     renderBossMetricOverTimeChart({
       canvasId: 'chartBossSumOverTime',
       points,
-      splineMode: bossSumOverTimeSplineSelect.value,
+      splineMode,
       datasetLabel: `Сумарний DPS — ${translateBoss(boss)}`,
       yLabel: 'Сумарний DPS',
       showBestResult: true
@@ -1084,17 +1078,14 @@ function renderBossSumOverTimeChart(allPersonalStats, boss) {
       canvasId: 'chartBossSumOverTime',
       byDay: computeBossSumByDay(personalStats, boss),
       selectedDays,
-      splineMode: bossSumOverTimeSplineSelect.value,
+      splineMode,
       yLabel: 'Сумарний DPS',
       showBestResult: true
     });
   }
 }
 
-function renderBossDurationOverTimeChart(allPersonalStats, boss) {
-  const personalStats = filterByYear(allPersonalStats, bossDurationYearSelect.value);
-  const selectedDays = [...bossDurationDayFilter.querySelectorAll('input:checked')].map((cb) => Number(cb.value));
-  const splineMode = bossDurationOverTimeSplineSelect.value;
+function renderBossDurationOverTimeChart(personalStats, boss, selectedDays, splineMode) {
 
   if (selectedDays.length <= 1) {
     let points;
@@ -1130,6 +1121,16 @@ function renderBossDurationOverTimeChart(allPersonalStats, boss) {
       bestIconPosition: 'below'
     });
   }
+}
+
+function renderBossOverTimeCharts(allPersonalStats) {
+  const personalStats = filterByYear(allPersonalStats, bossOverTimeYearSelect.value);
+  const boss = bossOverTimeSelect.value;
+  const selectedDays = getSelectedDays();
+  const splineMode = bossOverTimeSplineSelect.value;
+
+  renderBossSumOverTimeChart(personalStats, boss, selectedDays, splineMode);
+  renderBossDurationOverTimeChart(personalStats, boss, selectedDays, splineMode);
 }
 
 async function init() {
@@ -1189,52 +1190,16 @@ async function init() {
     };
 
     const statsDates = personalStats.map((record) => record.date);
-    populateYearSelect(bossSumYearSelect, statsDates);
-    populateYearSelect(bossDurationYearSelect, statsDates);
-
-    populateBossSelect(bossSumOverTimeSelect);
+    populateYearSelect(bossOverTimeYearSelect, statsDates);
+    populateBossSelect(bossOverTimeSelect);
 
     if (bossesWithHistory.length) {
-      renderBossSumOverTimeChart(personalStats, bossesWithHistory[0]);
+      renderBossOverTimeCharts(personalStats);
     }
 
-    bossSumOverTimeSelect.addEventListener('change', () => {
-      renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
-    });
-
-    bossSumOverTimeSplineSelect.addEventListener('change', () => {
-      renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
-    });
-
-    bossSumDayFilter.addEventListener('change', () => {
-      renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
-    });
-
-    bossSumYearSelect.addEventListener('change', () => {
-      renderBossSumOverTimeChart(personalStats, bossSumOverTimeSelect.value);
-    });
-
-    populateBossSelect(bossDurationOverTimeSelect);
-
-    if (bossesWithHistory.length) {
-      renderBossDurationOverTimeChart(personalStats, bossesWithHistory[0]);
+    for (const control of [bossOverTimeSelect, bossOverTimeSplineSelect, bossOverTimeDayFilter, bossOverTimeYearSelect]) {
+      control.addEventListener('change', () => renderBossOverTimeCharts(personalStats));
     }
-
-    bossDurationOverTimeSelect.addEventListener('change', () => {
-      renderBossDurationOverTimeChart(personalStats, bossDurationOverTimeSelect.value);
-    });
-
-    bossDurationOverTimeSplineSelect.addEventListener('change', () => {
-      renderBossDurationOverTimeChart(personalStats, bossDurationOverTimeSelect.value);
-    });
-
-    bossDurationDayFilter.addEventListener('change', () => {
-      renderBossDurationOverTimeChart(personalStats, bossDurationOverTimeSelect.value);
-    });
-
-    bossDurationYearSelect.addEventListener('change', () => {
-      renderBossDurationOverTimeChart(personalStats, bossDurationOverTimeSelect.value);
-    });
 
     renderAvgScoreChart('chartAvgScoreGuild', guildDpsRows);
     renderAvgScoreChart('chartAvgScoreLegion', dpsRows.filter((row) => !guildNames.has(row.name)));

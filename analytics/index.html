@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Гільдійська аналітика</title>
-  <link rel="stylesheet" href="../style.css?v=180">
+  <link rel="stylesheet" href="../style.css?v=181">
   <script src="/scripts/background.js?v=2"></script>
 </head>
 
@@ -72,14 +72,14 @@
       <div class="analytics-grid">
         <div class="analytics-card analytics-card--wide analytics-card--medium">
           <div class="analytics-card-header">
-            <h2>Сумарний DPS рейду</h2>
+            <h2>Сумарний DPS і час бою</h2>
             <span class="analytics-scope-chip">Всі</span>
           </div>
-          <p class="analytics-card-caption">Сума DPS усіх гравців рейду (дамаг-спеки, танки і хіли) по обраному босу ЦЛК, по датах рейдів.</p>
+          <p class="analytics-card-caption">По обраному босу ЦЛК, по датах рейдів. Фільтри діють на обидва графіки.</p>
           <div class="ranking-controls">
-            <select id="bossSumOverTimeSelect" aria-label="Бос"></select>
+            <select id="bossOverTimeSelect" aria-label="Бос"></select>
 
-            <div class="analytics-day-filter" id="bossSumDayFilter">
+            <div class="analytics-day-filter" id="bossOverTimeDayFilter">
               <label class="analytics-day-check"><input type="checkbox" value="1"><span>ПН</span></label>
               <label class="analytics-day-check"><input type="checkbox" value="2"><span>ВТ</span></label>
               <label class="analytics-day-check"><input type="checkbox" value="3"><span>СР</span></label>
@@ -89,11 +89,11 @@
               <label class="analytics-day-check"><input type="checkbox" value="0"><span>НД</span></label>
             </div>
 
-            <select id="bossSumYearSelect" class="analytics-year-select" aria-label="Період"></select>
+            <select id="bossOverTimeYearSelect" class="analytics-year-select" aria-label="Період"></select>
 
             <span class="analytics-curve-control">
-              <label for="bossSumOverTimeSplineSelect">Крива</label>
-              <select id="bossSumOverTimeSplineSelect">
+              <label for="bossOverTimeSplineSelect">Крива</label>
+              <select id="bossOverTimeSplineSelect">
                 <option value="smooth">Плавна</option>
                 <option value="smoothNoPoints" selected>Плавна без крапок</option>
                 <option value="linearNoPoints">Пряма без крапок</option>
@@ -101,45 +101,22 @@
               </select>
             </span>
           </div>
-          <div class="analytics-chart-wrap">
-            <canvas id="chartBossSumOverTime"></canvas>
-          </div>
-        </div>
 
-        <div class="analytics-card analytics-card--wide analytics-card--medium">
-          <div class="analytics-card-header">
-            <h2>Час бою</h2>
-            <span class="analytics-scope-chip">Всі</span>
-          </div>
-          <p class="analytics-card-caption">Тривалість вбивчого пулу по обраному босу ЦЛК, по датах рейдів.</p>
-          <div class="ranking-controls">
-            <select id="bossDurationOverTimeSelect" aria-label="Бос"></select>
-
-            <div class="analytics-day-filter" id="bossDurationDayFilter">
-              <label class="analytics-day-check"><input type="checkbox" value="1"><span>ПН</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="2"><span>ВТ</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="3"><span>СР</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="4"><span>ЧТ</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="5"><span>ПТ</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="6"><span>СБ</span></label>
-              <label class="analytics-day-check"><input type="checkbox" value="0"><span>НД</span></label>
+          <section class="analytics-chart-section">
+            <h3>Сумарний DPS рейду</h3>
+            <p class="analytics-card-caption">Сума DPS усіх гравців рейду (дамаг-спеки, танки і хіли).</p>
+            <div class="analytics-chart-wrap">
+              <canvas id="chartBossSumOverTime"></canvas>
             </div>
+          </section>
 
-            <select id="bossDurationYearSelect" class="analytics-year-select" aria-label="Період"></select>
-
-            <span class="analytics-curve-control">
-              <label for="bossDurationOverTimeSplineSelect">Крива</label>
-              <select id="bossDurationOverTimeSplineSelect">
-                <option value="smooth">Плавна</option>
-                <option value="smoothNoPoints" selected>Плавна без крапок</option>
-                <option value="linearNoPoints">Пряма без крапок</option>
-                <option value="trend">Лінія тренду</option>
-              </select>
-            </span>
-          </div>
-          <div class="analytics-chart-wrap">
-            <canvas id="chartBossDurationOverTime"></canvas>
-          </div>
+          <section class="analytics-chart-section">
+            <h3>Час бою</h3>
+            <p class="analytics-card-caption">Тривалість вбивчого пулу.</p>
+            <div class="analytics-chart-wrap">
+              <canvas id="chartBossDurationOverTime"></canvas>
+            </div>
+          </section>
         </div>
 
         <div class="analytics-card analytics-card--wide analytics-card--medium">
@@ -315,7 +292,7 @@
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=20"></script>
   <script src="../scripts/name-translations.js"></script>
-  <script src="../scripts/analytics.js?v=24"></script>
+  <script src="../scripts/analytics.js?v=25"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
