@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейди — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=177">
+  <link rel="stylesheet" href="../../style.css?v=178">
   <script src="/scripts/background.js?v=2"></script>
 </head>
 
@@ -106,10 +106,10 @@
     </div>
   </div>
 
-  <div id="createRaidModal" class="raid-modal" hidden>
+  <dialog id="createRaidModal" class="raid-modal" aria-labelledby="createRaidModalTitle">
     <div class="raid-modal-backdrop" id="createRaidModalBackdrop"></div>
     <div class="raid-modal-box">
-      <h3 class="raid-modal-title">Новий рейд</h3>
+      <h3 class="raid-modal-title" id="createRaidModalTitle">Новий рейд</h3>
 
       <ul class="raid-modal-text">
         <li>Софт-резерв предметів для рейдів — кожен гравець резервує до 3
@@ -180,25 +180,25 @@
         </div>
       </form>
     </div>
-  </div>
+  </dialog>
 
-  <div id="deleteRaidOverlay" class="archive-confirm-overlay" hidden>
+  <dialog id="deleteRaidOverlay" class="archive-confirm-overlay" aria-labelledby="deleteRaidText" aria-describedby="deleteRaidTitle">
     <div class="archive-confirm-dialog">
-      <p class="archive-confirm-text">Видалити рейд?</p>
+      <p class="archive-confirm-text" id="deleteRaidText">Видалити рейд?</p>
       <p id="deleteRaidTitle" class="archive-confirm-raid-title"></p>
       <div class="archive-confirm-actions">
         <button type="button" id="deleteRaidConfirmBtn" class="link-button-std link-button-std--danger">Так, видалити</button>
         <button type="button" id="deleteRaidCancelBtn" class="link-button-std">Ні, скасувати</button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <script src="../../scripts/nav.js?v=2"></script>
   <script src="../../scripts/auth-shared.js?v=14"></script>
-  <script src="../../scripts/ui-shared.js?v=17"></script>
+  <script src="../../scripts/ui-shared.js?v=18"></script>
   <script src="../../scripts/raid-manager-shared.js?v=10"></script>
   <script src="../../scripts/name-translations.js?v=2"></script>
-  <script src="../../scripts/raid-manager-archive.js?v=17"></script>
+  <script src="../../scripts/raid-manager-archive.js?v=18"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

@@ -374,28 +374,19 @@ function applyCharacterAliases(records, aliasMap) {
   return records;
 }
 
-// Модалки .raid-modal переводимо на <dialog> + showModal(): браузер сам
-// робить сторінку позаду недоступною, тримає фокус усередині, закриває по
-// Escape і повертає фокус на кнопку, що відкрила. Поки перехід не завершено,
-// хелпери розуміють і старі <div hidden>-модалки.
+// Модалки сайту - <dialog> + showModal(): браузер сам робить сторінку
+// позаду недоступною, тримає фокус усередині, закриває по Escape і повертає
+// фокус на кнопку, що відкрила.
 function openModal(modal) {
-  if (modal instanceof HTMLDialogElement) {
-    if (!modal.open) modal.showModal();
-  } else {
-    modal.hidden = false;
-  }
+  if (!modal.open) modal.showModal();
 }
 
 function closeModal(modal) {
-  if (modal instanceof HTMLDialogElement) {
-    modal.close();
-  } else {
-    modal.hidden = true;
-  }
+  modal.close();
 }
 
 function isModalOpen(modal) {
-  return modal instanceof HTMLDialogElement ? modal.open : !modal.hidden;
+  return modal.open;
 }
 
 // Escape на <dialog> веде через ту саму функцію, що й "Скасувати"/хрестик,
@@ -430,13 +421,7 @@ function bindInfoModal() {
   btn.addEventListener('click', () => openModal(modal));
   document.getElementById('infoModalCloseBtn').addEventListener('click', close);
   document.getElementById('infoModalBackdrop').addEventListener('click', close);
-  if (modal instanceof HTMLDialogElement) {
-    onModalCancel(modal, close);
-  } else {
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && isModalOpen(modal)) close();
-    });
-  }
+  onModalCancel(modal, close);
 }
 
 bindInfoModal();

@@ -121,16 +121,18 @@ let pendingDeleteId = null;
 function openConfirm(raidId, raidTitle) {
   pendingDeleteId = raidId;
   deleteRaidTitle.textContent = `«${raidTitle}»`;
-  deleteRaidOverlay.hidden = false;
+  openModal(deleteRaidOverlay);
 }
 
 function closeConfirm() {
   pendingDeleteId = null;
-  deleteRaidOverlay.hidden = true;
+  setModalBusy(deleteRaidOverlay, false);
+  closeModal(deleteRaidOverlay);
   deleteRaidConfirmBtn.disabled = false;
 }
 
 deleteRaidCancelBtn.addEventListener('click', closeConfirm);
+onModalCancel(deleteRaidOverlay, closeConfirm);
 
 deleteRaidOverlay.addEventListener('click', (e) => {
   if (e.target === deleteRaidOverlay) closeConfirm();
@@ -139,6 +141,7 @@ deleteRaidOverlay.addEventListener('click', (e) => {
 deleteRaidConfirmBtn.addEventListener('click', async () => {
   if (!pendingDeleteId) return;
   deleteRaidConfirmBtn.disabled = true;
+  setModalBusy(deleteRaidOverlay, true);
   try {
     await apiCall('DELETE', `/admin/raids/${encodeURIComponent(pendingDeleteId)}`, { token: getSessionToken() });
     closeConfirm();
@@ -262,22 +265,24 @@ async function openCreateRaidModal() {
   await loadTodayRaids();
   updateTitleIfAuto();
   updateMountSoftsVisibility();
-  createRaidModal.hidden = false;
+  openModal(createRaidModal);
 }
 
 function closeCreateRaidModal() {
-  createRaidModal.hidden = true;
+  closeModal(createRaidModal);
 }
 
 createRaidOpenBtn.addEventListener('click', openCreateRaidModal);
 createRaidCancelBtn.addEventListener('click', closeCreateRaidModal);
 createRaidModalBackdrop.addEventListener('click', closeCreateRaidModal);
+onModalCancel(createRaidModal, closeCreateRaidModal);
 
 createForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   const submitBtn = createForm.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
+  setModalBusy(createRaidModal, true);
 
   try {
     const body = {
@@ -297,6 +302,7 @@ createForm.addEventListener('submit', async (event) => {
     console.error(err);
     showMessageModal(`Не вдалося створити рейд: ${err.message}`);
     submitBtn.disabled = false;
+    setModalBusy(createRaidModal, false);
   }
 });
 

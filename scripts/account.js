@@ -199,12 +199,13 @@ function renderCharactersList(characters) {
 function openDeleteCharacterModal(name) {
   deleteCharacterModalText.textContent = `Видалити персонажа "${name}"?`;
   deleteCharacterModal._characterName = name;
-  deleteCharacterModal.hidden = false;
+  openModal(deleteCharacterModal);
 }
 
 deleteCharacterConfirmBtn.addEventListener('click', async () => {
   const name = deleteCharacterModal._characterName;
   deleteCharacterConfirmBtn.disabled = true;
+  setModalBusy(deleteCharacterModal, true);
   try {
     const token = getSessionToken();
     const res = await fetch(`${AUTH_API_BASE}/auth/me/characters/${encodeURIComponent(name)}`, {
@@ -213,16 +214,18 @@ deleteCharacterConfirmBtn.addEventListener('click', async () => {
     });
     if (!res.ok) throw new Error(await readErrorMessage(res));
     renderCharactersList(await res.json());
-    deleteCharacterModal.hidden = true;
+    closeModal(deleteCharacterModal);
   } catch (err) {
     setAccountStatus(`Помилка: ${err.message}`);
   } finally {
     deleteCharacterConfirmBtn.disabled = false;
+    setModalBusy(deleteCharacterModal, false);
   }
 });
 
-deleteCharacterCancelBtn.addEventListener('click', () => { deleteCharacterModal.hidden = true; });
-deleteCharacterModalBackdrop.addEventListener('click', () => { deleteCharacterModal.hidden = true; });
+deleteCharacterCancelBtn.addEventListener('click', () => { closeModal(deleteCharacterModal); });
+deleteCharacterModalBackdrop.addEventListener('click', () => { closeModal(deleteCharacterModal); });
+onModalCancel(deleteCharacterModal, () => closeModal(deleteCharacterModal));
 
 addCharacterForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -243,7 +246,7 @@ addCharacterForm.addEventListener('submit', async (event) => {
     characterNameInput.value = '';
     setAccountStatus('');
     // Перший персонаж - підказуємо, що далі йти в рейди.
-    if (wasEmpty && charactersCount > 0) firstCharacterModal.hidden = false;
+    if (wasEmpty && charactersCount > 0) openModal(firstCharacterModal);
   } catch (err) {
     setAccountStatus(`Помилка: ${err.message}`);
   }
@@ -427,11 +430,8 @@ async function initBackgrounds(user) {
   renderBackgroundGrid();
 }
 
-firstCharacterCloseBtn.addEventListener('click', () => { firstCharacterModal.hidden = true; });
-firstCharacterModalBackdrop.addEventListener('click', () => { firstCharacterModal.hidden = true; });
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') firstCharacterModal.hidden = true;
-});
+firstCharacterCloseBtn.addEventListener('click', () => { closeModal(firstCharacterModal); });
+firstCharacterModalBackdrop.addEventListener('click', () => { closeModal(firstCharacterModal); });
 
 adminRemoveCharacterForm.addEventListener('submit', async (event) => {
   event.preventDefault();

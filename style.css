@@ -2834,21 +2834,11 @@ body.raid-manager-page #templateModal .raid-modal-box {
   width: min(90vw, 32rem);
 }
 
-/* Форма довша за інші модалки - на невисоких вікнах align-items:center
-   (стандарт .raid-modal) підняв би картку під sticky-хедер, який має
-   вищий z-index (--z-sticky > --z-modal, так у всього сайту) і
-   перекрив би заголовок картки. Тому цей попап - виняток: якориться
-   зверху з відступом під хедер, а не по центру, і сам скролиться,
-   якщо однаково не влазить. */
-body.raid-manager-page #createRaidModal {
-  align-items: flex-start;
-  padding: 4.5rem 1rem 2rem;
-}
-
+/* Форма довша за інші модалки. Sticky-хедер її більше не перекриває
+   (<dialog> у top layer), а якщо картка не влазить у вікно - прокручується
+   сам dialog (див. dialog.raid-modal). */
 body.raid-manager-page #createRaidModal .raid-modal-box {
   width: min(90vw, 30rem);
-  max-height: calc(100vh - 6.5rem);
-  overflow-y: auto;
 }
 
 body.raid-manager-page .archive-confirm-overlay {
@@ -2861,8 +2851,31 @@ body.raid-manager-page .archive-confirm-overlay {
   justify-content: center;
 }
 
-body.raid-manager-page .archive-confirm-overlay:not([hidden]) {
+/* Підтвердження видалення рейду - теж <dialog> (showModal), але зі своїм
+   виглядом: затемнення дає сам dialog на весь екран, тож UA-стилі
+   скидаємо, а ::backdrop робимо прозорим. Блокування прокрутки сторінки -
+   як у dialog.raid-modal. */
+body.raid-manager-page dialog.archive-confirm-overlay {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 1rem;
+  border: none;
+  color: inherit;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+body.raid-manager-page dialog.archive-confirm-overlay[open] {
   display: flex;
+}
+
+body.raid-manager-page dialog.archive-confirm-overlay::backdrop {
+  background: transparent;
+  overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 body.raid-manager-page .archive-confirm-dialog {
@@ -5209,10 +5222,6 @@ body.raid-manager-detail-page .raid-soft-form .raid-penalty-notice {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.raid-modal[hidden] {
-  display: none;
 }
 
 /* .raid-modal на <dialog> (showModal): сам dialog - прозорий шар на весь

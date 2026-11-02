@@ -189,26 +189,29 @@ function showConfirmModal({ title, text, confirmLabel, cancelLabel = 'Скасу
   confirmModalConfirmBtn.textContent = confirmLabel;
   confirmModalCancelBtn.textContent = cancelLabel;
   confirmModalAction = onConfirm;
-  confirmModal.hidden = false;
+  openModal(confirmModal);
 }
 
 function hideConfirmModal() {
-  confirmModal.hidden = true;
+  closeModal(confirmModal);
   confirmModalAction = null;
 }
 
 confirmModalConfirmBtn.addEventListener('click', async () => {
   if (!confirmModalAction) return;
   confirmModalConfirmBtn.disabled = true;
+  setModalBusy(confirmModal, true);
   try {
     await confirmModalAction();
   } finally {
     confirmModalConfirmBtn.disabled = false;
+    setModalBusy(confirmModal, false);
   }
   hideConfirmModal();
 });
 confirmModalCancelBtn.addEventListener('click', hideConfirmModal);
 confirmModalBackdrop.addEventListener('click', hideConfirmModal);
+onModalCancel(confirmModal, hideConfirmModal);
 
 // ---- Дані ----
 
@@ -330,7 +333,7 @@ async function refreshAll() {
 // Не перемальовуємо сторінку під руками користувача: відкрита модалка,
 // перетягування, фокус у полі чи дропдауні, перейменування посилення.
 function isUserBusy() {
-  if (!confirmModal.hidden || !moveDayModal.hidden || !addOtherModal.hidden || isDragging || renamingTypeId !== null) return true;
+  if (isModalOpen(confirmModal) || isModalOpen(moveDayModal) || isModalOpen(addOtherModal) || isDragging || renamingTypeId !== null) return true;
   const focused = document.activeElement;
   return Boolean(focused && queueContent.contains(focused) && /^(INPUT|SELECT|TEXTAREA)$/.test(focused.tagName));
 }
@@ -787,12 +790,12 @@ function openAddOtherModal(day) {
   // зазвичай записує кількох гравців на одне й те саме.
   fillSelect(addOtherBoss, activeBosses().map((b) => ({ value: b.boss, label: bossLabel(b.boss) })), signupState.boss);
   fillSelect(addOtherType, activeTypes().map((t) => ({ value: String(t.id), label: translateBuffType(t.label) })), signupState.buffTypeId);
-  addOtherModal.hidden = false;
+  openModal(addOtherModal);
   setTimeout(() => addOtherName.focus(), 0);
 }
 
 function hideAddOtherModal() {
-  addOtherModal.hidden = true;
+  closeModal(addOtherModal);
   addOtherModal._dayId = null;
   addOtherNameList.innerHTML = '';
   addOtherNameList.classList.remove('is-open');
@@ -809,6 +812,7 @@ addOtherModalForm.addEventListener('submit', async (event) => {
   }
 
   addOtherModalConfirmBtn.disabled = true;
+  setModalBusy(addOtherModal, true);
   try {
     await apiRequest('POST', '/entries', {
       dayId: addOtherModal._dayId,
@@ -823,10 +827,12 @@ addOtherModalForm.addEventListener('submit', async (event) => {
     addOtherModalError.textContent = `Помилка: ${err.message}`;
   } finally {
     addOtherModalConfirmBtn.disabled = false;
+    setModalBusy(addOtherModal, false);
   }
 });
 addOtherModalCancelBtn.addEventListener('click', hideAddOtherModal);
 addOtherModalBackdrop.addEventListener('click', hideAddOtherModal);
+onModalCancel(addOtherModal, hideAddOtherModal);
 addOtherName.addEventListener('input', () => { addOtherModalError.textContent = ''; });
 
 function setupNameAutocomplete(inputEl, listEl, names) {
@@ -854,6 +860,14 @@ function setupNameAutocomplete(inputEl, listEl, names) {
     listEl.classList.add('is-open');
   });
   inputEl.addEventListener('blur', () => setTimeout(closeList, 150));
+  // Відкритий список закриваємо першим Escape, не чіпаючи модалку
+  // (preventDefault скасовує закриття <dialog> цим натисканням).
+  inputEl.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && listEl.classList.contains('is-open')) {
+      event.preventDefault();
+      closeList();
+    }
+  });
 }
 
 // ---- Перетягування (лише офіцери) ----
@@ -1444,11 +1458,11 @@ function openMoveDayModal(entry, day) {
   });
   moveDayModalText.textContent = 'Персонажа буде перенесено в кінець черги обраного дня.';
   moveDayModal._entry = entry;
-  moveDayModal.hidden = false;
+  openModal(moveDayModal);
 }
 
 function hideMoveDayModal() {
-  moveDayModal.hidden = true;
+  closeModal(moveDayModal);
   moveDayModal._entry = null;
 }
 
@@ -1456,6 +1470,7 @@ moveDayModalConfirmBtn.addEventListener('click', async () => {
   const entry = moveDayModal._entry;
   if (!entry) return;
   moveDayModalConfirmBtn.disabled = true;
+  setModalBusy(moveDayModal, true);
   try {
     await apiRequest('PATCH', `/entries/${entry.id}/day`, { dayId: Number(moveDayModalSelect.value) });
     setQueueStatus('');
@@ -1463,12 +1478,14 @@ moveDayModalConfirmBtn.addEventListener('click', async () => {
     setQueueStatus(`Помилка: ${err.message}`, true);
   } finally {
     moveDayModalConfirmBtn.disabled = false;
+    setModalBusy(moveDayModal, false);
   }
   hideMoveDayModal();
   await refreshAll();
 });
 moveDayModalCancelBtn.addEventListener('click', hideMoveDayModal);
 moveDayModalBackdrop.addEventListener('click', hideMoveDayModal);
+onModalCancel(moveDayModal, hideMoveDayModal);
 
 function deleteEntry(entry) {
   showConfirmModal({

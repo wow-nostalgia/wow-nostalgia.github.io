@@ -112,26 +112,29 @@ function showConfirmModal({ title, text, confirmLabel, onConfirm }) {
   confirmModalText.textContent = text;
   confirmModalConfirmBtn.textContent = confirmLabel;
   confirmModalAction = onConfirm;
-  confirmModal.hidden = false;
+  openModal(confirmModal);
 }
 
 function hideConfirmModal() {
-  confirmModal.hidden = true;
+  closeModal(confirmModal);
   confirmModalAction = null;
 }
 
 confirmModalConfirmBtn.addEventListener('click', async () => {
   if (!confirmModalAction) return;
   confirmModalConfirmBtn.disabled = true;
+  setModalBusy(confirmModal, true);
   try {
     await confirmModalAction();
   } finally {
     confirmModalConfirmBtn.disabled = false;
+    setModalBusy(confirmModal, false);
   }
   hideConfirmModal();
 });
 confirmModalCancelBtn.addEventListener('click', hideConfirmModal);
 confirmModalBackdrop.addEventListener('click', hideConfirmModal);
+onModalCancel(confirmModal, hideConfirmModal);
 
 // ---- Дані ----
 
@@ -656,12 +659,12 @@ function openAddOtherModal(day, resourceType) {
   addOtherModalError.textContent = '';
   // Ресурс — той блок, з якого відкрили попап; офіцер може змінити.
   addOtherResource.value = resourceType;
-  addOtherModal.hidden = false;
+  openModal(addOtherModal);
   setTimeout(() => addOtherName.focus(), 0);
 }
 
 function hideAddOtherModal() {
-  addOtherModal.hidden = true;
+  closeModal(addOtherModal);
   addOtherModal._dayId = null;
   addOtherNameList.innerHTML = '';
   addOtherNameList.classList.remove('is-open');
@@ -677,6 +680,7 @@ addOtherModalForm.addEventListener('submit', async (event) => {
   }
 
   addOtherModalConfirmBtn.disabled = true;
+  setModalBusy(addOtherModal, true);
   try {
     const res = await fetch(`${AUTH_API_BASE}/shard-queue/entries`, {
       method: 'POST',
@@ -691,10 +695,12 @@ addOtherModalForm.addEventListener('submit', async (event) => {
     addOtherModalError.textContent = `Помилка: ${err.message}`;
   } finally {
     addOtherModalConfirmBtn.disabled = false;
+    setModalBusy(addOtherModal, false);
   }
 });
 addOtherModalCancelBtn.addEventListener('click', hideAddOtherModal);
 addOtherModalBackdrop.addEventListener('click', hideAddOtherModal);
+onModalCancel(addOtherModal, hideAddOtherModal);
 addOtherName.addEventListener('input', () => { addOtherModalError.textContent = ''; });
 
 function setupNameAutocomplete(inputEl, listEl, names) {
@@ -722,6 +728,14 @@ function setupNameAutocomplete(inputEl, listEl, names) {
     listEl.classList.add('is-open');
   });
   inputEl.addEventListener('blur', () => setTimeout(closeList, 150));
+  // Відкритий список закриваємо першим Escape, не чіпаючи модалку
+  // (preventDefault скасовує закриття <dialog> цим натисканням).
+  inputEl.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && listEl.classList.contains('is-open')) {
+      event.preventDefault();
+      closeList();
+    }
+  });
 }
 
 function enableDragReorder(tbody, dayId, resourceType) {
@@ -1033,11 +1047,11 @@ function openMoveDayModal(entry, day) {
     ? ''
     : 'Персонажа буде перенесено в кінець черги обраного дня.';
   moveDayModal._entry = entry;
-  moveDayModal.hidden = false;
+  openModal(moveDayModal);
 }
 
 function hideMoveDayModal() {
-  moveDayModal.hidden = true;
+  closeModal(moveDayModal);
   moveDayModal._entry = null;
 }
 
@@ -1046,15 +1060,18 @@ moveDayModalConfirmBtn.addEventListener('click', async () => {
   if (!entry) return;
   const targetDayId = Number(moveDayModalSelect.value);
   moveDayModalConfirmBtn.disabled = true;
+  setModalBusy(moveDayModal, true);
   try {
     await performMoveEntryDay(entry, targetDayId);
   } finally {
     moveDayModalConfirmBtn.disabled = false;
+    setModalBusy(moveDayModal, false);
   }
   hideMoveDayModal();
 });
 moveDayModalCancelBtn.addEventListener('click', hideMoveDayModal);
 moveDayModalBackdrop.addEventListener('click', hideMoveDayModal);
+onModalCancel(moveDayModal, hideMoveDayModal);
 
 async function performDeleteEntry(entry) {
   try {
