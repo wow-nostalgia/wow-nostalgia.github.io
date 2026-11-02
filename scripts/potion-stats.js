@@ -267,13 +267,13 @@ async function loadPotionStats() {
   try {
     statusEl.textContent = 'Завантаження даних...';
     const [response, honorBoardResponse, playersResponse, ownersResponse, personalStatsResponse, rostersResponse, aliasesResponse] = await Promise.all([
-      fetch('/data/potion-stats.json?t=' + Date.now()),
-      fetch('/data/honor-board.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now()),
+      fetchSiteData('/data/potion-stats.json'),
+      fetchSiteData('/data/honor-board.json'),
+      fetchSiteData('/data/players.json'),
       fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null),
-      fetch('/data/personal-stats.json?t=' + Date.now()).catch(() => null),
-      fetch('/data/raid-rosters.json?t=' + Date.now()).catch(() => null),
-      fetch('/data/character-aliases.json?t=' + Date.now()).catch(() => null)
+      fetchSiteData('/data/personal-stats.json').catch(() => null),
+      fetchSiteData('/data/raid-rosters.json').catch(() => null),
+      fetchSiteData('/data/character-aliases.json').catch(() => null)
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 

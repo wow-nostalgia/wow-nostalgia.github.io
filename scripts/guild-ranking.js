@@ -561,10 +561,10 @@ async function init() {
   try {
     setStatus('Завантаження даних...');
     const [rankingResponse, playersResponse, ownersResponse, honorResponse, primaryResponse] = await Promise.all([
-      fetch('/data/guild-data.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now()),
+      fetchSiteData('/data/guild-data.json'),
+      fetchSiteData('/data/players.json'),
       fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null),
-      fetch('/data/honor-board.json?t=' + Date.now()).catch(() => null),
+      fetchSiteData('/data/honor-board.json').catch(() => null),
       fetch(`${AUTH_API_BASE}/characters/primary`).catch(() => null)
     ]);
 

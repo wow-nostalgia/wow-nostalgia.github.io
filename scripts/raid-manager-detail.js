@@ -839,14 +839,14 @@ function setupUserSearchAutocomplete(inputEl, listEl, onPick) {
 
 async function ensurePotionStatsLoaded() {
   if (potionStatsRaids) return potionStatsRaids;
-  const res = await fetch('/data/potion-stats.json?t=' + Date.now());
+  const res = await fetchSiteData('/data/potion-stats.json');
   potionStatsRaids = filterAndSortPotionRaids(await res.json());
   return potionStatsRaids;
 }
 
 async function ensureRaidRostersLoaded() {
   if (raidRosters) return raidRosters;
-  const res = await fetch('/data/raid-rosters.json?t=' + Date.now());
+  const res = await fetchSiteData('/data/raid-rosters.json');
   raidRosters = buildRosterMap(await res.json());
   return raidRosters;
 }
@@ -859,7 +859,7 @@ async function ensureRaidRostersLoaded() {
 // таблиці, коли він прийде; вкладка "Поти" чекає той самий проміс явно.
 function ensurePersonalStatsLoaded() {
   if (!personalStatsPromise) {
-    personalStatsPromise = fetch('/data/personal-stats.json?t=' + Date.now())
+    personalStatsPromise = fetchSiteData('/data/personal-stats.json')
       .then((res) => res.json())
       .then((personalStats) => {
         personalStatsRecords = personalStats;
@@ -2551,11 +2551,11 @@ async function init() {
   // тож просте оголошення змінних тут вже паралелить мережеві виклики;
   // await нижче лише чекає на вже запущені запити в потрібному порядку.
   const staticDataPromise = Promise.all([
-    fetch('/data/raid-items.json?t=' + Date.now()),
-    fetch('/data/players.json?t=' + Date.now()),
+    fetchSiteData('/data/raid-items.json'),
+    fetchSiteData('/data/players.json'),
     fetch(apiUrl('/characters/owners')).catch(() => null),
-    fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
-    fetch('/data/honor-board.json?t=' + Date.now()).catch(() => null),
+    fetchSiteData('/data/guild-data.json').catch(() => null),
+    fetchSiteData('/data/honor-board.json').catch(() => null),
     loadItemIconData()
   ]);
 

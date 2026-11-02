@@ -857,7 +857,7 @@ async function init() {
   const hashTab = document.querySelector(`.raid-tab[data-tab="${CSS.escape(location.hash.slice(1))}"]`);
   if (hashTab) hashTab.click();
 
-  const playersPromise = fetch('/data/players.json?t=' + Date.now())
+  const playersPromise = fetchSiteData('/data/players.json')
     .then((res) => (res.ok ? res.json() : []))
     .catch(() => []);
   const entriesPromise = apiCall('GET', '/penalty-battalion', { token: getSessionToken() }).catch((err) => {

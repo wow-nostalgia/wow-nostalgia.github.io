@@ -73,10 +73,10 @@ let raidAttendanceByName = new Map();
 async function loadCharacterStatsSources() {
   try {
     const [players, personalStats, guildDataRes, potionStats] = await Promise.all([
-      fetch('/data/players.json?t=' + Date.now()).then((r) => r.json()),
-      fetch('/data/personal-stats.json?t=' + Date.now()).then((r) => r.json()),
-      fetch('/data/guild-data.json?t=' + Date.now()).catch(() => null),
-      fetch('/data/potion-stats.json?t=' + Date.now()).then((r) => r.json())
+      fetchSiteData('/data/players.json').then((r) => r.json()),
+      fetchSiteData('/data/personal-stats.json').then((r) => r.json()),
+      fetchSiteData('/data/guild-data.json').catch(() => null),
+      fetchSiteData('/data/potion-stats.json').then((r) => r.json())
     ]);
     guildMemberNames = new Set(players.map((p) => p.name));
     personalAnalyticsNames = new Set();

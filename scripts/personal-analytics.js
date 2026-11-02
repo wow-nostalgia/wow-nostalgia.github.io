@@ -465,10 +465,10 @@ async function init() {
   try {
     setStatus('Завантаження даних...');
     const [personalResponse, playersResponse, honorResponse, aliasesResponse] = await Promise.all([
-      fetch('/data/personal-stats.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now()),
-      fetch('/data/honor-board.json?t=' + Date.now()),
-      fetch('/data/character-aliases.json?t=' + Date.now()).catch(() => null)
+      fetchSiteData('/data/personal-stats.json'),
+      fetchSiteData('/data/players.json'),
+      fetchSiteData('/data/honor-board.json'),
+      fetchSiteData('/data/character-aliases.json').catch(() => null)
     ]);
 
     if (!personalResponse.ok) throw new Error(`HTTP ${personalResponse.status}`);

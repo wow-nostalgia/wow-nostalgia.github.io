@@ -1140,13 +1140,13 @@ async function init() {
   try {
     setStatus('Завантаження даних...');
     const [guildResponse, playersResponse, potionResponse, healerResponse, personalResponse, ownersResponse, aliasesResponse] = await Promise.all([
-      fetch('/data/guild-data.json?t=' + Date.now()),
-      fetch('/data/players.json?t=' + Date.now()),
-      fetch('/data/potion-stats.json?t=' + Date.now()),
-      fetch('/data/healer-rankings.json?t=' + Date.now()),
-      fetch('/data/personal-stats.json?t=' + Date.now()),
+      fetchSiteData('/data/guild-data.json'),
+      fetchSiteData('/data/players.json'),
+      fetchSiteData('/data/potion-stats.json'),
+      fetchSiteData('/data/healer-rankings.json'),
+      fetchSiteData('/data/personal-stats.json'),
       fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null),
-      fetch('/data/character-aliases.json?t=' + Date.now()).catch(() => null)
+      fetchSiteData('/data/character-aliases.json').catch(() => null)
     ]);
 
     if (!guildResponse.ok) {

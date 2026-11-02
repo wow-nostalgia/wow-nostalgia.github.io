@@ -427,7 +427,7 @@ async function init() {
 
   try {
     setStatus('Завантаження даних...');
-    const response = await fetch(`/data/raid-summaries.json?t=${Date.now()}`);
+    const response = await fetchSiteData('/data/raid-summaries.json');
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const summaries = await response.json();
 

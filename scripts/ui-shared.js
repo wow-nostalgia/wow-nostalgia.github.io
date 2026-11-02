@@ -374,6 +374,16 @@ function applyCharacterAliases(records, aliasMap) {
   return records;
 }
 
+// Дані сайту з /data/*.json. cache: 'no-cache' - браузер щоразу питає
+// сервер, чи файл змінився (ETag), і отримує 304 без тіла, якщо ні: великі
+// файли (personal-stats.json) не завантажуються заново на кожному відкритті.
+// Раніше тут був ?t=Date.now(), що обходив і кеш CDN GitHub Pages; без нього
+// CDN може віддавати попередню версію до ~10 хв після оновлення даних
+// (Cache-Control: max-age=600) - для нічного оновлення це некритично.
+function fetchSiteData(path) {
+  return fetch(path, { cache: 'no-cache' });
+}
+
 // Модалки сайту - <dialog> + showModal(): браузер сам робить сторінку
 // позаду недоступною, тримає фокус усередині, закриває по Escape і повертає
 // фокус на кнопку, що відкрила.

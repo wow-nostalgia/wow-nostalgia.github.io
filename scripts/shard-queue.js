@@ -141,8 +141,8 @@ onModalCancel(confirmModal, hideConfirmModal);
 async function loadRosterSources() {
   try {
     const [playersRes, guildDataRes, ownersRes] = await Promise.all([
-      fetch('/data/players.json?t=' + Date.now()),
-      fetch('/data/guild-data.json?t=' + Date.now()),
+      fetchSiteData('/data/players.json'),
+      fetchSiteData('/data/guild-data.json'),
       fetch(`${AUTH_API_BASE}/characters/owners`).catch(() => null)
     ]);
     if (playersRes.ok) {
