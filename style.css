@@ -5249,9 +5249,14 @@ dialog.raid-modal::backdrop {
 }
 
 /* Затемнення лишається нашим div (клік по ньому закриває модалку), але
-   fixed - щоб не прокручувалось разом із довгою карткою. */
+   fixed - щоб не прокручувалось разом із довгою карткою. Прокрутка від
+   fixed-елемента йде одразу до сторінки, оминаючи dialog, тож і він має
+   бути scroll container з overscroll-behavior (працює в Chrome 144+ і
+   Firefox 150+; Safari поки прокручує сторінку - не критично). */
 dialog.raid-modal > .raid-modal-backdrop {
   position: fixed;
+  overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 dialog.raid-modal > .raid-modal-box {

@@ -763,7 +763,12 @@ function setupNameAutocomplete(inputEl, listEl, getNames = () => guildMemberName
   inputEl.addEventListener('focus', openList);
   inputEl.addEventListener('blur', () => setTimeout(closeList, 100));
   inputEl.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeList();
+    // Відкритий список закриваємо першим Escape, не чіпаючи модалку
+    // (preventDefault скасовує закриття <dialog> цим натисканням).
+    if (event.key === 'Escape' && listEl.classList.contains('is-open')) {
+      event.preventDefault();
+      closeList();
+    }
   });
 }
 
@@ -1032,7 +1037,7 @@ async function showPotionLogModal() {
   });
   if (raid.potion_log_url) potionLogSelect.value = raid.potion_log_url;
 
-  potionLogModal.hidden = false;
+  openModal(potionLogModal);
 }
 
 // Розбито так само, як fetchShardQueueRaw/applyShardQueueRaw - fetchOfficers
@@ -1242,12 +1247,11 @@ document.addEventListener('click', () => {
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     document.querySelectorAll('.raid-item-picker-list.is-open').forEach((el) => closeItemPicker(el));
-    noCharactersModal.hidden = true;
   }
 });
 
-noCharactersCloseBtn.addEventListener('click', () => { noCharactersModal.hidden = true; });
-noCharactersModalBackdrop.addEventListener('click', () => { noCharactersModal.hidden = true; });
+noCharactersCloseBtn.addEventListener('click', () => { closeModal(noCharactersModal); });
+noCharactersModalBackdrop.addEventListener('click', () => { closeModal(noCharactersModal); });
 
 function positionItemTooltip(event) {
   const offset = 16;
@@ -1928,22 +1932,23 @@ function showTransferModal() {
   if (!myCharNames().length) return;
   transferToPlayerInput.value = '';
   transferModalText.textContent = "Обери кому ти хочеш передати свої софти - відповідний гравець отримає сповіщення";
-  transferModal.hidden = false;
+  openModal(transferModal);
   transferToPlayerInput.focus();
 }
 
 function deleteTransfer(fromPlayer) {
   cancelTransferModalText.textContent = `Скасувати передачу софту від ${fromPlayer}?`;
   cancelTransferModal._fromPlayer = fromPlayer;
-  cancelTransferModal.hidden = false;
+  openModal(cancelTransferModal);
 }
 
 cancelTransferConfirmBtn.addEventListener('click', async () => {
   const fromPlayer = cancelTransferModal._fromPlayer;
   cancelTransferConfirmBtn.disabled = true;
+  setModalBusy(cancelTransferModal, true);
   try {
     await apiCall('DELETE', `/raids/${raidId}/transfers/${encodeURIComponent(fromPlayer)}`, { token: getSessionToken() });
-    cancelTransferModal.hidden = true;
+    closeModal(cancelTransferModal);
     await loadTransfers();
     await loadReserves();
     renderPlayersTable();
@@ -1953,11 +1958,13 @@ cancelTransferConfirmBtn.addEventListener('click', async () => {
     showMessageModal(err.message);
   } finally {
     cancelTransferConfirmBtn.disabled = false;
+    setModalBusy(cancelTransferModal, false);
   }
 });
 
-cancelTransferCancelBtn.addEventListener('click', () => { cancelTransferModal.hidden = true; });
-cancelTransferModalBackdrop.addEventListener('click', () => { cancelTransferModal.hidden = true; });
+cancelTransferCancelBtn.addEventListener('click', () => { closeModal(cancelTransferModal); });
+cancelTransferModalBackdrop.addEventListener('click', () => { closeModal(cancelTransferModal); });
+onModalCancel(cancelTransferModal, () => closeModal(cancelTransferModal));
 
 async function loadAudit() {
   auditEntries = await apiCall('GET', `/raids/${raidId}/audit`, { token: getSessionToken() });
@@ -2090,11 +2097,11 @@ potionsSoftedOnlyCheckbox.addEventListener('change', () => renderPotionLogTable(
 potionsHideHealTankCheckbox.addEventListener('change', () => renderPotionLogTable(findPotionLogEntry(raid.potion_log_url)));
 potionLogConfirmBtn.addEventListener('click', () => {
   const raidUrl = potionLogSelect.value;
-  potionLogModal.hidden = true;
+  closeModal(potionLogModal);
   if (raidUrl) setPotionLog(raidUrl);
 });
-potionLogCancelBtn.addEventListener('click', () => { potionLogModal.hidden = true; });
-potionLogModalBackdrop.addEventListener('click', () => { potionLogModal.hidden = true; });
+potionLogCancelBtn.addEventListener('click', () => { closeModal(potionLogModal); });
+potionLogModalBackdrop.addEventListener('click', () => { closeModal(potionLogModal); });
 
 softForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -2181,7 +2188,7 @@ async function saveRaidSettings(body) {
 let pendingSettingsBody = null;
 
 function hideLkOnlyConfirm() {
-  lkOnlyConfirmModal.hidden = true;
+  closeModal(lkOnlyConfirmModal);
   pendingSettingsBody = null;
 }
 
@@ -2189,15 +2196,18 @@ lkOnlyConfirmBtn.addEventListener('click', async () => {
   if (!pendingSettingsBody) return;
   const body = pendingSettingsBody;
   lkOnlyConfirmBtn.disabled = true;
+  setModalBusy(lkOnlyConfirmModal, true);
   try {
     await saveRaidSettings(body);
   } finally {
     lkOnlyConfirmBtn.disabled = false;
+    setModalBusy(lkOnlyConfirmModal, false);
     hideLkOnlyConfirm();
   }
 });
 lkOnlyCancelBtn.addEventListener('click', hideLkOnlyConfirm);
 lkOnlyConfirmBackdrop.addEventListener('click', hideLkOnlyConfirm);
+onModalCancel(lkOnlyConfirmModal, hideLkOnlyConfirm);
 
 settingsForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -2226,7 +2236,7 @@ settingsForm.addEventListener('submit', async (event) => {
         pendingSettingsBody = body;
         lkOnlyConfirmTitle.textContent = `Тільки ${translateBoss(LICH_KING)}`;
         lkOnlyConfirmText.textContent = `Софти на предмети інших босів буде видалено (${toDelete}). Софти на предмети ${translateBoss(LICH_KING)} лишаться. Продовжити?`;
-        lkOnlyConfirmModal.hidden = false;
+        openModal(lkOnlyConfirmModal);
         return;
       }
     }
@@ -2301,11 +2311,11 @@ async function openPenaltyModal(playerName) {
   penaltyModalPlayer = playerName;
   penaltyModalTitle.textContent = `Штраф: ${playerName}`;
   penaltyCountInput.value = '1';
-  penaltyModal.hidden = false;
+  openModal(penaltyModal);
 }
 
 function closePenaltyModal() {
-  penaltyModal.hidden = true;
+  closeModal(penaltyModal);
   penaltyModalPlayer = null;
 }
 
@@ -2317,6 +2327,7 @@ penaltyConfirmBtn.addEventListener('click', async () => {
     return;
   }
   penaltyConfirmBtn.disabled = true;
+  setModalBusy(penaltyModal, true);
   try {
     await addPenalty(penaltyModalPlayer, Number(penaltyTemplateSelect.value), count);
     closePenaltyModal();
@@ -2324,10 +2335,12 @@ penaltyConfirmBtn.addEventListener('click', async () => {
     showMessageModal(`Не вдалося додати штраф: ${err.message}`);
   } finally {
     penaltyConfirmBtn.disabled = false;
+    setModalBusy(penaltyModal, false);
   }
 });
 penaltyCancelBtn.addEventListener('click', closePenaltyModal);
 penaltyModalBackdrop.addEventListener('click', closePenaltyModal);
+onModalCancel(penaltyModal, closePenaltyModal);
 
 function renderPenaltiesTable() {
   raidPenaltiesBody.innerHTML = '';
@@ -2411,12 +2424,13 @@ transferConfirmBtn.addEventListener('click', async () => {
   }
 
   transferConfirmBtn.disabled = true;
+  setModalBusy(transferModal, true);
   try {
     await apiCall('POST', `/raids/${raidId}/transfers`, {
       token: getSessionToken(),
       body: { fromPlayer, toPlayer }
     });
-    transferModal.hidden = true;
+    closeModal(transferModal);
     await loadTransfers();
     await loadReserves();
     renderPlayersTable();
@@ -2426,11 +2440,13 @@ transferConfirmBtn.addEventListener('click', async () => {
     showMessageModal(err.message);
   } finally {
     transferConfirmBtn.disabled = false;
+    setModalBusy(transferModal, false);
   }
 });
 
-transferCancelModalBtn.addEventListener('click', () => { transferModal.hidden = true; });
-transferModalBackdrop.addEventListener('click', () => { transferModal.hidden = true; });
+transferCancelModalBtn.addEventListener('click', () => { closeModal(transferModal); });
+transferModalBackdrop.addEventListener('click', () => { closeModal(transferModal); });
+onModalCancel(transferModal, () => closeModal(transferModal));
 transferWeightBtn.addEventListener('click', () => showTransferModal());
 settingsSoftLimitInput.addEventListener('input', syncTransferLimitOptions);
 setupNameAutocomplete(transferToPlayerInput, transferToPlayerList, transferCandidateNames);
@@ -2460,7 +2476,7 @@ function showBonusGrantModal() {
     bonusGrantTableBody.appendChild(tr);
   });
 
-  bonusGrantModal.hidden = false;
+  openModal(bonusGrantModal);
 }
 
 bonusGrantOpenBtn.addEventListener('click', () => showBonusGrantModal());
@@ -2477,6 +2493,7 @@ bonusGrantSaveBtn.addEventListener('click', async () => {
   const toRevoke = [...grantedNames].filter((name) => !checkedNames.has(name));
 
   bonusGrantSaveBtn.disabled = true;
+  setModalBusy(bonusGrantModal, true);
   try {
     await Promise.all([
       ...toGrant.map((playerName) => apiCall('POST', `/raids/${raidId}/bonus-grants`, {
@@ -2492,18 +2509,20 @@ bonusGrantSaveBtn.addEventListener('click', async () => {
     renderPlayersTable();
     renderItemsTable();
     applySoftFormLockState();
-    bonusGrantModal.hidden = true;
+    closeModal(bonusGrantModal);
     setStatus('Бонусний софт оновлено.', 'success');
   } catch (err) {
     await loadBonusGrants();
     setStatus(`Помилка: ${err.message}`, 'error');
   } finally {
     bonusGrantSaveBtn.disabled = false;
+    setModalBusy(bonusGrantModal, false);
   }
 });
 
-bonusGrantCancelBtn.addEventListener('click', () => { bonusGrantModal.hidden = true; });
-bonusGrantModalBackdrop.addEventListener('click', () => { bonusGrantModal.hidden = true; });
+bonusGrantCancelBtn.addEventListener('click', () => { closeModal(bonusGrantModal); });
+bonusGrantModalBackdrop.addEventListener('click', () => { closeModal(bonusGrantModal); });
+onModalCancel(bonusGrantModal, () => closeModal(bonusGrantModal));
 
 async function init() {
   raidId = new URLSearchParams(window.location.search).get('id');
@@ -2607,7 +2626,7 @@ async function init() {
 
   // Без персонажів у профілі софтити неможливо - показуємо підказку щоразу,
   // поки їх нема. Для завершеного рейду сенсу нема: софтити там уже пізно.
-  if (!myCharacters.length && !isRaidCompleted()) noCharactersModal.hidden = false;
+  if (!myCharacters.length && !isRaidCompleted()) openModal(noCharactersModal);
 
   schedulePoll();
   document.addEventListener('visibilitychange', () => {
