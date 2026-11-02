@@ -716,8 +716,10 @@ button.nav__link {
   font-style: normal;
 }
 
+/* Закриті блоки ховає атрибут hidden="until-found" (scripts/index.js), а
+   не display: none — інакше Ctrl+F не знаходив би в них текст. display тут
+   не задаємо: інакше він перебив би [hidden] у браузерах без until-found. */
 .info-tabs .hider {
-  display: none;
   grid-column: 2;
   grid-row: 1 / span 20;
   padding: 1rem 1.25rem;
@@ -733,8 +735,13 @@ button.nav__link {
   color: var(--color-on-accent);
 }
 
-.info-tabs .collapsible.open .hider {
-  display: block;
+/* until-found лишає блоку рамку й відступи (ховається лише вміст) —
+   прибираємо, щоб закриті блоки не займали місця. */
+.info-tabs .hider[hidden] {
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 
