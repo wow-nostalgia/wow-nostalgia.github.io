@@ -255,6 +255,7 @@ function renderDayTabs() {
     settingsBtn.textContent = 'Налаштування';
     dayTabs.appendChild(settingsBtn);
   }
+  syncTabs(dayTabs);
 }
 
 dayTabs.addEventListener('click', async (event) => {
@@ -265,6 +266,9 @@ dayTabs.addEventListener('click', async (event) => {
   else if (btn.dataset.tabType === 'settings') activeTab = { type: 'settings' };
   else activeTab = { type: 'day', dayId: Number(btn.dataset.dayId) };
   renderDayTabs();
+  // Ряд вкладок перемальовано, тож фокус пропав разом зі старою кнопкою;
+  // при перемиканні з клавіатури (detail === 0) повертаємо його на нову активну.
+  if (event.detail === 0) dayTabs.querySelector('[aria-selected="true"]')?.focus();
   if (activeTab.type === 'audit') await loadShardQueueAudit();
   renderQueueContent();
 });

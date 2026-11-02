@@ -10,6 +10,7 @@ const lockToggleBtn = document.getElementById('lockToggleBtn');
 const statusToggleBtn = document.getElementById('statusToggleBtn');
 const raidStatus = document.getElementById('raidStatus');
 const raidTabs = document.querySelectorAll('.raid-tab');
+const raidTabsList = document.querySelector('.raid-tabs');
 const loginGate = document.getElementById('loginGate');
 const loginGateBtn = document.getElementById('loginGateBtn');
 const raidContent = document.getElementById('raidContent');
@@ -2064,6 +2065,7 @@ const TAB_PANES = { players: playersPane, items: itemsPane, potions: potionsPane
 async function setActiveTab(tab) {
   activeTab = tab;
   raidTabs.forEach((btn) => btn.classList.toggle('raid-tab--active', btn.dataset.tab === tab));
+  syncTabs(raidTabsList);
   Object.entries(TAB_PANES).forEach(([key, el]) => { el.hidden = key !== tab; });
   if (tab === 'audit') await loadAudit();
   if (tab === 'penalties') await loadAndRenderPenalties();
@@ -2071,6 +2073,7 @@ async function setActiveTab(tab) {
 }
 
 raidTabs.forEach((btn) => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)));
+syncTabs(raidTabsList);
 
 softPlayerNameInput.addEventListener('change', () => {
   localStorage.setItem(LS_CHAR_KEY, softPlayerNameInput.value);

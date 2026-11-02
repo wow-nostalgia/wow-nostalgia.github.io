@@ -144,9 +144,12 @@ setupToggleGroup(templateTypeToggle, templateTypeInput, 'type', applyTemplateVal
 
 // ---- Вкладки ----
 
+const tabsList = document.querySelector('.raid-tabs');
+syncTabs(tabsList);
 document.querySelectorAll('.raid-tab').forEach((tab) => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.raid-tab').forEach((t) => t.classList.toggle('raid-tab--active', t === tab));
+    syncTabs(tabsList);
     pendingPane.hidden = tab.dataset.tab !== 'pending';
     templatesPane.hidden = tab.dataset.tab !== 'templates';
     auditPane.hidden = tab.dataset.tab !== 'audit';

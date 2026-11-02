@@ -369,6 +369,7 @@ function renderDayTabs() {
   dayTabs.appendChild(tabButton('done', 'Архів'));
   dayTabs.appendChild(tabButton('audit', 'Історія дій'));
   if (isOfficer()) dayTabs.appendChild(tabButton('settings', 'Налаштування'));
+  syncTabs(dayTabs);
 }
 
 dayTabs.addEventListener('click', async (event) => {
@@ -378,6 +379,9 @@ dayTabs.addEventListener('click', async (event) => {
   activeTab = type === 'day' ? { type, dayId: Number(btn.dataset.dayId) } : { type };
   renamingTypeId = null;
   renderDayTabs();
+  // Ряд вкладок перемальовано, тож фокус пропав разом зі старою кнопкою;
+  // при перемиканні з клавіатури (detail === 0) повертаємо його на нову активну.
+  if (event.detail === 0) dayTabs.querySelector('[aria-selected="true"]')?.focus();
   if (type === 'audit') await loadAudit();
   renderQueueContent();
 });

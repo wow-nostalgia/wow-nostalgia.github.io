@@ -374,6 +374,41 @@ function applyCharacterAliases(records, aliasMap) {
   return records;
 }
 
+// Вкладки .raid-tab усередині [role="tablist"] за патерном WAI-ARIA Tabs:
+// role="tab" і aria-selected для скрінрідерів, одна зупинка Tab на весь
+// ряд (активна вкладка), стрілки ←/→ і Home/End - між видимими вкладками.
+// Перемикає вкладку Enter/пробіл (ручна активація): вкладки рейду й черг
+// підвантажують дані, і перегортання стрілками слало б зайві запити.
+// Викликати після кожної зміни активної вкладки або перемальовування ряду.
+function syncTabs(tablist) {
+  const tabs = [...tablist.querySelectorAll('.raid-tab')];
+  const active = tabs.find((t) => t.classList.contains('raid-tab--active'));
+  tabs.forEach((tab) => {
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-selected', String(tab === active));
+    tab.tabIndex = tab === active ? 0 : -1;
+  });
+  if (!tablist.dataset.tabsKeyboard) {
+    tablist.dataset.tabsKeyboard = 'true';
+    tablist.addEventListener('keydown', moveTabFocus);
+  }
+}
+
+function moveTabFocus(event) {
+  const tabs = [...event.currentTarget.querySelectorAll('.raid-tab')].filter((t) => !t.hidden);
+  const index = tabs.indexOf(document.activeElement);
+  if (index === -1) return;
+  const target = {
+    ArrowRight: tabs[(index + 1) % tabs.length],
+    ArrowLeft: tabs[(index - 1 + tabs.length) % tabs.length],
+    Home: tabs[0],
+    End: tabs[tabs.length - 1]
+  }[event.key];
+  if (!target) return;
+  event.preventDefault();
+  target.focus();
+}
+
 // Дані сайту з /data/*.json. cache: 'no-cache' - браузер щоразу питає
 // сервер, чи файл змінився (ETag), і отримує 304 без тіла, якщо ні: великі
 // файли (personal-stats.json) не завантажуються заново на кожному відкритті.

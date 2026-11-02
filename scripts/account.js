@@ -659,11 +659,13 @@ async function init() {
 
   // Дані адмін-панелі тягнемо лише при першому відкритті вкладки.
   let adminDataLoaded = false;
+  syncTabs(accountTabs);
   accountTabs.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-tab]');
     if (!btn) return;
     accountTabs.querySelectorAll('.raid-tab').forEach((t) => t.classList.remove('raid-tab--active'));
     btn.classList.add('raid-tab--active');
+    syncTabs(accountTabs);
     const tab = btn.dataset.tab;
     accountTabPane.hidden = tab !== 'account';
     settingsTabPane.hidden = tab !== 'settings';
