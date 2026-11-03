@@ -532,11 +532,26 @@ export async function updateUserPreferences(db, discordId, fields) {
 // Статистика фонів для адмін-панелі — лише агрегати, без жодних даних
 // акаунтів. background NULL означає і "обрав стандартний", і "ще не
 // обирав": обидва випадки зберігаються однаково (див. міграцію 0018).
+// Для нестандартних фонів додаємо й імена (основний персонаж або username) —
+// для "Стандартного" список був би на сотню людей і нікому не потрібен.
 export async function countUsersByBackground(db) {
-  const { results } = await db
-    .prepare('SELECT background, COUNT(*) AS count FROM users GROUP BY background')
-    .all();
-  return results;
+  const [{ results: counts }, { results: users }] = await db.batch([
+    db.prepare('SELECT background, COUNT(*) AS count FROM users GROUP BY background'),
+    db.prepare(
+      `SELECT u.background AS background, ${displayNameSubquery('u')} AS name
+       FROM users u
+       WHERE u.background IS NOT NULL AND u.background <> 'default.jpg'`
+    )
+  ]);
+  const namesByBackground = new Map();
+  for (const { background, name } of users) {
+    if (!namesByBackground.has(background)) namesByBackground.set(background, []);
+    namesByBackground.get(background).push(name);
+  }
+  return counts.map((row) => ({
+    ...row,
+    names: (namesByBackground.get(row.background) || []).sort((a, b) => a.localeCompare(b))
+  }));
 }
 
 // Публічна мапа "застовплений персонаж -> ім'я для тултіпа" (основний

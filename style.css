@@ -4696,10 +4696,15 @@ body.account-page .account-bg-stats-table tbody tr:hover {
   background-color: var(--color-hover);
 }
 
-/* Статистика фонів в адмін-панелі: дві вузькі колонки, розтягувати таблицю
-   на всю ширину сторінки нема сенсу. */
-body.account-page .account-bg-stats-table-wrap {
-  max-width: 420px;
+/* Статистика фонів в адмін-панелі: назва й кількість вузькі, решту ширини
+   забирає колонка імен, яка переноситься по рядках. */
+body.account-page .account-bg-stats-table td:first-child {
+  white-space: nowrap;
+}
+
+body.account-page .account-bg-stats-table .account-bg-stats-names {
+  color: var(--color-text-soft);
+  overflow-wrap: anywhere;
 }
 
 body.account-page .account-bg-stats-table .account-bg-stats-count {

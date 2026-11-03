@@ -600,43 +600,48 @@ async function loadDefaultOfficers() {
   }
 }
 
-// Статистика фонів для адмін-панелі. Worker віддає лише пари
-// { background, count }; назви беремо з того самого маніфесту, що й сітка
-// вибору у "Налаштуваннях".
+// Статистика фонів для адмін-панелі. Worker віддає { background, count, names }
+// (names — лише для нестандартних фонів); назви фонів беремо з того самого
+// маніфесту, що й сітка вибору у "Налаштуваннях".
 function renderBackgroundStats(stats, choices) {
-  const counts = new Map(stats.map((row) => [row.background ?? null, row.count]));
-  const takeCount = (key) => {
-    const count = counts.get(key) || 0;
-    counts.delete(key);
-    return count;
+  const byBackground = new Map(stats.map((row) => [row.background ?? null, row]));
+  const take = (key) => {
+    const row = byBackground.get(key);
+    byBackground.delete(key);
+    return { count: row?.count || 0, names: row?.names || [] };
   };
 
-  const rows = choices.map((item) => ({
+  const rows = choices.map((item) => {
     // Стандартний фон зберігається як NULL; явне 'default.jpg' можна
     // записати лише в обхід UI, але рахуємо й його сюди ж.
-    title: item.title,
-    count: item.isDefault ? takeCount(null) + takeCount(item.file) : takeCount(item.file)
-  }));
-  rows.push({ title: 'Без фону', count: takeCount(BACKGROUND_NONE) });
+    if (item.isDefault) {
+      return { title: item.title, count: take(null).count + take(item.file).count, names: [] };
+    }
+    return { title: item.title, ...take(item.file) };
+  });
+  rows.push({ title: 'Без фону', ...take(BACKGROUND_NONE) });
 
   // Решта — фони, які прибрали з репозиторію, а в акаунтах вони ще лишились
   // (гравець не заходив у профіль, де вибір сам скидається). Показуємо, щоб
   // ці гравці не зникали зі статистики мовчки.
-  for (const [file, count] of counts) {
-    rows.push({ title: `${file} (файл видалено)`, count });
+  for (const [file, row] of byBackground) {
+    rows.push({ title: `${file} (файл видалено)`, count: row.count, names: row.names || [] });
   }
 
   rows.sort((a, b) => b.count - a.count);
 
   backgroundStatsList.innerHTML = '';
-  for (const { title, count } of rows) {
+  for (const { title, count, names } of rows) {
     const tr = document.createElement('tr');
     const titleTd = document.createElement('td');
     titleTd.textContent = title;
     const countTd = document.createElement('td');
     countTd.className = 'account-bg-stats-count';
     countTd.textContent = String(count);
-    tr.append(titleTd, countTd);
+    const namesTd = document.createElement('td');
+    namesTd.className = 'account-bg-stats-names';
+    namesTd.textContent = names.length ? names.join(', ') : '—';
+    tr.append(titleTd, countTd, namesTd);
     backgroundStatsList.appendChild(tr);
   }
 }
