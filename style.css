@@ -2559,6 +2559,7 @@ body.raid-manager-page .raid-create-form input[type="text"],
 body.raid-manager-page .raid-create-form input[type="number"],
 body.raid-manager-page .raid-create-form textarea,
 body.raid-manager-detail-page .raid-soft-form select,
+body.raid-manager-detail-page .raid-bonus-grant-amount,
 body.raid-manager-detail-page .raid-soft-form input[type="text"],
 body.raid-manager-detail-page .raid-soft-form input[type="number"],
 body.raid-manager-detail-page .raid-input-wrap input[type="text"],
@@ -2591,6 +2592,7 @@ body.raid-manager-page .raid-create-form select:hover,
 body.raid-manager-page .raid-create-form input:hover,
 body.raid-manager-page .raid-create-form textarea:hover,
 body.raid-manager-detail-page .raid-soft-form select:hover,
+body.raid-manager-detail-page .raid-bonus-grant-amount:hover:not(:disabled),
 body.raid-manager-detail-page .raid-soft-form input:hover,
 body.raid-manager-detail-page .raid-input-wrap input[type="text"]:hover,
 body.account-page .raid-input-wrap input[type="text"]:hover,
@@ -2605,6 +2607,7 @@ body.raid-manager-page .raid-create-form select:focus,
 body.raid-manager-page .raid-create-form input:focus,
 body.raid-manager-page .raid-create-form textarea:focus,
 body.raid-manager-detail-page .raid-soft-form select:focus,
+body.raid-manager-detail-page .raid-bonus-grant-amount:focus,
 body.raid-manager-detail-page .raid-soft-form input:focus,
 body.raid-manager-detail-page .raid-input-wrap input[type="text"]:focus,
 body.account-page .raid-input-wrap input[type="text"]:focus,
@@ -2617,6 +2620,7 @@ body.raid-manager-detail-page .raid-item-picker-trigger:focus {
 }
 
 body.raid-manager-detail-page .raid-soft-form select:disabled,
+body.raid-manager-detail-page .raid-bonus-grant-amount:disabled,
 body.raid-manager-detail-page .raid-soft-form input:disabled,
 body.raid-manager-detail-page .raid-input-wrap input[type="text"]:disabled,
 body.raid-manager-detail-page .raid-item-picker-trigger:disabled {
@@ -2625,7 +2629,8 @@ body.raid-manager-detail-page .raid-item-picker-trigger:disabled {
 }
 
 body.raid-manager-page .raid-create-form select,
-body.raid-manager-detail-page .raid-soft-form select {
+body.raid-manager-detail-page .raid-soft-form select,
+body.raid-manager-detail-page .raid-bonus-grant-amount {
   appearance: none;
   padding-right: 2.5rem;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
@@ -5422,6 +5427,19 @@ dialog.raid-modal > .raid-modal-box {
 
 #bonusGrantModal .raid-modal-actions {
   justify-content: flex-start;
+}
+
+/* Друга колонка - кількість бонусних софтів, заголовок довгий. */
+#bonusGrantModal .raid-modal-box {
+  width: min(90vw, 24rem);
+}
+
+/* Чекбокс біля імені: клік по імені теж перемикає його. */
+body.raid-manager-detail-page .raid-bonus-grant-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
 }
 
 /* --- Bonus weight controls (Items tab, receiver B) --- */

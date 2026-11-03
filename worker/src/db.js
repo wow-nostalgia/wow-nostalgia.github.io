@@ -829,7 +829,7 @@ export async function deleteAllTransfersForRaid(db, raidId) {
 
 export async function listBonusGrants(db, raidId) {
   const { results } = await db
-    .prepare('SELECT player_name, granted_by, created_at FROM raid_bonus_grants WHERE raid_id = ? ORDER BY created_at ASC')
+    .prepare('SELECT player_name, granted_by, amount, created_at FROM raid_bonus_grants WHERE raid_id = ? ORDER BY created_at ASC')
     .bind(raidId)
     .all();
   return results;
@@ -837,15 +837,21 @@ export async function listBonusGrants(db, raidId) {
 
 export async function getBonusGrant(db, raidId, playerName) {
   return db
-    .prepare('SELECT player_name, granted_by FROM raid_bonus_grants WHERE raid_id = ? AND player_name = ?')
+    .prepare('SELECT player_name, granted_by, amount FROM raid_bonus_grants WHERE raid_id = ? AND player_name = ?')
     .bind(raidId, playerName)
     .first();
 }
 
-export async function createBonusGrant(db, raidId, playerName, grantedBy) {
+// Новий грант або зміна кількості в наявному. created_at при зміні не
+// чіпаємо — це момент призначення (за ним сторінка рейду відрізняє новий
+// грант від уже відомого).
+export async function upsertBonusGrant(db, raidId, playerName, amount, grantedBy) {
   await db
-    .prepare('INSERT INTO raid_bonus_grants (raid_id, player_name, granted_by, created_at) VALUES (?, ?, ?, ?)')
-    .bind(raidId, playerName, grantedBy, nowIso())
+    .prepare(
+      `INSERT INTO raid_bonus_grants (raid_id, player_name, granted_by, amount, created_at) VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT (raid_id, player_name) DO UPDATE SET amount = excluded.amount, granted_by = excluded.granted_by`
+    )
+    .bind(raidId, playerName, grantedBy, amount, nowIso())
     .run();
 }
 
@@ -888,11 +894,11 @@ export async function getTransferBonus(db, raid, fromPlayer) {
   return Math.max(0, Math.min(base, donorLimit));
 }
 
-// Бонусний пул гравця за джерелами: передача + грант офіцера (рівно +1).
+// Бонусний пул гравця за джерелами: передача + грант офіцера (amount, 1-5).
 export async function getBonusPool(db, raid, playerName) {
   const transfer = await getWeightTransferByTo(db, raid.id, playerName);
   const grant = await getBonusGrant(db, raid.id, playerName);
-  return (transfer ? await getTransferBonus(db, raid, transfer.from_player) : 0) + (grant ? 1 : 0);
+  return (transfer ? await getTransferBonus(db, raid, transfer.from_player) : 0) + (grant ? grant.amount : 0);
 }
 
 // Обрізає вже розподілену бонусну вагу під поточний пул (знизили ліміт

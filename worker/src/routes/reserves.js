@@ -272,7 +272,7 @@ export async function handleUpdateBonusWeight(request, env, raidId, reserveId, s
 
   if (delta === 1) {
     // Пул за джерелами: передача (обмежена лімітом софтів рейду й штрафом
-    // донора) + грант офіцера рівно +1 — див. getBonusPool у db.js.
+    // донора) + грант офіцера (1-5) — див. getBonusPool у db.js.
     const bonusLimit = await getBonusPool(env.DB, raid, reserve.player_name);
     const { totalBonus } = await sumBonusWeight(env.DB, raidId, reserve.player_name);
     if (totalBonus + 1 > bonusLimit) {

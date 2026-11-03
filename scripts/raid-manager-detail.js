@@ -505,6 +505,12 @@ function getMyBonusGrant() {
   return bonusGrants.find((g) => names.includes(g.player_name)) || null;
 }
 
+// "1 бонусний софт", "3 бонусні софти", "5 бонусних софтів".
+function bonusSoftsWord(count) {
+  const adjective = count === 1 ? 'бонусний' : count >= 2 && count <= 4 ? 'бонусні' : 'бонусних';
+  return `${adjective} ${softsWord(count)}`;
+}
+
 // ---- Звукові сповіщення ----
 //
 // Браузери не дають відтворити звук, поки в документі не було жесту
@@ -551,8 +557,11 @@ function playNotificationSound(kind) {
 // кожні 10 секунд, поки передача активна. Ключ - created_at, щоб повторна
 // передача від того самого гравця теж рахувалась новою подією (id у цих
 // таблиць нема, ключ складений).
+// Для гранту офіцера окремо пам'ятаємо кількість: її збільшення - теж нова
+// подія (created_at при зміні кількості не змінюється), а зменшення - ні.
 let lastTransferKey = null;
 let lastBonusGrantKey = null;
+let lastBonusGrantAmount = 0;
 
 function transferKey() {
   const t = getMyReceivedTransfer();
@@ -564,20 +573,29 @@ function bonusGrantKey() {
   return g ? `${g.player_name}::${g.created_at}` : null;
 }
 
+function bonusGrantAmount() {
+  return getMyBonusGrant()?.amount ?? 0;
+}
+
 function syncNotificationState() {
   lastTransferKey = transferKey();
   lastBonusGrantKey = bonusGrantKey();
+  lastBonusGrantAmount = bonusGrantAmount();
 }
 
 function checkNotifications() {
   const transfer = transferKey();
   const bonusGrant = bonusGrantKey();
+  const bonusAmount = bonusGrantAmount();
 
   if (transfer !== null && transfer !== lastTransferKey) playNotificationSound('transfer');
-  if (bonusGrant !== null && bonusGrant !== lastBonusGrantKey) playNotificationSound('bonusGrant');
+  if (bonusGrant !== null && (bonusGrant !== lastBonusGrantKey || bonusAmount > lastBonusGrantAmount)) {
+    playNotificationSound('bonusGrant');
+  }
 
   lastTransferKey = transfer;
   lastBonusGrantKey = bonusGrant;
+  lastBonusGrantAmount = bonusAmount;
 }
 
 // Лок блокує самософт лише для звичайних гравців — офіцери/лідер обходять
@@ -630,7 +648,10 @@ function applySoftFormLockState() {
     transferNotice.textContent = `Ти отримав софт від ${myReceived.from_player}. Розподіли його на вкладці «Предмети».`;
   } else if (myBonusGrant) {
     transferNotice.hidden = false;
-    transferNotice.textContent = 'Тобі призначено бонусний софт офіцером. Розподіли його на вкладці «Предмети».';
+    const amount = myBonusGrant.amount ?? 1;
+    transferNotice.textContent = amount === 1
+      ? 'Тобі призначено бонусний софт офіцером. Розподіли його на вкладці «Предмети».'
+      : `Тобі призначено ${amount} ${bonusSoftsWord(amount)} офіцером. Розподіли їх на вкладці «Предмети».`;
   } else {
     transferNotice.hidden = true;
   }
@@ -1597,7 +1618,7 @@ function renderPlayersTable() {
   });
 }
 
-function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove, allowStackOnSameItem }) {
+function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove }) {
   const bonusSpan = document.createElement('span');
   bonusSpan.className = 'raid-bonus-controls';
 
@@ -1608,12 +1629,9 @@ function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove, allowSt
     bonusSpan.appendChild(chip);
   }
 
-  // Для бонусного софту від офіцера (bonusGrant) вага розподіляється по
-  // предмету лише раз - кнопку "+" ховаємо повністю після першого кліку.
-  // Для переданої гравцем ваги (weightTransfer) обмеження нема - весь пул
-  // можна стакати на одному предметі, якщо в гравця більше нема на що
-  // його розподілити (allowStackOnSameItem).
-  if ((bonusWeight === 0 || allowStackOnSameItem) && canAdd) {
+  // Бонусний пул (передана вага чи грант офіцера) можна стакати на одному
+  // предметі цілком - "+" є, поки в пулі щось лишилось.
+  if (canAdd) {
     const addBtn = document.createElement('button');
     addBtn.type = 'button';
     addBtn.className = 'raid-transfer-btn raid-transfer-btn--add';
@@ -1711,9 +1729,9 @@ function renderItemsTable() {
   let usedBonusForItems = 0;
   if ((myReceivedForItems || myBonusGrantForItems) && currentUser) {
     // Пул за джерелом бонусу: передача ваги дає ліміт рейду, грант офіцера -
-    // завжди рівно +1 (та сама формула, що й у воркері, reserves.js).
+    // його кількість, 1-5 (та сама формула, що й у воркері, getBonusPool).
     bonusPoolForItems = (myReceivedForItems ? transferBonusFor(myReceivedForItems.from_player) : 0)
-      + (myBonusGrantForItems ? 1 : 0);
+      + (myBonusGrantForItems ? myBonusGrantForItems.amount ?? 1 : 0);
     usedBonusForItems = reserves
       .filter((r) => myNamesForItems.includes(r.player_name))
       .reduce((s, r) => s + (r.bonus_weight || 0), 0);
@@ -1734,7 +1752,6 @@ function renderItemsTable() {
   const bonusCtx = {
     myNames: myNamesForItems,
     hasBonusPool: Boolean(myReceivedForItems || myBonusGrantForItems),
-    allowStackOnSameItem: Boolean(myReceivedForItems),
     canAdd: usedBonusForItems < bonusPoolForItems
   };
 
@@ -1860,8 +1877,7 @@ function buildItemRow(item, bonusCtx) {
       reserveId: myReserveForItem.id,
       bonusWeight: myReserveForItem.bonus_weight || 0,
       canAdd: bonusCtx.canAdd,
-      canRemove: (myReserveForItem.bonus_weight || 0) > 0,
-      allowStackOnSameItem: bonusCtx.allowStackOnSameItem
+      canRemove: (myReserveForItem.bonus_weight || 0) > 0
     }
     : null;
 
@@ -1924,8 +1940,15 @@ function describeAuditAction(entry) {
     case 'officer_remove': return `видалив офіцера ${d.discordId}`;
     case 'weight_transfer': return `передав софти гравцю ${d.toPlayer}`;
     case 'weight_transfer_cancel': return `скасував передачу софтів від ${d.fromPlayer} до ${d.toPlayer}`;
-    case 'bonus_grant':
-      return hideSoftDetails ? 'призначив бонусний софт' : `призначив бонусний софт гравцю ${d.playerName}`;
+    case 'bonus_grant': {
+      // Записи до появи кількості - без amount, тобто 1.
+      const what = `${d.amount ?? 1} ${bonusSoftsWord(d.amount ?? 1)}`;
+      return hideSoftDetails ? `призначив ${what}` : `призначив ${what} гравцю ${d.playerName}`;
+    }
+    case 'bonus_grant_change':
+      return hideSoftDetails
+        ? 'змінив кількість бонусних софтів'
+        : `змінив бонусний софт гравцю ${d.playerName}: ${d.from} → ${d.to}`;
     case 'bonus_grant_cancel':
       return hideSoftDetails ? 'скасував бонусний софт' : `скасував бонусний софт гравцю ${d.playerName}`;
     default: return entry.action;
@@ -2564,24 +2587,51 @@ transferToPlayerClear.addEventListener('click', () => {
   transferToPlayerInput.focus();
 });
 
+// Офіцер може дати гравцю від 1 до 5 бонусних софтів (те саме обмеження
+// у воркері, bonus-grants.js).
+const MAX_BONUS_GRANT = 5;
+
 function showBonusGrantModal() {
   const names = [...getPlayersWithSoftsSet()].sort((a, b) => a.localeCompare(b, 'uk'));
-  const grantedNames = new Set(bonusGrants.map((g) => g.player_name));
+  const grantAmounts = new Map(bonusGrants.map((g) => [g.player_name, g.amount ?? 1]));
 
   bonusGrantTableBody.innerHTML = '';
   names.forEach((name) => {
     const tr = document.createElement('tr');
+
+    // Чекбокс біля імені; клік по імені теж перемикає його.
     const nameTd = document.createElement('td');
-    nameTd.textContent = name;
-    nameTd.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
-    const checkTd = document.createElement('td');
+    const label = document.createElement('label');
+    label.className = 'raid-bonus-grant-name';
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.dataset.player = name;
-    checkbox.checked = grantedNames.has(name);
-    checkTd.appendChild(checkbox);
-    tr.appendChild(nameTd);
-    tr.appendChild(checkTd);
+    checkbox.checked = grantAmounts.has(name);
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = name;
+    nameSpan.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
+    label.append(checkbox, nameSpan);
+    nameTd.appendChild(label);
+
+    const amountTd = document.createElement('td');
+    const amountSelect = document.createElement('select');
+    amountSelect.className = 'raid-bonus-grant-amount';
+    amountSelect.dataset.player = name;
+    amountSelect.setAttribute('aria-label', `Бонусний софт від офіцера для ${name}`);
+    for (let n = 1; n <= MAX_BONUS_GRANT; n++) {
+      amountSelect.appendChild(new Option(String(n), String(n)));
+    }
+    amountSelect.value = String(grantAmounts.get(name) ?? 1);
+    amountSelect.disabled = !checkbox.checked;
+    amountTd.appendChild(amountSelect);
+
+    // Щойно поставили чекбокс — одразу 1; зняли — кількість неактивна.
+    checkbox.addEventListener('change', () => {
+      amountSelect.disabled = !checkbox.checked;
+      if (checkbox.checked) amountSelect.value = '1';
+    });
+
+    tr.append(nameTd, amountTd);
     bonusGrantTableBody.appendChild(tr);
   });
 
@@ -2591,23 +2641,24 @@ function showBonusGrantModal() {
 bonusGrantOpenBtn.addEventListener('click', () => showBonusGrantModal());
 
 bonusGrantSaveBtn.addEventListener('click', async () => {
-  const grantedNames = new Set(bonusGrants.map((g) => g.player_name));
-  const checkedNames = new Set(
+  const grantAmounts = new Map(bonusGrants.map((g) => [g.player_name, g.amount ?? 1]));
+  const checked = new Map(
     [...bonusGrantTableBody.querySelectorAll('input[type="checkbox"]')]
       .filter((cb) => cb.checked)
-      .map((cb) => cb.dataset.player)
+      .map((cb) => [cb.dataset.player, Number(cb.closest('tr').querySelector('.raid-bonus-grant-amount').value)])
   );
 
-  const toGrant = [...checkedNames].filter((name) => !grantedNames.has(name));
-  const toRevoke = [...grantedNames].filter((name) => !checkedNames.has(name));
+  // Нові й змінені — POST (воркер сам створює або оновлює), зняті — DELETE.
+  const toGrant = [...checked].filter(([name, amount]) => grantAmounts.get(name) !== amount);
+  const toRevoke = [...grantAmounts.keys()].filter((name) => !checked.has(name));
 
   bonusGrantSaveBtn.disabled = true;
   setModalBusy(bonusGrantModal, true);
   try {
     await Promise.all([
-      ...toGrant.map((playerName) => apiCall('POST', `/raids/${raidId}/bonus-grants`, {
+      ...toGrant.map(([playerName, amount]) => apiCall('POST', `/raids/${raidId}/bonus-grants`, {
         token: getSessionToken(),
-        body: { playerName }
+        body: { playerName, amount }
       })),
       ...toRevoke.map((playerName) => apiCall('DELETE', `/raids/${raidId}/bonus-grants/${encodeURIComponent(playerName)}`, {
         token: getSessionToken()
