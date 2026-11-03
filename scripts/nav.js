@@ -6,6 +6,29 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// Speculation Rules: браузер починає качати сторінку, щойно на посилання
+// навели курсор (moderate) або почали тиснути, тож перехід майже миттєвий.
+// Лише prefetch самого HTML, без prerender: скрипти цільової сторінки не
+// виконуються заздалегідь (жодних зайвих запитів до Worker'а чи аналітики).
+// Не підтримується (Firefox, Safari) — браузер просто нічого не робить.
+// account/callback/ — разовий вхід через Discord, його не чіпаємо.
+if (HTMLScriptElement.supports?.('speculationrules')) {
+  const rules = document.createElement('script');
+  rules.type = 'speculationrules';
+  rules.textContent = JSON.stringify({
+    prefetch: [{
+      where: {
+        and: [
+          { href_matches: '/*' },
+          { not: { href_matches: '/account/callback/*' } }
+        ]
+      },
+      eagerness: 'moderate'
+    }]
+  });
+  document.head.appendChild(rules);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.querySelector('.nav-toggle');
   const nav = document.getElementById('primaryNav');
