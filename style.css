@@ -4039,7 +4039,9 @@ body.shard-queue-page #raidBtnTooltip {
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-normal);
-  white-space: nowrap;
+  /* pre, а не nowrap: так само без переносу, але "\n" в aria-label дає
+     новий рядок (тултіп джерел софту на вкладці "Предмети"). */
+  white-space: pre;
   box-shadow: var(--shadow-tooltip);
   pointer-events: none;
 }

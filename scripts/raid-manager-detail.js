@@ -1663,6 +1663,28 @@ function buildBonusControls({ reserveId, bonusWeight, canAdd, canRemove }) {
 
 // Групує резерви по вазі — окремий рядок на кожну вагу, щоб не плодити
 // купу однакових чіпсів "x1" поряд з кожним іменем.
+// Тултіп імені на вкладці "Предмети": з чого складається вага софту.
+// bonus_weight у базі - одне число без джерела, тож якщо в гравця і
+// передача, і грант офіцера, розділити його по предмету неможливо -
+// показуємо одним рядком. officer_bonus_weight - старий механізм бонусу
+// офіцера (давні рейди), рахуємо його до "Від офіцера".
+function reserveSourcesLabel(r) {
+  const bonus = r.bonus_weight || 0;
+  const transfer = weightTransfers.find((t) => t.to_player === r.player_name);
+  const grant = bonusGrants.find((g) => g.player_name === r.player_name);
+  let officerBonus = r.officer_bonus_weight || 0;
+  const lines = [`Свої: ${r.weight || 0}`];
+
+  if (bonus > 0) {
+    if (transfer && grant) lines.push(`Бонусні (передані від ${transfer.from_player} і від офіцера): ${bonus}`);
+    else if (transfer) lines.push(`Передані від ${transfer.from_player}: ${bonus}`);
+    else if (grant) officerBonus += bonus;
+    else lines.push(`Бонусні: ${bonus}`);
+  }
+  if (officerBonus > 0) lines.push(`Від офіцера: ${officerBonus}`);
+  return lines.join('\n');
+}
+
 function buildReservesByWeight(reservers) {
   const wrap = document.createElement('div');
   wrap.className = 'raid-reserve-weight-list';
@@ -1673,7 +1695,7 @@ function buildReservesByWeight(reservers) {
 
     if (!byWeight.has(effectiveWeight)) byWeight.set(effectiveWeight, { visible: [], hidden: 0 });
     if (r.player_name !== null) {
-      byWeight.get(effectiveWeight).visible.push({ name: r.player_name, id: r.id });
+      byWeight.get(effectiveWeight).visible.push({ name: r.player_name, id: r.id, reserve: r });
     } else byWeight.get(effectiveWeight).hidden++;
   });
 
@@ -1694,13 +1716,16 @@ function buildReservesByWeight(reservers) {
     namesSpan.className = 'raid-reserve-weight-names';
 
     const visibleNames = entry.visible;
-    visibleNames.forEach(({ name }, i) => {
+    visibleNames.forEach(({ name, reserve }, i) => {
       // Без pending: мінус до ролу показуємо лише коли штраф уже застосований
       // до рейду, інакше поруч з іменем висіло б число, якого в рейді ще нема.
       const p = penaltiesList.find((x) => x.player_name === name && !x.pending);
       const nameSpan = document.createElement('span');
       nameSpan.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
       nameSpan.textContent = name;
+      // Таблиця обрізає CSS-тултіпи (overflow) - тому JS-тултіп.
+      nameSpan.setAttribute('aria-label', reserveSourcesLabel(reserve));
+      bindTooltip(nameSpan);
       namesSpan.appendChild(nameSpan);
       if (p && p.roll_penalty > 0) {
         const penSpan = document.createElement('span');
