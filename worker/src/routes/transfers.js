@@ -6,12 +6,13 @@ import {
   getWeightTransferByTo,
   createWeightTransfer,
   deleteWeightTransfer,
-  resetBonusWeightForPlayer,
+  enforceBonusPool,
   deleteAllReservesForPlayer,
   addRaidParticipant,
   insertAudit,
   createClaim,
   getClaimOwner,
+  findCharacterOwner,
   applyPenaltyBattalionIfMatched
 } from '../db.js';
 import { isRaidOfficer, requireOwnCharacter } from '../auth.js';
@@ -20,6 +21,16 @@ async function loadRaidOr404(env, raidId) {
   const raid = await getRaid(env.DB, raidId);
   if (!raid) throw new HttpError(404, 'Рейд не знайдено');
   return raid;
+}
+
+// Акаунти, яким належить персонаж: власник у профілі + хто застовпив ім'я
+// в цьому рейді (персонажа могли вже прибрати з профілю).
+async function characterOwnerIds(env, raidId, playerName) {
+  const [profileOwner, claim] = await Promise.all([
+    findCharacterOwner(env.DB, playerName),
+    getClaimOwner(env.DB, raidId, playerName)
+  ]);
+  return new Set([profileOwner, claim?.discord_id].filter(Boolean));
 }
 
 export async function handleListTransfers(request, env, raidId) {
@@ -56,6 +67,20 @@ export async function handleCreateTransfer(request, env, raidId, session) {
     } else if (claim.discord_id !== session.discordId) {
       throw new HttpError(403, `Ім'я "${fromPlayer}" застовплене іншим гравцем`);
     }
+  }
+
+  // Передача власному персонажу обійшла б правило "один акаунт софтить у
+  // рейді одним персонажем": донор віддає ліміт альту, а той софтить ще й
+  // свій. Забороняємо й офіцерам — це та сама подвійна вага для акаунта.
+  const [fromOwners, toOwners] = await Promise.all([
+    characterOwnerIds(env, raidId, fromPlayer),
+    characterOwnerIds(env, raidId, toPlayer)
+  ]);
+  if (!officerMode) fromOwners.add(session.discordId);
+  if ([...toOwners].some((id) => fromOwners.has(id))) {
+    throw new HttpError(409, officerMode
+      ? `${fromPlayer} і ${toPlayer} — персонажі одного акаунта, передавати софти між ними не можна`
+      : 'Не можна передати софти власному персонажу');
   }
 
   const existingFrom = await getWeightTransferByFrom(env.DB, raidId, fromPlayer);
@@ -97,14 +122,15 @@ export async function handleDeleteTransfer(request, env, raidId, fromPlayer, ses
   }
 
   await deleteWeightTransfer(env.DB, raidId, fromPlayer);
-  // Бонусна вага, яку отримувач вже розподілив із переданого пулу, більше
-  // не має підстави - інакше вона лишається "мертвим" плюсом до рол-ваги
-  // назавжди, навіть після скасування передачі.
-  await resetBonusWeightForPlayer(env.DB, raidId, transfer.to_player);
   await insertAudit(env.DB, raidId, session.username, 'weight_transfer_cancel', {
     fromPlayer,
     toPlayer: transfer.to_player
   });
+  // Бонусна вага з переданого пулу більше не має підстави - інакше вона
+  // лишилась би "мертвим" плюсом до рол-ваги. Але зрізаємо лише надлишок
+  // понад новий пул: бонус від офіцера в отримувача має лишитись.
+  const trim = await enforceBonusPool(env.DB, raid, transfer.to_player);
+  if (trim) await insertAudit(env.DB, raidId, session.username, 'bonus_trim', { playerName: transfer.to_player, ...trim });
 
   return jsonResponse({ ok: true });
 }

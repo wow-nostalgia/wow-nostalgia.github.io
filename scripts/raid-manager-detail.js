@@ -643,15 +643,20 @@ function applySoftFormLockState() {
       cancelLink.addEventListener('click', () => deleteTransfer(myTransfer.from_player));
       transferNotice.appendChild(cancelLink);
     }
-  } else if (myReceived) {
+  } else if (myReceived || myBonusGrant) {
+    // Передача й грант офіцера можуть бути в гравця одночасно - згадуємо обидва.
+    const amount = myBonusGrant?.amount ?? 1;
+    const grantText = amount === 1 ? 'бонусний софт' : `${amount} ${bonusSoftsWord(amount)}`;
     transferNotice.hidden = false;
-    transferNotice.textContent = `Ти отримав софт від ${myReceived.from_player}. Розподіли його на вкладці «Предмети».`;
-  } else if (myBonusGrant) {
-    transferNotice.hidden = false;
-    const amount = myBonusGrant.amount ?? 1;
-    transferNotice.textContent = amount === 1
-      ? 'Тобі призначено бонусний софт офіцером. Розподіли його на вкладці «Предмети».'
-      : `Тобі призначено ${amount} ${bonusSoftsWord(amount)} офіцером. Розподіли їх на вкладці «Предмети».`;
+    if (myReceived && myBonusGrant) {
+      transferNotice.textContent = `Ти отримав софт від ${myReceived.from_player}, а офіцер призначив тобі ${grantText}. Розподіли їх на вкладці «Предмети».`;
+    } else if (myReceived) {
+      transferNotice.textContent = `Ти отримав софт від ${myReceived.from_player}. Розподіли його на вкладці «Предмети».`;
+    } else {
+      transferNotice.textContent = amount === 1
+        ? 'Тобі призначено бонусний софт офіцером. Розподіли його на вкладці «Предмети».'
+        : `Тобі призначено ${grantText} офіцером. Розподіли їх на вкладці «Предмети».`;
+    }
   } else {
     transferNotice.hidden = true;
   }
@@ -1736,8 +1741,13 @@ function renderItemsTable() {
       .filter((r) => myNamesForItems.includes(r.player_name))
       .reduce((s, r) => s + (r.bonus_weight || 0), 0);
     bonusPoolBanner.hidden = false;
-    const bonusSource = myReceivedForItems ? `від ${myReceivedForItems.from_player}` : 'від офіцера';
-    bonusPoolBanner.textContent = `Бонусні софти ${bonusSource}: ${usedBonusForItems}/${bonusPoolForItems} використано.`;
+    const bonusSource = [
+      myReceivedForItems && `від ${myReceivedForItems.from_player}`,
+      myBonusGrantForItems && 'від офіцера'
+    ].filter(Boolean).join(' і ');
+    bonusPoolBanner.textContent = myReceivedForItems && myBonusGrantForItems
+      ? `Бонусні софти (${bonusSource}): ${usedBonusForItems}/${bonusPoolForItems} використано.`
+      : `Бонусні софти ${bonusSource}: ${usedBonusForItems}/${bonusPoolForItems} використано.`;
   } else {
     bonusPoolBanner.hidden = true;
   }

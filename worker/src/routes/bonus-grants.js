@@ -5,7 +5,6 @@ import {
   getBonusGrant,
   upsertBonusGrant,
   deleteBonusGrant,
-  resetBonusWeightForPlayer,
   enforceBonusPool,
   insertAudit
 } from '../db.js';
@@ -63,8 +62,11 @@ export async function handleDeleteBonusGrant(request, env, raidId, playerName, s
   await requireRaidOfficer(env.DB, raidId, raid, session);
 
   await deleteBonusGrant(env.DB, raidId, playerName);
-  await resetBonusWeightForPlayer(env.DB, raidId, playerName);
   await insertAudit(env.DB, raidId, session.username, 'bonus_grant_cancel', { playerName });
+  // Зрізаємо лише надлишок понад новий пул: бонус від переданих софтів,
+  // якщо гравець їх отримав, лишається.
+  const trim = await enforceBonusPool(env.DB, raid, playerName);
+  if (trim) await insertAudit(env.DB, raidId, session.username, 'bonus_trim', { playerName, ...trim });
 
   return jsonResponse({ ok: true });
 }
