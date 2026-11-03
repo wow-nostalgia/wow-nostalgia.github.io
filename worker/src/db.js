@@ -357,6 +357,14 @@ export async function createReserve(db, { raidId, playerName, itemId, boss, weig
   return getReserveById(db, raidId, result.meta.last_row_id);
 }
 
+export async function listRaidSoftPlayerNames(db, raidId) {
+  const { results } = await db
+    .prepare('SELECT DISTINCT player_name FROM soft_reserves WHERE raid_id = ?')
+    .bind(raidId)
+    .all();
+  return results.map((r) => r.player_name);
+}
+
 export async function deleteReserveById(db, raidId, reserveId) {
   await db.prepare('DELETE FROM soft_reserves WHERE raid_id = ? AND id = ?').bind(raidId, reserveId).run();
 }

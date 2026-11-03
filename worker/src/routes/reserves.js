@@ -18,7 +18,9 @@ import {
   getBonusGrant,
   applyPenaltyBattalionIfMatched,
   getSoftPenalty,
-  getBonusPool
+  getBonusPool,
+  listUserCharacters,
+  listRaidSoftPlayerNames
 } from '../db.js';
 import { checkPlayerAccess, requireRaidOfficer, isRaidOfficer } from '../auth.js';
 
@@ -48,6 +50,30 @@ export async function listVisibleReserves(env, raid, session) {
   return reserves.map((r) => (ownNames.has(r.player_name) ? r : { ...r, player_name: null }));
 }
 
+// Один акаунт софтить у рейді лише одним персонажем: поки на якомусь його
+// персонажі є софти (хоч поставлені самим гравцем, хоч призначені офіцером),
+// інші його персонажі софтити не можуть. Стосується й офіцерів, коли вони
+// софтять за себе; софт офіцера за чужого гравця сюди не потрапляє — того
+// імені немає серед персонажів офіцера. "Свої" — профіль + імена,
+// застовплені цим акаунтом у рейді (на випадок, якщо персонажа потім
+// прибрали з профілю). Регістр — як у requireOwnCharacter: SQLite не
+// кейсфолдить кирилицю.
+async function requireSingleOwnCharacter(env, raidId, session, playerName) {
+  const [characters, claimed, softNames] = await Promise.all([
+    listUserCharacters(env.DB, session.discordId),
+    getClaimedPlayerNames(env.DB, raidId, session.discordId),
+    listRaidSoftPlayerNames(env.DB, raidId)
+  ]);
+  const key = (name) => name.toLocaleLowerCase('uk');
+  const own = new Set([...characters.map((c) => key(c.characterName)), ...[...claimed].map(key)]);
+  if (!own.has(key(playerName))) return;
+
+  const other = softNames.find((name) => own.has(key(name)) && key(name) !== key(playerName));
+  if (other) {
+    throw new HttpError(409, `У цьому рейді ти вже софтиш персонажем ${other}. Щоб софтити іншим — спершу видали всі софти ${other}`);
+  }
+}
+
 export async function handleCreateReserve(request, env, raidId, session) {
   const raid = await loadRaidOr404(env, raidId);
   const body = await readJson(request);
@@ -67,6 +93,8 @@ export async function handleCreateReserve(request, env, raidId, session) {
   if (raid.is_locked && !access.officer) {
     throw new HttpError(423, 'Рейд заблоковано для редагування');
   }
+
+  await requireSingleOwnCharacter(env, raidId, session, playerName);
 
   // Гравець, що передав вагу іншому, не може більше нічого засофтити
   const ownTransfer = await getWeightTransferByFrom(env.DB, raidId, playerName);

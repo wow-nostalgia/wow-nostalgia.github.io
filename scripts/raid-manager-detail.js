@@ -18,6 +18,7 @@ const raidContent = document.getElementById('raidContent');
 const softForm = document.getElementById('softForm');
 const softPlayerNameInput = document.getElementById('softPlayerName');
 const noCharactersHint = document.getElementById('noCharactersHint');
+const softCharacterNotice = document.getElementById('softCharacterNotice');
 const softBoss = document.getElementById('softBoss');
 const softItem = document.getElementById('softItem');
 const softItemTrigger = document.getElementById('softItemTrigger');
@@ -481,6 +482,14 @@ function myCharNames() {
   return myCharacters.map((c) => c.characterName);
 }
 
+// Мій персонаж, на якого в рейді вже є софти (свої чи призначені офіцером).
+// Ім'я повертаємо з профілю, щоб воно збігалось зі значенням у списку.
+function getMySoftedCharacter() {
+  const key = (name) => name.toLocaleLowerCase('uk');
+  const softed = new Set(reserves.filter((r) => r.player_name).map((r) => key(r.player_name)));
+  return myCharNames().find((name) => softed.has(key(name))) || null;
+}
+
 function getMyTransfer() {
   const names = myCharNames();
   return weightTransfers.find((t) => names.includes(t.from_player)) || null;
@@ -577,15 +586,26 @@ function checkNotifications() {
 function applySoftFormLockState() {
   const myTransfer = getMyTransfer();
   const locked = isRaidCompleted() || (raid.is_locked && !isOfficerMode()) || Boolean(myTransfer);
+  const softPlayerName = softPlayerNameInput.value.trim();
+
+  // Один акаунт софтить у рейді лише одним персонажем (те саме перевіряє
+  // worker). Список лишається активним — щоб можна було повернутись на
+  // персонажа з софтами.
+  const softedCharacter = getMySoftedCharacter();
+  const otherCharacterSofted = Boolean(softedCharacter) && softedCharacter !== softPlayerName;
+  softCharacterNotice.hidden = !otherCharacterSofted || locked;
+  softCharacterNotice.textContent = otherCharacterSofted
+    ? `⚠️ У цьому рейді ти вже софтиш персонажем ${softedCharacter}. Щоб софтити іншим — спершу видали всі софти ${softedCharacter}.`
+    : '';
+  const formLocked = locked || otherCharacterSofted;
 
   // Без персонажів список лишається активним: у ньому пункт "Додати персонажа".
   softPlayerNameInput.disabled = locked;
-  softBoss.disabled = locked;
-  softItemTrigger.disabled = locked;
-  softForm.querySelector('button[type="submit"]').disabled = locked;
+  softBoss.disabled = formLocked;
+  softItemTrigger.disabled = formLocked;
+  softForm.querySelector('button[type="submit"]').disabled = formLocked;
 
-  const softPlayerName = softPlayerNameInput.value.trim();
-  applyWeightLimit(softWeightToggle, softWeight, locked, remainingWeightFor(softPlayerName));
+  applyWeightLimit(softWeightToggle, softWeight, formLocked, remainingWeightFor(softPlayerName));
   renderSoftPenaltyNotice(softPlayerName);
 
   const transfersEnabled = (raid.transfer_weight_limit ?? 0) !== 0;
@@ -1347,8 +1367,13 @@ function populateMyCharacters() {
   addOpt.style.color = 'var(--color-link)';
   softPlayerNameInput.appendChild(addOpt);
 
+  // Персонаж, яким уже софтиш у цьому рейді, важливіший за останній
+  // обраний: іншими тут софтити все одно не можна.
   const saved = localStorage.getItem(LS_CHAR_KEY);
-  if (saved && myCharacters.some((c) => c.characterName === saved)) {
+  const softed = getMySoftedCharacter();
+  if (softed) {
+    softPlayerNameInput.value = softed;
+  } else if (saved && myCharacters.some((c) => c.characterName === saved)) {
     softPlayerNameInput.value = saved;
   } else {
     softPlayerNameInput.selectedIndex = 0;
