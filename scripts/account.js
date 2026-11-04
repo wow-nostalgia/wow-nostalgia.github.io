@@ -5,6 +5,7 @@ const loginBtn = document.getElementById('loginBtn');
 const profileAvatar = document.getElementById('profileAvatar');
 const profileUsername = document.getElementById('profileUsername');
 const profileDiscordId = document.getElementById('profileDiscordId');
+const logoutBtn = document.getElementById('logoutBtn');
 const charactersList = document.getElementById('charactersList');
 const addCharacterForm = document.getElementById('addCharacterForm');
 const characterNameInput = document.getElementById('characterNameInput');
@@ -630,6 +631,14 @@ async function loadBackgroundStats() {
     backgroundStatsStatus.textContent = `Помилка завантаження: ${err.message}`;
   }
 }
+
+// Вихід живе тут, у профілі (раніше — у меню акаунта в навбарі). Після
+// перезавантаження сторінка покаже "Увійти через Discord".
+logoutBtn.addEventListener('click', async () => {
+  logoutBtn.disabled = true;
+  await logoutCurrentUser();
+  window.location.reload();
+});
 
 async function init() {
   loginBtn.href = discordLoginUrl('/account/');

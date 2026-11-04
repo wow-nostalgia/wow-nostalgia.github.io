@@ -115,47 +115,26 @@ function renderAuthNav(user) {
     return;
   }
 
-  const dropdown = document.createElement('div');
-  dropdown.className = 'nav__dropdown';
-
-  const trigger = document.createElement('button');
-  trigger.type = 'button';
-  trigger.className = 'nav__link nav__dropdown-trigger';
-  trigger.setAttribute('aria-haspopup', 'true');
-  trigger.setAttribute('aria-expanded', 'false');
+  // Пряме посилання на профіль: аватар + "Профіль". Вихід — кнопка на самій
+  // сторінці профілю (account.js), окремого меню акаунта нема.
+  const accountLink = document.createElement('a');
+  accountLink.className = 'nav__link';
+  accountLink.href = '/account/';
+  if (location.pathname.startsWith('/account/')) {
+    accountLink.classList.add('nav__link--active');
+    accountLink.setAttribute('aria-current', 'page');
+  }
   if (user.avatar) {
     const avatar = document.createElement('img');
     avatar.className = 'nav__icon nav__icon--avatar';
     avatar.src = user.avatar;
     avatar.alt = '';
-    trigger.appendChild(avatar);
+    accountLink.appendChild(avatar);
   } else {
-    trigger.innerHTML =
-      '<svg class="nav__icon nav__icon--profile" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>';
+    accountLink.innerHTML = '<svg class="nav__icon nav__icon--inline" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M10.561 8.073a6.005 6.005 0 0 1 3.432 5.142.75.75 0 1 1-1.498.07 4.5 4.5 0 0 0-8.99 0 .75.75 0 0 1-1.498-.07 6.004 6.004 0 0 1 3.431-5.142 3.999 3.999 0 1 1 5.123 0ZM10.5 5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"/></svg>';
   }
-  dropdown.appendChild(trigger);
-
-  const menu = document.createElement('div');
-  menu.className = 'nav__dropdown-menu';
-
-  const accountLink = document.createElement('a');
-  accountLink.className = 'nav__link';
-  accountLink.href = '/account/';
-  accountLink.innerHTML = '<svg class="nav__icon nav__icon--inline" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M10.561 8.073a6.005 6.005 0 0 1 3.432 5.142.75.75 0 1 1-1.498.07 4.5 4.5 0 0 0-8.99 0 .75.75 0 0 1-1.498-.07 6.004 6.004 0 0 1 3.431-5.142 3.999 3.999 0 1 1 5.123 0ZM10.5 5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"/></svg>Профіль';
-  menu.appendChild(accountLink);
-
-  const logoutBtn = document.createElement('button');
-  logoutBtn.type = 'button';
-  logoutBtn.className = 'nav__link';
-  logoutBtn.addEventListener('click', async () => {
-    await logoutCurrentUser();
-    window.location.reload();
-  });
-  logoutBtn.innerHTML = '<svg class="nav__icon nav__icon--inline" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M2 2.75C2 1.784 2.784 1 3.75 1h2.5a.75.75 0 0 1 0 1.5h-2.5a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h2.5a.75.75 0 0 1 0 1.5h-2.5A1.75 1.75 0 0 1 2 13.25Zm10.44 4.5-1.97-1.97a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l1.97-1.97H6.75a.75.75 0 0 1 0-1.5Z"/></svg>Вийти';
-  menu.appendChild(logoutBtn);
-
-  dropdown.appendChild(menu);
-  slot.appendChild(dropdown);
+  accountLink.append('Профіль');
+  slot.appendChild(accountLink);
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

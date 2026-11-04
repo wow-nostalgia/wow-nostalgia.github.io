@@ -625,10 +625,6 @@ button.nav__link {
   display: block;
 }
 
-.nav__icon--profile {
-  margin-right: 6px;
-}
-
 .nav__icon--avatar {
   width: 20px;
   height: 20px;
@@ -4492,6 +4488,15 @@ body.account-page .account-profile {
   margin: 0.75rem 0 1.5rem;
 }
 
+/* Кнопка "Вийти" - у правому краю рядка з аватаром і ніком. */
+body.account-page .account-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
 body.account-page .account-avatar {
   width: 56px;
   height: 56px;
@@ -4499,10 +4504,13 @@ body.account-page .account-avatar {
   border: 1px solid var(--color-border-mid);
 }
 
+/* min-width + перенос: довгий нік не виштовхує кнопку "Вийти" за край. */
 body.account-page .account-info {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 body.account-page .account-username {
