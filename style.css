@@ -693,6 +693,48 @@ button.nav__link {
   width: 100%;
 }
 
+/* Кнопка з розділеним списком (як на GitHub): ліва частина - посилання на
+   основний розділ, права - стрілка, що відкриває решту пунктів. Між ними -
+   тонка риска; підсвічується лише та частина, на яку навели. */
+.nav__split {
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.nav__split-main {
+  padding-right: 8px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.nav__split-toggle {
+  padding: 0 8px;
+  border-left-color: var(--color-border-mid);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.nav__split-toggle::after {
+  margin-left: 0;
+}
+
+.nav__dropdown.is-open .nav__split-toggle {
+  background: var(--color-hover);
+}
+
+/* Поточна сторінка - один із пунктів списку: підсвічуємо стрілку.
+   Окремим правилом, бо .nav__dropdown-trigger скидає фон у transparent. */
+.nav__split-toggle.nav__link--active {
+  background: var(--color-brand-dark);
+  color: var(--color-on-accent);
+}
+
+/* display: inline-flex у .nav__link інакше перебиває атрибут hidden
+   (напр. "Штрафбат" для тих, хто не увійшов). */
+.nav__link[hidden] {
+  display: none;
+}
+
 
 /* =========================
    COLLAPSIBLE
@@ -4502,6 +4544,23 @@ body.raid-manager-detail-page .raid-rarity--epic { color: var(--wow-quality-epic
     flex: 1 1 calc(50% - 8px);
     min-width: 140px;
     justify-content: center;
+  }
+
+  /* У меню-гамбургері стрілки нема: основний пункт і решта стають
+     звичайними рядками в одній сітці (display: contents знімає обгортку). */
+  .nav__split {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .nav__split .nav__dropdown-menu {
+    display: contents;
+  }
+
+  .nav__split-main {
+    padding: 0 10px;
+    border-radius: var(--radius-lg);
   }
 }
 
