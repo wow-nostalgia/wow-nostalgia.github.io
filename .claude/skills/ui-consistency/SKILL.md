@@ -19,14 +19,41 @@
 |---|---|
 | Кольори тексту | `--color-text`, `--color-text-strong`, `--color-text-soft`, `--color-text-muted`, `--color-text-faint`, `--color-on-accent` (#ffffff, текст на насичених/темних кольорових фонах) |
 | Поверхні | `--color-surface`, `--color-surface-soft`, `--color-surface-solid` (#1d2636), `--color-surface-overlay`, `--color-surface-table`, `--color-surface-modal` (#0f1c2e) |
-| Бордюри | `--color-border`, `--color-border-soft`, `--color-border-mid`, `--color-border-strong`, `--color-border-accent` |
+| Бордюри | `--color-border-mid` — рамка **будь-якого елемента**; `--color-border` — лише **внутрішні розділювачі**; `--color-border-accent` / кольорові — лише стани (див. «Рамки і заокруглення» нижче) |
 | Стани hover/active | `--color-hover`, `--color-hover-strong`, `--color-active` |
 | Акценти | `--color-link` (#7baaf5), `--color-link-hover` (#ffd700), `--color-brand`, `--color-accent-gold`, `--color-accent-purple`, `--color-accent-orange` (#f2994a), `--color-accent-mint` (#6dd09a), `--color-accent-emerald` (#22c55e) |
 | Семантика | `--color-success` (#63d471) — колір тексту/чіпів; `--color-success-strong` (#3a9e4a) + `--color-success-strong-hover` (#2f8a3e) — суцільний фон кнопки; `--color-danger` (#ff6b6b) + `--color-danger-hover` (#e05252); `--color-warning` (#f0ad4e) |
-| Радіуси | `--radius-sm` (4px), `--radius-md` (8px), `--radius-lg` (10px), `--radius-xl` (14px), `--radius-pill` (999px) |
+| Радіуси | `--radius-lg` (12px), `--radius-md` (6px), `--radius-sm` (3px), `--radius-pill` — вибір за розміром елемента, див. нижче |
 | Тіні | `--shadow-sm`, `--shadow-md`, `--shadow-lg` |
 | Анімація | `--transition-fast` (0.2s ease) |
 | Відступи | `--space-1`…`--space-9` (0.15rem…2rem) |
+
+### Рамки і заокруглення — одне правило на весь сайт (2026-11-04)
+
+**Рамка (нейтральна) — лише два рівні:**
+- `1px solid var(--color-border-mid)` — зовнішня рамка будь-якого елемента:
+  кнопки, поля, селекти, перемикачі, випадаючі списки, картки, панелі,
+  модалки, обгортки таблиць, кнопки навбару.
+- `1px solid var(--color-border)` — лише внутрішні розділювачі:
+  лінії між рядками таблиць, лінія під вкладками, розділювачі секцій
+  всередині картки, шапка/футер.
+- Токенів `--color-border-soft/-strong/-input/-button` і «сирих»
+  `rgba(197,198,205,…)` більше немає — не повертай їх.
+- Кольорові рамки (`--color-border-accent`, `--color-link`, danger/success
+  rgba) — **тільки для станів** (hover, focus, відкрита вкладка, помилка),
+  не для оформлення в спокої.
+
+**Заокруглення — за розміром елемента:**
+- `--radius-lg` (12px) — великі блоки (≈40px заввишки й більше): кнопки
+  навбару, бокові кнопки головної, картки, панелі, модалки, обгортки таблиць.
+- `--radius-md` (6px) — звичайні кнопки (`.compare-btn`, `.link-button-std`),
+  поля, селекти, перемикачі ваги, випадаючі списки.
+- `--radius-sm` (3px) — лише дрібне неінтерактивне: тултіпи, іконки
+  предметів, крихітні чипи (`.raid-bonus-chip`), кнопки «+/−» ~18px.
+- `--radius-pill` / `50%` — пілюлі-чипи й кола (аватари, крапки).
+
+Приклади нижче можуть містити старі «сирі» значення — правило вище має
+пріоритет.
 
 > `--color-success` і `--color-success-strong` — це РІЗНІ токени для різних ролей, не одне й те саме перцепційно вирівняне значення: перший — для тексту/чіпів на темному тлі, другий — для суцільного фону кнопки (за задумом темніший, щоб не сліпив). Те саме для `--color-danger`/`--color-danger-hover`.
 
@@ -157,7 +184,7 @@ body.raid-manager-detail-page .raid-officer-panel { … }
 ### Первинна / CTA: `.compare-btn`
 ```css
 padding: 0.5rem 1rem;
-border: 1px solid rgba(255, 255, 255, 0.28);
+border: 1px solid var(--color-border-mid);
 border-radius: var(--radius-md);
 background: var(--color-surface-soft);
 color: var(--color-text-strong);
@@ -227,8 +254,8 @@ body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:
 ### Тогл-кнопки: `.raid-toggle-btn` / `.raid-weight-toggle-btn`
 ```css
 padding: 0.35rem 0.7rem;
-border: 1px solid rgba(197, 198, 205, 0.35);
-border-radius: var(--radius-sm);
+border: 1px solid var(--color-border-mid);
+border-radius: var(--radius-md);
 background-color: rgba(12, 21, 33, 0.88);
 color: var(--color-text-strong);
 font-size: 0.85rem; font-weight: 600;
@@ -293,8 +320,8 @@ function renderPagination(totalPages) {
 Єдиний паттерн для всіх текстових полів і дропдаунів:
 ```css
 padding: 0.45rem 0.65rem;
-border: 1px solid rgba(197, 198, 205, 0.35);
-border-radius: var(--radius-sm);
+border: 1px solid var(--color-border-mid);
+border-radius: var(--radius-md);
 background-color: rgba(12, 21, 33, 0.88);
 color: var(--color-text-strong);
 font-size: 0.95rem;
@@ -366,8 +393,8 @@ font-size: 0.9rem; font-weight: 500; cursor: pointer;
 position: absolute; top: 100%; left: 0; right: 0;
 z-index: 20; margin-top: 0.25rem;
 max-height: 18.75rem; overflow-y: auto;
-border: 1px solid rgba(197,198,205,0.35);
-border-radius: var(--radius-sm);
+border: 1px solid var(--color-border-mid);
+border-radius: var(--radius-md);
 background-color: rgba(12,21,33,0.97);
 box-shadow: var(--shadow-sm);
 display: none; /* показуй класом .is-open */
@@ -386,7 +413,7 @@ font-size: 0.85rem; color: var(--color-text-strong); cursor: pointer;
 Контейнер `.ranking-table-wrap`:
 ```css
 border: 1px solid var(--color-border-mid);
-border-radius: var(--radius-md);
+border-radius: var(--radius-lg);
 background-color: var(--color-surface-table);
 overflow: visible; /* або overflow-x: auto для широких */
 ```
