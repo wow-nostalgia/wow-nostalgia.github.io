@@ -520,9 +520,11 @@ body.account-page #loggedInView h2 {
   flex: 1;
 }
 
+/* gap - той самий, що між рештою кнопок навбару (.nav). */
 .nav__auth-slot {
   display: flex;
   align-items: center;
+  gap: 6px;
   margin-left: auto;
 }
 
@@ -612,10 +614,11 @@ button.nav__link {
 
 /* Рамка кнопок навбару (як на GitHub) - тієї ж товщини й кольору, що й
    риска між частинами кнопки з розділеним списком. Лише кнопки першого
-   рівня: пункти випадаючих списків, прапорець мови й кнопка профілю
-   лишаються без рамки. */
+   рівня та кнопки профілю. Пункти випадаючих списків і прапорець мови -
+   без рамки. */
 .nav > .nav__link,
-.nav__split > .nav__link {
+.nav__split > .nav__link,
+.nav__link--account {
   border-color: var(--color-border-mid);
 }
 
@@ -4566,7 +4569,8 @@ body.raid-manager-detail-page .raid-rarity--epic { color: var(--wow-quality-epic
   /* У меню-гамбургері пункти списків стоять окремими рядками поруч з
      основними - рамка лише на частині рядків виглядала б непослідовно. */
   .nav > .nav__link,
-  .nav__split > .nav__link {
+  .nav__split > .nav__link,
+  .nav__link--account {
     border-color: transparent;
   }
 }
