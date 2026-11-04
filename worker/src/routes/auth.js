@@ -16,6 +16,7 @@ import {
   listPrimaryCharacterNames,
   isDefaultOfficer,
   updateUserPreferences,
+  getUserDisplayName,
   DEFAULT_SOUND_VOLUME
 } from '../db.js';
 import { requireSession } from '../auth.js';
@@ -127,6 +128,7 @@ export async function handleGetMe(request, env) {
   const user = await getUserByDiscordId(env.DB, session.discordId);
   return jsonResponse({
     ...publicUser(user),
+    displayName: await getUserDisplayName(env.DB, session.discordId),
     isAdmin: session.discordId === env.ADMIN_DISCORD_ID,
     isGuildOfficer: await isDefaultOfficer(env.DB, session.discordId)
   });

@@ -496,6 +496,15 @@ export async function getUserByDiscordId(db, discordId) {
   return db.prepare('SELECT * FROM users WHERE discord_id = ?').bind(discordId).first();
 }
 
+// Ім'я для навбара: основний персонаж, а якщо його не позначено — нік Discord.
+export async function getUserDisplayName(db, discordId) {
+  const row = await db
+    .prepare(`SELECT ${displayNameSubquery('u')} AS name FROM users u WHERE u.discord_id = ?`)
+    .bind(discordId)
+    .first();
+  return row?.name || null;
+}
+
 // Гучність звукових сповіщень за замовчуванням, %. Колонка в базі має
 // DEFAULT 70 з міграції 0017 (у SQLite його не змінити без перебудови
 // таблиці), тож новим користувачам значення пишемо явно.
