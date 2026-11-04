@@ -82,6 +82,18 @@ function storageSet(key, value) {
   try { localStorage.setItem(key, value); } catch { /* без запам'ятовування */ }
 }
 
+function storageRemove(key) {
+  try { localStorage.removeItem(key); } catch { /* сховище недоступне */ }
+}
+
+// Кнопка-лампочка біля заголовка: видна лише поки карусель закрита й
+// повертає її без перезавантаження сторінки.
+function setRestoreButtonVisible(visible) {
+  const btn = document.getElementById('indexTipsRestoreBtn');
+  if (btn) btn.hidden = !visible;
+  return btn;
+}
+
 function svgIcon(name, className = '') {
   return `<svg${className ? ` class="${className}"` : ''} viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="${TIP_ICONS[name]}"/></svg>`;
 }
@@ -97,8 +109,12 @@ function iconButton(className, label, iconName) {
 
 function initIndexTips() {
   const root = document.getElementById('indexTips');
-  if (!root || !TIPS.length) return;
-  if (storageGet(HIDDEN_KEY) === String(TIPS_VERSION)) return;
+  if (!root || !TIPS.length) return null;
+  if (storageGet(HIDDEN_KEY) === String(TIPS_VERSION)) {
+    setRestoreButtonVisible(true);
+    return null;
+  }
+  setRestoreButtonVisible(false);
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isPhone = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
@@ -214,10 +230,19 @@ function initIndexTips() {
     schedule();
   });
 
-  hideBtn.addEventListener('click', () => {
+  hideBtn.addEventListener('click', (event) => {
     storageSet(HIDDEN_KEY, String(TIPS_VERSION));
     clearTimeout(timer);
-    root.remove();
+    // Порожній чистий блок на місці старого: повторний initIndexTips() з
+    // кнопки-лампочки збудує карусель заново, без подвійних слухачів.
+    const placeholder = document.createElement('section');
+    placeholder.id = root.id;
+    placeholder.className = root.className;
+    placeholder.hidden = true;
+    root.replaceWith(placeholder);
+    const restoreBtn = setRestoreButtonVisible(true);
+    // З клавіатури (detail 0) фокус не має губитись разом із кнопкою ✕.
+    if (event.detail === 0) restoreBtn?.focus();
   });
 
   root.addEventListener('mouseenter', () => { hovered = true; });
@@ -242,6 +267,18 @@ function initIndexTips() {
   root.hidden = false;
   render();
   schedule();
+  return root;
 }
 
-document.addEventListener('DOMContentLoaded', initIndexTips);
+document.addEventListener('DOMContentLoaded', () => {
+  initIndexTips();
+  document.getElementById('indexTipsRestoreBtn')?.addEventListener('click', (event) => {
+    storageRemove(HIDDEN_KEY);
+    const root = initIndexTips();
+    // З клавіатури переводимо фокус на карусель: кнопка-лампочка зникла.
+    if (root && event.detail === 0) {
+      root.tabIndex = -1;
+      root.focus();
+    }
+  });
+});

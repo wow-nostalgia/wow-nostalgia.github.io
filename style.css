@@ -259,10 +259,32 @@ body.index-page .container-inner {
   gap: var(--space-6);
 }
 
-body.index-page .container-inner > h1,
+body.index-page .index-heading > h1,
 body.index-page .container-inner > .intro-text {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+/* Заголовок + кнопка-лампочка "Показати підказки" в правому куті.
+   Симетричні відступи тримають заголовок по центру й не дають довгому
+   тексту на телефоні налізти на кнопку. */
+body.index-page .index-heading {
+  position: relative;
+}
+
+body.index-page .index-heading > h1 {
+  padding-inline: 2.25rem;
+}
+
+body.index-page .index-tips-restore {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+body.index-page .index-tips-restore[hidden] {
+  display: none;
 }
 
 /* Карусель підказок "Чи знаєш ти?" (scripts/index-tips.js). Слайди лежать

@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Nostalgia</title>
-  <link rel="stylesheet" href="style.css?v=187">
+  <link rel="stylesheet" href="style.css?v=188">
   <script src="/scripts/background.js?v=2"></script>
 </head>
 
@@ -57,7 +57,13 @@
     </header>
 
     <div class="container-inner">
-      <h1>Ласкаво просимо до "Nostalgia"</h1>
+      <div class="index-heading">
+        <h1>Ласкаво просимо до "Nostalgia"</h1>
+        <!-- Видна лише коли карусель підказок закрито (scripts/index-tips.js). -->
+        <button type="button" id="indexTipsRestoreBtn" class="index-tips__btn index-tips-restore tooltipped tooltipped--s tooltipped--sw" aria-label="Показати підказки про сайт" hidden>
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"/></svg>
+        </button>
+      </div>
       <p class="intro-text">Ми не просто збираємо рейди — ми відновлюємо ту саму атмосферу, за яку полюбили цей світ.</p>
 
       <section id="indexTips" class="index-tips" hidden></section>
@@ -336,7 +342,7 @@
     <script src="./scripts/nav.js?v=3"></script>
     <script src="./scripts/auth-shared.js?v=14"></script>
     <script src="./scripts/index.js?v=3"></script>
-    <script src="./scripts/index-tips.js?v=3"></script>
+    <script src="./scripts/index-tips.js?v=4"></script>
     <!-- Cloudflare Web Analytics -->
     <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
       data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

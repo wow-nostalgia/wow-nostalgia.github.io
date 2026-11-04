@@ -317,37 +317,6 @@ soundVolumeTestBtn.addEventListener('click', () => {
   audio.play().catch(() => setSettingsStatus('Не вдалося відтворити звук.'));
 });
 
-// --- Підказки на головній ----------------------------------------------
-// Закриття каруселі запам'ятовується лише в цьому браузері (ключ із
-// scripts/index-tips.js), тож і повертаємо її тут, без запиту до API.
-
-const INDEX_TIPS_HIDDEN_KEY = 'indexTipsHiddenVersion';
-const indexTipsResetBtn = document.getElementById('indexTipsResetBtn');
-const indexTipsHint = document.getElementById('indexTipsHint');
-
-function isIndexTipsHidden() {
-  try { return localStorage.getItem(INDEX_TIPS_HIDDEN_KEY) !== null; } catch { return false; }
-}
-
-function renderIndexTipsReset(justRestored = false) {
-  const hidden = isIndexTipsHidden();
-  indexTipsResetBtn.disabled = !hidden;
-  if (justRestored) {
-    indexTipsHint.textContent = "Готово: підказки знову з'являться на головній.";
-  } else {
-    indexTipsHint.textContent = hidden
-      ? 'Карусель підказок про сайт у цьому браузері сховано. Натисни кнопку, щоб вона знову показувалась на головній.'
-      : 'Карусель підказок про сайт зараз показується на головній.';
-  }
-}
-
-indexTipsResetBtn.addEventListener('click', () => {
-  try { localStorage.removeItem(INDEX_TIPS_HIDDEN_KEY); } catch { /* сховище недоступне */ }
-  renderIndexTipsReset(true);
-});
-
-renderIndexTipsReset();
-
 // --- Фон сайту ---------------------------------------------------------
 // Значення: null - стандартний фон, 'none' - без фону, інакше ім'я файлу з
 // images/backgrounds/. Застосування й кеш - у scripts/background.js.
