@@ -115,15 +115,13 @@ function renderAuthNav(user) {
     return;
   }
 
-  // Пряме посилання на профіль: аватар + "Профіль". Вихід — кнопка на самій
-  // сторінці профілю (account.js), окремого меню акаунта нема.
+  // Пряме посилання на профіль: аватар + ім'я. Вихід — кнопка на самій
+  // сторінці профілю (account.js), окремого меню акаунта нема. Поточну
+  // сторінку в навбарі візуально не підсвічуємо, лише для скрінрідерів.
   const accountLink = document.createElement('a');
   accountLink.className = 'nav__link';
   accountLink.href = '/account/';
-  if (location.pathname.startsWith('/account/')) {
-    accountLink.classList.add('nav__link--active');
-    accountLink.setAttribute('aria-current', 'page');
-  }
+  if (location.pathname.startsWith('/account/')) accountLink.setAttribute('aria-current', 'page');
   if (user.avatar) {
     const avatar = document.createElement('img');
     avatar.className = 'nav__icon nav__icon--avatar';
