@@ -134,8 +134,26 @@ function renderAuthNav(user) {
     accountLink.innerHTML = '<svg class="nav__icon nav__icon--inline" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M10.561 8.073a6.005 6.005 0 0 1 3.432 5.142.75.75 0 1 1-1.498.07 4.5 4.5 0 0 0-8.99 0 .75.75 0 0 1-1.498-.07 6.004 6.004 0 0 1 3.431-5.142 3.999 3.999 0 1 1 5.123 0ZM10.5 5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"/></svg>';
   }
   // Основний персонаж, а без нього — нік Discord (displayName з /auth/me).
-  accountLink.append(user.displayName || user.username || 'Профіль');
+  // Довгий нік CSS обрізає трикрапкою; тоді повне ім'я — у тултіпі.
+  const fullName = user.displayName || user.username || 'Профіль';
+  const nameSpan = document.createElement('span');
+  nameSpan.className = 'nav__account-name';
+  nameSpan.textContent = fullName;
+  accountLink.classList.add('nav__link--account');
+  accountLink.appendChild(nameSpan);
   slot.appendChild(accountLink);
+
+  // Тултіп лише коли ім'я справді обрізане. ResizeObserver спрацьовує і
+  // при зміні ширини вікна, і коли меню-гамбургер робить посилання видимим.
+  const syncNameTooltip = () => {
+    const truncated = nameSpan.scrollWidth > nameSpan.clientWidth;
+    accountLink.classList.toggle('tooltipped', truncated);
+    accountLink.classList.toggle('tooltipped--s', truncated);
+    accountLink.classList.toggle('tooltipped--sw', truncated);
+    if (truncated) accountLink.setAttribute('aria-label', fullName);
+    else accountLink.removeAttribute('aria-label');
+  };
+  new ResizeObserver(syncNameTooltip).observe(nameSpan);
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

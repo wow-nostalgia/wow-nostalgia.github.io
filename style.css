@@ -531,6 +531,17 @@ body.account-page #loggedInView h2 {
   right: 0;
 }
 
+/* Ім'я в посиланні на профіль. Персонаж WoW - до 12 символів і влазить
+   завжди; обрізається лише довгий нік Discord (тоді повне ім'я - у тултіпі,
+   scripts/auth-shared.js). */
+.nav__account-name {
+  min-width: 0;
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -4451,9 +4462,22 @@ body.raid-manager-detail-page .raid-rarity--epic { color: var(--wow-quality-epic
     flex: 1 1 100%;
   }
 
+  /* min-width: 0 - інакше flex не дасть слоту стиснутись нижче повної
+     ширини довгого імені, і сторінка поїде вбік. */
   .nav__auth-slot {
     flex: 1 1 100%;
+    min-width: 0;
     margin-left: 0;
+  }
+
+  /* У меню-гамбургері ім'я займає весь вільний рядок поруч із прапорцем і
+     обрізається лише там, де справді не влазить. */
+  .nav__link--account {
+    min-width: 0;
+  }
+
+  .nav__account-name {
+    max-width: none;
   }
 
   .nav__dropdown-trigger {
