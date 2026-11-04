@@ -377,6 +377,12 @@ body.index-page .index-tips__btn {
   cursor: pointer;
 }
 
+/* Трикутник ~4x7px проти паузи ~8x12px: x1.5 вирівнює їх оптично.
+   Кнопка й область кліку не змінюються. */
+body.index-page .index-tips__icon--play {
+  transform: scale(1.5);
+}
+
 body.index-page .index-tips__btn:hover {
   color: var(--color-text-strong);
   background-color: var(--color-hover);

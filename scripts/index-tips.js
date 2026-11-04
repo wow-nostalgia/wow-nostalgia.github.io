@@ -198,7 +198,9 @@ function initIndexTips() {
 
     const label = rotating ? 'Зупинити автопрокрутку' : 'Увімкнути автопрокрутку';
     rotationBtn.setAttribute('aria-label', label);
-    rotationBtn.innerHTML = svgIcon(rotating ? 'pause' : 'play');
+    // Трикутник "play" в Octicons (triangle-right) дрібніший за паузу —
+    // збільшуємо його класом, щоб кнопка не "стрибала" при перемиканні.
+    rotationBtn.innerHTML = rotating ? svgIcon('pause') : svgIcon('play', 'index-tips__icon--play');
     // Поки крутиться — без live-регіону, інакше зчитувач перебивав би читання.
     slidesEl.setAttribute('aria-live', rotating ? 'off' : 'polite');
   }
