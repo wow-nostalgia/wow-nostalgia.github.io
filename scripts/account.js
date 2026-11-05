@@ -120,13 +120,13 @@ function characterNameNode(name) {
   return link;
 }
 
-// КД героїчних рейдів (гравець відмічає вручну, щоп'ятниці о 04:00 за Києвом
+// КД рейдів, 10 і 25 (нормал і героїк мають спільний КД; гравець відмічає вручну, щоп'ятниці о 04:00 за Києвом
 // воркер їх скидає) і GearScore. Заголовки - за перемикачем мови назв
 // (nameLanguage, той самий, що для боссів/предметів).
 const COOLDOWN_KEYS = ['icc10', 'icc25', 'rs10', 'rs25'];
 const COOLDOWN_LABELS = {
-  uk: { icc10: 'КД ЦЛК 10г', icc25: 'КД ЦЛК 25г', rs10: 'КД РС 10г', rs25: 'КД РС 25г' },
-  en: { icc10: 'Cooldown ICC 10H', icc25: 'Cooldown ICC 25H', rs10: 'Cooldown RS 10H', rs25: 'Cooldown RS 25H' }
+  uk: { icc10: 'КД ЦЛК 10', icc25: 'КД ЦЛК 25', rs10: 'КД РС 10', rs25: 'КД РС 25' },
+  en: { icc10: 'Cooldown ICC 10', icc25: 'Cooldown ICC 25', rs10: 'Cooldown RS 10', rs25: 'Cooldown RS 25' }
 };
 
 function cooldownLabels() {

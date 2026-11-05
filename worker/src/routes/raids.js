@@ -18,7 +18,9 @@ import {
   resetAllBonusWeightsForRaid,
   deleteReservesExceptItems,
   enforceAllBonusPools,
-  pruneOldRaidsIfOverLimit
+  pruneOldRaidsIfOverLimit,
+  setCharacterCooldownsByNames,
+  CHARACTER_COOLDOWN_COLUMNS
 } from '../db.js';
 import { requireRaidOfficer, requireLeader } from '../auth.js';
 
@@ -240,6 +242,41 @@ export async function handleSetPotionLog(request, env, id, session) {
   await insertAudit(env.DB, id, session.username, 'potion_log_change', { raidUrl });
 
   return jsonResponse(publicRaid(updated));
+}
+
+const MAX_COOLDOWN_NAMES = 40;
+
+// Вкладка "Лог": офіцер ставить/знімає КД цього рейду обраним гравцям.
+// Колонку визначає сервер з самого рейду (ICC/RS + розмір 10/25; нормал і
+// героїк мають спільний КД), тож клієнт не може зачепити інший рейд.
+// body: { characters: string[], value: boolean }
+export async function handleSetRaidCooldowns(request, env, id, session) {
+  const raid = await loadRaidOr404(env, id);
+  await requireRaidOfficer(env.DB, id, raid, session);
+
+  const body = await readJson(request);
+  if (typeof body.value !== 'boolean') throw new HttpError(400, 'value має бути true або false');
+  if (!Array.isArray(body.characters) || !body.characters.length) {
+    throw new HttpError(400, 'Не обрано жодного персонажа');
+  }
+  if (body.characters.length > MAX_COOLDOWN_NAMES) {
+    throw new HttpError(400, `Не більше ${MAX_COOLDOWN_NAMES} персонажів за раз`);
+  }
+  const names = [...new Set(body.characters.map((n) => String(n ?? '').trim()).filter(Boolean))];
+  if (!names.length || names.some((n) => n.length > 24)) throw new HttpError(400, "Некоректні імена персонажів");
+
+  const size = String(raid.difficulty || '').slice(0, 2);
+  const key = `${String(raid.instance || '').toLowerCase()}${size}`;
+  const column = CHARACTER_COOLDOWN_COLUMNS[key];
+  if (!column) throw new HttpError(400, 'Для цього рейду КД не відстежується');
+
+  const result = await setCharacterCooldownsByNames(env.DB, column, names, body.value);
+  await insertAudit(env.DB, id, session.username, body.value ? 'cooldowns_set' : 'cooldowns_clear', {
+    cooldown: key,
+    characters: result.updated
+  });
+
+  return jsonResponse({ cooldown: key, ...result });
 }
 
 export async function handleToggleHiddenReserves(request, env, id, session) {

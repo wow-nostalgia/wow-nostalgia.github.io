@@ -69,6 +69,8 @@ const raidItemsList = document.getElementById('raidItemsList');
 const potionsPane = document.getElementById('potionsPane');
 const potionsAddBtn = document.getElementById('potionsAddBtn');
 const potionsClearBtn = document.getElementById('potionsClearBtn');
+const potionsCdSetBtn = document.getElementById('potionsCdSetBtn');
+const potionsCdClearBtn = document.getElementById('potionsCdClearBtn');
 const potionsHideHealTankLabel = document.getElementById('potionsHideHealTankLabel');
 const potionsHideHealTankCheckbox = document.getElementById('potionsHideHealTank');
 const potionsSoftedOnlyLabel = document.getElementById('potionsSoftedOnlyLabel');
@@ -959,8 +961,64 @@ function getPotionBossCount(statsRaid) {
   return countRaidBosses(getPotionBossMap(), statsRaid);
 }
 
+// КД рейду (профіль -> "Мої персонажі"): офіцер на вкладці "Лог" ставить/
+// знімає його обраним гравцям. Ключ рахуємо так само, як воркер (ICC/RS +
+// розмір; нормал і героїк мають спільний КД) - тут лише для підпису.
+const RAID_COOLDOWN_LABELS = { icc10: 'КД ЦЛК 10', icc25: 'КД ЦЛК 25', rs10: 'КД РС 10', rs25: 'КД РС 25' };
+const cdSelectedNames = new Set();
+
+function raidCooldownLabel() {
+  const key = `${String(raid.instance || '').toLowerCase()}${String(raid.difficulty || '').slice(0, 2)}`;
+  return RAID_COOLDOWN_LABELS[key] || null;
+}
+
+function updateCooldownButtons(headerCheckbox, rowCheckboxes) {
+  const count = cdSelectedNames.size;
+  potionsCdSetBtn.disabled = !count;
+  potionsCdClearBtn.disabled = !count;
+  if (!headerCheckbox) return;
+  headerCheckbox.checked = count > 0 && count === rowCheckboxes.length;
+  headerCheckbox.indeterminate = count > 0 && count < rowCheckboxes.length;
+}
+
+async function applyRaidCooldowns(value) {
+  const characters = [...cdSelectedNames];
+  if (!characters.length) return;
+  const label = raidCooldownLabel();
+  potionsCdSetBtn.disabled = true;
+  potionsCdClearBtn.disabled = true;
+  try {
+    const result = await apiCall('POST', `/raids/${raidId}/cooldowns`, {
+      token: getSessionToken(),
+      body: { characters, value }
+    });
+    const lines = [`${value ? 'Проставлено' : 'Знято'} ${label}: ${result.updated.length} персонажам.`];
+    if (result.missing.length) lines.push(`Немає на сайті: ${result.missing.join(', ')}.`);
+    showMessageModal(lines.join(' '), label);
+  } catch (err) {
+    showMessageModal(err.message);
+  } finally {
+    const hasSelection = cdSelectedNames.size > 0;
+    potionsCdSetBtn.disabled = !hasSelection;
+    potionsCdClearBtn.disabled = !hasSelection;
+  }
+}
+
 function renderPotionLogTable(statsRaid) {
   const bossCount = statsRaid ? getPotionBossCount(statsRaid) : 0;
+  // Чекбокси й кнопки КД - лише офіцерам і лише для рейдів, де КД відстежується.
+  const cooldownLabel = raidCooldownLabel();
+  const cdMode = Boolean(statsRaid) && isOfficerMode() && Boolean(cooldownLabel);
+  // Кожен перерендер (зміна фільтра, інший лог) скидає вибір, щоб не
+  // проставити КД гравцям, яких зараз не видно.
+  cdSelectedNames.clear();
+  potionsCdSetBtn.hidden = !cdMode;
+  potionsCdClearBtn.hidden = !cdMode;
+  if (cdMode) {
+    potionsCdSetBtn.setAttribute('aria-label', `Проставити ${cooldownLabel} обраним гравцям`);
+    potionsCdClearBtn.setAttribute('aria-label', `Зняти ${cooldownLabel} обраним гравцям`);
+  }
+  updateCooldownButtons(null, []);
 
   potionsBossCount.hidden = !bossCount;
   if (bossCount) potionsBossCount.textContent = `Босів: ${bossCount}`;
@@ -995,6 +1053,28 @@ function renderPotionLogTable(statsRaid) {
   applyAutoTooltip(table.querySelector('.table-header-icon'));
   const tbody = document.createElement('tbody');
 
+  // Офіцер: перша колонка - чекбокси для "Проставити/Зняти КД"; чекбокс у
+  // заголовку обирає/знімає всі видимі рядки.
+  let headerCheckbox = null;
+  const rowCheckboxes = [];
+  if (cdMode) {
+    const th = document.createElement('th');
+    th.className = 'raid-potion-cd-cell';
+    headerCheckbox = document.createElement('input');
+    headerCheckbox.type = 'checkbox';
+    headerCheckbox.setAttribute('aria-label', 'Обрати всіх');
+    headerCheckbox.addEventListener('change', () => {
+      rowCheckboxes.forEach((cb) => {
+        cb.checked = headerCheckbox.checked;
+        if (cb.checked) cdSelectedNames.add(cb.dataset.name);
+        else cdSelectedNames.delete(cb.dataset.name);
+      });
+      updateCooldownButtons(headerCheckbox, rowCheckboxes);
+    });
+    th.appendChild(headerCheckbox);
+    table.querySelector('thead tr').prepend(th);
+  }
+
   const rosterEntry = findRosterEntry(statsRaid.raidUrl);
 
   let players = statsRaid.players || [];
@@ -1008,6 +1088,22 @@ function renderPotionLogTable(statsRaid) {
   players.forEach((player) => {
     const tr = document.createElement('tr');
     tr.className = getPotionRowClass(player, bossCount);
+    if (cdMode) {
+      const cdTd = document.createElement('td');
+      cdTd.className = 'raid-potion-cd-cell';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.dataset.name = player.name;
+      cb.setAttribute('aria-label', `Обрати ${player.name}`);
+      cb.addEventListener('change', () => {
+        if (cb.checked) cdSelectedNames.add(player.name);
+        else cdSelectedNames.delete(player.name);
+        updateCooldownButtons(headerCheckbox, rowCheckboxes);
+      });
+      rowCheckboxes.push(cb);
+      cdTd.appendChild(cb);
+      tr.appendChild(cdTd);
+    }
     const nameTd = document.createElement('td');
     nameTd.className = 'raid-potion-name-cell';
     const nameWrap = document.createElement('span');
@@ -1051,6 +1147,8 @@ function renderPotionLogTable(statsRaid) {
 
     tbody.appendChild(tr);
   });
+
+  if (headerCheckbox) headerCheckbox.disabled = !rowCheckboxes.length;
 
   table.appendChild(tbody);
   wrap.appendChild(table);
@@ -1967,6 +2065,12 @@ function describeAuditAction(entry) {
       return hideSoftDetails
         ? `${d.delta > 0 ? 'додав' : 'прибрав'} офіцерський софт`
         : `${d.delta > 0 ? 'додав' : 'прибрав'} офіцерський софт гравцю ${d.playerName} (${translateBoss(d.boss)})`;
+    case 'cooldowns_set':
+    case 'cooldowns_clear': {
+      const label = RAID_COOLDOWN_LABELS[d.cooldown] || 'КД';
+      const names = d.characters || [];
+      return `${entry.action === 'cooldowns_set' ? 'проставив' : 'зняв'} ${label}: ${names.length ? names.join(', ') : 'нікому'}`;
+    }
     case 'hide_reserves': return "увімкнув режим прихованих софтів";
     case 'show_reserves': return "вимкнув режим прихованих софтів";
     case 'complete': return 'завершив рейд';
@@ -2260,6 +2364,8 @@ setupNameAutocomplete(assignPlayerNameInput, assignPlayerNameList);
 setupUserSearchAutocomplete(addOfficerInput, addOfficerList, addOfficer);
 potionsAddBtn.addEventListener('click', () => showPotionLogModal());
 potionsClearBtn.addEventListener('click', () => setPotionLog(null));
+potionsCdSetBtn.addEventListener('click', () => applyRaidCooldowns(true));
+potionsCdClearBtn.addEventListener('click', () => applyRaidCooldowns(false));
 potionsSoftedOnlyCheckbox.addEventListener('change', () => renderPotionLogTable(findPotionLogEntry(raid.potion_log_url)));
 potionsHideHealTankCheckbox.addEventListener('change', () => renderPotionLogTable(findPotionLogEntry(raid.potion_log_url)));
 potionLogConfirmBtn.addEventListener('click', () => {

@@ -634,6 +634,34 @@ export async function updateUserCharacter(db, discordId, characterName, fields) 
   return listUserCharacters(db, discordId);
 }
 
+// Офіцер з вкладки "Лог" рейду ставить/знімає КД списку персонажів. Імена
+// з логу можуть відрізнятись регістром від збережених - звіряємо без
+// регістру, як findCharacterClaim. column - лише з CHARACTER_COOLDOWN_COLUMNS.
+// Повертає { updated: [збережені імена], missing: [імена без профілю] }.
+export async function setCharacterCooldownsByNames(db, column, names, value) {
+  if (!Object.values(CHARACTER_COOLDOWN_COLUMNS).includes(column)) throw new Error(`bad column ${column}`);
+  const { results } = await db.prepare('SELECT discord_id, character_name FROM user_characters').all();
+  const byLower = new Map(results.map((r) => [r.character_name.toLocaleLowerCase('uk'), r]));
+
+  const updated = [];
+  const missing = [];
+  const statements = [];
+  for (const name of names) {
+    const row = byLower.get(name.toLocaleLowerCase('uk'));
+    if (!row) {
+      missing.push(name);
+      continue;
+    }
+    updated.push(row.character_name);
+    statements.push(
+      db.prepare(`UPDATE user_characters SET ${column} = ? WHERE discord_id = ? AND character_name = ?`)
+        .bind(value ? 1 : 0, row.discord_id, row.character_name)
+    );
+  }
+  if (statements.length) await db.batch(statements);
+  return { updated, missing };
+}
+
 // Щотижневе оновлення КД рейдів (cron, п'ятниця 04:00 за Києвом).
 export async function resetCharacterCooldowns(db) {
   const { meta } = await db

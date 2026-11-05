@@ -12,6 +12,7 @@ import {
   handleRemoveOfficer,
   handleToggleHiddenReserves,
   handleSetPotionLog,
+  handleSetRaidCooldowns,
   handleDeleteRaid,
   handlePruneOldRaids,
   publicRaid,
@@ -234,6 +235,7 @@ async function routeRaids(request, env, parts, session) {
   if (sub === 'unlock' && method === 'POST') return handleLock(request, env, raidId, false, session);
   if (sub === 'toggle-hidden' && method === 'POST') return handleToggleHiddenReserves(request, env, raidId, session);
   if (sub === 'potion-log' && method === 'PATCH') return handleSetPotionLog(request, env, raidId, session);
+  if (sub === 'cooldowns' && method === 'POST') return handleSetRaidCooldowns(request, env, raidId, session);
   if (sub === 'complete' && method === 'POST') return handleSetStatus(request, env, raidId, 'completed', session);
   if (sub === 'reactivate' && method === 'POST') return handleSetStatus(request, env, raidId, 'active', session);
   if (sub === 'audit' && method === 'GET') return handleListAudit(request, env, raidId, session);
