@@ -4752,6 +4752,11 @@ body.account-page .account-prefs .account-chars-hint {
   margin: 0.5rem 0 0;
 }
 
+/* Рядки статусу (помилка збереження) - без порожнього відступу, поки тихо. */
+body.account-page .account-prefs .account-chars-hint:empty {
+  display: none;
+}
+
 body.account-page .account-volume-row {
   display: flex;
   align-items: center;
