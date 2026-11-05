@@ -4371,6 +4371,12 @@ body.raid-manager-detail-page .raid-rarity--epic { color: var(--wow-quality-epic
     gap: 0.75rem;
   }
 
+  /* Під полем пошуку підказка має переноситись, інакше nowrap виносить її
+     за правий край і розширює сторінку на телефоні. */
+  body.ranking-page .player-search-hint {
+    white-space: normal;
+  }
+
   body.ranking-page .player-siblings-table {
     width: max-content;
     min-width: 100%;
