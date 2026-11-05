@@ -61,3 +61,35 @@ function setBackground(value) {
 }
 
 applyBackground(getStoredBackground());
+
+// Тема сайту (профіль -> Налаштування -> Тема сайту). Атрибут
+// data-theme на <html> перемикає блок токенів у style.css
+// (:root[data-theme="atom"]); без атрибута - стандартна тема.
+// Поки тестова й доступна лише адміну, тож зберігається тільки в
+// localStorage (без колонки в D1, як у фону).
+const THEME_STORAGE_KEY = 'siteTheme';
+const SITE_THEMES = ['default', 'atom'];
+
+function getSiteTheme() {
+  try {
+    const value = localStorage.getItem(THEME_STORAGE_KEY);
+    return SITE_THEMES.includes(value) ? value : 'default';
+  } catch {
+    return 'default';
+  }
+}
+
+function applySiteTheme(value) {
+  if (value && value !== 'default') document.documentElement.dataset.theme = value;
+  else delete document.documentElement.dataset.theme;
+}
+
+function setSiteTheme(value) {
+  try {
+    if (value && value !== 'default') localStorage.setItem(THEME_STORAGE_KEY, value);
+    else localStorage.removeItem(THEME_STORAGE_KEY);
+  } catch { /* без localStorage тема діє лише до перезавантаження */ }
+  applySiteTheme(value);
+}
+
+applySiteTheme(getSiteTheme());

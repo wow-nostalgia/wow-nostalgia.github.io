@@ -14,7 +14,7 @@
   <meta name="color-scheme" content="dark" />
   <title>Профіль — Рейд-менеджер</title>
   <link rel="stylesheet" href="../style.css?v=199">
-  <script src="/scripts/background.js?v=2"></script>
+  <script src="/scripts/background.js?v=3"></script>
 </head>
 
 <body class="account-page">
@@ -140,6 +140,15 @@
             <p id="backgroundStatus" class="account-chars-hint"></p>
           </div>
 
+          <div class="account-prefs" id="themePrefs" hidden>
+            <h2>Тема сайту</h2>
+            <div id="themeToggle" class="account-lang-toggle" role="group" aria-label="Тема сайту">
+              <button type="button" class="account-lang-toggle-btn" data-theme-value="default">Стандартна</button>
+              <button type="button" class="account-lang-toggle-btn" data-theme-value="atom">Темна (Atom One Cyan)</button>
+            </div>
+            <p class="account-chars-hint">Тестова функція, поки доступна лише адміністратору. Тема зберігається в цьому браузері.</p>
+          </div>
+
           <p id="settingsStatus"></p>
         </div>
 
@@ -236,7 +245,7 @@
   <script src="../scripts/auth-shared.js?v=18"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=20"></script>
-  <script src="../scripts/account.js?v=34"></script>
+  <script src="../scripts/account.js?v=35"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

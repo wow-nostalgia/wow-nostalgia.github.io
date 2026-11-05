@@ -405,6 +405,29 @@ backgroundGrid.addEventListener('click', (event) => {
   selectBackground(card.dataset.background || null);
 });
 
+// Тема сайту — тестова, показуємо лише адміну. setSiteTheme/getSiteTheme —
+// з scripts/background.js (підключений у <head>).
+function initThemeToggle() {
+  const prefs = document.getElementById('themePrefs');
+  const toggle = document.getElementById('themeToggle');
+  const render = () => {
+    const current = getSiteTheme();
+    toggle.querySelectorAll('[data-theme-value]').forEach((btn) => {
+      const active = btn.dataset.themeValue === current;
+      btn.classList.toggle('account-lang-toggle-btn--active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+  };
+  toggle.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-theme-value]');
+    if (!btn) return;
+    setSiteTheme(btn.dataset.themeValue);
+    render();
+  });
+  render();
+  prefs.hidden = false;
+}
+
 async function initBackgrounds(user) {
   currentBackground = user.background ?? null;
 
@@ -669,6 +692,7 @@ async function init() {
   if (user.isAdmin) {
     adminTabBtn.hidden = false;
     initDefaultOfficersAutocomplete();
+    initThemeToggle();
   }
 
   // Дані адмін-панелі тягнемо лише при першому відкритті вкладки.

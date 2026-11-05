@@ -5,46 +5,49 @@
 :root {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 
-  --color-page-bg: #282c34;
-  --color-surface: rgba(48, 56, 69, 0.98);
-  --color-surface-solid: #303845;
-  --color-surface-soft: #2c313c;
-  --color-surface-soft-hover: #3e4451;
-  --color-surface-overlay: rgba(40, 44, 52, 0.97);
-  --color-surface-deep: rgba(29, 31, 35, 0.75);
-  --color-surface-table: rgba(40, 44, 52, 0.45);
+  --color-page-bg: #0b1220;
+  --color-surface: rgba(29, 38, 54, 0.98);
+  --color-surface-solid: #1d2636;
+  --color-surface-soft: rgba(20, 35, 60, 0.55);
+  --color-surface-soft-hover: rgba(36, 58, 96, 0.72);
+  --color-surface-overlay: rgba(20, 27, 39, 0.97);
+  --color-surface-deep: rgba(8, 13, 22, 0.75);
+  --color-surface-table: rgba(11, 18, 29, 0.45);
 
-  --color-text: #abb2bf;
-  --color-text-strong: #dcdfe4;
-  --color-text-soft: #d7dae0;
-  --color-text-muted: #9da5b4;
-  --color-text-faint: #848b98;
+  --color-text: #c5c6cd;
+  --color-text-strong: #e8edf7;
+  --color-text-soft: #d6deed;
+  --color-text-muted: #b8c2d9;
+  --color-text-faint: #8f96a3;
 
-  --color-link: #61afef;
-  --color-link-hover: #56b6c2;
-  --color-brand: #56b6c2;
-  --color-brand-dark: #3e4451;
+  --color-link: #7baaf5;
+  --color-link-hover: #ffd700;
+  --color-brand: #87ceeb;
+  --color-brand-dark: #35558c;
   --color-brand-gradient-end: #000080;
-  --color-accent-gold: #e5c07b;
-  --color-accent-purple: #c678dd;
+  --color-accent-gold: #f2d27a;
+  --color-accent-purple: #cdb7e9;
   --color-accent-lavender: #cdb7e9;
 
-  --color-success: #98c379;
-  --color-success-strong: #5f8a3e;
-  --color-success-strong-hover: #4f7633;
-  --color-danger: #e06c75;
-  --color-danger-hover: #c85a63;
-  --color-warning: #e5c07b;
+  --color-success: #63d471;
+  --color-success-strong: #3a9e4a;
+  --color-success-strong-hover: #2f8a3e;
+  --color-danger: #ff6b6b;
+  --color-danger-hover: #e05252;
+  --color-warning: #f0ad4e;
 
   --color-on-accent: #ffffff;
-  --color-accent-orange: #d19a66;
-  --color-accent-mint: #56b6c2;
-  --color-accent-emerald: #98c379;
-  --color-surface-input: #1d1f23;
-  --color-surface-input-solid: #1d1f23;
-  --color-surface-topbar: rgba(40, 44, 52, 0.85);
-  --color-backdrop: rgba(24, 26, 31, 0.84);
-  --color-surface-modal: #282c34;
+  --color-accent-orange: #f2994a;
+  --color-accent-mint: #6dd09a;
+  --color-accent-emerald: #22c55e;
+  --color-surface-input: rgba(12, 21, 33, 0.88);
+  --color-surface-input-solid: rgba(12, 21, 33, 0.97);
+  --color-surface-topbar: rgba(29, 38, 54, 0.75);
+  --color-backdrop: rgba(5, 8, 14, 0.84);
+  --color-surface-tooltip: rgba(8, 14, 24, 0.97);
+  --color-badge-legion-bg: var(--color-accent-lavender);
+  --color-badge-legion-fg: var(--color-surface-solid);
+  --color-surface-modal: #0f1c2e;
 
   /* Нейтральні рамки - лише два рівні:
      --color-border-mid - рамка будь-якого елемента (кнопки, поля, селекти,
@@ -52,15 +55,15 @@
      --color-border - внутрішні розділювачі (рядки таблиць, лінія під
        вкладками, шапка/футер).
      Кольорові рамки (accent/danger/success) - лише для станів. */
-  --color-border: #2c313c;
-  --color-border-mid: #3e4451;
-  --color-border-accent: rgba(97, 175, 239, 0.45);
-  --color-border-accent-strong: rgba(97, 175, 239, 0.7);
-  --color-border-button-hover: #5c6370;
+  --color-border: rgba(197, 198, 205, 0.18);
+  --color-border-mid: rgba(197, 198, 205, 0.28);
+  --color-border-accent: rgba(123, 170, 245, 0.45);
+  --color-border-accent-strong: rgba(123, 170, 245, 0.7);
+  --color-border-button-hover: rgba(255, 255, 255, 0.45);
 
-  --color-hover: rgba(97, 175, 239, 0.10);
-  --color-hover-strong: rgba(97, 175, 239, 0.18);
-  --color-active: rgba(97, 175, 239, 0.12);
+  --color-hover: rgba(123, 170, 245, 0.10);
+  --color-hover-strong: rgba(123, 170, 245, 0.18);
+  --color-active: rgba(123, 170, 245, 0.12);
   --color-surface-stripe: rgba(255, 255, 255, 0.03);
   --color-surface-head: rgba(255, 255, 255, 0.06);
 
@@ -128,6 +131,57 @@
   --z-nav-dropdown: 1001;
 
   color-scheme: dark;
+}
+
+/* Темна тема "Atom One Cyan" (палітра VS Code-теми Atom One Cyan Dark).
+   Вмикається атрибутом data-theme="atom" на <html> (ставить
+   scripts/background.js за вибором у профілі -> Налаштування -> Тема сайту).
+   Перевизначає лише кольори; WoW-константи нижче не чіпає. */
+:root[data-theme="atom"] {
+  --color-page-bg: #282c34;
+  --color-surface: rgba(48, 56, 69, 0.98);
+  --color-surface-solid: #303845;
+  --color-surface-soft: #2c313c;
+  --color-surface-soft-hover: #3e4451;
+  --color-surface-overlay: rgba(40, 44, 52, 0.97);
+  --color-surface-deep: rgba(29, 31, 35, 0.75);
+  --color-surface-table: rgba(40, 44, 52, 0.45);
+  --color-text: #abb2bf;
+  --color-text-strong: #dcdfe4;
+  --color-text-soft: #d7dae0;
+  --color-text-muted: #9da5b4;
+  --color-text-faint: #848b98;
+  --color-link: #61afef;
+  --color-link-hover: #56b6c2;
+  --color-brand: #56b6c2;
+  --color-brand-dark: #3e4451;
+  --color-accent-gold: #e5c07b;
+  --color-accent-purple: #c678dd;
+  --color-success: #98c379;
+  --color-success-strong: #5f8a3e;
+  --color-success-strong-hover: #4f7633;
+  --color-danger: #e06c75;
+  --color-danger-hover: #c85a63;
+  --color-warning: #e5c07b;
+  --color-accent-orange: #d19a66;
+  --color-accent-mint: #56b6c2;
+  --color-accent-emerald: #98c379;
+  --color-surface-input: #1d1f23;
+  --color-surface-input-solid: #1d1f23;
+  --color-surface-topbar: rgba(40, 44, 52, 0.85);
+  --color-backdrop: rgba(24, 26, 31, 0.84);
+  --color-surface-modal: #282c34;
+  --color-border: #2c313c;
+  --color-border-mid: #3e4451;
+  --color-border-accent: rgba(97, 175, 239, 0.45);
+  --color-border-accent-strong: rgba(97, 175, 239, 0.7);
+  --color-border-button-hover: #5c6370;
+  --color-hover: rgba(97, 175, 239, 0.10);
+  --color-hover-strong: rgba(97, 175, 239, 0.18);
+  --color-active: rgba(97, 175, 239, 0.12);
+  --color-surface-tooltip: #1d1f23;
+  --color-badge-legion-bg: var(--color-brand-dark);
+  --color-badge-legion-fg: var(--color-on-accent);
 }
 
 @keyframes primer-dropdown-in {
@@ -2488,10 +2542,14 @@ body.personal-analytics-page .boss-checkbox-swatch {
   cursor: default;
 }
 
-.player-badge--guild,
-.player-badge--legion {
+.player-badge--guild {
   background: var(--color-brand-dark);
   color: var(--color-on-accent);
+}
+
+.player-badge--legion {
+  background: var(--color-badge-legion-bg);
+  color: var(--color-badge-legion-fg);
 }
 
 .resource-icon-wrap {
@@ -4072,7 +4130,7 @@ body.raid-manager-detail-page #raidItemTooltip {
   z-index: var(--z-sticky);
   max-width: 320px;
   padding: 0.6rem 0.75rem;
-  background-color: var(--color-surface-input-solid);
+  background-color: var(--color-surface-tooltip);
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-tooltip);
