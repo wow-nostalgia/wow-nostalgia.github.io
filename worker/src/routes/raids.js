@@ -2,6 +2,7 @@ import { HttpError, jsonResponse, readJson, generateRaidId, parseRaidStartsAt } 
 import {
   createRaid,
   listRaids,
+  listRaidsInRange,
   countRaids,
   getRaid,
   updateRaidSettings,
@@ -91,8 +92,25 @@ export async function handleCreateRaid(request, env, session) {
   return jsonResponse(publicRaid(raid), 201);
 }
 
+const MAX_CALENDAR_RANGE_MS = 62 * 24 * 60 * 60 * 1000;
+
 export async function handleListRaids(request, env) {
   const url = new URL(request.url);
+
+  // Календар: ?from=ISO&to=ISO - усі рейди, що починаються в цьому проміжку
+  // (до ~2 місяців, щоб запит лишався дешевим).
+  const from = url.searchParams.get('from');
+  const to = url.searchParams.get('to');
+  if (from || to) {
+    const fromDate = new Date(from || '');
+    const toDate = new Date(to || '');
+    if (Number.isNaN(fromDate.getTime()) || Number.isNaN(toDate.getTime()) || toDate <= fromDate) {
+      throw new HttpError(400, 'from/to мають бути датами ISO, from < to');
+    }
+    if (toDate - fromDate > MAX_CALENDAR_RANGE_MS) throw new HttpError(400, 'Завеликий проміжок дат');
+    const raids = await listRaidsInRange(env.DB, fromDate.toISOString(), toDate.toISOString());
+    return jsonResponse({ raids });
+  }
   const limit = Math.min(Math.max(Number(url.searchParams.get('limit')) || 20, 1), 50);
   const offset = Math.max(Number(url.searchParams.get('offset')) || 0, 0);
 

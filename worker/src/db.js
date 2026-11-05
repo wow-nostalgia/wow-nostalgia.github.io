@@ -57,6 +57,23 @@ export async function listRaids(db, { limit = 20, offset = 0 } = {}) {
   return results;
 }
 
+// Календар рейдів: рейди, що починаються в [fromIso, toIso). ISO-рядки UTC
+// порівнюються лексикографічно коректно (однаковий формат toISOString).
+export async function listRaidsInRange(db, fromIso, toIso) {
+  const { results } = await db
+    .prepare(
+      `SELECT r.id, r.title, r.instance, r.difficulty, r.is_locked, r.status, r.created_at, r.starts_at,
+              ${displayNameSubquery('u')} AS leader_display_name
+       FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
+       WHERE COALESCE(r.starts_at, r.created_at) >= ? AND COALESCE(r.starts_at, r.created_at) < ?
+       ORDER BY COALESCE(r.starts_at, r.created_at) ASC
+       LIMIT 500`
+    )
+    .bind(fromIso, toIso)
+    .all();
+  return results;
+}
+
 export async function countRaids(db) {
   const row = await db.prepare('SELECT COUNT(*) AS count FROM raids').first();
   return row.count;

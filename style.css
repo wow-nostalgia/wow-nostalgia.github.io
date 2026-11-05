@@ -2982,6 +2982,246 @@ body.raid-manager-page .archive-status-row {
   flex-wrap: wrap;
 }
 
+/* ===== Календар рейдів (вкладка "Календар") ===== */
+body.raid-manager-page .raid-calendar-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+body.raid-manager-page .raid-calendar-toolbar .link-button-std {
+  display: inline-flex;
+  align-items: center;
+}
+
+body.raid-manager-page .raid-calendar-month {
+  min-width: 11rem;
+  margin: 0;
+  text-align: center;
+  font-size: var(--font-title-md);
+  color: var(--color-text-strong);
+}
+
+body.raid-manager-page #calendarTodayBtn {
+  margin-left: auto;
+}
+
+body.raid-manager-page .raid-calendar {
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-table);
+  overflow: hidden;
+}
+
+body.raid-manager-page .raid-calendar-row {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+body.raid-manager-page .raid-calendar-row + .raid-calendar-row {
+  border-top: 1px solid var(--color-border);
+}
+
+body.raid-manager-page .raid-calendar-weekday {
+  padding: 0.4rem 0.5rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-faint);
+  text-align: center;
+}
+
+body.raid-manager-page .raid-calendar-cell {
+  position: relative;
+  min-height: 6.5rem;
+  padding: 0.3rem;
+  border-left: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+body.raid-manager-page .raid-calendar-cell:first-child {
+  border-left: none;
+}
+
+body.raid-manager-page .raid-calendar-cell:hover {
+  background-color: var(--color-hover);
+}
+
+body.raid-manager-page .raid-calendar-cell:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: -2px;
+}
+
+body.raid-manager-page .raid-calendar-cell--other {
+  opacity: 0.45;
+}
+
+body.raid-manager-page .raid-calendar-cell--past .raid-calendar-daynum {
+  color: var(--color-text-faint);
+}
+
+body.raid-manager-page .raid-calendar-cell--selected {
+  background-color: var(--color-hover-strong);
+  box-shadow: inset 0 0 0 1px var(--color-link);
+}
+
+body.raid-manager-page .raid-calendar-daynum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-strong);
+}
+
+body.raid-manager-page .raid-calendar-cell--today .raid-calendar-daynum {
+  background-color: var(--color-link);
+  color: var(--color-surface-solid);
+}
+
+/* Кількість рейдів - лише на вузькому екрані (замість плашок). */
+body.raid-manager-page .raid-calendar-count {
+  display: none;
+}
+
+body.raid-manager-page .raid-calendar-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.2rem;
+}
+
+body.raid-manager-page .raid-calendar-chip {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  min-width: 0;
+  padding: 0.1rem 0.35rem;
+  border-left: 3px solid var(--color-link);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-hover);
+  color: var(--color-text-strong);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-tight);
+  text-decoration: none;
+}
+
+body.raid-manager-page .raid-calendar-chip:hover {
+  background-color: var(--color-hover-strong);
+  text-decoration: none;
+}
+
+body.raid-manager-page .raid-calendar-chip--completed {
+  border-left-color: var(--color-text-faint);
+  color: var(--color-text-muted);
+}
+
+body.raid-manager-page .raid-calendar-chip-time {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-faint);
+}
+
+body.raid-manager-page .raid-calendar-chip-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Панель обраного дня під сіткою. */
+body.raid-manager-page .raid-calendar-day {
+  margin-top: 1rem;
+}
+
+body.raid-manager-page .raid-calendar-day-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+body.raid-manager-page .raid-calendar-day-head h3 {
+  margin: 0;
+  font-size: var(--font-title-sm);
+  color: var(--color-text-strong);
+}
+
+body.raid-manager-page .raid-calendar-day-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.raid-manager-page .raid-calendar-chip--wide {
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  font-size: var(--font-size-base);
+}
+
+body.raid-manager-page .raid-calendar-chip--wide .raid-calendar-chip-title {
+  flex: 1;
+}
+
+body.raid-manager-page .raid-calendar-chip-leader {
+  color: var(--color-text-faint);
+  white-space: nowrap;
+}
+
+body.raid-manager-page .raid-calendar-day-empty,
+body.raid-manager-page .raid-calendar-status {
+  color: var(--color-text-faint);
+  font-size: var(--font-size-base);
+}
+
+body.raid-manager-page .raid-calendar-status:empty {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  body.raid-manager-page .raid-calendar-cell {
+    min-height: 3.25rem;
+    padding: 0.2rem;
+    text-align: center;
+  }
+
+  body.raid-manager-page .raid-calendar-chips {
+    display: none;
+  }
+
+  body.raid-manager-page .raid-calendar-count {
+    display: block;
+    width: fit-content;
+    margin: 0.15rem auto 0;
+    padding: 0 0.4rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-link);
+    color: var(--color-surface-solid);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.2rem;
+  }
+
+  body.raid-manager-page .raid-calendar-month {
+    min-width: 0;
+    flex: 1;
+  }
+
+  body.raid-manager-page .raid-calendar-chip--wide {
+    flex-wrap: wrap;
+  }
+}
+
 /* Форма створення рейду в попапі - завжди однокoлонкова (лейбл над
    полем), а не auto/1fr як на старій повноцінній сторінці: найдовший
    лейбл ("Ліміт передачі софтів") стискав би колонку контролів занадто
@@ -4025,6 +4265,7 @@ body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:
 }
 
 body.raid-manager-page #createRaidOpenBtn.compare-btn,
+body.raid-manager-page #calendarCreateBtn.compare-btn,
 body.raid-manager-page #addPenaltyOpenBtn.compare-btn,
 body.raid-manager-page #addTemplateOpenBtn.compare-btn {
   display: inline-flex;
@@ -4041,6 +4282,7 @@ body.raid-manager-page #addTemplateOpenBtn.compare-btn[hidden] {
 
 body.raid-manager-page .raid-create-form button[type="submit"].compare-btn,
 body.raid-manager-page #createRaidOpenBtn.compare-btn,
+body.raid-manager-page #calendarCreateBtn.compare-btn,
 body.raid-manager-page #addPenaltyOpenBtn.compare-btn,
 body.raid-manager-page #addTemplateOpenBtn.compare-btn,
 body.ranking-page #compareBtn.compare-btn,
@@ -4054,6 +4296,7 @@ body.raid-manager-detail-page #bonusGrantSaveBtn.compare-btn {
 
 body.raid-manager-page .raid-create-form button[type="submit"].compare-btn:hover:not(:disabled),
 body.raid-manager-page #createRaidOpenBtn.compare-btn:hover:not(:disabled),
+body.raid-manager-page #calendarCreateBtn.compare-btn:hover:not(:disabled),
 body.raid-manager-page #addPenaltyOpenBtn.compare-btn:hover:not(:disabled),
 body.raid-manager-page #addTemplateOpenBtn.compare-btn:hover:not(:disabled),
 body.ranking-page #compareBtn.compare-btn:hover:not(:disabled),

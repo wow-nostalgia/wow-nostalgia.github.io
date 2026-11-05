@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейди — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=212">
+  <link rel="stylesheet" href="../../style.css?v=214">
   <script src="/scripts/background.js?v=4"></script>
 </head>
 
@@ -66,6 +66,39 @@
       </div>
 
       <div id="archiveSection" hidden>
+        <div class="raid-tabs" id="raidsTabs" role="tablist" aria-label="Рейди">
+          <button type="button" class="raid-tab raid-tab--active" data-tab="list">Рейди</button>
+          <button type="button" class="raid-tab" data-tab="calendar">Календар</button>
+        </div>
+
+        <div id="calendarPane" hidden>
+          <div class="raid-calendar-toolbar">
+            <button type="button" id="calendarPrevBtn" class="link-button-std tooltipped" aria-label="Попередній місяць">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M9.78 12.78a.75.75 0 0 1-1.06 0L4.47 8.53a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L6.06 8l3.72 3.72a.75.75 0 0 1 0 1.06Z"/></svg>
+            </button>
+            <h2 id="calendarMonthLabel" class="raid-calendar-month"></h2>
+            <button type="button" id="calendarNextBtn" class="link-button-std tooltipped" aria-label="Наступний місяць">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"/></svg>
+            </button>
+            <button type="button" id="calendarTodayBtn" class="link-button-std">Сьогодні</button>
+          </div>
+          <div class="raid-calendar" id="calendarGrid" role="grid" aria-labelledby="calendarMonthLabel"></div>
+          <div class="raid-calendar-day" id="calendarDayPanel">
+            <div class="raid-calendar-day-head">
+              <h3 id="calendarDayTitle"></h3>
+              <button type="button" id="calendarCreateBtn" class="compare-btn">
+                <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
+                  <path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"/>
+                </svg>
+                <span id="calendarCreateLabel">Створити рейд</span>
+              </button>
+            </div>
+            <ul class="raid-calendar-day-list" id="calendarDayList"></ul>
+          </div>
+          <p id="calendarStatus" class="raid-calendar-status"></p>
+        </div>
+
+        <div id="listPane">
         <div class="archive-status-row">
           <p id="archiveStatus">Завантаження...</p>
           <button type="button" id="createRaidOpenBtn" class="compare-btn">
@@ -92,6 +125,7 @@
           <button type="button" id="archivePrevBtn" class="link-button-std">← Попередня</button>
           <span id="archivePageInfo"></span>
           <button type="button" id="archiveNextBtn" class="link-button-std">Наступна →</button>
+        </div>
         </div>
       </div>
 
@@ -209,7 +243,8 @@
   <script src="../../scripts/ui-shared.js?v=21"></script>
   <script src="../../scripts/raid-manager-shared.js?v=11"></script>
   <script src="../../scripts/name-translations.js?v=2"></script>
-  <script src="../../scripts/raid-manager-archive.js?v=19"></script>
+  <script src="../../scripts/raid-manager-archive.js?v=20"></script>
+  <script src="../../scripts/raid-manager-calendar.js?v=2"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
