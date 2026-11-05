@@ -34,6 +34,13 @@ import { handleListTransfers, handleCreateTransfer, handleDeleteTransfer } from 
 import { handleListBonusGrants, handleCreateBonusGrant, handleDeleteBonusGrant } from './routes/bonus-grants.js';
 import { handleListPenalties, handleAddPenalty, handleDeletePenalty } from './routes/penalties.js';
 import {
+  handleListSignups,
+  handleUpsertOwnSignup,
+  handleDeleteOwnSignup,
+  handleOfficerSetSignupStatus,
+  handleOfficerDeleteSignup
+} from './routes/signups.js';
+import {
   handleListPenaltyTemplates,
   handleCreatePenaltyTemplate,
   handleUpdatePenaltyTemplate,
@@ -238,6 +245,19 @@ async function routeRaids(request, env, parts, session) {
   if (sub === 'toggle-hidden' && method === 'POST') return handleToggleHiddenReserves(request, env, raidId, session);
   if (sub === 'potion-log' && method === 'PATCH') return handleSetPotionLog(request, env, raidId, session);
   if (sub === 'cooldowns' && method === 'POST') return handleSetRaidCooldowns(request, env, raidId, session);
+
+  // Попередній запис: /signups (GET), /signups/me (PUT/DELETE - свій запис),
+  // /signups/{id} (PATCH статус / DELETE - лідер/офіцер).
+  if (sub === 'signups') {
+    const target = parts[2];
+    if (!target && method === 'GET') return handleListSignups(request, env, raidId);
+    if (target === 'me' && method === 'PUT') return handleUpsertOwnSignup(request, env, raidId, session);
+    if (target === 'me' && method === 'DELETE') return handleDeleteOwnSignup(request, env, raidId, session);
+    const signupId = Number(target);
+    if (Number.isInteger(signupId) && method === 'PATCH') return handleOfficerSetSignupStatus(request, env, raidId, signupId, session);
+    if (Number.isInteger(signupId) && method === 'DELETE') return handleOfficerDeleteSignup(request, env, raidId, signupId, session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
   if (sub === 'complete' && method === 'POST') return handleSetStatus(request, env, raidId, 'completed', session);
   if (sub === 'reactivate' && method === 'POST') return handleSetStatus(request, env, raidId, 'active', session);
   if (sub === 'audit' && method === 'GET') return handleListAudit(request, env, raidId, session);

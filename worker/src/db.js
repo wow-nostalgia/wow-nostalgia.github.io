@@ -59,17 +59,22 @@ export async function listRaids(db, { limit = 20, offset = 0 } = {}) {
 
 // Календар рейдів: рейди, що починаються в [fromIso, toIso). ISO-рядки UTC
 // порівнюються лексикографічно коректно (однаковий формат toISOString).
-export async function listRaidsInRange(db, fromIso, toIso) {
+// signed_count - основа (signed), extra_count - late/tentative/bench (як
+// "15 (+12)" у Raid-Helper; відсутні не рахуються), my_status - власний запис.
+export async function listRaidsInRange(db, fromIso, toIso, discordId) {
   const { results } = await db
     .prepare(
       `SELECT r.id, r.title, r.instance, r.difficulty, r.is_locked, r.status, r.created_at, r.starts_at,
-              ${displayNameSubquery('u')} AS leader_display_name
+              ${displayNameSubquery('u')} AS leader_display_name,
+              (SELECT COUNT(*) FROM raid_signups s WHERE s.raid_id = r.id AND s.status = 'signed') AS signed_count,
+              (SELECT COUNT(*) FROM raid_signups s WHERE s.raid_id = r.id AND s.status IN ('late', 'tentative', 'bench')) AS extra_count,
+              (SELECT s.status FROM raid_signups s WHERE s.raid_id = r.id AND s.discord_id = ?) AS my_status
        FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
        WHERE COALESCE(r.starts_at, r.created_at) >= ? AND COALESCE(r.starts_at, r.created_at) < ?
        ORDER BY COALESCE(r.starts_at, r.created_at) ASC
        LIMIT 500`
     )
-    .bind(fromIso, toIso)
+    .bind(discordId, fromIso, toIso)
     .all();
   return results;
 }
@@ -1454,3 +1459,64 @@ export async function listBuffQueueAuditActors(db) {
   return results.map((r) => r.actor_name);
 }
 
+
+// ---- Попередній запис на рейд (raid_signups) ----
+// Кожна зміна "торкає" raids.updated_at - поллінг сторінки рейду бачить це й
+// перечитує список записаних.
+
+export async function listRaidSignups(db, raidId) {
+  const { results } = await db
+    .prepare(
+      `SELECT s.id, s.discord_id, s.character_name, s.class, s.spec, s.status, s.position,
+              s.source, s.created_at, s.updated_at, ${displayNameSubquery('u')} AS owner_display_name
+       FROM raid_signups s LEFT JOIN users u ON u.discord_id = s.discord_id
+       WHERE s.raid_id = ?
+       ORDER BY s.position ASC`
+    )
+    .bind(raidId)
+    .all();
+  return results;
+}
+
+// Свій запис: новий - номер max+1; зміна - номер лишається (preserve_order).
+export async function upsertOwnSignup(db, raidId, discordId, { characterName, cls, spec, status }) {
+  const ts = nowIso();
+  await db.batch([
+    db.prepare(
+      `INSERT INTO raid_signups (raid_id, discord_id, character_name, class, spec, status, position, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, (SELECT COALESCE(MAX(position), 0) + 1 FROM raid_signups WHERE raid_id = ?), ?, ?)
+       ON CONFLICT (raid_id, discord_id) DO UPDATE SET
+         character_name = excluded.character_name, class = excluded.class, spec = excluded.spec,
+         status = excluded.status, updated_at = excluded.updated_at`
+    ).bind(raidId, discordId, characterName, cls, spec, status, raidId, ts, ts),
+    touchRaidStmt(db, raidId, ts)
+  ]);
+}
+
+export async function deleteOwnSignup(db, raidId, discordId) {
+  const ts = nowIso();
+  await db.batch([
+    db.prepare('DELETE FROM raid_signups WHERE raid_id = ? AND discord_id = ?').bind(raidId, discordId),
+    touchRaidStmt(db, raidId, ts)
+  ]);
+}
+
+export async function getRaidSignup(db, raidId, signupId) {
+  return db.prepare('SELECT * FROM raid_signups WHERE raid_id = ? AND id = ?').bind(raidId, signupId).first();
+}
+
+export async function setSignupStatus(db, raidId, signupId, status) {
+  const ts = nowIso();
+  await db.batch([
+    db.prepare('UPDATE raid_signups SET status = ?, updated_at = ? WHERE raid_id = ? AND id = ?').bind(status, ts, raidId, signupId),
+    touchRaidStmt(db, raidId, ts)
+  ]);
+}
+
+export async function deleteSignupById(db, raidId, signupId) {
+  const ts = nowIso();
+  await db.batch([
+    db.prepare('DELETE FROM raid_signups WHERE raid_id = ? AND id = ?').bind(raidId, signupId),
+    touchRaidStmt(db, raidId, ts)
+  ]);
+}

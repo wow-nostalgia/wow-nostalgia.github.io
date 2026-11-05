@@ -94,7 +94,7 @@ export async function handleCreateRaid(request, env, session) {
 
 const MAX_CALENDAR_RANGE_MS = 62 * 24 * 60 * 60 * 1000;
 
-export async function handleListRaids(request, env) {
+export async function handleListRaids(request, env, session) {
   const url = new URL(request.url);
 
   // Календар: ?from=ISO&to=ISO - усі рейди, що починаються в цьому проміжку
@@ -108,7 +108,7 @@ export async function handleListRaids(request, env) {
       throw new HttpError(400, 'from/to мають бути датами ISO, from < to');
     }
     if (toDate - fromDate > MAX_CALENDAR_RANGE_MS) throw new HttpError(400, 'Завеликий проміжок дат');
-    const raids = await listRaidsInRange(env.DB, fromDate.toISOString(), toDate.toISOString());
+    const raids = await listRaidsInRange(env.DB, fromDate.toISOString(), toDate.toISOString(), session.discordId);
     return jsonResponse({ raids });
   }
   const limit = Math.min(Math.max(Number(url.searchParams.get('limit')) || 20, 1), 50);

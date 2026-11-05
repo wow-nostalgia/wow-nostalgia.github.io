@@ -2656,6 +2656,7 @@ body.raid-manager-page .raid-toggle-group[hidden] {
   display: none;
 }
 
+body.raid-manager-detail-page .signup-status-buttons .raid-toggle-btn,
 body.raid-manager-page .raid-toggle-btn {
   padding: 0.35rem 0.7rem;
   border: 1px solid var(--color-border-mid);
@@ -2669,10 +2670,12 @@ body.raid-manager-page .raid-toggle-btn {
   transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
 }
 
+body.raid-manager-detail-page .signup-status-buttons .raid-toggle-btn:hover:not(:disabled),
 body.raid-manager-page .raid-toggle-btn:hover {
   border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
 }
 
+body.raid-manager-detail-page .signup-status-buttons .raid-toggle-btn--active,
 body.raid-manager-page .raid-toggle-btn--active {
   background-color: var(--color-link);
   border-color: var(--color-link);
@@ -2704,6 +2707,8 @@ body.raid-manager-detail-page .raid-no-characters-hint {
 body.raid-manager-page .raid-create-form select,
 body.raid-manager-page .raid-create-form input[type="text"],
 body.raid-manager-page .raid-create-form input[type="number"],
+body.raid-manager-page .signup-field select,
+body.raid-manager-detail-page .signup-field select,
 body.raid-manager-page .raid-create-form input[type="date"],
 body.raid-manager-page .raid-create-form input[type="time"],
 body.raid-manager-page .raid-create-form textarea,
@@ -2739,6 +2744,8 @@ body.raid-manager-page .buff-queue-audit-filter select {
   background-size: 0.65rem;
 }
 
+body.raid-manager-page .signup-field select:hover,
+body.raid-manager-detail-page .signup-field select:hover,
 body.raid-manager-page .raid-create-form select:hover,
 body.raid-manager-page .raid-create-form input:hover,
 body.raid-manager-page .raid-create-form textarea:hover,
@@ -2754,6 +2761,8 @@ body.raid-manager-detail-page .raid-item-picker-trigger:hover {
   border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
 }
 
+body.raid-manager-page .signup-field select:focus,
+body.raid-manager-detail-page .signup-field select:focus,
 body.raid-manager-page .raid-create-form select:focus,
 body.raid-manager-page .raid-create-form input:focus,
 body.raid-manager-page .raid-create-form textarea:focus,
@@ -2779,6 +2788,8 @@ body.raid-manager-detail-page .raid-item-picker-trigger:disabled {
   cursor: not-allowed;
 }
 
+body.raid-manager-page .signup-field select,
+body.raid-manager-detail-page .signup-field select,
 body.raid-manager-page .raid-create-form select,
 body.raid-manager-detail-page .raid-soft-form select,
 body.raid-manager-detail-page .raid-bonus-grant-amount {
@@ -3186,6 +3197,237 @@ body.raid-manager-page .raid-calendar-status {
 
 body.raid-manager-page .raid-calendar-status:empty {
   display: none;
+}
+
+/* Рядок панелі дня: плашка рейду + кнопка "Записатись". */
+body.raid-manager-page .raid-calendar-day-list li {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+body.raid-manager-page .raid-calendar-day-list li .raid-calendar-chip--wide {
+  flex: 1;
+  min-width: 0;
+}
+
+body.raid-manager-page .raid-calendar-chip-signups {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+body.raid-manager-page .raid-calendar-sign-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* ===== Попередній запис (scripts/raid-signups.js) ===== */
+body.raid-manager-detail-page .signup-roster {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding-top: 0.25rem;
+}
+
+body.raid-manager-detail-page .signup-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+body.raid-manager-detail-page .signup-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+body.raid-manager-detail-page .signup-meta-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-faint);
+}
+
+body.raid-manager-detail-page .signup-meta-value {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+body.raid-manager-detail-page .signup-meta-value--over {
+  color: var(--color-warning);
+}
+
+body.raid-manager-detail-page .signup-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+}
+
+body.raid-manager-detail-page .signup-my,
+body.raid-manager-detail-page .signup-closed-note {
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+}
+
+body.raid-manager-detail-page .signup-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+body.raid-manager-detail-page .signup-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+body.raid-manager-detail-page .signup-role img,
+body.raid-manager-detail-page .signup-column-head img {
+  border-radius: var(--radius-sm);
+}
+
+body.raid-manager-detail-page .signup-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 1rem 1.25rem;
+}
+
+/* Телефон: дві колонки класів замість однієї довгої. */
+@media (max-width: 640px) {
+  body.raid-manager-detail-page .signup-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem 0.75rem;
+  }
+}
+
+body.raid-manager-detail-page .signup-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+body.raid-manager-detail-page .signup-column-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.15rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-strong);
+}
+
+body.raid-manager-detail-page .signup-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 100%;
+  padding: 0.1rem 0.25rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--font-size-base);
+  text-align: left;
+}
+
+body.raid-manager-detail-page button.signup-entry {
+  cursor: pointer;
+}
+
+body.raid-manager-detail-page button.signup-entry:hover {
+  background-color: var(--color-hover);
+}
+
+body.raid-manager-detail-page .signup-entry img {
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+}
+
+body.raid-manager-detail-page .signup-pos {
+  min-width: 1.4rem;
+  padding: 0 0.25rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-soft-hover);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+body.raid-manager-detail-page .signup-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: var(--font-weight-semibold);
+}
+
+body.raid-manager-detail-page .signup-entry--mine .signup-pos {
+  background-color: var(--color-link);
+  color: var(--color-surface-solid);
+}
+
+/* Понад ліміт 25 - як "у черзі" в Raid-Helper: приглушено й перекреслено. */
+body.raid-manager-detail-page .signup-entry--over {
+  opacity: 0.55;
+}
+
+body.raid-manager-detail-page .signup-entry--over .signup-name {
+  text-decoration: line-through;
+}
+
+body.raid-manager-detail-page .signup-extra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem 0.5rem;
+}
+
+body.raid-manager-detail-page .signup-extra-label {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-strong);
+}
+
+body.raid-manager-detail-page .signup-empty {
+  color: var(--color-text-faint);
+  font-size: var(--font-size-base);
+}
+
+/* Вікна запису (сторінка рейду й календар). */
+body.raid-manager-page .signup-form,
+body.raid-manager-detail-page .signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+body.raid-manager-page .signup-field,
+body.raid-manager-detail-page .signup-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+body.raid-manager-page .signup-field select,
+body.raid-manager-detail-page .signup-field select {
+  width: 100%;
+}
+
+body.raid-manager-page .signup-status-buttons,
+body.raid-manager-detail-page .signup-status-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
 }
 
 @media (max-width: 640px) {

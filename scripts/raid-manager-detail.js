@@ -53,6 +53,8 @@ const playersPane = document.getElementById('playersPane');
 const raidPlayersBody = document.getElementById('raidPlayersBody');
 
 const auditPane = document.getElementById('auditPane');
+const signupsPane = document.getElementById('signupsPane');
+const signupsRoot = document.getElementById('signupsRoot');
 const auditListEl = document.getElementById('auditList');
 
 const officersPane = document.getElementById('officersPane');
@@ -2181,6 +2183,8 @@ function describeAuditAction(entry) {
       return hideSoftDetails
         ? `${d.delta > 0 ? 'додав' : 'прибрав'} офіцерський софт`
         : `${d.delta > 0 ? 'додав' : 'прибрав'} офіцерський софт гравцю ${d.playerName} (${translateBoss(d.boss)})`;
+    case 'signup_status': return `змінив статус запису ${d.characterName}: ${SIGNUP_STATUS_LABELS[d.from] || d.from} → ${SIGNUP_STATUS_LABELS[d.to] || d.to}`;
+    case 'signup_remove': return `видалив запис ${d.characterName}`;
     case 'cooldowns_set':
     case 'cooldowns_clear': {
       const label = RAID_COOLDOWN_LABELS[d.cooldown] || 'КД';
@@ -2438,7 +2442,7 @@ hiddenReservesToggle.addEventListener('change', async () => {
   }
 });
 
-const TAB_PANES = { players: playersPane, items: itemsPane, potions: potionsPane, audit: auditPane, penalties: penaltiesPane, officers: officersPane, settings: settingsPane };
+const TAB_PANES = { players: playersPane, items: itemsPane, signups: signupsPane, potions: potionsPane, audit: auditPane, penalties: penaltiesPane, officers: officersPane, settings: settingsPane };
 
 async function setActiveTab(tab) {
   activeTab = tab;
@@ -2448,6 +2452,33 @@ async function setActiveTab(tab) {
   if (tab === 'audit') await loadAudit();
   if (tab === 'penalties') await loadAndRenderPenalties();
   if (tab === 'potions') await loadPotionsTab();
+  if (tab === 'signups') await loadSignups();
+  // #signups у URL (посилання з календаря) - лише для цієї вкладки.
+  history.replaceState(null, '', tab === 'signups' ? '#signups' : location.pathname + location.search);
+}
+
+// ---- Попередній запис (scripts/raid-signups.js) ----
+let signupsList = null;
+
+function renderSignups() {
+  if (!signupsList) return;
+  renderSignupRoster(signupsRoot, {
+    raid,
+    signups: signupsList,
+    officer: isOfficerMode(),
+    myDiscordId: currentUser?.discordId,
+    onChange: (list) => { signupsList = list; renderSignups(); }
+  });
+}
+
+async function loadSignups() {
+  try {
+    signupsList = await apiCall('GET', `/raids/${raidId}/signups`, { token: getSessionToken() });
+    renderSignups();
+  } catch (err) {
+    console.error(err);
+    signupsRoot.textContent = `Не вдалося завантажити запис: ${err.message}`;
+  }
 }
 
 raidTabs.forEach((btn) => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)));
@@ -3065,6 +3096,9 @@ async function init() {
   // уже пізно.
   if (!myCharacters.length && !isRaidCompleted()) openAddCharacterModal({ firstCharacter: true });
 
+  // Посилання з календаря веде одразу на "Попередній запис".
+  if (location.hash === '#signups') setActiveTab('signups');
+
   schedulePoll();
   document.addEventListener('visibilitychange', () => {
     // Сховали вкладку — переходимо на рідкий інтервал; повернулись — одразу
@@ -3136,6 +3170,12 @@ async function pollRaid() {
       else await loadAndRenderPenalties();
     }
     if (activeTab === 'potions') await loadPotionsTab();
+    // Будь-яка зміна запису торкає raids.updated_at; інакше лише оновлюємо
+    // відлік і стан "запис закрито" в шапці.
+    if (activeTab === 'signups') {
+      if (penaltiesChanged) await loadSignups();
+      else renderSignups();
+    }
   } catch (err) {
     console.error(err);
   } finally {

@@ -368,7 +368,7 @@ async function init() {
 
   archiveSection.hidden = false;
   // Вкладки "Рейди | Календар" - scripts/raid-manager-calendar.js.
-  initRaidsTabs();
+  initRaidsTabs(user);
   await loadArchive();
 }
 

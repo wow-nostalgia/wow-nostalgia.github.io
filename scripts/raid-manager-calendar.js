@@ -9,7 +9,8 @@
 //
 // Залежить від: ui-shared.js (kyivDateKey, kyivTimeKey, kyivLocalToIso,
 // raidStartIso, syncTabs), raid-manager-shared.js (apiCall),
-// raid-manager-archive.js (openCreateRaidModal, addDaysToKey).
+// raid-manager-archive.js (openCreateRaidModal, addDaysToKey), raid-signups.js
+// (openSignupModal, isSignupClosed, SIGNUP_LIMIT, SIGNUP_STATUS_LABELS).
 
 const raidsTabs = document.getElementById('raidsTabs');
 const listPane = document.getElementById('listPane');
@@ -30,6 +31,7 @@ let calendarMonth = null; // 'YYYY-MM'
 let selectedDay = null; // 'YYYY-MM-DD'
 let raidsByDay = new Map(); // 'YYYY-MM-DD' -> [raid]
 let calendarRequestId = 0;
+let calendarUser = null;
 
 function keyToUtcDate(dateKey) {
   const [y, m, d] = dateKey.split('-').map(Number);
@@ -81,7 +83,7 @@ async function loadCalendarMonth() {
 function raidChip(raid) {
   const a = document.createElement('a');
   a.className = `raid-calendar-chip${raid.status === 'completed' ? ' raid-calendar-chip--completed' : ''}`;
-  a.href = `../raid/?id=${encodeURIComponent(raid.id)}`;
+  a.href = `../raid/?id=${encodeURIComponent(raid.id)}#signups`;
   const time = document.createElement('span');
   time.className = 'raid-calendar-chip-time';
   time.textContent = kyivTimeKey(raidStartIso(raid));
@@ -191,8 +193,28 @@ function renderDayPanel() {
     const leader = document.createElement('span');
     leader.className = 'raid-calendar-chip-leader';
     leader.textContent = raid.leader_display_name || '';
-    chip.append(leader, status);
+    // "Записано N/25 (+M)" - як у шапці Raid-Helper.
+    const count = document.createElement('span');
+    count.className = 'raid-calendar-chip-signups';
+    const extra = Number(raid.extra_count || 0);
+    count.textContent = `${Number(raid.signed_count || 0)}/${SIGNUP_LIMIT}${extra ? ` (+${extra})` : ''}`;
+    count.setAttribute('aria-label', 'Записано');
+    count.classList.add('tooltipped', 'tooltipped--n');
+    chip.append(count, leader, status);
     li.appendChild(chip);
+
+    // Записатись прямо з календаря - те саме вікно, що на сторінці рейду.
+    const signBtn = document.createElement('button');
+    signBtn.type = 'button';
+    signBtn.className = 'link-button-std raid-calendar-sign-btn';
+    signBtn.textContent = raid.my_status ? `Мій запис: ${SIGNUP_STATUS_LABELS[raid.my_status]}` : 'Записатись';
+    signBtn.disabled = isSignupClosed(raid);
+    signBtn.addEventListener('click', () => openSignupModal({
+      raid,
+      myDiscordId: calendarUser?.discordId,
+      onSaved: () => loadCalendarMonth()
+    }));
+    li.appendChild(signBtn);
     calendarDayList.appendChild(li);
   });
 }
@@ -260,7 +282,8 @@ function showRaidsTab(tab) {
   }
 }
 
-function initRaidsTabs() {
+function initRaidsTabs(user) {
+  calendarUser = user;
   raidsTabs.addEventListener('click', (event) => {
     const btn = event.target.closest('[data-tab]');
     if (!btn) return;
