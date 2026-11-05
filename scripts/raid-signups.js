@@ -370,8 +370,27 @@ async function openSignupModal(opts) {
   const classF = selectField('Клас', 'signupClass');
   const specF = selectField('Спек', 'signupSpec');
   const statusF = selectField('Статус', 'signupStatus');
-  characters.forEach((c) => charF.select.add(new Option(c.characterName, c.characterName)));
-  Object.keys(SIGNUP_CLASSES).forEach((cls) => classF.select.add(new Option(signupClassLabel(cls), cls)));
+  // Кольори класів - як у списку "Мій персонаж" на сторінці рейду: відомий
+  // клас - його колір, невідомий - приглушений.
+  await guessCharacterClassSpec('');
+  const charColor = (name) => signupClassColor(signupGuildClassMap.get(name)?.cls) || 'var(--color-text-faint)';
+  characters.forEach((c) => {
+    const opt = new Option(c.characterName, c.characterName);
+    opt.style.color = charColor(c.characterName);
+    charF.select.add(opt);
+  });
+  Object.keys(SIGNUP_CLASSES).forEach((cls) => {
+    const opt = new Option(signupClassLabel(cls), cls);
+    opt.style.color = signupClassColor(cls);
+    classF.select.add(opt);
+  });
+  // Поле персонажа - кольору обраного класу (для персонажа поза даними
+  // гільдії клас обирає сам гравець).
+  const paintSelects = () => {
+    const color = signupClassColor(classF.select.value);
+    charF.select.style.color = color;
+    classF.select.style.color = color;
+  };
   Object.entries(SIGNUP_STATUS_LABELS).forEach(([key, label]) => statusF.select.add(new Option(label, key)));
 
   const fillSpecs = (preferred) => {
@@ -399,8 +418,9 @@ async function openSignupModal(opts) {
     statusF.select.value = 'signed';
     await applyGuess();
   }
-  charF.select.addEventListener('change', applyGuess);
-  classF.select.addEventListener('change', () => fillSpecs());
+  paintSelects();
+  charF.select.addEventListener('change', async () => { await applyGuess(); paintSelects(); });
+  classF.select.addEventListener('change', () => { fillSpecs(); paintSelects(); });
 
   const actionsRow = document.createElement('div');
   actionsRow.className = 'raid-modal-actions';
