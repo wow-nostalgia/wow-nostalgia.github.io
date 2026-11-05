@@ -6,7 +6,7 @@ const raidDurationYearSelect = document.getElementById('raidDurationYearSelect')
 const fastRunTableBody = document.getElementById('fastRunTableBody');
 
 const DAY_LABELS = ['НД', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
-const DAY_COLORS = ['#f48cba', '#7baaf5', '#63d471', '#ffd700', '#ff7c0a', '#c41e3a', '#9382c9'];
+const DAY_COLORS = ['#f48cba', '#61afef', '#63d471', '#ffd700', '#ff7c0a', '#c41e3a', '#9382c9'];
 
 function setStatus(text) {
   if (fastRunStatus) fastRunStatus.textContent = text;

@@ -20,7 +20,7 @@
   --color-text-muted: #b8c2d9;
   --color-text-faint: #8f96a3;
 
-  --color-link: #7baaf5;
+  --color-link: #61afef;
   --color-link-hover: #ffd700;
   --color-brand: #87ceeb;
   --color-brand-dark: #35558c;
@@ -57,13 +57,13 @@
      Кольорові рамки (accent/danger/success) - лише для станів. */
   --color-border: rgba(197, 198, 205, 0.18);
   --color-border-mid: rgba(197, 198, 205, 0.28);
-  --color-border-accent: rgba(123, 170, 245, 0.45);
-  --color-border-accent-strong: rgba(123, 170, 245, 0.7);
+  --color-border-accent: rgba(97, 175, 239, 0.45);
+  --color-border-accent-strong: rgba(97, 175, 239, 0.7);
   --color-border-button-hover: rgba(255, 255, 255, 0.45);
 
-  --color-hover: rgba(123, 170, 245, 0.10);
-  --color-hover-strong: rgba(123, 170, 245, 0.18);
-  --color-active: rgba(123, 170, 245, 0.12);
+  --color-hover: rgba(97, 175, 239, 0.10);
+  --color-hover-strong: rgba(97, 175, 239, 0.18);
+  --color-active: rgba(97, 175, 239, 0.12);
   --color-surface-stripe: rgba(255, 255, 255, 0.03);
   --color-surface-head: rgba(255, 255, 255, 0.06);
 
@@ -151,7 +151,6 @@
   --color-text-soft: #d7dae0;
   --color-text-muted: #9da5b4;
   --color-text-faint: #848b98;
-  --color-link: #61afef;
   --color-link-hover: #56b6c2;
   --color-brand: #56b6c2;
   --color-brand-dark: #3e4451;
@@ -173,12 +172,7 @@
   --color-surface-modal: #282c34;
   --color-border: #2c313c;
   --color-border-mid: #3e4451;
-  --color-border-accent: rgba(97, 175, 239, 0.45);
-  --color-border-accent-strong: rgba(97, 175, 239, 0.7);
   --color-border-button-hover: #5c6370;
-  --color-hover: rgba(97, 175, 239, 0.10);
-  --color-hover-strong: rgba(97, 175, 239, 0.18);
-  --color-active: rgba(97, 175, 239, 0.12);
   --color-surface-tooltip: #1d1f23;
   --color-badge-legion-bg: var(--color-brand-dark);
   --color-badge-legion-fg: var(--color-on-accent);
