@@ -408,7 +408,12 @@ function renderBanner() {
   // він затирав би поле, яке лідер саме зараз редагує на вкладці "Налаштування".
   if (document.activeElement !== settingsTitleInput) settingsTitleInput.value = raid.title;
   if (document.activeElement !== settingsDateInput) settingsDateInput.value = kyivDateKey(raidStartIso(raid));
-  if (document.activeElement !== settingsTimeInput) settingsTimeInput.value = kyivTimeKey(raidStartIso(raid));
+  if (document.activeElement !== settingsTimeInput) {
+    settingsTimeInput.value = kyivTimeKey(raidStartIso(raid));
+    // Крок 5 хв; але старі рейди мають час створення (14:38) - з кроком 5 хв
+    // браузер вважав би його недійсним і не дав би зберегти налаштування.
+    settingsTimeInput.step = Number(settingsTimeInput.value.slice(3)) % 5 === 0 ? '300' : '60';
+  }
   if (document.activeElement !== settingsSoftLimitInput) settingsSoftLimitInput.value = raid.soft_limit_total;
 
   // Не заданий ліміт передачі (старі рейди) означає "як ліміт софтів" —
