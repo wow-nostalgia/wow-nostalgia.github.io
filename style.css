@@ -2487,14 +2487,10 @@ body.personal-analytics-page .boss-checkbox-swatch {
   cursor: default;
 }
 
-.player-badge--guild {
+.player-badge--guild,
+.player-badge--legion {
   background: var(--color-brand-dark);
   color: var(--color-on-accent);
-}
-
-.player-badge--legion {
-  background: var(--color-accent-purple);
-  color: var(--color-surface-solid);
 }
 
 .resource-icon-wrap {
