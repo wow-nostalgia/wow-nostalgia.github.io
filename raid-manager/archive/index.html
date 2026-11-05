@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейди — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=211">
+  <link rel="stylesheet" href="../../style.css?v=212">
   <script src="/scripts/background.js?v=4"></script>
 </head>
 
@@ -126,6 +126,17 @@
         </div>
         <input type="hidden" id="raidInstance" value="ICC">
 
+        <div class="raid-create-row">
+          <div class="raid-create-field">
+            <label for="raidDate">Дата</label>
+            <input type="date" id="raidDate" required>
+          </div>
+          <div class="raid-create-field">
+            <label for="raidTime">Час (Київ)</label>
+            <input type="time" id="raidTime" value="20:00" required>
+          </div>
+        </div>
+
         <label for="raidDifficulty">Складність</label>
         <select id="raidDifficulty">
           <option value="25H">25 Героїчний</option>
@@ -195,10 +206,10 @@
 
   <script src="../../scripts/nav.js?v=3"></script>
   <script src="../../scripts/auth-shared.js?v=19"></script>
-  <script src="../../scripts/ui-shared.js?v=20"></script>
+  <script src="../../scripts/ui-shared.js?v=21"></script>
   <script src="../../scripts/raid-manager-shared.js?v=11"></script>
   <script src="../../scripts/name-translations.js?v=2"></script>
-  <script src="../../scripts/raid-manager-archive.js?v=18"></script>
+  <script src="../../scripts/raid-manager-archive.js?v=19"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

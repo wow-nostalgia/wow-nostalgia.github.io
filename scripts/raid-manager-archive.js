@@ -34,7 +34,9 @@ const PAGE_SIZE = 20;
 let currentPage = 0;
 let isAdmin = false;
 let titleAutoFilled = true;
-let weekRaids = [];
+const raidDateInput = document.getElementById('raidDate');
+const raidTimeInput = document.getElementById('raidTime');
+const DEFAULT_RAID_TIME = '20:00';
 
 function setStatus(text) {
   archiveStatus.textContent = text;
@@ -84,7 +86,7 @@ function renderArchiveList(raids, total) {
     tr.appendChild(titleTd);
 
     const createdTd = document.createElement('td');
-    createdTd.textContent = formatDateTimeKyiv(raid.created_at);
+    createdTd.textContent = formatDateTimeKyiv(raidStartIso(raid));
     tr.appendChild(createdTd);
 
     const leaderTd = document.createElement('td');
@@ -152,35 +154,50 @@ deleteRaidConfirmBtn.addEventListener('click', async () => {
   }
 });
 
-// Тиждень для нумерації рейдів рахується не з понеділка, а з п'ятниці
-// 04:00 (типовий час скидання рейдових locков) - тому "тиждень" тут
-// власний, не календарний.
-function getResetWeekStart(date) {
-  const day = date.getDay(); // 0=нд ... 5=пт, 6=сб
-  const diffFromFriday = (day - 5 + 7) % 7;
-  const start = new Date(date.getFullYear(), date.getMonth(), date.getDate() - diffFromFriday, 4, 0, 0, 0);
-  if (start > date) start.setDate(start.getDate() - 7);
-  return start;
+// 'YYYY-MM-DD' + days -> 'YYYY-MM-DD' (календарна арифметика без часових поясів).
+function addDaysToKey(dateKey, days) {
+  const [y, m, d] = dateKey.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d + days)).toISOString().slice(0, 10);
 }
 
-async function loadTodayRaids() {
+// Тиждень для нумерації рейдів рахується не з понеділка, а з п'ятниці
+// 04:00 за Києвом (скидання рейдових КД) - тому "тиждень" тут власний, не
+// календарний. Береться тиждень обраної дати рейду, а не сьогоднішній.
+function getResetWeekRange(startIso) {
+  const dateKey = kyivDateKey(startIso);
+  const [y, m, d] = dateKey.split('-').map(Number);
+  const weekday = new Date(Date.UTC(y, m - 1, d)).getUTCDay(); // 0=нд ... 5=пт
+  let fridayKey = addDaysToKey(dateKey, -((weekday - 5 + 7) % 7));
+  if (kyivLocalToIso(fridayKey, '04:00') > startIso) fridayKey = addDaysToKey(fridayKey, -7);
+  return { from: kyivLocalToIso(fridayKey, '04:00'), to: kyivLocalToIso(addDaysToKey(fridayKey, 7), '04:00') };
+}
+
+let recentRaids = [];
+
+async function loadRecentRaids() {
   try {
     const { raids } = await apiCall('GET', '/raids?limit=50&offset=0', { token: getSessionToken() });
-    const weekStart = getResetWeekStart(new Date());
-    weekRaids = raids.filter((r) => new Date(r.created_at) >= weekStart);
+    recentRaids = raids;
   } catch (err) {
     console.error(err);
-    weekRaids = [];
+    recentRaids = [];
   }
+}
+
+function selectedStartIso() {
+  return kyivLocalToIso(raidDateInput.value || kyivDateKey(new Date()), raidTimeInput.value || DEFAULT_RAID_TIME);
 }
 
 function generateTitle() {
   const instance = raidInstanceInput.value;
   const difficulty = document.getElementById('raidDifficulty').value;
-  const now = new Date();
-  const dd = String(now.getDate()).padStart(2, '0');
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const yyyy = now.getFullYear();
+  const startIso = selectedStartIso();
+  const [yyyy, mm, dd] = kyivDateKey(startIso).split('-');
+  const { from, to } = getResetWeekRange(startIso);
+  const weekRaids = recentRaids.filter((r) => {
+    const iso = new Date(raidStartIso(r)).toISOString();
+    return iso >= from && iso < to;
+  });
   // Рейд лише на Ліча — у назві "Король-ліч" замість "ЦЛК"; номер рахується як для ЦЛК.
   const inst = instance === 'ICC' && raidLkOnlyInput.checked
     ? 'Король-ліч'
@@ -260,9 +277,15 @@ function applyNameLanguageToCreateForm() {
   document.getElementById('raidLkOnlyText').textContent = `Тільки ${translateBoss('The Lich King')}`;
 }
 
-async function openCreateRaidModal() {
+// dateKey - 'YYYY-MM-DD' (з календаря); без нього - сьогодні. Минулі дні
+// недоступні (min), сервер теж перевіряє.
+async function openCreateRaidModal(dateKey) {
   titleAutoFilled = true;
-  await loadTodayRaids();
+  const today = kyivDateKey(new Date());
+  raidDateInput.min = today;
+  raidDateInput.value = typeof dateKey === 'string' && dateKey >= today ? dateKey : today;
+  raidTimeInput.value = DEFAULT_RAID_TIME;
+  await loadRecentRaids();
   updateTitleIfAuto();
   updateMountSoftsVisibility();
   openModal(createRaidModal);
@@ -272,7 +295,9 @@ function closeCreateRaidModal() {
   closeModal(createRaidModal);
 }
 
-createRaidOpenBtn.addEventListener('click', openCreateRaidModal);
+createRaidOpenBtn.addEventListener('click', () => openCreateRaidModal());
+raidDateInput.addEventListener('change', updateTitleIfAuto);
+raidTimeInput.addEventListener('change', updateTitleIfAuto);
 createRaidCancelBtn.addEventListener('click', closeCreateRaidModal);
 createRaidModalBackdrop.addEventListener('click', closeCreateRaidModal);
 onModalCancel(createRaidModal, closeCreateRaidModal);
@@ -293,7 +318,8 @@ createForm.addEventListener('submit', async (event) => {
       hiddenReserves: document.getElementById('raidHiddenReserves').checked,
       allowMountSofts: document.getElementById('raidAllowMountSofts').checked,
       lkOnly: raidLkOnlyInput.checked,
-      transferWeightLimit: Number(document.getElementById('raidTransferWeightLimit').value)
+      transferWeightLimit: Number(document.getElementById('raidTransferWeightLimit').value),
+      startsAt: selectedStartIso()
     };
 
     const raid = await apiCall('POST', '/raids', { token: getSessionToken(), body });

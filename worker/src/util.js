@@ -62,3 +62,25 @@ export function softsWord(count) {
 export function capitalizeName(name) {
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
+
+// Дата й час початку рейду. Клієнт шле ISO-рядок з часовою зоною (UTC);
+// "минулий день" рахуємо за київським календарем, бо рейди плануються за
+// Києвом: рейд на сьогодні можна створити навіть після його часу початку,
+// на вчора - ні.
+const KYIV_DATE_FMT = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Kyiv', year: 'numeric', month: '2-digit', day: '2-digit' });
+
+export function kyivDateKey(date) {
+  return KYIV_DATE_FMT.format(date); // YYYY-MM-DD
+}
+
+export function parseRaidStartsAt(value) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/.test(value)) {
+    throw new HttpError(400, 'startsAt має бути датою й часом у форматі ISO');
+  }
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) throw new HttpError(400, 'Невалідна дата рейду');
+  if (kyivDateKey(date) < kyivDateKey(new Date())) {
+    throw new HttpError(400, 'Не можна призначити рейд на минулий день');
+  }
+  return date.toISOString();
+}

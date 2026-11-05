@@ -31,15 +31,15 @@ export async function getUserCharactersJoined(db, discordId) {
   return row?.characters || null;
 }
 
-export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, hiddenReserves, leaderDiscordId, transferWeightLimit, allowMountSofts, lkOnly }) {
+export async function createRaid(db, { id, title, instance, difficulty, softLimitTotal, hiddenReserves, leaderDiscordId, transferWeightLimit, allowMountSofts, lkOnly, startsAt }) {
   const ts = nowIso();
   const twl = (transferWeightLimit === undefined || transferWeightLimit === null) ? null : Number(transferWeightLimit);
   await db
     .prepare(
-      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, is_locked, hidden_reserves, officer_token, leader_discord_id, transfer_weight_limit, allow_mount_softs, lk_only, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO raids (id, title, instance, difficulty, soft_limit_total, is_locked, hidden_reserves, officer_token, leader_discord_id, transfer_weight_limit, allow_mount_softs, lk_only, starts_at, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
-    .bind(id, title, instance, difficulty, softLimitTotal, hiddenReserves ? 1 : 0, generateToken(), leaderDiscordId, twl, allowMountSofts ? 1 : 0, lkOnly ? 1 : 0, ts, ts)
+    .bind(id, title, instance, difficulty, softLimitTotal, hiddenReserves ? 1 : 0, generateToken(), leaderDiscordId, twl, allowMountSofts ? 1 : 0, lkOnly ? 1 : 0, startsAt || ts, ts, ts)
     .run();
   return getRaid(db, id);
 }
@@ -47,10 +47,10 @@ export async function createRaid(db, { id, title, instance, difficulty, softLimi
 export async function listRaids(db, { limit = 20, offset = 0 } = {}) {
   const { results } = await db
     .prepare(
-      `SELECT r.id, r.title, r.instance, r.difficulty, r.is_locked, r.status, r.created_at,
+      `SELECT r.id, r.title, r.instance, r.difficulty, r.is_locked, r.status, r.created_at, r.starts_at,
               ${displayNameSubquery('u')} AS leader_display_name
        FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
-       ORDER BY r.created_at DESC LIMIT ? OFFSET ?`
+       ORDER BY COALESCE(r.starts_at, r.created_at) DESC, r.created_at DESC LIMIT ? OFFSET ?`
     )
     .bind(limit, offset)
     .all();

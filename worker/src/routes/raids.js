@@ -1,4 +1,4 @@
-import { HttpError, jsonResponse, readJson, generateRaidId } from '../util.js';
+import { HttpError, jsonResponse, readJson, generateRaidId, parseRaidStartsAt } from '../util.js';
 import {
   createRaid,
   listRaids,
@@ -55,6 +55,8 @@ export async function handleCreateRaid(request, env, session) {
   const hiddenReserves = body.hiddenReserves !== false;
   const allowMountSofts = body.allowMountSofts === true;
   const lkOnly = instance === 'ICC' && body.lkOnly === true;
+  // Без startsAt (старий клієнт) - як раніше, рейд "зараз".
+  const startsAt = body.startsAt === undefined ? undefined : parseRaidStartsAt(body.startsAt);
 
   const transferWeightLimit = body.transferWeightLimit !== undefined && body.transferWeightLimit !== null
     ? Number(body.transferWeightLimit)
@@ -77,7 +79,8 @@ export async function handleCreateRaid(request, env, session) {
     leaderDiscordId: session.discordId,
     transferWeightLimit: cappedTransferLimit,
     allowMountSofts,
-    lkOnly
+    lkOnly,
+    startsAt
   });
 
   await insertAudit(env.DB, id, session.username, 'raid_create', { title, instance, difficulty });
@@ -121,6 +124,8 @@ export async function handleUpdateRaid(request, env, id, session) {
     fields.transfer_weight_limit = v;
   }
   if (body.allowMountSofts !== undefined) fields.allow_mount_softs = body.allowMountSofts ? 1 : 0;
+  // Лідер може перенести рейд, але лише на сьогодні чи пізніше.
+  if (body.startsAt !== undefined) fields.starts_at = parseRaidStartsAt(body.startsAt);
 
   // Ліміт передачі не більший за ліміт софтів — зокрема коли знизили лише
   // ліміт софтів, а збережений ліміт передачі лишився старим.

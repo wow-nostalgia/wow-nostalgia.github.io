@@ -243,6 +243,45 @@ function formatDateKyiv(isoString) {
   }).format(date);
 }
 
+// --- Дата й час початку рейду (raids.starts_at, UTC ISO) ---
+// Рейди плануються за київським часом, незалежно від часового поясу
+// браузера. Старі рейди без starts_at - за часом створення.
+function raidStartIso(raid) {
+  return raid.starts_at || raid.created_at;
+}
+
+// 'YYYY-MM-DD' за Києвом.
+function kyivDateKey(dateOrIso) {
+  const date = dateOrIso instanceof Date ? dateOrIso : new Date(dateOrIso);
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Kyiv', year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
+}
+
+// 'HH:MM' за Києвом.
+function kyivTimeKey(dateOrIso) {
+  const date = dateOrIso instanceof Date ? dateOrIso : new Date(dateOrIso);
+  return new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Kyiv', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(date);
+}
+
+// Зсув Києва від UTC у хвилинах на момент date (+120 узимку, +180 улітку).
+function kyivOffsetMinutes(date) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Kyiv', hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'
+  }).formatToParts(date).map((p) => [p.type, p.value]));
+  const asUtc = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute, +parts.second);
+  return Math.round((asUtc - date.getTime()) / 60000);
+}
+
+// Київські дата ('YYYY-MM-DD') і час ('HH:MM') -> UTC ISO. Зсув рахуємо двічі:
+// поруч із переходом на літній/зимовий час перша оцінка може бути хибною.
+function kyivLocalToIso(dateKey, timeKey) {
+  const [y, m, d] = dateKey.split('-').map(Number);
+  const [hh, mm] = timeKey.split(':').map(Number);
+  const naive = Date.UTC(y, m - 1, d, hh, mm);
+  let ts = naive - kyivOffsetMinutes(new Date(naive)) * 60000;
+  ts = naive - kyivOffsetMinutes(new Date(ts)) * 60000;
+  return new Date(ts).toISOString();
+}
+
 const SPLINE_MODES = {
   smooth: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 4, hitRadius: 1 },
   smoothNoPoints: { tension: 0.3, cubicInterpolationMode: 'default', pointRadius: 0, hitRadius: 6 },

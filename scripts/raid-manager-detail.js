@@ -61,6 +61,8 @@ const settingsTab = document.getElementById('settingsTab');
 const settingsPane = document.getElementById('settingsPane');
 const settingsForm = document.getElementById('settingsForm');
 const settingsTitleInput = document.getElementById('settingsTitleInput');
+const settingsDateInput = document.getElementById('settingsDateInput');
+const settingsTimeInput = document.getElementById('settingsTimeInput');
 const settingsSoftLimitInput = document.getElementById('settingsSoftLimitInput');
 
 const itemsPane = document.getElementById('itemsPane');
@@ -190,7 +192,7 @@ function normalizeWeekday(str) {
 }
 
 // Розбито на фетч (не залежить від raid, можна пускати паралельно з іншими
-// запитами в init()/поллінгу) і apply (потребує raid.created_at - викликати,
+// запитами в init()/поллінгу) і apply (потребує дату рейду - викликати,
 // тільки коли raid вже завантажений).
 async function fetchShardQueueRaw() {
   try {
@@ -208,7 +210,7 @@ async function fetchShardQueueRaw() {
 function applyShardQueueRaw(raw) {
   if (!raw) return;
   const { days, entries } = raw;
-  const weekday = kyivWeekdayLabel(raid.created_at);
+  const weekday = kyivWeekdayLabel(raidStartIso(raid));
   const matchedDay = days.find((d) => d.is_active && weekday && normalizeWeekday(d.label) === normalizeWeekday(weekday));
   if (!matchedDay) return;
 
@@ -255,7 +257,7 @@ function applyBuffQueueRaw(raw) {
   // Одна активна вкладка дня в черзі — вона діє для всіх рейдів, у який би
   // день рейд не створили. Кілька — строго за днем тижня рейду (як в уламків).
   const activeDays = days.filter((d) => d.is_active);
-  const weekday = kyivWeekdayLabel(raid.created_at);
+  const weekday = kyivWeekdayLabel(raidStartIso(raid));
   const matchedDay = activeDays.length === 1
     ? activeDays[0]
     : activeDays.find((d) => weekday && normalizeWeekday(d.label) === normalizeWeekday(weekday));
@@ -367,7 +369,7 @@ function renderBanner() {
     translateDifficulty(raid.difficulty, DIFFICULTY_LABELS),
     `Ліміт софтів: ${raid.soft_limit_total}`,
     `Лідер: ${raid.leader_display_name || '—'}`,
-    formatDateKyiv(raid.created_at)
+    `${formatDateKyiv(raidStartIso(raid))} ${kyivTimeKey(raidStartIso(raid))}`
   ];
 
   chips.forEach((text) => {
@@ -401,6 +403,8 @@ function renderBanner() {
   // поллінг renderBanner() викликається постійно, і без цього застереження
   // він затирав би поле, яке лідер саме зараз редагує на вкладці "Налаштування".
   if (document.activeElement !== settingsTitleInput) settingsTitleInput.value = raid.title;
+  if (document.activeElement !== settingsDateInput) settingsDateInput.value = kyivDateKey(raidStartIso(raid));
+  if (document.activeElement !== settingsTimeInput) settingsTimeInput.value = kyivTimeKey(raidStartIso(raid));
   if (document.activeElement !== settingsSoftLimitInput) settingsSoftLimitInput.value = raid.soft_limit_total;
 
   // Не заданий ліміт передачі (старі рейди) означає "як ліміт софтів" —
@@ -684,6 +688,8 @@ function applySettingsFormLockState() {
   const locked = isRaidCompleted();
 
   settingsTitleInput.disabled = locked;
+  settingsDateInput.disabled = locked;
+  settingsTimeInput.disabled = locked;
   settingsSoftLimitInput.disabled = locked;
   transferWeightLimitInput.disabled = locked;
   settingsAllowMountSoftsInput.disabled = locked;
@@ -2563,6 +2569,25 @@ settingsForm.addEventListener('submit', async (event) => {
 
   const transferWeightLimit = Number(transferWeightLimitInput.value);
   const body = { title, softLimitTotal, transferWeightLimit, allowMountSofts: settingsAllowMountSoftsInput.checked };
+
+  // Дата/час - лише якщо змінились (минулий рейд з незмінною датою має
+  // зберігати інші налаштування). Перенести можна на сьогодні чи пізніше.
+  const oldStart = raidStartIso(raid);
+  const newDate = settingsDateInput.value;
+  const newTime = settingsTimeInput.value;
+  if (newDate && newTime && (newDate !== kyivDateKey(oldStart) || newTime !== kyivTimeKey(oldStart))) {
+    if (newDate < kyivDateKey(new Date())) {
+      setStatus('Помилка: не можна перенести рейд на минулий день.', 'error');
+      return;
+    }
+    body.startsAt = kyivLocalToIso(newDate, newTime);
+    // Дата в кінці назви ("... - 04.11.2026") переїжджає разом із рейдом,
+    // якщо лідер назву вручну не міняв.
+    const [y, m, d] = newDate.split('-');
+    if (title === raid.title && /\s-\s\d{2}\.\d{2}\.\d{4}$/.test(title)) {
+      body.title = title.replace(/\d{2}\.\d{2}\.\d{4}$/, `${d}.${m}.${y}`);
+    }
+  }
 
   if (raid.instance === 'ICC') {
     body.lkOnly = settingsLkOnlyInput.checked;
