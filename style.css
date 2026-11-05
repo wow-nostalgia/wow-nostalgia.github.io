@@ -27,6 +27,7 @@
   --color-brand-gradient-end: #000080;
   --color-accent-gold: #e5c07b;
   --color-accent-purple: #c678dd;
+  --color-accent-lavender: #cdb7e9;
 
   --color-success: #98c379;
   --color-success-strong: #5f8a3e;
@@ -2500,7 +2501,7 @@ body.personal-analytics-page .boss-checkbox-swatch {
 }
 
 .resource-icon-wrap--shard {
-  color: var(--color-accent-purple);
+  color: var(--color-accent-lavender);
 }
 
 .resource-icon-wrap--blood {
