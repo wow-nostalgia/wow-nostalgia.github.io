@@ -84,3 +84,13 @@ export function parseRaidStartsAt(value) {
   }
   return date.toISOString();
 }
+
+// Софти (свої, офіцерські, передача, бонуси) відкриваються в час початку
+// рейду. Старі рейди без starts_at - без обмежень.
+export function requireRaidStarted(raid) {
+  if (!raid.starts_at) return;
+  const start = new Date(raid.starts_at);
+  if (Date.now() >= start.getTime()) return;
+  const when = new Intl.DateTimeFormat('uk-UA', { timeZone: 'Europe/Kyiv', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }).format(start);
+  throw new HttpError(423, `Софти відкриються ${when.replace(', ', ' о ')}`);
+}

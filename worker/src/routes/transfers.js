@@ -1,4 +1,4 @@
-import { HttpError, jsonResponse, readJson, capitalizeName } from '../util.js';
+import { HttpError, jsonResponse, readJson, capitalizeName, requireRaidStarted } from '../util.js';
 import {
   getRaid,
   listWeightTransfers,
@@ -41,6 +41,7 @@ export async function handleListTransfers(request, env, raidId) {
 export async function handleCreateTransfer(request, env, raidId, session) {
   const raid = await loadRaidOr404(env, raidId);
   if (raid.status === 'completed') throw new HttpError(423, 'Рейд завершено');
+  requireRaidStarted(raid);
 
   const transferLimit = raid.transfer_weight_limit;
   if (transferLimit !== null && transferLimit === 0) {

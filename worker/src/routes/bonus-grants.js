@@ -1,4 +1,4 @@
-import { HttpError, jsonResponse, readJson, capitalizeName } from '../util.js';
+import { HttpError, jsonResponse, readJson, capitalizeName, requireRaidStarted } from '../util.js';
 import {
   getRaid,
   listBonusGrants,
@@ -28,6 +28,7 @@ export async function handleListBonusGrants(request, env, raidId) {
 export async function handleCreateBonusGrant(request, env, raidId, session) {
   const raid = await loadRaidOr404(env, raidId);
   if (raid.status === 'completed') throw new HttpError(423, 'Рейд завершено');
+  requireRaidStarted(raid);
 
   await requireRaidOfficer(env.DB, raidId, raid, session);
 

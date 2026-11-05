@@ -62,6 +62,8 @@ const settingsPane = document.getElementById('settingsPane');
 const settingsForm = document.getElementById('settingsForm');
 const settingsTitleInput = document.getElementById('settingsTitleInput');
 const settingsDateInput = document.getElementById('settingsDateInput');
+const softsOpenNotice = document.getElementById('softsOpenNotice');
+const assignOpenNotice = document.getElementById('assignOpenNotice');
 const settingsTimeInput = document.getElementById('settingsTimeInput');
 const settingsSoftLimitInput = document.getElementById('settingsSoftLimitInput');
 
@@ -604,12 +606,44 @@ function checkNotifications() {
   lastBonusGrantAmount = bonusAmount;
 }
 
+// Софти (свої, офіцерські, передача, бонуси) відкриваються в час початку
+// рейду - ту саму перевірку робить воркер (requireRaidStarted). Поллінг
+// перемальовує форми кожні 10с, тож у час початку вони відкриються самі.
+function isBeforeRaidStart() {
+  return Boolean(raid.starts_at) && Date.now() < Date.parse(raid.starts_at);
+}
+
+// Таймер на сам час початку - щоб форми відкрились рівно тоді, а не з
+// наступним поллінгом (до 20с). Перепланування при кожному виклику
+// враховує перенесення рейду лідером.
+let softsOpenTimer = null;
+function scheduleSoftsOpen() {
+  clearTimeout(softsOpenTimer);
+  if (!isBeforeRaidStart()) return;
+  const delay = Date.parse(raid.starts_at) - Date.now() + 500;
+  if (delay > 2 ** 31 - 1) return; // >24 днів - setTimeout не вміє; відкриє поллінг
+  softsOpenTimer = setTimeout(() => {
+    applySoftFormLockState();
+    applyOfficerFormLockState();
+  }, delay);
+}
+
+function softsOpenText() {
+  const start = raidStartIso(raid);
+  const [, m, d] = kyivDateKey(start).split('-');
+  return `🕒 Софти відкриються ${d}.${m} о ${kyivTimeKey(start)}`;
+}
+
 // Лок блокує самософт лише для звичайних гравців — офіцери/лідер обходять
 // лок на бекенді (reserves.js). Завершення рейду (isRaidCompleted) блокує
 // форму для всіх без винятку, включно з лідером/офіцерами.
 function applySoftFormLockState() {
   const myTransfer = getMyTransfer();
-  const locked = isRaidCompleted() || (raid.is_locked && !isOfficerMode()) || Boolean(myTransfer);
+  const beforeStart = isBeforeRaidStart();
+  scheduleSoftsOpen();
+  softsOpenNotice.hidden = !beforeStart || isRaidCompleted();
+  if (beforeStart) softsOpenNotice.textContent = softsOpenText();
+  const locked = isRaidCompleted() || beforeStart || (raid.is_locked && !isOfficerMode()) || Boolean(myTransfer);
   const softPlayerName = softPlayerNameInput.value.trim();
 
   // Один акаунт софтить у рейді лише одним персонажем (те саме перевіряє
@@ -635,7 +669,7 @@ function applySoftFormLockState() {
   const transfersEnabled = (raid.transfer_weight_limit ?? 0) !== 0;
   const myReceived = getMyReceivedTransfer();
   const myBonusGrant = getMyBonusGrant();
-  const canShowTransferBtn = currentUser && transfersEnabled && !isRaidCompleted() && !myTransfer && !myReceived && !myBonusGrant && myCharNames().length > 0;
+  const canShowTransferBtn = currentUser && transfersEnabled && !isRaidCompleted() && !beforeStart && !myTransfer && !myReceived && !myBonusGrant && myCharNames().length > 0;
   transferWeightBtn.hidden = !canShowTransferBtn;
 
   if (myTransfer) {
@@ -671,9 +705,13 @@ function applySoftFormLockState() {
 // Офіцерська панель і налаштування рейду — завершення блокує їх для всіх,
 // на відміну від is_locked (той обходять офіцери/лідер).
 function applyOfficerFormLockState() {
-  const locked = isRaidCompleted();
+  const beforeStart = isBeforeRaidStart();
+  assignOpenNotice.hidden = !beforeStart || isRaidCompleted();
+  if (beforeStart) assignOpenNotice.textContent = softsOpenText();
+  // "Приховати софти" можна вмикати й до початку - це не софт.
+  hiddenReservesToggle.disabled = isRaidCompleted();
+  const locked = isRaidCompleted() || beforeStart;
 
-  hiddenReservesToggle.disabled = locked;
   assignPlayerNameInput.disabled = locked;
   assignPlayerNameClear.disabled = locked;
   assignBoss.disabled = locked;
@@ -3071,6 +3109,7 @@ async function pollRaid() {
   try {
     const lkOnlyBefore = Boolean(raid.lk_only);
     const updatedBefore = raid.updated_at;
+    const startsBefore = raid.starts_at;
     applyOfficers(await loadSnapshot());
     // Лідер перемкнув "Тільки Король-ліч" — оновлюємо список босів у формах.
     if (Boolean(raid.lk_only) !== lkOnlyBefore) repopulateBossSelects();
@@ -3085,7 +3124,8 @@ async function pollRaid() {
     renderPlayersTable();
     renderItemsTable();
     applySoftFormLockState();
-    if (penaltiesChanged) applyOfficerFormLockState();
+    // Лідер переніс рейд - офіцерська форма теж мусить закритись/відкритись.
+    if (penaltiesChanged || raid.starts_at !== startsBefore) applyOfficerFormLockState();
     // Дані окремих вкладок — лише коли їх видно: у фоні вистачає snapshot.
     if (document.hidden) return;
     if (activeTab === 'audit') await loadAudit();

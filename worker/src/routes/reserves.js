@@ -1,4 +1,4 @@
-import { HttpError, jsonResponse, readJson, capitalizeName, softsWord } from '../util.js';
+import { HttpError, jsonResponse, readJson, capitalizeName, softsWord, requireRaidStarted } from '../util.js';
 import {
   getRaid,
   listReserves,
@@ -76,6 +76,7 @@ async function requireSingleOwnCharacter(env, raidId, session, playerName) {
 
 export async function handleCreateReserve(request, env, raidId, session) {
   const raid = await loadRaidOr404(env, raidId);
+  requireRaidStarted(raid);
   const body = await readJson(request);
 
   const playerName = capitalizeName(String(body.playerName || '').trim());
@@ -196,6 +197,7 @@ export async function handleToggleReceived(request, env, raidId, reserveId, sess
 
 export async function handleOfficerAssign(request, env, raidId, session) {
   const raid = await loadRaidOr404(env, raidId);
+  requireRaidStarted(raid);
   await requireRaidOfficer(env.DB, raidId, raid, session);
 
   const body = await readJson(request);
@@ -254,6 +256,7 @@ export async function handleOfficerAssign(request, env, raidId, session) {
 export async function handleUpdateBonusWeight(request, env, raidId, reserveId, session) {
   const raid = await loadRaidOr404(env, raidId);
   if (raid.status === 'completed') throw new HttpError(423, 'Рейд завершено');
+  requireRaidStarted(raid);
 
   const reserve = await getReserveById(env.DB, raidId, reserveId);
   if (!reserve) throw new HttpError(404, 'Софт не знайдено');

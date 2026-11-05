@@ -79,6 +79,7 @@
         <div class="raid-forms-grid">
           <div class="raid-form-col">
             <h2>Мій софт</h2>
+            <p id="softsOpenNotice" class="raid-hidden-notice" hidden></p>
             <form id="softForm" class="raid-soft-form">
               <label for="softPlayerName">Мій персонаж</label>
               <select id="softPlayerName" required></select>
@@ -126,6 +127,7 @@
               <input type="checkbox" id="hiddenReservesToggle">
               Приховати софти
             </label>
+            <p id="assignOpenNotice" class="raid-hidden-notice" hidden></p>
             <form id="officerAssignForm" class="raid-soft-form">
               <label for="assignPlayerName">Учасник</label>
               <div class="raid-input-wrap">
@@ -426,7 +428,7 @@
   <script src="../../scripts/ui-shared.js?v=21"></script>
   <script src="../../scripts/raid-manager-shared.js?v=11"></script>
   <script src="../../scripts/name-translations.js?v=3"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=142"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=143"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
