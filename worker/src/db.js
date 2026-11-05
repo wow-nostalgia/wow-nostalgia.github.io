@@ -662,6 +662,25 @@ export async function setCharacterCooldownsByNames(db, column, names, value) {
   return { updated, missing };
 }
 
+// КД для перегляду (Рейтинг DPS -> "Гравець", лише залогіненим). Ключ
+// відповіді - ім'я так, як його передали (без регістру при пошуку);
+// персонажів без профілю у відповіді немає.
+export async function getCooldownsByNames(db, names) {
+  const { results } = await db
+    .prepare('SELECT character_name, cd_icc10, cd_icc25, cd_rs10, cd_rs25 FROM user_characters')
+    .all();
+  const byLower = new Map(results.map((r) => [r.character_name.toLocaleLowerCase('uk'), r]));
+  const out = {};
+  for (const name of names) {
+    const row = byLower.get(name.toLocaleLowerCase('uk'));
+    if (!row) continue;
+    out[name] = Object.fromEntries(
+      Object.entries(CHARACTER_COOLDOWN_COLUMNS).map(([key, col]) => [key, Boolean(row[col])])
+    );
+  }
+  return out;
+}
+
 // Щотижневе оновлення КД рейдів (cron, п'ятниця 04:00 за Києвом).
 export async function resetCharacterCooldowns(db) {
   const { meta } = await db

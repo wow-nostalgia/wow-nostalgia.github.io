@@ -500,6 +500,21 @@ function renderSiblingRows() {
     potionTd.textContent = potions >= 0 ? potions.toFixed(2) : '—';
     tr.appendChild(potionTd);
 
+    if (siblingCooldowns) {
+      const cooldowns = siblingCooldowns[row.name];
+      COOLDOWN_KEYS.forEach((key) => {
+        const td = document.createElement('td');
+        td.className = 'player-cd-col';
+        if (cooldowns?.[key]) {
+          td.innerHTML = CHECK_ICON_SVG;
+          td.setAttribute('aria-label', 'Є КД');
+        } else {
+          td.textContent = '—';
+        }
+        tr.appendChild(td);
+      });
+    }
+
     playerSiblingsBody.appendChild(tr);
   });
 
@@ -527,6 +542,10 @@ function attachSiblingTableSorting() {
 function renderPlayerSiblings(characterName) {
   playerSiblingsBody.innerHTML = '';
   currentSiblingRows = [];
+  // КД попереднього гравця не показуємо, поки не прийдуть нові.
+  cooldownRequestId++;
+  siblingCooldowns = null;
+  setCooldownColumnsVisible(false);
 
   if (!characterName) {
     playerViewStatus.textContent = '';
@@ -555,6 +574,44 @@ function renderPlayerSiblings(characterName) {
 
   currentSiblingRows = rows;
   renderSiblingRows();
+  loadSiblingCooldowns(siblingNames);
+}
+
+// КД рейдів (профіль -> "Мої персонажі") - read-only і лише залогіненим:
+// без токена / при помилці колонки просто не показуються.
+const COOLDOWN_KEYS = ['icc10', 'icc25', 'rs10', 'rs25'];
+const COOLDOWN_LABELS = {
+  uk: { icc10: 'КД ЦЛК 10', icc25: 'КД ЦЛК 25', rs10: 'КД РС 10', rs25: 'КД РС 25' },
+  en: { icc10: 'Cooldown ICC 10', icc25: 'Cooldown ICC 25', rs10: 'Cooldown RS 10', rs25: 'Cooldown RS 25' }
+};
+const CHECK_ICON_SVG = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></svg>';
+let siblingCooldowns = null;
+let cooldownRequestId = 0;
+
+function setCooldownColumnsVisible(visible) {
+  const lang = getNameLanguage() === 'en' ? 'en' : 'uk';
+  document.querySelectorAll('#playerSiblingsTable th[data-cd-label]').forEach((th) => {
+    th.textContent = COOLDOWN_LABELS[lang][th.dataset.cdLabel];
+    th.hidden = !visible;
+  });
+}
+
+async function loadSiblingCooldowns(names) {
+  const requestId = ++cooldownRequestId;
+  siblingCooldowns = null;
+  setCooldownColumnsVisible(false);
+  const token = getSessionToken();
+  if (!token || !names.length) return;
+  try {
+    const params = new URLSearchParams({ names: names.slice(0, 20).join(',') });
+    const res = await fetch(`${AUTH_API_BASE}/characters/cooldowns?${params}`, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok || requestId !== cooldownRequestId) return;
+    siblingCooldowns = await res.json();
+    setCooldownColumnsVisible(true);
+    renderSiblingRows();
+  } catch {
+    /* без КД - таблиця як раніше */
+  }
 }
 
 async function init() {

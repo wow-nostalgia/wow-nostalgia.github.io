@@ -18,6 +18,7 @@ import {
   updateUserPreferences,
   getUserDisplayName,
   updateUserCharacter,
+  getCooldownsByNames,
   CHARACTER_COOLDOWN_COLUMNS,
   DEFAULT_SOUND_VOLUME
 } from '../db.js';
@@ -282,6 +283,20 @@ export async function handleListCharacterOwners(request, env) {
 // Видає лише character_name, без discord_id чи інших даних акаунту.
 export async function handleListPrimaryCharacters(request, env) {
   return jsonResponse(await listPrimaryCharacterNames(env.DB));
+}
+
+const MAX_COOLDOWN_LOOKUP = 20;
+
+// Рейтинг DPS -> "Гравець": КД персонажів профілю (read-only), лише
+// залогіненим. ?names=A,B,C
+export async function handleListCharacterCooldowns(request, env) {
+  await requireSession(env.DB, request);
+  const raw = new URL(request.url).searchParams.get('names') || '';
+  const names = [...new Set(raw.split(',').map((n) => n.trim()).filter(Boolean))];
+  if (!names.length) return jsonResponse({});
+  if (names.length > MAX_COOLDOWN_LOOKUP) throw new HttpError(400, `Не більше ${MAX_COOLDOWN_LOOKUP} персонажів за раз`);
+  if (names.some((n) => n.length > 24)) throw new HttpError(400, "Некоректні імена персонажів");
+  return jsonResponse(await getCooldownsByNames(env.DB, names));
 }
 
 export async function handleSearchUsers(request, env) {

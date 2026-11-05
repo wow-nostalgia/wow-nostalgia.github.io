@@ -2285,6 +2285,22 @@ body.ranking-page .player-siblings-table td.ranking-rank-col {
   text-align: left;
 }
 
+/* КД рейдів (лише залогіненим, read-only): галочка або тире по центру. */
+body.ranking-page .player-siblings-table th.player-cd-col,
+body.ranking-page .player-siblings-table td.player-cd-col {
+  text-align: center;
+  white-space: nowrap;
+}
+
+body.ranking-page .player-siblings-table td.player-cd-col {
+  color: var(--color-text-faint);
+}
+
+body.ranking-page .player-siblings-table td.player-cd-col svg {
+  color: var(--color-success);
+  vertical-align: middle;
+}
+
 body.ranking-page .player-siblings-table tbody tr:hover {
   background-color: var(--color-hover);
 }

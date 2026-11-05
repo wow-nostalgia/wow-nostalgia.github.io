@@ -88,7 +88,8 @@ import {
   handleUpdateCharacter,
   handleAdminRemoveCharacter,
   handleListCharacterOwners,
-  handleListPrimaryCharacters
+  handleListPrimaryCharacters,
+  handleListCharacterCooldowns
 } from './routes/auth.js';
 import {
   listDefaultOfficers,
@@ -492,6 +493,11 @@ async function route(request, env) {
   // Публічний (без логіну) — для бейджа "Основний" у статичній аналітиці.
   if (parts[2] === 'characters' && parts[3] === 'primary' && request.method === 'GET') {
     return handleListPrimaryCharacters(request, env);
+  }
+
+  // КД персонажів для Рейтингу DPS -> "Гравець" (лише залогіненим).
+  if (parts[2] === 'characters' && parts[3] === 'cooldowns' && request.method === 'GET') {
+    return handleListCharacterCooldowns(request, env);
   }
 
   if (parts[2] === 'raids') {
