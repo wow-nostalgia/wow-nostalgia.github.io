@@ -65,8 +65,9 @@ applyBackground(getStoredBackground());
 // Тема сайту (профіль -> Налаштування -> Тема сайту). Атрибут
 // data-theme на <html> перемикає блок токенів у style.css
 // (:root[data-theme="atom"]); без атрибута - стандартна тема.
-// Поки тестова й доступна лише адміну, тож зберігається тільки в
-// localStorage (без колонки в D1, як у фону).
+// Як і з фоном: джерело істини - колонка users.theme у D1 (синхронізує
+// auth-shared.js після /auth/me), localStorage - лише кеш для першого рендеру.
+// Список має збігатися з SITE_THEMES у worker/src/routes/auth.js.
 const THEME_STORAGE_KEY = 'siteTheme';
 const SITE_THEMES = ['default', 'atom'];
 

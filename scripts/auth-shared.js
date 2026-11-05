@@ -64,21 +64,29 @@ async function logoutCurrentUser() {
   // Фон — налаштування акаунту, а не пристрою: після виходу повертаємо
   // стандартний, щоб наступний користувач за цим браузером не успадкував чужий.
   setBackground(null);
+  setSiteTheme('default');
 }
 
-// Джерело істини для фону — колонка users.background; localStorage лише кеш,
-// який тут доганяє сервер (напр. користувач змінив фон з іншого пристрою).
+// Джерело істини для фону й теми — колонки users.background / users.theme;
+// localStorage лише кеш, який тут доганяє сервер (напр. користувач змінив
+// фон чи тему з іншого пристрою).
 function syncBackgroundFromUser(user) {
   if (!user) {
     // Токена нема — це справжній вихід, скидаємо кеш. Якщо ж токен на місці,
     // а user порожній (мережа впала / Worker недоступний) — кеш лишаємо, щоб
     // не блимати стандартним фоном на кожній офлайн-сторінці.
-    if (!getSessionToken()) setBackground(null);
+    if (!getSessionToken()) {
+      setBackground(null);
+      setSiteTheme('default');
+    }
     return;
   }
 
   const value = user.background ?? null;
   if (value !== getStoredBackground()) setBackground(value);
+
+  const theme = user.theme ?? 'default';
+  if (theme !== getSiteTheme()) setSiteTheme(theme);
 }
 
 function renderAuthNav(user) {

@@ -64,6 +64,16 @@ function normalizeBackground(value) {
   return name;
 }
 
+// Мають збігатися з SITE_THEMES у scripts/background.js (крім 'default',
+// який зберігаємо як NULL).
+const SITE_THEMES = ['atom'];
+
+function normalizeTheme(value) {
+  if (value === null || value === 'default') return null;
+  if (!SITE_THEMES.includes(value)) throw new HttpError(400, 'Невідома тема сайту');
+  return value;
+}
+
 function discordAvatarUrl(discordId, avatarHash) {
   return avatarHash ? `https://cdn.discordapp.com/avatars/${discordId}/${avatarHash}.png` : null;
 }
@@ -79,7 +89,9 @@ function publicUser(user) {
     soundNotifications: Boolean(user.sound_notifications ?? 1),
     soundVolume: user.sound_volume ?? DEFAULT_SOUND_VOLUME,
     // null - стандартний фон, 'none' - без фону, інакше ім'я файлу.
-    background: user.background ?? null
+    background: user.background ?? null,
+    // null - стандартна тема, інакше назва з SITE_THEMES.
+    theme: user.theme ?? null
   };
 }
 
@@ -158,6 +170,10 @@ export async function handleUpdatePreferences(request, env) {
 
   if (body.background !== undefined) {
     fields.background = normalizeBackground(body.background);
+  }
+
+  if (body.theme !== undefined) {
+    fields.theme = normalizeTheme(body.theme);
   }
 
   if (!Object.keys(fields).length) throw new HttpError(400, 'Немає що змінювати');

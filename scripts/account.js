@@ -405,11 +405,14 @@ backgroundGrid.addEventListener('click', (event) => {
   selectBackground(card.dataset.background || null);
 });
 
-// Тема сайту — тестова, показуємо лише адміну. setSiteTheme/getSiteTheme —
-// з scripts/background.js (підключений у <head>).
-function initThemeToggle() {
-  const prefs = document.getElementById('themePrefs');
+// Тема сайту — як фон: застосовуємо одразу, зберігаємо в акаунті, при
+// помилці відкочуємо. setSiteTheme/getSiteTheme — з scripts/background.js
+// (підключений у <head>).
+function initThemeToggle(user) {
   const toggle = document.getElementById('themeToggle');
+  const status = document.getElementById('themeStatus');
+  const serverTheme = user.theme ?? 'default';
+  if (serverTheme !== getSiteTheme()) setSiteTheme(serverTheme);
   const render = () => {
     const current = getSiteTheme();
     toggle.querySelectorAll('[data-theme-value]').forEach((btn) => {
@@ -418,14 +421,24 @@ function initThemeToggle() {
       btn.setAttribute('aria-pressed', String(active));
     });
   };
-  toggle.addEventListener('click', (e) => {
+  toggle.addEventListener('click', async (e) => {
     const btn = e.target.closest('[data-theme-value]');
     if (!btn) return;
-    setSiteTheme(btn.dataset.themeValue);
+    const value = btn.dataset.themeValue;
+    const previous = getSiteTheme();
+    if (value === previous) return;
+    setSiteTheme(value);
     render();
+    status.textContent = '';
+    try {
+      await savePreferences({ theme: value === 'default' ? null : value });
+    } catch (err) {
+      setSiteTheme(previous);
+      render();
+      status.textContent = `Не вдалося зберегти: ${err.message}`;
+    }
   });
   render();
-  prefs.hidden = false;
 }
 
 async function initBackgrounds(user) {
@@ -681,6 +694,7 @@ async function init() {
   renderVolumeValue();
   applySoundPrefsState();
   initBackgrounds(user);
+  initThemeToggle(user);
   profileUsername.textContent = user.username;
   profileDiscordId.textContent = `Discord ID: ${user.discordId}`;
   if (user.avatar) {
@@ -692,7 +706,6 @@ async function init() {
   if (user.isAdmin) {
     adminTabBtn.hidden = false;
     initDefaultOfficersAutocomplete();
-    initThemeToggle();
   }
 
   // Дані адмін-панелі тягнемо лише при першому відкритті вкладки.
