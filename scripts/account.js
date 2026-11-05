@@ -120,6 +120,118 @@ function characterNameNode(name) {
   return link;
 }
 
+// КД героїчних рейдів (гравець відмічає вручну, щоп'ятниці о 04:00 за Києвом
+// воркер їх скидає) і GearScore. Заголовки - за перемикачем мови назв
+// (nameLanguage, той самий, що для боссів/предметів).
+const COOLDOWN_KEYS = ['icc10', 'icc25', 'rs10', 'rs25'];
+const COOLDOWN_LABELS = {
+  uk: { icc10: 'КД ЦЛК 10г', icc25: 'КД ЦЛК 25г', rs10: 'КД РС 10г', rs25: 'КД РС 25г' },
+  en: { icc10: 'Cooldown ICC 10H', icc25: 'Cooldown ICC 25H', rs10: 'Cooldown RS 10H', rs25: 'Cooldown RS 25H' }
+};
+
+function cooldownLabels() {
+  let lang = 'uk';
+  try { lang = localStorage.getItem('nameLanguage') === 'en' ? 'en' : 'uk'; } catch { /* дефолт uk */ }
+  return COOLDOWN_LABELS[lang];
+}
+
+document.querySelectorAll('[data-cd-label]').forEach((th) => {
+  th.textContent = cooldownLabels()[th.dataset.cdLabel];
+});
+
+async function patchCharacter(name, patch) {
+  const res = await fetch(`${AUTH_API_BASE}/auth/me/characters/${encodeURIComponent(name)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getSessionToken()}` },
+    body: JSON.stringify(patch)
+  });
+  if (!res.ok) throw new Error(await readErrorMessage(res));
+  return res.json();
+}
+
+function createCooldownCell(name, key, checked) {
+  const td = document.createElement('td');
+  td.className = 'account-cd-td';
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.checked = Boolean(checked);
+  checkbox.setAttribute('aria-label', `${cooldownLabels()[key]}: ${name}`);
+  checkbox.addEventListener('change', async () => {
+    checkbox.disabled = true;
+    try {
+      await patchCharacter(name, { cooldowns: { [key]: checkbox.checked } });
+      setAccountStatus('');
+    } catch (err) {
+      checkbox.checked = !checkbox.checked;
+      setAccountStatus(`Помилка: ${err.message}`);
+    } finally {
+      checkbox.disabled = false;
+    }
+  });
+  td.appendChild(checkbox);
+  return td;
+}
+
+// Маска GS "X.X": лише цифри, крапку ставимо самі ("65" -> "6.5").
+function formatGearScoreInput(raw) {
+  const digits = raw.replace(/\D/g, '').slice(0, 2);
+  return digits.length === 2 ? `${digits[0]}.${digits[1]}` : digits;
+}
+
+function gearScoreText(value) {
+  return value == null ? '' : value.toFixed(1);
+}
+
+function createGearScoreCell(name, gearScore) {
+  const td = document.createElement('td');
+  td.className = 'account-gs-td';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.inputMode = 'numeric';
+  input.autocomplete = 'off';
+  input.className = 'account-gs-input';
+  input.placeholder = '0.0';
+  input.maxLength = 3;
+  input.setAttribute('aria-label', `GS: ${name}`);
+  let saved = gearScoreText(gearScore);
+  input.value = saved;
+
+  input.addEventListener('input', () => {
+    input.value = formatGearScoreInput(input.value);
+  });
+
+  const save = async () => {
+    let text = input.value;
+    // Одна цифра без крапки - це цілі: "7" -> "7.0".
+    if (/^\d$/.test(text)) text = `${text}.0`;
+    input.value = text;
+    if (text === saved) return;
+    if (text && !/^\d\.\d$/.test(text)) {
+      input.value = saved;
+      return;
+    }
+    input.disabled = true;
+    try {
+      await patchCharacter(name, { gearScore: text ? Number(text) : null });
+      saved = text;
+      setAccountStatus('');
+    } catch (err) {
+      input.value = saved;
+      setAccountStatus(`Помилка: ${err.message}`);
+    } finally {
+      input.disabled = false;
+    }
+  };
+
+  input.addEventListener('blur', save);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+    if (e.key === 'Escape') { input.value = saved; input.blur(); }
+  });
+  td.appendChild(input);
+  return td;
+}
+
 // Скільки персонажів у списку зараз - щоб зрозуміти, чи щойно доданий був
 // першим (див. обробник addCharacterForm).
 let charactersCount = 0;
@@ -131,7 +243,7 @@ function renderCharactersList(characters) {
   if (!characters.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 4;
+    td.colSpan = 9;
     td.textContent = 'Ще не додано жодного персонажа.';
     tr.appendChild(td);
     charactersList.appendChild(tr);
@@ -140,7 +252,7 @@ function renderCharactersList(characters) {
 
   const hasPrimary = characters.some((c) => c.isPrimary);
 
-  characters.forEach(({ characterName: name, isPrimary }) => {
+  characters.forEach(({ characterName: name, isPrimary, cooldowns, gearScore }) => {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
@@ -181,6 +293,9 @@ function renderCharactersList(characters) {
     });
     checkboxTd.appendChild(checkbox);
     tr.appendChild(checkboxTd);
+
+    COOLDOWN_KEYS.forEach((key) => tr.appendChild(createCooldownCell(name, key, cooldowns?.[key])));
+    tr.appendChild(createGearScoreCell(name, gearScore));
 
     const actionsTd = document.createElement('td');
     actionsTd.className = 'account-delete-td';

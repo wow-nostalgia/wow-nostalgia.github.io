@@ -10,7 +10,7 @@ database_id = "0ac710f2-18e0-4d25-b4ba-f54a8f33c7d8"
 # Щоденне автовидалення найстаріших рейдів, якщо база наблизиться до
 # ліміту D1 (worker/src/db.js: pruneOldRaidsIfOverLimit).
 [triggers]
-crons = ["17 4 * * *"]
+crons = ["17 4 * * *", "0 1,2 * * 5"]
 
 [vars]
 DISCORD_CLIENT_ID = "1521132280243032064"

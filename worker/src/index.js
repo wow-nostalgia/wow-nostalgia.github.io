@@ -84,6 +84,7 @@ import {
   handleRemoveCharacter,
   handleSetPrimaryCharacter,
   handleClearPrimaryCharacter,
+  handleUpdateCharacter,
   handleAdminRemoveCharacter,
   handleListCharacterOwners,
   handleListPrimaryCharacters
@@ -94,6 +95,7 @@ import {
   removeDefaultOfficer,
   getUserByDiscordId,
   pruneOldRaidsIfOverLimit,
+  resetCharacterCooldowns,
   countUsersByBackground,
   listRaidOfficers,
   getUserCharactersJoined,
@@ -155,6 +157,7 @@ async function routeAuth(request, env, parts) {
       return handleClearPrimaryCharacter(request, env);
     }
     if (!sub4 && method === 'DELETE') return handleRemoveCharacter(request, env, decodeURIComponent(sub3));
+    if (!sub4 && method === 'PATCH') return handleUpdateCharacter(request, env, decodeURIComponent(sub3));
     throw new HttpError(405, 'Метод не підтримується');
   }
 
@@ -539,8 +542,32 @@ export default {
   },
 
   async scheduled(event, env, ctx) {
+    if (event.cron === WEEKLY_RESET_CRON) {
+      ctx.waitUntil(runWeeklyCooldownReset(env, new Date(event.scheduledTime)));
+      return;
+    }
     ctx.waitUntil(
       pruneOldRaidsIfOverLimit(env.DB).catch((err) => console.error('[prune] scheduled run failed', err))
     );
   }
 };
+
+// Щотижневе оновлення КД рейдів - п'ятниця 04:00 за Києвом. Cron у Cloudflare
+// лише в UTC, а Київ то UTC+2 (зима), то UTC+3 (літо), тож тригер стоїть на
+// обидва варіанти (п'ятниця 01:00 і 02:00 UTC, wrangler.toml), а скидає лише
+// той запуск, коли в Києві справді 04:00. Має збігатися з wrangler.toml.
+const WEEKLY_RESET_CRON = '0 1,2 * * 5';
+
+function kyivHour(date) {
+  return Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Kyiv', hour: '2-digit', hourCycle: 'h23' }).format(date));
+}
+
+async function runWeeklyCooldownReset(env, now) {
+  if (kyivHour(now) !== 4) return;
+  try {
+    const changed = await resetCharacterCooldowns(env.DB);
+    console.log(`[cooldowns] weekly reset: ${changed} characters`);
+  } catch (err) {
+    console.error('[cooldowns] weekly reset failed', err);
+  }
+}

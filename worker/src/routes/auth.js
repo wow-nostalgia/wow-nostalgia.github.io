@@ -17,6 +17,8 @@ import {
   isDefaultOfficer,
   updateUserPreferences,
   getUserDisplayName,
+  updateUserCharacter,
+  CHARACTER_COOLDOWN_COLUMNS,
   DEFAULT_SOUND_VOLUME
 } from '../db.js';
 import { requireSession } from '../auth.js';
@@ -215,6 +217,45 @@ export async function handleRemoveCharacter(request, env, characterName) {
 export async function handleSetPrimaryCharacter(request, env, characterName) {
   const session = await requireSession(env.DB, request);
   return jsonResponse(await setPrimaryCharacter(env.DB, session.discordId, characterName));
+}
+
+// Відмітки КД і GearScore персонажа. body: { cooldowns?: {icc10?: bool, ...},
+// gearScore?: number|null } - можна передати лише те, що змінилось.
+export async function handleUpdateCharacter(request, env, characterName) {
+  const session = await requireSession(env.DB, request);
+  const body = await readJson(request);
+  const fields = {};
+
+  if (body.cooldowns !== undefined) {
+    if (!body.cooldowns || typeof body.cooldowns !== 'object' || Array.isArray(body.cooldowns)) {
+      throw new HttpError(400, 'cooldowns має бути об’єктом');
+    }
+    for (const [key, value] of Object.entries(body.cooldowns)) {
+      const column = CHARACTER_COOLDOWN_COLUMNS[key];
+      if (!column) throw new HttpError(400, `Невідомий рейд: ${key}`);
+      if (typeof value !== 'boolean') throw new HttpError(400, `cooldowns.${key} має бути true або false`);
+      fields[column] = value ? 1 : 0;
+    }
+  }
+
+  if (body.gearScore !== undefined) {
+    if (body.gearScore === null) {
+      fields.gear_score = null;
+    } else {
+      const tenths = Math.round(Number(body.gearScore) * 10);
+      if (typeof body.gearScore !== 'number' || !Number.isFinite(body.gearScore)
+        || tenths < 0 || tenths > 99 || Math.abs(body.gearScore * 10 - tenths) > 1e-6) {
+        throw new HttpError(400, 'GS має бути числом від 0.0 до 9.9 з одним знаком після крапки');
+      }
+      fields.gear_score = tenths;
+    }
+  }
+
+  if (!Object.keys(fields).length) throw new HttpError(400, 'Немає що змінювати');
+
+  const characters = await updateUserCharacter(env.DB, session.discordId, characterName, fields);
+  if (!characters) throw new HttpError(404, 'Персонажа не знайдено');
+  return jsonResponse(characters);
 }
 
 export async function handleClearPrimaryCharacter(request, env) {

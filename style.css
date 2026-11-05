@@ -4710,17 +4710,23 @@ body.shard-queue-page .shard-queue-self-add-btn.compare-btn:hover:not(:disabled)
   border-color: var(--color-success-strong-hover);
 }
 
+/* Таблиця персонажів на всю ширину (9 колонок з КД і GS), підказки - під
+   нею. На вузькому екрані таблиця прокручується вбік у своїй рамці. */
 body.account-page .account-chars-layout {
   display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
+  flex-direction: column;
+  gap: 0.75rem;
   margin: 0.5rem 0 1.5rem;
 }
 
 body.account-page .account-characters-table-wrap {
   width: 100%;
-  max-width: 420px;
   margin: 0;
+  overflow-x: auto;
+}
+
+body.account-page .account-chars-hints .account-chars-hint {
+  max-width: 40rem;
 }
 
 body.account-page .account-chars-hints {
@@ -4939,8 +4945,48 @@ body.account-page .account-primary-checkbox-td {
   width: 5rem;
 }
 
-body.account-page .account-primary-checkbox-td input[type="checkbox"] {
+body.account-page .account-primary-checkbox-td input[type="checkbox"],
+body.account-page .account-cd-td input[type="checkbox"] {
   accent-color: var(--color-link);
+}
+
+body.account-page .account-cd-col,
+body.account-page .account-cd-td {
+  text-align: center;
+  white-space: nowrap;
+}
+
+body.account-page .account-gs-col,
+body.account-page .account-gs-td {
+  text-align: center;
+  width: 4rem;
+}
+
+body.account-page .account-gs-input {
+  width: 3.25rem;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-input);
+  color: var(--color-text-strong);
+  font-size: var(--font-size-base);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+body.account-page .account-gs-input:hover {
+  border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
+}
+
+body.account-page .account-gs-input:focus {
+  border-color: var(--color-link);
+  box-shadow: 0 0 0 2px var(--color-hover-strong);
+}
+
+body.account-page .account-gs-input:disabled {
+  opacity: 0.45;
 }
 
 body.account-page .account-delete-col {

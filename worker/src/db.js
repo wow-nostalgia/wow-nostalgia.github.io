@@ -594,12 +594,55 @@ export async function listPrimaryCharacterNames(db) {
   return results.map((r) => r.character_name);
 }
 
+// КД героїчних рейдів персонажа: API-ключ -> колонка user_characters.
+export const CHARACTER_COOLDOWN_COLUMNS = {
+  icc10: 'cd_icc10',
+  icc25: 'cd_icc25',
+  rs10: 'cd_rs10',
+  rs25: 'cd_rs25'
+};
+
 export async function listUserCharacters(db, discordId) {
   const { results } = await db
-    .prepare('SELECT character_name, is_primary FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC')
+    .prepare(
+      `SELECT character_name, is_primary, cd_icc10, cd_icc25, cd_rs10, cd_rs25, gear_score
+       FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC`
+    )
     .bind(discordId)
     .all();
-  return results.map((r) => ({ characterName: r.character_name, isPrimary: Boolean(r.is_primary) }));
+  return results.map((r) => ({
+    characterName: r.character_name,
+    isPrimary: Boolean(r.is_primary),
+    cooldowns: Object.fromEntries(
+      Object.entries(CHARACTER_COOLDOWN_COLUMNS).map(([key, col]) => [key, Boolean(r[col])])
+    ),
+    // У БД - десяті (65), назовні - число з одним знаком (6.5).
+    gearScore: r.gear_score == null ? null : r.gear_score / 10
+  }));
+}
+
+// fields: {колонка: значення}, колонки - лише з білого списку в роуті.
+// Повертає null, якщо такого персонажа в цього акаунта немає.
+export async function updateUserCharacter(db, discordId, characterName, fields) {
+  const columns = Object.keys(fields);
+  const setClause = columns.map((col) => `${col} = ?`).join(', ');
+  const { meta } = await db
+    .prepare(`UPDATE user_characters SET ${setClause} WHERE discord_id = ? AND character_name = ?`)
+    .bind(...columns.map((col) => fields[col]), discordId, characterName)
+    .run();
+  if (!meta.changes) return null;
+  return listUserCharacters(db, discordId);
+}
+
+// Щотижневе оновлення КД рейдів (cron, п'ятниця 04:00 за Києвом).
+export async function resetCharacterCooldowns(db) {
+  const { meta } = await db
+    .prepare(
+      `UPDATE user_characters SET cd_icc10 = 0, cd_icc25 = 0, cd_rs10 = 0, cd_rs25 = 0
+       WHERE cd_icc10 = 1 OR cd_icc25 = 1 OR cd_rs10 = 1 OR cd_rs25 = 1`
+    )
+    .run();
+  return meta.changes;
 }
 
 export async function addUserCharacter(db, discordId, characterName) {
