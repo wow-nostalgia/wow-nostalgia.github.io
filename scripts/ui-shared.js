@@ -250,6 +250,23 @@ function raidStartIso(raid) {
   return raid.starts_at || raid.created_at;
 }
 
+// Статус для відображення: до часу початку незавершений рейд - "Запланований",
+// з часу початку (коли відкриваються софти) - "Активний". У БД статус лише
+// active/completed; "запланований" рахується з starts_at.
+function raidDisplayStatus(raid) {
+  if (raid.status === 'completed') return { key: 'completed', label: 'Завершений' };
+  if (raid.starts_at && Date.now() < Date.parse(raid.starts_at)) return { key: 'planned', label: 'Запланований' };
+  return { key: 'active', label: 'Активний' };
+}
+
+function raidStatusChip(raid) {
+  const { key, label } = raidDisplayStatus(raid);
+  const chip = document.createElement('span');
+  chip.className = `raid-chip raid-chip--${key}`;
+  chip.textContent = label;
+  return chip;
+}
+
 // 'YYYY-MM-DD' за Києвом.
 function kyivDateKey(dateOrIso) {
   const date = dateOrIso instanceof Date ? dateOrIso : new Date(dateOrIso);

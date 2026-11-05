@@ -2938,6 +2938,14 @@ body.buff-queue-page .raid-chip--active {
   background-color: color-mix(in srgb, var(--color-success) 12%, transparent);
 }
 
+/* Запланований (до часу початку) - акцентний, не "успіх": рейд ще не йде. */
+body.raid-manager-detail-page .raid-chip--planned,
+body.raid-manager-page .raid-chip--planned {
+  color: var(--color-link);
+  border-color: color-mix(in srgb, var(--color-link) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-link) 12%, transparent);
+}
+
 body.raid-manager-detail-page .raid-chip--completed,
 body.raid-manager-page .raid-chip--completed {
   color: var(--color-text-faint);

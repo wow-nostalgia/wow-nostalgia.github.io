@@ -94,11 +94,7 @@ function renderArchiveList(raids, total) {
     tr.appendChild(leaderTd);
 
     const statusTd = document.createElement('td');
-    const isCompleted = raid.status === 'completed';
-    const statusChip = document.createElement('span');
-    statusChip.className = `raid-chip raid-chip--${isCompleted ? 'completed' : 'active'}`;
-    statusChip.textContent = isCompleted ? 'Завершений' : 'Активний';
-    statusTd.appendChild(statusChip);
+    statusTd.appendChild(raidStatusChip(raid));
     tr.appendChild(statusTd);
 
     if (isAdmin) {

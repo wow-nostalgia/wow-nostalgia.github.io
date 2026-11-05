@@ -187,9 +187,7 @@ function renderDayPanel() {
     const li = document.createElement('li');
     const chip = raidChip(raid);
     chip.classList.add('raid-calendar-chip--wide');
-    const status = document.createElement('span');
-    status.className = `raid-chip raid-chip--${raid.status === 'completed' ? 'completed' : 'active'}`;
-    status.textContent = raid.status === 'completed' ? 'Завершений' : 'Активний';
+    const status = raidStatusChip(raid);
     const leader = document.createElement('span');
     leader.className = 'raid-calendar-chip-leader';
     leader.textContent = raid.leader_display_name || '';

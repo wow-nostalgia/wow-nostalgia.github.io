@@ -384,10 +384,7 @@ function renderBanner() {
   });
 
   const isCompleted = raid.status === 'completed';
-  const statusChip = document.createElement('span');
-  statusChip.className = `raid-chip raid-chip--${isCompleted ? 'completed' : 'active'}`;
-  statusChip.textContent = isCompleted ? 'Завершений' : 'Активний';
-  raidSettingsBanner.appendChild(statusChip);
+  raidSettingsBanner.appendChild(raidStatusChip(raid));
 
   lockToggleBtn.hidden = !isOfficerMode();
   lockToggleBtn.textContent = raid.is_locked ? '🔒 Розблокувати рейд' : '🔓 Заблокувати рейд';
@@ -630,6 +627,7 @@ function scheduleSoftsOpen() {
   const delay = Date.parse(raid.starts_at) - Date.now() + 500;
   if (delay > 2 ** 31 - 1) return; // >24 днів - setTimeout не вміє; відкриє поллінг
   softsOpenTimer = setTimeout(() => {
+    renderBanner(); // "Запланований" -> "Активний"
     applySoftFormLockState();
     applyOfficerFormLockState();
   }, delay);
