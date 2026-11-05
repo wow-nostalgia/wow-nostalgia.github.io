@@ -560,20 +560,6 @@ body.account-page #loggedInView h2 {
   gap: 20px;
 }
 
-.brand {
-  color: var(--color-accent-gold);
-  text-decoration: none;
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--font-title-md);
-  line-height: var(--line-height-tight);
-  white-space: nowrap;
-}
-
-.brand:hover {
-  color: var(--color-link-hover);
-  text-decoration: none;
-}
-
 .nav {
   display: flex;
   align-items: center;
@@ -4849,7 +4835,9 @@ body.account-page .account-bg-card:hover {
 }
 
 body.account-page .account-bg-card--active {
-  border-color: var(--color-accent-gold);
+  /* 2px без зсуву макета: рамка + зовнішня тінь 1px того ж кольору */
+  border-color: var(--color-link);
+  box-shadow: 0 0 0 1px var(--color-link);
   color: var(--color-text-strong);
 }
 
@@ -5003,8 +4991,8 @@ body.account-page .account-lang-toggle-btn:hover {
 }
 
 body.account-page .account-lang-toggle-btn--active {
-  background-color: var(--color-accent-gold);
-  border-color: var(--color-accent-gold);
+  background-color: var(--color-link);
+  border-color: var(--color-link);
   color: var(--color-surface-solid);
 }
 
