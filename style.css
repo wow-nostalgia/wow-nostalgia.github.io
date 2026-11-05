@@ -5,41 +5,45 @@
 :root {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 
-  --color-page-bg: #0b1220;
-  --color-surface: rgba(29, 38, 54, 0.98);
-  --color-surface-solid: #1d2636;
-  --color-surface-soft: rgba(20, 35, 60, 0.55);
-  --color-surface-soft-hover: rgba(36, 58, 96, 0.72);
-  --color-surface-overlay: rgba(20, 27, 39, 0.97);
-  --color-surface-deep: rgba(8, 13, 22, 0.75);
-  --color-surface-table: rgba(11, 18, 29, 0.45);
+  --color-page-bg: #282c34;
+  --color-surface: rgba(48, 56, 69, 0.98);
+  --color-surface-solid: #303845;
+  --color-surface-soft: #2c313c;
+  --color-surface-soft-hover: #3e4451;
+  --color-surface-overlay: rgba(40, 44, 52, 0.97);
+  --color-surface-deep: rgba(29, 31, 35, 0.75);
+  --color-surface-table: rgba(40, 44, 52, 0.45);
 
-  --color-text: #c5c6cd;
-  --color-text-strong: #e8edf7;
-  --color-text-soft: #d6deed;
-  --color-text-muted: #b8c2d9;
-  --color-text-faint: #8f96a3;
+  --color-text: #abb2bf;
+  --color-text-strong: #dcdfe4;
+  --color-text-soft: #d7dae0;
+  --color-text-muted: #9da5b4;
+  --color-text-faint: #848b98;
 
-  --color-link: #7baaf5;
-  --color-link-hover: #ffd700;
-  --color-brand: #87ceeb;
-  --color-brand-dark: #35558c;
+  --color-link: #61afef;
+  --color-link-hover: #56b6c2;
+  --color-brand: #56b6c2;
+  --color-brand-dark: #3e4451;
   --color-brand-gradient-end: #000080;
-  --color-accent-gold: #f2d27a;
-  --color-accent-purple: #cdb7e9;
+  --color-accent-gold: #e5c07b;
+  --color-accent-purple: #c678dd;
 
-  --color-success: #63d471;
-  --color-success-strong: #3a9e4a;
-  --color-success-strong-hover: #2f8a3e;
-  --color-danger: #ff6b6b;
-  --color-danger-hover: #e05252;
-  --color-warning: #f0ad4e;
+  --color-success: #98c379;
+  --color-success-strong: #5f8a3e;
+  --color-success-strong-hover: #4f7633;
+  --color-danger: #e06c75;
+  --color-danger-hover: #c85a63;
+  --color-warning: #e5c07b;
 
   --color-on-accent: #ffffff;
-  --color-accent-orange: #f2994a;
-  --color-accent-mint: #6dd09a;
-  --color-accent-emerald: #22c55e;
-  --color-surface-modal: #0f1c2e;
+  --color-accent-orange: #d19a66;
+  --color-accent-mint: #56b6c2;
+  --color-accent-emerald: #98c379;
+  --color-surface-input: #1d1f23;
+  --color-surface-input-solid: #1d1f23;
+  --color-surface-topbar: rgba(40, 44, 52, 0.85);
+  --color-backdrop: rgba(24, 26, 31, 0.84);
+  --color-surface-modal: #282c34;
 
   /* Нейтральні рамки - лише два рівні:
      --color-border-mid - рамка будь-якого елемента (кнопки, поля, селекти,
@@ -47,15 +51,15 @@
      --color-border - внутрішні розділювачі (рядки таблиць, лінія під
        вкладками, шапка/футер).
      Кольорові рамки (accent/danger/success) - лише для станів. */
-  --color-border: rgba(197, 198, 205, 0.18);
-  --color-border-mid: rgba(197, 198, 205, 0.28);
-  --color-border-accent: rgba(123, 170, 245, 0.45);
-  --color-border-accent-strong: rgba(123, 170, 245, 0.7);
-  --color-border-button-hover: rgba(255, 255, 255, 0.45);
+  --color-border: #2c313c;
+  --color-border-mid: #3e4451;
+  --color-border-accent: rgba(97, 175, 239, 0.45);
+  --color-border-accent-strong: rgba(97, 175, 239, 0.7);
+  --color-border-button-hover: #5c6370;
 
-  --color-hover: rgba(123, 170, 245, 0.10);
-  --color-hover-strong: rgba(123, 170, 245, 0.18);
-  --color-active: rgba(123, 170, 245, 0.12);
+  --color-hover: rgba(97, 175, 239, 0.10);
+  --color-hover-strong: rgba(97, 175, 239, 0.18);
+  --color-active: rgba(97, 175, 239, 0.12);
   --color-surface-stripe: rgba(255, 255, 255, 0.03);
   --color-surface-head: rgba(255, 255, 255, 0.06);
 
@@ -495,7 +499,7 @@ body.account-page #loggedInView h2 {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  background-color: rgba(29, 38, 54, 0.75);
+  background-color: var(--color-surface-topbar);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--color-border);
@@ -826,7 +830,7 @@ button.nav__link {
 
 .info-tabs .collapsible.open .heading {
   background: var(--color-brand-dark);
-  border-color: rgba(132, 170, 255, 0.35);
+  border-color: color-mix(in srgb, var(--color-link) 35%, transparent);
   color: var(--color-on-accent);
 }
 
@@ -1050,7 +1054,7 @@ footer span {
   padding: 5px 12px;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   outline: none;
@@ -1059,7 +1063,7 @@ footer span {
 
 .ranking-controls select:hover,
 .ranking-controls input[type="text"]:hover {
-  border-color: rgba(123, 170, 245, 0.55);
+  border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
 }
 
 .ranking-controls select:disabled {
@@ -1080,7 +1084,7 @@ footer span {
 .ranking-controls select {
   appearance: none;
   padding-right: 2.5rem;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%239da5b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 0.5rem center;
   background-size: 1rem;
@@ -1116,7 +1120,7 @@ footer span {
   padding: 0.3rem 0.55rem;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-soft);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
@@ -1126,7 +1130,7 @@ footer span {
 }
 
 .analytics-day-check:hover {
-  border-color: rgba(123, 170, 245, 0.55);
+  border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
   color: var(--color-text-strong);
 }
 
@@ -1279,7 +1283,7 @@ footer span {
 }
 
 #rankingTable tbody tr:hover {
-  background-color: rgba(123, 170, 245, 0.08);
+  background-color: color-mix(in srgb, var(--color-link) 8%, transparent);
 }
 
 #rankingTable tbody tr:last-child td {
@@ -1486,7 +1490,7 @@ body.potion-page .potion-log-btn:hover {
 
 body.potion-page .potion-log-btn.active {
   background: var(--color-brand-dark);
-  border-color: rgba(132, 170, 255, 0.35);
+  border-color: color-mix(in srgb, var(--color-link) 35%, transparent);
   color: var(--color-on-accent);
 }
 
@@ -1744,7 +1748,7 @@ body.potion-page .add-log-input {
   padding: 5px 12px;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   outline: none;
@@ -1818,7 +1822,7 @@ body.gallery-page .gallery-card {
 
 body.gallery-page .gallery-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(123, 170, 245, 0.5);
+  border-color: color-mix(in srgb, var(--color-link) 50%, transparent);
   box-shadow: var(--shadow-md);
 }
 
@@ -1836,7 +1840,7 @@ body.gallery-page .gallery-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: rgba(8, 13, 22, 0.65);
+  background: var(--color-surface-deep);
 }
 
 body.gallery-page .gallery-lightbox {
@@ -1859,7 +1863,7 @@ body.gallery-page .gallery-lightbox[open] {
 }
 
 body.gallery-page .gallery-lightbox::backdrop {
-  background: rgba(5, 8, 14, 0.84);
+  background: var(--color-backdrop);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
@@ -2045,20 +2049,20 @@ body.analytics-page .analytics-scope-chip {
 
 body.analytics-page .analytics-scope-chip--guild {
   color: var(--color-success);
-  border-color: rgba(99, 212, 113, 0.4);
-  background-color: rgba(99, 212, 113, 0.12);
+  border-color: color-mix(in srgb, var(--color-success) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-success) 12%, transparent);
 }
 
 body.analytics-page .analytics-scope-chip--legion {
   color: var(--color-accent-orange);
-  border-color: rgba(242, 153, 74, 0.4);
-  background-color: rgba(242, 153, 74, 0.12);
+  border-color: color-mix(in srgb, var(--color-accent-orange) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-accent-orange) 12%, transparent);
 }
 
 body.analytics-page .analytics-scope-chip--account {
   color: var(--color-accent-purple);
-  border-color: rgba(205, 183, 233, 0.4);
-  background-color: rgba(205, 183, 233, 0.12);
+  border-color: color-mix(in srgb, var(--color-accent-purple) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-accent-purple) 12%, transparent);
 }
 
 body.analytics-page .analytics-split-grid {
@@ -2317,7 +2321,7 @@ body.ranking-page .autocomplete-list {
   overflow-y: auto;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-lg);
-  background-color: rgba(12, 21, 33, 0.97);
+  background-color: var(--color-surface-input-solid);
   box-shadow: var(--shadow-md);
 }
 
@@ -2337,7 +2341,7 @@ body.ranking-page .autocomplete-item {
 
 body.personal-analytics-page .autocomplete-item:hover,
 body.ranking-page .autocomplete-item:hover {
-  background-color: rgba(123, 170, 245, 0.18);
+  background-color: color-mix(in srgb, var(--color-link) 18%, transparent);
 }
 
 body.personal-analytics-page .autocomplete-empty,
@@ -2364,18 +2368,18 @@ body.personal-analytics-page .spline-select-wrap select {
   padding-right: 2rem;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   outline: none;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%239da5b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 0.55rem center;
   background-size: 0.65rem;
 }
 
 body.personal-analytics-page .spline-select-wrap select:hover {
-  border-color: rgba(123, 170, 245, 0.55);
+  border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
 }
 
 body.personal-analytics-page .spline-select-wrap select:focus {
@@ -2415,7 +2419,7 @@ body.personal-analytics-page .boss-checkboxes {
   padding: 0.6rem 0.85rem;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
 }
 
 body.personal-analytics-page .boss-checkboxes-empty {
@@ -2599,7 +2603,7 @@ body.raid-manager-page .raid-toggle-btn {
   padding: 0.35rem 0.7rem;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
@@ -2609,7 +2613,7 @@ body.raid-manager-page .raid-toggle-btn {
 }
 
 body.raid-manager-page .raid-toggle-btn:hover {
-  border-color: rgba(123, 170, 245, 0.55);
+  border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
 }
 
 body.raid-manager-page .raid-toggle-btn--active {
@@ -2657,7 +2661,7 @@ body.raid-manager-detail-page .raid-item-picker-trigger {
   padding: 5px 12px;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   outline: none;
@@ -2668,7 +2672,7 @@ body.shard-queue-page select,
 body.raid-manager-page .buff-queue-audit-filter select {
   appearance: none;
   padding-right: 2rem;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%239da5b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 0.65rem center;
   background-size: 0.65rem;
@@ -2686,7 +2690,7 @@ body.shard-queue-page .raid-input-wrap input[type="text"]:hover,
 body.shard-queue-page select:hover,
 body.raid-manager-page .buff-queue-audit-filter select:hover,
 body.raid-manager-detail-page .raid-item-picker-trigger:hover {
-  border-color: rgba(123, 170, 245, 0.55);
+  border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
 }
 
 body.raid-manager-page .raid-create-form select:focus,
@@ -2719,7 +2723,7 @@ body.raid-manager-detail-page .raid-soft-form select,
 body.raid-manager-detail-page .raid-bonus-grant-amount {
   appearance: none;
   padding-right: 2.5rem;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%239da5b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 0.5rem center;
   background-size: 1rem;
@@ -2858,8 +2862,8 @@ body.raid-manager-detail-page .raid-chip--active,
 body.raid-manager-page .raid-chip--active,
 body.buff-queue-page .raid-chip--active {
   color: var(--color-success);
-  border-color: rgba(99, 212, 113, 0.4);
-  background-color: rgba(99, 212, 113, 0.12);
+  border-color: color-mix(in srgb, var(--color-success) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-success) 12%, transparent);
 }
 
 body.raid-manager-detail-page .raid-chip--completed,
@@ -2900,13 +2904,13 @@ body.account-page .link-button-std:disabled {
 body.raid-manager-page .link-button-std--danger,
 body.shard-queue-page .link-button-std--danger {
   color: var(--color-danger);
-  border-color: rgba(255, 107, 107, 0.4);
-  background-color: rgba(255, 107, 107, 0.12);
+  border-color: color-mix(in srgb, var(--color-danger) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
 body.raid-manager-page .link-button-std--danger:hover,
 body.shard-queue-page .link-button-std--danger:hover {
-  background-color: rgba(255, 107, 107, 0.2);
+  background-color: color-mix(in srgb, var(--color-danger) 20%, transparent);
 }
 
 body.raid-manager-page .archive-status-row {
@@ -3053,7 +3057,7 @@ body.raid-manager-page .archive-delete-btn {
 
 body.raid-manager-page .archive-delete-btn:hover {
   color: var(--color-danger);
-  background-color: rgba(255, 107, 107, 0.12);
+  background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
 body.raid-manager-page .archive-delete-th {
@@ -3214,14 +3218,14 @@ body.raid-manager-detail-page .raid-status-chip {
 
 body.raid-manager-detail-page .raid-status-chip--error {
   color: var(--color-danger);
-  border-color: rgba(255, 107, 107, 0.4);
-  background-color: rgba(255, 107, 107, 0.12);
+  border-color: color-mix(in srgb, var(--color-danger) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
 body.raid-manager-detail-page .raid-status-chip--success {
   color: var(--color-success);
-  border-color: rgba(99, 212, 113, 0.4);
-  background-color: rgba(99, 212, 113, 0.12);
+  border-color: color-mix(in srgb, var(--color-success) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-success) 12%, transparent);
 }
 
 body.raid-manager-detail-page .raid-banner-buttons {
@@ -3285,12 +3289,12 @@ body.raid-manager-detail-page .link-button-std:disabled {
 
 body.raid-manager-detail-page .link-button-std--danger {
   color: var(--color-danger);
-  border-color: rgba(255, 107, 107, 0.4);
-  background-color: rgba(255, 107, 107, 0.12);
+  border-color: color-mix(in srgb, var(--color-danger) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
 body.raid-manager-detail-page .link-button-std--danger:hover {
-  background-color: rgba(255, 107, 107, 0.2);
+  background-color: color-mix(in srgb, var(--color-danger) 20%, transparent);
 }
 
 body.raid-manager-detail-page .raid-officer-panel {
@@ -3399,7 +3403,7 @@ body.shard-queue-page .raid-autocomplete-list {
   overflow-y: auto;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-lg);
-  background-color: rgba(12, 21, 33, 0.97);
+  background-color: var(--color-surface-input-solid);
   box-shadow: var(--shadow-md);
 }
 
@@ -3432,7 +3436,7 @@ body.raid-manager-detail-page .raid-autocomplete-item:hover,
 body.raid-manager-page .raid-autocomplete-item:hover,
 body.account-page .raid-autocomplete-item:hover,
 body.shard-queue-page .raid-autocomplete-item:hover {
-  background-color: rgba(123, 170, 245, 0.18);
+  background-color: color-mix(in srgb, var(--color-link) 18%, transparent);
 }
 
 body.raid-manager-detail-page .raid-autocomplete-empty,
@@ -3464,7 +3468,7 @@ body.raid-manager-detail-page .raid-item-picker-trigger::after {
   margin-left: auto;
   width: 0.65rem;
   height: 0.65rem;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23a0a8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%239da5b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -3482,7 +3486,7 @@ body.raid-manager-detail-page .raid-item-picker-list {
   overflow-y: auto;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-lg);
-  background-color: rgba(12, 21, 33, 0.97);
+  background-color: var(--color-surface-input-solid);
   box-shadow: var(--shadow-md);
 }
 
@@ -3502,7 +3506,7 @@ body.raid-manager-detail-page .raid-item-picker-option {
 }
 
 body.raid-manager-detail-page .raid-item-picker-option:hover {
-  background-color: rgba(123, 170, 245, 0.18);
+  background-color: color-mix(in srgb, var(--color-link) 18%, transparent);
 }
 
 body.raid-manager-detail-page .raid-item-name-cell {
@@ -3636,7 +3640,7 @@ body.raid-manager-detail-page .raid-search-input {
   padding: 5px 12px;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border-mid);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   outline: none;
@@ -3644,7 +3648,7 @@ body.raid-manager-detail-page .raid-search-input {
 }
 
 body.raid-manager-detail-page .raid-search-input:hover {
-  border-color: rgba(123, 170, 245, 0.55);
+  border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
 }
 
 body.raid-manager-detail-page .raid-search-input:focus {
@@ -3761,7 +3765,7 @@ body.raid-manager-detail-page .raid-potion-clear-btn:not([hidden]) {
 
 body.raid-manager-detail-page .raid-potion-clear-btn:hover {
   color: var(--color-danger);
-  background-color: rgba(255, 107, 107, 0.12);
+  background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
 body.raid-manager-detail-page .raid-potion-boss-count {
@@ -3989,7 +3993,7 @@ body.raid-manager-detail-page .raid-weight-toggle-btn {
   padding: 0.35rem 0.7rem;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
@@ -3998,7 +4002,7 @@ body.raid-manager-detail-page .raid-weight-toggle-btn {
 }
 
 body.raid-manager-detail-page .raid-weight-toggle-btn:hover {
-  border-color: rgba(123, 170, 245, 0.55);
+  border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
 }
 
 body.raid-manager-detail-page .raid-weight-toggle-btn:disabled {
@@ -4071,7 +4075,7 @@ body.raid-manager-detail-page #raidItemTooltip {
   z-index: var(--z-sticky);
   max-width: 320px;
   padding: 0.6rem 0.75rem;
-  background-color: rgba(8, 14, 24, 0.97);
+  background-color: var(--color-surface-input-solid);
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-tooltip);
@@ -4652,7 +4656,7 @@ body.shard-queue-page .account-form input[type="text"] {
   padding: 5px 12px;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   outline: none;
@@ -4931,7 +4935,7 @@ body.shard-queue-page .account-delete-btn {
 body.account-page .account-delete-btn:hover,
 body.shard-queue-page .account-delete-btn:hover {
   color: var(--color-danger);
-  background-color: rgba(255, 107, 107, 0.12);
+  background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
 body.account-page .account-lang-toggle {
@@ -4944,7 +4948,7 @@ body.account-page .account-lang-toggle-btn {
   padding: 0.35rem 0.7rem;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
@@ -4954,7 +4958,7 @@ body.account-page .account-lang-toggle-btn {
 }
 
 body.account-page .account-lang-toggle-btn:hover {
-  border-color: rgba(123, 170, 245, 0.55);
+  border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
 }
 
 body.account-page .account-lang-toggle-btn--active {
@@ -5029,12 +5033,12 @@ body.account-page .link-button-std:hover {
 
 body.account-page .link-button-std--danger {
   color: var(--color-danger);
-  border-color: rgba(255, 107, 107, 0.4);
-  background-color: rgba(255, 107, 107, 0.12);
+  border-color: color-mix(in srgb, var(--color-danger) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
 body.account-page .link-button-std--danger:hover {
-  background-color: rgba(255, 107, 107, 0.2);
+  background-color: color-mix(in srgb, var(--color-danger) 20%, transparent);
 }
 
 @media (max-width: 544px) {
@@ -5198,9 +5202,9 @@ body.raid-manager-page .penalty-chip {
   gap: 0.25rem;
   max-width: 100%;
   padding: 0.1rem 0.55rem;
-  border: 1px solid rgba(255, 107, 107, 0.4);
+  border: 1px solid color-mix(in srgb, var(--color-danger) 40%, transparent);
   border-radius: var(--radius-md);
-  background-color: rgba(255, 107, 107, 0.12);
+  background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
   color: var(--color-text);
   font-size: var(--font-size-sm);
   line-height: 1.4;
@@ -5227,7 +5231,7 @@ body.raid-manager-page .penalty-chip-remove {
 body.raid-manager-detail-page .penalty-chip-remove:hover,
 body.raid-manager-page .penalty-chip-remove:hover {
   color: var(--color-danger);
-  background-color: rgba(255, 107, 107, 0.2);
+  background-color: color-mix(in srgb, var(--color-danger) 20%, transparent);
 }
 
 body.raid-manager-detail-page .penalty-add-btn,
@@ -5306,7 +5310,7 @@ body.raid-manager-page .penalty-add-btn[aria-disabled="true"] {
   width: 1.1rem;
   height: 1.1rem;
   padding: 0;
-  border: 1px solid rgba(123, 170, 245, 0.5);
+  border: 1px solid color-mix(in srgb, var(--color-link) 50%, transparent);
   border-radius: var(--radius-sm);
   background: none;
   color: var(--color-link);
@@ -5317,19 +5321,19 @@ body.raid-manager-page .penalty-add-btn[aria-disabled="true"] {
 }
 
 .raid-transfer-btn:hover {
-  background: rgba(123, 170, 245, 0.15);
+  background: color-mix(in srgb, var(--color-link) 15%, transparent);
   border-color: var(--color-link);
 }
 
 /* Кнопка "+" самостійного розподілу бонусної ваги (Items tab) — зелена,
    щоб виглядала як явно позитивна дія, а не як передача софту. */
 .raid-transfer-btn--add {
-  border-color: rgba(34, 197, 94, 0.5);
+  border-color: color-mix(in srgb, var(--color-accent-emerald) 50%, transparent);
   color: var(--color-accent-emerald);
 }
 
 .raid-transfer-btn--add:hover {
-  background: rgba(34, 197, 94, 0.15);
+  background: color-mix(in srgb, var(--color-accent-emerald) 15%, transparent);
   border-color: var(--color-accent-emerald);
 }
 
@@ -5353,7 +5357,7 @@ body.raid-manager-page .penalty-add-btn[aria-disabled="true"] {
   margin: 0 0 0.6rem;
   padding: 0.45rem 0.65rem;
   border-radius: var(--radius-md);
-  background: rgba(160, 168, 184, 0.1);
+  background: color-mix(in srgb, var(--color-text-faint) 10%, transparent);
   border-left: 3px solid var(--color-text-faint);
   color: var(--color-text-soft);
   font-size: var(--font-size-base);
@@ -5366,7 +5370,7 @@ body.raid-manager-page .penalty-add-btn[aria-disabled="true"] {
   margin: 0 0 0.6rem;
   padding: 0.45rem 0.65rem;
   border-radius: var(--radius-md);
-  background: rgba(240, 173, 78, 0.12);
+  background: color-mix(in srgb, var(--color-warning) 12%, transparent);
   border-left: 3px solid var(--color-warning);
   color: var(--color-text-soft);
   font-size: var(--font-size-base);
@@ -5391,7 +5395,7 @@ body.raid-manager-detail-page .raid-soft-form .raid-penalty-notice {
   padding: 0.3rem 0.45rem;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background: rgba(12, 21, 33, 0.6);
+  background: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
 }
@@ -5559,7 +5563,7 @@ dialog.raid-modal > .raid-modal-box {
   padding: 0.4rem 0.6rem;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background: rgba(12, 21, 33, 0.8);
+  background: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
 }
@@ -5602,9 +5606,9 @@ body.raid-manager-detail-page .raid-bonus-grant-name {
   font-weight: var(--font-weight-semibold);
   padding: 1px 6px;
   border-radius: var(--radius-sm);
-  background: rgba(34, 197, 94, 0.15);
+  background: color-mix(in srgb, var(--color-accent-emerald) 15%, transparent);
   color: var(--color-accent-emerald);
-  border: 1px solid rgba(34, 197, 94, 0.3);
+  border: 1px solid color-mix(in srgb, var(--color-accent-emerald) 30%, transparent);
 }
 
 /* --- Іконка посилення з номером у черзі (createBuffQueueIcon у
@@ -5783,7 +5787,7 @@ body.shard-queue-page .shard-queue-progress-input {
   padding: 0.3rem 0.4rem;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-sm);
   outline: none;
@@ -5791,12 +5795,12 @@ body.shard-queue-page .shard-queue-progress-input {
 }
 
 body.shard-queue-page .shard-queue-progress-input:hover {
-  border-color: rgba(123, 170, 245, 0.55);
+  border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
 }
 
 body.shard-queue-page .shard-queue-progress-input:focus {
   border-color: var(--color-link);
-  box-shadow: 0 0 0 2px rgba(123, 170, 245, 0.18);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-link) 18%, transparent);
 }
 
 body.shard-queue-page .shard-queue-add-forms {
@@ -5926,7 +5930,7 @@ body.raid-manager-page .buff-queue-audit-filters input[type="date"] {
   padding: 5px 12px;
   border: 1px solid var(--color-border-mid);
   border-radius: var(--radius-md);
-  background-color: rgba(12, 21, 33, 0.88);
+  background-color: var(--color-surface-input);
   color: var(--color-text-strong);
   font-size: var(--font-size-base);
   font-family: inherit;
@@ -5937,7 +5941,7 @@ body.raid-manager-page .buff-queue-audit-filters input[type="date"] {
 
 body.buff-queue-page .buff-queue-audit-filters input[type="date"]:hover,
 body.raid-manager-page .buff-queue-audit-filters input[type="date"]:hover {
-  border-color: rgba(123, 170, 245, 0.55);
+  border-color: color-mix(in srgb, var(--color-link) 55%, transparent);
 }
 
 body.buff-queue-page .buff-queue-audit-filters input[type="date"]:focus,
@@ -6179,7 +6183,7 @@ body.buff-queue-page .buff-queue-status-icon--buffed {
 
 /* Хто посилений прямо зараз — видно одним поглядом по таблиці. */
 body.buff-queue-page .buff-queue-row--buffed {
-  background-color: rgba(99, 212, 113, 0.06);
+  background-color: color-mix(in srgb, var(--color-success) 6%, transparent);
 }
 
 /* Статус-кнопка + перенос + кошик в одній клітинці: за нестачі місця
@@ -6207,12 +6211,12 @@ body.buff-queue-page .buff-queue-actions .link-button-std {
 /* Той самий патерн, що .link-button-std--danger, але для підтвердження. */
 body.buff-queue-page .buff-queue-btn--success {
   color: var(--color-success);
-  border-color: rgba(99, 212, 113, 0.4);
-  background-color: rgba(99, 212, 113, 0.12);
+  border-color: color-mix(in srgb, var(--color-success) 40%, transparent);
+  background-color: color-mix(in srgb, var(--color-success) 12%, transparent);
 }
 
 body.buff-queue-page .buff-queue-btn--success:hover {
-  background-color: rgba(99, 212, 113, 0.2);
+  background-color: color-mix(in srgb, var(--color-success) 20%, transparent);
 }
 
 /* Кнопка переносу бере базу .account-delete-btn, але наведення — не

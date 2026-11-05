@@ -484,7 +484,7 @@ function renderGuildVsLegionChart(rows, legionNames, guildRosterSize) {
             Number(stats.legion.top100Pct.toFixed(1)),
             Number(stats.legion.top200Pct.toFixed(1))
           ],
-          backgroundColor: '#f2994a'
+          backgroundColor: cssVar('--color-accent-orange')
         }
       ]
     },
@@ -683,10 +683,10 @@ function renderPotionScoreChart(potionStats, rows, personalStats, guildNames) {
     {
       label: 'Легіонери',
       data: legionPoints,
-      backgroundColor: '#f2994a'
+      backgroundColor: cssVar('--color-accent-orange')
     },
     buildPotionScoreTrendDataset(guildPoints, 'Гільдія — лінія тренду', cssVar('--color-success'), maxX),
-    buildPotionScoreTrendDataset(legionPoints, 'Легіонери — лінія тренду', '#f2994a', maxX)
+    buildPotionScoreTrendDataset(legionPoints, 'Легіонери — лінія тренду', cssVar('--color-accent-orange'), maxX)
   ].filter(Boolean);
 
   new Chart(document.getElementById('chartPotionScore'), {
@@ -1208,7 +1208,7 @@ async function init() {
     renderTopByClassChart(guildDpsRows, 'DPS', 'chartTopByClassDps');
     renderTopHealersChart(healerRankings, guildNames);
     renderRaidAttendanceChart('chartRaidAttendanceGuild', computeRaidAttendance(potionStats, (name) => guildNames.has(name)), cssVar('--color-success'));
-    renderRaidAttendanceChart('chartRaidAttendanceLegion', computeRaidAttendance(potionStats, (name) => !guildNames.has(name)), '#f2994a');
+    renderRaidAttendanceChart('chartRaidAttendanceLegion', computeRaidAttendance(potionStats, (name) => !guildNames.has(name)), cssVar('--color-accent-orange'));
     renderRaidAttendanceChart('chartRaidAttendanceAccount', computeRaidAttendanceByAccount(potionStats, characterOwnerNames), cssVar('--color-accent-purple'));
     renderPotionScoreChart(potionStats, dpsRows, personalStats, guildNames);
 
