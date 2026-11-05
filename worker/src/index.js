@@ -89,7 +89,8 @@ import {
   handleAdminRemoveCharacter,
   handleListCharacterOwners,
   handleListPrimaryCharacters,
-  handleListCharacterCooldowns
+  handleListCharacterCooldowns,
+  handleListCharacterGearScores
 } from './routes/auth.js';
 import {
   listDefaultOfficers,
@@ -495,9 +496,14 @@ async function route(request, env) {
     return handleListPrimaryCharacters(request, env);
   }
 
-  // КД персонажів для Рейтингу DPS -> "Гравець" (лише залогіненим).
+  // КД персонажів - лише офіцерам (Рейтинг DPS -> "Гравець", вкладка "Лог").
   if (parts[2] === 'characters' && parts[3] === 'cooldowns' && request.method === 'GET') {
     return handleListCharacterCooldowns(request, env);
+  }
+
+  // GearScore персонажів - Рейтинг DPS -> "Гравець", усім залогіненим.
+  if (parts[2] === 'characters' && parts[3] === 'gear-scores' && request.method === 'GET') {
+    return handleListCharacterGearScores(request, env);
   }
 
   if (parts[2] === 'raids') {

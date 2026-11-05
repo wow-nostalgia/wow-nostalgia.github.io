@@ -505,6 +505,14 @@ function renderSiblingRows() {
     potionTd.textContent = potions >= 0 ? potions.toFixed(2) : '—';
     tr.appendChild(potionTd);
 
+    if (siblingGearScores) {
+      const gsTd = document.createElement('td');
+      gsTd.className = 'player-gs-col';
+      const gs = siblingGearScores[row.name];
+      gsTd.textContent = gs == null ? '—' : gs.toFixed(1);
+      tr.appendChild(gsTd);
+    }
+
     if (siblingCooldowns) {
       const cooldowns = siblingCooldowns[row.name];
       COOLDOWN_KEYS.forEach((key) => {
@@ -547,10 +555,13 @@ function attachSiblingTableSorting() {
 function renderPlayerSiblings(characterName) {
   playerSiblingsBody.innerHTML = '';
   currentSiblingRows = [];
-  // КД попереднього гравця не показуємо, поки не прийдуть нові.
+  // КД і GS попереднього гравця не показуємо, поки не прийдуть нові.
   cooldownRequestId++;
   siblingCooldowns = null;
   setCooldownColumnsVisible(false);
+  gearScoreRequestId++;
+  siblingGearScores = null;
+  document.getElementById('playerGsHeader').hidden = true;
 
   if (!characterName) {
     playerViewStatus.textContent = '';
@@ -580,6 +591,28 @@ function renderPlayerSiblings(characterName) {
   currentSiblingRows = rows;
   renderSiblingRows();
   loadSiblingCooldowns(siblingNames);
+  loadSiblingGearScores(siblingNames);
+}
+
+// GearScore з профілю - read-only, усім залогіненим (без токена / при
+// помилці колонки просто немає).
+let siblingGearScores = null;
+let gearScoreRequestId = 0;
+
+async function loadSiblingGearScores(names) {
+  const requestId = ++gearScoreRequestId;
+  const token = getSessionToken();
+  if (!token || !names.length) return;
+  try {
+    const params = new URLSearchParams({ names: names.slice(0, 40).join(',') });
+    const res = await fetch(`${AUTH_API_BASE}/characters/gear-scores?${params}`, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok || requestId !== gearScoreRequestId) return;
+    siblingGearScores = await res.json();
+    document.getElementById('playerGsHeader').hidden = false;
+    renderSiblingRows();
+  } catch {
+    /* без GS - таблиця як раніше */
+  }
 }
 
 // КД рейдів (профіль -> "Мої персонажі") - read-only і лише офіцерам гільдії:
@@ -627,7 +660,7 @@ async function loadSiblingCooldowns(names) {
   if (!token || !names.length) return;
   if (!(await isGuildOfficerUser()) || requestId !== cooldownRequestId) return;
   try {
-    const params = new URLSearchParams({ names: names.slice(0, 20).join(',') });
+    const params = new URLSearchParams({ names: names.slice(0, 40).join(',') });
     const res = await fetch(`${AUTH_API_BASE}/characters/cooldowns?${params}`, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok || requestId !== cooldownRequestId) return;
     siblingCooldowns = await res.json();

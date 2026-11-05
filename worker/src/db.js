@@ -681,6 +681,21 @@ export async function getCooldownsByNames(db, names) {
   return out;
 }
 
+// GearScore для перегляду (Рейтинг DPS -> "Гравець", усім залогіненим).
+// Лише персонажі з проставленим GS; ключ - ім'я так, як його передали.
+export async function getGearScoresByNames(db, names) {
+  const { results } = await db
+    .prepare('SELECT character_name, gear_score FROM user_characters WHERE gear_score IS NOT NULL')
+    .all();
+  const byLower = new Map(results.map((r) => [r.character_name.toLocaleLowerCase('uk'), r.gear_score]));
+  const out = {};
+  for (const name of names) {
+    const tenths = byLower.get(name.toLocaleLowerCase('uk'));
+    if (tenths != null) out[name] = tenths / 10;
+  }
+  return out;
+}
+
 // Щотижневе оновлення КД рейдів (cron, п'ятниця 04:00 за Києвом).
 export async function resetCharacterCooldowns(db) {
   const { meta } = await db

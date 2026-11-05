@@ -19,6 +19,7 @@ import {
   getUserDisplayName,
   updateUserCharacter,
   getCooldownsByNames,
+  getGearScoresByNames,
   getRaid,
   CHARACTER_COOLDOWN_COLUMNS,
   DEFAULT_SOUND_VOLUME
@@ -302,12 +303,26 @@ export async function handleListCharacterCooldowns(request, env) {
   } else {
     await requireGlobalOfficer(env.DB, session);
   }
+  const names = parseLookupNames(params);
+  if (!names.length) return jsonResponse({});
+  return jsonResponse(await getCooldownsByNames(env.DB, names));
+}
+
+function parseLookupNames(params) {
   const raw = params.get('names') || '';
   const names = [...new Set(raw.split(',').map((n) => n.trim()).filter(Boolean))];
-  if (!names.length) return jsonResponse({});
   if (names.length > MAX_COOLDOWN_LOOKUP) throw new HttpError(400, `Не більше ${MAX_COOLDOWN_LOOKUP} персонажів за раз`);
   if (names.some((n) => n.length > 24)) throw new HttpError(400, "Некоректні імена персонажів");
-  return jsonResponse(await getCooldownsByNames(env.DB, names));
+  return names;
+}
+
+// GearScore персонажів (read-only) - Рейтинг DPS -> "Гравець", усім
+// залогіненим. ?names=A,B,C
+export async function handleListCharacterGearScores(request, env) {
+  await requireSession(env.DB, request);
+  const names = parseLookupNames(new URL(request.url).searchParams);
+  if (!names.length) return jsonResponse({});
+  return jsonResponse(await getGearScoresByNames(env.DB, names));
 }
 
 export async function handleSearchUsers(request, env) {
