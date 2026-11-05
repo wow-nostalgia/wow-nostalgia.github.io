@@ -2310,6 +2310,8 @@ body.ranking-page .player-siblings-table td.player-cd-col {
 
 body.ranking-page .player-siblings-table td.player-cd-col svg {
   color: var(--color-success);
+  /* глобальний reset робить svg блочним - text-align його не центрує */
+  display: inline-block;
   vertical-align: middle;
 }
 
@@ -3844,6 +3846,7 @@ body.raid-manager-detail-page #potionsContent .raid-potion-cd-status {
 
 body.raid-manager-detail-page #potionsContent td.raid-potion-cd-status svg {
   color: var(--color-success);
+  display: inline-block;
   vertical-align: middle;
 }
 
