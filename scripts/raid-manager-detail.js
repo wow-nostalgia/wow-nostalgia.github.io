@@ -981,6 +981,59 @@ function updateCooldownButtons(headerCheckbox, rowCheckboxes) {
   headerCheckbox.indeterminate = count > 0 && count < rowCheckboxes.length;
 }
 
+// Остання колонка "КД <рейд>" (лише офіцеру): чи вже стоїть КД цього рейду.
+// Ключ кешу - ім'я в нижньому регістрі (воркер звіряє без регістру);
+// значення true/false, відсутній ключ після завантаження - персонажа немає
+// в жодному профілі. Кеш живе, доки відкрита сторінка; після "Проставити/
+// Зняти КД" оновлюємо його з відповіді воркера.
+const CHECK_ICON_SVG = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></svg>';
+const logCdStatus = new Map();
+let logCdStatusLoaded = false;
+const logCdStatusCells = new Map();
+
+function raidCooldownKey() {
+  return `${String(raid.instance || '').toLowerCase()}${String(raid.difficulty || '').slice(0, 2)}`;
+}
+
+function paintCdStatusCell(td, name) {
+  td.innerHTML = '';
+  if (!logCdStatusLoaded) return;
+  const key = name.toLocaleLowerCase('uk');
+  if (!logCdStatus.has(key)) {
+    // Порожньо, але з підказкою: span на всю клітинку, свіжий на кожен
+    // перемальовок - щоб bindTooltip не накопичував обробники.
+    const missing = document.createElement('span');
+    missing.className = 'raid-potion-cd-missing';
+    missing.setAttribute('aria-label', 'Немає на сайті');
+    bindTooltip(missing);
+    td.appendChild(missing);
+    return;
+  }
+  if (logCdStatus.get(key)) td.innerHTML = CHECK_ICON_SVG;
+  else td.textContent = '—';
+}
+
+function repaintCdStatusCells() {
+  logCdStatusCells.forEach((td, name) => paintCdStatusCell(td, name));
+}
+
+async function loadLogCdStatus(names) {
+  if (logCdStatusLoaded) return;
+  const cdKey = raidCooldownKey();
+  try {
+    for (let i = 0; i < names.length; i += 40) {
+      const chunk = names.slice(i, i + 40);
+      const params = new URLSearchParams({ names: chunk.join(',') });
+      const data = await apiCall('GET', `/characters/cooldowns?${params}`, { token: getSessionToken() });
+      Object.entries(data).forEach(([name, cds]) => logCdStatus.set(name.toLocaleLowerCase('uk'), Boolean(cds[cdKey])));
+    }
+    logCdStatusLoaded = true;
+    repaintCdStatusCells();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function applyRaidCooldowns(value) {
   const characters = [...cdSelectedNames];
   if (!characters.length) return;
@@ -992,6 +1045,8 @@ async function applyRaidCooldowns(value) {
       token: getSessionToken(),
       body: { characters, value }
     });
+    result.updated.forEach((name) => logCdStatus.set(name.toLocaleLowerCase('uk'), value));
+    repaintCdStatusCells();
     const lines = [`${value ? 'Проставлено' : 'Знято'} ${label}: ${result.updated.length} персонажам.`];
     if (result.missing.length) lines.push(`Немає на сайті: ${result.missing.join(', ')}.`);
     showMessageModal(lines.join(' '), label);
@@ -1073,7 +1128,13 @@ function renderPotionLogTable(statsRaid) {
     });
     th.appendChild(headerCheckbox);
     table.querySelector('thead tr').prepend(th);
+
+    const statusTh = document.createElement('th');
+    statusTh.className = 'raid-potion-cd-status';
+    statusTh.textContent = cooldownLabel;
+    table.querySelector('thead tr').appendChild(statusTh);
   }
+  logCdStatusCells.clear();
 
   const rosterEntry = findRosterEntry(statsRaid.raidUrl);
 
@@ -1145,10 +1206,21 @@ function renderPotionLogTable(statsRaid) {
     potionTd.className = 'penalty-potion-stat';
     tr.appendChild(potionTd);
 
+    if (cdMode) {
+      const statusTd = document.createElement('td');
+      statusTd.className = 'raid-potion-cd-status';
+      logCdStatusCells.set(player.name, statusTd);
+      paintCdStatusCell(statusTd, player.name);
+      tr.appendChild(statusTd);
+    }
+
     tbody.appendChild(tr);
   });
 
   if (headerCheckbox) headerCheckbox.disabled = !rowCheckboxes.length;
+  // Статус КД тягнемо для всіх гравців логу (не лише видимих) - тоді зміна
+  // фільтра не потребує нового запиту.
+  if (cdMode) loadLogCdStatus((statsRaid.players || []).map((p) => p.name));
 
   table.appendChild(tbody);
   wrap.appendChild(table);

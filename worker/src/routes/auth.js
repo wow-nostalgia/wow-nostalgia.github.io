@@ -285,9 +285,9 @@ export async function handleListPrimaryCharacters(request, env) {
   return jsonResponse(await listPrimaryCharacterNames(env.DB));
 }
 
-const MAX_COOLDOWN_LOOKUP = 20;
+const MAX_COOLDOWN_LOOKUP = 40;
 
-// Рейтинг DPS -> "Гравець": КД персонажів профілю (read-only), лише
+// Рейтинг DPS -> "Гравець" і вкладка "Лог" рейду (офіцер): КД персонажів (read-only), лише
 // залогіненим. ?names=A,B,C
 export async function handleListCharacterCooldowns(request, env) {
   await requireSession(env.DB, request);

@@ -3834,6 +3834,24 @@ body.raid-manager-detail-page #potionsContent .raid-potion-cd-cell input[type="c
   cursor: pointer;
 }
 
+/* Остання колонка "КД <рейд>": галочка / тире / порожньо ("Немає на сайті"). */
+body.raid-manager-detail-page #potionsContent .raid-potion-cd-status {
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  color: var(--color-text-faint) !important;
+}
+
+body.raid-manager-detail-page #potionsContent td.raid-potion-cd-status svg {
+  color: var(--color-success);
+  vertical-align: middle;
+}
+
+body.raid-manager-detail-page #potionsContent .raid-potion-cd-missing {
+  display: block;
+  min-height: 1.25rem;
+}
+
 body.raid-manager-detail-page .raid-potion-boss-count {
   color: var(--color-text-faint);
   font-size: 0.9rem;
