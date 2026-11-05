@@ -582,8 +582,8 @@ function renderPlayerSiblings(characterName) {
   loadSiblingCooldowns(siblingNames);
 }
 
-// КД рейдів (профіль -> "Мої персонажі") - read-only і лише залогіненим:
-// без токена / при помилці колонки просто не показуються.
+// КД рейдів (профіль -> "Мої персонажі") - read-only і лише офіцерам гільдії:
+// іншим / без токена / при помилці колонки просто не показуються.
 const COOLDOWN_KEYS = ['icc10', 'icc25', 'rs10', 'rs25'];
 // Шапка в два рядки: "КД" над 4 короткими підзаголовками - так колонки
 // вузькі й таблиця вміщається без переносів.
@@ -611,12 +611,21 @@ function setCooldownColumnsVisible(visible) {
   });
 }
 
+// Колонки КД - лише офіцерам гільдії (воркер теж перевіряє). /auth/me
+// питаємо один раз на сторінку.
+let guildOfficerPromise = null;
+function isGuildOfficerUser() {
+  guildOfficerPromise ??= fetchCurrentUser().then((u) => Boolean(u?.isGuildOfficer)).catch(() => false);
+  return guildOfficerPromise;
+}
+
 async function loadSiblingCooldowns(names) {
   const requestId = ++cooldownRequestId;
   siblingCooldowns = null;
   setCooldownColumnsVisible(false);
   const token = getSessionToken();
   if (!token || !names.length) return;
+  if (!(await isGuildOfficerUser()) || requestId !== cooldownRequestId) return;
   try {
     const params = new URLSearchParams({ names: names.slice(0, 20).join(',') });
     const res = await fetch(`${AUTH_API_BASE}/characters/cooldowns?${params}`, { headers: { Authorization: `Bearer ${token}` } });

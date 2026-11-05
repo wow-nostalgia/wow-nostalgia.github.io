@@ -19,10 +19,11 @@ import {
   getUserDisplayName,
   updateUserCharacter,
   getCooldownsByNames,
+  getRaid,
   CHARACTER_COOLDOWN_COLUMNS,
   DEFAULT_SOUND_VOLUME
 } from '../db.js';
-import { requireSession } from '../auth.js';
+import { requireSession, requireGlobalOfficer, requireRaidOfficer } from '../auth.js';
 
 const SESSION_TTL_DAYS = 30;
 
@@ -287,11 +288,21 @@ export async function handleListPrimaryCharacters(request, env) {
 
 const MAX_COOLDOWN_LOOKUP = 40;
 
-// Рейтинг DPS -> "Гравець" і вкладка "Лог" рейду (офіцер): КД персонажів (read-only), лише
-// залогіненим. ?names=A,B,C
+// КД персонажів (read-only), лише офіцерам. ?names=A,B,C[&raidId=X]
+//   з raidId - вкладка "Лог" рейду: лідер/офіцер саме цього рейду;
+//   без raidId - Рейтинг DPS -> "Гравець": офіцер гільдії.
 export async function handleListCharacterCooldowns(request, env) {
-  await requireSession(env.DB, request);
-  const raw = new URL(request.url).searchParams.get('names') || '';
+  const session = await requireSession(env.DB, request);
+  const params = new URL(request.url).searchParams;
+  const raidId = params.get('raidId');
+  if (raidId) {
+    const raid = await getRaid(env.DB, raidId);
+    if (!raid) throw new HttpError(404, 'Рейд не знайдено');
+    await requireRaidOfficer(env.DB, raidId, raid, session);
+  } else {
+    await requireGlobalOfficer(env.DB, session);
+  }
+  const raw = params.get('names') || '';
   const names = [...new Set(raw.split(',').map((n) => n.trim()).filter(Boolean))];
   if (!names.length) return jsonResponse({});
   if (names.length > MAX_COOLDOWN_LOOKUP) throw new HttpError(400, `Не більше ${MAX_COOLDOWN_LOOKUP} персонажів за раз`);

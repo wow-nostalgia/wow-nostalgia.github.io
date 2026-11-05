@@ -1023,7 +1023,7 @@ async function loadLogCdStatus(names) {
   try {
     for (let i = 0; i < names.length; i += 40) {
       const chunk = names.slice(i, i + 40);
-      const params = new URLSearchParams({ names: chunk.join(',') });
+      const params = new URLSearchParams({ names: chunk.join(','), raidId });
       const data = await apiCall('GET', `/characters/cooldowns?${params}`, { token: getSessionToken() });
       Object.entries(data).forEach(([name, cds]) => logCdStatus.set(name.toLocaleLowerCase('uk'), Boolean(cds[cdKey])));
     }
