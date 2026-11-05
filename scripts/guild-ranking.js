@@ -468,14 +468,19 @@ function renderSiblingRows() {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
-    nameTd.className = 'player-siblings-name-cell';
-    nameTd.appendChild(buildCharacterAnalyticsLink(row.name, row));
+    // flex - на внутрішній обгортці, не на <td>: td з display:flex перестає
+    // бути клітинкою таблиці й не тягнеться на висоту рядка (лінія-розділювач
+    // під іменем з'їжджала вгору).
+    const nameWrap = document.createElement('span');
+    nameWrap.className = 'player-siblings-name-cell';
+    nameWrap.appendChild(buildCharacterAnalyticsLink(row.name, row));
     if (primaryCharacterNames.has(row.name)) {
       const primaryBadge = document.createElement('span');
       primaryBadge.className = 'primary-character-badge';
       primaryBadge.textContent = 'Основний';
-      nameTd.appendChild(primaryBadge);
+      nameWrap.appendChild(primaryBadge);
     }
+    nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
 
     const specTd = document.createElement('td');
@@ -580,19 +585,29 @@ function renderPlayerSiblings(characterName) {
 // КД рейдів (профіль -> "Мої персонажі") - read-only і лише залогіненим:
 // без токена / при помилці колонки просто не показуються.
 const COOLDOWN_KEYS = ['icc10', 'icc25', 'rs10', 'rs25'];
+// Шапка в два рядки: "КД" над 4 короткими підзаголовками - так колонки
+// вузькі й таблиця вміщається без переносів.
 const COOLDOWN_LABELS = {
-  uk: { icc10: 'КД ЦЛК 10', icc25: 'КД ЦЛК 25', rs10: 'КД РС 10', rs25: 'КД РС 25' },
-  en: { icc10: 'Cooldown ICC 10', icc25: 'Cooldown ICC 25', rs10: 'Cooldown RS 10', rs25: 'Cooldown RS 25' }
+  uk: { group: 'КД', icc10: 'ЦЛК 10', icc25: 'ЦЛК 25', rs10: 'РС 10', rs25: 'РС 25' },
+  en: { group: 'Cooldown', icc10: 'ICC 10', icc25: 'ICC 25', rs10: 'RS 10', rs25: 'RS 25' }
 };
 const CHECK_ICON_SVG = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></svg>';
 let siblingCooldowns = null;
 let cooldownRequestId = 0;
 
 function setCooldownColumnsVisible(visible) {
-  const lang = getNameLanguage() === 'en' ? 'en' : 'uk';
+  const labels = COOLDOWN_LABELS[getNameLanguage() === 'en' ? 'en' : 'uk'];
+  const group = document.getElementById('playerCdGroupHeader');
+  group.textContent = labels.group;
+  group.hidden = !visible;
+  document.getElementById('playerCdHeaderRow').hidden = !visible;
   document.querySelectorAll('#playerSiblingsTable th[data-cd-label]').forEach((th) => {
-    th.textContent = COOLDOWN_LABELS[lang][th.dataset.cdLabel];
-    th.hidden = !visible;
+    th.textContent = labels[th.dataset.cdLabel];
+  });
+  // Решта заголовків займає обидва рядки шапки, лише коли є рядок КД.
+  group.parentElement.querySelectorAll('th:not(.player-cd-group)').forEach((th) => {
+    if (visible) th.rowSpan = 2;
+    else th.removeAttribute('rowspan');
   });
 }
 

@@ -2285,11 +2285,23 @@ body.ranking-page .player-siblings-table td.ranking-rank-col {
   text-align: left;
 }
 
-/* КД рейдів (лише залогіненим, read-only): галочка або тире по центру. */
+/* Без переносів: шапка, спеціалізація й "медаль + очки" в один рядок.
+   Якщо таблиця не вміщається - прокрутка вбік у .ranking-table-wrap. */
+body.ranking-page .player-siblings-table th,
+body.ranking-page .player-siblings-table td {
+  white-space: nowrap;
+}
+
+/* КД рейдів (лише залогіненим, read-only): шапка "КД" над 4 короткими
+   підзаголовками, галочка або тире по центру. */
+body.ranking-page .player-siblings-table th.player-cd-group,
 body.ranking-page .player-siblings-table th.player-cd-col,
 body.ranking-page .player-siblings-table td.player-cd-col {
   text-align: center;
-  white-space: nowrap;
+}
+
+body.ranking-page .player-siblings-table th[rowspan] {
+  vertical-align: bottom;
 }
 
 body.ranking-page .player-siblings-table td.player-cd-col {
