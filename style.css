@@ -2833,6 +2833,13 @@ body.raid-manager-detail-page .raid-copy-link-wrap {
   margin-left: auto;
 }
 
+/* Іконка копіювання (Octicons copy-16) зліва від тексту. */
+body.raid-manager-detail-page .raid-copy-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 body.raid-manager-detail-page .raid-chip,
 body.raid-manager-page .raid-chip,
 body.buff-queue-page .raid-chip {
