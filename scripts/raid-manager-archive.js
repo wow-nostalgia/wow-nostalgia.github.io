@@ -33,6 +33,8 @@ const TITLE_DIFFICULTY_ABBR_UK = { "25H": "25ХМ", "25N": "25Н", "10H": "10Х�
 const PAGE_SIZE = 20;
 let currentPage = 0;
 let isAdmin = false;
+// Гільдійський офіцер - лише він бачить галочку "Опублікувати в Discord".
+let isGuildOfficer = false;
 let titleAutoFilled = true;
 const raidDateInput = document.getElementById('raidDate');
 const raidTimeInput = document.getElementById('raidTime');
@@ -282,8 +284,9 @@ let createRhEventId = null;
 async function openCreateRaidModal(dateKey, prefill = null) {
   titleAutoFilled = !prefill;
   createRhEventId = prefill ? prefill.rhEventId : null;
-  // Рейд з Discord уже там є - галочка публікації не потрібна.
-  document.getElementById('raidPublishDiscordLabel').hidden = Boolean(prefill);
+  // Публікувати в Discord можуть лише гільдійські офіцери (перевіряє й
+  // воркер); рейд з Discord уже там є - галочка не потрібна.
+  document.getElementById('raidPublishDiscordLabel').hidden = Boolean(prefill) || !isGuildOfficer;
   document.getElementById('raidPublishDiscord').checked = false;
   const today = kyivDateKey(new Date());
   raidDateInput.min = today;
@@ -372,6 +375,7 @@ async function init() {
   }
 
   isAdmin = !!user.isAdmin;
+  isGuildOfficer = !!user.isGuildOfficer;
 
   archiveSection.hidden = false;
   // Вкладки "Рейди | Календар" - scripts/raid-manager-calendar.js.

@@ -24,7 +24,8 @@ import {
   setRaidHelperLink,
   findRaidByRhEventId,
   deleteUnmatchedEvent,
-  listUnmatchedEvents
+  listUnmatchedEvents,
+  isDefaultOfficer
 } from '../db.js';
 import { requireGlobalOfficer } from '../auth.js';
 import { requireRaidOfficer, requireLeader } from '../auth.js';
@@ -109,9 +110,8 @@ export async function handleCreateRaid(request, env, session) {
     await setRaidHelperLink(env.DB, id, rhEventId);
     await deleteUnmatchedEvent(env.DB, rhEventId);
     await syncRaidFromRaidHelper(env, await getRaid(env.DB, id), { throwOnError: false });
-  } else if (body.publishToDiscord !== false) {
-    // Галочка "Опублікувати в Discord" у формі (без неї - старий клієнт -
-    // публікуємо, як і раніше).
+  } else if (body.publishToDiscord === true && await isDefaultOfficer(env.DB, session.discordId)) {
+    // Галочка "Опублікувати в Discord" у формі - лише гільдійським офіцерам.
     await publishRaidToRaidHelper(env, await getRaid(env.DB, id));
   }
 
