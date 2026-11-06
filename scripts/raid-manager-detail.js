@@ -1038,6 +1038,11 @@ function raidCooldownLabel() {
   return RAID_COOLDOWN_LABELS[key] || null;
 }
 
+function pruneCdSelection(visibleNames) {
+  const visible = new Set(visibleNames);
+  [...cdSelectedNames].forEach((name) => { if (!visible.has(name)) cdSelectedNames.delete(name); });
+}
+
 function updateCooldownButtons(headerCheckbox, rowCheckboxes) {
   const count = cdSelectedNames.size;
   potionsCdSetBtn.disabled = !count;
@@ -1054,7 +1059,9 @@ function updateCooldownButtons(headerCheckbox, rowCheckboxes) {
 // Зняти КД" оновлюємо його з відповіді воркера.
 const CHECK_ICON_SVG = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></svg>';
 const logCdStatus = new Map();
-let logCdStatusLoaded = false;
+// Імена (нижній регістр), для яких статус уже запитано: список росте (новий
+// софт, потім лог) - довантажуємо лише нові.
+const logCdStatusRequested = new Set();
 const logCdStatusCells = new Map();
 
 function raidCooldownKey() {
@@ -1063,8 +1070,8 @@ function raidCooldownKey() {
 
 function paintCdStatusCell(td, name) {
   td.innerHTML = '';
-  if (!logCdStatusLoaded) return;
   const key = name.toLocaleLowerCase('uk');
+  if (!logCdStatusRequested.has(key)) return;
   if (!logCdStatus.has(key)) {
     // Порожньо, але з підказкою: span на всю клітинку, свіжий на кожен
     // перемальовок - щоб bindTooltip не накопичував обробники.
@@ -1084,16 +1091,17 @@ function repaintCdStatusCells() {
 }
 
 async function loadLogCdStatus(names) {
-  if (logCdStatusLoaded) return;
+  const fresh = [...new Set(names)].filter((n) => !logCdStatusRequested.has(n.toLocaleLowerCase('uk')));
+  if (!fresh.length) return;
   const cdKey = raidCooldownKey();
   try {
-    for (let i = 0; i < names.length; i += 40) {
-      const chunk = names.slice(i, i + 40);
+    for (let i = 0; i < fresh.length; i += 40) {
+      const chunk = fresh.slice(i, i + 40);
       const params = new URLSearchParams({ names: chunk.join(','), raidId });
       const data = await apiCall('GET', `/characters/cooldowns?${params}`, { token: getSessionToken() });
       Object.entries(data).forEach(([name, cds]) => logCdStatus.set(name.toLocaleLowerCase('uk'), Boolean(cds[cdKey])));
+      chunk.forEach((n) => logCdStatusRequested.add(n.toLocaleLowerCase('uk')));
     }
-    logCdStatusLoaded = true;
     repaintCdStatusCells();
   } catch (err) {
     console.error(err);
@@ -1128,11 +1136,15 @@ async function applyRaidCooldowns(value) {
 function renderPotionLogTable(statsRaid) {
   const bossCount = statsRaid ? getPotionBossCount(statsRaid) : 0;
   // Чекбокси й кнопки КД - лише офіцерам і лише для рейдів, де КД відстежується.
+  // Без логу - для тих, хто софтив чи передавав софт: КД можна проставити
+  // одразу після рейду, ще до вибору логу.
   const cooldownLabel = raidCooldownLabel();
-  const cdMode = Boolean(statsRaid) && isOfficerMode() && Boolean(cooldownLabel);
-  // Кожен перерендер (зміна фільтра, інший лог) скидає вибір, щоб не
-  // проставити КД гравцям, яких зараз не видно.
-  cdSelectedNames.clear();
+  const softers = statsRaid ? null : [...getPlayersWithSoftsSet()].sort((a, b) => a.localeCompare(b, 'uk'));
+  const cdMode = isOfficerMode() && Boolean(cooldownLabel) && (Boolean(statsRaid) || softers.length > 0);
+  // Вибір переживає перерендер (поллінг сторінки кожні 20 с), але гравці, яких
+  // зараз не видно (фільтр, інший лог), з нього випадають - щоб не проставити
+  // їм КД наосліп (pruneCdSelection у кожній таблиці).
+  if (!cdMode) cdSelectedNames.clear();
   potionsCdSetBtn.hidden = !cdMode;
   potionsCdClearBtn.hidden = !cdMode;
   if (cdMode) {
@@ -1159,7 +1171,9 @@ function renderPotionLogTable(statsRaid) {
     empty.textContent = raid.potion_log_url
       ? 'Обраний лог не знайдено у Статистиці Potion.'
       : 'Лог ще не обрано.';
+    if (cdMode) empty.textContent += ' Нижче - ті, хто софтив або передавав софт: їм уже можна проставити КД.';
     potionsContent.appendChild(empty);
+    if (cdMode) renderSoftersCooldownTable(softers, cooldownLabel);
     return;
   }
 
@@ -1211,6 +1225,7 @@ function renderPotionLogTable(statsRaid) {
   if (potionsHideHealTankCheckbox.checked) {
     players = players.filter((player) => !isHealOrTankPlayer(rosterEntry, player.name));
   }
+  if (cdMode) pruneCdSelection(players.map((p) => p.name));
 
   players.forEach((player) => {
     const tr = document.createElement('tr');
@@ -1221,6 +1236,7 @@ function renderPotionLogTable(statsRaid) {
       const cb = document.createElement('input');
       cb.type = 'checkbox';
       cb.dataset.name = player.name;
+      cb.checked = cdSelectedNames.has(player.name);
       cb.setAttribute('aria-label', `Обрати ${player.name}`);
       cb.addEventListener('change', () => {
         if (cb.checked) cdSelectedNames.add(player.name);
@@ -1284,6 +1300,7 @@ function renderPotionLogTable(statsRaid) {
   });
 
   if (headerCheckbox) headerCheckbox.disabled = !rowCheckboxes.length;
+  if (cdMode) updateCooldownButtons(headerCheckbox, rowCheckboxes);
   // Статус КД тягнемо для всіх гравців логу (не лише видимих) - тоді зміна
   // фільтра не потребує нового запиту.
   if (cdMode) loadLogCdStatus((statsRaid.players || []).map((p) => p.name));
@@ -1291,6 +1308,86 @@ function renderPotionLogTable(statsRaid) {
   table.appendChild(tbody);
   wrap.appendChild(table);
   potionsContent.appendChild(wrap);
+}
+
+// Без логу (офіцеру): "чекбокс / Ім'я / КД <рейд>" для тих, хто софтив або
+// передавав софт. Ті самі кнопки "Проставити/Зняти КД" і той самий кеш
+// статусу КД, що й у таблиці логу.
+function renderSoftersCooldownTable(names, cooldownLabel) {
+  logCdStatusCells.clear();
+  pruneCdSelection(names);
+  const wrap = document.createElement('div');
+  wrap.className = 'ranking-table-wrap';
+  const table = document.createElement('table');
+  table.className = 'raid-table';
+  const thead = document.createElement('thead');
+  const headRow = document.createElement('tr');
+  const cbTh = document.createElement('th');
+  cbTh.className = 'raid-potion-cd-cell';
+  const headerCheckbox = document.createElement('input');
+  headerCheckbox.type = 'checkbox';
+  headerCheckbox.setAttribute('aria-label', 'Обрати всіх');
+  cbTh.appendChild(headerCheckbox);
+  const nameTh = document.createElement('th');
+  nameTh.textContent = "Ім'я";
+  const statusTh = document.createElement('th');
+  statusTh.className = 'raid-potion-cd-status';
+  statusTh.textContent = cooldownLabel;
+  headRow.append(cbTh, nameTh, statusTh);
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+
+  const rowCheckboxes = [];
+  headerCheckbox.addEventListener('change', () => {
+    rowCheckboxes.forEach((cb) => {
+      cb.checked = headerCheckbox.checked;
+      if (cb.checked) cdSelectedNames.add(cb.dataset.name);
+      else cdSelectedNames.delete(cb.dataset.name);
+    });
+    updateCooldownButtons(headerCheckbox, rowCheckboxes);
+  });
+
+  const tbody = document.createElement('tbody');
+  names.forEach((name) => {
+    const tr = document.createElement('tr');
+    const cdTd = document.createElement('td');
+    cdTd.className = 'raid-potion-cd-cell';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.dataset.name = name;
+    cb.checked = cdSelectedNames.has(name);
+    cb.setAttribute('aria-label', `Обрати ${name}`);
+    cb.addEventListener('change', () => {
+      if (cb.checked) cdSelectedNames.add(name);
+      else cdSelectedNames.delete(name);
+      updateCooldownButtons(headerCheckbox, rowCheckboxes);
+    });
+    rowCheckboxes.push(cb);
+    cdTd.appendChild(cb);
+
+    const nameTd = document.createElement('td');
+    nameTd.className = 'raid-potion-name-cell';
+    const nameEl = document.createElement('span');
+    nameEl.textContent = name;
+    // Колір класу - як на вкладці "Гравці" (дані гільдії).
+    nameEl.style.color = classColorMap.get(name) || 'var(--color-text-faint)';
+    const ownerName = characterOwnerNames.get(name);
+    nameEl.setAttribute('aria-label', `${name} - ${guildMemberNames.has(name) ? 'Ностальгія' : 'Легіонер'}${ownerName ? ` (${ownerName})` : ''}`);
+    bindTooltip(nameEl);
+    nameTd.appendChild(nameEl);
+
+    const statusTd = document.createElement('td');
+    statusTd.className = 'raid-potion-cd-status';
+    logCdStatusCells.set(name, statusTd);
+    paintCdStatusCell(statusTd, name);
+    tr.append(cdTd, nameTd, statusTd);
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  potionsContent.appendChild(wrap);
+  updateCooldownButtons(headerCheckbox, rowCheckboxes);
+  loadLogCdStatus(names);
 }
 
 async function loadPotionsTab() {
