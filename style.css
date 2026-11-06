@@ -5530,10 +5530,20 @@ body.account-page .account-chars-hints .account-chars-hint {
   max-width: 40rem;
 }
 
+/* Між підказками - рівно один порожній рядок (без власних відступів <p>). */
 body.account-page .account-chars-hints {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+}
+
+/* 1lh - висота рядка самої підказки (а не контейнера); padding-top
+   .account-chars-hint уже входить у проміжок, тож віднімаємо його. */
+body.account-page .account-chars-hints .account-chars-hint {
+  margin: 0;
+}
+
+body.account-page .account-chars-hints .account-chars-hint + .account-chars-hint {
+  margin-top: calc(1lh - 0.25rem);
 }
 
 body.account-page .account-chars-hint {
