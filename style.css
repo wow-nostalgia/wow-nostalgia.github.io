@@ -2965,10 +2965,23 @@ body.raid-manager-detail-page .raid-list-item-name {
   gap: 0.35rem;
 }
 
-/* Офіцери: Discord-ім'я | персонажі в цьому рейді | (кнопка лідера). */
-body.raid-manager-detail-page .raid-officer-item {
+/* Офіцери: Discord-ім'я | персонажі в цьому рейді | (кнопка лідера).
+   Колонки - спільні для всього списку (subgrid): у рядку лідера кнопки
+   "Видалити" немає, і з власною сіткою його колонка персонажів з'їжджала
+   правіше, ніж в інших рядках. */
+body.raid-manager-detail-page #officersList {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  column-gap: 0.5rem;
+}
+
+body.raid-manager-detail-page #officersList > li {
+  grid-column: 1 / -1;
+}
+
+body.raid-manager-detail-page .raid-officer-item {
+  display: grid;
+  grid-template-columns: subgrid;
 }
 
 body.raid-manager-detail-page .raid-officer-characters {
