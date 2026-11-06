@@ -5880,6 +5880,14 @@ body.account-page .account-stats-block {
   min-width: 0;
 }
 
+/* .ranking-table-wrap - width: max-content: довгий список імен розтягнув би
+   таблицю за межі своєї половини (на сусідню). Тут - за вмістом, але не
+   ширше блоку; імена переносяться (.account-bg-stats-names). */
+body.account-page .account-stats-block .ranking-table-wrap {
+  width: fit-content;
+  max-width: 100%;
+}
+
 body.account-page .account-admin-hint {
   margin: 0 0 0.5rem;
   font-size: var(--font-size-base);
