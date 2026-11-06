@@ -1251,6 +1251,90 @@ footer span {
   cursor: not-allowed;
 }
 
+/* Кнопка з розділеним списком (scripts/raid-signups.js: createSplitButton) -
+   як "Рейди ▾" у навбарі, але в стилі .compare-btn: основна дія + стрілка з
+   другорядними діями (скасування, відв'язка). Обидві частини в одній рамці,
+   межа стрілки - риска-розділювач. */
+.split-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.split-btn__main {
+  white-space: nowrap;
+  border-right-width: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.split-btn__toggle {
+  padding: 0.5rem 0.6rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.split-btn__toggle::after {
+  content: '▾';
+  font-size: 10px;
+}
+
+/* Частини не "підстрибують" окремо одна від одної. */
+.split-btn .compare-btn:hover:not(:disabled) {
+  transform: none;
+  box-shadow: none;
+}
+
+.split-btn.is-open .split-btn__toggle {
+  background: var(--color-hover);
+}
+
+.split-btn__menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+  padding: 6px;
+  min-width: 100%;
+  background-color: var(--color-surface-overlay);
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  z-index: 30;
+}
+
+.split-btn.is-open .split-btn__menu {
+  display: flex;
+}
+
+.split-btn__item {
+  padding: 0.45rem 0.65rem;
+  border: none;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-text-strong);
+  font: inherit;
+  font-size: var(--font-size-base);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.split-btn__item:hover {
+  background: var(--color-hover);
+}
+
+.split-btn__item--danger {
+  color: var(--color-danger);
+}
+
+.split-btn__item--danger:hover {
+  background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+}
+
 #rankingTable th.checkbox-cell,
 #rankingTable td.checkbox-cell {
   text-align: center;

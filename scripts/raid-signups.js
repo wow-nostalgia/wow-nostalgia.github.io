@@ -127,6 +127,55 @@ function signupEntryLabel(signup) {
   return `${signupDisplayName(signup)}${classSpec}${who ? ` (${who})` : ''}${noChar}`;
 }
 
+// Кнопка з розділеним списком (як "Рейди ▾" у навбарі): основна дія +
+// стрілка з другорядними (напр. скасування). items: [{ label, danger, onClick }].
+function createSplitButton({ label, onClick, items, disabled = false, toggleLabel = 'Інші дії' }) {
+  const wrap = document.createElement('div');
+  wrap.className = 'split-btn';
+  const main = document.createElement('button');
+  main.type = 'button';
+  main.className = 'compare-btn split-btn__main';
+  main.textContent = label;
+  main.disabled = disabled;
+  main.addEventListener('click', onClick);
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'compare-btn split-btn__toggle';
+  toggle.setAttribute('aria-haspopup', 'menu');
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.setAttribute('aria-label', toggleLabel);
+  toggle.disabled = disabled;
+  const menu = document.createElement('div');
+  menu.className = 'split-btn__menu';
+  menu.setAttribute('role', 'menu');
+
+  const setOpen = (open) => {
+    wrap.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+  };
+  const onOutside = (event) => {
+    if (!wrap.isConnected) { document.removeEventListener('click', onOutside); return; }
+    if (!wrap.contains(event.target)) setOpen(false);
+  };
+  document.addEventListener('click', onOutside);
+  wrap.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && wrap.classList.contains('is-open')) { setOpen(false); toggle.focus(); }
+  });
+  toggle.addEventListener('click', () => setOpen(!wrap.classList.contains('is-open')));
+
+  items.forEach((item) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `split-btn__item${item.danger ? ' split-btn__item--danger' : ''}`;
+    btn.setAttribute('role', 'menuitem');
+    btn.textContent = item.label;
+    btn.addEventListener('click', () => { setOpen(false); item.onClick(); });
+    menu.appendChild(btn);
+  });
+  wrap.append(main, toggle, menu);
+  return wrap;
+}
+
 // Рядок стану синхронізації з Raid-Helper + (офіцерам) прив'язка/оновлення.
 function renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange }) {
   if (!raid.rh_event_id && !officer) return;
@@ -165,19 +214,14 @@ function renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange }) {
       }
     };
     if (raid.rh_event_id) {
-      const sync = document.createElement('button');
-      sync.type = 'button';
-      sync.className = 'link-button-std';
-      sync.textContent = 'Оновити зараз';
-      sync.addEventListener('click', () => call('POST', `/raids/${raid.id}/raid-helper/sync`, undefined, (r) => {
-        if (r.skipped) showMessageModal(`Пропущено записів з невідомим класом/спеком: ${r.skipped}`);
+      bar.appendChild(createSplitButton({
+        label: 'Оновити зараз',
+        toggleLabel: 'Інші дії з синхронізацією',
+        onClick: () => call('POST', `/raids/${raid.id}/raid-helper/sync`, undefined, (r) => {
+          if (r.skipped) showMessageModal(`Пропущено записів з невідомим класом/спеком: ${r.skipped}`);
+        }),
+        items: [{ label: "Відв'язати від Discord", danger: true, onClick: () => call('PUT', `/raids/${raid.id}/raid-helper`, { eventId: '' }) }]
       }));
-      const unlink = document.createElement('button');
-      unlink.type = 'button';
-      unlink.className = 'link-button-std link-button-std--danger';
-      unlink.textContent = "Відв'язати";
-      unlink.addEventListener('click', () => call('PUT', `/raids/${raid.id}/raid-helper`, { eventId: '' }));
-      bar.append(sync, unlink);
     } else {
       const form = document.createElement('form');
       form.className = 'signup-rh-form';
@@ -188,7 +232,7 @@ function renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange }) {
       input.setAttribute('aria-label', 'ID рейду Raid-Helper (ID повідомлення в Discord)');
       const link = document.createElement('button');
       link.type = 'submit';
-      link.className = 'link-button-std';
+      link.className = 'compare-btn';
       link.textContent = "Прив'язати";
       form.append(input, link);
       form.addEventListener('submit', (event) => {
@@ -205,7 +249,7 @@ function renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange }) {
       if (raid.status !== 'completed') {
         const publish = document.createElement('button');
         publish.type = 'button';
-        publish.className = 'link-button-std';
+        publish.className = 'compare-btn';
         publish.textContent = 'Опублікувати в Discord';
         publish.addEventListener('click', () => call('POST', `/raids/${raid.id}/raid-helper/publish`, undefined, (r) => {
           const lines = [`Опубліковано в Discord. Відправлено записів із сайту: ${r.pushed}.`];
@@ -270,29 +314,38 @@ function renderSignupRoster(root, opts) {
     my.textContent = `Твій запис: ${mine.character_name || 'персонаж не обраний'} · ${signupSpecLabel(mine.spec)} · ${SIGNUP_STATUS_LABELS[mine.status]}`;
     actions.appendChild(my);
   }
-  const signBtn = document.createElement('button');
-  signBtn.type = 'button';
-  signBtn.className = 'compare-btn signup-sign-btn';
-  signBtn.textContent = mine ? 'Змінити запис' : 'Записатись';
-  signBtn.disabled = closed;
-  signBtn.addEventListener('click', () => openSignupModal({ raid, signups, myDiscordId, onSaved: onChange }));
-  actions.appendChild(signBtn);
+  const openModalForMe = () => openSignupModal({ raid, signups, myDiscordId, onSaved: onChange });
   if (mine) {
-    const cancelBtn = document.createElement('button');
-    cancelBtn.type = 'button';
-    cancelBtn.className = 'link-button-std link-button-std--danger';
-    cancelBtn.textContent = 'Скасувати запис';
-    cancelBtn.disabled = closed;
-    cancelBtn.addEventListener('click', async () => {
-      cancelBtn.disabled = true;
-      try {
-        onChange(await apiCall('DELETE', `/raids/${raid.id}/signups/me`, { token: getSessionToken() }));
-      } catch (err) {
-        cancelBtn.disabled = false;
-        showMessageModal(err.message);
-      }
+    // Скасування - другорядна дія, у списку під стрілкою.
+    const split = createSplitButton({
+      label: 'Змінити запис',
+      toggleLabel: 'Інші дії із записом',
+      disabled: closed,
+      onClick: openModalForMe,
+      items: [{
+        label: 'Скасувати запис',
+        danger: true,
+        onClick: async () => {
+          split.querySelectorAll('button').forEach((b) => { b.disabled = true; });
+          try {
+            onChange(await apiCall('DELETE', `/raids/${raid.id}/signups/me`, { token: getSessionToken() }));
+          } catch (err) {
+            split.querySelectorAll('button').forEach((b) => { b.disabled = false; });
+            showMessageModal(err.message);
+          }
+        }
+      }]
     });
-    actions.appendChild(cancelBtn);
+    split.querySelector('.split-btn__main').classList.add('signup-sign-btn');
+    actions.appendChild(split);
+  } else {
+    const signBtn = document.createElement('button');
+    signBtn.type = 'button';
+    signBtn.className = 'compare-btn signup-sign-btn';
+    signBtn.textContent = 'Записатись';
+    signBtn.disabled = closed;
+    signBtn.addEventListener('click', openModalForMe);
+    actions.appendChild(signBtn);
   }
   if (closed) {
     const note = document.createElement('span');
