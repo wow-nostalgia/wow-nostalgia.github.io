@@ -31,6 +31,7 @@ import {
   markRaidHelperEventDeleted,
   listLinkedRhEventIds,
   replaceUnmatchedEvents,
+  listCharacterNamesByDiscordIds,
   getUserByDiscordId,
   createRaidWithDefaults,
   getRaid
@@ -110,9 +111,17 @@ async function eventFromWrite(env, eventId, data) {
 
 // Знімок рейду з Raid-Helper -> D1. Повертає кількість пропущених записів
 // (невідомий клас/спек).
+function matchCharacterByNick(nick, characters) {
+  if (!nick || !characters || !characters.length) return null;
+  const base = String(nick).replace(/\s*\(.*\)\s*$/, '').trim().toLocaleLowerCase('uk');
+  if (!base) return null;
+  return characters.find((c) => c.toLocaleLowerCase('uk') === base) || null;
+}
+
 export async function applyRaidHelperEvent(db, raidId, event) {
   const local = await listSignupRows(db, raidId);
   const byDiscord = new Map(local.map((row) => [row.discord_id, row]));
+  const charsByDiscord = await listCharacterNamesByDiscordIds(db, event.signUps.map((s) => String(s.userId || '')).filter(Boolean));
   const seen = new Set();
   const upserts = [];
   let skipped = 0;
@@ -132,7 +141,10 @@ export async function applyRaidHelperEvent(db, raidId, event) {
     const cls = mapped.cls ?? row?.class ?? null;
     const spec = mapped.cls ? mapped.spec : (row?.spec ?? null);
     // Персонаж обирався під клас - зміна класу в Discord його скидає.
-    const characterName = row && row.character_name && (!row.class || row.class === cls) ? row.character_name : null;
+    const kept = row && row.character_name && (!row.class || row.class === cls) ? row.character_name : null;
+    // Персонаж не обраний - нік у Discord, що збігається з персонажем цього
+    // гравця на сайті ("Sangria" -> Sangria, "Blackmore(Совуня)" -> Blackmore).
+    const characterName = kept ?? matchCharacterByNick(s.name, charsByDiscord.get(discordId));
     const next = {
       discordId,
       discordName: s.name ? String(s.name) : null,

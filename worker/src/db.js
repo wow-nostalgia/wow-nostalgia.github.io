@@ -1533,6 +1533,21 @@ export async function deleteSignupById(db, raidId, signupId) {
 
 // ---- Синхронізація з Raid-Helper ----
 
+// Персонажі гравців (Map discordId -> [імена]) - підбір персонажа за ніком у
+// Discord для записів з Raid-Helper.
+export async function listCharacterNamesByDiscordIds(db, discordIds) {
+  const map = new Map();
+  if (!discordIds.length) return map;
+  const { results } = await db.prepare(
+    'SELECT discord_id, character_name FROM user_characters WHERE discord_id IN (SELECT value FROM json_each(?))'
+  ).bind(JSON.stringify(discordIds)).all();
+  results.forEach((r) => {
+    if (!map.has(r.discord_id)) map.set(r.discord_id, []);
+    map.get(r.discord_id).push(r.character_name);
+  });
+  return map;
+}
+
 export async function listSignupRows(db, raidId) {
   const { results } = await db.prepare('SELECT * FROM raid_signups WHERE raid_id = ?').bind(raidId).all();
   return results;
