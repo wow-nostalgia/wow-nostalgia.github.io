@@ -3362,6 +3362,16 @@ body.raid-manager-detail-page .signup-roster {
   padding-top: 0.25rem;
 }
 
+/* Шапка (лідер, дата...) ліворуч і "Твій запис" + кнопки праворуч - один
+   рядок; на вузькому екрані дії переносяться під шапку. */
+body.raid-manager-detail-page .signup-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
 body.raid-manager-detail-page .signup-head {
   display: flex;
   flex-wrap: wrap;

@@ -301,7 +301,12 @@ function renderSignupRoster(root, opts) {
     item.append(l, v);
     head.appendChild(item);
   });
-  root.appendChild(head);
+  // Шапка й дії - в одному рядку (дії праворуч), на вузькому екрані дії
+  // переносяться під шапку.
+  const top = document.createElement('div');
+  top.className = 'signup-top';
+  top.appendChild(head);
+  root.appendChild(top);
 
   // Мій запис + кнопки.
   const mine = signups.find((s) => s.discord_id === myDiscordId);
@@ -350,10 +355,15 @@ function renderSignupRoster(root, opts) {
   if (closed) {
     const note = document.createElement('span');
     note.className = 'signup-closed-note';
-    note.textContent = raid.status === 'completed' ? 'Рейд завершено - запис закрито.' : 'Рейд почався - запис закрито. Зміни вносить лідер або офіцер.';
+    // Коротко (вміщається праворуч від шапки); пояснення - у підказці.
+    note.textContent = raid.status === 'completed' ? 'Рейд завершено - запис закрито' : 'Рейд почався - запис закрито';
+    if (raid.status !== 'completed') {
+      note.setAttribute('aria-label', 'Зміни в записі тепер вносить лідер або офіцер рейду');
+      applyAutoTooltip(note);
+    }
     actions.appendChild(note);
   }
-  root.appendChild(actions);
+  top.appendChild(actions);
 
   // Лічильники ролей (лише основа).
   const roles = document.createElement('div');
