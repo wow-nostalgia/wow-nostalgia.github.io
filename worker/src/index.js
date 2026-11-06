@@ -38,8 +38,11 @@ import {
   handleUpsertOwnSignup,
   handleDeleteOwnSignup,
   handleOfficerSetSignupStatus,
-  handleOfficerDeleteSignup
+  handleOfficerDeleteSignup,
+  handleSetRaidHelperLink,
+  handleRaidHelperSyncNow
 } from './routes/signups.js';
+import { syncUpcomingRaids } from './raid-helper.js';
 import {
   handleListPenaltyTemplates,
   handleCreatePenaltyTemplate,
@@ -256,6 +259,12 @@ async function routeRaids(request, env, parts, session) {
     const signupId = Number(target);
     if (Number.isInteger(signupId) && method === 'PATCH') return handleOfficerSetSignupStatus(request, env, raidId, signupId, session);
     if (Number.isInteger(signupId) && method === 'DELETE') return handleOfficerDeleteSignup(request, env, raidId, signupId, session);
+    throw new HttpError(405, 'Метод не підтримується');
+  }
+  // Прив'язка до Raid-Helper: PUT /raid-helper { eventId }, POST /raid-helper/sync.
+  if (sub === 'raid-helper') {
+    if (!parts[2] && method === 'PUT') return handleSetRaidHelperLink(request, env, raidId, session);
+    if (parts[2] === 'sync' && method === 'POST') return handleRaidHelperSyncNow(request, env, raidId, session);
     throw new HttpError(405, 'Метод не підтримується');
   }
   if (sub === 'complete' && method === 'POST') return handleSetStatus(request, env, raidId, 'completed', session);
@@ -580,6 +589,10 @@ export default {
       ctx.waitUntil(runWeeklyCooldownReset(env, new Date(event.scheduledTime)));
       return;
     }
+    if (event.cron === RAID_HELPER_SYNC_CRON) {
+      ctx.waitUntil(syncUpcomingRaids(env, new Date(event.scheduledTime)).catch((err) => console.error('[raid-helper] cron failed', err)));
+      return;
+    }
     ctx.waitUntil(
       pruneOldRaidsIfOverLimit(env.DB).catch((err) => console.error('[prune] scheduled run failed', err))
     );
@@ -591,6 +604,9 @@ export default {
 // обидва варіанти (п'ятниця 01:00 і 02:00 UTC, wrangler.toml), а скидає лише
 // той запуск, коли в Києві справді 04:00. Має збігатися з wrangler.toml.
 const WEEKLY_RESET_CRON = '0 1,2 * * 5';
+// Підтягування записів з Raid-Helper (worker/src/raid-helper.js). Має
+// збігатися з wrangler.toml.
+const RAID_HELPER_SYNC_CRON = '*/10 * * * *';
 
 function kyivHour(date) {
   return Number(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Kyiv', hour: '2-digit', hourCycle: 'h23' }).format(date));

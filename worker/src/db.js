@@ -1467,7 +1467,7 @@ export async function listBuffQueueAuditActors(db) {
 export async function listRaidSignups(db, raidId) {
   const { results } = await db
     .prepare(
-      `SELECT s.id, s.discord_id, s.character_name, s.class, s.spec, s.status, s.position,
+      `SELECT s.id, s.discord_id, s.discord_name, s.character_name, s.class, s.spec, s.status, s.position,
               s.source, s.created_at, s.updated_at, ${displayNameSubquery('u')} AS owner_display_name
        FROM raid_signups s LEFT JOIN users u ON u.discord_id = s.discord_id
        WHERE s.raid_id = ?
@@ -1519,4 +1519,82 @@ export async function deleteSignupById(db, raidId, signupId) {
     db.prepare('DELETE FROM raid_signups WHERE raid_id = ? AND id = ?').bind(raidId, signupId),
     touchRaidStmt(db, raidId, ts)
   ]);
+}
+
+// ---- Синхронізація з Raid-Helper ----
+
+export async function listSignupRows(db, raidId) {
+  const { results } = await db.prepare('SELECT * FROM raid_signups WHERE raid_id = ?').bind(raidId).all();
+  return results;
+}
+
+// Застосувати знімок з Raid-Helper: upserts - рядки { discordId, discordName,
+// characterName, cls, spec, status, position, externalId, source }, deleteIds -
+// id локальних записів, яких у Raid-Helper уже немає. Рейд "торкається" лише
+// якщо щось змінилось (інакше поллінг сторінки перечитував би записи щоразу).
+export async function applySignupSync(db, raidId, { upserts, deleteIds }) {
+  const ts = nowIso();
+  const stmts = upserts.map((u) => db.prepare(
+    `INSERT INTO raid_signups (raid_id, discord_id, discord_name, character_name, class, spec, status, position, source, external_id, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT (raid_id, discord_id) DO UPDATE SET
+       discord_name = excluded.discord_name, character_name = excluded.character_name,
+       class = excluded.class, spec = excluded.spec, status = excluded.status,
+       position = excluded.position, external_id = excluded.external_id, updated_at = excluded.updated_at`
+  ).bind(raidId, u.discordId, u.discordName, u.characterName, u.cls, u.spec, u.status, u.position, u.source, u.externalId, ts, ts));
+  deleteIds.forEach((id) => stmts.push(db.prepare('DELETE FROM raid_signups WHERE raid_id = ? AND id = ?').bind(raidId, id)));
+  if (!stmts.length) return;
+  stmts.push(touchRaidStmt(db, raidId, ts));
+  await db.batch(stmts);
+}
+
+// Персонаж/клас/спек, обрані на сайті, - Raid-Helper персонажів не знає.
+export async function setSignupSiteFields(db, raidId, discordId, { characterName, cls, spec }) {
+  const ts = nowIso();
+  await db.batch([
+    db.prepare(
+      'UPDATE raid_signups SET character_name = ?, class = ?, spec = ?, updated_at = ? WHERE raid_id = ? AND discord_id = ?'
+    ).bind(characterName, cls, spec, ts, raidId, discordId),
+    touchRaidStmt(db, raidId, ts)
+  ]);
+}
+
+export async function setRaidHelperLink(db, raidId, eventId) {
+  await db.prepare(
+    'UPDATE raids SET rh_event_id = ?, rh_synced_at = NULL, rh_sync_error = NULL, updated_at = ? WHERE id = ?'
+  ).bind(eventId, nowIso(), raidId).run();
+}
+
+// Стан синхронізації без "торкання" рейду - лише текст помилки, коли він
+// змінюється, торкає (щоб сторінка показала/прибрала попередження).
+export async function setRaidSyncState(db, raidId, { synced, error }) {
+  const ts = nowIso();
+  if (synced) {
+    await db.prepare(
+      `UPDATE raids SET rh_synced_at = ?, rh_sync_error = NULL,
+         updated_at = CASE WHEN rh_sync_error IS NULL THEN updated_at ELSE ? END
+       WHERE id = ?`
+    ).bind(ts, ts, raidId).run();
+  } else {
+    await db.prepare(
+      `UPDATE raids SET rh_sync_error = ?,
+         updated_at = CASE WHEN rh_sync_error IS ? THEN updated_at ELSE ? END
+       WHERE id = ?`
+    ).bind(error, error, ts, raidId).run();
+  }
+}
+
+export async function findRaidByRhEventId(db, eventId) {
+  return db.prepare('SELECT id, title FROM raids WHERE rh_event_id = ?').bind(eventId).first();
+}
+
+// Рейди для фонової синхронізації: прив'язані, не завершені, з початком у
+// вікні [from, to].
+export async function listRaidsToSync(db, fromIso, toIso) {
+  const { results } = await db.prepare(
+    `SELECT * FROM raids
+     WHERE rh_event_id IS NOT NULL AND status != 'completed'
+       AND COALESCE(starts_at, created_at) BETWEEN ? AND ?`
+  ).bind(fromIso, toIso).all();
+  return results;
 }

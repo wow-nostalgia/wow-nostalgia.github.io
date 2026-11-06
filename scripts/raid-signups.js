@@ -20,12 +20,14 @@ const SIGNUP_LIMIT = 25;
 
 // Має збігатися з worker/src/signup-specs.js. role: tank | healer | ranged | melee.
 const SIGNUP_CLASSES = {
-  'Death Knight': { icon: 'class_deathknight', specs: { Blood: ['tank', 'spell_deathknight_bloodpresence'], Frost: ['melee', 'spell_deathknight_frostpresence'], Unholy: ['melee', 'spell_deathknight_unholypresence'] } },
+  // ДК - кожен спек як танк і як ДД, у жреця є Smite: як у шаблоні wowwotlk
+  // Raid-Helper (лише для попереднього запису).
+  'Death Knight': { icon: 'class_deathknight', specs: { 'Blood (Tank)': ['tank', 'spell_deathknight_bloodpresence'], 'Blood (DPS)': ['melee', 'spell_deathknight_bloodpresence'], 'Frost (Tank)': ['tank', 'spell_deathknight_frostpresence'], 'Frost (DPS)': ['melee', 'spell_deathknight_frostpresence'], 'Unholy (Tank)': ['tank', 'spell_deathknight_unholypresence'], 'Unholy (DPS)': ['melee', 'spell_deathknight_unholypresence'] } },
   Druid: { icon: 'class_druid', specs: { Balance: ['ranged', 'spell_nature_starfall'], 'Feral Combat (Bear)': ['tank', 'ability_racial_bearform'], 'Feral Combat (Cat)': ['melee', 'ability_druid_catform'], Restoration: ['healer', 'spell_nature_healingtouch'] } },
   Hunter: { icon: 'class_hunter', specs: { 'Beast Mastery': ['ranged', 'ability_hunter_beasttaming'], Marksmanship: ['ranged', 'ability_marksmanship'], Survival: ['ranged', 'ability_hunter_swiftstrike'] } },
   Mage: { icon: 'class_mage', specs: { Arcane: ['ranged', 'spell_holy_magicalsentry'], Fire: ['ranged', 'spell_fire_firebolt02'], Frost: ['ranged', 'spell_frost_frostbolt02'] } },
   Paladin: { icon: 'class_paladin', specs: { Holy: ['healer', 'spell_holy_holybolt'], Protection: ['tank', 'spell_holy_devotionaura'], Retribution: ['melee', 'spell_holy_auraoflight'] } },
-  Priest: { icon: 'class_priest', specs: { Discipline: ['healer', 'spell_holy_wordfortitude'], Holy: ['healer', 'spell_holy_guardianspirit'], Shadow: ['ranged', 'spell_shadow_shadowwordpain'] } },
+  Priest: { icon: 'class_priest', specs: { Discipline: ['healer', 'spell_holy_wordfortitude'], Holy: ['healer', 'spell_holy_guardianspirit'], Shadow: ['ranged', 'spell_shadow_shadowwordpain'], Smite: ['ranged', 'spell_holy_holysmite'] } },
   Rogue: { icon: 'class_rogue', specs: { Assassination: ['melee', 'ability_rogue_eviscerate'], Combat: ['melee', 'ability_backstab'], Subtlety: ['melee', 'ability_stealth'] } },
   Shaman: { icon: 'class_shaman', specs: { Elemental: ['ranged', 'spell_nature_lightning'], Enhancement: ['melee', 'spell_nature_lightningshield'], Restoration: ['healer', 'spell_nature_magicimmunity'] } },
   Warlock: { icon: 'class_warlock', specs: { Affliction: ['ranged', 'spell_shadow_deathcoil'], Demonology: ['ranged', 'spell_shadow_metamorphosis'], Destruction: ['ranged', 'spell_shadow_rainoffire'] } },
@@ -69,10 +71,25 @@ function signupClassLabel(cls) {
   return typeof translateClass === 'function' ? translateClass(cls) : cls;
 }
 
+const DK_ROLE_LABELS_UK = { Tank: 'танк', DPS: 'ДД' };
+const SMITE_LABEL_UK = 'Кара';
+
 function signupSpecLabel(spec) {
+  if (!spec) return '—';
   const uk = typeof getNameLanguage !== 'function' || getNameLanguage() === 'uk';
   if (FERAL_LABELS_UK[spec]) return uk ? FERAL_LABELS_UK[spec] : spec;
+  if (spec === 'Smite') return uk ? SMITE_LABEL_UK : spec;
+  const dk = /^(Blood|Frost|Unholy) \((Tank|DPS)\)$/.exec(spec);
+  if (dk) {
+    const base = typeof translateSpec === 'function' ? translateSpec(dk[1]) : dk[1];
+    return uk ? `${base} (${DK_ROLE_LABELS_UK[dk[2]]})` : spec;
+  }
   return typeof translateSpec === 'function' ? translateSpec(spec) : spec;
+}
+
+// Ім'я запису: персонаж, а для запису з Discord без обраного персонажа - нік.
+function signupDisplayName(signup) {
+  return signup.character_name || signup.discord_name || '—';
 }
 
 function signupSpecInfo(cls, spec) {
@@ -104,15 +121,97 @@ function signupCountdownText(raid) {
 }
 
 function signupEntryLabel(signup) {
-  return `${signup.character_name} - ${signupClassLabel(signup.class)}, ${signupSpecLabel(signup.spec)}${signup.owner_display_name ? ` (${signup.owner_display_name})` : ''}`;
+  const who = signup.owner_display_name || (signup.character_name ? signup.discord_name : '');
+  const classSpec = signup.class ? ` - ${signupClassLabel(signup.class)}, ${signupSpecLabel(signup.spec)}` : '';
+  const noChar = signup.character_name ? '' : ' · з Discord, персонаж не обраний';
+  return `${signupDisplayName(signup)}${classSpec}${who ? ` (${who})` : ''}${noChar}`;
+}
+
+// Рядок стану синхронізації з Raid-Helper + (офіцерам) прив'язка/оновлення.
+function renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange }) {
+  if (!raid.rh_event_id && !officer) return;
+  const bar = document.createElement('div');
+  bar.className = 'signup-rh';
+  const text = document.createElement('span');
+  text.className = 'signup-rh-text';
+  if (raid.rh_event_id) {
+    const synced = raid.rh_synced_at
+      ? `оновлено ${kyivTimeKey(raid.rh_synced_at)}`
+      : 'ще не оновлювалось';
+    text.textContent = `Синхронізовано з Discord (Raid-Helper) · ${synced}`;
+  } else {
+    text.textContent = "Не прив'язано до Discord (Raid-Helper).";
+  }
+  bar.appendChild(text);
+  if (raid.rh_sync_error) {
+    const err = document.createElement('span');
+    err.className = 'signup-rh-error';
+    err.textContent = `Помилка синхронізації: ${raid.rh_sync_error}`;
+    bar.appendChild(err);
+  }
+
+  if (officer) {
+    const busy = (on) => bar.querySelectorAll('button, input').forEach((el) => { el.disabled = on; });
+    const call = async (method, path, body, after) => {
+      busy(true);
+      try {
+        const result = await apiCall(method, path, { token: getSessionToken(), body });
+        if (onRaidChange) await onRaidChange();
+        onChange(result.signups);
+        if (after) after(result);
+      } catch (err) {
+        busy(false);
+        showMessageModal(err.message);
+      }
+    };
+    if (raid.rh_event_id) {
+      const sync = document.createElement('button');
+      sync.type = 'button';
+      sync.className = 'link-button-std';
+      sync.textContent = 'Оновити зараз';
+      sync.addEventListener('click', () => call('POST', `/raids/${raid.id}/raid-helper/sync`, undefined, (r) => {
+        if (r.skipped) showMessageModal(`Пропущено записів з невідомим класом/спеком: ${r.skipped}`);
+      }));
+      const unlink = document.createElement('button');
+      unlink.type = 'button';
+      unlink.className = 'link-button-std link-button-std--danger';
+      unlink.textContent = "Відв'язати";
+      unlink.addEventListener('click', () => call('PUT', `/raids/${raid.id}/raid-helper`, { eventId: '' }));
+      bar.append(sync, unlink);
+    } else {
+      const form = document.createElement('form');
+      form.className = 'signup-rh-form';
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.inputMode = 'numeric';
+      input.placeholder = 'ID рейду Raid-Helper';
+      input.setAttribute('aria-label', 'ID рейду Raid-Helper (ID повідомлення в Discord)');
+      const link = document.createElement('button');
+      link.type = 'submit';
+      link.className = 'link-button-std';
+      link.textContent = "Прив'язати";
+      form.append(input, link);
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        call('PUT', `/raids/${raid.id}/raid-helper`, { eventId: input.value.trim() }, (r) => {
+          const lines = [`Прив'язано. Відправлено в Discord записів із сайту: ${r.pushed}.`];
+          if (r.failed.length) lines.push(`Не вдалося відправити (записи зникли з сайту): ${r.failed.join('; ')}`);
+          showMessageModal(lines.join(' '));
+        });
+      });
+      bar.appendChild(form);
+    }
+  }
+  root.appendChild(bar);
 }
 
 // --- Вигляд записаних (вкладка "Попередній запис") ---
 
 // opts: { raid, signups, officer, myDiscordId, onChange(newSignups) }
 function renderSignupRoster(root, opts) {
-  const { raid, signups, officer, myDiscordId, onChange } = opts;
+  const { raid, signups, officer, myDiscordId, onChange, onRaidChange } = opts;
   root.innerHTML = '';
+  renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange });
 
   const main = signups.filter((s) => s.status === 'signed');
   const extraCount = signups.filter((s) => ['late', 'tentative', 'bench'].includes(s.status)).length;
@@ -154,7 +253,7 @@ function renderSignupRoster(root, opts) {
   if (mine) {
     const my = document.createElement('span');
     my.className = 'signup-my';
-    my.textContent = `Твій запис: ${mine.character_name} · ${signupSpecLabel(mine.spec)} · ${SIGNUP_STATUS_LABELS[mine.status]}`;
+    my.textContent = `Твій запис: ${mine.character_name || 'персонаж не обраний'} · ${signupSpecLabel(mine.spec)} · ${SIGNUP_STATUS_LABELS[mine.status]}`;
     actions.appendChild(my);
   }
   const signBtn = document.createElement('button');
@@ -222,7 +321,8 @@ function renderSignupRoster(root, opts) {
     pos.textContent = String(s.position);
     const name = document.createElement('span');
     name.className = 'signup-name';
-    name.textContent = s.character_name;
+    name.textContent = signupDisplayName(s);
+    if (!s.character_name) name.classList.add('signup-name--discord');
     const color = signupClassColor(s.class);
     if (color) name.style.color = color;
     el.append(img, pos, name);
@@ -403,16 +503,25 @@ async function openSignupModal(opts) {
     if (guess && SIGNUP_CLASSES[guess.cls]) {
       classF.select.value = guess.cls;
       // Ферал у даних гільдії один - за замовчуванням ведмідь не вгадуємо, кіт.
-      fillSpecs(guess.spec === 'Feral Combat' ? 'Feral Combat (Cat)' : guess.spec);
+      // ДК у даних гільдії без ролі: Blood - танк, Frost/Unholy - ДД.
+      const dkSpec = { Blood: 'Blood (Tank)', Frost: 'Frost (DPS)', Unholy: 'Unholy (DPS)' };
+      fillSpecs(guess.spec === 'Feral Combat' ? 'Feral Combat (Cat)'
+        : guess.cls === 'Death Knight' ? dkSpec[guess.spec] : guess.spec);
     } else {
       fillSpecs();
     }
   };
 
   if (mine) {
-    charF.select.value = mine.character_name;
-    classF.select.value = mine.class;
-    fillSpecs(mine.spec);
+    // Запис з Discord: персонаж ще не обраний - лишаємо першого зі списку;
+    // клас/спек - з Discord, якщо вони є ("Відсутній" їх не має).
+    if (mine.character_name) charF.select.value = mine.character_name;
+    if (mine.class && SIGNUP_CLASSES[mine.class]) {
+      classF.select.value = mine.class;
+      fillSpecs(mine.spec);
+    } else {
+      await applyGuess();
+    }
     statusF.select.value = mine.status;
   } else {
     statusF.select.value = 'signed';
@@ -461,10 +570,12 @@ async function openSignupModal(opts) {
 
 // Лідер/офіцер: змінити статус запису або видалити його.
 function openOfficerSignupModal({ raid, signup, onSaved }) {
-  const { dialog, body, close } = buildSignupDialog(signup.character_name);
+  const { dialog, body, close } = buildSignupDialog(signupDisplayName(signup));
   const info = document.createElement('p');
   info.className = 'raid-modal-text';
-  info.textContent = `${signupClassLabel(signup.class)}, ${signupSpecLabel(signup.spec)} · №${signup.position} · ${SIGNUP_STATUS_LABELS[signup.status]}${signup.owner_display_name ? ` · ${signup.owner_display_name}` : ''}`;
+  const classSpec = signup.class ? `${signupClassLabel(signup.class)}, ${signupSpecLabel(signup.spec)} · ` : '';
+  const who = signup.owner_display_name || (signup.character_name ? signup.discord_name : '');
+  info.textContent = `${classSpec}№${signup.position} · ${SIGNUP_STATUS_LABELS[signup.status]}${who ? ` · ${who}` : ''}`;
   body.appendChild(info);
 
   const run = async (method, payload) => {

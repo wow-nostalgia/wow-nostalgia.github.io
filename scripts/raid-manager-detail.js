@@ -2470,7 +2470,9 @@ function renderSignups() {
     signups: signupsList,
     officer: isOfficerMode(),
     myDiscordId: currentUser?.discordId,
-    onChange: (list) => { signupsList = list; renderSignups(); }
+    onChange: (list) => { signupsList = list; renderSignups(); },
+    // Прив'язка до Raid-Helper змінює рейд (rh_event_id) - перечитуємо його.
+    onRaidChange: async () => { await loadRaid(); renderSignups(); }
   });
 }
 
@@ -3175,8 +3177,12 @@ async function pollRaid() {
     if (activeTab === 'potions') await loadPotionsTab();
     // Будь-яка зміна запису торкає raids.updated_at; інакше лише оновлюємо
     // відлік і стан "запис закрито" в шапці.
+    // Рейд прив'язаний до Raid-Helper: раз на хвилину перечитуємо - запит сам
+    // підтягує свіже з Discord (воркер не частіше раз на хвилину).
     if (activeTab === 'signups') {
-      if (penaltiesChanged) await loadSignups();
+      const rhStale = raid.rh_event_id && raid.status !== 'completed'
+        && (!raid.rh_synced_at || Date.now() - Date.parse(raid.rh_synced_at) >= 60000);
+      if (penaltiesChanged || rhStale) await loadSignups();
       else renderSignups();
     }
   } catch (err) {

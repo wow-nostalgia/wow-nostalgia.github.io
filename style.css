@@ -2709,6 +2709,7 @@ body.raid-manager-page .raid-create-form input[type="text"],
 body.raid-manager-page .raid-create-form input[type="number"],
 body.raid-manager-page .signup-field select,
 body.raid-manager-detail-page .signup-field select,
+body.raid-manager-detail-page .signup-rh-form input,
 body.raid-manager-page .raid-create-form input[type="date"],
 body.raid-manager-page .raid-create-form input[type="time"],
 body.raid-manager-page .raid-create-form textarea,
@@ -2746,6 +2747,7 @@ body.raid-manager-page .buff-queue-audit-filter select {
 
 body.raid-manager-page .signup-field select:hover,
 body.raid-manager-detail-page .signup-field select:hover,
+body.raid-manager-detail-page .signup-rh-form input:hover,
 body.raid-manager-page .raid-create-form select:hover,
 body.raid-manager-page .raid-create-form input:hover,
 body.raid-manager-page .raid-create-form textarea:hover,
@@ -2763,6 +2765,7 @@ body.raid-manager-detail-page .raid-item-picker-trigger:hover {
 
 body.raid-manager-page .signup-field select:focus,
 body.raid-manager-detail-page .signup-field select:focus,
+body.raid-manager-detail-page .signup-rh-form input:focus,
 body.raid-manager-page .raid-create-form select:focus,
 body.raid-manager-page .raid-create-form input:focus,
 body.raid-manager-page .raid-create-form textarea:focus,
@@ -3270,6 +3273,37 @@ body.raid-manager-detail-page .signup-actions {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem 0.75rem;
+}
+
+/* Синхронізація з Raid-Helper: стан + (офіцерам) прив'язка/оновлення. */
+body.raid-manager-detail-page .signup-rh {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+}
+
+body.raid-manager-detail-page .signup-rh-error {
+  color: var(--color-danger);
+}
+
+body.raid-manager-detail-page .signup-rh-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+body.raid-manager-detail-page .signup-rh-form input {
+  width: 13rem;
+  max-width: 100%;
+}
+
+/* Запис з Discord без обраного на сайті персонажа - нік у Discord. */
+body.raid-manager-detail-page .signup-name--discord {
+  font-style: italic;
 }
 
 body.raid-manager-detail-page .signup-my,
