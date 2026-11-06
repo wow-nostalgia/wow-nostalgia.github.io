@@ -603,6 +603,24 @@ export async function countUsersByBackground(db) {
   }));
 }
 
+// Те саме для теми сайту (users.theme; NULL - стандартна). Імена - лише для
+// нестандартних тем, як і для фонів.
+export async function countUsersByTheme(db) {
+  const [{ results: counts }, { results: users }] = await db.batch([
+    db.prepare('SELECT theme, COUNT(*) AS count FROM users GROUP BY theme'),
+    db.prepare(`SELECT u.theme AS theme, ${displayNameSubquery('u')} AS name FROM users u WHERE u.theme IS NOT NULL`)
+  ]);
+  const namesByTheme = new Map();
+  for (const { theme, name } of users) {
+    if (!namesByTheme.has(theme)) namesByTheme.set(theme, []);
+    namesByTheme.get(theme).push(name);
+  }
+  return counts.map((row) => ({
+    ...row,
+    names: (namesByTheme.get(row.theme) || []).sort((a, b) => a.localeCompare(b))
+  }));
+}
+
 // Публічна мапа "застовплений персонаж -> ім'я для тултіпа" (основний
 // персонаж власника, або username, якщо основного не позначено) — для
 // тултіпів у статичній аналітиці/таблиці гравців рейду. Без авторизації:

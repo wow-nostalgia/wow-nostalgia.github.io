@@ -113,6 +113,7 @@ import {
   pruneOldRaidsIfOverLimit,
   resetCharacterCooldowns,
   countUsersByBackground,
+  countUsersByTheme,
   listRaidOfficers,
   getUserCharactersJoined,
   listWeightTransfers,
@@ -483,6 +484,10 @@ async function routeAdmin(request, env, parts, session) {
 
   if (sub === 'prune-old-raids' && method === 'POST') {
     return handlePruneOldRaids(request, env, session);
+  }
+
+  if (sub === 'theme-stats' && !sub2 && method === 'GET') {
+    return jsonResponse(await countUsersByTheme(env.DB));
   }
 
   if (sub === 'background-stats' && !sub2 && method === 'GET') {

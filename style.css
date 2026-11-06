@@ -5867,6 +5867,19 @@ body.account-page .account-admin-tools + .account-admin-tools {
   border-top: 1px solid var(--color-border);
 }
 
+/* Статистика фонів і тем - поруч; на вузькому екрані одна під одною. */
+body.account-page .account-stats-pair {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1rem 2rem;
+}
+
+body.account-page .account-stats-block {
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
 body.account-page .account-admin-hint {
   margin: 0 0 0.5rem;
   font-size: var(--font-size-base);

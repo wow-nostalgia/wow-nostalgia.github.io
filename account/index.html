@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Профіль — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../style.css?v=225">
+  <link rel="stylesheet" href="../style.css?v=226">
   <script src="/scripts/background.js?v=4"></script>
 </head>
 
@@ -182,22 +182,41 @@
             <p id="adminCharacterStatus"></p>
           </div>
 
-          <div class="account-admin-tools">
-            <h2>Фони сайту</h2>
-            <p class="account-admin-hint">Скільки гравців обрали кожен фон. «Стандартний» також включає тих, хто ще нічого не обирав.</p>
-            <div class="ranking-table-wrap account-bg-stats-table-wrap">
-              <table class="account-bg-stats-table">
-                <thead>
-                  <tr>
-                    <th>Фон</th>
-                    <th class="account-bg-stats-count">Гравців</th>
-                    <th>Акаунт</th>
-                  </tr>
-                </thead>
-                <tbody id="backgroundStatsList"></tbody>
-              </table>
+          <div class="account-admin-tools account-stats-pair">
+            <div class="account-stats-block">
+              <h2>Фони сайту</h2>
+              <p class="account-admin-hint">Скільки гравців обрали кожен фон. «Стандартний» також включає тих, хто ще нічого не обирав.</p>
+              <div class="ranking-table-wrap account-bg-stats-table-wrap">
+                <table class="account-bg-stats-table">
+                  <thead>
+                    <tr>
+                      <th>Фон</th>
+                      <th class="account-bg-stats-count">Гравців</th>
+                      <th>Акаунт</th>
+                    </tr>
+                  </thead>
+                  <tbody id="backgroundStatsList"></tbody>
+                </table>
+              </div>
+              <p id="backgroundStatsStatus"></p>
             </div>
-            <p id="backgroundStatsStatus"></p>
+            <div class="account-stats-block">
+              <h2>Теми сайту</h2>
+              <p class="account-admin-hint">Скільки гравців обрали кожну тему. «Стандартна» також включає тих, хто ще нічого не обирав.</p>
+              <div class="ranking-table-wrap account-bg-stats-table-wrap">
+                <table class="account-bg-stats-table">
+                  <thead>
+                    <tr>
+                      <th>Тема</th>
+                      <th class="account-bg-stats-count">Гравців</th>
+                      <th>Акаунт</th>
+                    </tr>
+                  </thead>
+                  <tbody id="themeStatsList"></tbody>
+                </table>
+              </div>
+              <p id="themeStatsStatus"></p>
+            </div>
           </div>
         </div>
       </div>
@@ -250,7 +269,7 @@
   <script src="../scripts/auth-shared.js?v=19"></script>
   <script src="../scripts/wow-class-colors.js?v=1"></script>
   <script src="../scripts/ui-shared.js?v=22"></script>
-  <script src="../scripts/account.js?v=38"></script>
+  <script src="../scripts/account.js?v=39"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

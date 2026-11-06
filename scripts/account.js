@@ -783,6 +783,47 @@ async function loadBackgroundStats() {
   }
 }
 
+// Статистика тем (users.theme; NULL - стандартна) - поруч зі статистикою
+// фонів. Назви тем - з кнопок перемикача у "Налаштуваннях", щоб не дублювати.
+async function loadThemeStats() {
+  const list = document.getElementById('themeStatsList');
+  const status = document.getElementById('themeStatsStatus');
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/admin/theme-stats`, {
+      headers: { Authorization: `Bearer ${getSessionToken()}` }
+    });
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    const stats = await res.json();
+    const byTheme = new Map(stats.map((row) => [row.theme ?? 'default', row]));
+    const rows = [...document.querySelectorAll('#themeToggle [data-theme-value]')].map((btn) => {
+      const row = byTheme.get(btn.dataset.themeValue);
+      byTheme.delete(btn.dataset.themeValue);
+      return { title: btn.textContent.trim(), count: row?.count || 0, names: row?.names || [] };
+    });
+    // Тема, якої вже немає в перемикачі, але лишилась в акаунтах.
+    for (const [theme, row] of byTheme) rows.push({ title: `${theme} (прибрана)`, count: row.count, names: row.names || [] });
+    rows.sort((a, b) => b.count - a.count);
+
+    list.innerHTML = '';
+    for (const { title, count, names } of rows) {
+      const tr = document.createElement('tr');
+      const titleTd = document.createElement('td');
+      titleTd.textContent = title;
+      const countTd = document.createElement('td');
+      countTd.className = 'account-bg-stats-count';
+      countTd.textContent = String(count);
+      const namesTd = document.createElement('td');
+      namesTd.className = 'account-bg-stats-names';
+      namesTd.textContent = names.length ? names.join(', ') : '—';
+      tr.append(titleTd, countTd, namesTd);
+      list.appendChild(tr);
+    }
+    status.textContent = '';
+  } catch (err) {
+    status.textContent = `Помилка завантаження: ${err.message}`;
+  }
+}
+
 // Вихід живе тут, у профілі (раніше — у меню акаунта в навбарі). Після
 // перезавантаження сторінка покаже "Увійти через Discord".
 logoutBtn.addEventListener('click', async () => {
@@ -840,6 +881,7 @@ async function init() {
       adminDataLoaded = true;
       loadDefaultOfficers();
       loadBackgroundStats();
+      loadThemeStats();
     }
   });
 
