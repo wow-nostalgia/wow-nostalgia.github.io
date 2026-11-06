@@ -378,6 +378,11 @@ function buildFlatItemList() {
 
 function renderBanner() {
   raidSettingsBanner.innerHTML = '';
+  // Заголовок - теж тут: назву могли змінити в Discord (синхронізація з
+  // Raid-Helper) чи інший офіцер, а поллінг перемальовує лише банер. Дата є в
+  // чипі банера, тож у заголовку без неї (як після збереження налаштувань).
+  raidTitleHeading.textContent = stripDateFromTitle(raid.title);
+  document.title = `${raid.title} — Рейд-менеджер`;
 
   const chips = [
     translateInstance(raid.instance, INSTANCE_LABELS),
@@ -2484,7 +2489,7 @@ function renderSignups() {
     myDiscordId: currentUser?.discordId,
     onChange: (list) => { signupsList = list; renderSignups(); },
     // Прив'язка до Raid-Helper змінює рейд (rh_event_id) - перечитуємо його.
-    onRaidChange: async () => { await loadRaid(); renderSignups(); }
+    onRaidChange: async () => { await loadRaid(); renderBanner(); renderSignups(); }
   });
 }
 
@@ -2606,8 +2611,7 @@ async function saveRaidSettings(body) {
   const lkOnlyBefore = Boolean(raid.lk_only);
   try {
     raid = await apiCall('PATCH', `/raids/${raidId}`, { token: getSessionToken(), body });
-    raidTitleHeading.textContent = stripDateFromTitle(raid.title);
-    document.title = `${raid.title} — Рейд-менеджер`;
+    renderBanner();
     if (Boolean(raid.lk_only) !== lkOnlyBefore) {
       // Увімкнення могло видалити софти на сервері — одразу свіжі дані.
       await loadReserves();
@@ -3079,9 +3083,6 @@ async function init() {
     setStatus(`Рейд не знайдено: ${raidError.message}`, 'error');
     return;
   }
-
-  raidTitleHeading.textContent = raid.title;
-  document.title = `${raid.title} — Рейд-менеджер`;
 
   applyOfficers(officers);
   renderBanner();
