@@ -1251,6 +1251,12 @@ footer span {
   cursor: not-allowed;
 }
 
+/* Небезпечний стан (напр. "Розблокувати рейд", коли рейд заблоковано). */
+.compare-btn--danger {
+  color: var(--color-danger);
+  border-color: color-mix(in srgb, var(--color-danger) 45%, transparent);
+}
+
 /* Кнопка з розділеним списком (scripts/raid-signups.js: createSplitButton) -
    як "Рейди ▾" у навбарі, але в стилі .compare-btn: основна дія + стрілка з
    другорядними діями (скасування, відв'язка). Обидві частини в одній рамці,
@@ -4666,10 +4672,19 @@ body.raid-manager-detail-page .raid-soft-form button[type="submit"].compare-btn:
 body.raid-manager-page #createRaidOpenBtn.compare-btn,
 body.raid-manager-page #calendarCreateBtn.compare-btn,
 body.raid-manager-page #addPenaltyOpenBtn.compare-btn,
-body.raid-manager-page #addTemplateOpenBtn.compare-btn {
+body.raid-manager-page #addTemplateOpenBtn.compare-btn,
+body.raid-manager-detail-page #lockToggleBtn.compare-btn,
+body.raid-manager-detail-page #statusToggleBtn.compare-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+}
+
+/* Офіцерські перемикачі приховані поза режимом офіцера - inline-flex вище
+   інакше перекрив би атрибут hidden. */
+body.raid-manager-detail-page #lockToggleBtn.compare-btn[hidden],
+body.raid-manager-detail-page #statusToggleBtn.compare-btn[hidden] {
+  display: none;
 }
 
 /* Кнопки додавання у Штрафбаті гравцям (лише перегляд) сховані — inline-flex

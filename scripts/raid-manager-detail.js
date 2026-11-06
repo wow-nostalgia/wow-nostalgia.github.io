@@ -8,6 +8,17 @@ const copyLinkBtn = document.getElementById('copyLinkBtn');
 const copyLinkTooltip = document.getElementById('copyLinkTooltip');
 const lockToggleBtn = document.getElementById('lockToggleBtn');
 const statusToggleBtn = document.getElementById('statusToggleBtn');
+
+// Primer Octicons (16px) для кнопок офіцерської панелі.
+const OCTICON_LOCK = 'M4 4a4 4 0 0 1 8 0v2h.25c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0 1 12.25 15h-8.5A1.75 1.75 0 0 1 2 13.25v-5.5C2 6.784 2.784 6 3.75 6H4Zm8.25 3.5h-8.5a.25.25 0 0 0-.25.25v5.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-5.5a.25.25 0 0 0-.25-.25ZM10.5 6V4a2.5 2.5 0 1 0-5 0v2Z';
+const OCTICON_UNLOCK = 'M5.5 4v2h7A1.5 1.5 0 0 1 14 7.5v6a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5v-6A1.5 1.5 0 0 1 3.499 6H4V4a4 4 0 0 1 7.371-2.154.75.75 0 0 1-1.264.808A2.5 2.5 0 0 0 5.5 4Zm-2 3.5v6h9v-6h-9Z';
+const OCTICON_CHECK_CIRCLE = 'M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm1.5 0a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm10.28-1.72-4.5 4.5a.75.75 0 0 1-1.06 0l-2-2a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l1.47 1.47 3.97-3.97a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z';
+const OCTICON_UNDO = 'M1.22 6.28a.749.749 0 0 1 0-1.06l3.5-3.5a.749.749 0 1 1 1.06 1.06L3.561 5h7.188l.001.007L10.749 5c.058 0 .116.007.171.019A4.501 4.501 0 0 1 10.5 14H8.796a.75.75 0 0 1 0-1.5H10.5a3 3 0 1 0 0-6H3.561L5.78 8.72a.749.749 0 1 1-1.06 1.06l-3.5-3.5Z';
+
+function setIconButton(btn, iconPath, label) {
+  btn.innerHTML = `<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="${iconPath}"/></svg>`;
+  btn.append(label);
+}
 const raidStatus = document.getElementById('raidStatus');
 const raidTabs = document.querySelectorAll('.raid-tab');
 const raidTabsList = document.querySelector('.raid-tabs');
@@ -386,12 +397,13 @@ function renderBanner() {
   const isCompleted = raid.status === 'completed';
   raidSettingsBanner.appendChild(raidStatusChip(raid));
 
+  // Іконки - Primer Octicons (lock/unlock, check-circle, undo).
   lockToggleBtn.hidden = !isOfficerMode();
-  lockToggleBtn.textContent = raid.is_locked ? '🔒 Розблокувати рейд' : '🔓 Заблокувати рейд';
-  lockToggleBtn.classList.toggle('link-button-std--danger', raid.is_locked);
+  setIconButton(lockToggleBtn, raid.is_locked ? OCTICON_LOCK : OCTICON_UNLOCK, raid.is_locked ? 'Розблокувати рейд' : 'Заблокувати рейд');
+  lockToggleBtn.classList.toggle('compare-btn--danger', Boolean(raid.is_locked));
 
   statusToggleBtn.hidden = !isOfficerMode();
-  statusToggleBtn.textContent = isCompleted ? '↩ Реактивувати рейд' : '✅ Завершити рейд';
+  setIconButton(statusToggleBtn, isCompleted ? OCTICON_UNDO : OCTICON_CHECK_CIRCLE, isCompleted ? 'Реактивувати рейд' : 'Завершити рейд');
 
   hiddenReservesToggle.checked = Boolean(raid.hidden_reserves);
   hiddenReservesNotice.hidden = !(raid.hidden_reserves && !isOfficerMode());
