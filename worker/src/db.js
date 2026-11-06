@@ -44,6 +44,16 @@ export async function createRaid(db, { id, title, instance, difficulty, softLimi
   return getRaid(db, id);
 }
 
+// Створення рейду + запис в історії + гільдійські офіцери (сайт і імпорт з
+// Raid-Helper).
+export async function createRaidWithDefaults(db, fields, actorName) {
+  const raid = await createRaid(db, fields);
+  await insertAudit(db, raid.id, actorName, 'raid_create', { title: fields.title, instance: fields.instance, difficulty: fields.difficulty });
+  const defaultOfficers = await listDefaultOfficers(db);
+  await Promise.all(defaultOfficers.map((o) => addRaidOfficer(db, raid.id, o.discord_id)));
+  return raid;
+}
+
 export async function listRaids(db, { limit = 20, offset = 0 } = {}) {
   const { results } = await db
     .prepare(
@@ -1582,6 +1592,55 @@ export async function setRaidSyncState(db, raidId, { synced, error }) {
        WHERE id = ?`
     ).bind(error, error, ts, raidId).run();
   }
+}
+
+// Назва/дата змінились у Discord - переносимо на сайт.
+export async function updateRaidFromRaidHelper(db, raidId, { title, startsAt }) {
+  await db.prepare('UPDATE raids SET title = ?, starts_at = ?, updated_at = ? WHERE id = ?')
+    .bind(title, startsAt, nowIso(), raidId).run();
+}
+
+// Рейд видалили в Discord: рейд на сайті лишається (софти, лут), лише
+// відв'язується з позначкою.
+export async function markRaidHelperEventDeleted(db, raidId) {
+  await db.prepare(
+    "UPDATE raids SET rh_event_id = NULL, rh_synced_at = NULL, rh_sync_error = 'Рейд видалено в Discord', updated_at = ? WHERE id = ?"
+  ).bind(nowIso(), raidId).run();
+}
+
+// Рейди Raid-Helper, які імпорт пропускає: уже прив'язані + відв'язані офіцером.
+export async function listLinkedRhEventIds(db) {
+  const { results } = await db.prepare(
+    'SELECT rh_event_id AS id FROM raids WHERE rh_event_id IS NOT NULL UNION SELECT event_id FROM rh_ignored_events'
+  ).all();
+  return new Set(results.map((r) => r.id));
+}
+
+export async function ignoreRhEvent(db, eventId) {
+  await db.prepare('INSERT OR IGNORE INTO rh_ignored_events (event_id, created_at) VALUES (?, ?)').bind(eventId, nowIso()).run();
+}
+
+export async function unignoreRhEvent(db, eventId) {
+  await db.prepare('DELETE FROM rh_ignored_events WHERE event_id = ?').bind(eventId).run();
+}
+
+// Нерозпізнані рейди з Discord - повна заміна списку (cron).
+export async function replaceUnmatchedEvents(db, events) {
+  const ts = nowIso();
+  const stmts = [db.prepare('DELETE FROM rh_unmatched_events')];
+  events.forEach((e) => stmts.push(db.prepare(
+    'INSERT INTO rh_unmatched_events (event_id, title, channel_name, starts_at, seen_at) VALUES (?, ?, ?, ?, ?)'
+  ).bind(e.eventId, e.title, e.channelName, e.startsAt, ts)));
+  await db.batch(stmts);
+}
+
+export async function listUnmatchedEvents(db) {
+  const { results } = await db.prepare('SELECT * FROM rh_unmatched_events ORDER BY starts_at ASC').all();
+  return results;
+}
+
+export async function deleteUnmatchedEvent(db, eventId) {
+  await db.prepare('DELETE FROM rh_unmatched_events WHERE event_id = ?').bind(eventId).run();
 }
 
 export async function findRaidByRhEventId(db, eventId) {

@@ -15,6 +15,7 @@ import {
   handleSetRaidCooldowns,
   handleDeleteRaid,
   handlePruneOldRaids,
+  handleListUnmatchedEvents,
   publicRaid,
   loadRaidOr404,
   canSeeOfficers
@@ -42,7 +43,7 @@ import {
   handleSetRaidHelperLink,
   handleRaidHelperSyncNow
 } from './routes/signups.js';
-import { syncUpcomingRaids } from './raid-helper.js';
+import { syncUpcomingRaids, importRaidHelperEvents } from './raid-helper.js';
 import {
   handleListPenaltyTemplates,
   handleCreatePenaltyTemplate,
@@ -535,6 +536,11 @@ async function route(request, env) {
     return handleListCharacterGearScores(request, env);
   }
 
+  // Нерозпізнані рейди з Discord (Raid-Helper) - гільдійським офіцерам.
+  if (parts[2] === 'raid-helper' && parts[3] === 'unmatched' && request.method === 'GET') {
+    return handleListUnmatchedEvents(request, env, await requireSession(env.DB, request));
+  }
+
   if (parts[2] === 'raids') {
     const session = await requireSession(env.DB, request);
     return routeRaids(request, env, parts.slice(3), session);
@@ -590,7 +596,12 @@ export default {
       return;
     }
     if (event.cron === RAID_HELPER_SYNC_CRON) {
-      ctx.waitUntil(syncUpcomingRaids(env, new Date(event.scheduledTime)).catch((err) => console.error('[raid-helper] cron failed', err)));
+      // Спершу нові рейди з Discord, потім записи прив'язаних.
+      const now = new Date(event.scheduledTime);
+      ctx.waitUntil((async () => {
+        await importRaidHelperEvents(env, now).catch((err) => console.error('[raid-helper] import failed', err));
+        await syncUpcomingRaids(env, now).catch((err) => console.error('[raid-helper] cron failed', err));
+      })());
       return;
     }
     ctx.waitUntil(

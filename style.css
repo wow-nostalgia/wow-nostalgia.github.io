@@ -3210,6 +3210,37 @@ body.raid-manager-page .raid-calendar-status:empty {
   display: none;
 }
 
+/* Нерозпізнані рейди з Discord (Raid-Helper) - офіцерам. */
+body.raid-manager-page .raid-calendar-unmatched {
+  margin-bottom: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--color-warning) 40%, transparent);
+  border-radius: var(--radius-md);
+  background-color: color-mix(in srgb, var(--color-warning) 8%, transparent);
+  font-size: var(--font-size-base);
+}
+
+body.raid-manager-page .raid-calendar-unmatched-head {
+  margin: 0 0 0.4rem;
+  color: var(--color-warning);
+}
+
+body.raid-manager-page .raid-calendar-unmatched-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.raid-manager-page .raid-calendar-unmatched-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.75rem;
+}
+
 /* Рядок панелі дня: плашка рейду + кнопка "Записатись". */
 body.raid-manager-page .raid-calendar-day-list li {
   display: flex;

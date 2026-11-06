@@ -20,6 +20,9 @@ import {
   listSignupRows,
   setRaidHelperLink,
   findRaidByRhEventId,
+  ignoreRhEvent,
+  unignoreRhEvent,
+  deleteUnmatchedEvent,
   insertAudit
 } from '../db.js';
 import { requireOwnCharacter, requireRaidOfficer } from '../auth.js';
@@ -148,6 +151,8 @@ export async function handleSetRaidHelperLink(request, env, raidId, session) {
   const eventId = String(body.eventId ?? '').trim();
 
   if (!eventId) {
+    // Відв'язаний рейд cron більше не імпортує (не створює дубль).
+    if (raid.rh_event_id) await ignoreRhEvent(env.DB, raid.rh_event_id);
     await setRaidHelperLink(env.DB, raidId, null);
     await insertAudit(env.DB, raidId, session.username, 'rh_unlink', { eventId: raid.rh_event_id });
     return jsonResponse({ signups: await listRaidSignups(env.DB, raidId), pushed: 0, failed: [] });
@@ -160,6 +165,8 @@ export async function handleSetRaidHelperLink(request, env, raidId, session) {
   const linked = { ...raid, rh_event_id: eventId };
   const { pushed, failed } = await pushLocalSignupsOnLink(env, linked, event);
   await setRaidHelperLink(env.DB, raidId, eventId);
+  await unignoreRhEvent(env.DB, eventId);
+  await deleteUnmatchedEvent(env.DB, eventId);
   await syncRaidFromRaidHelper(env, linked);
   await insertAudit(env.DB, raidId, session.username, 'rh_link', { eventId, pushed, failed: failed.length });
   return jsonResponse({ signups: await listRaidSignups(env.DB, raidId), pushed, failed });

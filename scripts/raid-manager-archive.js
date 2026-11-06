@@ -275,14 +275,20 @@ function applyNameLanguageToCreateForm() {
 
 // dateKey - 'YYYY-MM-DD' (з календаря); без нього - сьогодні. Минулі дні
 // недоступні (min), сервер теж перевіряє.
-async function openCreateRaidModal(dateKey) {
-  titleAutoFilled = true;
+// Рейд з Discord, для якого створюється рейд на сайті (календар ->
+// "Нерозпізнані рейди з Discord"): prefill { title, time, rhEventId }.
+let createRhEventId = null;
+
+async function openCreateRaidModal(dateKey, prefill = null) {
+  titleAutoFilled = !prefill;
+  createRhEventId = prefill ? prefill.rhEventId : null;
   const today = kyivDateKey(new Date());
   raidDateInput.min = today;
   raidDateInput.value = typeof dateKey === 'string' && dateKey >= today ? dateKey : today;
-  raidTimeInput.value = DEFAULT_RAID_TIME;
+  raidTimeInput.value = prefill ? prefill.time : DEFAULT_RAID_TIME;
   await loadRecentRaids();
   updateTitleIfAuto();
+  if (prefill) document.getElementById('raidTitle').value = prefill.title;
   updateMountSoftsVisibility();
   openModal(createRaidModal);
 }
@@ -317,6 +323,7 @@ createForm.addEventListener('submit', async (event) => {
       transferWeightLimit: Number(document.getElementById('raidTransferWeightLimit').value),
       startsAt: selectedStartIso()
     };
+    if (createRhEventId) body.rhEventId = createRhEventId;
 
     const raid = await apiCall('POST', '/raids', { token: getSessionToken(), body });
     window.location.href = `../raid/?id=${encodeURIComponent(raid.id)}`;

@@ -277,6 +277,44 @@ function showRaidsTab(tab) {
     selectedDay = kyivDateKey(new Date());
     calendarMonth = selectedDay.slice(0, 7);
     loadCalendarMonth();
+    loadUnmatchedEvents();
+  }
+}
+
+// Рейди з Discord, які воркер не зміг створити на сайті сам (з назви не
+// зрозуміло інстанс/розмір) - лише гільдійським офіцерам.
+async function loadUnmatchedEvents() {
+  const box = document.getElementById('calendarUnmatched');
+  if (!box || !calendarUser?.isGuildOfficer) return;
+  try {
+    const { events } = await apiCall('GET', '/raid-helper/unmatched', { token: getSessionToken() });
+    box.innerHTML = '';
+    box.hidden = !events.length;
+    if (!events.length) return;
+    const head = document.createElement('p');
+    head.className = 'raid-calendar-unmatched-head';
+    head.textContent = 'Рейди з Discord, які не вдалося створити на сайті автоматично (з назви не зрозуміло інстанс або розмір):';
+    const list = document.createElement('ul');
+    list.className = 'raid-calendar-unmatched-list';
+    events.forEach((e) => {
+      const li = document.createElement('li');
+      const dateKey = kyivDateKey(e.starts_at);
+      const [, m, d] = dateKey.split('-');
+      const text = document.createElement('span');
+      text.textContent = `${d}.${m} ${kyivTimeKey(e.starts_at)} · ${e.title}${e.channel_name ? ` (${e.channel_name})` : ''}`;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'link-button-std';
+      btn.textContent = 'Створити на сайті';
+      btn.addEventListener('click', () => openCreateRaidModal(dateKey, {
+        title: e.title, time: kyivTimeKey(e.starts_at), rhEventId: e.event_id
+      }));
+      li.append(text, btn);
+      list.appendChild(li);
+    });
+    box.append(head, list);
+  } catch (err) {
+    console.error(err);
   }
 }
 

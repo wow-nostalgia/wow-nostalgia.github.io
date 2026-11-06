@@ -1,6 +1,5 @@
 import { HttpError, jsonResponse, readJson, generateRaidId, parseRaidStartsAt } from '../util.js';
 import {
-  createRaid,
   listRaids,
   listRaidsInRange,
   countRaids,
@@ -13,7 +12,6 @@ import {
   addRaidOfficer,
   removeRaidOfficer,
   getUserByDiscordId,
-  listDefaultOfficers,
   deleteRaid,
   deleteAllTransfersForRaid,
   resetAllBonusWeightsForRaid,
@@ -21,9 +19,23 @@ import {
   enforceAllBonusPools,
   pruneOldRaidsIfOverLimit,
   setCharacterCooldownsByNames,
-  CHARACTER_COOLDOWN_COLUMNS
+  CHARACTER_COOLDOWN_COLUMNS,
+  createRaidWithDefaults,
+  setRaidHelperLink,
+  findRaidByRhEventId,
+  deleteUnmatchedEvent,
+  listUnmatchedEvents
 } from '../db.js';
+import { requireGlobalOfficer } from '../auth.js';
 import { requireRaidOfficer, requireLeader } from '../auth.js';
+import {
+  publishRaidToRaidHelper,
+  updateRaidInRaidHelper,
+  deleteRaidInRaidHelper,
+  isRaidHelperEventId,
+  fetchRaidHelperEvent,
+  syncRaidFromRaidHelper
+} from '../raid-helper.js';
 
 const INSTANCES = new Set(['ICC', 'RS']);
 const DIFFICULTIES = new Set(['10N', '10H', '25N', '25H']);
@@ -68,9 +80,18 @@ export async function handleCreateRaid(request, env, session) {
   // Передати можна не більше, ніж сам ліміт софтів рейду.
   const cappedTransferLimit = transferWeightLimit === null ? null : Math.min(transferWeightLimit, softLimitTotal);
 
+  // rhEventId - офіцер створює рейд для нерозпізнаного рейду з Discord
+  // (календар): прив'язуємо до нього замість публікації нового.
+  const rhEventId = body.rhEventId ? String(body.rhEventId).trim() : null;
+  if (rhEventId) {
+    if (!isRaidHelperEventId(rhEventId)) throw new HttpError(400, 'Невалідний ID рейду Raid-Helper');
+    if (await findRaidByRhEventId(env.DB, rhEventId)) throw new HttpError(409, "Цей рейд з Discord уже є на сайті");
+    await fetchRaidHelperEvent(env, rhEventId); // існує
+  }
+
   const id = generateRaidId();
 
-  const raid = await createRaid(env.DB, {
+  await createRaidWithDefaults(env.DB, {
     id,
     title,
     instance,
@@ -82,14 +103,17 @@ export async function handleCreateRaid(request, env, session) {
     allowMountSofts,
     lkOnly,
     startsAt
-  });
+  }, session.username);
 
-  await insertAudit(env.DB, id, session.username, 'raid_create', { title, instance, difficulty });
+  if (rhEventId) {
+    await setRaidHelperLink(env.DB, id, rhEventId);
+    await deleteUnmatchedEvent(env.DB, rhEventId);
+    await syncRaidFromRaidHelper(env, await getRaid(env.DB, id), { throwOnError: false });
+  } else {
+    await publishRaidToRaidHelper(env, await getRaid(env.DB, id));
+  }
 
-  const defaultOfficers = await listDefaultOfficers(env.DB);
-  await Promise.all(defaultOfficers.map((o) => addRaidOfficer(env.DB, id, o.discord_id)));
-
-  return jsonResponse(publicRaid(raid), 201);
+  return jsonResponse(publicRaid(await getRaid(env.DB, id)), 201);
 }
 
 const MAX_CALENDAR_RANGE_MS = 62 * 24 * 60 * 60 * 1000;
@@ -168,6 +192,8 @@ export async function handleUpdateRaid(request, env, id, session) {
   if (Object.keys(fields).length) {
     await insertAudit(env.DB, id, session.username, 'settings_change', fields);
   }
+  // Назва/дата - і в Discord (помилка - у rh_sync_error, зміна на сайті лишається).
+  await updateRaidInRaidHelper(env, raid, updated);
 
   if (lkItemIds && await deleteReservesExceptItems(env.DB, id, lkItemIds) > 0) {
     await insertAudit(env.DB, id, session.username, 'lk_only_cleanup', {});
@@ -316,9 +342,17 @@ export async function handleToggleHiddenReserves(request, env, id, session) {
 export async function handleDeleteRaid(request, env, id, session) {
   if (session.discordId !== env.ADMIN_DISCORD_ID) throw new HttpError(403, "Лише адміністратор сайту");
   const raid = await loadRaidOr404(env, id);
+  await deleteRaidInRaidHelper(env, raid);
   await insertAudit(env.DB, id, session.username, 'raid_delete', { title: raid.title });
   await deleteRaid(env.DB, id);
   return jsonResponse({ ok: true });
+}
+
+// GET /raid-helper/unmatched - рейди з Discord, які не вдалося створити на
+// сайті автоматично (гільдійські офіцери, календар).
+export async function handleListUnmatchedEvents(request, env, session) {
+  await requireGlobalOfficer(env.DB, session);
+  return jsonResponse({ events: await listUnmatchedEvents(env.DB) });
 }
 
 export async function handlePruneOldRaids(request, env, session) {

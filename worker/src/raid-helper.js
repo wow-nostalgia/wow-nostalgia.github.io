@@ -11,12 +11,57 @@
 // Персонажа Raid-Helper не знає: персонаж/клас/спек, обрані на сайті,
 // зберігаються лише тут; запис з Discord від гравця без вибору на сайті
 // показується за ніком у Discord.
-import { HttpError } from './util.js';
-import { listSignupRows, applySignupSync, setRaidSyncState, listRaidsToSync } from './db.js';
+//
+// Рейди (етап B):
+// - створення рейду на сайті створює рейд у Raid-Helper у гілці дня тижня
+//   (RH_WEEKDAY_CHANNELS, за Києвом); зміна назви/дати й видалення - теж;
+// - cron імпортує нові рейди з цих гілок: інстанс/розмір/складність - з назви
+//   рейду або гілки (parseRaidKind); нерозпізнані - у rh_unmatched_events
+//   (офіцери створюють їх з календаря вручну);
+// - зміна назви/дати в Discord переноситься на сайт; рейд, видалений у
+//   Discord, на сайті лишається, але відв'язується з позначкою.
+import { HttpError, generateRaidId } from './util.js';
+import {
+  listSignupRows,
+  applySignupSync,
+  setRaidSyncState,
+  listRaidsToSync,
+  setRaidHelperLink,
+  updateRaidFromRaidHelper,
+  markRaidHelperEventDeleted,
+  listLinkedRhEventIds,
+  replaceUnmatchedEvents,
+  getUserByDiscordId,
+  createRaidWithDefaults,
+  getRaid
+} from './db.js';
 import { fromRaidHelperSignup, toRaidHelperClassSpec } from './signup-specs.js';
 
 const RH_API = 'https://raid-helper.xyz/api/v4';
 export const RH_THROTTLE_MS = 60 * 1000;
+const RH_SERVER_ID = '1055547379832602788';
+const RH_TEMPLATE_ID = 'wowwotlk';
+const SITE_URL = 'https://wow-nostalgia.github.io';
+
+// Гілки форуму рейдів за днем тижня (0 - неділя). Четвер - Ульдуар, сайт його
+// не підтримує: рейд на четвер у Discord не публікується й не імпортується.
+const RH_WEEKDAY_CHANNELS = {
+  0: '1522478570625040494', // НД
+  1: '1534107868545155102', // ПН
+  2: '1508209176525013113', // ВТ
+  3: '1515828536617734376', // СР
+  5: '1517857306610634832', // ПТ
+  6: '1522359803031060500' // СБ
+};
+const RH_CHANNEL_SET = new Set(Object.values(RH_WEEKDAY_CHANNELS));
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+function channelForStart(iso) {
+  const wd = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Kyiv', weekday: 'short' }).format(new Date(iso));
+  return RH_WEEKDAY_CHANNELS[WEEKDAYS.indexOf(wd)] || null;
+}
+
+const toUnix = (iso) => Math.floor(Date.parse(iso) / 1000);
 
 export function isRaidHelperEventId(value) {
   return /^\d{17,20}$/.test(value);
@@ -28,8 +73,8 @@ function requireApiKey(env) {
   }
 }
 
-async function rhRequest(env, method, path, body) {
-  const headers = { Accept: 'application/json' };
+async function rhRequest(env, method, path, body, extraHeaders = {}) {
+  const headers = { Accept: 'application/json', ...extraHeaders };
   if (env.RAID_HELPER_API_KEY) headers.Authorization = env.RAID_HELPER_API_KEY;
   if (body !== undefined) headers['Content-Type'] = 'application/json; charset=utf-8';
   let res;
@@ -114,8 +159,26 @@ export async function applyRaidHelperEvent(db, raidId, event) {
 // запусків: помилка лише зберігається в raids.rh_sync_error.
 export async function syncRaidFromRaidHelper(env, raid, { throwOnError = true } = {}) {
   try {
-    const event = await fetchRaidHelperEvent(env, raid.rh_event_id);
+    let event;
+    try {
+      event = await fetchRaidHelperEvent(env, raid.rh_event_id);
+    } catch (err) {
+      if (err.rhStatus !== 404) throw err;
+      // Рейд видалили в Discord.
+      await markRaidHelperEventDeleted(env.DB, raid.id);
+      return { skipped: 0, deleted: true };
+    }
     const skipped = await applyRaidHelperEvent(env.DB, raid.id, event);
+    // Назва/дата змінились у Discord.
+    const title = event.title ? String(event.title) : raid.title;
+    const startUnix = Number(event.startTime);
+    const startChanged = Number.isFinite(startUnix) && startUnix > 0 && startUnix !== toUnix(raid.starts_at);
+    if (title !== raid.title || startChanged) {
+      await updateRaidFromRaidHelper(env.DB, raid.id, {
+        title,
+        startsAt: startChanged ? new Date(startUnix * 1000).toISOString() : raid.starts_at
+      });
+    }
     await setRaidSyncState(env.DB, raid.id, { synced: true });
     return { skipped };
   } catch (err) {
@@ -213,4 +276,143 @@ export async function syncUpcomingRaids(env, now = new Date()) {
   for (const raid of raids) {
     await syncRaidFromRaidHelper(env, raid, { throwOnError: false });
   }
+}
+
+// ---- Рейди: сайт -> Discord ----
+
+const INSTANCE_LABELS = { ICC: 'ЦЛК', RS: 'РС' };
+
+function raidDescription(raid) {
+  const kind = `${INSTANCE_LABELS[raid.instance] || raid.instance} ${raid.difficulty.slice(0, 2)} ${raid.difficulty.endsWith('H') ? 'героїк' : 'нормал'}`;
+  return `${kind}\nСофти й запис: ${SITE_URL}/raid-manager/raid/?id=${encodeURIComponent(raid.id)}`;
+}
+
+// Створює рейд у Raid-Helper для рейду сайту й прив'язує його. Помилка не
+// валить створення рейду на сайті - зберігається в rh_sync_error (видно у
+// вкладці "Попередній запис", там же можна прив'язати вручну).
+export async function publishRaidToRaidHelper(env, raid) {
+  const channelId = channelForStart(raid.starts_at);
+  if (!channelId || !env.RAID_HELPER_API_KEY) return; // четвер / не налаштовано
+  try {
+    const start = toUnix(raid.starts_at);
+    const data = await rhRequest(env, 'POST', `/servers/${RH_SERVER_ID}/channels/${channelId}/event`, {
+      leaderId: raid.leader_discord_id,
+      templateId: RH_TEMPLATE_ID,
+      date: String(start),
+      time: String(start),
+      title: raid.title,
+      description: raidDescription(raid)
+    });
+    const eventId = data && ((data.event && data.event.id) || data.id);
+    if (!eventId) throw new HttpError(502, 'Raid-Helper не повернув ID створеного рейду');
+    await setRaidHelperLink(env.DB, raid.id, String(eventId));
+  } catch (err) {
+    console.error('[raid-helper] publish failed', raid.id, err.message);
+    await setRaidSyncState(env.DB, raid.id, { synced: false, error: `Не вдалося створити рейд у Discord: ${err.message}` });
+  }
+}
+
+// Назва/дата змінились на сайті. Дата на інший день тижня - рейд переїжджає
+// в гілку того дня (крім четверга - тоді лишається, де був).
+export async function updateRaidInRaidHelper(env, before, after) {
+  if (!after.rh_event_id || !env.RAID_HELPER_API_KEY) return;
+  const body = {};
+  if (after.title !== before.title) body.title = after.title;
+  if (after.starts_at !== before.starts_at) {
+    body.startTime = toUnix(after.starts_at);
+    body.endTime = body.startTime;
+    const channelId = channelForStart(after.starts_at);
+    if (channelId && channelId !== channelForStart(before.starts_at)) body.channelId = channelId;
+  }
+  if (!Object.keys(body).length) return;
+  try {
+    await rhRequest(env, 'PATCH', `/events/${after.rh_event_id}`, body);
+  } catch (err) {
+    console.error('[raid-helper] update failed', after.id, err.message);
+    await setRaidSyncState(env.DB, after.id, { synced: false, error: `Не вдалося змінити рейд у Discord: ${err.message}` });
+  }
+}
+
+// Видалення рейду на сайті. Помилка (крім "вже видалено") зупиняє видалення,
+// щоб рейд у Discord не лишився сиротою.
+export async function deleteRaidInRaidHelper(env, raid) {
+  if (!raid.rh_event_id) return;
+  requireApiKey(env);
+  try {
+    await rhRequest(env, 'DELETE', `/events/${raid.rh_event_id}`);
+  } catch (err) {
+    if (err.rhStatus !== 404) throw err;
+  }
+}
+
+// ---- Рейди: Discord -> сайт ----
+
+// Інстанс/розмір/складність з назви ("ЦКК 25 хм Логорейд" -> ICC 25H).
+// null - якщо інстанс або розмір не зрозумілі.
+const LETTERS = 'a-zа-яіїєґё';
+function hasWord(text, words) {
+  return new RegExp(`(^|[^${LETTERS}])(${words})(?![${LETTERS}])`, 'i').test(text);
+}
+export function parseRaidKind(text) {
+  if (!text) return null;
+  const t = String(text).toLowerCase();
+  const instance = /(цлк|цкк|icc|цитадел)/.test(t) ? 'ICC'
+    : (hasWord(t, 'рс|rs') || /(рубін|рубин|ruby)/.test(t)) ? 'RS' : null;
+  // 10/25 не частина часу ("21:10") чи іншого числа.
+  const size = /(^|[^\d:])25(?![\d:])/.test(t) ? '25' : /(^|[^\d:])10(?![\d:])/.test(t) ? '10' : null;
+  if (!instance || !size) return null;
+  const heroic = hasWord(t, 'хм|гер|героїк|героик|hc|hm|heroic|х|г|h');
+  return { instance, difficulty: `${size}${heroic ? 'H' : 'N'}` };
+}
+
+// Cron: нові рейди з гілок рейдів -> рейди на сайті.
+export async function importRaidHelperEvents(env, now = new Date()) {
+  if (!env.RAID_HELPER_API_KEY) return;
+  const data = await rhRequest(env, 'GET', `/servers/${RH_SERVER_ID}/events`, undefined, {
+    StartTimeFilter: String(Math.floor(now.getTime() / 1000)),
+    IncludeSignUps: 'false'
+  });
+  const events = ((data && data.postedEvents) || []).filter((e) => RH_CHANNEL_SET.has(String(e.channelId)));
+  const linked = await listLinkedRhEventIds(env.DB);
+  const unmatched = [];
+  for (const e of events) {
+    const eventId = String(e.id);
+    if (linked.has(eventId) || !Number(e.startTime)) continue;
+    const startsAt = new Date(Number(e.startTime) * 1000).toISOString();
+    const title = String(e.title || e.displayTitle || '').trim() || 'Рейд';
+    const kind = parseRaidKind(title) || parseRaidKind(e.channelName);
+    if (!kind) {
+      unmatched.push({ eventId, title, channelName: e.channelName ? String(e.channelName) : null, startsAt });
+      continue;
+    }
+    try {
+      await createRaidFromEvent(env, { eventId, title, startsAt, leaderId: e.leaderId ? String(e.leaderId) : null, ...kind });
+    } catch (err) {
+      console.error('[raid-helper] import failed', eventId, err.message);
+    }
+  }
+  await replaceUnmatchedEvents(env.DB, unmatched);
+}
+
+// Рейд сайту для рейду Raid-Helper (cron або офіцер з календаря).
+// Лідер - лідер з Raid-Helper, якщо він є на сайті, інакше адмін сайту.
+export async function createRaidFromEvent(env, { eventId, title, startsAt, leaderId, instance, difficulty }, overrides = {}) {
+  const leader = leaderId && (await getUserByDiscordId(env.DB, leaderId)) ? leaderId : env.ADMIN_DISCORD_ID;
+  const raid = await createRaidWithDefaults(env.DB, {
+    id: generateRaidId(),
+    title,
+    instance,
+    difficulty,
+    softLimitTotal: 3,
+    hiddenReserves: true,
+    leaderDiscordId: leader,
+    transferWeightLimit: null,
+    allowMountSofts: false,
+    lkOnly: false,
+    startsAt,
+    ...overrides
+  }, 'Raid-Helper');
+  await setRaidHelperLink(env.DB, raid.id, eventId);
+  await syncRaidFromRaidHelper(env, await getRaid(env.DB, raid.id), { throwOnError: false });
+  return getRaid(env.DB, raid.id);
 }
