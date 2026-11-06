@@ -616,7 +616,8 @@ export default {
 // лише в UTC, а Київ то UTC+2 (зима), то UTC+3 (літо), тож тригер стоїть на
 // обидва варіанти (п'ятниця 01:00 і 02:00 UTC, wrangler.toml), а скидає лише
 // той запуск, коли в Києві справді 04:00. Має збігатися з wrangler.toml.
-const WEEKLY_RESET_CRON = '0 1,2 * * 5';
+// День тижня - лише назвою: у Cloudflare 1 = неділя, тож "5" - це четвер.
+const WEEKLY_RESET_CRON = '0 1,2 * * fri';
 // Підтягування записів з Raid-Helper (worker/src/raid-helper.js). Має
 // збігатися з wrangler.toml.
 const RAID_HELPER_SYNC_CRON = '*/10 * * * *';
