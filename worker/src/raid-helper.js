@@ -344,11 +344,34 @@ export async function updateRaidInRaidHelper(env, before, after) {
   }
   if (!Object.keys(body).length) return;
   try {
-    await rhRequest(env, 'PATCH', `/events/${after.rh_event_id}`, body);
+    const data = await rhRequest(env, 'PATCH', `/events/${after.rh_event_id}`, body);
+    // Переїзд в іншу гілку Raid-Helper робить новим повідомленням - ID рейду
+    // (= ID повідомлення) змінюється. Без цього сайт лишився б прив'язаним до
+    // неіснуючого рейду ("unknown event").
+    let newId = data && data.event && data.event.id ? String(data.event.id) : null;
+    if (body.channelId && (!newId || newId === after.rh_event_id)) {
+      // Відповідь без нового ID: якщо старий уже не існує - шукаємо рейд у
+      // новій гілці за часом початку й назвою.
+      const stillThere = await rhRequest(env, 'GET', `/events/${after.rh_event_id}`).then(() => true, (err) => err.rhStatus !== 404);
+      if (!stillThere) newId = await findMovedEventId(env, body.channelId, toUnix(after.starts_at), after.title);
+    }
+    if (newId && newId !== after.rh_event_id) await setRaidHelperLink(env.DB, after.id, newId);
   } catch (err) {
     console.error('[raid-helper] update failed', after.id, err.message);
     await setRaidSyncState(env.DB, after.id, { synced: false, error: `Не вдалося змінити рейд у Discord: ${err.message}` });
   }
+}
+
+async function findMovedEventId(env, channelId, startUnix, title) {
+  const data = await rhRequest(env, 'GET', `/servers/${RH_SERVER_ID}/events`, undefined, {
+    ChannelFilter: channelId,
+    StartTimeFilter: String(startUnix - 60),
+    EndTimeFilter: String(startUnix + 60),
+    IncludeSignUps: 'false'
+  });
+  const events = (data && data.postedEvents) || [];
+  const match = events.find((e) => String(e.title) === title) || (events.length === 1 ? events[0] : null);
+  return match ? String(match.id) : null;
 }
 
 // Видалення рейду на сайті. Помилка (крім "вже видалено") зупиняє видалення,
