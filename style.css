@@ -3402,6 +3402,9 @@ body.raid-manager-detail-page .signup-rh {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem 0.75rem;
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
   font-size: var(--font-size-base);
   color: var(--color-text-muted);
 }

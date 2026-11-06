@@ -177,8 +177,9 @@ function createSplitButton({ label, onClick, items, disabled = false, toggleLabe
 }
 
 // Рядок стану синхронізації з Raid-Helper + (офіцерам) прив'язка/оновлення.
+// Лише офіцерам; унизу вкладки - другорядне для гравців.
 function renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange }) {
-  if (!raid.rh_event_id && !officer) return;
+  if (!officer) return;
   const bar = document.createElement('div');
   bar.className = 'signup-rh';
   const text = document.createElement('span');
@@ -269,7 +270,6 @@ function renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange }) {
 function renderSignupRoster(root, opts) {
   const { raid, signups, officer, myDiscordId, onChange, onRaidChange } = opts;
   root.innerHTML = '';
-  renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange });
 
   const main = signups.filter((s) => s.status === 'signed');
   const extraCount = signups.filter((s) => ['late', 'tentative', 'bench'].includes(s.status)).length;
@@ -445,6 +445,8 @@ function renderSignupRoster(root, opts) {
     list.forEach((s) => row.appendChild(entry(s)));
     root.appendChild(row);
   });
+
+  renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange });
 }
 
 // --- Вікна ---
