@@ -162,8 +162,8 @@ function renderDayPanel() {
   const title = DAY_TITLE_FMT.format(keyToUtcDate(selectedDay));
   calendarDayTitle.textContent = title.charAt(0).toUpperCase() + title.slice(1);
 
-  const [, m, d] = selectedDay.split('-');
-  calendarCreateLabel.textContent = `Створити рейд на ${d}.${m}`;
+  // Підпис - як на вкладці "Рейди" (обраний день видно в заголовку поруч).
+  calendarCreateLabel.textContent = 'Створити рейд';
   const isPast = selectedDay < today;
   calendarCreateBtn.disabled = isPast;
   if (isPast) {

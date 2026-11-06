@@ -3108,11 +3108,24 @@ body.raid-manager-page .archive-status-row {
 }
 
 /* ===== Календар рейдів (вкладка "Календар") ===== */
+/* Тулбар: ‹ Місяць › · Обраний день ··· [Створити рейд на ..] [Сьогодні];
+   на вузькому екрані переноситься. */
 body.raid-manager-page .raid-calendar-toolbar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
+}
+
+body.raid-manager-page .raid-calendar-day-title {
+  margin: 0 0 0 0.75rem;
+  font-size: var(--font-title-sm);
+  color: var(--color-text-strong);
+}
+
+body.raid-manager-page #calendarCreateBtn {
+  margin-left: auto;
 }
 
 body.raid-manager-page .raid-calendar-toolbar .link-button-std {
@@ -3126,10 +3139,6 @@ body.raid-manager-page .raid-calendar-month {
   text-align: center;
   font-size: var(--font-title-md);
   color: var(--color-text-strong);
-}
-
-body.raid-manager-page #calendarTodayBtn {
-  margin-left: auto;
 }
 
 body.raid-manager-page .raid-calendar {
@@ -3261,21 +3270,6 @@ body.raid-manager-page .raid-calendar-chip-title {
 /* Панель обраного дня під сіткою. */
 body.raid-manager-page .raid-calendar-day {
   margin-top: 1rem;
-}
-
-body.raid-manager-page .raid-calendar-day-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.5rem;
-}
-
-body.raid-manager-page .raid-calendar-day-head h3 {
-  margin: 0;
-  font-size: var(--font-title-sm);
-  color: var(--color-text-strong);
 }
 
 body.raid-manager-page .raid-calendar-day-list {
@@ -3707,6 +3701,28 @@ body.raid-manager-detail-page .signup-status-buttons {
   body.raid-manager-page .raid-calendar-month {
     min-width: 0;
     flex: 1;
+  }
+
+  /* Телефон: 1-й рядок "‹ Місяць › Сьогодні", 2-й - обраний день + кнопка
+     створення. ::after (order 2, на всю ширину) - примусовий перенос. */
+  body.raid-manager-page #calendarTodayBtn {
+    order: 1;
+  }
+
+  body.raid-manager-page .raid-calendar-toolbar::after {
+    content: '';
+    order: 2;
+    flex-basis: 100%;
+  }
+
+  body.raid-manager-page .raid-calendar-day-title {
+    order: 3;
+    flex: 1 1 auto;
+    margin-left: 0;
+  }
+
+  body.raid-manager-page #calendarCreateBtn {
+    order: 4;
   }
 
   body.raid-manager-page .raid-calendar-chip--wide {
