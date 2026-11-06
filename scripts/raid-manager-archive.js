@@ -282,6 +282,9 @@ let createRhEventId = null;
 async function openCreateRaidModal(dateKey, prefill = null) {
   titleAutoFilled = !prefill;
   createRhEventId = prefill ? prefill.rhEventId : null;
+  // Рейд з Discord уже там є - галочка публікації не потрібна.
+  document.getElementById('raidPublishDiscordLabel').hidden = Boolean(prefill);
+  document.getElementById('raidPublishDiscord').checked = false;
   const today = kyivDateKey(new Date());
   raidDateInput.min = today;
   raidDateInput.value = typeof dateKey === 'string' && dateKey >= today ? dateKey : today;
@@ -324,6 +327,7 @@ createForm.addEventListener('submit', async (event) => {
       startsAt: selectedStartIso()
     };
     if (createRhEventId) body.rhEventId = createRhEventId;
+    else body.publishToDiscord = document.getElementById('raidPublishDiscord').checked;
 
     const raid = await apiCall('POST', '/raids', { token: getSessionToken(), body });
     window.location.href = `../raid/?id=${encodeURIComponent(raid.id)}`;
