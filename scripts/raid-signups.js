@@ -565,9 +565,13 @@ async function openSignupModal(opts) {
     Object.keys(SIGNUP_CLASSES[classF.select.value].specs).forEach((spec) => specF.select.add(new Option(signupSpecLabel(spec), spec)));
     if (preferred && SIGNUP_CLASSES[classF.select.value].specs[preferred]) specF.select.value = preferred;
   };
+  // Клас відомого (з даних гільдії) персонажа фіксований - змінюється лише
+  // спек. Вибір класу лишається тільки для персонажа поза даними гільдії.
   const applyGuess = async () => {
     const guess = await guessCharacterClassSpec(charF.select.value);
-    if (guess && SIGNUP_CLASSES[guess.cls]) {
+    const known = Boolean(guess && SIGNUP_CLASSES[guess.cls]);
+    classF.select.disabled = known;
+    if (known) {
       classF.select.value = guess.cls;
       // Ферал у даних гільдії один - за замовчуванням ведмідь не вгадуємо, кіт.
       // ДК у даних гільдії без ролі: Blood - танк, Frost/Unholy - ДД.
@@ -583,8 +587,13 @@ async function openSignupModal(opts) {
     // Запис з Discord: персонаж ще не обраний - лишаємо першого зі списку;
     // клас/спек - з Discord, якщо вони є ("Відсутній" їх не має).
     if (mine.character_name) charF.select.value = mine.character_name;
-    if (mine.class && SIGNUP_CLASSES[mine.class]) {
+    const known = await guessCharacterClassSpec(charF.select.value);
+    const knownCls = known && SIGNUP_CLASSES[known.cls] ? known.cls : null;
+    // Клас із запису - лише якщо він збігається з класом персонажа (або клас
+    // персонажа невідомий); інакше - клас і спек персонажа.
+    if (mine.class && SIGNUP_CLASSES[mine.class] && (!knownCls || knownCls === mine.class)) {
       classF.select.value = mine.class;
+      classF.select.disabled = Boolean(knownCls);
       fillSpecs(mine.spec);
     } else {
       await applyGuess();
