@@ -279,12 +279,8 @@ function renderSignupRoster(root, opts) {
   // Шапка.
   const head = document.createElement('div');
   head.className = 'signup-head';
-  const start = raidStartIso(raid);
-  const [y, m, d] = kyivDateKey(start).split('-');
+  // Лідер, дата й час - уже в чипах угорі сторінки рейду, тут не дублюємо.
   const metaItems = [
-    ['Лідер', raid.leader_display_name || '—'],
-    ['Дата', `${d}.${m}.${y}`],
-    ['Час', kyivTimeKey(start)],
     ['Записано', `${main.length}/${SIGNUP_LIMIT}${extraCount ? ` (+${extraCount})` : ''}`],
     ['Початок', signupCountdownText(raid)]
   ];
