@@ -406,6 +406,16 @@ body.index-page .index-tips__link {
   text-decoration: none;
 }
 
+/* "Графік рейдів": заголовок + кнопка "Відкрити календар" праворуч (вигляд -
+   як кнопки в підказках вище). */
+body.index-page .index-schedule-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
 body.index-page .index-tips__top {
   position: absolute;
   top: 0.5rem;
