@@ -284,7 +284,10 @@ const INSTANCE_LABELS = { ICC: 'ЦЛК', RS: 'РС' };
 
 function raidDescription(raid) {
   const kind = `${INSTANCE_LABELS[raid.instance] || raid.instance} ${raid.difficulty.slice(0, 2)} ${raid.difficulty.endsWith('H') ? 'героїк' : 'нормал'}`;
-  return `${kind}\nСофти й запис: ${SITE_URL}/raid-manager/raid/?id=${encodeURIComponent(raid.id)}`;
+  // Markdown-посилання, як "Копіювати для Discord" на сторінці рейду: у
+  // Discord показується назвою рейду. Квадратні дужки в назві екрануємо.
+  const title = raid.title.replace(/[[\]]/g, '\\$&');
+  return `${kind}\nСофти й запис: [${title}](${SITE_URL}/raid-manager/raid/?id=${encodeURIComponent(raid.id)})`;
 }
 
 // Створює рейд у Raid-Helper для рейду сайту й прив'язує його. Помилка не
@@ -323,7 +326,11 @@ export async function publishRaidToRaidHelper(env, raid, { throwOnError = false 
 export async function updateRaidInRaidHelper(env, before, after) {
   if (!after.rh_event_id || !env.RAID_HELPER_API_KEY) return;
   const body = {};
-  if (after.title !== before.title) body.title = after.title;
+  // В описі посилання з назвою рейду - оновлюється разом з назвою.
+  if (after.title !== before.title) {
+    body.title = after.title;
+    body.description = raidDescription(after);
+  }
   if (after.starts_at !== before.starts_at) {
     body.startTime = toUnix(after.starts_at);
     body.endTime = body.startTime;
