@@ -41,7 +41,8 @@ import {
   handleOfficerSetSignupStatus,
   handleOfficerDeleteSignup,
   handleSetRaidHelperLink,
-  handleRaidHelperSyncNow
+  handleRaidHelperSyncNow,
+  handlePublishRaidToDiscord
 } from './routes/signups.js';
 import { syncUpcomingRaids, importRaidHelperEvents } from './raid-helper.js';
 import {
@@ -266,6 +267,7 @@ async function routeRaids(request, env, parts, session) {
   if (sub === 'raid-helper') {
     if (!parts[2] && method === 'PUT') return handleSetRaidHelperLink(request, env, raidId, session);
     if (parts[2] === 'sync' && method === 'POST') return handleRaidHelperSyncNow(request, env, raidId, session);
+    if (parts[2] === 'publish' && method === 'POST') return handlePublishRaidToDiscord(request, env, raidId, session);
     throw new HttpError(405, 'Метод не підтримується');
   }
   if (sub === 'complete' && method === 'POST') return handleSetStatus(request, env, raidId, 'completed', session);

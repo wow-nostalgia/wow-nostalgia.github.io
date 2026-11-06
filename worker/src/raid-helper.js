@@ -290,8 +290,13 @@ function raidDescription(raid) {
 // Створює рейд у Raid-Helper для рейду сайту й прив'язує його. Помилка не
 // валить створення рейду на сайті - зберігається в rh_sync_error (видно у
 // вкладці "Попередній запис", там же можна прив'язати вручну).
-export async function publishRaidToRaidHelper(env, raid) {
+// throwOnError - кнопка "Опублікувати в Discord": помилку бачить офіцер одразу.
+export async function publishRaidToRaidHelper(env, raid, { throwOnError = false } = {}) {
   const channelId = channelForStart(raid.starts_at);
+  if (throwOnError) {
+    requireApiKey(env);
+    if (!channelId) throw new HttpError(400, 'Рейди на четвер у Discord не публікуються');
+  }
   if (!channelId || !env.RAID_HELPER_API_KEY) return; // четвер / не налаштовано
   try {
     const start = toUnix(raid.starts_at);
@@ -309,6 +314,7 @@ export async function publishRaidToRaidHelper(env, raid) {
   } catch (err) {
     console.error('[raid-helper] publish failed', raid.id, err.message);
     await setRaidSyncState(env.DB, raid.id, { synced: false, error: `Не вдалося створити рейд у Discord: ${err.message}` });
+    if (throwOnError) throw err;
   }
 }
 

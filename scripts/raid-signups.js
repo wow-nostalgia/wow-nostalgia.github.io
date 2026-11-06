@@ -200,6 +200,20 @@ function renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange }) {
         });
       });
       bar.appendChild(form);
+      // Рейд без прив'язки (створений до синхронізації чи публікація не
+      // вдалась) - створити його в Discord.
+      if (raid.status !== 'completed') {
+        const publish = document.createElement('button');
+        publish.type = 'button';
+        publish.className = 'link-button-std';
+        publish.textContent = 'Опублікувати в Discord';
+        publish.addEventListener('click', () => call('POST', `/raids/${raid.id}/raid-helper/publish`, undefined, (r) => {
+          const lines = [`Опубліковано в Discord. Відправлено записів із сайту: ${r.pushed}.`];
+          if (r.failed.length) lines.push(`Не вдалося відправити (записи зникли з сайту): ${r.failed.join('; ')}`);
+          showMessageModal(lines.join(' '));
+        }));
+        bar.appendChild(publish);
+      }
     }
   }
   root.appendChild(bar);

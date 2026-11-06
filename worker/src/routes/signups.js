@@ -35,7 +35,8 @@ import {
   isSyncStale,
   pushSignupToRaidHelper,
   deleteSignupInRaidHelper,
-  pushLocalSignupsOnLink
+  pushLocalSignupsOnLink,
+  publishRaidToRaidHelper
 } from '../raid-helper.js';
 
 function requireSignupsOpen(raid) {
@@ -169,6 +170,23 @@ export async function handleSetRaidHelperLink(request, env, raidId, session) {
   await deleteUnmatchedEvent(env.DB, eventId);
   await syncRaidFromRaidHelper(env, linked);
   await insertAudit(env.DB, raidId, session.username, 'rh_link', { eventId, pushed, failed: failed.length });
+  return jsonResponse({ signups: await listRaidSignups(env.DB, raidId), pushed, failed });
+}
+
+// POST /raids/:id/raid-helper/publish - "Опублікувати в Discord" для рейду
+// без прив'язки (створений до синхронізації або публікація не вдалась).
+// Записи з сайту відправляються в новий рейд Raid-Helper.
+export async function handlePublishRaidToDiscord(request, env, raidId, session) {
+  const raid = await loadRaidOr404(env, raidId);
+  await requireRaidOfficer(env.DB, raidId, raid, session);
+  if (raid.rh_event_id) throw new HttpError(409, "Рейд уже прив'язаний до Discord");
+  if (raid.status === 'completed') throw new HttpError(423, 'Рейд завершено');
+  await publishRaidToRaidHelper(env, raid, { throwOnError: true });
+  const linked = await loadRaidOr404(env, raidId);
+  const event = await fetchRaidHelperEvent(env, linked.rh_event_id);
+  const { pushed, failed } = await pushLocalSignupsOnLink(env, linked, event);
+  await syncRaidFromRaidHelper(env, linked, { throwOnError: false });
+  await insertAudit(env.DB, raidId, session.username, 'rh_publish', { eventId: linked.rh_event_id, pushed, failed: failed.length });
   return jsonResponse({ signups: await listRaidSignups(env.DB, raidId), pushed, failed });
 }
 
