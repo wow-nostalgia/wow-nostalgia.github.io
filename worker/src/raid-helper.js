@@ -204,12 +204,16 @@ function rhClassSpec(cls, spec, status) {
 // Для статусів (Tentative тощо) документація не каже, чи приймається спек.
 // Пробуємо зі спеком (так у Raid-Helper зберігається спек), а якщо відмова -
 // без нього.
+// notify: false явно - запис із сайту не має тегати гравця в Discord (без
+// нього Raid-Helper вписував у повідомлення рейду згадку останнього
+// доданого через API гравця).
 async function writeWithSpecFallback(env, method, path, base, classSpec) {
+  const body = { ...base, notify: false };
   try {
-    return await rhRequest(env, method, path, { ...base, ...classSpec });
+    return await rhRequest(env, method, path, { ...body, ...classSpec });
   } catch (err) {
     if (classSpec.specName === undefined || classSpec.className === undefined || !RH_STATUS_ONLY.has(classSpec.className)) throw err;
-    return rhRequest(env, method, path, { ...base, className: classSpec.className });
+    return rhRequest(env, method, path, { ...body, className: classSpec.className });
   }
 }
 const RH_STATUS_ONLY = new Set(['Late', 'Bench', 'Tentative', 'Absence']);
