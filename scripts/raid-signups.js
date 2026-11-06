@@ -264,11 +264,109 @@ function renderRaidHelperBar(root, { raid, officer, onChange, onRaidChange }) {
   root.appendChild(bar);
 }
 
+// --- Підказка над записом: персонажі гравця ---
+// Одна спільна підказка з position: fixed (як #raidBtnTooltip у ui-shared.js:
+// не обрізається overflow батьків), але з таблицею замість тексту.
+
+let signupTipEl = null;
+
+function showSignupTip(anchor, content) {
+  if (!signupTipEl) {
+    signupTipEl = document.createElement('div');
+    signupTipEl.className = 'signup-tip';
+    signupTipEl.setAttribute('role', 'tooltip');
+    signupTipEl.hidden = true;
+    document.body.appendChild(signupTipEl);
+  }
+  if (typeof moveTooltipNear === 'function') moveTooltipNear(signupTipEl, anchor);
+  signupTipEl.replaceChildren(content);
+  signupTipEl.hidden = false;
+  const rect = anchor.getBoundingClientRect();
+  const tip = signupTipEl.getBoundingClientRect();
+  let x = rect.left + rect.width / 2 - tip.width / 2;
+  let y = rect.top - tip.height - 8;
+  if (y < 0) y = rect.bottom + 8;
+  x = Math.max(4, Math.min(x, window.innerWidth - tip.width - 4));
+  signupTipEl.style.left = `${x}px`;
+  signupTipEl.style.top = `${y}px`;
+}
+
+function hideSignupTip() {
+  if (signupTipEl) signupTipEl.hidden = true;
+}
+
+function bindSignupCharactersTip(el, build) {
+  el.addEventListener('mouseenter', () => showSignupTip(el, build()));
+  el.addEventListener('mouseleave', hideSignupTip);
+  el.addEventListener('focus', () => showSignupTip(el, build()));
+  el.addEventListener('blur', hideSignupTip);
+}
+
+// Порядок - як на "Рейтинг DPS" -> "Гравець": за очками (найкращий спек
+// персонажа в даних гільдії) від більших; персонажі поза даними - в кінці.
+function sortSignupCharacters(list) {
+  const score = (c) => signupGuildClassMap?.get(c.name)?.score ?? -1;
+  return [...list].sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name, 'uk'));
+}
+
+function buildSignupCharactersTip(signup, chars, { overLimit, officer }) {
+  const box = document.createElement('div');
+  // chars: null - ще вантажиться; [] - персонажів немає (owner_display_name
+  // є лише в гравців, зареєстрованих на сайті).
+  if (!chars || !chars.length) {
+    const p = document.createElement('div');
+    p.className = 'signup-tip-note';
+    const who = signupDisplayName(signup);
+    p.textContent = !chars ? `${who} - завантаження...`
+      : signup.owner_display_name ? `${who} - немає персонажів на сайті` : `${who} - немає на сайті`;
+    box.appendChild(p);
+  } else {
+    const table = document.createElement('table');
+    table.className = 'signup-tip-table';
+    table.innerHTML = '<thead><tr><th>Персонаж</th><th>GS</th><th>КД</th></tr></thead>';
+    const tbody = document.createElement('tbody');
+    sortSignupCharacters(chars).forEach((c) => {
+      const tr = document.createElement('tr');
+      if (signup.character_name && c.name.toLocaleLowerCase('uk') === signup.character_name.toLocaleLowerCase('uk')) {
+        tr.className = 'signup-tip-current';
+      }
+      const name = document.createElement('td');
+      name.textContent = c.name;
+      name.style.color = signupClassColor(signupGuildClassMap?.get(c.name)?.cls) || 'var(--color-text-faint)';
+      const gs = document.createElement('td');
+      gs.textContent = c.gs == null ? '—' : c.gs.toFixed(1);
+      const cd = document.createElement('td');
+      // Octicon check, як у колонках КД на "Рейтинг DPS".
+      if (c.cd) {
+        cd.className = 'signup-tip-cd';
+        cd.innerHTML = '<svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-label="Є КД"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></svg>';
+      } else {
+        cd.textContent = '—';
+      }
+      tr.append(name, gs, cd);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    box.appendChild(table);
+  }
+  const notes = [overLimit ? 'Понад ліміт' : '', officer ? 'Клікни, щоб змінити' : ''].filter(Boolean);
+  notes.forEach((text) => {
+    const n = document.createElement('div');
+    n.className = 'signup-tip-note';
+    n.textContent = text;
+    box.appendChild(n);
+  });
+  return box;
+}
+
 // --- Вигляд записаних (вкладка "Попередній запис") ---
 
 // opts: { raid, signups, officer, myDiscordId, onChange(newSignups) }
 function renderSignupRoster(root, opts) {
-  const { raid, signups, officer, myDiscordId, onChange, onRaidChange } = opts;
+  // characters: { discordId: [{ name, gs, cd }] } - GET /raids/:id/signups/characters.
+  const { raid, signups, officer, myDiscordId, onChange, onRaidChange, characters } = opts;
+  // Перемальовка прибирає елемент під курсором - mouseleave вже не прийде.
+  hideSignupTip();
   root.innerHTML = '';
 
   const main = signups.filter((s) => s.status === 'signed');
@@ -400,7 +498,10 @@ function renderSignupRoster(root, opts) {
     if (color) name.style.color = color;
     el.append(img, pos, name);
     el.setAttribute('aria-label', `${signupEntryLabel(s)}${overLimitIds.has(s.id) ? ' - понад ліміт' : ''}${officer ? '. Клікни, щоб змінити' : ''}`);
-    applyAutoTooltip(el);
+    // Підказка - таблиця персонажів гравця (GS, КД цього рейду).
+    bindSignupCharactersTip(el, () => buildSignupCharactersTip(s, characters ? (characters[s.discord_id] || []) : null, {
+      overLimit: overLimitIds.has(s.id), officer
+    }));
     if (officer) el.addEventListener('click', () => openOfficerSignupModal({ raid, signup: s, onSaved: onChange }));
     return el;
   };
@@ -500,8 +601,11 @@ async function guessCharacterClassSpec(name) {
     try {
       const res = await fetchSiteData('/data/guild-data.json');
       const data = await res.json();
+      // score - найкращі очки персонажа серед його спеків (порядок у підказці).
       (data.rows || []).forEach((row) => {
-        if (!signupGuildClassMap.has(row.name)) signupGuildClassMap.set(row.name, { cls: row.class, spec: row.spec });
+        const known = signupGuildClassMap.get(row.name);
+        if (!known) signupGuildClassMap.set(row.name, { cls: row.class, spec: row.spec, score: Number(row.overallScore) || 0 });
+        else known.score = Math.max(known.score, Number(row.overallScore) || 0);
       });
     } catch (err) {
       console.error(err);

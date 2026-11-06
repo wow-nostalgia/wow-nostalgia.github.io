@@ -23,6 +23,8 @@ import {
   ignoreRhEvent,
   unignoreRhEvent,
   deleteUnmatchedEvent,
+  listSignupCharacters,
+  CHARACTER_COOLDOWN_COLUMNS,
   insertAudit
 } from '../db.js';
 import { requireOwnCharacter, requireRaidOfficer } from '../auth.js';
@@ -60,6 +62,15 @@ export async function handleListSignups(request, env, raidId) {
     await syncRaidFromRaidHelper(env, raid, { throwOnError: false });
   }
   return jsonResponse(await listRaidSignups(env.DB, raidId));
+}
+
+// GET /raids/:id/signups/characters - персонажі записаних гравців з GS і КД
+// цього рейду (інстанс + розмір: ЦЛК 25 -> cd_icc25). Бачать усі залогінені.
+export async function handleListSignupCharacters(request, env, raidId) {
+  const raid = await loadRaidOr404(env, raidId);
+  const key = `${String(raid.instance || '').toLowerCase()}${String(raid.difficulty || '').slice(0, 2)}`;
+  const cdColumn = CHARACTER_COOLDOWN_COLUMNS[key] || null;
+  return jsonResponse(await listSignupCharacters(env.DB, raidId, cdColumn));
 }
 
 async function findOwnRow(env, raidId, discordId) {

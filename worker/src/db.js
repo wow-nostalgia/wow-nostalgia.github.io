@@ -1548,6 +1548,27 @@ export async function listCharacterNamesByDiscordIds(db, discordIds) {
   return map;
 }
 
+// Персонажі записаних на рейд гравців: GS (тисячі, 6.4) і КД цього рейду
+// (cdColumn - одна з CHARACTER_COOLDOWN_COLUMNS або null). Для підказки над
+// записом у вкладці "Попередній запис".
+export async function listSignupCharacters(db, raidId, cdColumn) {
+  const cd = cdColumn ? `c.${cdColumn}` : 'NULL';
+  const { results } = await db.prepare(
+    `SELECT c.discord_id, c.character_name, c.gear_score, ${cd} AS cd
+     FROM user_characters c
+     WHERE c.discord_id IN (SELECT discord_id FROM raid_signups WHERE raid_id = ?)`
+  ).bind(raidId).all();
+  const out = {};
+  results.forEach((r) => {
+    (out[r.discord_id] ||= []).push({
+      name: r.character_name,
+      gs: r.gear_score == null ? null : r.gear_score / 10,
+      cd: r.cd == null ? null : Boolean(r.cd)
+    });
+  });
+  return out;
+}
+
 export async function listSignupRows(db, raidId) {
   const { results } = await db.prepare('SELECT * FROM raid_signups WHERE raid_id = ?').bind(raidId).all();
   return results;

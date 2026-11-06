@@ -3435,6 +3435,67 @@ body.raid-manager-detail-page .signup-rh-form input {
   max-width: 100%;
 }
 
+/* Підказка над записом: персонажі гравця з GS і КД рейду (scripts/
+   raid-signups.js: showSignupTip). Вигляд - як #raidBtnTooltip. */
+body.raid-manager-detail-page .signup-tip {
+  position: fixed;
+  z-index: var(--z-tooltip-local);
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-mid);
+  background-color: var(--color-surface-overlay);
+  color: var(--color-text-strong);
+  font-size: var(--font-size-base);
+  box-shadow: var(--shadow-tooltip);
+  pointer-events: none;
+}
+
+body.raid-manager-detail-page .signup-tip[hidden] {
+  display: none;
+}
+
+body.raid-manager-detail-page .signup-tip-table {
+  border-collapse: collapse;
+}
+
+body.raid-manager-detail-page .signup-tip-table th,
+body.raid-manager-detail-page .signup-tip-table td {
+  padding: 0.1rem 0.45rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+body.raid-manager-detail-page .signup-tip-table th {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-normal);
+  font-size: 0.75rem;
+}
+
+body.raid-manager-detail-page .signup-tip-table td:nth-child(n + 2),
+body.raid-manager-detail-page .signup-tip-table th:nth-child(n + 2) {
+  text-align: center;
+}
+
+body.raid-manager-detail-page .signup-tip-table svg {
+  display: inline-block;
+  vertical-align: -2px;
+}
+
+/* Персонаж, з яким гравець записаний. */
+body.raid-manager-detail-page .signup-tip-current td {
+  font-weight: var(--font-weight-semibold);
+}
+
+body.raid-manager-detail-page .signup-tip-cd {
+  color: var(--color-success);
+}
+
+body.raid-manager-detail-page .signup-tip-note {
+  padding: 0.15rem 0.45rem 0;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
 /* Запис з Discord без обраного на сайті персонажа - нік у Discord. */
 body.raid-manager-detail-page .signup-name--discord {
   font-style: italic;

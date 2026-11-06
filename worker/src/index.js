@@ -42,7 +42,8 @@ import {
   handleOfficerDeleteSignup,
   handleSetRaidHelperLink,
   handleRaidHelperSyncNow,
-  handlePublishRaidToDiscord
+  handlePublishRaidToDiscord,
+  handleListSignupCharacters
 } from './routes/signups.js';
 import { syncUpcomingRaids, importRaidHelperEvents } from './raid-helper.js';
 import {
@@ -256,6 +257,7 @@ async function routeRaids(request, env, parts, session) {
   if (sub === 'signups') {
     const target = parts[2];
     if (!target && method === 'GET') return handleListSignups(request, env, raidId);
+    if (target === 'characters' && method === 'GET') return handleListSignupCharacters(request, env, raidId);
     if (target === 'me' && method === 'PUT') return handleUpsertOwnSignup(request, env, raidId, session);
     if (target === 'me' && method === 'DELETE') return handleDeleteOwnSignup(request, env, raidId, session);
     const signupId = Number(target);

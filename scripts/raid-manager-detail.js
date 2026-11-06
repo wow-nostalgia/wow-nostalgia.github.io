@@ -2487,16 +2487,36 @@ function renderSignups() {
     signups: signupsList,
     officer: isOfficerMode(),
     myDiscordId: currentUser?.discordId,
-    onChange: (list) => { signupsList = list; renderSignups(); },
+    characters: signupCharacters,
+    // Новий запис - новий гравець, тож і його персонажі.
+    onChange: (list) => { signupsList = list; renderSignups(); loadSignupCharacters(); },
     // Прив'язка до Raid-Helper змінює рейд (rh_event_id) - перечитуємо його.
     onRaidChange: async () => { await loadRaid(); renderBanner(); renderSignups(); }
   });
+}
+
+// Персонажі записаних (GS, КД рейду) для підказки над записом. Дані гільдії
+// (класи, очки) - для кольору й порядку. Помилка - підказка без таблиці.
+let signupCharacters = null;
+
+async function loadSignupCharacters() {
+  try {
+    const [chars] = await Promise.all([
+      apiCall('GET', `/raids/${raidId}/signups/characters`, { token: getSessionToken() }),
+      guessCharacterClassSpec('')
+    ]);
+    signupCharacters = chars;
+    renderSignups();
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 async function loadSignups() {
   try {
     signupsList = await apiCall('GET', `/raids/${raidId}/signups`, { token: getSessionToken() });
     renderSignups();
+    loadSignupCharacters();
   } catch (err) {
     console.error(err);
     signupsRoot.textContent = `Не вдалося завантажити запис: ${err.message}`;
