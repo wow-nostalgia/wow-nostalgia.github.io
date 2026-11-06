@@ -287,7 +287,8 @@ function raidDescription(raid) {
   // Markdown-посилання, як "Копіювати для Discord" на сторінці рейду: у
   // Discord показується назвою рейду. Квадратні дужки в назві екрануємо.
   const title = raid.title.replace(/[[\]]/g, '\\$&');
-  return `${kind}\nСофти й запис: [${title}](${SITE_URL}/raid-manager/raid/?id=${encodeURIComponent(raid.id)})`;
+  // #signups - одразу вкладка "Попередній запис".
+  return `${kind}\nСофти й запис: [${title}](${SITE_URL}/raid-manager/raid/?id=${encodeURIComponent(raid.id)}#signups)`;
 }
 
 // Створює рейд у Raid-Helper для рейду сайту й прив'язує його. Помилка не
