@@ -1,5 +1,140 @@
 [
   {
+    "name": "Чоколокомоко",
+    "raidsCount": 21,
+    "averagePotionsPerBoss": 1.3098591549295775
+  },
+  {
+    "name": "Ветала",
+    "raidsCount": 22,
+    "averagePotionsPerBoss": 1.6127167630057804
+  },
+  {
+    "name": "Рмт",
+    "raidsCount": 5,
+    "averagePotionsPerBoss": 2.1818181818181817
+  },
+  {
+    "name": "Непридумав",
+    "raidsCount": 13,
+    "averagePotionsPerBoss": 1.3211009174311927
+  },
+  {
+    "name": "Boroheal",
+    "raidsCount": 33,
+    "averagePotionsPerBoss": 1.0950704225352113
+  },
+  {
+    "name": "Kohaiibaka",
+    "raidsCount": 26,
+    "averagePotionsPerBoss": 1.346613545816733
+  },
+  {
+    "name": "Майорр",
+    "raidsCount": 6,
+    "averagePotionsPerBoss": 1.21875
+  },
+  {
+    "name": "Kissoflife",
+    "raidsCount": 12,
+    "averagePotionsPerBoss": 1.8482142857142858
+  },
+  {
+    "name": "Ефеймл",
+    "raidsCount": 11,
+    "averagePotionsPerBoss": 1.3157894736842106
+  },
+  {
+    "name": "Chargedeath",
+    "raidsCount": 6,
+    "averagePotionsPerBoss": 1.5454545454545454
+  },
+  {
+    "name": "Kel",
+    "raidsCount": 5,
+    "averagePotionsPerBoss": 0.9772727272727273
+  },
+  {
+    "name": "Совуня",
+    "raidsCount": 36,
+    "averagePotionsPerBoss": 0.7401129943502824
+  },
+  {
+    "name": "Nekthara",
+    "raidsCount": 13,
+    "averagePotionsPerBoss": 1.9565217391304348
+  },
+  {
+    "name": "Vampiree",
+    "raidsCount": 13,
+    "averagePotionsPerBoss": 1.3
+  },
+  {
+    "name": "Darkrunner",
+    "raidsCount": 6,
+    "averagePotionsPerBoss": 0.4444444444444444
+  },
+  {
+    "name": "Мордрет",
+    "raidsCount": 4,
+    "averagePotionsPerBoss": 1.4761904761904763
+  },
+  {
+    "name": "Веспер",
+    "raidsCount": 11,
+    "averagePotionsPerBoss": 0.08620689655172414
+  },
+  {
+    "name": "Didi",
+    "raidsCount": 15,
+    "averagePotionsPerBoss": 1.6111111111111112
+  },
+  {
+    "name": "Кабачок",
+    "raidsCount": 14,
+    "averagePotionsPerBoss": 0.2125984251968504
+  },
+  {
+    "name": "Беллатрікс",
+    "raidsCount": 40,
+    "averagePotionsPerBoss": 0.5487804878048781
+  },
+  {
+    "name": "Кумбурі",
+    "raidsCount": 9,
+    "averagePotionsPerBoss": 1.1734693877551021
+  },
+  {
+    "name": "Лизунчік",
+    "raidsCount": 7,
+    "averagePotionsPerBoss": 0
+  },
+  {
+    "name": "Орвелл",
+    "raidsCount": 6,
+    "averagePotionsPerBoss": 0
+  },
+  {
+    "name": "Прістуля",
+    "raidsCount": 9,
+    "averagePotionsPerBoss": 0.3764705882352941
+  },
+  {
+    "name": "Dandeli",
+    "raidsCount": 19,
+    "averagePotionsPerBoss": 0.9947368421052631
+  },
+  {
+    "name": "Kartofa",
+    "raidsCount": 15,
+    "averagePotionsPerBoss": 0.5691056910569106
+  },
+  {
+    "name": "Metallheadxp",
+    "raidsCount": 19,
+    "averagePotionsPerBoss": 0
+  },
+  {
     "name": "Жабнерека",
     "raidsCount": 6,
     "averagePotionsPerBoss": 1.9285714285714286
@@ -8,11 +143,6 @@
     "name": "Metallheadxm",
     "raidsCount": 25,
     "averagePotionsPerBoss": 2.0083333333333333
-  },
-  {
-    "name": "Кумбурі",
-    "raidsCount": 8,
-    "averagePotionsPerBoss": 1.3218390804597702
   },
   {
     "name": "Капуста",
@@ -38,11 +168,6 @@
     "name": "Коко",
     "raidsCount": 22,
     "averagePotionsPerBoss": 1.1917808219178083
-  },
-  {
-    "name": "Прістуля",
-    "raidsCount": 8,
-    "averagePotionsPerBoss": 0.43243243243243246
   },
   {
     "name": "Chucknorris",
@@ -130,19 +255,9 @@
     "averagePotionsPerBoss": 1.4125
   },
   {
-    "name": "Орвелл",
-    "raidsCount": 5,
-    "averagePotionsPerBoss": 0
-  },
-  {
     "name": "Отчєнаш",
     "raidsCount": 6,
     "averagePotionsPerBoss": 0.8695652173913043
-  },
-  {
-    "name": "Чоколокомоко",
-    "raidsCount": 20,
-    "averagePotionsPerBoss": 1.2722772277227723
   },
   {
     "name": "Чокомоколоко",
@@ -153,11 +268,6 @@
     "name": "Япєрдолю",
     "raidsCount": 47,
     "averagePotionsPerBoss": 0.07127429805615551
-  },
-  {
-    "name": "Dandeli",
-    "raidsCount": 18,
-    "averagePotionsPerBoss": 1.0558659217877095
   },
   {
     "name": "Evrika",
@@ -200,11 +310,6 @@
     "averagePotionsPerBoss": 1.8181818181818181
   },
   {
-    "name": "Nekthara",
-    "raidsCount": 12,
-    "averagePotionsPerBoss": 2.015748031496063
-  },
-  {
     "name": "Vetala",
     "raidsCount": 4,
     "averagePotionsPerBoss": 1.7073170731707317
@@ -213,11 +318,6 @@
     "name": "Gobsek",
     "raidsCount": 28,
     "averagePotionsPerBoss": 0.26785714285714285
-  },
-  {
-    "name": "Vampiree",
-    "raidsCount": 12,
-    "averagePotionsPerBoss": 1.3361344537815125
   },
   {
     "name": "Емріс",
@@ -240,19 +340,9 @@
     "averagePotionsPerBoss": 1.3478260869565217
   },
   {
-    "name": "Darkrunner",
-    "raidsCount": 5,
-    "averagePotionsPerBoss": 0.36538461538461536
-  },
-  {
     "name": "Blodsikerr",
     "raidsCount": 28,
     "averagePotionsPerBoss": 0.6335877862595419
-  },
-  {
-    "name": "Kartofa",
-    "raidsCount": 14,
-    "averagePotionsPerBoss": 0.625
   },
   {
     "name": "Вагончик",
@@ -355,29 +445,14 @@
     "averagePotionsPerBoss": 1.6623376623376624
   },
   {
-    "name": "Kissoflife",
-    "raidsCount": 11,
-    "averagePotionsPerBoss": 1.881188118811881
-  },
-  {
     "name": "Mallboro",
     "raidsCount": 32,
     "averagePotionsPerBoss": 1.27
   },
   {
-    "name": "Ефеймл",
-    "raidsCount": 10,
-    "averagePotionsPerBoss": 1.2976190476190477
-  },
-  {
     "name": "Shh",
     "raidsCount": 7,
     "averagePotionsPerBoss": 2.0434782608695654
-  },
-  {
-    "name": "Kohaiibaka",
-    "raidsCount": 25,
-    "averagePotionsPerBoss": 1.3333333333333333
   },
   {
     "name": "Ксеноморф",
@@ -408,11 +483,6 @@
     "name": "Iki",
     "raidsCount": 12,
     "averagePotionsPerBoss": 0.10101010101010101
-  },
-  {
-    "name": "Metallheadxp",
-    "raidsCount": 18,
-    "averagePotionsPerBoss": 0
   },
   {
     "name": "Sealtiel",
@@ -520,21 +590,6 @@
     "averagePotionsPerBoss": 1.2951807228915662
   },
   {
-    "name": "Беллатрікс",
-    "raidsCount": 39,
-    "averagePotionsPerBoss": 0.5639097744360902
-  },
-  {
-    "name": "Кабачок",
-    "raidsCount": 13,
-    "averagePotionsPerBoss": 0.21551724137931033
-  },
-  {
-    "name": "Лизунчік",
-    "raidsCount": 6,
-    "averagePotionsPerBoss": 0
-  },
-  {
     "name": "Мелісера",
     "raidsCount": 17,
     "averagePotionsPerBoss": 0.24050632911392406
@@ -543,11 +598,6 @@
     "name": "Спиртовик",
     "raidsCount": 5,
     "averagePotionsPerBoss": 0.28846153846153844
-  },
-  {
-    "name": "Chargedeath",
-    "raidsCount": 5,
-    "averagePotionsPerBoss": 1.5681818181818181
   },
   {
     "name": "Бульбошка",
@@ -565,19 +615,9 @@
     "averagePotionsPerBoss": 1.3225806451612903
   },
   {
-    "name": "Didi",
-    "raidsCount": 14,
-    "averagePotionsPerBoss": 1.7142857142857142
-  },
-  {
     "name": "Esotericss",
     "raidsCount": 5,
     "averagePotionsPerBoss": 1.037037037037037
-  },
-  {
-    "name": "Майорр",
-    "raidsCount": 5,
-    "averagePotionsPerBoss": 1.150943396226415
   },
   {
     "name": "Палідан",
@@ -613,11 +653,6 @@
     "name": "Зібров",
     "raidsCount": 4,
     "averagePotionsPerBoss": 0.9047619047619048
-  },
-  {
-    "name": "Совуня",
-    "raidsCount": 35,
-    "averagePotionsPerBoss": 0.7201166180758017
   },
   {
     "name": "Спалахуйчик",
@@ -670,19 +705,9 @@
     "averagePotionsPerBoss": 0
   },
   {
-    "name": "Рмт",
-    "raidsCount": 4,
-    "averagePotionsPerBoss": 2.272727272727273
-  },
-  {
     "name": "Morganna",
     "raidsCount": 6,
     "averagePotionsPerBoss": 1.0222222222222221
-  },
-  {
-    "name": "Boroheal",
-    "raidsCount": 32,
-    "averagePotionsPerBoss": 1.0695970695970696
   },
   {
     "name": "Purplehaze",
@@ -840,11 +865,6 @@
     "averagePotionsPerBoss": 2
   },
   {
-    "name": "Непридумав",
-    "raidsCount": 12,
-    "averagePotionsPerBoss": 1.2653061224489797
-  },
-  {
     "name": "Zibrow",
     "raidsCount": 18,
     "averagePotionsPerBoss": 1.301775147928994
@@ -955,11 +975,6 @@
     "averagePotionsPerBoss": 1.4169096209912537
   },
   {
-    "name": "Веспер",
-    "raidsCount": 10,
-    "averagePotionsPerBoss": 0.05714285714285714
-  },
-  {
     "name": "Калабаня",
     "raidsCount": 5,
     "averagePotionsPerBoss": 0
@@ -1055,11 +1070,6 @@
     "averagePotionsPerBoss": 0.9142857142857143
   },
   {
-    "name": "Ветала",
-    "raidsCount": 21,
-    "averagePotionsPerBoss": 1.5925925925925926
-  },
-  {
     "name": "Душнила",
     "raidsCount": 5,
     "averagePotionsPerBoss": 1.186046511627907
@@ -1078,11 +1088,6 @@
     "name": "Yu",
     "raidsCount": 2,
     "averagePotionsPerBoss": 0.95
-  },
-  {
-    "name": "Мордрет",
-    "raidsCount": 3,
-    "averagePotionsPerBoss": 1.8064516129032258
   },
   {
     "name": "Inferndru",
