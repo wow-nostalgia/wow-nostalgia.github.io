@@ -243,6 +243,7 @@ async function routeRaids(request, env, parts, session) {
   if (!sub) {
     if (method === 'GET') return handleGetRaid(request, env, raidId, session);
     if (method === 'PATCH') return handleUpdateRaid(request, env, raidId, session);
+    if (method === 'DELETE') return handleDeleteRaid(request, env, raidId, session);
     throw new HttpError(405, 'Метод не підтримується');
   }
 

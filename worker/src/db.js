@@ -57,7 +57,7 @@ export async function createRaidWithDefaults(db, fields, actorName) {
 export async function listRaids(db, { limit = 20, offset = 0 } = {}) {
   const { results } = await db
     .prepare(
-      `SELECT r.id, r.title, r.instance, r.difficulty, r.is_locked, r.status, r.created_at, r.starts_at,
+      `SELECT r.id, r.title, r.instance, r.difficulty, r.is_locked, r.status, r.created_at, r.starts_at, r.leader_discord_id,
               ${displayNameSubquery('u')} AS leader_display_name
        FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
        ORDER BY COALESCE(r.starts_at, r.created_at) DESC, r.created_at DESC LIMIT ? OFFSET ?`

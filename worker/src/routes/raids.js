@@ -341,9 +341,14 @@ export async function handleToggleHiddenReserves(request, env, id, session) {
   return jsonResponse(publicRaid(updated));
 }
 
+// Адмін сайту й гільдійські офіцери (default_officers) - будь-який рейд;
+// решта - лише рейди, де вони лідер (хто створив, той і лідер).
 export async function handleDeleteRaid(request, env, id, session) {
-  if (session.discordId !== env.ADMIN_DISCORD_ID) throw new HttpError(403, "Лише адміністратор сайту");
   const raid = await loadRaidOr404(env, id);
+  const isOwn = raid.leader_discord_id === session.discordId;
+  if (!isOwn && session.discordId !== env.ADMIN_DISCORD_ID && !(await isDefaultOfficer(env.DB, session.discordId))) {
+    throw new HttpError(403, "Видалити рейд може лише його лідер або офіцер гільдії");
+  }
   await deleteRaidInRaidHelper(env, raid);
   await insertAudit(env.DB, id, session.username, 'raid_delete', { title: raid.title });
   await deleteRaid(env.DB, id);

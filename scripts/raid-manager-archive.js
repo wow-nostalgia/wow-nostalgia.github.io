@@ -35,6 +35,11 @@ let currentPage = 0;
 let isAdmin = false;
 // Гільдійський офіцер - лише він бачить галочку "Опублікувати в Discord".
 let isGuildOfficer = false;
+// Видаляти будь-які рейди з архіву можуть адмін і гільдійські офіцери; решта -
+// лише свої (де вони лідер).
+let canDeleteRaids = false;
+let myDiscordId = null;
+const canDeleteRaid = (raid) => canDeleteRaids || (Boolean(myDiscordId) && raid.leader_discord_id === myDiscordId);
 let titleAutoFilled = true;
 const raidDateInput = document.getElementById('raidDate');
 const raidTimeInput = document.getElementById('raidTime');
@@ -59,11 +64,12 @@ function renderArchiveList(raids, total) {
   const thead = archiveTable.querySelector('thead tr');
 
   const existingDeleteTh = thead.querySelector('.archive-delete-th');
-  if (isAdmin && !existingDeleteTh) {
+  const showDeleteColumn = raids.some(canDeleteRaid);
+  if (showDeleteColumn && !existingDeleteTh) {
     const th = document.createElement('th');
     th.className = 'archive-delete-th';
     thead.appendChild(th);
-  } else if (!isAdmin && existingDeleteTh) {
+  } else if (!showDeleteColumn && existingDeleteTh) {
     existingDeleteTh.remove();
   }
 
@@ -99,7 +105,7 @@ function renderArchiveList(raids, total) {
     statusTd.appendChild(raidStatusChip(raid));
     tr.appendChild(statusTd);
 
-    if (isAdmin) {
+    if (showDeleteColumn) {
       const actionsTd = document.createElement('td');
       actionsTd.className = 'archive-delete-td';
       const deleteBtn = document.createElement('button');
@@ -107,8 +113,10 @@ function renderArchiveList(raids, total) {
       deleteBtn.className = 'archive-delete-btn';
       deleteBtn.setAttribute('aria-label', "Видалити рейд");
       deleteBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
-      deleteBtn.addEventListener('click', () => openConfirm(raid.id, raid.title));
-      actionsTd.appendChild(deleteBtn);
+      if (canDeleteRaid(raid)) {
+        deleteBtn.addEventListener('click', () => openConfirm(raid.id, raid.title));
+        actionsTd.appendChild(deleteBtn);
+      }
       tr.appendChild(actionsTd);
     }
 
@@ -143,7 +151,7 @@ deleteRaidConfirmBtn.addEventListener('click', async () => {
   deleteRaidConfirmBtn.disabled = true;
   setModalBusy(deleteRaidOverlay, true);
   try {
-    await apiCall('DELETE', `/admin/raids/${encodeURIComponent(pendingDeleteId)}`, { token: getSessionToken() });
+    await apiCall('DELETE', `/raids/${encodeURIComponent(pendingDeleteId)}`, { token: getSessionToken() });
     closeConfirm();
     await loadArchive();
   } catch (err) {
@@ -376,6 +384,8 @@ async function init() {
 
   isAdmin = !!user.isAdmin;
   isGuildOfficer = !!user.isGuildOfficer;
+  canDeleteRaids = isAdmin || isGuildOfficer;
+  myDiscordId = user.discordId || null;
 
   archiveSection.hidden = false;
   // Вкладки "Рейди | Календар" - scripts/raid-manager-calendar.js.
