@@ -54,13 +54,22 @@ export async function createRaidWithDefaults(db, fields, actorName) {
   return raid;
 }
 
-export async function listRaids(db, { limit = 20, offset = 0 } = {}) {
+// status: 'completed' - лише завершені (вкладка "Архів"), 'open' - решта
+// (вкладка "Рейди": активні й заплановані), без нього - усі.
+function raidStatusWhere(status) {
+  if (status === 'completed') return "WHERE r.status = 'completed'";
+  if (status === 'open') return "WHERE r.status != 'completed'";
+  return '';
+}
+
+export async function listRaids(db, { limit = 20, offset = 0, status } = {}) {
   const { results } = await db
     .prepare(
       `SELECT r.id, r.title, r.instance, r.difficulty, r.is_locked, r.status, r.created_at, r.starts_at, r.leader_discord_id,
               ${displayNameSubquery('u')} AS leader_display_name,
               (SELECT COUNT(*) FROM soft_reserves s WHERE s.raid_id = r.id) AS soft_count
        FROM raids r LEFT JOIN users u ON u.discord_id = r.leader_discord_id
+       ${raidStatusWhere(status)}
        ORDER BY COALESCE(r.starts_at, r.created_at) DESC, r.created_at DESC LIMIT ? OFFSET ?`
     )
     .bind(limit, offset)
@@ -90,8 +99,8 @@ export async function listRaidsInRange(db, fromIso, toIso, discordId) {
   return results;
 }
 
-export async function countRaids(db) {
-  const row = await db.prepare('SELECT COUNT(*) AS count FROM raids').first();
+export async function countRaids(db, status) {
+  const row = await db.prepare(`SELECT COUNT(*) AS count FROM raids r ${raidStatusWhere(status)}`).first();
   return row.count;
 }
 

@@ -81,12 +81,13 @@ function renderArchiveList(raids, total) {
   }
 
   if (!raids.length) {
-    setStatus(currentPage === 0 ? 'Ще немає створених рейдів.' : '');
+    const emptyText = listStatus === 'completed' ? 'Ще немає завершених рейдів.' : 'Немає активних чи запланованих рейдів.';
+    setStatus(currentPage === 0 ? emptyText : '');
     archivePagination.hidden = true;
     return;
   }
 
-  setStatus(`Усього рейдів: ${total}`);
+  setStatus(listStatus === 'completed' ? `Завершених рейдів: ${total}` : `Активних і запланованих рейдів: ${total}`);
   renderPagination(total);
 
   raids.forEach((raid) => {
@@ -390,10 +391,27 @@ createForm.addEventListener('submit', async (event) => {
   }
 });
 
+// Вкладка "Рейди" - активні й заплановані (status=open), "Архів" - завершені
+// (status=completed). Перемикає scripts/raid-manager-calendar.js.
+let listStatus = 'open';
+let listLoadedStatus = null;
+
+function showRaidsList(status) {
+  // Створювати рейд - лише з "Рейдів": в архіві кнопка зайва.
+  createRaidOpenBtn.hidden = status === 'completed';
+  if (status === listLoadedStatus) return;
+  listStatus = status;
+  currentPage = 0;
+  loadArchive();
+}
+
 async function loadArchive() {
   try {
     const offset = currentPage * PAGE_SIZE;
-    const { raids, total } = await apiCall('GET', `/raids?limit=${PAGE_SIZE}&offset=${offset}`, { token: getSessionToken() });
+    const status = listStatus;
+    listLoadedStatus = status;
+    const { raids, total } = await apiCall('GET', `/raids?limit=${PAGE_SIZE}&offset=${offset}&status=${status}`, { token: getSessionToken() });
+    if (status !== listStatus) return; // встигли перемкнути вкладку
     renderArchiveList(raids, total);
   } catch (err) {
     console.error(err);
@@ -429,8 +447,8 @@ async function init() {
 
   archiveSection.hidden = false;
   // Вкладки "Рейди | Календар" - scripts/raid-manager-calendar.js.
+  // Вкладка з адреси (#calendar / #archive) - сама завантажує свій список.
   initRaidsTabs(user);
-  await loadArchive();
 }
 
 init();

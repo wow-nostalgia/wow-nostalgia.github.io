@@ -271,8 +271,11 @@ function showRaidsTab(tab) {
     t.classList.toggle('raid-tab--active', t.dataset.tab === tab);
   });
   syncTabs(raidsTabs);
-  listPane.hidden = tab !== 'list';
+  // "Рейди" і "Архів" - той самий список, різний фільтр статусу
+  // (scripts/raid-manager-archive.js: showRaidsList).
+  listPane.hidden = tab !== 'list' && tab !== 'archive';
   calendarPane.hidden = tab !== 'calendar';
+  if (tab === 'list' || tab === 'archive') showRaidsList(tab === 'archive' ? 'completed' : 'open');
   if (tab === 'calendar' && !calendarMonth) {
     selectedDay = kyivDateKey(new Date());
     calendarMonth = selectedDay.slice(0, 7);
@@ -324,7 +327,9 @@ function initRaidsTabs(user) {
     const btn = event.target.closest('[data-tab]');
     if (!btn) return;
     showRaidsTab(btn.dataset.tab);
-    history.replaceState(null, '', btn.dataset.tab === 'calendar' ? '#calendar' : location.pathname + location.search);
+    const tab = btn.dataset.tab;
+    history.replaceState(null, '', tab === 'list' ? location.pathname + location.search : `#${tab}`);
   });
-  showRaidsTab(location.hash === '#calendar' ? 'calendar' : 'list');
+  const hashTab = location.hash.slice(1);
+  showRaidsTab(hashTab === 'calendar' || hashTab === 'archive' ? hashTab : 'list');
 }

@@ -139,10 +139,14 @@ export async function handleListRaids(request, env, session) {
   }
   const limit = Math.min(Math.max(Number(url.searchParams.get('limit')) || 20, 1), 50);
   const offset = Math.max(Number(url.searchParams.get('offset')) || 0, 0);
+  // ?status=open - вкладка "Рейди" (активні й заплановані), ?status=completed -
+  // "Архів"; без параметра - усі (номер у автоназві рейду тощо).
+  const statusParam = url.searchParams.get('status');
+  const status = statusParam === 'open' || statusParam === 'completed' ? statusParam : undefined;
 
   const [raids, total] = await Promise.all([
-    listRaids(env.DB, { limit, offset }),
-    countRaids(env.DB)
+    listRaids(env.DB, { limit, offset, status }),
+    countRaids(env.DB, status)
   ]);
 
   return jsonResponse({ raids, total });

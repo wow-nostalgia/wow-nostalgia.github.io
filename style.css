@@ -2931,6 +2931,12 @@ body.shard-queue-page .raid-table {
   cursor: not-allowed;
 }
 
+/* display:flex вище інакше перекриває атрибут hidden (одна сторінка -
+   пагінація не потрібна). */
+.raid-pagination[hidden] {
+  display: none;
+}
+
 body.raid-manager-page .raid-table th,
 body.raid-manager-page .raid-table td,
 body.shard-queue-page .raid-table th,
@@ -4844,6 +4850,7 @@ body.raid-manager-detail-page #statusToggleBtn.compare-btn[hidden] {
 
 /* Кнопки додавання у Штрафбаті гравцям (лише перегляд) сховані — inline-flex
    вище інакше перекрив би атрибут hidden. */
+body.raid-manager-page #createRaidOpenBtn.compare-btn[hidden],
 body.raid-manager-page #addPenaltyOpenBtn.compare-btn[hidden],
 body.raid-manager-page #addTemplateOpenBtn.compare-btn[hidden] {
   display: none;
