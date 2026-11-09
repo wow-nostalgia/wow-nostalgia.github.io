@@ -447,7 +447,7 @@ async function init() {
 
   archiveSection.hidden = false;
   // Вкладки "Рейди | Календар" - scripts/raid-manager-calendar.js.
-  // Вкладка з адреси (#calendar / #archive) - сама завантажує свій список.
+  // Вкладка з адреси (#current / #archive; без хеша - календар) сама завантажує свій список.
   initRaidsTabs(user);
 }
 

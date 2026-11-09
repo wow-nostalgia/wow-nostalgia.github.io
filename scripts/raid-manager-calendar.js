@@ -1,4 +1,4 @@
-// Вкладка "Календар" на сторінці рейдів (/raid-manager/archive/#calendar).
+// Вкладка "Календар" на сторінці рейдів (/raid-manager/archive/) - основна, відкривається за замовчуванням.
 //
 // Сітка місяця з понеділка за київським часом. У клітинці дня - плашки
 // рейдів (час + назва без дати в кінці); на телефоні замість плашок лише
@@ -264,7 +264,7 @@ function addMonths(month, delta) {
   return new Date(Date.UTC(y, m - 1 + delta, 1)).toISOString().slice(0, 7);
 }
 
-// --- Вкладки "Рейди | Календар" (#calendar у URL відкриває календар) ---
+// --- Вкладки "Календар | Актуальні | Архів" (#current / #archive у URL - відповідна вкладка) ---
 
 function showRaidsTab(tab) {
   raidsTabs.querySelectorAll('.raid-tab').forEach((t) => {
@@ -327,9 +327,12 @@ function initRaidsTabs(user) {
     const btn = event.target.closest('[data-tab]');
     if (!btn) return;
     showRaidsTab(btn.dataset.tab);
+    // Календар - основна вкладка (без хеша; "Рейди" в навбарі веде сюди),
+    // "Актуальні" - #current, "Архів" - #archive.
     const tab = btn.dataset.tab;
-    history.replaceState(null, '', tab === 'list' ? location.pathname + location.search : `#${tab}`);
+    const hash = { list: '#current', archive: '#archive' }[tab];
+    history.replaceState(null, '', hash || location.pathname + location.search);
   });
-  const hashTab = location.hash.slice(1);
-  showRaidsTab(hashTab === 'calendar' || hashTab === 'archive' ? hashTab : 'list');
+  const hashTab = { '#current': 'list', '#archive': 'archive' }[location.hash];
+  showRaidsTab(hashTab || 'calendar');
 }

@@ -67,12 +67,12 @@
 
       <div id="archiveSection" hidden>
         <div class="raid-tabs" id="raidsTabs" role="tablist" aria-label="Рейди">
-          <button type="button" class="raid-tab raid-tab--active" data-tab="list">Рейди</button>
-          <button type="button" class="raid-tab" data-tab="calendar">Календар</button>
+          <button type="button" class="raid-tab raid-tab--active" data-tab="calendar">Календар</button>
+          <button type="button" class="raid-tab" data-tab="list">Актуальні</button>
           <button type="button" class="raid-tab" data-tab="archive">Архів</button>
         </div>
 
-        <div id="calendarPane" hidden>
+        <div id="calendarPane">
           <div class="raid-calendar-toolbar">
             <button type="button" id="calendarPrevBtn" class="link-button-std tooltipped" aria-label="Попередній місяць">
               <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M9.78 12.78a.75.75 0 0 1-1.06 0L4.47 8.53a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L6.06 8l3.72 3.72a.75.75 0 0 1 0 1.06Z"/></svg>
@@ -98,7 +98,7 @@
           <p id="calendarStatus" class="raid-calendar-status"></p>
         </div>
 
-        <div id="listPane">
+        <div id="listPane" hidden>
         <div class="archive-status-row">
           <p id="archiveStatus">Завантаження...</p>
           <button type="button" id="createRaidOpenBtn" class="compare-btn">
@@ -257,10 +257,10 @@
   <script src="../../scripts/ui-shared.js?v=22"></script>
   <script src="../../scripts/raid-manager-shared.js?v=12"></script>
   <script src="../../scripts/name-translations.js?v=4"></script>
-  <script src="../../scripts/raid-manager-archive.js?v=31"></script>
+  <script src="../../scripts/raid-manager-archive.js?v=32"></script>
   <script src="../../scripts/wow-class-colors.js?v=1"></script>
   <script src="../../scripts/raid-signups.js?v=12"></script>
-  <script src="../../scripts/raid-manager-calendar.js?v=7"></script>
+  <script src="../../scripts/raid-manager-calendar.js?v=8"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
