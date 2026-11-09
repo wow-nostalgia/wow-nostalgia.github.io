@@ -114,7 +114,7 @@ function renderArchiveList(raids, total) {
       deleteBtn.setAttribute('aria-label', "Видалити рейд");
       deleteBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
       if (canDeleteRaid(raid)) {
-        deleteBtn.addEventListener('click', () => openConfirm(raid.id, raid.title));
+        deleteBtn.addEventListener('click', () => openConfirm(raid.id, raid.title, Number(raid.soft_count) || 0));
         actionsTd.appendChild(deleteBtn);
       }
       tr.appendChild(actionsTd);
@@ -126,9 +126,21 @@ function renderArchiveList(raids, total) {
 
 let pendingDeleteId = null;
 
-function openConfirm(raidId, raidTitle) {
+// Рейд із софтами - окреме попередження: софти зникнуть разом із рейдом.
+function softsWord(n) {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'софт';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'софти';
+  return 'софтів';
+}
+
+function openConfirm(raidId, raidTitle, softCount = 0) {
   pendingDeleteId = raidId;
   deleteRaidTitle.textContent = `«${raidTitle}»`;
+  const softsNote = document.getElementById('deleteRaidSofts');
+  softsNote.hidden = !softCount;
+  if (softCount) softsNote.textContent = `Рейд містить ${softCount} ${softsWord(softCount)} - їх буде видалено разом із рейдом.`;
   openModal(deleteRaidOverlay);
 }
 

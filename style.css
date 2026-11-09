@@ -3855,6 +3855,17 @@ body.raid-manager-page .archive-confirm-raid-title {
   color: var(--color-text-soft);
 }
 
+/* Попередження, що рейд містить софти (між назвою й кнопками). */
+body.raid-manager-page .archive-confirm-warning {
+  margin: -0.75rem 0 1.25rem;
+  font-size: var(--font-size-base);
+  color: var(--color-warning);
+}
+
+body.raid-manager-page .archive-confirm-warning[hidden] {
+  display: none;
+}
+
 body.raid-manager-page .archive-confirm-actions {
   display: flex;
   gap: 0.75rem;
