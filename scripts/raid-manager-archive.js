@@ -270,6 +270,8 @@ function applyInstanceChoice() {
   document.getElementById('raidSoftLimitField').hidden = !withSofts;
   document.getElementById('raidHiddenReservesLabel').hidden = !withSofts;
   document.getElementById('raidTransferField').hidden = !withSofts;
+  // Вступний пункт про софт-резерв - лише для ЦЛК/РС.
+  document.getElementById('raidSoftIntroItem').hidden = !withSofts;
   updateMountSoftsVisibility();
   updateTitleIfAuto();
 }
