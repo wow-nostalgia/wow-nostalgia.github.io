@@ -37,9 +37,7 @@ import {
   fetchRaidHelperEvent,
   syncRaidFromRaidHelper
 } from '../raid-helper.js';
-
-const INSTANCES = new Set(['ICC', 'RS']);
-const DIFFICULTIES = new Set(['10N', '10H', '25N', '25H']);
+import { SOFT_INSTANCES, isKnownInstance, isValidDifficulty } from '../instances.js';
 
 function publicRaid(raid) {
   const { officer_token, ...rest } = raid;
@@ -59,20 +57,22 @@ export async function handleCreateRaid(request, env, session) {
   const difficulty = String(body.difficulty || '').trim();
 
   if (!title) throw new HttpError(400, 'Потрібна назва рейду');
-  if (!INSTANCES.has(instance)) throw new HttpError(400, 'instance має бути ICC або RS');
-  if (!DIFFICULTIES.has(difficulty)) throw new HttpError(400, 'difficulty має бути 10N/10H/25N/25H');
+  if (!isKnownInstance(instance)) throw new HttpError(400, 'Невідомий рейд');
+  if (!isValidDifficulty(instance, difficulty)) throw new HttpError(400, 'Ця складність недоступна для цього рейду');
+  // Спрощений рейд (не ЦЛК/РС) - без софтів: софт-налаштування ігноруються.
+  const withSofts = SOFT_INSTANCES.has(instance);
 
-  const softLimitTotal = Number(body.softLimitTotal ?? 3);
+  const softLimitTotal = withSofts ? Number(body.softLimitTotal ?? 3) : 3;
 
   if (!Number.isInteger(softLimitTotal) || softLimitTotal < 1) throw new HttpError(400, 'Невалідний softLimitTotal');
 
-  const hiddenReserves = body.hiddenReserves !== false;
-  const allowMountSofts = body.allowMountSofts === true;
+  const hiddenReserves = withSofts && body.hiddenReserves !== false;
+  const allowMountSofts = withSofts && body.allowMountSofts === true;
   const lkOnly = instance === 'ICC' && body.lkOnly === true;
   // Без startsAt (старий клієнт) - як раніше, рейд "зараз".
   const startsAt = body.startsAt === undefined ? undefined : parseRaidStartsAt(body.startsAt);
 
-  const transferWeightLimit = body.transferWeightLimit !== undefined && body.transferWeightLimit !== null
+  const transferWeightLimit = withSofts && body.transferWeightLimit !== undefined && body.transferWeightLimit !== null
     ? Number(body.transferWeightLimit)
     : null;
   if (transferWeightLimit !== null && (!Number.isInteger(transferWeightLimit) || transferWeightLimit < 0)) {

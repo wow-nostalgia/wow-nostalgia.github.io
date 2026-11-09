@@ -27,7 +27,14 @@ const raidAllowMountSoftsLabel = document.getElementById('raidAllowMountSoftsLab
 const raidLkOnlyInput = document.getElementById('raidLkOnly');
 const raidLkOnlyLabel = document.getElementById('raidLkOnlyLabel');
 
-const TITLE_INSTANCE_ABBR_UK = { ICC: "ЦЛК", RS: "РС" };
+const raidOtherInstanceField = document.getElementById('raidOtherInstanceField');
+const raidOtherInstanceSelect = document.getElementById('raidOtherInstance');
+const raidDifficultySelect = document.getElementById('raidDifficulty');
+
+const TITLE_INSTANCE_ABBR_UK = {
+  ICC: "ЦЛК", RS: "РС",
+  NAXX: "Накс", OS: "ОС", EOE: "Око", VOA: "СА", ULD: "Ульда", TOC: "ВХ", ONY: "Оня"
+};
 const TITLE_DIFFICULTY_ABBR_UK = { "25H": "25ХМ", "25N": "25Н", "10H": "10ХМ", "10N": "10Н" };
 
 const PAGE_SIZE = 20;
@@ -126,15 +133,8 @@ function renderArchiveList(raids, total) {
 
 let pendingDeleteId = null;
 
-// Рейд із софтами - окреме попередження: софти зникнуть разом із рейдом.
-function softsWord(n) {
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return 'софт';
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'софти';
-  return 'софтів';
-}
-
+// Рейд із софтами - окреме попередження: софти зникнуть разом із рейдом
+// (softsWord - raid-manager-shared.js).
 function openConfirm(raidId, raidTitle, softCount = 0) {
   pendingDeleteId = raidId;
   deleteRaidTitle.textContent = `«${raidTitle}»`;
@@ -220,7 +220,9 @@ function generateTitle() {
   const inst = instance === 'ICC' && raidLkOnlyInput.checked
     ? 'Король-ліч'
     : (TITLE_INSTANCE_ABBR_UK[instance] || instance);
-  const diff = TITLE_DIFFICULTY_ABBR_UK[difficulty] || difficulty;
+  const diff = SOFT_INSTANCES.has(instance)
+    ? (TITLE_DIFFICULTY_ABBR_UK[difficulty] || difficulty)
+    : `${difficulty.slice(0, 2)}${difficulty.endsWith('H') ? 'ХМ' : ''}`;
   const seq = weekRaids.filter((r) => r.instance === instance && r.difficulty === difficulty).length + 1;
   return `${inst} ${diff} #${seq} - ${dd}.${mm}.${yyyy}`;
 }
@@ -254,9 +256,28 @@ function setupToggleGroup(toggleEl, hiddenInput, datasetKey, onChange) {
   });
 }
 
-setupToggleGroup(raidInstanceToggle, raidInstanceInput, 'instance', () => {
-  updateTitleIfAuto();
+// "Інші" - рейди без софтів (OTHER_INSTANCES, raid-manager-shared.js): сам
+// рейд обирається зі списку, а поля софтів ховаються.
+function applyInstanceChoice() {
+  const other = raidInstanceInput.value === 'OTHER' || !SOFT_INSTANCES.has(raidInstanceInput.value);
+  raidOtherInstanceField.hidden = !other;
+  if (other) raidInstanceInput.value = raidOtherInstanceSelect.value;
+  // Лише складності, що є в цьому рейді (героїк - ЦЛК, РС, ВХ).
+  const allowed = INSTANCE_DIFFICULTIES[raidInstanceInput.value] || [];
+  [...raidDifficultySelect.options].forEach((opt) => { opt.hidden = !allowed.includes(opt.value); opt.disabled = opt.hidden; });
+  if (!allowed.includes(raidDifficultySelect.value)) raidDifficultySelect.value = allowed[0];
+  const withSofts = SOFT_INSTANCES.has(raidInstanceInput.value);
+  document.getElementById('raidSoftLimitField').hidden = !withSofts;
+  document.getElementById('raidHiddenReservesLabel').hidden = !withSofts;
+  document.getElementById('raidTransferField').hidden = !withSofts;
   updateMountSoftsVisibility();
+  updateTitleIfAuto();
+}
+
+setupToggleGroup(raidInstanceToggle, raidInstanceInput, 'instance', applyInstanceChoice);
+raidOtherInstanceSelect.addEventListener('change', () => {
+  raidInstanceInput.value = raidOtherInstanceSelect.value;
+  applyInstanceChoice();
 });
 // Ліміт передачі не може бути більшим за ліміт софтів: зайві варіанти
 // вимикаємо, а вибраний — опускаємо до ліміту софтів.
@@ -287,8 +308,13 @@ raidTitleInput.addEventListener('input', () => { titleAutoFilled = false; });
 
 function applyNameLanguageToCreateForm() {
   raidInstanceToggle.querySelectorAll('.raid-toggle-btn').forEach((btn) => {
+    if (btn.dataset.instance === 'OTHER') return; // "Інші" - без перекладу
     btn.textContent = translateInstance(btn.dataset.instance, INSTANCE_LABELS);
   });
+  const selectedOther = raidOtherInstanceSelect.value;
+  raidOtherInstanceSelect.innerHTML = '';
+  OTHER_INSTANCES.forEach((code) => raidOtherInstanceSelect.add(new Option(translateInstance(code, INSTANCE_LABELS), code)));
+  if (selectedOther) raidOtherInstanceSelect.value = selectedOther;
   document.getElementById('raidDifficulty').querySelectorAll('option').forEach((opt) => {
     opt.textContent = translateDifficulty(opt.value, DIFFICULTY_LABELS);
   });

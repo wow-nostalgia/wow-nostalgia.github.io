@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейди — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=232">
+  <link rel="stylesheet" href="../../style.css?v=233">
   <script src="/scripts/background.js?v=4"></script>
 </head>
 
@@ -156,8 +156,14 @@
         <div class="raid-toggle-group" id="raidInstanceToggle" role="group" aria-label="Інстанс">
           <button type="button" class="raid-toggle-btn raid-toggle-btn--active" data-instance="ICC">Льодяна Цитадель</button>
           <button type="button" class="raid-toggle-btn" data-instance="RS">Рубінове Святилище</button>
+          <button type="button" class="raid-toggle-btn" data-instance="OTHER">Інші</button>
         </div>
         <input type="hidden" id="raidInstance" value="ICC">
+
+        <div class="raid-create-field" id="raidOtherInstanceField" hidden>
+          <label for="raidOtherInstance">Рейд</label>
+          <select id="raidOtherInstance"></select>
+        </div>
 
         <div class="raid-create-row">
           <div class="raid-create-field">
@@ -179,7 +185,7 @@
         </select>
 
         <div class="raid-create-row">
-          <div class="raid-create-field">
+          <div class="raid-create-field" id="raidSoftLimitField">
             <label>Кількість софтів</label>
             <div class="raid-toggle-group" id="raidSoftLimitToggle" role="group" aria-label="Кількість софтів">
               <button type="button" class="raid-toggle-btn" data-value="1">1</button>
@@ -205,7 +211,7 @@
           <span id="raidLkOnlyText">Тільки Король-ліч</span>
         </label>
 
-        <label class="raid-filter-checkbox" for="raidHiddenReserves">
+        <label class="raid-filter-checkbox" for="raidHiddenReserves" id="raidHiddenReservesLabel">
           <input type="checkbox" id="raidHiddenReserves">
           Приховати софти
         </label>
@@ -215,13 +221,15 @@
           Опублікувати в Discord
         </label>
 
-        <label for="raidTransferWeightLimit">Ліміт передачі софтів</label>
-        <select id="raidTransferWeightLimit">
-          <option value="0" selected>Заборонено передавати</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
+        <div class="raid-create-field" id="raidTransferField">
+          <label for="raidTransferWeightLimit">Ліміт передачі софтів</label>
+          <select id="raidTransferWeightLimit">
+            <option value="0" selected>Заборонено передавати</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
 
         <div class="raid-modal-actions">
           <button type="submit" class="compare-btn">Створити рейд</button>
@@ -246,11 +254,11 @@
   <script src="../../scripts/nav.js?v=3"></script>
   <script src="../../scripts/auth-shared.js?v=19"></script>
   <script src="../../scripts/ui-shared.js?v=22"></script>
-  <script src="../../scripts/raid-manager-shared.js?v=11"></script>
-  <script src="../../scripts/name-translations.js?v=2"></script>
-  <script src="../../scripts/raid-manager-archive.js?v=28"></script>
+  <script src="../../scripts/raid-manager-shared.js?v=12"></script>
+  <script src="../../scripts/name-translations.js?v=4"></script>
+  <script src="../../scripts/raid-manager-archive.js?v=29"></script>
   <script src="../../scripts/wow-class-colors.js?v=1"></script>
-  <script src="../../scripts/raid-signups.js?v=11"></script>
+  <script src="../../scripts/raid-signups.js?v=12"></script>
   <script src="../../scripts/raid-manager-calendar.js?v=6"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'

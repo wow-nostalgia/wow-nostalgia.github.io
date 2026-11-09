@@ -3372,6 +3372,31 @@ body.raid-manager-page .raid-calendar-sign-btn {
 }
 
 /* ===== Попередній запис (scripts/raid-signups.js) ===== */
+/* Спрощений рейд (не ЦЛК/РС, кнопка "Інші" у формі створення): без софтів,
+   передачі, бонусів, штрафів і логу. Лишаються "Попередній запис",
+   "Офіцери", "Налаштування" (назва/дата/час), "Історія дій" і "Завершити
+   рейд". !important - JS сам ставить hidden/display багатьом із цих
+   елементів (scripts/raid-manager-detail.js: .raid-content--simple). */
+body.raid-manager-detail-page .raid-content--simple .raid-forms-grid > .raid-form-col:first-child,
+body.raid-manager-detail-page .raid-content--simple #benchmarkPanel,
+body.raid-manager-detail-page .raid-content--simple #lockToggleBtn,
+body.raid-manager-detail-page .raid-content--simple label[for="hiddenReservesToggle"],
+body.raid-manager-detail-page .raid-content--simple #assignOpenNotice,
+body.raid-manager-detail-page .raid-content--simple #officerAssignForm,
+body.raid-manager-detail-page .raid-content--simple #hiddenReservesNotice,
+body.raid-manager-detail-page .raid-content--simple .raid-tab[data-tab="players"],
+body.raid-manager-detail-page .raid-content--simple .raid-tab[data-tab="items"],
+body.raid-manager-detail-page .raid-content--simple .raid-tab[data-tab="penalties"],
+body.raid-manager-detail-page .raid-content--simple .raid-tab[data-tab="potions"],
+body.raid-manager-detail-page .raid-content--simple label[for="settingsSoftLimitInput"],
+body.raid-manager-detail-page .raid-content--simple #settingsSoftLimitInput,
+body.raid-manager-detail-page .raid-content--simple label[for="transferWeightLimitInput"],
+body.raid-manager-detail-page .raid-content--simple #transferWeightLimitInput,
+body.raid-manager-detail-page .raid-content--simple #settingsAllowMountSoftsLabel,
+body.raid-manager-detail-page .raid-content--simple #settingsLkOnlyLabel {
+  display: none !important;
+}
+
 body.raid-manager-detail-page .signup-roster {
   display: flex;
   flex-direction: column;
@@ -3765,6 +3790,12 @@ body.raid-manager-page #createRaidModal .raid-create-field {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+/* "Інші" рейди (без софтів) ховають поля софтів - display:flex вище інакше
+   перекрив би атрибут hidden. */
+body.raid-manager-page #createRaidModal .raid-create-field[hidden] {
+  display: none;
 }
 
 body.raid-manager-page #createRaidModal .raid-create-field--grow {

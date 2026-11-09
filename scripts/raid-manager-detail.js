@@ -387,10 +387,11 @@ function renderBanner() {
   const chips = [
     translateInstance(raid.instance, INSTANCE_LABELS),
     translateDifficulty(raid.difficulty, DIFFICULTY_LABELS),
-    `Ліміт софтів: ${raid.soft_limit_total}`,
+    // Спрощені рейди (не ЦЛК/РС) софтів не мають.
+    raidHasSofts(raid) ? `Ліміт софтів: ${raid.soft_limit_total}` : null,
     `Лідер: ${raid.leader_display_name || '—'}`,
     `${formatDateKyiv(raidStartIso(raid))} ${kyivTimeKey(raidStartIso(raid))}`
-  ];
+  ].filter(Boolean);
 
   chips.forEach((text) => {
     const span = document.createElement('span');
@@ -3219,6 +3220,9 @@ async function init() {
   renderItemsTable();
 
   raidContent.hidden = false;
+  // Спрощений рейд (не ЦЛК/РС): без софтів, передачі, штрафів і логу - усе це
+  // ховає CSS за класом .raid-content--simple (style.css).
+  raidContent.classList.toggle('raid-content--simple', !raidHasSofts(raid));
   setStatus('');
   initialRenderDone = true;
 
@@ -3229,10 +3233,11 @@ async function init() {
   // Без персонажів у профілі софтити неможливо - пропонуємо додати одразу
   // тут, щоразу, поки їх нема. Для завершеного рейду сенсу нема: софтити там
   // уже пізно.
-  if (!myCharacters.length && !isRaidCompleted()) openAddCharacterModal({ firstCharacter: true });
+  if (!myCharacters.length && !isRaidCompleted() && raidHasSofts(raid)) openAddCharacterModal({ firstCharacter: true });
 
-  // Посилання з календаря веде одразу на "Попередній запис".
-  if (location.hash === '#signups') setActiveTab('signups');
+  // Посилання з календаря веде одразу на "Попередній запис"; у спрощеному
+  // рейді інших вкладок про гравців і предмети немає - він завжди перший.
+  if (location.hash === '#signups' || !raidHasSofts(raid)) setActiveTab('signups');
 
   schedulePoll();
   document.addEventListener('visibilitychange', () => {

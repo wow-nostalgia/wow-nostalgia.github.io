@@ -387,7 +387,17 @@ const BUFF_TYPE_NAMES_EN = {
   "надання сил": "Power Infusion"
 };
 
-const INSTANCE_LABELS_EN = { ICC: "Icecrown Citadel", RS: "Ruby Sanctum" };
+const INSTANCE_LABELS_EN = {
+  ICC: "Icecrown Citadel",
+  RS: "Ruby Sanctum",
+  NAXX: "Naxxramas",
+  OS: "The Obsidian Sanctum",
+  EOE: "The Eye of Eternity",
+  VOA: "Vault of Archavon",
+  ULD: "Ulduar",
+  TOC: "Trial of the Crusader",
+  ONY: "Onyxia's Lair"
+};
 const DIFFICULTY_LABELS_EN = { "10N": "10 Normal", "10H": "10 Heroic", "25N": "25 Normal", "25H": "25 Heroic" };
 
 function getNameLanguage() {

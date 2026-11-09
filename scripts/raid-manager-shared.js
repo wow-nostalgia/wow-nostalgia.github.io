@@ -8,7 +8,39 @@
 
 const API_BASE = 'https://raid-manager-api.wow-nostalgia.workers.dev/api/v1';
 
-const INSTANCE_LABELS = { ICC: 'Льодяна Цитадель', RS: 'Рубінове Святилище' };
+const INSTANCE_LABELS = {
+  ICC: 'Льодяна Цитадель',
+  RS: 'Рубінове Святилище',
+  NAXX: 'Наксрамас',
+  OS: 'Обсидіанове святилище',
+  EOE: 'Око Вічності',
+  VOA: 'Склеп Аркавона',
+  ULD: 'Ульдуар',
+  TOC: 'Випробування хрестоносця',
+  ONY: 'Лігво Оніксії'
+};
+
+// Рейди з софт-резервами - ЦЛК і РС; решта WotLK (кнопка "Інші" у формі
+// створення) - спрощені: без софтів, передачі, бонусів, штрафів і логу.
+// Має збігатися з worker/src/instances.js.
+const SOFT_INSTANCES = new Set(['ICC', 'RS']);
+const OTHER_INSTANCES = ['NAXX', 'OS', 'EOE', 'VOA', 'ULD', 'TOC', 'ONY'];
+// Складності кожного рейду (героїк - лише ЦЛК, РС і ВХ). Порядок - як у формі.
+const INSTANCE_DIFFICULTIES = {
+  ICC: ['25H', '25N', '10H', '10N'],
+  RS: ['25H', '25N', '10H', '10N'],
+  TOC: ['25H', '25N', '10H', '10N'],
+  NAXX: ['25N', '10N'],
+  OS: ['25N', '10N'],
+  EOE: ['25N', '10N'],
+  VOA: ['25N', '10N'],
+  ULD: ['25N', '10N'],
+  ONY: ['25N', '10N']
+};
+
+function raidHasSofts(raid) {
+  return SOFT_INSTANCES.has(raid.instance);
+}
 const DIFFICULTY_LABELS = { '10N': '10 Звичайний', '10H': '10 Героїчний', '25N': '25 Звичайний', '25H': '25 Героїчний' };
 
 const ICC_BOSSES = [
@@ -26,12 +58,13 @@ function formatWeight(weight) {
   return `х${weight}`;
 }
 
-// "1 софт", "2 софти", "0 софтів" - без цього в текстах вилазить
-// "доступно 2 софт". Ліміти тут маленькі (0-3), тож повні правила
-// відмінювання для 11-14 не потрібні.
+// "1 софт", "2 софти", "5 софтів", "21 софт", "12 софтів" - повні правила
+// відмінювання (кількість софтів рейду у вікні видалення буває будь-якою).
 function softsWord(count) {
-  if (count === 1) return 'софт';
-  if (count >= 2 && count <= 4) return 'софти';
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'софт';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'софти';
   return 'софтів';
 }
 

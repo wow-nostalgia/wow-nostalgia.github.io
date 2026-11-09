@@ -87,7 +87,12 @@ export function parseRaidStartsAt(value) {
 
 // Софти (свої, офіцерські, передача, бонуси) відкриваються в час початку
 // рейду. Старі рейди без starts_at - без обмежень.
+// Спрощені рейди (не ЦЛК/РС, worker/src/instances.js) софтів не мають - цей
+// гейт стоїть у всіх ендпоінтах створення софтів/передачі/бонусів.
 export function requireRaidStarted(raid) {
+  if (raid.instance !== 'ICC' && raid.instance !== 'RS') {
+    throw new HttpError(400, 'У цьому рейді немає софтів');
+  }
   if (!raid.starts_at) return;
   const start = new Date(raid.starts_at);
   if (Date.now() >= start.getTime()) return;

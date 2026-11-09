@@ -323,7 +323,9 @@ function buildSignupCharactersTip(signup, chars, { overLimit, officer }) {
   } else {
     const table = document.createElement('table');
     table.className = 'signup-tip-table';
-    table.innerHTML = '<thead><tr><th>Персонаж</th><th>GS</th><th>КД</th></tr></thead>';
+    // КД ведуться лише для ЦЛК і РС - в інших рейдах воркер віддає cd: null.
+    const showCd = chars.some((c) => c.cd !== null);
+    table.innerHTML = `<thead><tr><th>Персонаж</th><th>GS</th>${showCd ? '<th>КД</th>' : ''}</tr></thead>`;
     const tbody = document.createElement('tbody');
     sortSignupCharacters(chars).forEach((c) => {
       const tr = document.createElement('tr');
@@ -343,7 +345,8 @@ function buildSignupCharactersTip(signup, chars, { overLimit, officer }) {
       } else {
         cd.textContent = '—';
       }
-      tr.append(name, gs, cd);
+      tr.append(name, gs);
+      if (showCd) tr.appendChild(cd);
       tbody.appendChild(tr);
     });
     table.appendChild(tbody);

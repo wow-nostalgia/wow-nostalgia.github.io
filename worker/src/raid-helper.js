@@ -37,6 +37,7 @@ import {
   getRaid
 } from './db.js';
 import { fromRaidHelperSignup, toRaidHelperClassSpec } from './signup-specs.js';
+import { INSTANCE_LABELS, SOFT_INSTANCES, isValidDifficulty } from './instances.js';
 
 const RH_API = 'https://raid-helper.xyz/api/v4';
 export const RH_THROTTLE_MS = 60 * 1000;
@@ -44,13 +45,13 @@ const RH_SERVER_ID = '1055547379832602788';
 const RH_TEMPLATE_ID = 'wowwotlk';
 const SITE_URL = 'https://wow-nostalgia.github.io';
 
-// Гілки форуму рейдів за днем тижня (0 - неділя). Четвер - Ульдуар, сайт його
-// не підтримує: рейд на четвер у Discord не публікується й не імпортується.
+// Гілки форуму рейдів за днем тижня (0 - неділя).
 const RH_WEEKDAY_CHANNELS = {
   0: '1522478570625040494', // НД
   1: '1534107868545155102', // ПН
   2: '1508209176525013113', // ВТ
   3: '1515828536617734376', // СР
+  4: '1569415096608751626', // ЧТ (Ульдуар)
   5: '1517857306610634832', // ПТ
   6: '1522359803031060500' // СБ
 };
@@ -296,15 +297,15 @@ export async function syncUpcomingRaids(env, now = new Date()) {
 
 // ---- Рейди: сайт -> Discord ----
 
-const INSTANCE_LABELS = { ICC: 'ЦЛК', RS: 'РС' };
 
 function raidDescription(raid) {
   const kind = `${INSTANCE_LABELS[raid.instance] || raid.instance} ${raid.difficulty.slice(0, 2)} ${raid.difficulty.endsWith('H') ? 'героїк' : 'нормал'}`;
   // Markdown-посилання, як "Копіювати для Discord" на сторінці рейду: у
   // Discord показується назвою рейду. Квадратні дужки в назві екрануємо.
   const title = raid.title.replace(/[[\]]/g, '\\$&');
-  // #signups - одразу вкладка "Попередній запис".
-  return `${kind}\nСофти й запис: [${title}](${SITE_URL}/raid-manager/raid/?id=${encodeURIComponent(raid.id)}#signups)`;
+  // #signups - одразу вкладка "Попередній запис". У спрощених рейдах софтів немає.
+  const what = SOFT_INSTANCES.has(raid.instance) ? 'Софти й запис' : 'Запис';
+  return `${kind}\n${what}: [${title}](${SITE_URL}/raid-manager/raid/?id=${encodeURIComponent(raid.id)}#signups)`;
 }
 
 // Створює рейд у Raid-Helper для рейду сайту й прив'язує його. Помилка не
@@ -406,16 +407,31 @@ const LETTERS = 'a-zа-яіїєґё';
 function hasWord(text, words) {
   return new RegExp(`(^|[^${LETTERS}])(${words})(?![${LETTERS}])`, 'i').test(text);
 }
+// Інші рейди WotLK (спрощені, worker/src/instances.js). ЦЛК/РС перевіряються
+// першими, далі - ці по черзі.
+const OTHER_INSTANCE_PATTERNS = [
+  ['NAXX', (t) => /(накс|naxx)/.test(t)],
+  ['ULD', (t) => /(ульд|uld)/.test(t)],
+  ['TOC', (t) => hasWord(t, 'вх|toc|togc|тотк|тогк') || /(хрестонос|крестонос|crusader)/.test(t)],
+  ['OS', (t) => hasWord(t, 'ос|os') || /(обсидіан|обсидиан|obsidian|сартаріон|сартарион|sartharion)/.test(t)],
+  ['EOE', (t) => hasWord(t, 'око|eoe') || /(малігос|малигос|malygos)/.test(t)],
+  ['VOA', (t) => hasWord(t, 'са|voa') || /(аркавон|archavon)/.test(t)],
+  ['ONY', (t) => hasWord(t, 'оня|ony') || /(онікс|оникс|onyx)/.test(t)]
+];
+
 export function parseRaidKind(text) {
   if (!text) return null;
   const t = String(text).toLowerCase();
   const instance = /(цлк|цкк|icc|цитадел)/.test(t) ? 'ICC'
-    : (hasWord(t, 'рс|rs') || /(рубін|рубин|ruby)/.test(t)) ? 'RS' : null;
+    : (hasWord(t, 'рс|rs') || /(рубін|рубин|ruby)/.test(t)) ? 'RS'
+      : (OTHER_INSTANCE_PATTERNS.find(([, test]) => test(t)) || [null])[0];
   // 10/25 не частина часу ("21:10") чи іншого числа.
   const size = /(^|[^\d:])25(?![\d:])/.test(t) ? '25' : /(^|[^\d:])10(?![\d:])/.test(t) ? '10' : null;
   if (!instance || !size) return null;
-  const heroic = hasWord(t, 'хм|гер|героїк|героик|hc|hm|heroic|х|г|h');
-  return { instance, difficulty: `${size}${heroic ? 'H' : 'N'}` };
+  const heroic = hasWord(t, 'хм|гер|героїк|героик|hc|hm|heroic|х|г|h|togc|тогк');
+  // Героїк лише там, де він є (ЦЛК, РС, ВХ); інакше - нормал.
+  const difficulty = `${size}${heroic ? 'H' : 'N'}`;
+  return { instance, difficulty: isValidDifficulty(instance, difficulty) ? difficulty : `${size}N` };
 }
 
 // Cron: нові рейди з гілок рейдів -> рейди на сайті.
