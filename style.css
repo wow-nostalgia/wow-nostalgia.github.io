@@ -6579,9 +6579,12 @@ dialog.raid-modal > .raid-modal-box {
   justify-content: flex-start;
 }
 
-/* Друга колонка - кількість бонусних софтів, заголовок довгий. */
+/* Друга колонка - кількість бонусних софтів, заголовок довгий. Довгий нік
+   (з тегом гільдії в дужках) розширює вікно, а не вилазить за його край. */
 #bonusGrantModal .raid-modal-box {
-  width: min(90vw, 24rem);
+  width: max-content;
+  min-width: min(90vw, 24rem);
+  max-width: 90vw;
 }
 
 /* Чекбокс біля імені: клік по імені теж перемикає його. */
