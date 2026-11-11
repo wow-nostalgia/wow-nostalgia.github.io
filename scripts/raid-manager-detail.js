@@ -224,6 +224,11 @@ async function fetchShardQueueRaw() {
 
 function applyShardQueueRaw(raw) {
   if (!raw) return;
+  // Уламки й кров падають лише в ЦЛК - в інших рейдах черга не показується.
+  if (raid.instance !== 'ICC') {
+    shardQueueIconsByName = new Map();
+    return;
+  }
   const { days, entries } = raw;
   const weekday = kyivWeekdayLabel(raidStartIso(raid));
   const matchedDay = days.find((d) => d.is_active && weekday && normalizeWeekday(d.label) === normalizeWeekday(weekday));
