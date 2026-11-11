@@ -83,7 +83,7 @@ async function loadCalendarMonth() {
 function raidChip(raid) {
   const a = document.createElement('a');
   a.className = `raid-calendar-chip${raid.status === 'completed' ? ' raid-calendar-chip--completed' : ''}`;
-  a.href = `../raid/?id=${encodeURIComponent(raid.id)}#signups`;
+  a.href = `../raid/?id=${encodeURIComponent(raid.id)}`;
   const time = document.createElement('span');
   time.className = 'raid-calendar-chip-time';
   time.textContent = kyivTimeKey(raidStartIso(raid));

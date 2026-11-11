@@ -2571,7 +2571,7 @@ async function setActiveTab(tab) {
   if (tab === 'penalties') await loadAndRenderPenalties();
   if (tab === 'potions') await loadPotionsTab();
   if (tab === 'signups') await loadSignups();
-  // #signups у URL (посилання з календаря) - лише для цієї вкладки.
+  // #signups у URL (посилання з Discord) - лише для цієї вкладки.
   history.replaceState(null, '', tab === 'signups' ? '#signups' : location.pathname + location.search);
 }
 
@@ -3235,7 +3235,7 @@ async function init() {
   // уже пізно.
   if (!myCharacters.length && !isRaidCompleted() && raidHasSofts(raid)) openAddCharacterModal({ firstCharacter: true });
 
-  // Посилання з календаря веде одразу на "Попередній запис"; у спрощеному
+  // Посилання з Discord веде одразу на "Попередній запис"; у спрощеному
   // рейді інших вкладок про гравців і предмети немає - він завжди перший.
   if (location.hash === '#signups' || !raidHasSofts(raid)) setActiveTab('signups');
 
