@@ -373,10 +373,8 @@ function showCharacterMenuClasses(character) {
   positionCharacterMenu();
 }
 
-function createCharacterMenuCell(character) {
+function createCharacterMenuButton(character) {
   const name = character.characterName;
-  const td = document.createElement('td');
-  td.className = 'account-char-menu-td';
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'account-char-menu-btn';
@@ -394,8 +392,7 @@ function createCharacterMenuCell(character) {
     characterMenu.hidden = false;
     showCharacterMenuRoot(character);
   });
-  td.appendChild(btn);
-  return td;
+  return btn;
 }
 
 document.addEventListener('click', (event) => {
@@ -428,7 +425,7 @@ function renderCharactersList(characters) {
   if (!characters.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 7;
+    td.colSpan = 6;
     td.textContent = 'Ще не додано жодного персонажа.';
     tr.appendChild(td);
     charactersList.appendChild(tr);
@@ -442,7 +439,6 @@ function renderCharactersList(characters) {
     const nameTd = document.createElement('td');
     const nameWrap = document.createElement('span');
     nameWrap.className = 'account-character-name-cell';
-    nameWrap.appendChild(createPlayerBadge(name));
     nameWrap.appendChild(characterNameNode(name, className));
     if (isPrimary) {
       const primaryBadge = document.createElement('span');
@@ -450,9 +446,10 @@ function renderCharactersList(characters) {
       primaryBadge.textContent = 'Основний';
       nameWrap.appendChild(primaryBadge);
     }
+    // Кнопка ⋯ - одразу за іменем (і чіпом "Основний"), не окремою колонкою.
+    nameWrap.appendChild(createCharacterMenuButton(character));
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
-    tr.appendChild(createCharacterMenuCell(character));
     tr.appendChild(createGearScoreCell(gearScore));
 
 

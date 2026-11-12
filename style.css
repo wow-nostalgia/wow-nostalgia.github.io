@@ -5907,20 +5907,12 @@ body.shard-queue-page .account-delete-btn:hover {
   background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
-/* Колонка з кнопкою ⋯ одразу після імені персонажа. */
-body.account-page .account-char-menu-col,
-body.account-page .account-char-menu-td {
-  width: 2.25rem;
-  padding-left: 0;
-  padding-right: 0;
-  text-align: center;
-}
-
-/* База - як у .account-delete-btn, але наведення звичайне, не червоне. */
+/* Кнопка ⋯ одразу за іменем персонажа. База - як у .account-delete-btn,
+   але наведення звичайне, не червоне; відступ менший, щоб не відсувалась. */
 body.account-page .account-char-menu-btn {
   background: none;
   border: none;
-  padding: 0.4rem;
+  padding: 0.25rem 0.15rem;
   color: var(--color-text-muted);
   cursor: pointer;
   border-radius: var(--radius-md);
