@@ -295,6 +295,14 @@ function showCharacterMenuRoot(character) {
   addCharacterMenuItem(character.isPrimary
     ? { label: 'Зняти «Основний»', onClick: () => setCharacterPrimary(character.characterName, false) }
     : { label: 'Зробити основним', onClick: () => setCharacterPrimary(character.characterName, true) });
+  addCharacterMenuItem({
+    label: 'Видалити персонажа',
+    extraClass: 'split-btn__item--danger account-char-menu-delete',
+    onClick: () => {
+      closeCharacterMenu();
+      openDeleteCharacterModal(character.characterName);
+    }
+  });
   positionCharacterMenu();
   characterMenu.querySelector('button:not(:disabled)')?.focus();
 }
@@ -428,7 +436,7 @@ function renderCharactersList(characters) {
   if (!characters.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 9;
+    td.colSpan = 8;
     td.textContent = 'Ще не додано жодного персонажа.';
     tr.appendChild(td);
     charactersList.appendChild(tr);
@@ -462,17 +470,6 @@ function renderCharactersList(characters) {
 
 
     COOLDOWN_KEYS.forEach((key) => tr.appendChild(createCooldownCell(name, key, cooldowns?.[key])));
-
-    const actionsTd = document.createElement('td');
-    actionsTd.className = 'account-delete-td';
-    const removeBtn = document.createElement('button');
-    removeBtn.type = 'button';
-    removeBtn.className = 'account-delete-btn';
-    removeBtn.setAttribute('aria-label', "Видалити персонажа");
-    removeBtn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
-    removeBtn.addEventListener('click', () => openDeleteCharacterModal(name));
-    actionsTd.appendChild(removeBtn);
-    tr.appendChild(actionsTd);
 
     charactersList.appendChild(tr);
   });

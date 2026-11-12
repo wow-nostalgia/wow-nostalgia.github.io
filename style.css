@@ -5894,17 +5894,6 @@ body.account-page .account-gs-input:disabled {
   opacity: 0.45;
 }
 
-body.account-page .account-delete-col {
-  width: 2.75rem;
-  text-align: center;
-}
-
-body.account-page .account-delete-td {
-  width: 2.75rem;
-  text-align: center;
-  padding: 0;
-}
-
 body.account-page .account-delete-btn,
 body.shard-queue-page .account-delete-btn {
   background: none;
@@ -6006,6 +5995,13 @@ body.account-page .account-char-menu .split-btn__item[aria-current="true"] {
 body.account-page .account-char-menu-hint {
   font-size: 0.75rem;
   color: var(--color-text-faint);
+}
+
+/* Небезпечна дія - окремо, під лінією. */
+body.account-page .account-char-menu-delete {
+  margin-top: 2px;
+  border-top: 1px solid var(--color-border);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
 
 /* "Вказати GS" у меню: поле + Зберегти в один рядок. */
