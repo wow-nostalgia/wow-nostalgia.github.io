@@ -69,15 +69,13 @@ async function readErrorMessage(res) {
 let guildMemberNames = new Set();
 let personalAnalyticsNames = new Set();
 let classColorMap = new Map();
-let raidAttendanceByName = new Map();
 
 async function loadCharacterStatsSources() {
   try {
-    const [players, personalStats, guildDataRes, potionStats] = await Promise.all([
+    const [players, personalStats, guildDataRes] = await Promise.all([
       fetchSiteData('/data/players.json').then((r) => r.json()),
       fetchSiteData('/data/personal-stats.json').then((r) => r.json()),
-      fetchSiteData('/data/guild-data.json').catch(() => null),
-      fetchSiteData('/data/potion-stats.json').then((r) => r.json())
+      fetchSiteData('/data/guild-data.json').catch(() => null)
     ]);
     guildMemberNames = new Set(players.map((p) => p.name));
     personalAnalyticsNames = new Set();
@@ -89,12 +87,6 @@ async function loadCharacterStatsSources() {
     if (guildDataRes?.ok) {
       const guildData = await guildDataRes.json();
       classColorMap = buildClassColorMap(guildData.rows || []);
-    }
-    raidAttendanceByName = new Map();
-    for (const raid of potionStats || []) {
-      for (const player of raid.players || []) {
-        raidAttendanceByName.set(player.name, (raidAttendanceByName.get(player.name) || 0) + 1);
-      }
     }
   } catch (err) {
     console.error(err);
@@ -436,7 +428,7 @@ function renderCharactersList(characters) {
   if (!characters.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 8;
+    td.colSpan = 7;
     td.textContent = 'Ще не додано жодного персонажа.';
     tr.appendChild(td);
     charactersList.appendChild(tr);
@@ -462,11 +454,6 @@ function renderCharactersList(characters) {
     tr.appendChild(nameTd);
     tr.appendChild(createCharacterMenuCell(character));
     tr.appendChild(createGearScoreCell(gearScore));
-
-    const attendanceTd = document.createElement('td');
-    attendanceTd.className = 'account-attendance-col';
-    attendanceTd.textContent = String(raidAttendanceByName.get(name) || 0);
-    tr.appendChild(attendanceTd);
 
 
     COOLDOWN_KEYS.forEach((key) => tr.appendChild(createCooldownCell(name, key, cooldowns?.[key])));
