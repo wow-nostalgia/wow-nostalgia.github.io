@@ -350,8 +350,10 @@ function parseLookupNames(params) {
   const raw = params.get('names') || '';
   const names = [...new Set(raw.split(',').map((n) => n.trim()).filter(Boolean))];
   if (names.length > MAX_COOLDOWN_LOOKUP) throw new HttpError(400, `Не більше ${MAX_COOLDOWN_LOOKUP} персонажів за раз`);
-  if (names.some((n) => n.length > 24)) throw new HttpError(400, "Некоректні імена персонажів");
-  return names;
+  // Ім'я довше за 24 символи (напр. ім'я гравця в софтах з приміткою в
+  // дужках) персонажем бути не може - пропускаємо, а не валимо весь запит:
+  // у відповіді його просто немає, як і будь-якого персонажа без профілю.
+  return names.filter((n) => n.length <= 24);
 }
 
 // GearScore персонажів (read-only) - Рейтинг DPS -> "Гравець", усім

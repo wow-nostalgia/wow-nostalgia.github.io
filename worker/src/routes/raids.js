@@ -322,15 +322,23 @@ export async function handleSetRaidCooldowns(request, env, id, session) {
   if (body.characters.length > MAX_COOLDOWN_NAMES) {
     throw new HttpError(400, `Не більше ${MAX_COOLDOWN_NAMES} персонажів за раз`);
   }
-  const names = [...new Set(body.characters.map((n) => String(n ?? '').trim()).filter(Boolean))];
-  if (!names.length || names.some((n) => n.length > 24)) throw new HttpError(400, "Некоректні імена персонажів");
+  const all = [...new Set(body.characters.map((n) => String(n ?? '').trim()).filter(Boolean))];
+  if (!all.length) throw new HttpError(400, "Некоректні імена персонажів");
+  // Ім'я гравця в софтах буває довшим за ім'я персонажа (з приміткою в
+  // дужках) - персонажа з таким ім'ям бути не може, тож воно просто
+  // "немає на сайті", а не помилка для всього списку.
+  const names = all.filter((n) => n.length <= 24);
+  const tooLong = all.filter((n) => n.length > 24);
 
   const size = String(raid.difficulty || '').slice(0, 2);
   const key = `${String(raid.instance || '').toLowerCase()}${size}`;
   const column = CHARACTER_COOLDOWN_COLUMNS[key];
   if (!column) throw new HttpError(400, 'Для цього рейду КД не відстежується');
 
-  const result = await setCharacterCooldownsByNames(env.DB, column, names, body.value);
+  const result = names.length
+    ? await setCharacterCooldownsByNames(env.DB, column, names, body.value)
+    : { updated: [], missing: [] };
+  result.missing.push(...tooLong);
   await insertAudit(env.DB, id, session.username, body.value ? 'cooldowns_set' : 'cooldowns_clear', {
     cooldown: key,
     characters: result.updated
