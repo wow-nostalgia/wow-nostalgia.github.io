@@ -5928,11 +5928,13 @@ body.account-page .account-char-menu-btn {
   align-items: center;
 }
 
-/* Вузька колонка таблиці інакше стискає іконку до кількох пікселів. */
+/* Вузька колонка таблиці інакше стискає іконку до кількох пікселів.
+   Вертикальних крапок в Octicons немає - повертаємо kebab-horizontal. */
 body.account-page .account-char-menu-btn svg {
   flex: none;
   width: 16px;
   height: 16px;
+  transform: rotate(90deg);
 }
 
 body.account-page .account-char-menu-btn:hover,
