@@ -10,7 +10,7 @@
 // Залежить від: ui-shared.js (kyivDateKey, kyivTimeKey, kyivLocalToIso,
 // raidStartIso, syncTabs), raid-manager-shared.js (apiCall),
 // raid-manager-archive.js (openCreateRaidModal, addDaysToKey), raid-signups.js
-// (openSignupModal, isSignupClosed, SIGNUP_LIMIT, SIGNUP_STATUS_LABELS).
+// (openSignupModal, isSignupClosed, signupLimit, SIGNUP_STATUS_LABELS).
 
 const raidsTabs = document.getElementById('raidsTabs');
 const listPane = document.getElementById('listPane');
@@ -195,7 +195,7 @@ function renderDayPanel() {
     const count = document.createElement('span');
     count.className = 'raid-calendar-chip-signups';
     const extra = Number(raid.extra_count || 0);
-    count.textContent = `${Number(raid.signed_count || 0)}/${SIGNUP_LIMIT}${extra ? ` (+${extra})` : ''}`;
+    count.textContent = `${Number(raid.signed_count || 0)}/${signupLimit(raid)}${extra ? ` (+${extra})` : ''}`;
     count.setAttribute('aria-label', 'Записано');
     count.classList.add('tooltipped', 'tooltipped--n');
     chip.append(count, leader, status);
