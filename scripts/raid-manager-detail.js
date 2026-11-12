@@ -1521,7 +1521,8 @@ function renderOfficersPanel(officers) {
     li.appendChild(nameWrap);
     li.appendChild(officerCharactersCell(officer.characters));
 
-    if (isLeader()) {
+    // Лідер не з офіцерів гільдії прибирає лише тих, кого додав сам.
+    if (isLeader() && (currentUser.isGuildOfficer || !officer.is_guild_officer)) {
       const removeBtn = document.createElement('button');
       removeBtn.type = 'button';
       removeBtn.className = 'link-button-std';

@@ -867,7 +867,8 @@ export async function listRaidOfficers(db, raidId) {
     .prepare(
       `SELECT u.discord_id, u.username, u.avatar,
               ${displayNameSubquery('u')} AS display_name,
-              ${charactersSubquery('u.discord_id')} AS characters
+              ${charactersSubquery('u.discord_id')} AS characters,
+              EXISTS (SELECT 1 FROM default_officers d WHERE d.discord_id = u.discord_id) AS is_guild_officer
        FROM raid_officers ro
        JOIN users u ON u.discord_id = ro.discord_id
        WHERE ro.raid_id = ? ORDER BY ro.added_at ASC`

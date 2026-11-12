@@ -279,6 +279,11 @@ export async function handleAddOfficer(request, env, id, session) {
 export async function handleRemoveOfficer(request, env, id, discordId, session) {
   const raid = await loadRaidOr404(env, id);
   requireLeader(raid, session);
+  // Лідер, що не є офіцером гільдії, не може прибрати офіцера гільдії зі
+  // свого рейду - лише тих, кого додав сам.
+  if (!(await isDefaultOfficer(env.DB, session.discordId)) && (await isDefaultOfficer(env.DB, discordId))) {
+    throw new HttpError(403, 'Офіцера гільдії може прибрати лише інший офіцер гільдії');
+  }
 
   await removeRaidOfficer(env.DB, id, discordId);
   await insertAudit(env.DB, id, session.username, 'officer_remove', { discordId });
