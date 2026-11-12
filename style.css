@@ -6042,6 +6042,20 @@ body.account-page .account-char-menu-delete {
   border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
 
+/* Пункт з другим рівнем: стрілка › праворуч; поки його підменю відкрите -
+   підсвічений, як при наведенні. */
+body.account-page .account-char-menu-arrow {
+  flex: none;
+  margin-left: auto;
+  padding-left: 0.75rem;
+  box-sizing: content-box;
+  color: var(--color-text-faint);
+}
+
+body.account-page .account-char-menu-parent[aria-expanded="true"] {
+  background: var(--color-hover);
+}
+
 /* Пункт спеку в "Вказати GS": іконка, назва, праворуч - поточний GS. */
 body.account-page .account-char-menu-spec-icon {
   width: 16px;

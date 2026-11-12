@@ -207,21 +207,46 @@ function createGearScoreCell(character) {
   return td;
 }
 
-// Меню ⋯ біля імені персонажа: "Обрати клас" -> список класів. Клас із
-// логів важливіший, тож для персонажа з логів пункт неактивний. Меню одне
-// на сторінку й позиціонується fixed від кнопки - таблиця має overflow-x
-// і обрізала б абсолютне меню.
+// Меню ⋯ біля імені персонажа. Пункти з другим рівнем ("Обрати клас",
+// "Вказати GS") мають стрілку ›: мишею підменю випадає праворуч при
+// наведенні (головне меню лишається відкритим), на тачі (наведення немає) -
+// тап замінює вміст меню, з кнопкою "назад". Меню й підменю - fixed від
+// кнопки: таблиця має overflow-x і обрізала б абсолютне меню.
 const KEBAB_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM1.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm13 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg>';
 const CHEVRON_LEFT_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M9.78 12.78a.75.75 0 0 1-1.06 0L4.47 8.53a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L6.06 8l3.72 3.72a.75.75 0 0 1 0 1.06Z"/></svg>';
+const CHEVRON_RIGHT_ICON = '<svg class="account-char-menu-arrow" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"/></svg>';
 
-const characterMenu = document.createElement('div');
-characterMenu.className = 'account-char-menu';
-characterMenu.setAttribute('role', 'menu');
-characterMenu.hidden = true;
-document.body.appendChild(characterMenu);
-let characterMenuAnchor = null;
+// Підменю, що випадає вбік, - лише там, де є миша (наведення).
+const CHARACTER_MENU_CAN_HOVER = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+function createCharacterMenuPanel(extraClass) {
+  const panel = document.createElement('div');
+  panel.className = `account-char-menu${extraClass ? ` ${extraClass}` : ''}`;
+  panel.setAttribute('role', 'menu');
+  panel.hidden = true;
+  document.body.appendChild(panel);
+  return panel;
+}
+
+const characterMenu = createCharacterMenuPanel();
+const characterSubmenu = createCharacterMenuPanel('account-char-menu--sub');
+let characterMenuAnchor = null; // кнопка ⋯
+let characterSubmenuParent = null; // пункт головного меню, чиє підменю відкрите
+
+function isEditingInCharacterMenu() {
+  const el = document.activeElement;
+  return el?.tagName === 'INPUT' && (characterMenu.contains(el) || characterSubmenu.contains(el));
+}
+
+function closeCharacterSubmenu() {
+  if (characterSubmenu.hidden) return;
+  characterSubmenu.hidden = true;
+  characterSubmenuParent?.setAttribute('aria-expanded', 'false');
+  characterSubmenuParent = null;
+}
 
 function closeCharacterMenu() {
+  closeCharacterSubmenu();
   if (characterMenu.hidden) return;
   characterMenu.hidden = true;
   characterMenuAnchor?.setAttribute('aria-expanded', 'false');
@@ -239,9 +264,30 @@ function positionCharacterMenu() {
   const top = below + height > window.innerHeight - 8 ? Math.max(8, rect.top - height - 4) : below;
   characterMenu.style.left = `${left}px`;
   characterMenu.style.top = `${top}px`;
+  positionCharacterSubmenu();
 }
 
-function addCharacterMenuItem({ label, html, color, disabled, hint, onClick, extraClass }) {
+// Праворуч від головного меню на рівні свого пункту; не влазить праворуч -
+// ліворуч від меню; по вертикалі - в межах екрана.
+function positionCharacterSubmenu() {
+  if (characterSubmenu.hidden || !characterSubmenuParent) return;
+  const menuRect = characterMenu.getBoundingClientRect();
+  const itemRect = characterSubmenuParent.getBoundingClientRect();
+  const width = characterSubmenu.offsetWidth;
+  const height = characterSubmenu.offsetHeight;
+  let left = menuRect.right + 4;
+  if (left + width > window.innerWidth - 8) left = Math.max(8, menuRect.left - width - 4);
+  const top = Math.max(8, Math.min(itemRect.top - 7, window.innerHeight - height - 8));
+  characterSubmenu.style.left = `${left}px`;
+  characterSubmenu.style.top = `${top}px`;
+}
+
+function positionCharacterPanel(panel) {
+  if (panel === characterSubmenu) positionCharacterSubmenu();
+  else positionCharacterMenu();
+}
+
+function addCharacterMenuItem(panel, { label, html, color, disabled, hint, onClick, extraClass }) {
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = `split-btn__item${extraClass ? ` ${extraClass}` : ''}`;
@@ -260,8 +306,74 @@ function addCharacterMenuItem({ label, html, color, disabled, hint, onClick, ext
     event.stopPropagation();
     onClick();
   });
-  characterMenu.appendChild(btn);
+  // Наведення на звичайний пункт головного меню закриває відкрите підменю
+  // (окрім випадку, коли в підменю зараз вводять GS).
+  if (panel === characterMenu && CHARACTER_MENU_CAN_HOVER) {
+    btn.addEventListener('mouseenter', () => {
+      if (btn !== characterSubmenuParent && !isEditingInCharacterMenu()) closeCharacterSubmenu();
+    });
+  }
+  panel.appendChild(btn);
   return btn;
+}
+
+function addCharacterMenuBack(panel, title, onBack) {
+  const btn = addCharacterMenuItem(panel, {
+    html: `${CHEVRON_LEFT_ICON}<span></span>`,
+    extraClass: 'account-char-menu-back',
+    onClick: onBack
+  });
+  btn.querySelector('span').textContent = title;
+  return btn;
+}
+
+function focusFirstCharacterMenuItem(panel) {
+  panel.querySelector('button:not(:disabled):not(.account-char-menu-back)')?.focus();
+}
+
+// Пункт головного меню з другим рівнем. render(panel, onBack) малює другий
+// рівень у panel; onBack - null у підменю збоку (головне меню й так видно).
+function addCharacterSubmenuItem(character, { label, disabled, hint, render }) {
+  const btn = addCharacterMenuItem(characterMenu, {
+    html: `<span class="account-char-menu-label"></span>${disabled ? '' : CHEVRON_RIGHT_ICON}`,
+    disabled,
+    hint,
+    extraClass: 'account-char-menu-parent',
+    onClick: () => {
+      if (CHARACTER_MENU_CAN_HOVER) {
+        openCharacterSubmenu(btn, render, true);
+      } else {
+        render(characterMenu, () => showCharacterMenuRoot(character));
+      }
+    }
+  });
+  btn.querySelector('.account-char-menu-label').textContent = label;
+  if (disabled) return btn;
+  btn.setAttribute('aria-haspopup', 'menu');
+  btn.setAttribute('aria-expanded', 'false');
+  if (CHARACTER_MENU_CAN_HOVER) {
+    btn.addEventListener('mouseenter', () => {
+      if (!isEditingInCharacterMenu()) openCharacterSubmenu(btn, render, false);
+    });
+    btn.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        openCharacterSubmenu(btn, render, true);
+      }
+    });
+  }
+  return btn;
+}
+
+function openCharacterSubmenu(parentBtn, render, focusFirst) {
+  if (characterSubmenuParent !== parentBtn || characterSubmenu.hidden) {
+    closeCharacterSubmenu();
+    characterSubmenuParent = parentBtn;
+    parentBtn.setAttribute('aria-expanded', 'true');
+    characterSubmenu.hidden = false;
+    render(characterSubmenu, null);
+  }
+  if (focusFirst) focusFirstCharacterMenuItem(characterSubmenu);
 }
 
 async function saveCharacterField(name, patch) {
@@ -290,27 +402,28 @@ async function setCharacterPrimary(name, primary) {
 }
 
 function showCharacterMenuRoot(character) {
+  closeCharacterSubmenu();
   characterMenu.innerHTML = '';
   const fromLogs = classColorMap.has(character.characterName);
-  addCharacterMenuItem({
+  addCharacterSubmenuItem(character, {
     label: 'Обрати клас',
     disabled: fromLogs,
     hint: fromLogs ? 'визначено з логів' : '',
-    onClick: () => showCharacterMenuClasses(character)
+    render: (panel, onBack) => renderCharacterClasses(panel, character, onBack)
   });
   // GS - по спеках класу, тож без класу вказати нема для чого.
   const hasClass = Boolean(SIGNUP_CLASSES[characterClass(character)]);
-  addCharacterMenuItem({
+  addCharacterSubmenuItem(character, {
     label: 'Вказати GS',
     disabled: !hasClass,
     hint: hasClass ? '' : 'спершу обери клас',
-    onClick: () => showCharacterMenuSpecs(character)
+    render: (panel, onBack) => renderCharacterSpecs(panel, character, onBack)
   });
   // Основний може бути лише один - сервер сам знімає прапорець з інших.
-  addCharacterMenuItem(character.isPrimary
+  addCharacterMenuItem(characterMenu, character.isPrimary
     ? { label: 'Зняти «Основний»', onClick: () => setCharacterPrimary(character.characterName, false) }
     : { label: 'Зробити основним', onClick: () => setCharacterPrimary(character.characterName, true) });
-  addCharacterMenuItem({
+  addCharacterMenuItem(characterMenu, {
     label: 'Видалити персонажа',
     extraClass: 'split-btn__item--danger account-char-menu-delete',
     onClick: () => {
@@ -319,16 +432,7 @@ function showCharacterMenuRoot(character) {
     }
   });
   positionCharacterMenu();
-  characterMenu.querySelector('button:not(:disabled)')?.focus();
-}
-
-function addCharacterMenuBack(title, onBack) {
-  const btn = addCharacterMenuItem({
-    html: `${CHEVRON_LEFT_ICON}<span></span>`,
-    extraClass: 'account-char-menu-back',
-    onClick: onBack
-  });
-  btn.querySelector('span').textContent = title;
+  focusFirstCharacterMenuItem(characterMenu);
 }
 
 // Іконка + назва спеку для пункту меню / заголовка.
@@ -336,15 +440,15 @@ function specMenuHtml(cls, spec) {
   return `<img class="account-char-menu-spec-icon" src="${signupIconUrl(signupSpecInfo(cls, spec).icon)}" alt="" width="16" height="16"><span class="account-char-menu-spec-label"></span>`;
 }
 
-// "Вказати GS" -> список спеків класу з поточними значеннями праворуч.
-function showCharacterMenuSpecs(character) {
+// "Вказати GS" -> спеки класу з поточними значеннями праворуч.
+function renderCharacterSpecs(panel, character, onBack) {
   const cls = characterClass(character);
-  characterMenu.innerHTML = '';
-  addCharacterMenuBack('Вказати GS', () => showCharacterMenuRoot(character));
+  panel.innerHTML = '';
+  if (onBack) addCharacterMenuBack(panel, 'Вказати GS', onBack);
   Object.keys(SIGNUP_CLASSES[cls].specs).forEach((spec) => {
-    const btn = addCharacterMenuItem({
+    const btn = addCharacterMenuItem(panel, {
       html: specMenuHtml(cls, spec),
-      onClick: () => showCharacterMenuGearScore(character, spec)
+      onClick: () => renderCharacterGearScoreForm(panel, character, spec, () => renderCharacterSpecs(panel, character, onBack))
     });
     btn.querySelector('.account-char-menu-spec-label').textContent = signupSpecLabel(spec);
     const gs = character.gearScores?.[spec];
@@ -355,18 +459,17 @@ function showCharacterMenuSpecs(character) {
       btn.appendChild(value);
     }
   });
-  positionCharacterMenu();
-  characterMenu.querySelector('button:not(.account-char-menu-back)')?.focus();
+  positionCharacterPanel(panel);
+  if (onBack) focusFirstCharacterMenuItem(panel);
 }
 
 // GS одного спеку: поле з маскою X.X + Зберегти (і Очистити, якщо GS уже є).
-function showCharacterMenuGearScore(character, spec) {
+function renderCharacterGearScoreForm(panel, character, spec, onBack) {
   const name = character.characterName;
   const cls = characterClass(character);
   const gearScore = character.gearScores?.[spec] ?? null;
-  characterMenu.innerHTML = '';
-  addCharacterMenuBack(signupSpecLabel(spec), () => showCharacterMenuSpecs(character));
-  const backBtn = characterMenu.lastElementChild;
+  panel.innerHTML = '';
+  const backBtn = addCharacterMenuBack(panel, signupSpecLabel(spec), onBack);
   backBtn.querySelector('svg').insertAdjacentHTML('afterend', `<img class="account-char-menu-spec-icon" src="${signupIconUrl(signupSpecInfo(cls, spec).icon)}" alt="" width="16" height="16">`);
 
   const form = document.createElement('form');
@@ -401,22 +504,22 @@ function showCharacterMenuGearScore(character, spec) {
     }
     await saveCharacterField(name, { gearScores: { [spec]: Number(text) } });
   });
-  characterMenu.appendChild(form);
+  panel.appendChild(form);
 
   if (gearScore != null) {
-    addCharacterMenuItem({ label: 'Очистити GS', extraClass: 'split-btn__item--danger', onClick: () => saveCharacterField(name, { gearScores: { [spec]: null } }) });
+    addCharacterMenuItem(panel, { label: 'Очистити GS', extraClass: 'split-btn__item--danger', onClick: () => saveCharacterField(name, { gearScores: { [spec]: null } }) });
   }
-  positionCharacterMenu();
+  positionCharacterPanel(panel);
   input.focus();
   input.select();
 }
 
-function showCharacterMenuClasses(character) {
+function renderCharacterClasses(panel, character, onBack) {
   const { characterName: name, className } = character;
-  characterMenu.innerHTML = '';
-  addCharacterMenuBack('Обрати клас', () => showCharacterMenuRoot(character));
+  panel.innerHTML = '';
+  if (onBack) addCharacterMenuBack(panel, 'Обрати клас', onBack);
   Object.keys(WOW_CLASS_COLORS).forEach((cls) => {
-    const item = addCharacterMenuItem({
+    const item = addCharacterMenuItem(panel, {
       label: translateClass(cls),
       color: WOW_CLASS_COLORS[cls],
       onClick: () => saveCharacterField(name, { className: cls })
@@ -424,9 +527,10 @@ function showCharacterMenuClasses(character) {
     if (cls === className) item.setAttribute('aria-current', 'true');
   });
   if (className) {
-    addCharacterMenuItem({ label: 'Скинути клас', extraClass: 'split-btn__item--danger', onClick: () => saveCharacterField(name, { className: null }) });
+    addCharacterMenuItem(panel, { label: 'Скинути клас', extraClass: 'split-btn__item--danger', onClick: () => saveCharacterField(name, { className: null }) });
   }
-  positionCharacterMenu();
+  positionCharacterPanel(panel);
+  if (onBack) focusFirstCharacterMenuItem(panel);
 }
 
 function createCharacterMenuButton(character) {
@@ -452,10 +556,19 @@ function createCharacterMenuButton(character) {
 }
 
 document.addEventListener('click', (event) => {
-  if (!characterMenu.contains(event.target)) closeCharacterMenu();
+  if (!characterMenu.contains(event.target) && !characterSubmenu.contains(event.target)) closeCharacterMenu();
 });
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && !characterMenu.hidden) {
+  if (characterMenu.hidden) return;
+  // Escape / стрілка вліво в підменю - назад до його пункту в головному меню.
+  if (!characterSubmenu.hidden && characterSubmenu.contains(document.activeElement)
+    && (event.key === 'Escape' || (event.key === 'ArrowLeft' && document.activeElement.tagName !== 'INPUT'))) {
+    const parent = characterSubmenuParent;
+    closeCharacterSubmenu();
+    parent?.focus();
+    return;
+  }
+  if (event.key === 'Escape') {
     const anchor = characterMenuAnchor;
     closeCharacterMenu();
     anchor?.focus();
@@ -464,7 +577,7 @@ document.addEventListener('keydown', (event) => {
 // Поки фокус у полі GS у меню, клавіатура телефона сама скролить/ресайзить
 // сторінку - тоді меню не закриваємо, а переставляємо.
 const onCharacterMenuViewportChange = () => {
-  if (characterMenu.contains(document.activeElement) && document.activeElement.tagName === 'INPUT') positionCharacterMenu();
+  if (isEditingInCharacterMenu()) positionCharacterMenu();
   else closeCharacterMenu();
 };
 window.addEventListener('resize', onCharacterMenuViewportChange);
