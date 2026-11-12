@@ -547,16 +547,43 @@ function computeTopHealersByHps(healerRankings, topN, allowedNames) {
   return flat;
 }
 
+// Топ-3 по спеках: на вузькому екрані Chart.js обрізає довгий підпис зліва,
+// тож там він ділиться на два рядки (клас і спек / номер і нік).
+const TOP_SPEC_NARROW = window.matchMedia('(max-width: 600px)').matches;
+
+function topSpecLabel(s) {
+  const spec = translateSpecKey(s.key);
+  const who = '#' + s.rank + ' — ' + s.name;
+  return TOP_SPEC_NARROW ? [spec, who] : spec + ' ' + who;
+}
+
+// Chart.js обмежує ширину осі Y частиною графіка, і найдовші підписи
+// ("Чорнокнижник — Руйнування") все одно вилазять за лівий край. Розширюємо
+// вісь під найширший рядок.
+function fitTopSpecAxis(scale) {
+  if (!TOP_SPEC_NARROW) return;
+  const ctx = scale.ctx;
+  ctx.save();
+  ctx.font = Chart.helpers.toFont(scale.options.ticks.font).string;
+  const widest = Math.max(0, ...scale.chart.data.labels.flat().map((line) => ctx.measureText(line).width));
+  ctx.restore();
+  scale.width = Math.max(scale.width, Math.ceil(widest) + scale.options.ticks.padding + scale.options.grid.tickLength + 4);
+}
+
+function sizeTopSpecChart(canvas, count) {
+  canvas.parentElement.style.height = Math.max(320, count * (TOP_SPEC_NARROW ? 40 : 26)) + 'px';
+}
+
 function renderTopHealersChart(healerRankings, allowedNames) {
   const stats = computeTopHealersByHps(healerRankings, 3, allowedNames);
 
   const canvas = document.getElementById('chartTopByClassHealer');
-  canvas.parentElement.style.height = `${Math.max(320, stats.length * 26)}px`;
+  sizeTopSpecChart(canvas, stats.length);
 
   new Chart(canvas, {
     type: 'bar',
     data: {
-      labels: stats.map((s) => `${translateSpecKey(s.key)} #${s.rank} — ${s.name}`),
+      labels: stats.map(topSpecLabel),
       datasets: [
         {
           label: 'HPS',
@@ -572,7 +599,7 @@ function renderTopHealersChart(healerRankings, allowedNames) {
       plugins: { legend: { display: false } },
       scales: {
         x: { beginAtZero: true },
-        y: { ticks: { color: classTickColor(stats) } }
+        y: { ticks: { color: classTickColor(stats) }, afterFit: fitTopSpecAxis }
       }
     }
   });
@@ -582,12 +609,12 @@ function renderTopByClassChart(rows, role, canvasId) {
   const stats = computeTopPlayersBySpec(rows, role, 3);
 
   const canvas = document.getElementById(canvasId);
-  canvas.parentElement.style.height = `${Math.max(320, stats.length * 26)}px`;
+  sizeTopSpecChart(canvas, stats.length);
 
   new Chart(canvas, {
     type: 'bar',
     data: {
-      labels: stats.map((s) => `${translateSpecKey(s.key)} #${s.rank} — ${s.name}`),
+      labels: stats.map(topSpecLabel),
       datasets: [
         {
           label: 'Score',
@@ -603,7 +630,7 @@ function renderTopByClassChart(rows, role, canvasId) {
       plugins: { legend: { display: false } },
       scales: {
         x: { beginAtZero: true },
-        y: { ticks: { color: classTickColor(stats) } }
+        y: { ticks: { color: classTickColor(stats) }, afterFit: fitTopSpecAxis }
       }
     }
   });
