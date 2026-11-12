@@ -670,16 +670,77 @@ export async function listUserCharacters(db, discordId) {
     )
     .bind(discordId)
     .all();
+  const gearScores = await gearScoresByCharacter(db, 'WHERE discord_id = ?', [discordId]);
   return results.map((r) => ({
     characterName: r.character_name,
     isPrimary: Boolean(r.is_primary),
     cooldowns: Object.fromEntries(
       Object.entries(CHARACTER_COOLDOWN_COLUMNS).map(([key, col]) => [key, Boolean(r[col])])
     ),
-    // У БД - десяті (65), назовні - число з одним знаком (6.5).
+    // GS по спеках: { спек: 6.5 }. У БД - десяті (65), назовні - X.X.
+    gearScores: gearScores.get(r.character_name) || {},
+    // Старий GS одним числом - лише в персонажів без відомого класу, поки
+    // клас не обрано (тоді він розходиться по всіх спеках класу).
     gearScore: r.gear_score == null ? null : r.gear_score / 10,
     className: r.class_name || null
   }));
+}
+
+// Map "ім'я персонажа -> { спек: GS }" з character_gear_scores.
+async function gearScoresByCharacter(db, whereSql = '', binds = []) {
+  const { results } = await db
+    .prepare(`SELECT character_name, spec, gear_score FROM character_gear_scores ${whereSql}`)
+    .bind(...binds)
+    .all();
+  const map = new Map();
+  for (const r of results) {
+    if (!map.has(r.character_name)) map.set(r.character_name, {});
+    map.get(r.character_name)[r.spec] = r.gear_score / 10;
+  }
+  return map;
+}
+
+// Рядок персонажа цього акаунта ({ class_name }) або null, якщо його немає.
+export async function getUserCharacter(db, discordId, characterName) {
+  return db.prepare('SELECT class_name FROM user_characters WHERE discord_id = ? AND character_name = ?')
+    .bind(discordId, characterName).first();
+}
+
+// tenthsBySpec: { спек: десяті | null } - null видаляє GS спеку.
+export async function setCharacterGearScores(db, discordId, characterName, tenthsBySpec) {
+  const statements = Object.entries(tenthsBySpec).map(([spec, tenths]) => (tenths == null
+    ? db.prepare('DELETE FROM character_gear_scores WHERE discord_id = ? AND character_name = ? AND spec = ?')
+      .bind(discordId, characterName, spec)
+    : db.prepare(
+      `INSERT INTO character_gear_scores (discord_id, character_name, spec, gear_score) VALUES (?, ?, ?, ?)
+       ON CONFLICT (discord_id, character_name, spec) DO UPDATE SET gear_score = excluded.gear_score`
+    ).bind(discordId, characterName, spec, tenths)));
+  if (statements.length) await db.batch(statements);
+}
+
+// Гравець змінив клас персонажа в профілі: GS спеків старого класу
+// видаляються всі (назви спеків бувають спільні - Protection у паладина й
+// воїна, - але шмот різний); старий GS одним числом (якщо є) розходиться по
+// всіх спеках нового класу і очищається. Викликати лише якщо клас справді
+// змінився. classSpecs - спеки нового класу ([] - клас скинуто).
+export async function applyCharacterClassToGearScores(db, discordId, characterName, classSpecs) {
+  const statements = [
+    db.prepare('DELETE FROM character_gear_scores WHERE discord_id = ? AND character_name = ?')
+      .bind(discordId, characterName)
+  ];
+  if (classSpecs.length) {
+    statements.push(
+      db.prepare(
+        `INSERT OR IGNORE INTO character_gear_scores (discord_id, character_name, spec, gear_score)
+         SELECT uc.discord_id, uc.character_name, s.value, uc.gear_score
+         FROM user_characters uc, json_each(?) s
+         WHERE uc.discord_id = ? AND uc.character_name = ? AND uc.gear_score IS NOT NULL`
+      ).bind(JSON.stringify(classSpecs), discordId, characterName),
+      db.prepare('UPDATE user_characters SET gear_score = NULL WHERE discord_id = ? AND character_name = ?')
+        .bind(discordId, characterName)
+    );
+  }
+  await db.batch(statements);
 }
 
 // Класи гравців, які ще не мають кольору з логів (класи англійською, як у
@@ -757,17 +818,16 @@ export async function getCooldownsByNames(db, names) {
   return out;
 }
 
-// GearScore для перегляду (Рейтинг DPS -> "Гравець", усім залогіненим).
-// Лише персонажі з проставленим GS; ключ - ім'я так, як його передали.
+// GearScore для перегляду (Рейтинг DPS -> "Гравець", усім залогіненим):
+// { ім'я: { спек: GS } }. Лише персонажі з хоч одним GS спеку; ключ - ім'я
+// так, як його передали.
 export async function getGearScoresByNames(db, names) {
-  const { results } = await db
-    .prepare('SELECT character_name, gear_score FROM user_characters WHERE gear_score IS NOT NULL')
-    .all();
-  const byLower = new Map(results.map((r) => [r.character_name.toLocaleLowerCase('uk'), r.gear_score]));
+  const map = await gearScoresByCharacter(db);
+  const byLower = new Map([...map].map(([name, specs]) => [name.toLocaleLowerCase('uk'), specs]));
   const out = {};
   for (const name of names) {
-    const tenths = byLower.get(name.toLocaleLowerCase('uk'));
-    if (tenths != null) out[name] = tenths / 10;
+    const specs = byLower.get(name.toLocaleLowerCase('uk'));
+    if (specs) out[name] = specs;
   }
   return out;
 }
@@ -1593,20 +1653,24 @@ export async function listCharacterNamesByDiscordIds(db, discordIds) {
   return map;
 }
 
-// Персонажі записаних на рейд гравців: GS (тисячі, 6.4) і КД цього рейду
+// Персонажі записаних на рейд гравців: GS по спеках (тисячі, { спек: 6.4 }),
+// старий GS одним числом (лише персонажі без класу) і КД цього рейду
 // (cdColumn - одна з CHARACTER_COOLDOWN_COLUMNS або null). Для підказки над
 // записом у вкладці "Попередній запис".
 export async function listSignupCharacters(db, raidId, cdColumn) {
   const cd = cdColumn ? `c.${cdColumn}` : 'NULL';
+  const signedIn = 'discord_id IN (SELECT discord_id FROM raid_signups WHERE raid_id = ?)';
   const { results } = await db.prepare(
     `SELECT c.discord_id, c.character_name, c.gear_score, ${cd} AS cd
      FROM user_characters c
-     WHERE c.discord_id IN (SELECT discord_id FROM raid_signups WHERE raid_id = ?)`
+     WHERE c.${signedIn}`
   ).bind(raidId).all();
+  const gearScores = await gearScoresByCharacter(db, `WHERE ${signedIn}`, [raidId]);
   const out = {};
   results.forEach((r) => {
     (out[r.discord_id] ||= []).push({
       name: r.character_name,
+      gearScores: gearScores.get(r.character_name) || {},
       gs: r.gear_score == null ? null : r.gear_score / 10,
       cd: r.cd == null ? null : Boolean(r.cd)
     });

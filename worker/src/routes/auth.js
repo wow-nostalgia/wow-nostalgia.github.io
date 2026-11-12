@@ -24,8 +24,14 @@ import {
   CHARACTER_COOLDOWN_COLUMNS,
   CHARACTER_CLASSES,
   listCharacterClasses,
+  getUserCharacter,
+  setCharacterGearScores,
+  applyCharacterClassToGearScores,
   DEFAULT_SOUND_VOLUME
 } from '../db.js';
+import { SIGNUP_CLASS_SPECS } from '../signup-specs.js';
+
+const ALL_SIGNUP_SPECS = new Set(Object.values(SIGNUP_CLASS_SPECS).flat());
 import { requireSession, requireGlobalOfficer, requireRaidOfficer } from '../auth.js';
 
 const SESSION_TTL_DAYS = 30;
@@ -224,13 +230,24 @@ export async function handleSetPrimaryCharacter(request, env, characterName) {
   return jsonResponse(await setPrimaryCharacter(env.DB, session.discordId, characterName));
 }
 
-// Відмітки КД і GearScore персонажа. body: { cooldowns?: {icc10?: bool, ...},
-// gearScore?: number|null, className?: string|null } - можна передати лише
-// те, що змінилось.
+// GS "X.X" (0.0-9.9) -> десяті для БД; інакше 400.
+function parseGearScoreTenths(value) {
+  const tenths = Math.round(Number(value) * 10);
+  if (typeof value !== 'number' || !Number.isFinite(value)
+    || tenths < 0 || tenths > 99 || Math.abs(value * 10 - tenths) > 1e-6) {
+    throw new HttpError(400, 'GS має бути числом від 0.0 до 9.9 з одним знаком після крапки');
+  }
+  return tenths;
+}
+
+// Відмітки КД, GS і клас персонажа. body: { cooldowns?: {icc10?: bool, ...},
+// gearScores?: { спек: number|null }, className?: string|null } - можна
+// передати лише те, що змінилось. Спеки - як у попередньому записі.
 export async function handleUpdateCharacter(request, env, characterName) {
   const session = await requireSession(env.DB, request);
   const body = await readJson(request);
   const fields = {};
+  let gearScores = null;
 
   if (body.cooldowns !== undefined) {
     if (!body.cooldowns || typeof body.cooldowns !== 'object' || Array.isArray(body.cooldowns)) {
@@ -244,16 +261,14 @@ export async function handleUpdateCharacter(request, env, characterName) {
     }
   }
 
-  if (body.gearScore !== undefined) {
-    if (body.gearScore === null) {
-      fields.gear_score = null;
-    } else {
-      const tenths = Math.round(Number(body.gearScore) * 10);
-      if (typeof body.gearScore !== 'number' || !Number.isFinite(body.gearScore)
-        || tenths < 0 || tenths > 99 || Math.abs(body.gearScore * 10 - tenths) > 1e-6) {
-        throw new HttpError(400, 'GS має бути числом від 0.0 до 9.9 з одним знаком після крапки');
-      }
-      fields.gear_score = tenths;
+  if (body.gearScores !== undefined) {
+    if (!body.gearScores || typeof body.gearScores !== 'object' || Array.isArray(body.gearScores)) {
+      throw new HttpError(400, 'gearScores має бути об’єктом');
+    }
+    gearScores = {};
+    for (const [spec, value] of Object.entries(body.gearScores)) {
+      if (!ALL_SIGNUP_SPECS.has(spec)) throw new HttpError(400, `Невідомий спек: ${spec}`);
+      gearScores[spec] = value === null ? null : parseGearScoreTenths(value);
     }
   }
 
@@ -264,11 +279,18 @@ export async function handleUpdateCharacter(request, env, characterName) {
     fields.class_name = body.className;
   }
 
-  if (!Object.keys(fields).length) throw new HttpError(400, 'Немає що змінювати');
+  if (!Object.keys(fields).length && !(gearScores && Object.keys(gearScores).length)) {
+    throw new HttpError(400, 'Немає що змінювати');
+  }
+  const existing = await getUserCharacter(env.DB, session.discordId, characterName);
+  if (!existing) throw new HttpError(404, 'Персонажа не знайдено');
 
-  const characters = await updateUserCharacter(env.DB, session.discordId, characterName, fields);
-  if (!characters) throw new HttpError(404, 'Персонажа не знайдено');
-  return jsonResponse(characters);
+  if (Object.keys(fields).length) await updateUserCharacter(env.DB, session.discordId, characterName, fields);
+  if (body.className !== undefined && body.className !== (existing.class_name || null)) {
+    await applyCharacterClassToGearScores(env.DB, session.discordId, characterName, SIGNUP_CLASS_SPECS[body.className] || []);
+  }
+  if (gearScores) await setCharacterGearScores(env.DB, session.discordId, characterName, gearScores);
+  return jsonResponse(await listUserCharacters(env.DB, session.discordId));
 }
 
 export async function handleClearPrimaryCharacter(request, env) {

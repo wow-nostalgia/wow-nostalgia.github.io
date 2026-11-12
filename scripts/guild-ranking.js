@@ -508,7 +508,8 @@ function renderSiblingRows() {
     if (siblingGearScores) {
       const gsTd = document.createElement('td');
       gsTd.className = 'player-gs-col';
-      const gs = siblingGearScores[row.name];
+      // GS по спеках з профілю: { спек запису: GS } - беремо спек цього рядка.
+      const gs = siblingGearScores[row.name]?.[logSpecToSignupSpec(row.class, row.spec)];
       gsTd.textContent = gs == null ? '—' : gs.toFixed(1);
       tr.appendChild(gsTd);
     }

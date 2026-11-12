@@ -14,29 +14,14 @@
 // Залежить від: ui-shared.js (openModal, closeModal, onModalCancel,
 // setModalBusy, showMessageModal, applyAutoTooltip, kyivDateKey, kyivTimeKey,
 // raidStartIso), raid-manager-shared.js (apiCall), auth-shared.js
-// (getSessionToken). Опційно: name-translations.js (translateClass,
-// translateSpec), wow-class-colors.js (WOW_CLASS_COLORS).
+// (getSessionToken), wow-specs.js (SIGNUP_CLASSES, signupSpecLabel,
+// signupSpecInfo, signupIconUrl, GS-чіпи). Опційно: name-translations.js
+// (translateClass, translateSpec), wow-class-colors.js (WOW_CLASS_COLORS).
 
 // Ліміт основи - розмір рейду з його складності ("10N", "25H"...).
 function signupLimit(raid) {
   return parseInt(raid?.difficulty, 10) === 10 ? 10 : 25;
 }
-
-// Має збігатися з worker/src/signup-specs.js. role: tank | healer | ranged | melee.
-const SIGNUP_CLASSES = {
-  // ДК - кожен спек як танк і як ДД, у жреця є Smite: як у шаблоні wowwotlk
-  // Raid-Helper (лише для попереднього запису).
-  'Death Knight': { icon: 'class_deathknight', specs: { 'Blood (Tank)': ['tank', 'spell_deathknight_bloodpresence'], 'Blood (DPS)': ['melee', 'spell_deathknight_bloodpresence'], 'Frost (Tank)': ['tank', 'spell_deathknight_frostpresence'], 'Frost (DPS)': ['melee', 'spell_deathknight_frostpresence'], 'Unholy (Tank)': ['tank', 'spell_deathknight_unholypresence'], 'Unholy (DPS)': ['melee', 'spell_deathknight_unholypresence'] } },
-  Druid: { icon: 'class_druid', specs: { Balance: ['ranged', 'spell_nature_starfall'], 'Feral Combat (Bear)': ['tank', 'ability_racial_bearform'], 'Feral Combat (Cat)': ['melee', 'ability_druid_catform'], Restoration: ['healer', 'spell_nature_healingtouch'] } },
-  Hunter: { icon: 'class_hunter', specs: { 'Beast Mastery': ['ranged', 'ability_hunter_beasttaming'], Marksmanship: ['ranged', 'ability_marksmanship'], Survival: ['ranged', 'ability_hunter_swiftstrike'] } },
-  Mage: { icon: 'class_mage', specs: { Arcane: ['ranged', 'spell_holy_magicalsentry'], Fire: ['ranged', 'spell_fire_firebolt02'], Frost: ['ranged', 'spell_frost_frostbolt02'] } },
-  Paladin: { icon: 'class_paladin', specs: { Holy: ['healer', 'spell_holy_holybolt'], Protection: ['tank', 'spell_holy_devotionaura'], Retribution: ['melee', 'spell_holy_auraoflight'] } },
-  Priest: { icon: 'class_priest', specs: { Discipline: ['healer', 'spell_holy_wordfortitude'], Holy: ['healer', 'spell_holy_guardianspirit'], Shadow: ['ranged', 'spell_shadow_shadowwordpain'], Smite: ['ranged', 'spell_holy_holysmite'] } },
-  Rogue: { icon: 'class_rogue', specs: { Assassination: ['melee', 'ability_rogue_eviscerate'], Combat: ['melee', 'ability_backstab'], Subtlety: ['melee', 'ability_stealth'] } },
-  Shaman: { icon: 'class_shaman', specs: { Elemental: ['ranged', 'spell_nature_lightning'], Enhancement: ['melee', 'spell_nature_lightningshield'], Restoration: ['healer', 'spell_nature_magicimmunity'] } },
-  Warlock: { icon: 'class_warlock', specs: { Affliction: ['ranged', 'spell_shadow_deathcoil'], Demonology: ['ranged', 'spell_shadow_metamorphosis'], Destruction: ['ranged', 'spell_shadow_rainoffire'] } },
-  Warrior: { icon: 'class_warrior', specs: { Arms: ['melee', 'ability_warrior_savageblow'], Fury: ['melee', 'ability_warrior_innerrage'], Protection: ['tank', 'ability_warrior_defensivestance'] } }
-};
 
 // Порядок колонок - як у шаблоні WoW Raid-Helper (танки окремою колонкою).
 const SIGNUP_COLUMN_ORDER = ['Tank', 'Death Knight', 'Warrior', 'Druid', 'Paladin', 'Rogue', 'Hunter', 'Mage', 'Warlock', 'Priest', 'Shaman'];
@@ -64,41 +49,14 @@ const SIGNUP_EXTRA_GROUPS = [
   { status: 'absent', label: 'Відсутні' }
 ];
 
-const FERAL_LABELS_UK = { 'Feral Combat (Bear)': 'Сила звіра (ведмідь)', 'Feral Combat (Cat)': 'Сила звіра (кіт)' };
-
-function signupIconUrl(icon) {
-  return `https://wow.zamimg.com/images/wow/icons/small/${icon}.jpg`;
-}
-
 function signupClassLabel(cls) {
   if (cls === 'Tank') return 'Танк';
   return typeof translateClass === 'function' ? translateClass(cls) : cls;
 }
 
-const DK_ROLE_LABELS_UK = { Tank: 'танк', DPS: 'ДД' };
-const SMITE_LABEL_UK = 'Кара';
-
-function signupSpecLabel(spec) {
-  if (!spec) return '—';
-  const uk = typeof getNameLanguage !== 'function' || getNameLanguage() === 'uk';
-  if (FERAL_LABELS_UK[spec]) return uk ? FERAL_LABELS_UK[spec] : spec;
-  if (spec === 'Smite') return uk ? SMITE_LABEL_UK : spec;
-  const dk = /^(Blood|Frost|Unholy) \((Tank|DPS)\)$/.exec(spec);
-  if (dk) {
-    const base = typeof translateSpec === 'function' ? translateSpec(dk[1]) : dk[1];
-    return uk ? `${base} (${DK_ROLE_LABELS_UK[dk[2]]})` : spec;
-  }
-  return typeof translateSpec === 'function' ? translateSpec(spec) : spec;
-}
-
 // Ім'я запису: персонаж, а для запису з Discord без обраного персонажа - нік.
 function signupDisplayName(signup) {
   return signup.character_name || signup.discord_name || '—';
-}
-
-function signupSpecInfo(cls, spec) {
-  const [role, icon] = SIGNUP_CLASSES[cls]?.specs?.[spec] || ['melee', SIGNUP_CLASSES[cls]?.icon || 'inv_misc_questionmark'];
-  return { role, icon };
 }
 
 function signupClassColor(cls) {
@@ -333,14 +291,18 @@ function buildSignupCharactersTip(signup, chars, { overLimit, officer }) {
     const tbody = document.createElement('tbody');
     sortSignupCharacters(chars).forEach((c) => {
       const tr = document.createElement('tr');
-      if (signup.character_name && c.name.toLocaleLowerCase('uk') === signup.character_name.toLocaleLowerCase('uk')) {
-        tr.className = 'signup-tip-current';
-      }
+      const isCurrent = Boolean(signup.character_name) && c.name.toLocaleLowerCase('uk') === signup.character_name.toLocaleLowerCase('uk');
+      if (isCurrent) tr.className = 'signup-tip-current';
+      const cls = signupGuildClassMap?.get(c.name)?.cls;
       const name = document.createElement('td');
       name.textContent = c.name;
-      name.style.color = signupClassColor(signupGuildClassMap?.get(c.name)?.cls) || 'var(--color-text-faint)';
+      name.style.color = signupClassColor(cls) || 'var(--color-text-faint)';
+      // GS по спеках; у персонажа, яким записався, - підсвічений спек запису.
+      // Старий GS одним числом - лише в персонажів без класу.
       const gs = document.createElement('td');
-      gs.textContent = c.gs == null ? '—' : c.gs.toFixed(1);
+      const chips = createGearScoreChips(c.gearScores, { cls, highlightSpec: isCurrent ? signup.spec : null, tooltips: false });
+      if (chips) gs.appendChild(chips);
+      else gs.textContent = c.gs == null ? '—' : c.gs.toFixed(1);
       const cd = document.createElement('td');
       // Octicon check, як у колонках КД на "Рейтинг DPS".
       if (c.cd) {

@@ -69,6 +69,8 @@ async function readErrorMessage(res) {
 let guildMemberNames = new Set();
 let personalAnalyticsNames = new Set();
 let classColorMap = new Map();
+// Клас персонажа з логів (англійською, як у SIGNUP_CLASSES) - для спеків GS.
+let logClassByName = new Map();
 
 async function loadCharacterStatsSources() {
   try {
@@ -87,6 +89,10 @@ async function loadCharacterStatsSources() {
     if (guildDataRes?.ok) {
       const guildData = await guildDataRes.json();
       classColorMap = buildClassColorMap(guildData.rows || []);
+      logClassByName = new Map();
+      for (const row of guildData.rows || []) {
+        if (!logClassByName.has(row.name)) logClassByName.set(row.name, row.class);
+      }
     }
   } catch (err) {
     console.error(err);
@@ -175,18 +181,28 @@ function gearScoreText(value) {
   return value == null ? '' : value.toFixed(1);
 }
 
-// GS у таблиці лише показується (чіп); змінюється через меню ⋯ -> "Вказати GS".
-function createGearScoreCell(gearScore) {
+// Клас персонажа: з логів, інакше обраний у профілі; null - невідомий.
+function characterClass(character) {
+  return logClassByName.get(character.characterName) || character.className || null;
+}
+
+// GS у таблиці лише показується - чіпи "іконка спеку + GS"; змінюється через
+// меню ⋯ -> "Вказати GS". Старий GS одним числом (персонаж без класу) -
+// звичайний чіп без іконки, поки клас не обрано.
+function createGearScoreCell(character) {
   const td = document.createElement('td');
   td.className = 'account-gs-td';
-  if (gearScore == null) {
-    td.textContent = '—';
-    td.classList.add('account-gs-td--empty');
-  } else {
+  const chips = createGearScoreChips(character.gearScores, { cls: characterClass(character) });
+  if (chips) {
+    td.appendChild(chips);
+  } else if (character.gearScore != null) {
     const chip = document.createElement('span');
     chip.className = 'raid-chip';
-    chip.textContent = gearScoreText(gearScore);
+    chip.textContent = gearScoreText(character.gearScore);
     td.appendChild(chip);
+  } else {
+    td.textContent = '—';
+    td.classList.add('account-gs-td--empty');
   }
   return td;
 }
@@ -282,7 +298,14 @@ function showCharacterMenuRoot(character) {
     hint: fromLogs ? 'визначено з логів' : '',
     onClick: () => showCharacterMenuClasses(character)
   });
-  addCharacterMenuItem({ label: 'Вказати GS', onClick: () => showCharacterMenuGearScore(character) });
+  // GS - по спеках класу, тож без класу вказати нема для чого.
+  const hasClass = Boolean(SIGNUP_CLASSES[characterClass(character)]);
+  addCharacterMenuItem({
+    label: 'Вказати GS',
+    disabled: !hasClass,
+    hint: hasClass ? '' : 'спершу обери клас',
+    onClick: () => showCharacterMenuSpecs(character)
+  });
   // Основний може бути лише один - сервер сам знімає прапорець з інших.
   addCharacterMenuItem(character.isPrimary
     ? { label: 'Зняти «Основний»', onClick: () => setCharacterPrimary(character.characterName, false) }
@@ -299,19 +322,52 @@ function showCharacterMenuRoot(character) {
   characterMenu.querySelector('button:not(:disabled)')?.focus();
 }
 
-function addCharacterMenuBack(title, character) {
-  addCharacterMenuItem({
-    html: `${CHEVRON_LEFT_ICON}<span>${title}</span>`,
+function addCharacterMenuBack(title, onBack) {
+  const btn = addCharacterMenuItem({
+    html: `${CHEVRON_LEFT_ICON}<span></span>`,
     extraClass: 'account-char-menu-back',
-    onClick: () => showCharacterMenuRoot(character)
+    onClick: onBack
   });
+  btn.querySelector('span').textContent = title;
 }
 
-// "Вказати GS": поле з маскою X.X + Зберегти (і Очистити, якщо GS уже є).
-function showCharacterMenuGearScore(character) {
-  const { characterName: name, gearScore } = character;
+// Іконка + назва спеку для пункту меню / заголовка.
+function specMenuHtml(cls, spec) {
+  return `<img class="account-char-menu-spec-icon" src="${signupIconUrl(signupSpecInfo(cls, spec).icon)}" alt="" width="16" height="16"><span class="account-char-menu-spec-label"></span>`;
+}
+
+// "Вказати GS" -> список спеків класу з поточними значеннями праворуч.
+function showCharacterMenuSpecs(character) {
+  const cls = characterClass(character);
   characterMenu.innerHTML = '';
-  addCharacterMenuBack('Вказати GS', character);
+  addCharacterMenuBack('Вказати GS', () => showCharacterMenuRoot(character));
+  Object.keys(SIGNUP_CLASSES[cls].specs).forEach((spec) => {
+    const btn = addCharacterMenuItem({
+      html: specMenuHtml(cls, spec),
+      onClick: () => showCharacterMenuGearScore(character, spec)
+    });
+    btn.querySelector('.account-char-menu-spec-label').textContent = signupSpecLabel(spec);
+    const gs = character.gearScores?.[spec];
+    if (gs != null) {
+      const value = document.createElement('span');
+      value.className = 'account-char-menu-spec-gs';
+      value.textContent = gearScoreText(gs);
+      btn.appendChild(value);
+    }
+  });
+  positionCharacterMenu();
+  characterMenu.querySelector('button:not(.account-char-menu-back)')?.focus();
+}
+
+// GS одного спеку: поле з маскою X.X + Зберегти (і Очистити, якщо GS уже є).
+function showCharacterMenuGearScore(character, spec) {
+  const name = character.characterName;
+  const cls = characterClass(character);
+  const gearScore = character.gearScores?.[spec] ?? null;
+  characterMenu.innerHTML = '';
+  addCharacterMenuBack(signupSpecLabel(spec), () => showCharacterMenuSpecs(character));
+  const backBtn = characterMenu.lastElementChild;
+  backBtn.querySelector('svg').insertAdjacentHTML('afterend', `<img class="account-char-menu-spec-icon" src="${signupIconUrl(signupSpecInfo(cls, spec).icon)}" alt="" width="16" height="16">`);
 
   const form = document.createElement('form');
   form.className = 'account-char-menu-gs';
@@ -322,7 +378,7 @@ function showCharacterMenuGearScore(character) {
   input.className = 'account-gs-input';
   input.placeholder = '0.0';
   input.maxLength = 3;
-  input.setAttribute('aria-label', `GS: ${name}`);
+  input.setAttribute('aria-label', `GS: ${name}, ${signupSpecLabel(spec)}`);
   input.value = gearScoreText(gearScore);
   input.addEventListener('input', () => {
     input.value = formatGearScoreInput(input.value);
@@ -343,12 +399,12 @@ function showCharacterMenuGearScore(character) {
       input.focus();
       return;
     }
-    await saveCharacterField(name, { gearScore: Number(text) });
+    await saveCharacterField(name, { gearScores: { [spec]: Number(text) } });
   });
   characterMenu.appendChild(form);
 
   if (gearScore != null) {
-    addCharacterMenuItem({ label: 'Очистити GS', extraClass: 'split-btn__item--danger', onClick: () => saveCharacterField(name, { gearScore: null }) });
+    addCharacterMenuItem({ label: 'Очистити GS', extraClass: 'split-btn__item--danger', onClick: () => saveCharacterField(name, { gearScores: { [spec]: null } }) });
   }
   positionCharacterMenu();
   input.focus();
@@ -358,7 +414,7 @@ function showCharacterMenuGearScore(character) {
 function showCharacterMenuClasses(character) {
   const { characterName: name, className } = character;
   characterMenu.innerHTML = '';
-  addCharacterMenuBack('Обрати клас', character);
+  addCharacterMenuBack('Обрати клас', () => showCharacterMenuRoot(character));
   Object.keys(WOW_CLASS_COLORS).forEach((cls) => {
     const item = addCharacterMenuItem({
       label: translateClass(cls),
@@ -433,7 +489,7 @@ function renderCharactersList(characters) {
   }
 
   characters.forEach((character) => {
-    const { characterName: name, isPrimary, cooldowns, gearScore, className } = character;
+    const { characterName: name, isPrimary, cooldowns, className } = character;
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
@@ -450,7 +506,7 @@ function renderCharactersList(characters) {
     nameWrap.appendChild(createCharacterMenuButton(character));
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
-    tr.appendChild(createGearScoreCell(gearScore));
+    tr.appendChild(createGearScoreCell(character));
 
 
     COOLDOWN_KEYS.forEach((key) => tr.appendChild(createCooldownCell(name, key, cooldowns?.[key])));
