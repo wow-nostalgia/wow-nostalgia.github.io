@@ -8,7 +8,8 @@
 // - колонки: "Танк" (усі танк-спеки) і класи, заголовок класу - лише якщо в
 //   ньому хтось є; у рядку - іконка спеку, номер запису, персонаж;
 // - рядки внизу: Лавка запасних, Запізнюсь, Під питанням, Відсутні;
-// - ліміт 25 лише показується: записи основи понад 25 позначені "понад ліміт".
+// - ліміт (10 чи 25 за складністю рейду) лише показується: записи основи понад
+//   ліміт позначені "понад ліміт".
 //
 // Залежить від: ui-shared.js (openModal, closeModal, onModalCancel,
 // setModalBusy, showMessageModal, applyAutoTooltip, kyivDateKey, kyivTimeKey,
@@ -16,7 +17,10 @@
 // (getSessionToken). Опційно: name-translations.js (translateClass,
 // translateSpec), wow-class-colors.js (WOW_CLASS_COLORS).
 
-const SIGNUP_LIMIT = 25;
+// Ліміт основи - розмір рейду з його складності ("10N", "25H"...).
+function signupLimit(raid) {
+  return parseInt(raid?.difficulty, 10) === 10 ? 10 : 25;
+}
 
 // Має збігатися з worker/src/signup-specs.js. role: tank | healer | ranged | melee.
 const SIGNUP_CLASSES = {
@@ -374,15 +378,16 @@ function renderSignupRoster(root, opts) {
 
   const main = signups.filter((s) => s.status === 'signed');
   const extraCount = signups.filter((s) => ['late', 'tentative', 'bench'].includes(s.status)).length;
-  // Понад ліміт - основа після перших 25 за номером запису.
-  const overLimitIds = new Set(main.slice(SIGNUP_LIMIT).map((s) => s.id));
+  // Понад ліміт - основа після перших 10/25 за номером запису.
+  const limit = signupLimit(raid);
+  const overLimitIds = new Set(main.slice(limit).map((s) => s.id));
 
   // Шапка.
   const head = document.createElement('div');
   head.className = 'signup-head';
   // Лідер, дата й час - уже в чипах угорі сторінки рейду, тут не дублюємо.
   const metaItems = [
-    ['Записано', `${main.length}/${SIGNUP_LIMIT}${extraCount ? ` (+${extraCount})` : ''}`],
+    ['Записано', `${main.length}/${limit}${extraCount ? ` (+${extraCount})` : ''}`],
     ['Початок', signupCountdownText(raid)]
   ];
   metaItems.forEach(([label, value]) => {
@@ -394,7 +399,7 @@ function renderSignupRoster(root, opts) {
     const v = document.createElement('span');
     v.className = 'signup-meta-value';
     v.textContent = value;
-    if (label === 'Записано' && main.length > SIGNUP_LIMIT) v.classList.add('signup-meta-value--over');
+    if (label === 'Записано' && main.length > limit) v.classList.add('signup-meta-value--over');
     item.append(l, v);
     head.appendChild(item);
   });
