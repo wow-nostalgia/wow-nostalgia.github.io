@@ -183,53 +183,19 @@ function gearScoreText(value) {
   return value == null ? '' : value.toFixed(1);
 }
 
-function createGearScoreCell(name, gearScore) {
+// GS у таблиці лише показується (чіп); змінюється через меню ⋯ -> "Вказати GS".
+function createGearScoreCell(gearScore) {
   const td = document.createElement('td');
   td.className = 'account-gs-td';
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.inputMode = 'numeric';
-  input.autocomplete = 'off';
-  input.className = 'account-gs-input';
-  input.placeholder = '0.0';
-  input.maxLength = 3;
-  input.setAttribute('aria-label', `GS: ${name}`);
-  let saved = gearScoreText(gearScore);
-  input.value = saved;
-
-  input.addEventListener('input', () => {
-    input.value = formatGearScoreInput(input.value);
-  });
-
-  const save = async () => {
-    let text = input.value;
-    // Одна цифра без крапки - це цілі: "7" -> "7.0".
-    if (/^\d$/.test(text)) text = `${text}.0`;
-    input.value = text;
-    if (text === saved) return;
-    if (text && !/^\d\.\d$/.test(text)) {
-      input.value = saved;
-      return;
-    }
-    input.disabled = true;
-    try {
-      await patchCharacter(name, { gearScore: text ? Number(text) : null });
-      saved = text;
-      setAccountStatus('');
-    } catch (err) {
-      input.value = saved;
-      setAccountStatus(`Помилка: ${err.message}`);
-    } finally {
-      input.disabled = false;
-    }
-  };
-
-  input.addEventListener('blur', save);
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
-    if (e.key === 'Escape') { input.value = saved; input.blur(); }
-  });
-  td.appendChild(input);
+  if (gearScore == null) {
+    td.textContent = '—';
+    td.classList.add('account-gs-td--empty');
+  } else {
+    const chip = document.createElement('span');
+    chip.className = 'raid-chip';
+    chip.textContent = gearScoreText(gearScore);
+    td.appendChild(chip);
+  }
   return td;
 }
 
@@ -290,50 +256,125 @@ function addCharacterMenuItem({ label, html, color, disabled, hint, onClick, ext
   return btn;
 }
 
-async function saveCharacterClass(name, className) {
+async function saveCharacterField(name, patch) {
   closeCharacterMenu();
   try {
-    renderCharactersList(await patchCharacter(name, { className }));
+    renderCharactersList(await patchCharacter(name, patch));
     setAccountStatus('');
   } catch (err) {
     setAccountStatus(`Помилка: ${err.message}`);
   }
 }
 
-function showCharacterMenuRoot(name, className) {
+async function setCharacterPrimary(name, primary) {
+  closeCharacterMenu();
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/auth/me/characters/${encodeURIComponent(name)}/primary`, {
+      method: primary ? 'POST' : 'DELETE',
+      headers: { Authorization: `Bearer ${getSessionToken()}` }
+    });
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    renderCharactersList(await res.json());
+    setAccountStatus('');
+  } catch (err) {
+    setAccountStatus(`Помилка: ${err.message}`);
+  }
+}
+
+function showCharacterMenuRoot(character) {
   characterMenu.innerHTML = '';
-  const fromLogs = classColorMap.has(name);
+  const fromLogs = classColorMap.has(character.characterName);
   addCharacterMenuItem({
     label: 'Обрати клас',
     disabled: fromLogs,
     hint: fromLogs ? 'визначено з логів' : '',
-    onClick: () => showCharacterMenuClasses(name, className)
+    onClick: () => showCharacterMenuClasses(character)
   });
+  addCharacterMenuItem({ label: 'Вказати GS', onClick: () => showCharacterMenuGearScore(character) });
+  // Основний може бути лише один - сервер сам знімає прапорець з інших.
+  addCharacterMenuItem(character.isPrimary
+    ? { label: 'Зняти «Основний»', onClick: () => setCharacterPrimary(character.characterName, false) }
+    : { label: 'Зробити основним', onClick: () => setCharacterPrimary(character.characterName, true) });
   positionCharacterMenu();
+  characterMenu.querySelector('button:not(:disabled)')?.focus();
 }
 
-function showCharacterMenuClasses(name, className) {
-  characterMenu.innerHTML = '';
+function addCharacterMenuBack(title, character) {
   addCharacterMenuItem({
-    html: `${CHEVRON_LEFT_ICON}<span>Обрати клас</span>`,
+    html: `${CHEVRON_LEFT_ICON}<span>${title}</span>`,
     extraClass: 'account-char-menu-back',
-    onClick: () => showCharacterMenuRoot(name, className)
+    onClick: () => showCharacterMenuRoot(character)
   });
+}
+
+// "Вказати GS": поле з маскою X.X + Зберегти (і Очистити, якщо GS уже є).
+function showCharacterMenuGearScore(character) {
+  const { characterName: name, gearScore } = character;
+  characterMenu.innerHTML = '';
+  addCharacterMenuBack('Вказати GS', character);
+
+  const form = document.createElement('form');
+  form.className = 'account-char-menu-gs';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.inputMode = 'numeric';
+  input.autocomplete = 'off';
+  input.className = 'account-gs-input';
+  input.placeholder = '0.0';
+  input.maxLength = 3;
+  input.setAttribute('aria-label', `GS: ${name}`);
+  input.value = gearScoreText(gearScore);
+  input.addEventListener('input', () => {
+    input.value = formatGearScoreInput(input.value);
+  });
+  const saveBtn = document.createElement('button');
+  saveBtn.type = 'submit';
+  saveBtn.className = 'compare-btn account-char-menu-gs-save';
+  saveBtn.textContent = 'Зберегти';
+  form.append(input, saveBtn);
+  form.addEventListener('click', (event) => event.stopPropagation());
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    let text = input.value;
+    // Одна цифра без крапки - це цілі: "7" -> "7.0".
+    if (/^\d$/.test(text)) text = `${text}.0`;
+    if (!/^\d\.\d$/.test(text)) {
+      input.value = formatGearScoreInput(text);
+      input.focus();
+      return;
+    }
+    await saveCharacterField(name, { gearScore: Number(text) });
+  });
+  characterMenu.appendChild(form);
+
+  if (gearScore != null) {
+    addCharacterMenuItem({ label: 'Очистити GS', extraClass: 'split-btn__item--danger', onClick: () => saveCharacterField(name, { gearScore: null }) });
+  }
+  positionCharacterMenu();
+  input.focus();
+  input.select();
+}
+
+function showCharacterMenuClasses(character) {
+  const { characterName: name, className } = character;
+  characterMenu.innerHTML = '';
+  addCharacterMenuBack('Обрати клас', character);
   Object.keys(WOW_CLASS_COLORS).forEach((cls) => {
     const item = addCharacterMenuItem({
       label: translateClass(cls),
       color: WOW_CLASS_COLORS[cls],
-      onClick: () => saveCharacterClass(name, cls)
+      onClick: () => saveCharacterField(name, { className: cls })
     });
     if (cls === className) item.setAttribute('aria-current', 'true');
   });
   if (className) {
-    addCharacterMenuItem({ label: 'Скинути клас', extraClass: 'split-btn__item--danger', onClick: () => saveCharacterClass(name, null) });
+    addCharacterMenuItem({ label: 'Скинути клас', extraClass: 'split-btn__item--danger', onClick: () => saveCharacterField(name, { className: null }) });
   }
   positionCharacterMenu();
 }
 
-function createCharacterMenuCell(name, className) {
+function createCharacterMenuCell(character) {
+  const name = character.characterName;
   const td = document.createElement('td');
   td.className = 'account-char-menu-td';
   const btn = document.createElement('button');
@@ -351,7 +392,7 @@ function createCharacterMenuCell(name, className) {
     characterMenuAnchor = btn;
     btn.setAttribute('aria-expanded', 'true');
     characterMenu.hidden = false;
-    showCharacterMenuRoot(name, className);
+    showCharacterMenuRoot(character);
   });
   td.appendChild(btn);
   return td;
@@ -367,8 +408,14 @@ document.addEventListener('keydown', (event) => {
     anchor?.focus();
   }
 });
-window.addEventListener('resize', closeCharacterMenu);
-window.addEventListener('scroll', closeCharacterMenu, true);
+// Поки фокус у полі GS у меню, клавіатура телефона сама скролить/ресайзить
+// сторінку - тоді меню не закриваємо, а переставляємо.
+const onCharacterMenuViewportChange = () => {
+  if (characterMenu.contains(document.activeElement) && document.activeElement.tagName === 'INPUT') positionCharacterMenu();
+  else closeCharacterMenu();
+};
+window.addEventListener('resize', onCharacterMenuViewportChange);
+window.addEventListener('scroll', onCharacterMenuViewportChange, true);
 
 // Скільки персонажів у списку зараз - щоб зрозуміти, чи щойно доданий був
 // першим (див. обробник addCharacterForm).
@@ -381,16 +428,15 @@ function renderCharactersList(characters) {
   if (!characters.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 10;
+    td.colSpan = 9;
     td.textContent = 'Ще не додано жодного персонажа.';
     tr.appendChild(td);
     charactersList.appendChild(tr);
     return;
   }
 
-  const hasPrimary = characters.some((c) => c.isPrimary);
-
-  characters.forEach(({ characterName: name, isPrimary, cooldowns, gearScore, className }) => {
+  characters.forEach((character) => {
+    const { characterName: name, isPrimary, cooldowns, gearScore, className } = character;
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
@@ -398,43 +444,24 @@ function renderCharactersList(characters) {
     nameWrap.className = 'account-character-name-cell';
     nameWrap.appendChild(createPlayerBadge(name));
     nameWrap.appendChild(characterNameNode(name, className));
+    if (isPrimary) {
+      const primaryBadge = document.createElement('span');
+      primaryBadge.className = 'primary-character-badge';
+      primaryBadge.textContent = 'Основний';
+      nameWrap.appendChild(primaryBadge);
+    }
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
-    tr.appendChild(createCharacterMenuCell(name, className));
+    tr.appendChild(createCharacterMenuCell(character));
+    tr.appendChild(createGearScoreCell(gearScore));
 
     const attendanceTd = document.createElement('td');
     attendanceTd.className = 'account-attendance-col';
     attendanceTd.textContent = String(raidAttendanceByName.get(name) || 0);
     tr.appendChild(attendanceTd);
 
-    const checkboxTd = document.createElement('td');
-    checkboxTd.className = 'account-primary-checkbox-td';
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = isPrimary;
-    checkbox.disabled = !isPrimary && hasPrimary;
-    checkbox.addEventListener('change', async () => {
-      checkbox.disabled = true;
-      const method = checkbox.checked ? 'POST' : 'DELETE';
-      try {
-        const token = getSessionToken();
-        const res = await fetch(`${AUTH_API_BASE}/auth/me/characters/${encodeURIComponent(name)}/primary`, {
-          method,
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        if (!res.ok) throw new Error(await readErrorMessage(res));
-        renderCharactersList(await res.json());
-      } catch (err) {
-        checkbox.checked = !checkbox.checked;
-        checkbox.disabled = false;
-        setAccountStatus(`Помилка: ${err.message}`);
-      }
-    });
-    checkboxTd.appendChild(checkbox);
-    tr.appendChild(checkboxTd);
 
     COOLDOWN_KEYS.forEach((key) => tr.appendChild(createCooldownCell(name, key, cooldowns?.[key])));
-    tr.appendChild(createGearScoreCell(name, gearScore));
 
     const actionsTd = document.createElement('td');
     actionsTd.className = 'account-delete-td';

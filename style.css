@@ -3040,7 +3040,8 @@ body.raid-manager-detail-page .raid-copy-link-btn {
 
 body.raid-manager-detail-page .raid-chip,
 body.raid-manager-page .raid-chip,
-body.buff-queue-page .raid-chip {
+body.buff-queue-page .raid-chip,
+body.account-page .raid-chip {
   padding: 0 7px;
   border-radius: var(--radius-pill);
   font-size: var(--font-size-sm);
@@ -5838,13 +5839,10 @@ body.account-page .account-attendance-col {
   color: var(--color-text-faint);
 }
 
-body.account-page .account-primary-col,
-body.account-page .account-primary-checkbox-td {
-  text-align: center;
-  width: 5rem;
+body.account-page .account-character-name-cell .primary-character-badge {
+  white-space: nowrap;
 }
 
-body.account-page .account-primary-checkbox-td input[type="checkbox"],
 body.account-page .account-cd-td input[type="checkbox"] {
   accent-color: var(--color-link);
 }
@@ -5859,6 +5857,14 @@ body.account-page .account-gs-col,
 body.account-page .account-gs-td {
   text-align: center;
   width: 4rem;
+}
+
+body.account-page .account-gs-td .raid-chip {
+  font-variant-numeric: tabular-nums;
+}
+
+body.account-page .account-gs-td--empty {
+  color: var(--color-text-faint);
 }
 
 body.account-page .account-gs-input {
@@ -5938,6 +5944,13 @@ body.account-page .account-char-menu-btn {
   align-items: center;
 }
 
+/* Вузька колонка таблиці інакше стискає іконку до кількох пікселів. */
+body.account-page .account-char-menu-btn svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
 body.account-page .account-char-menu-btn:hover,
 body.account-page .account-char-menu-btn[aria-expanded="true"] {
   color: var(--color-text-strong);
@@ -5946,9 +5959,13 @@ body.account-page .account-char-menu-btn[aria-expanded="true"] {
 
 /* Меню - той самий вигляд, що .split-btn__menu, але fixed: таблиця
    персонажів має overflow-x і обрізала б абсолютне меню. */
+/* Над навбаром (як його власні дропдауни) і зі скролом, якщо список класів
+   не влазить ні під кнопкою, ні над нею. */
 body.account-page .account-char-menu {
   position: fixed;
-  z-index: var(--z-dropdown);
+  z-index: var(--z-nav-dropdown);
+  max-height: calc(100vh - 16px);
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -5989,6 +6006,31 @@ body.account-page .account-char-menu .split-btn__item[aria-current="true"] {
 body.account-page .account-char-menu-hint {
   font-size: 0.75rem;
   color: var(--color-text-faint);
+}
+
+/* "Вказати GS" у меню: поле + Зберегти в один рядок. */
+body.account-page .account-char-menu-gs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.4rem;
+}
+
+body.account-page .account-char-menu-gs .account-gs-input {
+  padding-block: 0.35rem;
+}
+
+body.account-page .account-char-menu-gs-save {
+  padding: 0.3rem 0.75rem;
+  font-size: var(--font-size-base);
+  background: var(--color-success-strong);
+  border-color: var(--color-success-strong);
+  color: var(--color-on-accent);
+}
+
+body.account-page .account-char-menu-gs-save:hover:not(:disabled) {
+  background: var(--color-success-strong-hover);
+  border-color: var(--color-success-strong-hover);
 }
 
 body.account-page .account-char-menu-back {
