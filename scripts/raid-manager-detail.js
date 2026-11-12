@@ -3168,7 +3168,8 @@ async function init() {
     fetch(apiUrl('/characters/owners')).catch(() => null),
     fetchSiteData('/data/guild-data.json').catch(() => null),
     fetchSiteData('/data/honor-board.json').catch(() => null),
-    loadItemIconData()
+    loadItemIconData(),
+    fetchManualCharacterClasses()
   ]);
 
   let raidError = null;
@@ -3178,7 +3179,7 @@ async function init() {
     .catch((err) => { console.error(err); return null; });
 
   try {
-    const [itemsRes, playersRes, ownersRes, guildDataRes, honorBoardRes] = await staticDataPromise;
+    const [itemsRes, playersRes, ownersRes, guildDataRes, honorBoardRes, , manualClasses] = await staticDataPromise;
     itemsCatalog = await itemsRes.json();
     if (playersRes.ok) {
       const players = await playersRes.json();
@@ -3198,6 +3199,8 @@ async function init() {
     if (honorBoardRes?.ok) {
       honorBoard = await honorBoardRes.json();
     }
+    // Класи з профілю - для персонажів, яких ще немає в логах.
+    addManualClassColors(classColorMap, manualClasses);
   } catch (err) {
     console.error(err);
   }

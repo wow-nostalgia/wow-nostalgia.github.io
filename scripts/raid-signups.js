@@ -602,10 +602,12 @@ function selectField(labelText, id) {
 }
 
 let signupGuildClassMap = null;
-// Клас/спек персонажа з data/guild-data.json - щоб підставити в форму.
+// Клас/спек персонажа з data/guild-data.json (або клас із профілю) - щоб
+// підставити в форму.
 async function guessCharacterClassSpec(name) {
   if (!signupGuildClassMap) {
     signupGuildClassMap = new Map();
+    const manualPromise = fetchManualCharacterClasses();
     try {
       const res = await fetchSiteData('/data/guild-data.json');
       const data = await res.json();
@@ -618,6 +620,11 @@ async function guessCharacterClassSpec(name) {
     } catch (err) {
       console.error(err);
     }
+    // Клас, обраний у профілі, - лише для персонажів, яких немає в логах;
+    // спек невідомий, очок нема (у підказці - після персонажів з логів).
+    Object.entries(await manualPromise).forEach(([name, cls]) => {
+      if (!signupGuildClassMap.has(name)) signupGuildClassMap.set(name, { cls, spec: null, score: -1 });
+    });
   }
   return signupGuildClassMap.get(name) || null;
 }

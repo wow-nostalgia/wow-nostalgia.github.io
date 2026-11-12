@@ -5917,6 +5917,86 @@ body.shard-queue-page .account-delete-btn:hover {
   background-color: color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
+/* Колонка з кнопкою ⋯ одразу після імені персонажа. */
+body.account-page .account-char-menu-col,
+body.account-page .account-char-menu-td {
+  width: 2.25rem;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+}
+
+/* База - як у .account-delete-btn, але наведення звичайне, не червоне. */
+body.account-page .account-char-menu-btn {
+  background: none;
+  border: none;
+  padding: 0.4rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+}
+
+body.account-page .account-char-menu-btn:hover,
+body.account-page .account-char-menu-btn[aria-expanded="true"] {
+  color: var(--color-text-strong);
+  background-color: var(--color-hover);
+}
+
+/* Меню - той самий вигляд, що .split-btn__menu, але fixed: таблиця
+   персонажів має overflow-x і обрізала б абсолютне меню. */
+body.account-page .account-char-menu {
+  position: fixed;
+  z-index: var(--z-dropdown);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 11rem;
+  padding: 6px;
+  background-color: var(--color-surface-overlay);
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+body.account-page .account-char-menu[hidden] {
+  display: none;
+}
+
+body.account-page .account-char-menu .split-btn__item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+body.account-page .account-char-menu .split-btn__item:disabled {
+  color: var(--color-text-faint);
+  cursor: not-allowed;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+}
+
+body.account-page .account-char-menu .split-btn__item:disabled:hover {
+  background: none;
+}
+
+body.account-page .account-char-menu .split-btn__item[aria-current="true"] {
+  background: var(--color-hover);
+}
+
+body.account-page .account-char-menu-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-faint);
+}
+
+body.account-page .account-char-menu-back {
+  color: var(--color-text-faint);
+  border-bottom: 1px solid var(--color-border);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
 body.account-page .account-lang-toggle {
   display: flex;
   gap: 0.4rem;

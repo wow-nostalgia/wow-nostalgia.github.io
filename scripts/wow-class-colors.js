@@ -16,6 +16,27 @@ const WOW_CLASS_COLORS = {
   'Warrior': '#C79C6E'
 };
 
+// Класи, обрані гравцями в профілі (GET /characters/classes): { ім'я: клас }.
+// Потребує apiUrl з auth-shared.js. Помилка мережі - просто без них.
+async function fetchManualCharacterClasses() {
+  try {
+    const res = await fetch(apiUrl('/characters/classes'));
+    return res.ok ? await res.json() : {};
+  } catch (err) {
+    console.error(err);
+    return {};
+  }
+}
+
+// Доповнює мапу "ім'я -> колір" класами з профілю - лише для імен, яких
+// немає в логах: клас із логів завжди важливіший.
+function addManualClassColors(map, manualClasses) {
+  for (const [name, cls] of Object.entries(manualClasses || {})) {
+    if (!map.has(name) && WOW_CLASS_COLORS[cls]) map.set(name, WOW_CLASS_COLORS[cls]);
+  }
+  return map;
+}
+
 function buildClassColorMap(rows) {
   const map = new Map();
   for (const row of rows) {

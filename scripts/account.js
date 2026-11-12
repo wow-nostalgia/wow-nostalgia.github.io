@@ -104,8 +104,9 @@ async function loadCharacterStatsSources() {
 // Ім'я персонажа — лінк на "Персональну аналітику" з префілом цього
 // персонажа (?player=...), лише якщо для нього взагалі є дані в логах.
 // Інакше — звичайний текст, лінк в нікуди був би плутаниною.
-function characterNameNode(name) {
-  const color = classColorMap.get(name);
+// manualClass - клас, обраний у профілі; діє лише без класу з логів.
+function characterNameNode(name, manualClass) {
+  const color = classColorMap.get(name) || WOW_CLASS_COLORS[manualClass];
   if (!personalAnalyticsNames.has(name)) {
     if (!color) return document.createTextNode(name);
     const span = document.createElement('span');
@@ -232,6 +233,143 @@ function createGearScoreCell(name, gearScore) {
   return td;
 }
 
+// Меню ⋯ біля імені персонажа: "Обрати клас" -> список класів. Клас із
+// логів важливіший, тож для персонажа з логів пункт неактивний. Меню одне
+// на сторінку й позиціонується fixed від кнопки - таблиця має overflow-x
+// і обрізала б абсолютне меню.
+const KEBAB_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM1.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm13 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg>';
+const CHEVRON_LEFT_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M9.78 12.78a.75.75 0 0 1-1.06 0L4.47 8.53a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L6.06 8l3.72 3.72a.75.75 0 0 1 0 1.06Z"/></svg>';
+
+const characterMenu = document.createElement('div');
+characterMenu.className = 'account-char-menu';
+characterMenu.setAttribute('role', 'menu');
+characterMenu.hidden = true;
+document.body.appendChild(characterMenu);
+let characterMenuAnchor = null;
+
+function closeCharacterMenu() {
+  if (characterMenu.hidden) return;
+  characterMenu.hidden = true;
+  characterMenuAnchor?.setAttribute('aria-expanded', 'false');
+  characterMenuAnchor = null;
+}
+
+function positionCharacterMenu() {
+  if (!characterMenuAnchor) return;
+  const rect = characterMenuAnchor.getBoundingClientRect();
+  const width = characterMenu.offsetWidth;
+  const height = characterMenu.offsetHeight;
+  const left = Math.max(8, Math.min(rect.left, window.innerWidth - width - 8));
+  // Не влазить знизу - відкриваємо над кнопкою.
+  const below = rect.bottom + 4;
+  const top = below + height > window.innerHeight - 8 ? Math.max(8, rect.top - height - 4) : below;
+  characterMenu.style.left = `${left}px`;
+  characterMenu.style.top = `${top}px`;
+}
+
+function addCharacterMenuItem({ label, html, color, disabled, hint, onClick, extraClass }) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = `split-btn__item${extraClass ? ` ${extraClass}` : ''}`;
+  btn.setAttribute('role', 'menuitem');
+  if (html) btn.innerHTML = html;
+  else btn.textContent = label;
+  if (color) btn.style.color = color;
+  btn.disabled = Boolean(disabled);
+  if (hint) {
+    const note = document.createElement('span');
+    note.className = 'account-char-menu-hint';
+    note.textContent = hint;
+    btn.appendChild(note);
+  }
+  btn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    onClick();
+  });
+  characterMenu.appendChild(btn);
+  return btn;
+}
+
+async function saveCharacterClass(name, className) {
+  closeCharacterMenu();
+  try {
+    renderCharactersList(await patchCharacter(name, { className }));
+    setAccountStatus('');
+  } catch (err) {
+    setAccountStatus(`Помилка: ${err.message}`);
+  }
+}
+
+function showCharacterMenuRoot(name, className) {
+  characterMenu.innerHTML = '';
+  const fromLogs = classColorMap.has(name);
+  addCharacterMenuItem({
+    label: 'Обрати клас',
+    disabled: fromLogs,
+    hint: fromLogs ? 'визначено з логів' : '',
+    onClick: () => showCharacterMenuClasses(name, className)
+  });
+  positionCharacterMenu();
+}
+
+function showCharacterMenuClasses(name, className) {
+  characterMenu.innerHTML = '';
+  addCharacterMenuItem({
+    html: `${CHEVRON_LEFT_ICON}<span>Обрати клас</span>`,
+    extraClass: 'account-char-menu-back',
+    onClick: () => showCharacterMenuRoot(name, className)
+  });
+  Object.keys(WOW_CLASS_COLORS).forEach((cls) => {
+    const item = addCharacterMenuItem({
+      label: translateClass(cls),
+      color: WOW_CLASS_COLORS[cls],
+      onClick: () => saveCharacterClass(name, cls)
+    });
+    if (cls === className) item.setAttribute('aria-current', 'true');
+  });
+  if (className) {
+    addCharacterMenuItem({ label: 'Скинути клас', extraClass: 'split-btn__item--danger', onClick: () => saveCharacterClass(name, null) });
+  }
+  positionCharacterMenu();
+}
+
+function createCharacterMenuCell(name, className) {
+  const td = document.createElement('td');
+  td.className = 'account-char-menu-td';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'account-char-menu-btn';
+  btn.setAttribute('aria-label', `Дії: ${name}`);
+  btn.setAttribute('aria-haspopup', 'menu');
+  btn.setAttribute('aria-expanded', 'false');
+  btn.innerHTML = KEBAB_ICON;
+  btn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const wasOpenHere = characterMenuAnchor === btn;
+    closeCharacterMenu();
+    if (wasOpenHere) return;
+    characterMenuAnchor = btn;
+    btn.setAttribute('aria-expanded', 'true');
+    characterMenu.hidden = false;
+    showCharacterMenuRoot(name, className);
+  });
+  td.appendChild(btn);
+  return td;
+}
+
+document.addEventListener('click', (event) => {
+  if (!characterMenu.contains(event.target)) closeCharacterMenu();
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !characterMenu.hidden) {
+    const anchor = characterMenuAnchor;
+    closeCharacterMenu();
+    anchor?.focus();
+  }
+});
+window.addEventListener('resize', closeCharacterMenu);
+window.addEventListener('scroll', closeCharacterMenu, true);
+
 // Скільки персонажів у списку зараз - щоб зрозуміти, чи щойно доданий був
 // першим (див. обробник addCharacterForm).
 let charactersCount = 0;
@@ -243,7 +381,7 @@ function renderCharactersList(characters) {
   if (!characters.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 9;
+    td.colSpan = 10;
     td.textContent = 'Ще не додано жодного персонажа.';
     tr.appendChild(td);
     charactersList.appendChild(tr);
@@ -252,16 +390,17 @@ function renderCharactersList(characters) {
 
   const hasPrimary = characters.some((c) => c.isPrimary);
 
-  characters.forEach(({ characterName: name, isPrimary, cooldowns, gearScore }) => {
+  characters.forEach(({ characterName: name, isPrimary, cooldowns, gearScore, className }) => {
     const tr = document.createElement('tr');
 
     const nameTd = document.createElement('td');
     const nameWrap = document.createElement('span');
     nameWrap.className = 'account-character-name-cell';
     nameWrap.appendChild(createPlayerBadge(name));
-    nameWrap.appendChild(characterNameNode(name));
+    nameWrap.appendChild(characterNameNode(name, className));
     nameTd.appendChild(nameWrap);
     tr.appendChild(nameTd);
+    tr.appendChild(createCharacterMenuCell(name, className));
 
     const attendanceTd = document.createElement('td');
     attendanceTd.className = 'account-attendance-col';

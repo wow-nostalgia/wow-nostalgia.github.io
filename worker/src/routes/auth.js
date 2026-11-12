@@ -22,6 +22,8 @@ import {
   getGearScoresByNames,
   getRaid,
   CHARACTER_COOLDOWN_COLUMNS,
+  CHARACTER_CLASSES,
+  listCharacterClasses,
   DEFAULT_SOUND_VOLUME
 } from '../db.js';
 import { requireSession, requireGlobalOfficer, requireRaidOfficer } from '../auth.js';
@@ -223,7 +225,8 @@ export async function handleSetPrimaryCharacter(request, env, characterName) {
 }
 
 // Відмітки КД і GearScore персонажа. body: { cooldowns?: {icc10?: bool, ...},
-// gearScore?: number|null } - можна передати лише те, що змінилось.
+// gearScore?: number|null, className?: string|null } - можна передати лише
+// те, що змінилось.
 export async function handleUpdateCharacter(request, env, characterName) {
   const session = await requireSession(env.DB, request);
   const body = await readJson(request);
@@ -254,6 +257,13 @@ export async function handleUpdateCharacter(request, env, characterName) {
     }
   }
 
+  if (body.className !== undefined) {
+    if (body.className !== null && !CHARACTER_CLASSES.includes(body.className)) {
+      throw new HttpError(400, 'Невідомий клас');
+    }
+    fields.class_name = body.className;
+  }
+
   if (!Object.keys(fields).length) throw new HttpError(400, 'Немає що змінювати');
 
   const characters = await updateUserCharacter(env.DB, session.discordId, characterName, fields);
@@ -279,6 +289,12 @@ export async function handleListCharacterOwners(request, env) {
   const map = {};
   for (const row of rows) map[row.owned_name] = row.display_name;
   return jsonResponse(map);
+}
+
+// Публічно (без логіну) — класи, обрані гравцями в профілі, для кольору
+// імен персонажів, яких ще немає в логах. Лише ім'я персонажа і клас.
+export async function handleListCharacterClasses(request, env) {
+  return jsonResponse(await listCharacterClasses(env.DB));
 }
 
 // Публічно (без логіну) — для бейджа "Основний" у статичній аналітиці.

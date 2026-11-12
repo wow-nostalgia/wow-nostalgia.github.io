@@ -665,7 +665,7 @@ export const CHARACTER_COOLDOWN_COLUMNS = {
 export async function listUserCharacters(db, discordId) {
   const { results } = await db
     .prepare(
-      `SELECT character_name, is_primary, cd_icc10, cd_icc25, cd_rs10, cd_rs25, gear_score
+      `SELECT character_name, is_primary, cd_icc10, cd_icc25, cd_rs10, cd_rs25, gear_score, class_name
        FROM user_characters WHERE discord_id = ? ORDER BY created_at ASC`
     )
     .bind(discordId)
@@ -677,8 +677,24 @@ export async function listUserCharacters(db, discordId) {
       Object.entries(CHARACTER_COOLDOWN_COLUMNS).map(([key, col]) => [key, Boolean(r[col])])
     ),
     // У БД - десяті (65), назовні - число з одним знаком (6.5).
-    gearScore: r.gear_score == null ? null : r.gear_score / 10
+    gearScore: r.gear_score == null ? null : r.gear_score / 10,
+    className: r.class_name || null
   }));
+}
+
+// Класи гравців, які ще не мають кольору з логів (класи англійською, як у
+// data/guild-data.json).
+export const CHARACTER_CLASSES = [
+  'Death Knight', 'Druid', 'Hunter', 'Mage', 'Paladin',
+  'Priest', 'Rogue', 'Shaman', 'Warlock', 'Warrior'
+];
+
+// Публічна мапа "ім'я персонажа -> обраний у профілі клас".
+export async function listCharacterClasses(db) {
+  const { results } = await db
+    .prepare('SELECT character_name, class_name FROM user_characters WHERE class_name IS NOT NULL')
+    .all();
+  return Object.fromEntries(results.map((r) => [r.character_name, r.class_name]));
 }
 
 // fields: {колонка: значення}, колонки - лише з білого списку в роуті.

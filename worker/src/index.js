@@ -101,6 +101,7 @@ import {
   handleUpdateCharacter,
   handleAdminRemoveCharacter,
   handleListCharacterOwners,
+  handleListCharacterClasses,
   handleListPrimaryCharacters,
   handleListCharacterCooldowns,
   handleListCharacterGearScores
@@ -529,6 +530,11 @@ async function route(request, env) {
   // у статичній аналітиці й таблиці гравців рейду.
   if (parts[2] === 'characters' && parts[3] === 'owners' && request.method === 'GET') {
     return handleListCharacterOwners(request, env);
+  }
+
+  // Публічний (без логіну) — класи з профілю для персонажів, яких нема в логах.
+  if (parts[2] === 'characters' && parts[3] === 'classes' && request.method === 'GET') {
+    return handleListCharacterClasses(request, env);
   }
 
   // Публічний (без логіну) — для бейджа "Основний" у статичній аналітиці.
