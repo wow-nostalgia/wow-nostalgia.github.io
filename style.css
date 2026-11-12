@@ -5856,12 +5856,24 @@ body.account-page .account-bg-stats-table .account-bg-stats-count {
   font-variant-numeric: tabular-nums;
 }
 
+/* Колонка імені - по найширшому імені (з чіпом "Основний"), а кнопка ⋯
+   притиснута до її правого краю: кнопки всіх рядків стоять в одну лінію,
+   і в найдовшого імені вона одразу за ним. */
+body.account-page #charactersList td:first-child:not([colspan]) {
+  width: 1%;
+  white-space: nowrap;
+}
+
 body.account-page .account-character-name-cell {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0.4rem;
   font-weight: var(--font-weight-medium);
   color: var(--color-text-strong);
+}
+
+body.account-page .account-character-name-cell .account-char-menu-btn {
+  margin-left: auto;
 }
 
 body.account-page .account-character-actions {
