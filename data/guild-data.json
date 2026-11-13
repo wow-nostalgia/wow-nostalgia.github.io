@@ -428,7 +428,7 @@
       "spec": "Fire",
       "specIndex": 2,
       "overallRank": 107,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 83.2,
       "bosses": {
         "Lord Marrowgar": 21363.5,
@@ -1754,7 +1754,7 @@
       "spec": "Fire",
       "specIndex": 2,
       "overallRank": 34,
-      "rankDelta": 1,
+      "rankDelta": 0,
       "overallScore": 97.55,
       "bosses": {
         "Lord Marrowgar": 23453.3,
@@ -2170,7 +2170,7 @@
       "spec": "Restoration",
       "specIndex": 3,
       "overallRank": 28,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 62.38,
       "bosses": {
         "Lord Marrowgar": 2.2,
@@ -3860,7 +3860,7 @@
       "spec": "Fury",
       "specIndex": 2,
       "overallRank": 174,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 62.19,
       "bosses": {
         "Lord Marrowgar": 16398.8,
@@ -3886,7 +3886,7 @@
       "spec": "Fury",
       "specIndex": 2,
       "overallRank": 170,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 63.26,
       "bosses": {
         "Lord Marrowgar": 16822.1,
@@ -4120,7 +4120,7 @@
       "spec": "Restoration",
       "specIndex": 3,
       "overallRank": 27,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 62.42,
       "bosses": {
         "Lord Marrowgar": 95.8,
@@ -4536,7 +4536,7 @@
       "spec": "Elemental",
       "specIndex": 1,
       "overallRank": 87,
-      "rankDelta": -2,
+      "rankDelta": 0,
       "overallScore": 38.25,
       "bosses": {
         "Lord Marrowgar": 11813.7,
@@ -6538,7 +6538,7 @@
       "spec": "Protection",
       "specIndex": 2,
       "overallRank": 83,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 61.96,
       "bosses": {
         "Lord Marrowgar": 5277.4,
@@ -7578,7 +7578,7 @@
       "spec": "Fury",
       "specIndex": 2,
       "overallRank": 102,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 85.4,
       "bosses": {
         "Lord Marrowgar": 20950.1,
@@ -8098,7 +8098,7 @@
       "spec": "Restoration",
       "specIndex": 3,
       "overallRank": 24,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 63.43,
       "bosses": {
         "Lord Marrowgar": 60.4,
@@ -9034,7 +9034,7 @@
       "spec": "Restoration",
       "specIndex": 3,
       "overallRank": 43,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 56.55,
       "bosses": {
         "Lord Marrowgar": 73.5,
@@ -10542,7 +10542,7 @@
       "spec": "Fire",
       "specIndex": 2,
       "overallRank": 106,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 83.36,
       "bosses": {
         "Lord Marrowgar": 22170.3,
@@ -10698,7 +10698,7 @@
       "spec": "Restoration",
       "specIndex": 3,
       "overallRank": 34,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 60.68,
       "bosses": {
         "Lord Marrowgar": 67.7,
@@ -11192,7 +11192,7 @@
       "spec": "Elemental",
       "specIndex": 1,
       "overallRank": 113,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 26.89,
       "bosses": {
         "Lord Marrowgar": 0,
@@ -11322,7 +11322,7 @@
       "spec": "Restoration",
       "specIndex": 3,
       "overallRank": 32,
-      "rankDelta": -2,
+      "rankDelta": 0,
       "overallScore": 61.35,
       "bosses": {
         "Lord Marrowgar": 57.3,
@@ -11686,7 +11686,7 @@
       "spec": "Fury",
       "specIndex": 2,
       "overallRank": 175,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 62.12,
       "bosses": {
         "Lord Marrowgar": 17398.8,
@@ -12024,7 +12024,7 @@
       "spec": "Elemental",
       "specIndex": 1,
       "overallRank": 140,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 8.01,
       "bosses": {
         "Lord Marrowgar": 0,
@@ -13454,7 +13454,7 @@
       "spec": "Restoration",
       "specIndex": 3,
       "overallRank": 295,
-      "rankDelta": -1,
+      "rankDelta": 0,
       "overallScore": 8.74,
       "bosses": {
         "Lord Marrowgar": 0,
@@ -13532,7 +13532,7 @@
       "spec": "Restoration",
       "specIndex": 3,
       "overallRank": 159,
-      "rankDelta": 1,
+      "rankDelta": 0,
       "overallScore": 26.15,
       "bosses": {
         "Lord Marrowgar": 0,
@@ -13714,7 +13714,7 @@
       "spec": "Fury",
       "specIndex": 2,
       "overallRank": 101,
-      "rankDelta": 1,
+      "rankDelta": 0,
       "overallScore": 85.4,
       "bosses": {
         "Lord Marrowgar": 20171.8,
@@ -16594,7 +16594,7 @@
       }
     }
   ],
-  "lastUpdated": "2026-11-12T04:21:19.609Z",
+  "lastUpdated": "2026-11-13T04:00:40.466Z",
   "updateSummary": {
     "totalRows": 635,
     "failedPlayers": 0
