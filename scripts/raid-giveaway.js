@@ -180,7 +180,10 @@ function initRaidGiveaway(opts) {
   }
 
   function applyState(data) {
-    clockOffset = Date.parse(data.serverNow) - Date.now();
+    // Різниця годинників "пливе" на затримку мережі кожного запиту; оновлюємо
+    // лише на помітну зміну - інакше таймер і смужка смикаються.
+    const offset = Date.parse(data.serverNow) - Date.now();
+    if (state === null || Math.abs(offset - clockOffset) > 1000) clockOffset = offset;
     const prevRounds = new Map((state?.giveaway?.rounds || []).map((r) => [r.id, r.status]));
     state = data;
     // Рулетка - для раунду, що щойно закрився (на очах у гравця або нещодавно).
@@ -220,7 +223,6 @@ function initRaidGiveaway(opts) {
     if (!round) return;
     const end = Date.parse(round.endsAt);
     const timerEl = bannerEl.querySelector('.giveaway-timer');
-    const barEl = bannerEl.querySelector('.giveaway-progress-bar');
     const now = serverNow();
     const start = Date.parse(round.startsAt);
     if (now < start) {
@@ -234,7 +236,6 @@ function initRaidGiveaway(opts) {
       return;
     }
     if (timerEl) timerEl.textContent = `${Math.max(0, Math.ceil((end - now) / 1000))} с`;
-    if (barEl) barEl.style.width = `${Math.max(0, Math.min(100, ((end - now) / (end - start)) * 100))}%`;
     if (now >= end) fetchState();
   }
 
@@ -375,6 +376,17 @@ function initRaidGiveaway(opts) {
       bar.className = 'giveaway-progress';
       bar.innerHTML = '<div class="giveaway-progress-bar"></div>';
       box.appendChild(bar);
+      // Смужку веде один CSS-перехід від поточної частки до нуля - без
+      // покрокових стрибків, і перемальовування банера його не обриває.
+      const fill = bar.firstChild;
+      const start = Date.parse(round.startsAt);
+      const end = Date.parse(round.endsAt);
+      const left = Math.max(0, end - now);
+      fill.style.width = `${Math.max(0, Math.min(100, (left / (end - start)) * 100))}%`;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        fill.style.transition = `width ${left}ms linear`;
+        fill.style.width = '0%';
+      }));
     }
 
     const me = state.me;
@@ -671,7 +683,7 @@ function initRaidGiveaway(opts) {
     const durationSelect = form.querySelector('.giveaway-duration');
     durationSelect.innerHTML = '';
     catalog.roundSeconds.forEach((s) => durationSelect.add(new Option(`${s} с`, String(s))));
-    durationSelect.value = catalog.roundSeconds.includes(60) ? '60' : String(catalog.roundSeconds[0]);
+    durationSelect.value = catalog.roundSeconds.includes(30) ? '30' : String(catalog.roundSeconds[0]);
 
     // Галочки умов теж переживають перезавантаження (і лишаються після
     // старту - це налаштування офіцера, а не чернетка). За замовчуванням - усі.
