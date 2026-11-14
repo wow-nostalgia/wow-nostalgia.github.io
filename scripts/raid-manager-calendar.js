@@ -91,6 +91,17 @@ function raidChip(raid) {
   title.className = 'raid-calendar-chip-title';
   title.textContent = shortRaidTitle(raid);
   a.append(time, title);
+  // Назва обрізана "..." - при наведенні/фокусі повна назва в тултіпі
+  // (JS-тултіп #raidBtnTooltip: клітинки календаря обрізали б CSS-варіант).
+  const showFull = () => {
+    if (title.scrollWidth <= title.clientWidth) return;
+    a.setAttribute('aria-label', title.textContent);
+    showBtnTooltip(a);
+  };
+  a.addEventListener('mouseenter', showFull);
+  a.addEventListener('focus', showFull);
+  a.addEventListener('mouseleave', hideBtnTooltip);
+  a.addEventListener('blur', hideBtnTooltip);
   return a;
 }
 
