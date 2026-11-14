@@ -207,7 +207,15 @@ export async function checkGiveawayEligibility(db, raid, criteria, discordId) {
       .prepare('SELECT player_name, discord_id FROM soft_reserves WHERE raid_id = ?')
       .bind(raid.id)
       .all();
-    const has = results.some((r) => r.discord_id === discordId || ownNames.has(lower(r.player_name)));
+    let has = results.some((r) => r.discord_id === discordId || ownNames.has(lower(r.player_name)));
+    // Хто передав свій софт іншому гравцю, теж бере участь у рейді софтом.
+    if (!has && ownNames.size) {
+      const { results: transfers } = await db
+        .prepare('SELECT from_player FROM raid_weight_transfers WHERE raid_id = ?')
+        .bind(raid.id)
+        .all();
+      has = transfers.some((t) => ownNames.has(lower(t.from_player)));
+    }
     if (!has) missing.push('Немає софтів у цьому рейді');
   }
 
