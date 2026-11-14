@@ -2339,7 +2339,9 @@ function describeAuditAction(entry) {
       return hideSoftDetails ? 'скасував бонусний софт' : `скасував бонусний софт гравцю ${d.playerName}`;
     case 'giveaway_start': {
       const prizes = (d.prizes || []).map((p) => {
-        const what = p.hidden ? 'прихований приз' : p.gold != null ? `${p.gold} золота` : p.name;
+        // Прихований приз - без кількості: вона теж підказує, що розігрується.
+        if (p.hidden) return 'прихований приз';
+        const what = p.gold != null ? `${p.gold} золота` : p.name;
         return p.count > 1 ? `${what} ×${p.count}` : what;
       });
       return `почав розіграш: ${prizes.join(', ')}`;

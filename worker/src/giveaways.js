@@ -396,7 +396,7 @@ export async function handleStartGiveaway(request, env, raid, session) {
   await insertAudit(db, raid.id, session.username, 'giveaway_start', {
     rounds: rounds.length,
     // Приховані призи в історії не розкриваємо.
-    prizes: body.prizes.map((p) => (p.hidden ? { hidden: true, count: Number(p.count ?? 1) }
+    prizes: body.prizes.map((p) => (p.hidden ? { hidden: true }
       : p.itemId != null
         ? { name: GIVEAWAY_PRIZES_BY_ID.get(Number(p.itemId)).name, count: Number(p.count ?? 1) }
         : { gold: Number(p.gold), count: Number(p.count ?? 1) })),
