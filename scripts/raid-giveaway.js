@@ -614,7 +614,7 @@ function initRaidGiveaway(opts) {
         btn.textContent = 'Перекинути';
         btn.addEventListener('click', async () => {
           const text = r.winner ? `Розіграти приз ще раз без ${r.winner.name}?` : 'Розіграти приз ще раз?';
-          if (!(await giveawayConfirm(text, 'Перекинути'))) return;
+          if (!(await giveawayConfirm(text, 'Так'))) return;
           await officerAction('POST', `/raids/${raidId}/giveaway/rounds/${r.id}/reroll`);
         });
         row.appendChild(btn);
