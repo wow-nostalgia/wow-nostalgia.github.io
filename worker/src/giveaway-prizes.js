@@ -160,7 +160,12 @@ export const GIVEAWAY_PRIZES = [
   {"id":49286,"name":"X-51 Nether-Rocket X-TREME","icon":"ability_mount_rocketmount","quality":4,"category":"mounts"},
   {"id":49290,"name":"Magic Rooster Egg","icon":"inv_egg_03","quality":4,"category":"mounts"},
   {"id":54068,"name":"Wooly White Rhino","icon":"ability_hunter_pet_rhino","quality":4,"category":"mounts"},
-  {"id":54069,"name":"Blazing Hippogryph","icon":"ability_mount_warhippogryph","quality":4,"category":"mounts"}
+  {"id":54069,"name":"Blazing Hippogryph","icon":"ability_mount_warhippogryph","quality":4,"category":"mounts"},
+  {"id":41508,"name":"Mechano-hog","icon":"inv_misc_key_06","quality":4,"category":"mounts"},
+  {"id":44413,"name":"Mekgineer's Chopper","icon":"inv_misc_key_14","quality":4,"category":"mounts"},
+  {"id":34060,"name":"Flying Machine Control","icon":"ability_mount_gyrocoptor","quality":3,"category":"mounts"},
+  {"id":34061,"name":"Turbo-Charged Flying Machine Control","icon":"ability_mount_gyrocoptorelite","quality":4,"category":"mounts"},
+  {"id":44554,"name":"Flying Carpet","icon":"ability_mount_flyingcarpet","quality":3,"category":"mounts"}
 ];
 
 export const GIVEAWAY_PRIZES_BY_ID = new Map(GIVEAWAY_PRIZES.map((p) => [p.id, p]));
