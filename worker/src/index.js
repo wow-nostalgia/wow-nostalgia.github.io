@@ -47,6 +47,16 @@ import {
 } from './routes/signups.js';
 import { syncUpcomingRaids, importRaidHelperEvents } from './raid-helper.js';
 import {
+  getGiveawaySummary,
+  handleGetGiveaway,
+  handleListGiveawayPrizes,
+  handleStartGiveaway,
+  handleGiveawayRoll,
+  handleCancelGiveaway,
+  handleRerollGiveawayRound,
+  handleSetGiveawayDelivered
+} from './giveaways.js';
+import {
   handleListPenaltyTemplates,
   handleCreatePenaltyTemplate,
   handleUpdatePenaltyTemplate,
@@ -198,7 +208,7 @@ async function handleRaidSnapshot(request, env, raidId, session) {
   const withQueues = new URL(request.url).searchParams.get('queues') === '1';
   const db = env.DB;
 
-  const [reserves, officers, transfers, bonusGrants, shardQueue, buffQueue] = await Promise.all([
+  const [reserves, officers, transfers, bonusGrants, shardQueue, buffQueue, giveaway] = await Promise.all([
     listVisibleReserves(env, raid, session),
     listRaidOfficers(db, raidId),
     listWeightTransfers(db, raidId).catch(() => []),
@@ -210,7 +220,9 @@ async function handleRaidSnapshot(request, env, raidId, session) {
     withQueues
       ? Promise.all([listBuffQueueDays(db), listBuffQueueTypes(db), listActiveBuffQueueEntries(db)])
         .then(([days, types, entries]) => ({ days, types, entries })).catch(() => null)
-      : undefined
+      : undefined,
+    // Лише id і статус останнього розіграшу - деталі сторінка бере окремо.
+    getGiveawaySummary(db, raidId).catch(() => null)
   ]);
 
   // Офіцери (з персонажами) і персонажі лідера — лише лідеру й офіцерам рейду.
@@ -225,7 +237,8 @@ async function handleRaidSnapshot(request, env, raidId, session) {
     transfers,
     bonusGrants,
     shardQueue,
-    buffQueue
+    buffQueue,
+    giveaway
   });
 }
 
@@ -254,6 +267,25 @@ async function routeRaids(request, env, parts, session) {
   if (sub === 'toggle-hidden' && method === 'POST') return handleToggleHiddenReserves(request, env, raidId, session);
   if (sub === 'potion-log' && method === 'PATCH') return handleSetPotionLog(request, env, raidId, session);
   if (sub === 'cooldowns' && method === 'POST') return handleSetRaidCooldowns(request, env, raidId, session);
+
+  // Розіграш призів: /giveaway (GET стан, POST старт), /giveaway/prizes,
+  // /giveaway/roll, /giveaway/cancel, /giveaway/rounds/{id}/reroll|delivered.
+  if (sub === 'giveaway') {
+    const raid = await loadRaidOr404(env, raidId);
+    const target = parts[2];
+    if (!target && method === 'GET') return handleGetGiveaway(request, env, raid, session);
+    if (!target && method === 'POST') return handleStartGiveaway(request, env, raid, session);
+    if (target === 'prizes' && method === 'GET') return handleListGiveawayPrizes(request, env, raid, session);
+    if (target === 'roll' && method === 'POST') return handleGiveawayRoll(request, env, raid, session);
+    if (target === 'cancel' && method === 'POST') return handleCancelGiveaway(request, env, raid, session);
+    if (target === 'rounds' && parts[3] && method === 'POST') {
+      const roundId = Number(parts[3]);
+      if (!Number.isInteger(roundId)) throw new HttpError(400, 'Некоректний раунд');
+      if (parts[4] === 'reroll') return handleRerollGiveawayRound(request, env, raid, session, roundId);
+      if (parts[4] === 'delivered') return handleSetGiveawayDelivered(request, env, raid, session, roundId);
+    }
+    throw new HttpError(404, 'Невідомий шлях');
+  }
 
   // Попередній запис: /signups (GET), /signups/me (PUT/DELETE - свій запис),
   // /signups/{id} (PATCH статус / DELETE - лідер/офіцер).
