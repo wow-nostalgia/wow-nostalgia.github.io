@@ -429,6 +429,36 @@
     "quality": 1,
     "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Flask of Stoneblood</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->85</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->75<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=53758/flask-of-stoneblood\" class=\"q2\">Increases maximum health by 1300 for 1 hour. Counts as both a Battle and Guardian elixir. &nbsp;This effect persists through death.</a> (3 Sec Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">25</span></div></td></tr></table>"
   },
+  "49282": {
+    "icon": "ability_druid_challangingroar",
+    "quality": 4,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q4\">Big Battle Bear</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->40</span><!--bo--><br>Unique<!--ue--><!--ue--><br />Mount<!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->40<br>Requires <a href=\"/wotlk/skill=762/riding\" class=\"q1\">Riding</a> (150)<br><span class=\"q2\">Use: <a href=\"/wotlk/spell=51412/big-battle-bear\">Teaches you how to summon this mount.  This is a very fast mount.</a></span><br><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/wotlk/spell=51412/big-battle-bear\" class=\"q2\">Summons and dismisses a rideable Big Battle Bear. This is a very fast mount.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--></td></tr></table>"
+  },
+  "49283": {
+    "icon": "ability_mount_spectraltiger",
+    "quality": 3,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q3\">Reins of the Spectral Tiger</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->20</span><!--bo--><br>Unique<!--ue--><!--ue--><br />Mount<!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->20<br>Requires <a href=\"/wotlk/skill=762/riding\" class=\"q1\">Riding</a> (75)<br><span class=\"q2\">Use: <a href=\"/wotlk/spell=42776/spectral-tiger\">Teaches you how to summon this mount.</a></span><br><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/wotlk/spell=42776/spectral-tiger\" class=\"q2\">Summons and dismisses a rideable Spectral Tiger.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--></td></tr></table>"
+  },
+  "49284": {
+    "icon": "ability_mount_spectraltiger",
+    "quality": 4,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q4\">Reins of the Swift Spectral Tiger</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->40</span><!--bo--><br>Unique<!--ue--><!--ue--><br />Mount<!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->40<br>Requires <a href=\"/wotlk/skill=762/riding\" class=\"q1\">Riding</a> (150)<br><span class=\"q2\">Use: <a href=\"/wotlk/spell=42777/swift-spectral-tiger\">Teaches you how to summon this mount.  This is a very fast mount.</a></span><br><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/wotlk/spell=42777/swift-spectral-tiger\" class=\"q2\">Summons and dismisses a rideable Swift Spectral Tiger. &nbsp;This is a very fast mount.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--></td></tr></table>"
+  },
+  "49285": {
+    "icon": "ability_mount_rocketmountblue",
+    "quality": 3,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q3\">X-51 Nether-Rocket</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->60</span><!--bo--><br>Unique<!--ue--><!--ue--><br />Mount<!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->60<br>Requires <a href=\"/wotlk/skill=762/riding\" class=\"q1\">Riding</a> (225)<br><span class=\"q2\">Use: <a href=\"/wotlk/spell=46197/x-51-nether-rocket\">Teaches you how to summon this mount.  Can only be used in Outland or Northrend.</a></span><br><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/wotlk/spell=46197/x-51-nether-rocket\" class=\"q2\">A riding rocket! &nbsp;This can only be summoned in Outland or Northrend.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--></td></tr></table>"
+  },
+  "49286": {
+    "icon": "ability_mount_rocketmount",
+    "quality": 4,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q4\">X-51 Nether-Rocket X-TREME</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->70</span><!--bo--><br>Unique<!--ue--><!--ue--><br />Mount<!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->70<br>Requires <a href=\"/wotlk/skill=762/riding\" class=\"q1\">Riding</a> (300)<br><span class=\"q2\">Use: <a href=\"/wotlk/spell=46199/x-51-nether-rocket-x-treme\">Teaches you how to summon this mount.  This is a very fast mount.</a></span><br><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/wotlk/spell=46199/x-51-nether-rocket-x-treme\" class=\"q2\">An X-TREME riding rocket! &nbsp;This is a very fast mount.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--></td></tr></table>"
+  },
+  "49290": {
+    "icon": "inv_egg_03",
+    "quality": 4,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q4\">Magic Rooster Egg</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->40</span><!--bo--><br>Unique<!--ue--><!--ue--><br />Mount<!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->40<br>Requires <a href=\"/wotlk/skill=762/riding\" class=\"q1\">Riding</a> (150)<br><span class=\"q2\">Use: <a href=\"/wotlk/spell=65917/magic-rooster\">Teaches you how to summon this mount.  This is a very fast mount.</a></span><br><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/wotlk/spell=65917/magic-rooster\" class=\"q2\">Summons and dismisses a rideable Magic Rooster. &nbsp;No, seriously. &nbsp;This is a very fast mount.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--></td></tr></table>"
+  },
   "49908": {
     "icon": "spell_fire_felflamebreath",
     "quality": 3,
@@ -3393,6 +3423,16 @@
     "icon": "item_icecrownringb",
     "quality": 4,
     "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Ring of Phased Regeneration</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 5</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q\"><br>Item Level <!--ilvl-->271</span><!--bo--><br>Binds when picked up<br>Unique-Equipped<!--ue--><br>Unique-Equipped: Ring of Phased Regeneration (1)<!--ue--><table width=\"100%\"><tr><td>Finger</td><th><!--scstart4:-2--><span class=\"q1\"></span><!--scend--></th></tr></table><!--rf--><span><!--stat7-->+73 Stamina</span><br><span><!--stat5-->+73 Intellect</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><!--rs--><!--e--><br /><br><a href=\"/wotlk/items/gems?filter=81;2;0\" class=\"socket-red q0\">Red Socket</a><!--ps--><br><!--sb--><span class=\"q0\">Socket Bonus: +5 Spell Power</span><br /><br /></td></tr></table><table><tr><td>Requires Level <!--rlvl-->80<br><!--rr--><span class=\"q2\">Equip: Improves haste rating by <!--rtg36-->56.</span><br><span class=\"q2\">Equip: Restores <!--rtg43-->32 mana per 5 sec.</span><br><span class=\"q2\">Equip: Increases spell power by <!--rtg45-->104.</span><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">7</span> <span class=\"moneysilver\">56</span> <span class=\"moneycopper\">23</span></div></td></tr></table><!--i?53490:1:80:80-->"
+  },
+  "54068": {
+    "icon": "ability_hunter_pet_rhino",
+    "quality": 4,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q4\">Wooly White Rhino</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->40</span><!--bo--><br>Unique<!--ue--><!--ue--><br />Mount<!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->40<br>Requires <a href=\"/wotlk/skill=762/riding\" class=\"q1\">Riding</a> (150)<br><span class=\"q2\">Use: <a href=\"/wotlk/spell=74918/wooly-white-rhino\">Teaches you how to summon this mount.  This is a very fast mount.</a></span><br><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/wotlk/spell=74918/wooly-white-rhino\" class=\"q2\">Summons and dismisses a rideable Wooly White Rhino. &nbsp;This is a very fast mount.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--></td></tr></table>"
+  },
+  "54069": {
+    "icon": "ability_mount_warhippogryph",
+    "quality": 4,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q4\">Blazing Hippogryph</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->60</span><!--bo--><br>Unique<!--ue--><!--ue--><br />Mount<!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->60<br>Requires <a href=\"/wotlk/skill=762/riding\" class=\"q1\">Riding</a> (225)<br><span class=\"q2\">Use: <a href=\"/wotlk/spell=74856/blazing-hippogryph\">Teaches you how to summon this mount.</a></span><br><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/wotlk/spell=74856/blazing-hippogryph\" class=\"q2\">Summons and dismisses a rideable Blazing Hippogryph. &nbsp;This mount changes depending on your Riding skill.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--></td></tr></table>"
   },
   "54556": {
     "icon": "inv_misc_cape_20",

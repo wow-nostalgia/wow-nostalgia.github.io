@@ -51,6 +51,10 @@ export const GIVEAWAY_PRIZE_CATEGORIES = [
   {
     "key": "boe",
     "label": "Фіолетові BoE (треш ЦЛК)"
+  },
+  {
+    "key": "mounts",
+    "label": "Маунти"
   }
 ];
 
@@ -148,7 +152,15 @@ export const GIVEAWAY_PRIZES = [
   {"id":50449,"name":"Stiffened Corpse Shoulderpads","icon":"inv_shoulder_119","quality":4,"category":"boe"},
   {"id":50450,"name":"Leggings of Dubious Charms","icon":"inv_pants_mail_35","quality":4,"category":"boe"},
   {"id":50451,"name":"Belt of the Lonely Noble","icon":"inv_belt_70","quality":4,"category":"boe"},
-  {"id":50444,"name":"Rowan's Rifle of Silver Bullets","icon":"inv_weapon_rifle_39","quality":4,"category":"boe"}
+  {"id":50444,"name":"Rowan's Rifle of Silver Bullets","icon":"inv_weapon_rifle_39","quality":4,"category":"boe"},
+  {"id":49282,"name":"Big Battle Bear","icon":"ability_druid_challangingroar","quality":4,"category":"mounts"},
+  {"id":49283,"name":"Reins of the Spectral Tiger","icon":"ability_mount_spectraltiger","quality":3,"category":"mounts"},
+  {"id":49284,"name":"Reins of the Swift Spectral Tiger","icon":"ability_mount_spectraltiger","quality":4,"category":"mounts"},
+  {"id":49285,"name":"X-51 Nether-Rocket","icon":"ability_mount_rocketmountblue","quality":3,"category":"mounts"},
+  {"id":49286,"name":"X-51 Nether-Rocket X-TREME","icon":"ability_mount_rocketmount","quality":4,"category":"mounts"},
+  {"id":49290,"name":"Magic Rooster Egg","icon":"inv_egg_03","quality":4,"category":"mounts"},
+  {"id":54068,"name":"Wooly White Rhino","icon":"ability_hunter_pet_rhino","quality":4,"category":"mounts"},
+  {"id":54069,"name":"Blazing Hippogryph","icon":"ability_mount_warhippogryph","quality":4,"category":"mounts"}
 ];
 
 export const GIVEAWAY_PRIZES_BY_ID = new Map(GIVEAWAY_PRIZES.map((p) => [p.id, p]));
