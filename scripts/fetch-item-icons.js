@@ -1,10 +1,12 @@
 'use strict';
 
 // Одноразовий збір іконок/рідкості предметів із Wowhead для всіх item id,
-// що зустрічаються в data/raid-items.json. Результат — data/item-icons.json,
+// що зустрічаються в data/raid-items.json і в каталозі призів розіграшу
+// (worker/src/giveaway-prizes.js). Результат — data/item-icons.json,
 // статичний файл, що фетчиться браузером напряму (як і raid-items.json).
 //
-// Запуск: node scripts/fetch-item-icons.js
+// Запуск: node scripts/fetch-item-icons.js [--missing]
+// --missing - дозапитати лише id, яких ще немає в item-icons.json.
 // Перезапускати лише якщо змінився каталог предметів (новий extract-raid-items.js).
 
 const fs = require('node:fs');
@@ -12,6 +14,7 @@ const path = require('node:path');
 
 const RAID_ITEMS_PATH = path.join(__dirname, '..', 'data', 'raid-items.json');
 const OUT_PATH = path.join(__dirname, '..', 'data', 'item-icons.json');
+const GIVEAWAY_PRIZES_PATH = path.join(__dirname, '..', 'worker', 'src', 'giveaway-prizes.js');
 const REQUEST_DELAY_MS = 120;
 
 function collectItemIds() {
@@ -22,6 +25,9 @@ function collectItemIds() {
       for (const item of items) ids.add(item.id);
     }
   }
+  // Призи розіграшу (ES-модуль воркера) - id беремо з тексту файлу.
+  const prizes = fs.readFileSync(GIVEAWAY_PRIZES_PATH, 'utf8');
+  for (const m of prizes.matchAll(/"id":(\d+)/g)) ids.add(Number(m[1]));
   return [...ids].sort((a, b) => a - b);
 }
 
@@ -39,10 +45,11 @@ async function fetchIcon(itemId) {
 }
 
 async function main() {
-  const ids = collectItemIds();
-  console.log(`Унікальних item id: ${ids.length}`);
+  const missingOnly = process.argv.includes('--missing');
+  const result = missingOnly && fs.existsSync(OUT_PATH) ? JSON.parse(fs.readFileSync(OUT_PATH, 'utf8')) : {};
+  const ids = collectItemIds().filter((id) => !missingOnly || !result[id]);
+  console.log(`Item id до запиту: ${ids.length}`);
 
-  const result = {};
   let failed = 0;
 
   for (let i = 0; i < ids.length; i++) {

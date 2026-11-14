@@ -7697,6 +7697,13 @@ body.raid-manager-detail-page .giveaway-settings {
   border-top: 1px solid var(--color-border);
 }
 
+/* Офіцер (не лідер) бачить лише розіграш - без лінії-розділювача зверху. */
+body.raid-manager-detail-page .raid-soft-form[hidden] + .giveaway-settings {
+  margin-top: 0.75rem;
+  padding-top: 0;
+  border-top: none;
+}
+
 body.raid-manager-detail-page .giveaway-settings-title {
   margin: 0 0 0.6rem;
   font-size: var(--font-title-sm);

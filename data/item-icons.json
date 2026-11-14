@@ -1,13 +1,438 @@
 {
-  "50818": {
-    "icon": "spell_deathknight_summondeathcharger",
-    "quality": 4,
-    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Invincible's Reins</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->20</span><!--bo--><br>Binds when picked up<!--ue--><!--ue--><br />Mount<!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->20<br>Requires <a href=\"/wotlk/skill=762/riding\" class=\"q1\">Riding</a> (75)<br><span class=\"q2\">Use: <a href=\"/wotlk/spell=72286/invincible\">Teaches you how to summon this mount.</a></span><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/wotlk/spell=72286/invincible\" class=\"q2\">Summons and dismisses the flying undead horse Invincible. &nbsp;This mount changes depending on your Riding skill and location.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-droppedby\">Dropped by: The Lich King</div><div class=\"whtt-extra whtt-dropchance\">Drop Chance: 0.78%</div></td></tr></table>"
+  "22788": {
+    "icon": "inv_misc_herb_flamecap",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Flame Cap</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->67</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->55<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=28714/flame-cap\" class=\"q2\">Chance to strike a ranged or melee target for 40 fire damage. &nbsp; Also increases fire spell power by 80. &nbsp;Lasts 1 min.</a> (3 Min Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">7</span> <span class=\"moneycopper\">50</span></div></td></tr></table>"
   },
-  "95341": {
-    "icon": "ability_mount_epicbatmount",
+  "33447": {
+    "icon": "inv_alchemy_elixir_05",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Runic Healing Potion</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->70<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=43185/healing-potion\" class=\"q2\">Restores 2700 to 4500 health.</a> (1 Min Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">60</span></div></td></tr></table>"
+  },
+  "33448": {
+    "icon": "inv_alchemy_elixir_02",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Runic Mana Potion</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->70<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=43186/restore-mana\" class=\"q2\">Restores 4200 to 4400 mana.</a> (1 Min Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">60</span></div></td></tr></table>"
+  },
+  "34753": {
+    "icon": "ability_hunter_pet_boar",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Great Feast</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->70<br>Requires <a href=\"/wotlk/skill=185/cooking\" class=\"q1\">Cooking</a> (375)<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=57301/great-feast\" class=\"q2\">Set out a great feast that will feed your party! &nbsp; Restores 22500 health and 19200 mana over 30 sec. &nbsp;If you spend at least 10 seconds eating you will become well fed and gain 60 Attack Power, 35 Spell Power and 30 Stamina for 1 hour.</a><!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">25</span></div></td></tr></table>"
+  },
+  "40087": {
+    "icon": "inv_alchemy_elixir_06",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Powerful Rejuvenation Potion</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->70<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=53761/rejuvenation-potion\" class=\"q2\">Restores 2475 to 4125 mana and health.</a> (1 Min Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">50</span></div></td></tr></table>"
+  },
+  "40093": {
+    "icon": "inv_alchemy_elixir_empty",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Indestructible Potion</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->70<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=53762/indestructible\" class=\"q2\">Increases armor by 3500 for 2 min.</a> (2 Min Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">50</span></div></td></tr></table>"
+  },
+  "40111": {
+    "icon": "inv_jewelcrafting_gem_37",
     "quality": 4,
-    "tooltip": "<table><tr><td><!--nstart--><b class=\"q4\">Armored Bloodwing</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->14</span><!--bo--><br>Binds when picked up<!--ue--><!--ue--><br />Mount <span class=\"q0\">(Account-wide)</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td><span class=\"q2\">Use: <a href=\"/spell=139595/armored-bloodwing\">Teaches you how to summon this mount.  The capabilities of this mount depend on your Riding skill and location.</a></span><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/spell=139595/armored-bloodwing\" class=\"q2\">Summons and dismisses an Armored Bloodwing. &nbsp;This mount changes depending on your Riding skill and location.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br>Requires level <!--minlvl-->1 to <!--maxlvl-->90 (<!--lvl-->90)<br>Requires <a href=\"/spell=33388/apprentice-riding\" class=\"q1\">Apprentice Riding</a><br><!--pvpEquip--><!--pvpEquip--><br /><br><span class=\"q\">\"This monstrous, flesh-eating bat is the undisputed ruler of the night skies.\"</span><br><span style=\"color: #FFD200\">In-Game Shop</span></td></tr></table><!--i?95341:1:90:90:872:0-->"
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Bold Cardinal Ruby</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Strength</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40112": {
+    "icon": "inv_jewelcrafting_gem_37",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Delicate Cardinal Ruby</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Agility</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40113": {
+    "icon": "inv_jewelcrafting_gem_37",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Runed Cardinal Ruby</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+23 Spell Power</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40114": {
+    "icon": "inv_jewelcrafting_gem_37",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Bright Cardinal Ruby</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+40 Attack Power</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40115": {
+    "icon": "inv_jewelcrafting_gem_37",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Subtle Cardinal Ruby</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Dodge Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40116": {
+    "icon": "inv_jewelcrafting_gem_37",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Flashing Cardinal Ruby</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Parry Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40117": {
+    "icon": "inv_jewelcrafting_gem_37",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Fractured Cardinal Ruby</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Armor Penetration Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40118": {
+    "icon": "inv_jewelcrafting_gem_37",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Precise Cardinal Ruby</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Expertise Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40119": {
+    "icon": "inv_jewelcrafting_gem_42",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Solid Majestic Zircon</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+30 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40120": {
+    "icon": "inv_jewelcrafting_gem_42",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Sparkling Majestic Zircon</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Spirit</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40121": {
+    "icon": "inv_jewelcrafting_gem_42",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Lustrous Majestic Zircon</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Mana every 5 seconds</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40122": {
+    "icon": "inv_jewelcrafting_gem_42",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Stormy Majestic Zircon</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br /><span class=\"q1\"><a href=\"/wotlk/spell=28799/increased-spell-penetration-25\">+25 Spell Penetration</a></span></td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40123": {
+    "icon": "inv_jewelcrafting_gem_38",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Brilliant King's Amber</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Intellect</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40124": {
+    "icon": "inv_jewelcrafting_gem_38",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Smooth King's Amber</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Critical Strike Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40125": {
+    "icon": "inv_jewelcrafting_gem_38",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Rigid King's Amber</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Hit Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40126": {
+    "icon": "inv_jewelcrafting_gem_38",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Thick King's Amber</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Defense Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40127": {
+    "icon": "inv_jewelcrafting_gem_38",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Mystic King's Amber</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Resilience Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40128": {
+    "icon": "inv_jewelcrafting_gem_38",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Quick King's Amber</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Haste Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40129": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Sovereign Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Strength and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40130": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Shifting Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Agility and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40131": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Tenuous Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Agility and +5 Mana every 5 seconds</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40132": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Glowing Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+12 Spell Power and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40133": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Purified Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+12 Spell Power and +10 Spirit</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40134": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Royal Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+12 Spell Power and +5 Mana every 5 seconds</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40135": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Mysterious Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br /><span class=\"q1\">+12 Spell Power and <a href=\"/wotlk/spell=28680/spell-penetration-13\">+13 Spell Penetration</a></span></td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40136": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Balanced Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Attack Power and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40137": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Infused Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Attack Power and +5 Mana every 5 seconds</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40138": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Regal Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Dodge Rating and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40139": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Defender's Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Parry Rating and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40140": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Puissant Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Armor Penetration Rating and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40141": {
+    "icon": "inv_jewelcrafting_gem_40",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Guardian's Dreadstone</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Expertise Rating and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40142": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Inscribed Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Strength and +10 Critical Strike Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40143": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Etched Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Strength and +10 Hit Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40144": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Champion's Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Strength and +10 Defense Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40145": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Resplendent Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Strength and +10 Resilience Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40146": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Fierce Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Strength and +10 Haste Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40147": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Deadly Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Agility and +10 Critical Strike Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40148": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Glinting Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Agility and +10 Hit Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40149": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Lucent Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Agility and +10 Resilience Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40150": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Deft Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Agility and +10 Haste Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40151": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Luminous Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+12 Spell Power and +10 Intellect</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40152": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Potent Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+12 Spell Power and +10 Critical Strike Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40153": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Veiled Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+12 Spell Power and +10 Hit Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40154": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Durable Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+12 Spell Power and +10 Resilience Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40155": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Reckless Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+12 Spell Power and +10 Haste Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40156": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Wicked Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Attack Power and +10 Critical Strike Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40157": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Pristine Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Attack Power and +10 Hit Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40158": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Empowered Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Attack Power and +10 Resilience Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40159": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Stark Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+20 Attack Power and +10 Haste Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40160": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Stalwart Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Dodge Rating and +10 Defense Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40161": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Glimmering Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Parry Rating and +10 Defense Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40162": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Accurate Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Expertise Rating and +10 Hit Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40163": {
+    "icon": "inv_jewelcrafting_gem_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Resolute Ametrine</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Expertise Rating and +10 Defense Rating</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Red or Yellow Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40164": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Timeless Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Intellect and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40165": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Jagged Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Critical Strike Rating and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40166": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Vivid Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Hit Rating and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40167": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Enduring Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Defense Rating and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40168": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Steady Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Resilience Rating and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40169": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Forceful Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Haste Rating and +15 Stamina</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40170": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Seer's Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Intellect and +10 Spirit</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40171": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Misty Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Critical Strike Rating and +10 Spirit</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40172": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Shining Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Hit Rating and +10 Spirit</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40173": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Turbid Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Resilience Rating and +10 Spirit</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40174": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Intricate Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Haste Rating and +10 Spirit</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40175": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Dazzling Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Intellect and +5 Mana every 5 seconds</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40176": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Sundered Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Critical Strike Rating and +5 Mana every 5 seconds</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40177": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Lambent Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Hit Rating and +5 Mana every 5 seconds</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40178": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Opaque Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Resilience Rating and +5 Mana every 5 seconds</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40179": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Energized Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br />+10 Haste Rating and +5 Mana every 5 seconds</td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40180": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Radiant Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br /><span class=\"q1\">+10 Critical Strike Rating and <a href=\"/wotlk/spell=28680/spell-penetration-13\">+13 Spell Penetration</a></span></td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40181": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Tense Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br /><span class=\"q1\">+10 Hit Rating and <a href=\"/wotlk/spell=28680/spell-penetration-13\">+13 Spell Penetration</a></span></td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40182": {
+    "icon": "inv_jewelcrafting_gem_41",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Shattered Eye of Zul</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 3</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><br /><span class=\"q1\">+10 Haste Rating and <a href=\"/wotlk/spell=28680/spell-penetration-13\">+13 Spell Penetration</a></span></td></tr></table><table><tr><td><!--itemEffects:0--><span class=\"q\">&quot;Matches a Yellow or Blue Socket.&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">9</span></div></td></tr></table>"
+  },
+  "40211": {
+    "icon": "inv_alchemy_elixir_04",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Potion of Speed</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->70<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=53908/speed\" class=\"q2\">Increases haste rating by 500 for 15 sec.</a> (1 Min Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">50</span></div></td></tr></table>"
+  },
+  "40212": {
+    "icon": "inv_alchemy_elixir_01",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Potion of Wild Magic</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->70<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=53909/wild-magic\" class=\"q2\">Increases critical rating by 200 and spell power by 200 for 15 sec.</a> (1 Min Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">50</span></div></td></tr></table>"
+  },
+  "41119": {
+    "icon": "inv_misc_enggizmos_32",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Saronite Bomb</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->75</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires <a href=\"/wotlk/skill=202/engineering\" class=\"q1\">Engineering</a> (350)<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=56350/saronite-bomb\" class=\"q2\">Inflicts 1150 to 1500 Fire damage to targets in a 10 yard radius. &nbsp;This explosive is powerful enough to cause moderate siege damage.</a> (1 Min Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">2</span> <span class=\"moneycopper\">50</span></div></td></tr></table>"
+  },
+  "43015": {
+    "icon": "inv_misc_fish_52",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Fish Feast</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->70<br>Requires <a href=\"/wotlk/skill=185/cooking\" class=\"q1\">Cooking</a> (425)<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=57426/fish-feast\" class=\"q2\">Set out a great feast that will feed your party! &nbsp; Restores 22500 health and 19200 mana over 30 sec. &nbsp;If you spend at least 10 seconds eating you will become well fed and gain 80 Attack Power, 46 Spell Power and 40 Stamina for 1 hour.</a><!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">25</span></div></td></tr></table>"
+  },
+  "46376": {
+    "icon": "inv_alchemy_endlessflask_04",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Flask of the Frost Wyrm</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->85</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->75<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=53755/flask-of-the-frost-wyrm\" class=\"q2\">Increases spell power by 125 for 1 hour. Counts as both a Battle and Guardian elixir. &nbsp;This effect persists through death.</a> (3 Sec Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">25</span></div></td></tr></table>"
+  },
+  "46377": {
+    "icon": "inv_alchemy_endlessflask_06",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Flask of Endless Rage</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->85</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->75<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=53760/flask-of-endless-rage\" class=\"q2\">Increases attack power by 180 for 1 hour. Counts as both a Battle and Guardian elixir. &nbsp;This effect persists through death.</a> (3 Sec Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">25</span></div></td></tr></table>"
+  },
+  "46378": {
+    "icon": "inv_alchemy_endlessflask_03",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Flask of Pure Mojo</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->85</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->75<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=54212/flask-of-pure-mojo\" class=\"q2\">Increases mana regeneration by 45 mana per 5 seconds for 1 hour. Counts as both a Battle and Guardian elixir. &nbsp;This effect persists through death.</a> (3 Sec Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">25</span></div></td></tr></table>"
+  },
+  "46379": {
+    "icon": "inv_alchemy_endlessflask_05",
+    "quality": 1,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q1\">Flask of Stoneblood</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->85</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->75<br><br><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Use: <!--useEffect:0:1--><a href=\"/wotlk/spell=53758/flask-of-stoneblood\" class=\"q2\">Increases maximum health by 1300 for 1 hour. Counts as both a Battle and Guardian elixir. &nbsp;This effect persists through death.</a> (3 Sec Cooldown)<!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneysilver\">25</span></div></td></tr></table>"
+  },
+  "49908": {
+    "icon": "spell_fire_felflamebreath",
+    "quality": 3,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q3\">Primordial Saronite</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->80</span><!--bo--><!--ue--><!--ue--><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td><!--itemEffects:0--><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-maxstack\">Max Stack: 20</div><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">7</span></div></td></tr></table>"
   },
   "49919": {
     "icon": "inv_mace_116",
@@ -753,6 +1178,41 @@
     "icon": "inv_staff_108",
     "quality": 4,
     "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Archus, Greatstaff of Antonidas</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q\"><br>Item Level <!--ilvl-->271</span><!--bo--><br>Binds when picked up<!--ue--><!--ue--><table width=\"100%\"><tr><td>Two-Hand</td><th><!--scstart2:10--><span class=\"q1\">Staff</span><!--scend--></th></tr></table><!--rf--><table width=\"100%\"><tr>\n    <td><span><!--dmg-->321 - 583 Damage</span></td>\n    <th>Speed <!--spd-->2.10</th>\n</tr></table><!--dps-->(215.24 damage per second)<br><span><!--stat7-->+167 Stamina</span><br><span><!--stat5-->+167 Intellect</span><br><span><!--stat6-->+130 Spirit</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><!--rs--><!--e--><br /><br><a href=\"/wotlk/items/gems?filter=81;2;0\" class=\"socket-red q0\">Red Socket</a><br><a href=\"/wotlk/items/gems?filter=81;2;0\" class=\"socket-red q0\">Red Socket</a><!--ps--><br><!--sb--><span class=\"q0\">Socket Bonus: +7 Spell Power</span><br /><br />Durability 120 / 120</td></tr></table><table><tr><td>Requires Level <!--rlvl-->80<br><!--rr--><span class=\"q0\">Increases attack power by 2245 in Cat, Bear, Dire Bear, and Moonkin forms only.</span><br><span class=\"q2\">Equip: Improves haste rating by <!--rtg36-->130.</span><br><span class=\"q2\">Equip: Increases spell power by <!--rtg45-->792.</span><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">31</span> <span class=\"moneysilver\">56</span> <span class=\"moneycopper\">50</span></div><div class=\"whtt-extra whtt-droppedby\">Dropped by: The Lich King</div><div class=\"whtt-extra whtt-dropchance\">Drop Chance: 14.29%</div></td></tr></table><!--i?50429:1:80:80-->"
+  },
+  "50444": {
+    "icon": "inv_weapon_rifle_39",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Rowan's Rifle of Silver Bullets</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q\"><br>Item Level <!--ilvl-->264</span><!--bo--><br>Binds when equipped<!--ue--><!--ue--><table width=\"100%\"><tr><td>Ranged</td><th><!--scstart2:3--><span class=\"q1\">Gun</span><!--scend--></th></tr></table><!--rf--><table width=\"100%\"><tr>\n    <td><span><!--dmg-->406 - 664 Damage</span></td>\n    <th>Speed <!--spd-->2.10</th>\n</tr></table><!--dps-->(254.76 damage per second)<br><span><!--stat4-->+39 Strength</span><br><span><!--stat7-->+77 Stamina</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><!--rs--><!--e--><!--ps--><br>Durability 90 / 90</td></tr></table><table><tr><td>Requires Level <!--rlvl-->80<br><!--rr--><span class=\"q2\">Equip: Increases your dodge rating by <!--rtg13-->34.</span><br><span class=\"q2\">Equip: Increases your parry rating by <!--rtg14-->34.</span><br><span class=\"q2\">Equip: Improves hit rating by <!--rtg31-->26.</span><!--itemEffects:1--><br><span class=\"q\">&quot;For when herding just won't do&quot;</span><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">20</span> <span class=\"moneysilver\">3</span> <span class=\"moneycopper\">29</span></div></td></tr></table><!--i?50444:1:80:80-->"
+  },
+  "50447": {
+    "icon": "inv_jewelry_ring_84",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Harbinger's Bone Band</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q\"><br>Item Level <!--ilvl-->264</span><!--bo--><br>Binds when equipped<br>Unique-Equipped<!--ue--><!--ue--><table width=\"100%\"><tr><td>Finger</td><th><!--scstart4:-2--><span class=\"q1\"></span><!--scend--></th></tr></table><!--rf--><span><!--stat4-->+69 Strength</span><br><span><!--stat7-->+124 Stamina</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><!--rs--><!--e--><br /><br><a href=\"/wotlk/items/gems?filter=81;3;0\" class=\"socket-yellow q0\">Yellow Socket</a><!--ps--><br><!--sb--><span class=\"q0\">Socket Bonus: +6 Stamina</span><br /><br /></td></tr></table><table><tr><td>Requires Level <!--rlvl-->80<br><!--rr--><span class=\"q2\">Equip: Increases defense rating by <!--rtg12-->60.</span><br><span class=\"q2\">Equip: Increases your dodge rating by <!--rtg13-->60.</span><br><span class=\"q2\">Equip: Improves hit rating by <!--rtg31-->38.</span><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">7</span> <span class=\"moneysilver\">56</span> <span class=\"moneycopper\">23</span></div></td></tr></table><!--i?50447:1:80:80-->"
+  },
+  "50449": {
+    "icon": "inv_shoulder_119",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Stiffened Corpse Shoulderpads</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q\"><br>Item Level <!--ilvl-->264</span><!--bo--><br>Binds when equipped<!--ue--><!--ue--><table width=\"100%\"><tr><td>Shoulder</td><th><!--scstart4:1--><span class=\"q1\">Cloth</span><!--scend--></th></tr></table><!--rf--><span><!--amr-->265 Armor</span><br><span><!--stat7-->+92 Stamina</span><br><span><!--stat5-->+92 Intellect</span><br><span><!--stat6-->+80 Spirit</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><!--rs--><!--e--><br /><br><a href=\"/wotlk/items/gems?filter=81;3;0\" class=\"socket-yellow q0\">Yellow Socket</a><br><a href=\"/wotlk/items/gems?filter=81;3;0\" class=\"socket-yellow q0\">Yellow Socket</a><!--ps--><br><!--sb--><span class=\"q0\">Socket Bonus: +7 Spell Power</span><br /><br />Durability 60 / 60</td></tr></table><table><tr><td>Requires Level <!--rlvl-->80<br><!--rr--><span class=\"q2\">Equip: Improves critical strike rating by <!--rtg32-->64.</span><br><span class=\"q2\">Equip: Increases spell power by <!--rtg45-->122.</span><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">7</span> <span class=\"moneysilver\">38</span> <span class=\"moneycopper\">71</span></div></td></tr></table><!--i?50449:1:80:80-->"
+  },
+  "50450": {
+    "icon": "inv_pants_mail_35",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Leggings of Dubious Charms</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q\"><br>Item Level <!--ilvl-->264</span><!--bo--><br>Binds when equipped<!--ue--><!--ue--><table width=\"100%\"><tr><td>Legs</td><th><!--scstart4:3--><span class=\"q1\">Mail</span><!--scend--></th></tr></table><!--rf--><span><!--amr-->1293 Armor</span><br><span><!--stat7-->+123 Stamina</span><br><span><!--stat5-->+123 Intellect</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><!--rs--><!--e--><br /><br><a href=\"/wotlk/items/gems?filter=81;3;0\" class=\"socket-yellow q0\">Yellow Socket</a><br><a href=\"/wotlk/items/gems?filter=81;2;0\" class=\"socket-red q0\">Red Socket</a><br><a href=\"/wotlk/items/gems?filter=81;4;0\" class=\"socket-blue q0\">Blue Socket</a><!--ps--><br><!--sb--><span class=\"q0\">Socket Bonus: +9 Spell Power</span><br /><br />Durability 105 / 105</td></tr></table><table><tr><td>Requires Level <!--rlvl-->80<br><!--rr--><span class=\"q2\">Equip: Improves critical strike rating by <!--rtg32-->92.</span><br><span class=\"q2\">Equip: Restores <!--rtg43-->50 mana per 5 sec.</span><br><span class=\"q2\">Equip: Increases spell power by <!--rtg45-->161.</span><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">14</span> <span class=\"moneysilver\">83</span> <span class=\"moneycopper\">10</span></div></td></tr></table><!--i?50450:1:80:80-->"
+  },
+  "50451": {
+    "icon": "inv_belt_70",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Belt of the Lonely Noble</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q\"><br>Item Level <!--ilvl-->264</span><!--bo--><br>Binds when equipped<!--ue--><!--ue--><table width=\"100%\"><tr><td>Waist</td><th><!--scstart4:4--><span class=\"q1\">Plate</span><!--scend--></th></tr></table><!--rf--><span><!--amr-->1485 Armor</span><br><span><!--stat7-->+92 Stamina</span><br><span><!--stat5-->+92 Intellect</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><!--rs--><!--e--><br /><br><a href=\"/wotlk/items/gems?filter=81;3;0\" class=\"socket-yellow q0\">Yellow Socket</a><br><a href=\"/wotlk/items/gems?filter=81;4;0\" class=\"socket-blue q0\">Blue Socket</a><!--ps--><br><!--sb--><span class=\"q0\">Socket Bonus: +7 Spell Power</span><br /><br />Durability 55 / 55</td></tr></table><table><tr><td>Requires Level <!--rlvl-->80<br><!--rr--><span class=\"q2\">Equip: Improves critical strike rating by <!--rtg32-->80.</span><br><span class=\"q2\">Equip: Improves haste rating by <!--rtg36-->64.</span><br><span class=\"q2\">Equip: Increases spell power by <!--rtg45-->122.</span><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">8</span> <span class=\"moneysilver\">73</span> <span class=\"moneycopper\">32</span></div></td></tr></table><!--i?50451:1:80:80-->"
+  },
+  "50452": {
+    "icon": "inv_misc_pelt_wolf_ruin_01",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Wodin's Lucky Necklace</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q\"><br>Item Level <!--ilvl-->264</span><!--bo--><br>Binds when equipped<!--ue--><!--ue--><table width=\"100%\"><tr><td>Neck</td><th><!--scstart4:-3--><span class=\"q1\"></span><!--scend--></th></tr></table><!--rf--><span><!--stat3-->+90 Agility</span><br><span><!--stat7-->+90 Stamina</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><!--rs--><!--e--><br /><br><a href=\"/wotlk/items/gems?filter=81;3;0\" class=\"socket-yellow q0\">Yellow Socket</a><!--ps--><br><!--sb--><span class=\"q0\">Socket Bonus: +4 Agility</span><br /><br /></td></tr></table><table><tr><td>Requires Level <!--rlvl-->80<br><!--rr--><span class=\"q2\">Equip: Improves critical strike rating by <!--rtg32-->69.</span><br><span class=\"q2\">Equip: Improves hit rating by <!--rtg31-->38.</span><br><span class=\"q2\">Equip: Increases attack power by <!--rtg38-->105.</span><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">7</span> <span class=\"moneysilver\">56</span> <span class=\"moneycopper\">23</span></div></td></tr></table><!--i?50452:1:80:80-->"
+  },
+  "50453": {
+    "icon": "inv_jewelry_ring_81",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Ring of Rotting Sinew</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q\"><br>Item Level <!--ilvl-->264</span><!--bo--><br>Binds when equipped<br>Unique-Equipped<!--ue--><!--ue--><table width=\"100%\"><tr><td>Finger</td><th><!--scstart4:-2--><span class=\"q1\"></span><!--scend--></th></tr></table><!--rf--><span><!--stat4-->+95 Strength</span><br><span><!--stat7-->+103 Stamina</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><!--rs--><!--e--><br /><br><a href=\"/wotlk/items/gems?filter=81;3;0\" class=\"socket-yellow q0\">Yellow Socket</a><!--ps--><br><!--sb--><span class=\"q0\">Socket Bonus: +4 Strength</span><br /><br /></td></tr></table><table><tr><td>Requires Level <!--rlvl-->80<br><!--rr--><span class=\"q2\">Equip: Improves critical strike rating by <!--rtg32-->69.</span><br><span class=\"q2\">Equip: Improves hit rating by <!--rtg31-->38.</span><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">7</span> <span class=\"moneysilver\">56</span> <span class=\"moneycopper\">23</span></div></td></tr></table><!--i?50453:1:80:80-->"
   },
   "50472": {
     "icon": "inv_wand_34",
@@ -1648,6 +2108,11 @@
     "icon": "inv_boots_mail_06",
     "quality": 4,
     "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Taldron's Long Neglected Boots</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q\"><br>Item Level <!--ilvl-->251</span><!--bo--><br>Binds when picked up<!--ue--><!--ue--><table width=\"100%\"><tr><td>Feet</td><th><!--scstart4:3--><span class=\"q1\">Mail</span><!--scend--></th></tr></table><!--rf--><span><!--amr-->972 Armor</span><br><span><!--stat3-->+91 Agility</span><br><span><!--stat7-->+84 Stamina</span><br><span><!--stat5-->+60 Intellect</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><!--rs--><!--e--><br /><br><a href=\"/wotlk/items/gems?filter=81;2;0\" class=\"socket-red q0\">Red Socket</a><br><a href=\"/wotlk/items/gems?filter=81;3;0\" class=\"socket-yellow q0\">Yellow Socket</a><!--ps--><br><!--sb--><span class=\"q0\">Socket Bonus: +6 Agility</span><br /><br />Durability 70 / 70</td></tr></table><table><tr><td>Requires Level <!--rlvl-->80<br><!--rr--><span class=\"q2\">Equip: Improves critical strike rating by <!--rtg32-->33.</span><br><span class=\"q2\">Equip: Increases attack power by <!--rtg38-->153.</span><br><span class=\"q2\">Equip: Increases your armor penetration by <!--rtg44-->62.</span><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">11</span> <span class=\"moneysilver\">5</span> <span class=\"moneycopper\">69</span></div><div class=\"whtt-extra whtt-droppedby\">Dropped by: Festergut</div><div class=\"whtt-extra whtt-dropchance\">Drop Chance: 4.03%</div></td></tr></table><!--i?50812:1:80:80-->"
+  },
+  "50818": {
+    "icon": "spell_deathknight_summondeathcharger",
+    "quality": 4,
+    "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Invincible's Reins</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 4</b></th></tr></table><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->20</span><!--bo--><br>Binds when picked up<!--ue--><!--ue--><br />Mount<!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->20<br>Requires <a href=\"/wotlk/skill=762/riding\" class=\"q1\">Riding</a> (75)<br><span class=\"q2\">Use: <a href=\"/wotlk/spell=72286/invincible\">Teaches you how to summon this mount.</a></span><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/wotlk/spell=72286/invincible\" class=\"q2\">Summons and dismisses the flying undead horse Invincible. &nbsp;This mount changes depending on your Riding skill and location.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-extra whtt-droppedby\">Dropped by: The Lich King</div><div class=\"whtt-extra whtt-dropchance\">Drop Chance: 0.78%</div></td></tr></table>"
   },
   "50852": {
     "icon": "inv_jewelry_ring_78",
@@ -3088,5 +3553,10 @@
     "icon": "inv_misc_rubysanctum3",
     "quality": 4,
     "tooltip": "<table><tr><td><table style=\"display:inline-table; vertical-align:inherit\"><tr><td><!--nstart--><b class=\"q4\">Petrified Twilight Scale</b><!--nend--></td><th><b class=\"q0 whtt-extra\">Phase 5</b></th></tr></table><!--ndstart--><br /><span class=\"q2\">Heroic</span><!--ndend--><span class=\"q\"><br>Item Level <!--ilvl-->284</span><!--bo--><br>Binds when picked up<br>Unique<!--ue--><br>Unique-Equipped: Petrified Twilight Scale (1)<!--ue--><table width=\"100%\"><tr><td>Trinket</td><th><!--scstart4:-4--><span class=\"q1\"></span><!--scend--></th></tr></table><!--rf--><span><!--amr-->2576 Armor</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--><!--rs--><!--e--><!--ps--></td></tr></table><table><tr><td>Requires Level <!--rlvl-->80<br><!--rr--><!--useText:0:1--><span id=\"useText1\" class=\"q2\">Equip: <!--useEffect:0:1--><a href=\"/wotlk/spell=75481/item-chamber-of-aspects-25-heroic-tank-trinket\" class=\"q2\">Melee attacks which reduce you below 35% health cause you to gain 828 dodge rating for 10 sec. &nbsp;Cannot occur more than once every 45 sec. (45s cooldown)</a><!--useEffect:1--></span><!--useText:1--><!--itemEffects:1--><br><!--pvpEquip--><!--pvpEquip--><div class=\"whtt-sellprice\">Sell Price: <span class=\"moneygold\">11</span> <span class=\"moneysilver\">39</span> <span class=\"moneycopper\">40</span></div></td></tr></table>"
+  },
+  "95341": {
+    "icon": "ability_mount_epicbatmount",
+    "quality": 4,
+    "tooltip": "<table><tr><td><!--nstart--><b class=\"q4\">Armored Bloodwing</b><!--nend--><!--ndstart--><!--ndend--><span class=\"q whtt-extra whtt-ilvl\"><br>Item Level <!--ilvl-->14</span><!--bo--><br>Binds when picked up<!--ue--><!--ue--><br />Mount <span class=\"q0\">(Account-wide)</span><!--ebstats--><!--egstats--><!--eistats--><!--nameDescStats--></td></tr></table><table><tr><td><span class=\"q2\">Use: <a href=\"/spell=139595/armored-bloodwing\">Teaches you how to summon this mount.  The capabilities of this mount depend on your Riding skill and location.</a></span><br><!--useText:0:2--><span id=\"useText2\" class=\"q2\"><!--useEffect:0:2--><a href=\"/spell=139595/armored-bloodwing\" class=\"q2\">Summons and dismisses an Armored Bloodwing. &nbsp;This mount changes depending on your Riding skill and location.</a><!--useEffect:2--></span><!--useText:2--><!--itemEffects:1--><br>Requires level <!--minlvl-->1 to <!--maxlvl-->90 (<!--lvl-->90)<br>Requires <a href=\"/spell=33388/apprentice-riding\" class=\"q1\">Apprentice Riding</a><br><!--pvpEquip--><!--pvpEquip--><br /><br><span class=\"q\">\"This monstrous, flesh-eating bat is the undisputed ruler of the night skies.\"</span><br><span style=\"color: #FFD200\">In-Game Shop</span></td></tr></table><!--i?95341:1:90:90:872:0-->"
   }
 }

@@ -52,6 +52,9 @@ function giveawayPrizeNode(prize, size = 'small') {
   const look = giveawayPrizeLook(prize);
   const wrap = document.createElement('span');
   wrap.className = 'giveaway-prize';
+  // Підказка Wowhead при наведенні - спільний обробник сторінки рейду
+  // ([data-item-id] + data/item-icons.json). Прихований приз - без неї.
+  if (prize.type === 'item' && prize.itemId) wrap.dataset.itemId = String(prize.itemId);
   const img = document.createElement('img');
   img.src = giveawayIconUrl(look.icon, size);
   img.alt = '';
@@ -555,8 +558,10 @@ function initRaidGiveaway(opts) {
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'giveaway-catalog-item';
-          btn.appendChild(giveawayPrizeNode({ type: 'item', icon: p.icon, name: p.name, quality: p.quality }));
-          btn.addEventListener('click', () => addPrize({ key: `i${p.id}`, itemId: p.id, prize: { type: 'item', icon: p.icon, name: p.name, quality: p.quality } }));
+          // Підказка - на весь рядок, не лише на назву.
+          btn.dataset.itemId = String(p.id);
+          btn.appendChild(giveawayPrizeNode({ type: 'item', itemId: p.id, icon: p.icon, name: p.name, quality: p.quality }));
+          btn.addEventListener('click', () => addPrize({ key: `i${p.id}`, itemId: p.id, prize: { type: 'item', itemId: p.id, icon: p.icon, name: p.name, quality: p.quality } }));
           list.appendChild(btn);
         });
       if (!list.children.length) list.textContent = 'Нічого не знайдено';
