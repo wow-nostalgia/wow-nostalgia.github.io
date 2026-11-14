@@ -2338,12 +2338,21 @@ function describeAuditAction(entry) {
     case 'bonus_grant_cancel':
       return hideSoftDetails ? 'скасував бонусний софт' : `скасував бонусний софт гравцю ${d.playerName}`;
     case 'giveaway_start': {
-      const prizes = (d.prizes || []).map((p) => {
-        // Прихований приз - без кількості: вона теж підказує, що розігрується.
-        if (p.hidden) return 'прихований приз';
+      const all = d.prizes || [];
+      const prizes = all.filter((p) => !p.hidden).map((p) => {
         const what = p.gold != null ? `${p.gold} золота` : p.name;
         return p.count > 1 ? `${what} ×${p.count}` : what;
       });
+      // Приховані - одним підсумком, без назв і кількостей: вони підказали б,
+      // що розігрується.
+      const hidden = all.filter((p) => p.hidden).length;
+      if (hidden) {
+        const n10 = hidden % 10;
+        const n100 = hidden % 100;
+        const word = n10 === 1 && n100 !== 11 ? 'прихований приз'
+          : n10 >= 2 && n10 <= 4 && (n100 < 12 || n100 > 14) ? 'приховані призи' : 'прихованих призів';
+        prizes.push(hidden === 1 ? word : `${hidden} ${word}`);
+      }
       return `почав розіграш: ${prizes.join(', ')}`;
     }
     case 'giveaway_cancel': return 'скасував розіграш';
