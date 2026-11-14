@@ -17,10 +17,10 @@ import { isRaidOfficer, requireRaidOfficer } from './auth.js';
 import { GIVEAWAY_PRIZES, GIVEAWAY_PRIZE_CATEGORIES, GIVEAWAY_PRIZES_BY_ID } from './giveaway-prizes.js';
 
 export const GIVEAWAY_ROUND_SECONDS = [20, 30, 60];
-// Відлік до старту раунду. Перший - довший: про новий розіграш сторінка
-// дізнається зі snapshot (раз на 20 с), тож усі встигнуть його побачити.
-// Далі сторінки й так опитують розіграш часто - вистачає анонсу.
-const FIRST_ROUND_LEAD_MS = 25000;
+// Відлік до старту раунду (анонс). Про новий розіграш сторінка дізнається
+// зі snapshot (раз на 20 с), тож хто відкрив її раніше, може побачити
+// перший раунд уже після старту - так вирішено (2026-11-15).
+const FIRST_ROUND_LEAD_MS = 10000;
 const NEXT_ROUND_LEAD_MS = 10000;
 const MAX_ROUNDS = 50;
 const MAX_QUANTITY = 20;
