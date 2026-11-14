@@ -746,7 +746,7 @@ function initRaidGiveaway(opts) {
   function addPrize(entry) {
     const existing = selected.find((s) => s.key === entry.key);
     if (existing) existing.count = Math.min(20, existing.count + 1);
-    else selected.push({ ...entry, count: 1, hidden: false });
+    else selected.push({ ...entry, count: 1, hidden: true });
     renderSelected();
   }
 
