@@ -17,6 +17,11 @@ import { isRaidOfficer, requireRaidOfficer } from './auth.js';
 import { GIVEAWAY_PRIZES, GIVEAWAY_PRIZE_CATEGORIES, GIVEAWAY_PRIZES_BY_ID } from './giveaway-prizes.js';
 
 export const GIVEAWAY_ROUND_SECONDS = [30, 60, 90];
+// Відлік до старту раунду. Перший - довший: про новий розіграш сторінка
+// дізнається зі snapshot (раз на 20 с), тож усі встигнуть його побачити.
+// Далі сторінки й так опитують розіграш часто - вистачає анонсу.
+const FIRST_ROUND_LEAD_MS = 25000;
+const NEXT_ROUND_LEAD_MS = 10000;
 const MAX_ROUNDS = 50;
 const MAX_QUANTITY = 20;
 const MAX_GOLD = 1000000;
@@ -137,18 +142,19 @@ async function advanceGiveaway(db, giveaway) {
     giveaway.status = 'finished';
     return listRounds(db, giveaway.id);
   }
-  // Перший раунд - одразу після старту розіграшу.
+  // Перший раунд - сам, після відліку від старту розіграшу.
   if (!rounds.some((r) => r.starts_at)) {
-    await startNextRound(db, giveaway);
+    await startNextRound(db, giveaway, FIRST_ROUND_LEAD_MS);
     return listRounds(db, giveaway.id);
   }
   return rounds;
 }
 
-// Стартує наступний раунд черги, якщо зараз жоден не йде. Умова в самому
+// Ставить наступний раунд черги (статус active, старт через leadMs - до
+// нього гравці бачать відлік), якщо зараз жоден не йде. Умова в самому
 // UPDATE - паралельні запити не запустять двох раундів.
-async function startNextRound(db, giveaway) {
-  const startMs = Date.now();
+async function startNextRound(db, giveaway, leadMs = NEXT_ROUND_LEAD_MS) {
+  const startMs = Date.now() + leadMs;
   await db
     .prepare(
       `UPDATE raid_giveaway_rounds SET status = 'active', starts_at = ?, ends_at = ?

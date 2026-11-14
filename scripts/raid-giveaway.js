@@ -226,7 +226,10 @@ function initRaidGiveaway(opts) {
     const now = serverNow();
     const start = Date.parse(round.startsAt);
     if (now < start) {
-      if (timerEl) timerEl.textContent = `Наступний раунд через ${Math.ceil((start - now) / 1000)} с`;
+      // Перший раунд - старт усього розіграшу, далі - анонс наступного.
+      const first = !state.giveaway.rounds.some((r) => r.id !== round.id && r.startsAt);
+      const left = Math.ceil((start - now) / 1000);
+      if (timerEl) timerEl.textContent = first ? `Розіграш почнеться через ${left} с` : `Наступний раунд почнеться через ${left} с`;
       return;
     }
     // Раунд щойно почався - один раз перемальовуємо (кнопка стає активною).
