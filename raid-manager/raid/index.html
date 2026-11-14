@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейд — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=249">
+  <link rel="stylesheet" href="../../style.css?v=250">
   <script src="/scripts/background.js?v=4"></script>
 </head>
 
@@ -75,6 +75,11 @@
       </div>
 
       <div id="raidContent" hidden>
+
+        <!-- Розіграш призів (scripts/raid-giveaway.js) - видно з будь-якої
+             вкладки; поки він на екрані, займає місце форм софту й
+             офіцерської панелі (CSS: #giveawayBanner:not([hidden]) ~ ...). -->
+        <section id="giveawayBanner" class="giveaway-banner" aria-live="polite" hidden></section>
 
         <div class="raid-forms-grid">
           <div class="raid-form-col">
@@ -168,9 +173,6 @@
         </div>
 
         <p id="hiddenReservesNotice" class="raid-hidden-notice" hidden>🔒 Режим прихованих софтів — ви бачите тільки свої</p>
-
-        <!-- Розіграш призів (scripts/raid-giveaway.js) - видно з будь-якої вкладки. -->
-        <section id="giveawayBanner" class="giveaway-banner" aria-live="polite" hidden></section>
 
         <div class="raid-tabs" role="tablist">
           <button type="button" class="raid-tab raid-tab--active" data-tab="players">Гравці</button>

@@ -7432,6 +7432,12 @@ body.raid-manager-detail-page .giveaway-settings-active[hidden] {
   display: none;
 }
 
+/* Поки банер розіграшу на екрані - він замість форм софту й офіцерської
+   панелі; сховали банер - форми повертаються. */
+body.raid-manager-detail-page #giveawayBanner:not([hidden]) ~ .raid-forms-grid {
+  display: none;
+}
+
 body.raid-manager-detail-page .giveaway-banner {
   display: flex;
   flex-direction: column;
