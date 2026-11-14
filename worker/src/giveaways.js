@@ -24,7 +24,7 @@ const FIRST_ROUND_LEAD_MS = 25000;
 const NEXT_ROUND_LEAD_MS = 10000;
 const MAX_ROUNDS = 50;
 const MAX_QUANTITY = 20;
-const MAX_GOLD = 1000000;
+const MAX_GOLD = 10000;
 const CRITERIA_KEYS = ['signup', 'gearScore', 'softs', 'noPenalties'];
 
 function nowIso(ms = Date.now()) {

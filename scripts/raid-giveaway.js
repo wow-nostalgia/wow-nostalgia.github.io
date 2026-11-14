@@ -16,6 +16,12 @@ const GIVEAWAY_SPIN_MS = 5000;
 // пізніше, бачить одразу результат.
 const GIVEAWAY_SPIN_RECENT_MS = 20000;
 const GIVEAWAY_ICON_BASE = 'https://wow.zamimg.com/images/wow/icons';
+// Межі поля "кількість": пачка предметів / сума золота (як MAX_GOLD воркера).
+const GIVEAWAY_MAX_COUNT = 20;
+const GIVEAWAY_MAX_GOLD = 10000;
+const GIVEAWAY_DEFAULT_GOLD = 100;
+// Категорія каталогу лише для фронту: золото не входить у каталог воркера.
+const GIVEAWAY_GOLD_CATEGORY = 'gold';
 const GIVEAWAY_CRITERIA = [
   { key: 'signup', label: 'Записаний у рейд до його початку' },
   { key: 'gearScore', label: 'GS указано в усіх персонажів' },
@@ -36,7 +42,10 @@ function giveawayIconUrl(icon, size = 'medium') {
   return `${GIVEAWAY_ICON_BASE}/${size}/${icon}.jpg`;
 }
 
+// gold == null - золото без суми (каталог і рядок обраного призу, де
+// сума - у полі кількості).
 function giveawayGoldText(gold) {
+  if (gold == null) return 'Золото';
   return `${Number(gold).toLocaleString('uk-UA')} золота`;
 }
 
@@ -133,6 +142,12 @@ function initRaidGiveaway(opts) {
   let renderedBeforeStart = null; // раунд, намальований ще до свого старту
   let catalog = null;
   const selected = []; // [{ key, itemId?, gold?, count, hidden, prize }]
+  // Золото - кожне додавання окремим призом (500 і 1000 - два раунди), тож
+  // ключ унікальний; сума живе в gold, кількість завжди 1.
+  let goldSeq = 0;
+  const goldEntry = (gold, hidden = true) => ({
+    key: `g${++goldSeq}`, gold, count: 1, hidden, prize: { type: 'gold', gold: null }
+  });
   // Чернетка обраних призів - щоб перезавантаження сторінки її не скидало.
   const draftKey = `giveawayDraft:${raidId}`;
 
@@ -158,7 +173,7 @@ function initRaidGiveaway(opts) {
         if (!p) return;
         selected.push({ key: `i${p.id}`, itemId: p.id, count, hidden: Boolean(d.hidden), prize: { type: 'item', itemId: p.id, icon: p.icon, name: p.name, quality: p.quality } });
       } else if (Number.isInteger(d.gold) && d.gold > 0) {
-        selected.push({ key: `g${d.gold}`, gold: d.gold, count: 1, hidden: Boolean(d.hidden), prize: { type: 'gold', gold: d.gold } });
+        selected.push(goldEntry(Math.min(GIVEAWAY_MAX_GOLD, d.gold), Boolean(d.hidden)));
       }
     });
   }
@@ -651,12 +666,23 @@ function initRaidGiveaway(opts) {
     const search = form.querySelector('.giveaway-search');
     const list = form.querySelector('.giveaway-catalog');
     categorySelect.innerHTML = '<option value="">Усі призи</option>';
+    categorySelect.add(new Option('Золото', GIVEAWAY_GOLD_CATEGORY));
     catalog.categories.forEach((c) => categorySelect.add(new Option(c.label, c.key)));
 
     const renderCatalog = () => {
       const q = search.value.trim().toLocaleLowerCase('en');
       const cat = categorySelect.value;
       list.innerHTML = '';
+      // Золото - першим рядком каталогу; сума - у полі обраного призу.
+      if ((!cat || cat === GIVEAWAY_GOLD_CATEGORY) && (!q || 'золото gold'.includes(q))) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'giveaway-catalog-item';
+        btn.appendChild(giveawayPrizeNode({ type: 'gold', gold: null }));
+        btn.addEventListener('click', () => addPrize(goldEntry(GIVEAWAY_DEFAULT_GOLD)));
+        list.appendChild(btn);
+      }
+      if (cat === GIVEAWAY_GOLD_CATEGORY) return;
       catalog.prizes
         .filter((p) => (!cat || p.category === cat) && (!q || p.name.toLocaleLowerCase('en').includes(q)))
         .forEach((p) => {
@@ -674,14 +700,6 @@ function initRaidGiveaway(opts) {
     categorySelect.addEventListener('change', renderCatalog);
     search.addEventListener('input', renderCatalog);
     renderCatalog();
-
-    const goldInput = form.querySelector('.giveaway-gold-input');
-    form.querySelector('.giveaway-gold-add').addEventListener('click', () => {
-      const gold = Number(goldInput.value);
-      if (!Number.isInteger(gold) || gold < 1) { goldInput.focus(); return; }
-      addPrize({ key: `g${gold}`, gold, prize: { type: 'gold', gold } });
-      goldInput.value = '';
-    });
 
     const durationSelect = form.querySelector('.giveaway-duration');
     durationSelect.innerHTML = '';
@@ -723,7 +741,7 @@ function initRaidGiveaway(opts) {
           body: {
             prizes: selected.map((s) => (s.itemId != null
               ? { itemId: s.itemId, count: s.count, hidden: s.hidden }
-              : { gold: s.gold, count: s.count, hidden: s.hidden })),
+              : { gold: s.gold, count: 1, hidden: s.hidden })),
             criteria,
             roundSeconds: Number(durationSelect.value)
           }
@@ -744,9 +762,14 @@ function initRaidGiveaway(opts) {
   }
 
   function addPrize(entry) {
+    // Золото приходить готовим записом (goldEntry) - щоразу новий приз.
+    if (entry.gold != null) {
+      selected.push(entry);
+      renderSelected();
+      return;
+    }
     const existing = selected.find((s) => s.key === entry.key);
-    // Золото - завжди одна сума (кількість для нього не має сенсу).
-    if (existing) { if (existing.gold == null) existing.count = Math.min(20, existing.count + 1); }
+    if (existing) existing.count = Math.min(GIVEAWAY_MAX_COUNT, existing.count + 1);
     else selected.push({ ...entry, count: 1, hidden: true });
     renderSelected();
   }
@@ -766,17 +789,20 @@ function initRaidGiveaway(opts) {
       const row = document.createElement('div');
       row.className = 'giveaway-selected-row';
       row.appendChild(giveawayPrizeNode(s.prize));
+      // Для предмета - кількість у пачці, для золота - сума.
+      const isGold = s.gold != null;
+      const max = isGold ? GIVEAWAY_MAX_GOLD : GIVEAWAY_MAX_COUNT;
       const count = document.createElement('input');
       count.type = 'number';
       count.min = '1';
-      count.max = '20';
-      count.value = String(s.count);
+      count.max = String(max);
+      count.value = String(isGold ? s.gold : s.count);
       count.className = 'giveaway-count';
-      count.setAttribute('aria-label', 'Кількість');
-      if (s.gold != null) count.disabled = true;
+      count.setAttribute('aria-label', isGold ? 'Сума золота' : 'Кількість');
       count.addEventListener('change', () => {
-        s.count = Math.max(1, Math.min(20, Number(count.value) || 1));
-        count.value = String(s.count);
+        const value = Math.max(1, Math.min(max, Math.floor(Number(count.value)) || 1));
+        if (isGold) s.gold = value; else s.count = value;
+        count.value = String(value);
         saveDraft();
       });
       const hiddenLabel = document.createElement('label');

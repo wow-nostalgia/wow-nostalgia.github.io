@@ -7745,15 +7745,13 @@ body.raid-manager-detail-page .giveaway-picker {
   gap: 0.5rem;
 }
 
-body.raid-manager-detail-page .giveaway-picker-filters,
-body.raid-manager-detail-page .giveaway-gold-row {
+body.raid-manager-detail-page .giveaway-picker-filters {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
 }
 
-body.raid-manager-detail-page .giveaway-picker-filters > *,
-body.raid-manager-detail-page .giveaway-gold-input {
+body.raid-manager-detail-page .giveaway-picker-filters > * {
   flex: 1 1 12rem;
   min-width: 0;
 }
@@ -7835,14 +7833,9 @@ body.raid-manager-detail-page .giveaway-selected-row .giveaway-prize {
   flex: 1 1 12rem;
 }
 
+/* Кількість предметів або сума золота (до 10 000 - п'ять цифр). */
 body.raid-manager-detail-page .giveaway-form .giveaway-count {
-  width: 4.5rem;
-}
-
-/* Золото - одна сума, кількість для нього неактивна. */
-body.raid-manager-detail-page .giveaway-form .giveaway-count:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
+  width: 6.5rem;
 }
 
 body.raid-manager-detail-page .giveaway-criteria {
