@@ -431,7 +431,10 @@ function initRaidGiveaway(opts) {
     box.className = 'giveaway-round';
     const prizeRow = document.createElement('div');
     prizeRow.className = 'giveaway-current-prize';
-    prizeRow.appendChild(giveawayPrizeNode(round.prize, 'medium'));
+    // Приз наосліп гравці бачать лише разом із переможцем - коли рулетка
+    // зупиниться (офіцери - одразу, як і весь розіграш).
+    const revealLater = Boolean(round.prize.hidden) && !opts.isOfficer();
+    prizeRow.appendChild(giveawayPrizeNode(revealLater ? { type: 'hidden' } : round.prize, 'medium'));
     box.appendChild(prizeRow);
 
     const viewport = document.createElement('div');
@@ -473,6 +476,7 @@ function initRaidGiveaway(opts) {
       }
       strip.style.transform = `translateX(${-offset}px)`;
       const showWinner = () => {
+        if (revealLater) prizeRow.replaceChildren(giveawayPrizeNode(round.prize, 'medium'));
         win.classList.add('giveaway-spin-cell--won');
         result.textContent = `Виграв ${round.winner.name} (${round.winner.roll})`;
       };
