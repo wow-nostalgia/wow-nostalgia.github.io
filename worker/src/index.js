@@ -54,7 +54,8 @@ import {
   handleGiveawayRoll,
   handleCancelGiveaway,
   handleRerollGiveawayRound,
-  handleSetGiveawayDelivered
+  handleSetGiveawayDelivered,
+  handleNextGiveawayRound
 } from './giveaways.js';
 import {
   handleListPenaltyTemplates,
@@ -269,7 +270,8 @@ async function routeRaids(request, env, parts, session) {
   if (sub === 'cooldowns' && method === 'POST') return handleSetRaidCooldowns(request, env, raidId, session);
 
   // Розіграш призів: /giveaway (GET стан, POST старт), /giveaway/prizes,
-  // /giveaway/roll, /giveaway/cancel, /giveaway/rounds/{id}/reroll|delivered.
+  // /giveaway/roll, /giveaway/cancel, /giveaway/next,
+  // /giveaway/rounds/{id}/reroll|delivered.
   if (sub === 'giveaway') {
     const raid = await loadRaidOr404(env, raidId);
     const target = parts[2];
@@ -278,6 +280,7 @@ async function routeRaids(request, env, parts, session) {
     if (target === 'prizes' && method === 'GET') return handleListGiveawayPrizes(request, env, raid, session);
     if (target === 'roll' && method === 'POST') return handleGiveawayRoll(request, env, raid, session);
     if (target === 'cancel' && method === 'POST') return handleCancelGiveaway(request, env, raid, session);
+    if (target === 'next' && method === 'POST') return handleNextGiveawayRound(request, env, raid, session);
     if (target === 'rounds' && parts[3] && method === 'POST') {
       const roundId = Number(parts[3]);
       if (!Number.isInteger(roundId)) throw new HttpError(400, 'Некоректний раунд');

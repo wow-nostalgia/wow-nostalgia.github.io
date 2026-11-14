@@ -17,9 +17,8 @@ import { isRaidOfficer, requireRaidOfficer } from './auth.js';
 import { GIVEAWAY_PRIZES, GIVEAWAY_PRIZE_CATEGORIES, GIVEAWAY_PRIZES_BY_ID } from './giveaway-prizes.js';
 
 export const GIVEAWAY_ROUND_SECONDS = [30, 60, 90];
-// Пауза між раундами - на анімацію рулетки з переможцем попереднього.
-const GIVEAWAY_SPIN_MS = 8000;
 const MAX_ROUNDS = 50;
+const MAX_QUANTITY = 20;
 const MAX_GOLD = 1000000;
 const CRITERIA_KEYS = ['signup', 'gearScore', 'softs', 'noPenalties'];
 
@@ -117,40 +116,56 @@ async function resolveRound(db, round) {
 }
 
 // Доводить розіграш до поточного моменту: закриває раунд, що скінчився,
-// стартує наступний (після паузи на рулетку), завершує розіграш, коли
-// раундів не лишилось. Повертає актуальні раунди.
+// стартує перший раунд, завершує розіграш, коли раундів не лишилось.
+// Кожен наступний раунд стартує лише з дії офіцера (startNextRound):
+// позначка "видано" або кнопка "Наступний раунд". Повертає актуальні раунди.
 async function advanceGiveaway(db, giveaway) {
   if (giveaway.status !== 'active') return listRounds(db, giveaway.id);
   const now = Date.now();
-  for (let guard = 0; guard < MAX_ROUNDS * 2 + 2; guard++) {
-    const rounds = await listRounds(db, giveaway.id);
-    const active = rounds.find((r) => r.status === 'active');
-    if (active) {
-      if (now < Date.parse(active.ends_at)) return rounds;
-      await resolveRound(db, active);
-      continue;
-    }
-    const next = rounds.find((r) => r.status === 'pending');
-    if (!next) {
-      await db
-        .prepare("UPDATE raid_giveaways SET status = 'finished', finished_at = ? WHERE id = ? AND status = 'active'")
-        .bind(nowIso(now), giveaway.id)
-        .run();
-      giveaway.status = 'finished';
-      return listRounds(db, giveaway.id);
-    }
-    // Попередній раунд (закритий) - від його кінця пауза на рулетку. Якщо
-    // закрили із запізненням (ніхто не дивився) - пауза від "зараз".
-    const lastEnd = Math.max(0, ...rounds.filter((r) => r.ends_at && r.status !== 'pending').map((r) => Date.parse(r.ends_at)));
-    const hadPrevious = lastEnd > 0;
-    const startMs = hadPrevious ? Math.max(lastEnd, now) + GIVEAWAY_SPIN_MS : now;
+  let rounds = await listRounds(db, giveaway.id);
+  const active = rounds.find((r) => r.status === 'active');
+  if (active) {
+    if (now < Date.parse(active.ends_at)) return rounds;
+    await resolveRound(db, active);
+    rounds = await listRounds(db, giveaway.id);
+  }
+  if (!rounds.some((r) => r.status === 'pending')) {
     await db
-      .prepare("UPDATE raid_giveaway_rounds SET status = 'active', starts_at = ?, ends_at = ? WHERE id = ? AND status = 'pending'")
-      .bind(nowIso(startMs), nowIso(startMs + giveaway.round_seconds * 1000), next.id)
+      .prepare("UPDATE raid_giveaways SET status = 'finished', finished_at = ? WHERE id = ? AND status = 'active'")
+      .bind(nowIso(now), giveaway.id)
       .run();
+    giveaway.status = 'finished';
     return listRounds(db, giveaway.id);
   }
-  return listRounds(db, giveaway.id);
+  // Перший раунд - одразу після старту розіграшу.
+  if (!rounds.some((r) => r.starts_at)) {
+    await startNextRound(db, giveaway);
+    return listRounds(db, giveaway.id);
+  }
+  return rounds;
+}
+
+// Стартує наступний раунд черги, якщо зараз жоден не йде. Умова в самому
+// UPDATE - паралельні запити не запустять двох раундів.
+async function startNextRound(db, giveaway) {
+  const startMs = Date.now();
+  await db
+    .prepare(
+      `UPDATE raid_giveaway_rounds SET status = 'active', starts_at = ?, ends_at = ?
+       WHERE id = (SELECT id FROM raid_giveaway_rounds WHERE giveaway_id = ? AND status = 'pending'
+                   ORDER BY position ASC, id ASC LIMIT 1)
+         AND status = 'pending'
+         AND NOT EXISTS (SELECT 1 FROM raid_giveaway_rounds WHERE giveaway_id = ? AND status = 'active')`
+    )
+    .bind(nowIso(startMs), nowIso(startMs + giveaway.round_seconds * 1000), giveaway.id, giveaway.id)
+    .run();
+}
+
+// Розіграш чекає офіцера: раунд не йде, а в черзі ще є призи.
+function isWaitingForOfficer(giveaway, rounds) {
+  return giveaway.status === 'active'
+    && !rounds.some((r) => r.status === 'active')
+    && rounds.some((r) => r.status === 'pending');
 }
 
 // ---------- умови участі ----------
@@ -238,7 +253,8 @@ export async function checkGiveawayEligibility(db, raid, criteria, discordId) {
 function prizeView(round, canSee = true) {
   const hidden = Boolean(round.hidden);
   if (hidden && !canSee && !['done', 'void', 'rerolled'].includes(round.status)) return { type: 'hidden', hidden: true };
-  if (round.gold != null) return { type: 'gold', gold: round.gold, hidden };
+  const quantity = round.quantity || 1;
+  if (round.gold != null) return { type: 'gold', gold: round.gold, quantity, hidden };
   const item = GIVEAWAY_PRIZES_BY_ID.get(round.item_id);
   return {
     type: 'item',
@@ -246,14 +262,30 @@ function prizeView(round, canSee = true) {
     name: item?.name || `#${round.item_id}`,
     icon: item?.icon || 'inv_misc_questionmark',
     quality: item?.quality ?? 1,
+    quantity,
     hidden
   };
 }
 
+// Керує розіграшем (скасування, видача, перекидання, наступний раунд) лише
+// офіцер, що його почав - щоб кілька офіцерів не перебивали одне одного.
+// Розіграші до цього правила (без created_by_discord_id) - будь-який офіцер.
+function isGiveawayOwner(giveaway, session) {
+  return !giveaway.created_by_discord_id || giveaway.created_by_discord_id === session.discordId;
+}
+
+async function requireGiveawayOwner(db, raid, session, giveaway) {
+  await requireRaidOfficer(db, raid.id, raid, session);
+  if (!isGiveawayOwner(giveaway, session)) {
+    throw new HttpError(403, `Керувати розіграшем може лише офіцер, що його почав: ${giveaway.created_by}`);
+  }
+}
+
 async function giveawayState(db, raid, session) {
   const giveaway = await getLatestGiveaway(db, raid.id);
-  const canManage = await isRaidOfficer(db, raid.id, raid, session.discordId);
-  if (!giveaway) return { serverNow: nowIso(), canManage, giveaway: null, me: null };
+  const isOfficer = await isRaidOfficer(db, raid.id, raid, session.discordId);
+  if (!giveaway) return { serverNow: nowIso(), canManage: isOfficer, giveaway: null, me: null };
+  const canManage = isOfficer && isGiveawayOwner(giveaway, session);
 
   const rounds = await advanceGiveaway(db, giveaway);
   const rolls = await listRolls(db, giveaway.id);
@@ -280,12 +312,13 @@ async function giveawayState(db, raid, session) {
       status: giveaway.status,
       criteria,
       roundSeconds: giveaway.round_seconds,
+      waitingForOfficer: isWaitingForOfficer(giveaway, rounds),
       createdBy: giveaway.created_by,
       createdAt: giveaway.created_at,
       rounds: rounds.map((r) => ({
         id: r.id,
         position: r.position,
-        prize: prizeView(r, canManage),
+        prize: prizeView(r, isOfficer),
         status: r.status,
         startsAt: r.starts_at,
         endsAt: r.ends_at,
@@ -331,34 +364,35 @@ export async function handleStartGiveaway(request, env, raid, session) {
   const criteria = Object.fromEntries(CRITERIA_KEYS.map((k) => [k, Boolean(body.criteria[k])]));
 
   if (!Array.isArray(body.prizes) || !body.prizes.length) throw new HttpError(400, 'Не обрано жодного призу');
+  // Кожен рядок - один раунд; кількість розігрується пачкою.
   const rounds = [];
   for (const p of body.prizes) {
-    const count = Number(p?.count ?? 1);
-    if (!Number.isInteger(count) || count < 1) throw new HttpError(400, 'Кількість призу має бути цілим числом від 1');
-    let prize;
+    const quantity = Number(p?.count ?? 1);
+    if (!Number.isInteger(quantity) || quantity < 1 || quantity > MAX_QUANTITY) {
+      throw new HttpError(400, `Кількість призу - ціле число від 1 до ${MAX_QUANTITY}`);
+    }
     if (p.itemId != null) {
       const itemId = Number(p.itemId);
       if (!GIVEAWAY_PRIZES_BY_ID.has(itemId)) throw new HttpError(400, `Невідомий приз: ${p.itemId}`);
-      prize = { itemId, gold: null, hidden: Boolean(p.hidden) };
+      rounds.push({ itemId, gold: null, quantity, hidden: Boolean(p.hidden) });
     } else {
       const gold = Number(p.gold);
       if (!Number.isInteger(gold) || gold < 1 || gold > MAX_GOLD) throw new HttpError(400, `Золото - ціле число від 1 до ${MAX_GOLD}`);
-      prize = { itemId: null, gold, hidden: Boolean(p.hidden) };
+      rounds.push({ itemId: null, gold, quantity, hidden: Boolean(p.hidden) });
     }
-    for (let i = 0; i < count; i++) rounds.push(prize);
   }
   if (rounds.length > MAX_ROUNDS) throw new HttpError(400, `Не більше ${MAX_ROUNDS} призів за розіграш`);
 
   const created = await db
     .prepare(
-      `INSERT INTO raid_giveaways (raid_id, status, criteria, round_seconds, created_by, created_at)
-       VALUES (?, 'active', ?, ?, ?, ?) RETURNING id`
+      `INSERT INTO raid_giveaways (raid_id, status, criteria, round_seconds, created_by, created_by_discord_id, created_at)
+       VALUES (?, 'active', ?, ?, ?, ?, ?) RETURNING id`
     )
-    .bind(raid.id, JSON.stringify(criteria), roundSeconds, session.username, nowIso())
+    .bind(raid.id, JSON.stringify(criteria), roundSeconds, session.username, session.discordId, nowIso())
     .first();
   await db.batch(rounds.map((r, i) => db
-    .prepare("INSERT INTO raid_giveaway_rounds (giveaway_id, position, item_id, gold, hidden, status) VALUES (?, ?, ?, ?, ?, 'pending')")
-    .bind(created.id, i + 1, r.itemId, r.gold, r.hidden ? 1 : 0)));
+    .prepare("INSERT INTO raid_giveaway_rounds (giveaway_id, position, item_id, gold, quantity, hidden, status) VALUES (?, ?, ?, ?, ?, ?, 'pending')")
+    .bind(created.id, i + 1, r.itemId, r.gold, r.quantity, r.hidden ? 1 : 0)));
   await insertAudit(db, raid.id, session.username, 'giveaway_start', {
     rounds: rounds.length,
     // Приховані призи в історії не розкриваємо.
@@ -406,6 +440,7 @@ export async function handleCancelGiveaway(request, env, raid, session) {
   await requireRaidOfficer(db, raid.id, raid, session);
   const giveaway = await getLatestGiveaway(db, raid.id);
   if (!giveaway || giveaway.status !== 'active') throw new HttpError(400, 'Зараз немає розіграшу');
+  await requireGiveawayOwner(db, raid, session, giveaway);
   await db.batch([
     db.prepare("UPDATE raid_giveaways SET status = 'cancelled', finished_at = ? WHERE id = ? AND status = 'active'")
       .bind(nowIso(), giveaway.id),
@@ -439,6 +474,7 @@ export async function handleRerollGiveawayRound(request, env, raid, session, rou
   if (!['done', 'void'].includes(round.status)) throw new HttpError(400, 'Перекинути можна лише зіграний раунд');
   if (round.delivered) throw new HttpError(400, 'Приз уже видано');
   const giveaway = await getGiveaway(db, raid.id, round.giveaway_id);
+  await requireGiveawayOwner(db, raid, session, giveaway);
   if (giveaway.status === 'cancelled') throw new HttpError(400, 'Розіграш скасовано');
 
   const last = await db
@@ -452,9 +488,9 @@ export async function handleRerollGiveawayRound(request, env, raid, session, rou
   if (!meta.changes) throw new HttpError(409, 'Раунд уже змінено');
   await db.batch([
     db.prepare(
-      `INSERT INTO raid_giveaway_rounds (giveaway_id, position, item_id, gold, hidden, status, excluded_discord_id)
-       VALUES (?, ?, ?, ?, ?, 'pending', ?)`
-    ).bind(giveaway.id, last.pos + 1, round.item_id, round.gold, round.hidden, round.winner_discord_id),
+      `INSERT INTO raid_giveaway_rounds (giveaway_id, position, item_id, gold, quantity, hidden, status, excluded_discord_id)
+       VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)`
+    ).bind(giveaway.id, last.pos + 1, round.item_id, round.gold, round.quantity || 1, round.hidden, round.winner_discord_id),
     // Розіграш уже скінчився - продовжуємо його цим раундом.
     db.prepare("UPDATE raid_giveaways SET status = 'active', finished_at = NULL WHERE id = ? AND status = 'finished'")
       .bind(giveaway.id)
@@ -472,6 +508,8 @@ export async function handleSetGiveawayDelivered(request, env, raid, session, ro
   await requireRaidOfficer(db, raid.id, raid, session);
   const round = await loadRoundOr404(db, raid, roundId);
   if (round.status !== 'done') throw new HttpError(400, 'У раунді немає переможця');
+  const giveaway = await getGiveaway(db, raid.id, round.giveaway_id);
+  await requireGiveawayOwner(db, raid, session, giveaway);
   const body = await readJson(request);
   if (typeof body.delivered !== 'boolean') throw new HttpError(400, 'delivered має бути true або false');
   await db.prepare('UPDATE raid_giveaway_rounds SET delivered = ? WHERE id = ?').bind(body.delivered ? 1 : 0, round.id).run();
@@ -479,5 +517,33 @@ export async function handleSetGiveawayDelivered(request, env, raid, session, ro
     prize: prizeView(round),
     winner: round.winner_name
   });
+  // Видача призу - підтвердження офіцера: стартує наступний раунд, якщо
+  // інших невиданих призів немає.
+  if (body.delivered && raid.status !== 'completed') {
+    if (giveaway.status === 'active') {
+      const rounds = await advanceGiveaway(db, giveaway);
+      if (isWaitingForOfficer(giveaway, rounds) && !rounds.some((r) => r.status === 'done' && !r.delivered)) {
+        await startNextRound(db, giveaway);
+      }
+    }
+  }
+  return jsonResponse(await giveawayState(db, raid, session));
+}
+
+// Наступний раунд вручну - коли видавати нічого (ніхто не кинув, приз
+// перекинуто). Поки є невидані призи, кнопка не діє: спершу видача.
+export async function handleNextGiveawayRound(request, env, raid, session) {
+  const db = env.DB;
+  await requireRaidOfficer(db, raid.id, raid, session);
+  if (raid.status === 'completed') throw new HttpError(400, 'Рейд завершено');
+  const giveaway = await getLatestGiveaway(db, raid.id);
+  if (!giveaway || giveaway.status !== 'active') throw new HttpError(400, 'Зараз немає розіграшу');
+  await requireGiveawayOwner(db, raid, session, giveaway);
+  const rounds = await advanceGiveaway(db, giveaway);
+  if (!isWaitingForOfficer(giveaway, rounds)) throw new HttpError(409, 'Раунд уже йде або призів не лишилось');
+  if (rounds.some((r) => r.status === 'done' && !r.delivered)) {
+    throw new HttpError(400, 'Спершу познач видачу призу переможцю');
+  }
+  await startNextRound(db, giveaway);
   return jsonResponse(await giveawayState(db, raid, session));
 }

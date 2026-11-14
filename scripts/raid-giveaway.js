@@ -64,6 +64,13 @@ function giveawayPrizeNode(prize, size = 'small') {
   name.textContent = look.name;
   if (look.color) name.style.color = look.color;
   wrap.append(img, name);
+  // Пачка (напр. 5 Fish Feast) - один приз одному переможцю.
+  if (prize.type !== 'hidden' && prize.quantity > 1) {
+    const qty = document.createElement('span');
+    qty.className = 'giveaway-prize-qty';
+    qty.textContent = `×${prize.quantity}`;
+    wrap.appendChild(qty);
+  }
   // Офіцер бачить прихований приз - з позначкою, що гравцям його не видно.
   if (prize.hidden && prize.type !== 'hidden') {
     const tag = document.createElement('span');
@@ -231,6 +238,11 @@ function initRaidGiveaway(opts) {
     if (now >= end) fetchState();
   }
 
+  // Керує розіграшем лише офіцер, що його почав (рішення сервера).
+  function canManage() {
+    return Boolean(state?.canManage);
+  }
+
   function activeRound() {
     return state?.giveaway?.rounds.find((r) => r.status === 'active') || null;
   }
@@ -268,7 +280,7 @@ function initRaidGiveaway(opts) {
       : shown ? `Розіграш · приз ${played.indexOf(shown) + 1} з ${played.length}` : 'Розіграш';
     title.appendChild(titleText);
     head.appendChild(title);
-    if (opts.isOfficer() && g.status === 'active') {
+    if (canManage() && g.status === 'active') {
       const cancel = document.createElement('button');
       cancel.type = 'button';
       cancel.className = 'link-button-std link-button-std--danger';
@@ -278,14 +290,19 @@ function initRaidGiveaway(opts) {
         await officerAction('POST', `/raids/${raidId}/giveaway/cancel`);
       });
       head.appendChild(cancel);
+    } else if (opts.isOfficer() && g.status === 'active') {
+      const owner = document.createElement('span');
+      owner.className = 'giveaway-timer';
+      owner.textContent = `Веде: ${g.createdBy}`;
+      head.appendChild(owner);
     } else if (g.status === 'finished') {
       const close = document.createElement('button');
       close.type = 'button';
       close.className = 'link-button-std';
       close.textContent = 'Сховати';
       close.addEventListener('click', () => {
-        // Офіцер не ховає банер, поки є невидані призи: "видано" є лише тут.
-        const undelivered = opts.isOfficer() ? g.rounds.filter((r) => r.status === 'done' && !r.delivered) : [];
+        // Офіцер-ведучий не ховає банер, поки є невидані призи: "видано" є лише тут.
+        const undelivered = canManage() ? g.rounds.filter((r) => r.status === 'done' && !r.delivered) : [];
         if (undelivered.length) {
           const list = undelivered.map((r) => `${giveawayPrizeLook(r.prize).name} - ${r.winner.name}`).join('; ');
           showMessageModal(`Спершу познач видачу всіх призів. Ще не видано: ${list}.`, 'Розіграш');
@@ -302,8 +319,41 @@ function initRaidGiveaway(opts) {
       renderSpin(g.rounds.find((r) => r.id === spinning.roundId));
     } else if (round) {
       renderRound(round);
+    } else if (g.waitingForOfficer) {
+      renderWaiting(g);
     }
     renderResults(g);
+  }
+
+  // Між раундами: наступний стартує лише з дії офіцера - позначки "видано"
+  // або кнопки "Наступний раунд" (коли видавати нічого).
+  function renderWaiting(g) {
+    const box = document.createElement('div');
+    box.className = 'giveaway-round giveaway-waiting';
+    const left = g.rounds.filter((r) => r.status === 'pending').length;
+    const text = document.createElement('div');
+    text.className = 'giveaway-action giveaway-action--note';
+    const undelivered = g.rounds.filter((r) => r.status === 'done' && !r.delivered);
+    if (!canManage()) {
+      text.textContent = `Очікуємо, поки ${g.createdBy || 'офіцер'} розпочне наступний раунд (призів у черзі: ${left}).`;
+      box.appendChild(text);
+    } else if (undelivered.length) {
+      text.textContent = `Познач «видано» у результатах, щоб розпочати наступний раунд (призів у черзі: ${left}).`;
+      box.appendChild(text);
+    } else {
+      text.textContent = `Призів у черзі: ${left}.`;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'compare-btn giveaway-next-btn';
+      btn.textContent = 'Наступний раунд';
+      btn.disabled = opts.isRaidCompleted();
+      btn.addEventListener('click', () => {
+        btn.disabled = true;
+        officerAction('POST', `/raids/${raidId}/giveaway/next`);
+      });
+      box.append(text, btn);
+    }
+    bannerEl.appendChild(box);
   }
 
   function renderRound(round) {
@@ -501,7 +551,7 @@ function initRaidGiveaway(opts) {
     h.className = 'giveaway-results-title';
     h.textContent = 'Результати';
     wrap.appendChild(h);
-    const officer = opts.isOfficer();
+    const officer = canManage();
     finished.forEach((r) => {
       const row = document.createElement('div');
       row.className = `giveaway-result${r.status === 'rerolled' ? ' giveaway-result--rerolled' : ''}`;
