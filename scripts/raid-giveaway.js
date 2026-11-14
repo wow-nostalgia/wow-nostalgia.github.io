@@ -255,6 +255,13 @@ function initRaidGiveaway(opts) {
       close.className = 'link-button-std';
       close.textContent = 'Сховати';
       close.addEventListener('click', () => {
+        // Офіцер не ховає банер, поки є невидані призи: "видано" є лише тут.
+        const undelivered = opts.isOfficer() ? g.rounds.filter((r) => r.status === 'done' && !r.delivered) : [];
+        if (undelivered.length) {
+          const list = undelivered.map((r) => `${giveawayPrizeLook(r.prize).name} - ${r.winner.name}`).join('; ');
+          showMessageModal(`Спершу познач видачу всіх призів. Ще не видано: ${list}.`, 'Розіграш');
+          return;
+        }
         try { localStorage.setItem(dismissKey, String(g.id)); } catch { /* без сховища - просто ховаємо зараз */ }
         bannerEl.hidden = true;
       });
