@@ -510,7 +510,12 @@ function renderSiblingRows() {
       gsTd.className = 'player-gs-col';
       // GS по спеках з профілю: { спек запису: GS } - беремо спек цього рядка.
       const gs = siblingGearScores[row.name]?.[logSpecToSignupSpec(row.class, row.spec)];
-      gsTd.textContent = gs == null ? '—' : gs.toFixed(1);
+      if (gs == null) {
+        gsTd.textContent = '—';
+      } else {
+        fillGearScoreValue(gsTd, gs);
+        if (isBis(gs)) gsTd.setAttribute('aria-label', 'BiS - найкраще спорядження');
+      }
       tr.appendChild(gsTd);
     }
 

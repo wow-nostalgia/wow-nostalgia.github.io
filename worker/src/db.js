@@ -686,16 +686,17 @@ export async function listUserCharacters(db, discordId) {
   }));
 }
 
-// Map "ім'я персонажа -> { спек: GS }" з character_gear_scores.
+// Map "ім'я персонажа -> { спек: GS | 'bis' }" з character_gear_scores.
+// 'bis' (Best in Slot) - замість числа.
 async function gearScoresByCharacter(db, whereSql = '', binds = []) {
   const { results } = await db
-    .prepare(`SELECT character_name, spec, gear_score FROM character_gear_scores ${whereSql}`)
+    .prepare(`SELECT character_name, spec, gear_score, bis FROM character_gear_scores ${whereSql}`)
     .bind(...binds)
     .all();
   const map = new Map();
   for (const r of results) {
     if (!map.has(r.character_name)) map.set(r.character_name, {});
-    map.get(r.character_name)[r.spec] = r.gear_score / 10;
+    map.get(r.character_name)[r.spec] = r.bis ? 'bis' : r.gear_score / 10;
   }
   return map;
 }
@@ -706,15 +707,17 @@ export async function getUserCharacter(db, discordId, characterName) {
     .bind(discordId, characterName).first();
 }
 
-// tenthsBySpec: { спек: десяті | null } - null видаляє GS спеку.
+// tenthsBySpec: { спек: десяті | 'bis' | null } - null видаляє GS спеку,
+// 'bis' ставить BiS замість числа.
 export async function setCharacterGearScores(db, discordId, characterName, tenthsBySpec) {
   const statements = Object.entries(tenthsBySpec).map(([spec, tenths]) => (tenths == null
     ? db.prepare('DELETE FROM character_gear_scores WHERE discord_id = ? AND character_name = ? AND spec = ?')
       .bind(discordId, characterName, spec)
     : db.prepare(
-      `INSERT INTO character_gear_scores (discord_id, character_name, spec, gear_score) VALUES (?, ?, ?, ?)
-       ON CONFLICT (discord_id, character_name, spec) DO UPDATE SET gear_score = excluded.gear_score`
-    ).bind(discordId, characterName, spec, tenths)));
+      `INSERT INTO character_gear_scores (discord_id, character_name, spec, gear_score, bis) VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT (discord_id, character_name, spec)
+       DO UPDATE SET gear_score = excluded.gear_score, bis = excluded.bis`
+    ).bind(discordId, characterName, spec, tenths === 'bis' ? null : tenths, tenths === 'bis' ? 1 : 0)));
   if (statements.length) await db.batch(statements);
 }
 

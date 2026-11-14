@@ -2687,6 +2687,18 @@ body.personal-analytics-page .boss-checkbox-swatch {
   vertical-align: middle;
 }
 
+/* BiS - золота корона замість числа GS (scripts/wow-specs.js, GS_BIS_ICON). */
+.gs-bis {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-accent-gold);
+}
+
+.gs-bis-icon {
+  display: block;
+  flex-shrink: 0;
+}
+
 .gs-chip {
   display: inline-flex;
   align-items: center;
@@ -6082,6 +6094,38 @@ body.account-page .account-char-menu-gs {
 
 body.account-page .account-char-menu-gs .account-gs-input {
   padding-block: 0.35rem;
+}
+
+/* Перемикач BiS у формі GS - патерн тогл-кнопок (.raid-toggle-btn). */
+body.account-page .account-char-menu-bis {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid rgba(197, 198, 205, 0.35);
+  border-radius: var(--radius-sm);
+  background-color: rgba(12, 21, 33, 0.88);
+  color: var(--color-text-strong);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+}
+
+body.account-page .account-char-menu-bis:hover {
+  border-color: rgba(123, 170, 245, 0.55);
+}
+
+body.account-page .account-char-menu-bis.raid-toggle-btn--active {
+  background: var(--color-accent-gold);
+  border-color: var(--color-accent-gold);
+  color: var(--color-surface-solid);
+}
+
+body.account-page .account-char-menu-gs .account-gs-input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 body.account-page .account-char-menu-gs-save {

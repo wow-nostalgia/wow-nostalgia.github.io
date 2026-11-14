@@ -55,7 +55,33 @@ function logSpecToSignupSpec(cls, spec) {
   return spec;
 }
 
-// Чіпи "іконка спеку + GS" у порядку спеків класу. gearScores: { спек: 6.5 }.
+// BiS (Best in Slot) - значення GS спеку 'bis' замість числа: персонаж
+// одягнутий найкраще з можливого. Корона - ВИНЯТОК із правила "лише Primer
+// Octicons" (там корони немає; погоджено 2026-11-15): намальована в їхньому
+// форматі - 16x16, fill="currentColor", без stroke.
+const GS_BIS_ICON = '<svg class="gs-bis-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M2 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm6-2a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm6 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM2.2 5.8l3 2.7L8 3.9l2.8 4.6 3-2.7-1 6.2H3.2Zm.8 7.2h10v1.5H3Z"/></svg>';
+
+function isBis(gs) {
+  return gs === 'bis';
+}
+
+// Текст GS для підказок/полів: "6.5", "BiS" або "".
+function gearScoreLabel(gs) {
+  if (gs == null) return '';
+  return isBis(gs) ? 'BiS' : Number(gs).toFixed(1);
+}
+
+// Вміст клітинки/чіпа: корона для BiS, інакше число.
+function fillGearScoreValue(el, gs) {
+  if (isBis(gs)) {
+    // Обгортка - щоб не міняти display самого el (буває <td>).
+    el.innerHTML = `<span class="gs-bis">${GS_BIS_ICON}</span>`;
+  } else {
+    el.textContent = gearScoreLabel(gs);
+  }
+}
+
+// Чіпи "іконка спеку + GS" у порядку спеків класу. gearScores: { спек: 6.5 | 'bis' }.
 // highlightSpec - підсвітити чіп цього спеку (напр. спек запису на рейд).
 // tooltips: false - без підказок (якщо чіпи вже всередині підказки).
 // Повертає null, якщо GS немає жодного.
@@ -78,10 +104,10 @@ function createGearScoreChips(gearScores, { cls, highlightSpec, tooltips = true 
     img.height = 14;
     img.loading = 'lazy';
     const value = document.createElement('span');
-    value.textContent = Number(gs).toFixed(1);
+    fillGearScoreValue(value, gs);
     chip.append(img, value);
     if (tooltips) {
-      chip.setAttribute('aria-label', `${signupSpecLabel(spec)}: ${Number(gs).toFixed(1)}`);
+      chip.setAttribute('aria-label', `${signupSpecLabel(spec)}: ${gearScoreLabel(gs)}`);
       if (typeof applyAutoTooltip === 'function') applyAutoTooltip(chip);
     }
     wrap.appendChild(chip);

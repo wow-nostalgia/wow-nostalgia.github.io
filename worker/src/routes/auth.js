@@ -241,7 +241,7 @@ function parseGearScoreTenths(value) {
 }
 
 // Відмітки КД, GS і клас персонажа. body: { cooldowns?: {icc10?: bool, ...},
-// gearScores?: { спек: number|null }, className?: string|null } - можна
+// gearScores?: { спек: number|'bis'|null }, className?: string|null } - можна
 // передати лише те, що змінилось. Спеки - як у попередньому записі.
 export async function handleUpdateCharacter(request, env, characterName) {
   const session = await requireSession(env.DB, request);
@@ -268,7 +268,8 @@ export async function handleUpdateCharacter(request, env, characterName) {
     gearScores = {};
     for (const [spec, value] of Object.entries(body.gearScores)) {
       if (!ALL_SIGNUP_SPECS.has(spec)) throw new HttpError(400, `Невідомий спек: ${spec}`);
-      gearScores[spec] = value === null ? null : parseGearScoreTenths(value);
+      // 'bis' - Best in Slot замість числа.
+      gearScores[spec] = value === null || value === 'bis' ? value : parseGearScoreTenths(value);
     }
   }
 

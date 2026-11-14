@@ -177,8 +177,9 @@ function formatGearScoreInput(raw) {
   return digits.length === 2 ? `${digits[0]}.${digits[1]}` : digits;
 }
 
+// Число GS для поля вводу; BiS у полі - порожньо (його показує перемикач).
 function gearScoreText(value) {
-  return value == null ? '' : value.toFixed(1);
+  return value == null || isBis(value) ? '' : value.toFixed(1);
 }
 
 // Клас персонажа: з логів, інакше обраний у профілі; null - невідомий.
@@ -455,7 +456,7 @@ function renderCharacterSpecs(panel, character, onBack) {
     if (gs != null) {
       const value = document.createElement('span');
       value.className = 'account-char-menu-spec-gs';
-      value.textContent = gearScoreText(gs);
+      fillGearScoreValue(value, gs);
       btn.appendChild(value);
     }
   });
@@ -486,14 +487,35 @@ function renderCharacterGearScoreForm(panel, character, spec, onBack) {
   input.addEventListener('input', () => {
     input.value = formatGearScoreInput(input.value);
   });
+  // BiS - альтернатива числу: увімкнений перемикач вимикає поле.
+  const bisBtn = document.createElement('button');
+  bisBtn.type = 'button';
+  bisBtn.className = 'raid-toggle-btn account-char-menu-bis';
+  bisBtn.innerHTML = `${GS_BIS_ICON}<span>BiS</span>`;
+  const setBis = (on) => {
+    bisBtn.setAttribute('aria-pressed', String(on));
+    bisBtn.classList.toggle('raid-toggle-btn--active', on);
+    input.disabled = on;
+  };
+  setBis(isBis(gearScore));
+  // Без підказки: меню обрізало б її, а напис "BiS" на кнопці й так видно.
+  bisBtn.setAttribute('aria-label', 'BiS - найкраще спорядження (замість GS)');
+  bisBtn.addEventListener('click', () => {
+    setBis(bisBtn.getAttribute('aria-pressed') !== 'true');
+    if (!input.disabled) input.focus();
+  });
   const saveBtn = document.createElement('button');
   saveBtn.type = 'submit';
   saveBtn.className = 'compare-btn account-char-menu-gs-save';
   saveBtn.textContent = 'Зберегти';
-  form.append(input, saveBtn);
+  form.append(input, bisBtn, saveBtn);
   form.addEventListener('click', (event) => event.stopPropagation());
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (bisBtn.getAttribute('aria-pressed') === 'true') {
+      await saveCharacterField(name, { gearScores: { [spec]: 'bis' } });
+      return;
+    }
     let text = input.value;
     // Одна цифра без крапки - це цілі: "7" -> "7.0".
     if (/^\d$/.test(text)) text = `${text}.0`;

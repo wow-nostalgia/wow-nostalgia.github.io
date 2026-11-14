@@ -129,6 +129,13 @@ gh api repos/primer/octicons/contents/icons/gift-16.svg --jq '.content' | base64
 > НЕ копіюй його SVG як зразок для нових кнопок, копіюй тільки CSS-клас.
 > Для нового кошика бери Octicons `trash-16`.
 
+> **Погоджений виняток (2026-11-15):** корона BiS (`GS_BIS_ICON` у
+> `scripts/wow-specs.js`) — в Octicons корони немає, а WoW-іконки корон
+> (`inv_crown_*`) нерозбірливі на 14px. Намальована у форматі Octicons
+> (16×16, `fill="currentColor"`, без stroke), колір — `.gs-bis`
+> (`--color-accent-gold`). Не множ винятки: нова іконка — спершу шукай
+> в Octicons, а виняток — лише з явної згоди користувача.
+
 ---
 
 ## Тултіпи — тільки `.tooltipped` (Primer-стиль), ніколи нативний `title`
