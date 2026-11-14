@@ -43,6 +43,8 @@ const RH_API = 'https://raid-helper.xyz/api/v4';
 export const RH_THROTTLE_MS = 60 * 1000;
 const RH_SERVER_ID = '1055547379832602788';
 const RH_TEMPLATE_ID = 'wowwotlk';
+// Ролі, які тегаються при публікації рейду з сайту в Discord.
+const RH_PUBLISH_MENTIONS = 'Рейдер, Учасники';
 const SITE_URL = 'https://wow-nostalgia.github.io';
 
 // Гілки форуму рейдів за днем тижня (0 - неділя).
@@ -327,7 +329,10 @@ export async function publishRaidToRaidHelper(env, raid, { throwOnError = false 
       date: String(start),
       time: String(start),
       title: raid.title,
-      description: raidDescription(raid)
+      description: raidDescription(raid),
+      // Ролі Discord, які Raid-Helper тегає при створенні рейду (за назвою,
+      // через кому). Ролі мають бути тегабельні для бота.
+      advancedSettings: { mentions: RH_PUBLISH_MENTIONS }
     });
     const eventId = data && ((data.event && data.event.id) || data.id);
     if (!eventId) throw new HttpError(502, 'Raid-Helper не повернув ID створеного рейду');
