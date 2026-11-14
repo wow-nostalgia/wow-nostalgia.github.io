@@ -7623,10 +7623,13 @@ body.raid-manager-detail-page .giveaway-progress {
   overflow: hidden;
 }
 
+/* Ширину веде JS щокадру (transform: scaleX - без перерахунку розкладки). */
 body.raid-manager-detail-page .giveaway-progress-bar {
   height: 100%;
   width: 100%;
   background-color: var(--color-accent-gold);
+  transform-origin: left center;
+  will-change: transform;
 }
 
 body.raid-manager-detail-page .giveaway-action--note {

@@ -186,11 +186,29 @@ function initRaidGiveaway(opts) {
 
   const serverNow = () => Date.now() + clockOffset;
 
+  // Синхронізація годинника за Крістіаном (як NTP): серверний час відповідає
+  // середині запиту, похибка - до половини його тривалості. Беремо замір із
+  // найкоротшим запитом (найточніший); повільні відповіді годинник не зсувають.
+  // Кращий замір "старіє" (+1 мс до похибки за секунду) - щоб годинник
+  // зрештою підлаштувався, якщо локальний дрейфує.
+  let bestClock = null; // { offset, error, at }
+  function sampleClock(serverIso, sentAt, receivedAt) {
+    const error = (receivedAt - sentAt) / 2;
+    const offset = Date.parse(serverIso) - (sentAt + receivedAt) / 2;
+    const aged = bestClock ? bestClock.error + (receivedAt - bestClock.at) / 1000 : Infinity;
+    if (error <= aged) {
+      bestClock = { offset, error, at: receivedAt };
+      clockOffset = offset;
+    }
+  }
+
   async function fetchState() {
     if (fetching) return;
     fetching = true;
     try {
+      const sentAt = Date.now();
       const data = await apiCall('GET', `/raids/${raidId}/giveaway`, { token: getSessionToken() });
+      sampleClock(data.serverNow, sentAt, Date.now());
       applyState(data);
     } catch (err) {
       console.error(err);
@@ -199,11 +217,29 @@ function initRaidGiveaway(opts) {
     }
   }
 
+  // Смужка прогресу раунду: щокадру ширина = частка часу, що лишилась.
+  let progressFrame = null;
+  function paintProgress(fill) {
+    const start = Number(fill.dataset.start);
+    const end = Number(fill.dataset.end);
+    const frac = Math.max(0, Math.min(1, (end - serverNow()) / (end - start)));
+    fill.style.transform = `scaleX(${frac})`;
+  }
+  function startProgressLoop() {
+    if (progressFrame) return;
+    const step = () => {
+      const fill = bannerEl.querySelector('.giveaway-progress-bar');
+      if (!fill) { progressFrame = null; return; }
+      paintProgress(fill);
+      progressFrame = requestAnimationFrame(step);
+    };
+    progressFrame = requestAnimationFrame(step);
+  }
+
   function applyState(data) {
-    // Різниця годинників "пливе" на затримку мережі кожного запиту; оновлюємо
-    // лише на помітну зміну - інакше таймер і смужка смикаються.
-    const offset = Date.parse(data.serverNow) - Date.now();
-    if (state === null || Math.abs(offset - clockOffset) > 1000) clockOffset = offset;
+    // Годинник - лише з fetchState (там відомий час запиту); тут - перший
+    // раз, поки замірів ще немає.
+    if (!bestClock) clockOffset = Date.parse(data.serverNow) - Date.now();
     const prevRounds = new Map((state?.giveaway?.rounds || []).map((r) => [r.id, r.status]));
     state = data;
     // Рулетка - для раунду, що щойно закрився (на очах у гравця або нещодавно).
@@ -464,17 +500,13 @@ function initRaidGiveaway(opts) {
       bar.className = 'giveaway-progress';
       bar.innerHTML = '<div class="giveaway-progress-bar"></div>';
       box.appendChild(bar);
-      // Смужку веде один CSS-перехід від поточної частки до нуля - без
-      // покрокових стрибків, і перемальовування банера його не обриває.
+      // Ширину щокадру рахує animateProgress() як функцію часу - тож
+      // перемальовування банера (нова смужка) продовжує з тієї ж точки.
       const fill = bar.firstChild;
-      const start = Date.parse(round.startsAt);
-      const end = Date.parse(round.endsAt);
-      const left = Math.max(0, end - now);
-      fill.style.width = `${Math.max(0, Math.min(100, (left / (end - start)) * 100))}%`;
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        fill.style.transition = `width ${left}ms linear`;
-        fill.style.width = '0%';
-      }));
+      fill.dataset.start = String(Date.parse(round.startsAt));
+      fill.dataset.end = String(Date.parse(round.endsAt));
+      paintProgress(fill);
+      startProgressLoop();
     }
 
     const me = state.me;
