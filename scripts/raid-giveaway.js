@@ -619,6 +619,15 @@ function initRaidGiveaway(opts) {
     catalog.roundSeconds.forEach((s) => durationSelect.add(new Option(`${s} с`, String(s))));
     durationSelect.value = catalog.roundSeconds.includes(60) ? '60' : String(catalog.roundSeconds[0]);
 
+    // Галочки умов теж переживають перезавантаження (і лишаються після
+    // старту - це налаштування офіцера, а не чернетка). За замовчуванням - усі.
+    const criteriaKey = `giveawayCriteria:${raidId}`;
+    let savedCriteria = {};
+    try { savedCriteria = JSON.parse(localStorage.getItem(criteriaKey) || '{}') || {}; } catch { savedCriteria = {}; }
+    const saveCriteria = () => {
+      const value = Object.fromEntries([...criteriaBox.querySelectorAll('input')].map((i) => [i.dataset.criterion, i.checked]));
+      try { localStorage.setItem(criteriaKey, JSON.stringify(value)); } catch { /* без сховища */ }
+    };
     const criteriaBox = form.querySelector('.giveaway-criteria');
     criteriaBox.innerHTML = '';
     GIVEAWAY_CRITERIA.forEach((c) => {
@@ -626,7 +635,8 @@ function initRaidGiveaway(opts) {
       label.className = 'raid-filter-checkbox';
       const box = document.createElement('input');
       box.type = 'checkbox';
-      box.checked = true;
+      box.checked = typeof savedCriteria[c.key] === 'boolean' ? savedCriteria[c.key] : true;
+      box.addEventListener('change', saveCriteria);
       box.dataset.criterion = c.key;
       label.append(box, document.createTextNode(c.label));
       criteriaBox.appendChild(label);
