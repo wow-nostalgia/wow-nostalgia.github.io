@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейд — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=244">
+  <link rel="stylesheet" href="../../style.css?v=245">
   <script src="/scripts/background.js?v=4"></script>
 </head>
 
@@ -169,6 +169,9 @@
 
         <p id="hiddenReservesNotice" class="raid-hidden-notice" hidden>🔒 Режим прихованих софтів — ви бачите тільки свої</p>
 
+        <!-- Розіграш призів (scripts/raid-giveaway.js) - видно з будь-якої вкладки. -->
+        <section id="giveawayBanner" class="giveaway-banner" aria-live="polite" hidden></section>
+
         <div class="raid-tabs" role="tablist">
           <button type="button" class="raid-tab raid-tab--active" data-tab="players">Гравці</button>
           <button type="button" class="raid-tab" data-tab="items">Предмети</button>
@@ -291,6 +294,31 @@
 
               <button type="submit" class="compare-btn">Зберегти</button>
             </form>
+            <section id="giveawaySettings" class="giveaway-settings" hidden>
+              <h3 class="giveaway-settings-title">Розіграш призів</h3>
+              <p class="giveaway-settings-active" hidden>Розіграш триває - керування в банері вгорі сторінки.</p>
+              <form class="giveaway-form" hidden>
+                <div class="giveaway-picker">
+                  <div class="giveaway-picker-filters">
+                    <select class="giveaway-category" aria-label="Категорія призів"></select>
+                    <input type="search" class="giveaway-search" placeholder="Пошук призу..." aria-label="Пошук призу" autocomplete="off">
+                  </div>
+                  <div class="giveaway-catalog" role="list"></div>
+                  <div class="giveaway-gold-row">
+                    <input type="number" class="giveaway-gold-input" min="1" step="1" placeholder="Сума золота" aria-label="Сума золота">
+                    <button type="button" class="link-button-std giveaway-gold-add">Додати золото</button>
+                  </div>
+                </div>
+                <div class="giveaway-subtitle">Призи (кожен - окремий раунд)</div>
+                <div class="giveaway-selected"></div>
+                <div class="giveaway-subtitle">Хто може брати участь</div>
+                <div class="giveaway-criteria"></div>
+                <label class="giveaway-duration-label">Тривалість раунду
+                  <select class="giveaway-duration"></select>
+                </label>
+                <button type="submit" class="compare-btn giveaway-start-btn">Почати розіграш</button>
+              </form>
+            </section>
           </div>
         </div>
       </div>
@@ -434,8 +462,9 @@
   <script src="../../scripts/raid-manager-shared.js?v=12"></script>
   <script src="../../scripts/name-translations.js?v=4"></script>
   <script src="../../scripts/wow-specs.js?v=1"></script>
+  <script src="../../scripts/raid-giveaway.js?v=1"></script>
   <script src="../../scripts/raid-signups.js?v=15"></script>
-  <script src="../../scripts/raid-manager-detail.js?v=159"></script>
+  <script src="../../scripts/raid-manager-detail.js?v=160"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->

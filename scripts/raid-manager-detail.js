@@ -419,7 +419,10 @@ function renderBanner() {
   hiddenReservesToggle.checked = Boolean(raid.hidden_reserves);
   hiddenReservesNotice.hidden = !(raid.hidden_reserves && !isOfficerMode());
 
-  settingsTab.hidden = !isLeader();
+  // Офіцерам - лише розіграш; налаштування самого рейду - лідеру.
+  settingsTab.hidden = !isOfficerMode();
+  settingsForm.hidden = !isLeader();
+  raidGiveaway?.render();
   penaltiesTab.hidden = !isOfficerMode();
   potionsAddBtn.hidden = !isOfficerMode() || Boolean(raid.potion_log_url);
   potionsClearBtn.hidden = !isOfficerMode() || !raid.potion_log_url;
@@ -2334,6 +2337,23 @@ function describeAuditAction(entry) {
         : `змінив бонусний софт гравцю ${d.playerName}: ${d.from} → ${d.to}`;
     case 'bonus_grant_cancel':
       return hideSoftDetails ? 'скасував бонусний софт' : `скасував бонусний софт гравцю ${d.playerName}`;
+    case 'giveaway_start': {
+      const prizes = (d.prizes || []).map((p) => {
+        const what = p.hidden ? 'прихований приз' : p.gold != null ? `${p.gold} золота` : p.name;
+        return p.count > 1 ? `${what} ×${p.count}` : what;
+      });
+      return `почав розіграш: ${prizes.join(', ')}`;
+    }
+    case 'giveaway_cancel': return 'скасував розіграш';
+    case 'giveaway_reroll': {
+      const prize = d.prize?.gold != null ? `${d.prize.gold} золота` : d.prize?.name || 'приз';
+      return `перекинув ${prize}${d.previousWinner ? ` (був ${d.previousWinner})` : ''}`;
+    }
+    case 'giveaway_delivered':
+    case 'giveaway_undelivered': {
+      const prize = d.prize?.gold != null ? `${d.prize.gold} золота` : d.prize?.name || 'приз';
+      return `${entry.action === 'giveaway_delivered' ? 'видав' : 'скасував видачу'} ${prize} гравцю ${d.winner}`;
+    }
     default: return entry.action;
   }
 }
@@ -2376,6 +2396,10 @@ async function loadRaid() {
 // їх з бази дорого (ліміт D1 на прочитані рядки) — тож у snapshot вони
 // приходять не частіше ніж раз на хвилину і лише в активній вкладці.
 const QUEUES_REFRESH_MS = 60000;
+// Розіграш призів (scripts/raid-giveaway.js): створюється після першого
+// snapshot, коли вже відомо, чи гравець офіцер.
+let raidGiveaway = null;
+let giveawaySummary = null;
 let queuesLoadedAt = 0;
 
 async function loadSnapshot() {
@@ -2390,6 +2414,8 @@ async function loadSnapshot() {
   // Черги прив'язані до дня тижня рейду — тож лише після raid.
   applyShardQueueRaw(snapshot.shardQueue);
   applyBuffQueueRaw(snapshot.buffQueue);
+  giveawaySummary = snapshot.giveaway ?? null;
+  raidGiveaway?.onSnapshot(giveawaySummary);
   return snapshot.officers;
 }
 
@@ -3214,6 +3240,14 @@ async function init() {
   applyOfficers(officers);
   renderBanner();
   officerPanel.hidden = !isOfficerMode();
+  raidGiveaway = initRaidGiveaway({
+    raidId,
+    isOfficer: isOfficerMode,
+    isRaidCompleted,
+    bannerEl: document.getElementById('giveawayBanner'),
+    settingsEl: document.getElementById('giveawaySettings')
+  });
+  raidGiveaway.onSnapshot(giveawaySummary);
   renderBenchmarkPanel();
 
   populateBossSelect(softBoss);
