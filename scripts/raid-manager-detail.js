@@ -3285,6 +3285,10 @@ async function init() {
   if (location.hash === '#signups' || !raidHasSofts(raid)) setActiveTab('signups');
 
   schedulePoll();
+  setInterval(checkSiteUpdate, SITE_UPDATE_CHECK_MS);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) checkSiteUpdate();
+  });
   document.addEventListener('visibilitychange', () => {
     // Сховали вкладку — переходимо на рідкий інтервал; повернулись — одразу
     // свіжі дані, далі знову кожні 20 с.
@@ -3297,6 +3301,41 @@ async function init() {
     if (isRaidCompleted()) return;
     pollRaid().finally(schedulePoll);
   });
+}
+
+// Новий деплой сайту: сторінка, відкрита до нього, тримає старі скрипти, що
+// можуть не порозумітися з новим воркером. Раз на 2 хв звіряємо версії
+// скриптів/стилів (?v=N) зі свіжим HTML цієї сторінки на GitHub Pages (не
+// воркер - ліміт запитів Cloudflare не витрачається) і, якщо вони новіші,
+// перезавантажуємо - але не посеред розіграшу, модалки чи введення тексту.
+const SITE_UPDATE_CHECK_MS = 2 * 60 * 1000;
+let siteUpdateChecking = false;
+
+function assetVersions(doc) {
+  return [...doc.querySelectorAll('script[src*="?v="], link[rel="stylesheet"][href*="?v="]')]
+    .map((el) => el.getAttribute('src') || el.getAttribute('href'))
+    .sort()
+    .join('|');
+}
+
+async function checkSiteUpdate() {
+  if (document.hidden || siteUpdateChecking) return;
+  siteUpdateChecking = true;
+  try {
+    const res = await fetch(location.pathname, { cache: 'no-store' });
+    if (!res.ok) return;
+    const fresh = new DOMParser().parseFromString(await res.text(), 'text/html');
+    const freshVersions = assetVersions(fresh);
+    if (!freshVersions || freshVersions === assetVersions(document)) return;
+    const busy = raidGiveaway?.isBusy()
+      || document.querySelector('dialog[open]')
+      || document.activeElement?.matches('input, textarea, select');
+    if (!busy) location.reload();
+  } catch {
+    // Мережа впала - перевіримо наступного разу.
+  } finally {
+    siteUpdateChecking = false;
+  }
 }
 
 // Автооновлення сторінки рейду. Активна вкладка — кожні 20 с. У фоні — раз

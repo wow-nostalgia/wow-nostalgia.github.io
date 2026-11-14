@@ -804,6 +804,8 @@ function initRaidGiveaway(opts) {
       if (summary && (!known || known.id !== summary.id || known.status !== summary.status)) fetchState();
     },
     refresh: fetchState,
-    render
+    render,
+    // Йде розіграш або крутиться рулетка - сторінку не перезавантажуємо.
+    isBusy: () => state?.giveaway?.status === 'active' || Boolean(spinning)
   };
 }
