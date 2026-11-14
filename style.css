@@ -7432,10 +7432,52 @@ body.raid-manager-detail-page .giveaway-settings-active[hidden] {
   display: none;
 }
 
-/* Поки банер розіграшу на екрані - він замість форм софту й офіцерської
-   панелі; сховали банер - форми повертаються. */
-body.raid-manager-detail-page #giveawayBanner:not([hidden]) ~ .raid-forms-grid {
+/* Поки банер розіграшу розгорнутий - він замість форм софту й офіцерської
+   панелі; сховали чи згорнули банер - форми повертаються. */
+body.raid-manager-detail-page #giveawayBanner:not([hidden]):not(.giveaway-banner--collapsed) ~ .raid-forms-grid {
   display: none;
+}
+
+/* Режим фокусу (scripts/raid-giveaway.js, applyFocus): усе, крім банера,
+   розмите й неактивне (ще й inert у JS). */
+body.raid-manager-detail-page.giveaway-focus .topbar,
+body.raid-manager-detail-page.giveaway-focus .container-inner > :not(#raidContent),
+body.raid-manager-detail-page.giveaway-focus #raidContent > :not(#giveawayBanner) {
+  filter: blur(4px);
+  opacity: 0.6;
+  pointer-events: none;
+  user-select: none;
+  transition: filter var(--transition-fast), opacity var(--transition-fast);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.raid-manager-detail-page.giveaway-focus .topbar,
+  body.raid-manager-detail-page.giveaway-focus .container-inner > :not(#raidContent),
+  body.raid-manager-detail-page.giveaway-focus #raidContent > :not(#giveawayBanner) {
+    transition: none;
+  }
+}
+
+/* Згорнутий банер - вузька смужка "Іде розіграш · Повернутись". */
+body.raid-manager-detail-page .giveaway-banner--collapsed {
+  padding: 0.4rem 0.75rem;
+}
+
+body.raid-manager-detail-page .giveaway-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Заголовок ліворуч, кнопки (скасувати / сховати / "×") - праворуч. */
+body.raid-manager-detail-page .giveaway-head > .giveaway-title {
+  margin-right: auto;
+}
+
+body.raid-manager-detail-page .giveaway-collapse-btn {
+  flex-shrink: 0;
 }
 
 body.raid-manager-detail-page .giveaway-banner {
