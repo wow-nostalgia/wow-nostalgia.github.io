@@ -125,7 +125,36 @@ function initRaidGiveaway(opts) {
   let spinning = null; // { roundId, until }
   let renderedBeforeStart = null; // раунд, намальований ще до свого старту
   let catalog = null;
-  const selected = []; // [{ key, itemId?, gold?, count, hidden }]
+  const selected = []; // [{ key, itemId?, gold?, count, hidden, prize }]
+  // Чернетка обраних призів - щоб перезавантаження сторінки її не скидало.
+  const draftKey = `giveawayDraft:${raidId}`;
+
+  function saveDraft() {
+    try {
+      if (selected.length) {
+        localStorage.setItem(draftKey, JSON.stringify(selected.map(({ itemId, gold, count, hidden }) => ({ itemId, gold, count, hidden }))));
+      } else {
+        localStorage.removeItem(draftKey);
+      }
+    } catch { /* без сховища - чернетка живе до перезавантаження */ }
+  }
+
+  // Після завантаження каталогу: лише призи, що є в ньому (каталог міг змінитись).
+  function loadDraft() {
+    let draft = [];
+    try { draft = JSON.parse(localStorage.getItem(draftKey) || '[]'); } catch { draft = []; }
+    if (!Array.isArray(draft)) return;
+    draft.forEach((d) => {
+      const count = Math.max(1, Math.min(20, Number(d.count) || 1));
+      if (d.itemId != null) {
+        const p = catalog.prizes.find((x) => x.id === Number(d.itemId));
+        if (!p) return;
+        selected.push({ key: `i${p.id}`, itemId: p.id, count, hidden: Boolean(d.hidden), prize: { type: 'item', itemId: p.id, icon: p.icon, name: p.name, quality: p.quality } });
+      } else if (Number.isInteger(d.gold) && d.gold > 0) {
+        selected.push({ key: `g${d.gold}`, gold: d.gold, count, hidden: Boolean(d.hidden), prize: { type: 'gold', gold: d.gold } });
+      }
+    });
+  }
   const dismissKey = `giveawayDismissed:${raidId}`;
 
   const serverNow = () => Date.now() + clockOffset;
@@ -631,6 +660,7 @@ function initRaidGiveaway(opts) {
         submit.disabled = false;
       }
     });
+    if (!selected.length) loadDraft();
     renderSelected();
   }
 
@@ -642,6 +672,7 @@ function initRaidGiveaway(opts) {
   }
 
   function renderSelected() {
+    saveDraft();
     const box = settingsEl.querySelector('.giveaway-selected');
     if (!box) return;
     box.innerHTML = '';
@@ -665,13 +696,14 @@ function initRaidGiveaway(opts) {
       count.addEventListener('change', () => {
         s.count = Math.max(1, Math.min(20, Number(count.value) || 1));
         count.value = String(s.count);
+        saveDraft();
       });
       const hiddenLabel = document.createElement('label');
       hiddenLabel.className = 'raid-filter-checkbox';
       const hidden = document.createElement('input');
       hidden.type = 'checkbox';
       hidden.checked = s.hidden;
-      hidden.addEventListener('change', () => { s.hidden = hidden.checked; });
+      hidden.addEventListener('change', () => { s.hidden = hidden.checked; saveDraft(); });
       hiddenLabel.append(hidden, document.createTextNode('наосліп'));
       const remove = document.createElement('button');
       remove.type = 'button';
