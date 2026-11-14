@@ -158,7 +158,7 @@ function initRaidGiveaway(opts) {
         if (!p) return;
         selected.push({ key: `i${p.id}`, itemId: p.id, count, hidden: Boolean(d.hidden), prize: { type: 'item', itemId: p.id, icon: p.icon, name: p.name, quality: p.quality } });
       } else if (Number.isInteger(d.gold) && d.gold > 0) {
-        selected.push({ key: `g${d.gold}`, gold: d.gold, count, hidden: Boolean(d.hidden), prize: { type: 'gold', gold: d.gold } });
+        selected.push({ key: `g${d.gold}`, gold: d.gold, count: 1, hidden: Boolean(d.hidden), prize: { type: 'gold', gold: d.gold } });
       }
     });
   }
@@ -745,7 +745,8 @@ function initRaidGiveaway(opts) {
 
   function addPrize(entry) {
     const existing = selected.find((s) => s.key === entry.key);
-    if (existing) existing.count = Math.min(20, existing.count + 1);
+    // Золото - завжди одна сума (кількість для нього не має сенсу).
+    if (existing) { if (existing.gold == null) existing.count = Math.min(20, existing.count + 1); }
     else selected.push({ ...entry, count: 1, hidden: true });
     renderSelected();
   }
@@ -772,6 +773,7 @@ function initRaidGiveaway(opts) {
       count.value = String(s.count);
       count.className = 'giveaway-count';
       count.setAttribute('aria-label', 'Кількість');
+      if (s.gold != null) count.disabled = true;
       count.addEventListener('change', () => {
         s.count = Math.max(1, Math.min(20, Number(count.value) || 1));
         count.value = String(s.count);

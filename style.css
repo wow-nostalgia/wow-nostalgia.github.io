@@ -7839,6 +7839,12 @@ body.raid-manager-detail-page .giveaway-form .giveaway-count {
   width: 4.5rem;
 }
 
+/* Золото - одна сума, кількість для нього неактивна. */
+body.raid-manager-detail-page .giveaway-form .giveaway-count:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 body.raid-manager-detail-page .giveaway-criteria {
   display: flex;
   flex-direction: column;
