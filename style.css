@@ -4853,8 +4853,9 @@ body.raid-manager-detail-page #settingsForm .raid-filter-checkbox {
   grid-column: 1 / -1;
 }
 
+/* Зберегти - під галочками, по лівому краю форми. */
 body.raid-manager-detail-page #settingsForm button[type="submit"] {
-  grid-column: 2;
+  grid-column: 1 / -1;
   justify-self: start;
 }
 
