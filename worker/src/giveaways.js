@@ -16,7 +16,7 @@ import { insertAudit, getUserDisplayName } from './db.js';
 import { isRaidOfficer, requireRaidOfficer } from './auth.js';
 import { GIVEAWAY_PRIZES, GIVEAWAY_PRIZE_CATEGORIES, GIVEAWAY_PRIZES_BY_ID } from './giveaway-prizes.js';
 
-export const GIVEAWAY_ROUND_SECONDS = [30, 60, 90];
+export const GIVEAWAY_ROUND_SECONDS = [20, 30, 60];
 // Відлік до старту раунду. Перший - довший: про новий розіграш сторінка
 // дізнається зі snapshot (раз на 20 с), тож усі встигнуть його побачити.
 // Далі сторінки й так опитують розіграш часто - вистачає анонсу.
