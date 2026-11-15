@@ -7520,7 +7520,8 @@ body.raid-manager-detail-page .giveaway-head > .giveaway-title {
   margin-right: auto;
 }
 
-body.raid-manager-detail-page .giveaway-collapse-btn {
+body.raid-manager-detail-page .giveaway-collapse-btn,
+body.raid-manager-detail-page .giveaway-close-btn {
   flex-shrink: 0;
 }
 

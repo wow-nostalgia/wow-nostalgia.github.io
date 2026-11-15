@@ -30,6 +30,8 @@ const GIVEAWAY_CRITERIA = [
 ];
 const GIVEAWAY_GIFT_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M2 2.75A2.75 2.75 0 0 1 4.75 0c.983 0 1.873.42 2.57 1.232.268.318.497.668.68 1.042.183-.375.411-.725.68-1.044C9.376.42 10.266 0 11.25 0a2.75 2.75 0 0 1 2.45 4h.55c.966 0 1.75.784 1.75 1.75v2c0 .698-.409 1.301-1 1.582v4.918A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V9.332C.409 9.05 0 8.448 0 7.75v-2C0 4.784.784 4 1.75 4h.55c-.192-.375-.3-.8-.3-1.25ZM7.25 9.5H2.5v4.75c0 .138.112.25.25.25h4.5Zm1.5 0v5h4.5a.25.25 0 0 0 .25-.25V9.5Zm0-4V8h5.5a.25.25 0 0 0 .25-.25v-2a.25.25 0 0 0-.25-.25Zm-7 0a.25.25 0 0 0-.25.25v2c0 .138.112.25.25.25h5.5V5.5h-5.5Zm3-4a1.25 1.25 0 0 0 0 2.5h2.309c-.233-.818-.542-1.401-.878-1.793-.43-.502-.915-.707-1.431-.707ZM8.941 4h2.309a1.25 1.25 0 0 0 0-2.5c-.516 0-1 .205-1.43.707-.337.392-.646.975-.879 1.793Z"/></svg>';
 const GIVEAWAY_TRASH_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z"/></svg>';
+// Закрити завершений розіграш - хрестик (Octicons x-16).
+const GIVEAWAY_CLOSE_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/></svg>';
 // Згорнути банер - риска, як 'Згорнути' у вікнах (Octicons dash-16).
 const GIVEAWAY_MINIMIZE_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M2 7.75A.75.75 0 0 1 2.75 7h10a.75.75 0 0 1 0 1.5h-10A.75.75 0 0 1 2 7.75Z"/></svg>';
 // Кубик - та сама іконка, що в блоці "Правила ролу" на головній.
@@ -395,6 +397,7 @@ function initRaidGiveaway(opts) {
       : shown ? `Розіграш · приз ${played.indexOf(shown) + 1} з ${played.length}` : 'Розіграш';
     title.appendChild(titleText);
     head.appendChild(title);
+    let closeBtn = null;
     if (canManage() && g.status === 'active') {
       const cancel = document.createElement('button');
       cancel.type = 'button';
@@ -413,8 +416,10 @@ function initRaidGiveaway(opts) {
     } else if (g.status === 'finished') {
       const close = document.createElement('button');
       close.type = 'button';
-      close.className = 'link-button-std';
-      close.textContent = 'Сховати';
+      // Закрити (хрестик) - сховати завершений розіграш остаточно.
+      close.className = 'raid-icon-btn tooltipped tooltipped--sw giveaway-close-btn';
+      close.setAttribute('aria-label', 'Закрити розіграш');
+      close.innerHTML = GIVEAWAY_CLOSE_ICON;
       close.addEventListener('click', () => {
         // Офіцер-ведучий не ховає банер, поки є невидані призи: "видано" є лише тут.
         const undelivered = canManage() ? g.rounds.filter((r) => r.status === 'done' && !r.delivered) : [];
@@ -427,7 +432,7 @@ function initRaidGiveaway(opts) {
         bannerEl.hidden = true;
         applyFocus(false);
       });
-      head.appendChild(close);
+      closeBtn = close;
     }
     // "Згорнути" (риска) - будь-коли (і гравцю, і офіцеру): сторінка повертається
     // до звичного вигляду, лишається смужка "Повернутись".
@@ -438,6 +443,8 @@ function initRaidGiveaway(opts) {
     collapse.innerHTML = GIVEAWAY_MINIMIZE_ICON;
     collapse.addEventListener('click', () => setCollapsed(g, true));
     head.appendChild(collapse);
+    // Порядок як у вікнах: "Згорнути", потім "Закрити".
+    if (closeBtn) head.appendChild(closeBtn);
     bannerEl.appendChild(head);
 
     if (spinning) {
