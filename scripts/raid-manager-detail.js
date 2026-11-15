@@ -72,6 +72,8 @@ const officersPane = document.getElementById('officersPane');
 
 const settingsTab = document.getElementById('settingsTab');
 const settingsPane = document.getElementById('settingsPane');
+const prizesTab = document.getElementById('prizesTab');
+const prizesPane = document.getElementById('prizesPane');
 const settingsForm = document.getElementById('settingsForm');
 const settingsTitleInput = document.getElementById('settingsTitleInput');
 const settingsDateInput = document.getElementById('settingsDateInput');
@@ -419,8 +421,9 @@ function renderBanner() {
   hiddenReservesToggle.checked = Boolean(raid.hidden_reserves);
   hiddenReservesNotice.hidden = !(raid.hidden_reserves && !isOfficerMode());
 
-  // Офіцерам - лише розіграш; налаштування самого рейду - лідеру.
-  settingsTab.hidden = !isOfficerMode();
+  // Налаштування рейду - лідеру; розіграш призів (вкладка Призи) - офіцерам.
+  settingsTab.hidden = !isLeader();
+  prizesTab.hidden = !isOfficerMode();
   settingsForm.hidden = !isLeader();
   raidGiveaway?.render();
   penaltiesTab.hidden = !isOfficerMode();
@@ -2603,7 +2606,7 @@ hiddenReservesToggle.addEventListener('change', async () => {
   }
 });
 
-const TAB_PANES = { players: playersPane, items: itemsPane, signups: signupsPane, potions: potionsPane, audit: auditPane, penalties: penaltiesPane, officers: officersPane, settings: settingsPane };
+const TAB_PANES = { players: playersPane, items: itemsPane, signups: signupsPane, potions: potionsPane, audit: auditPane, penalties: penaltiesPane, officers: officersPane, settings: settingsPane, prizes: prizesPane };
 
 async function setActiveTab(tab) {
   activeTab = tab;
