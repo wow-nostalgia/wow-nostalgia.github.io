@@ -7611,7 +7611,8 @@ body.raid-manager-detail-page .giveaway-waiting {
   gap: 0.75rem;
 }
 
-body.raid-manager-detail-page .giveaway-timer {
+body.raid-manager-detail-page .giveaway-timer,
+body.raid-manager-detail-page .giveaway-owner {
   color: var(--color-text-faint);
   font-variant-numeric: tabular-nums;
 }

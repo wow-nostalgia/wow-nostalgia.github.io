@@ -255,7 +255,7 @@ export async function checkGiveawayEligibility(db, raid, criteria, discordId) {
 // ---------- відповідь ----------
 
 // Прихований приз (розіграш наосліп) гравці бачать лише після раунду;
-// офіцери (canSee) - завжди, з позначкою hidden.
+// офіцер, що веде розіграш (canSee), - завжди, з позначкою hidden; інші офіцери - як гравці.
 function prizeView(round, canSee = true) {
   const hidden = Boolean(round.hidden);
   if (hidden && !canSee && !['done', 'void', 'rerolled'].includes(round.status)) return { type: 'hidden', hidden: true };
@@ -324,7 +324,7 @@ async function giveawayState(db, raid, session) {
       rounds: rounds.map((r) => ({
         id: r.id,
         position: r.position,
-        prize: prizeView(r, isOfficer),
+        prize: prizeView(r, canManage),
         status: r.status,
         startsAt: r.starts_at,
         endsAt: r.ends_at,

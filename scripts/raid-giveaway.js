@@ -407,7 +407,7 @@ function initRaidGiveaway(opts) {
       head.appendChild(cancel);
     } else if (opts.isOfficer() && g.status === 'active') {
       const owner = document.createElement('span');
-      owner.className = 'giveaway-timer';
+      owner.className = 'giveaway-owner'; // не .giveaway-timer - його переписує tick()
       owner.textContent = `Веде: ${g.createdBy}`;
       head.appendChild(owner);
     } else if (g.status === 'finished') {
@@ -614,8 +614,8 @@ function initRaidGiveaway(opts) {
     const prizeRow = document.createElement('div');
     prizeRow.className = 'giveaway-current-prize';
     // Приз наосліп гравці бачать лише разом із переможцем - коли рулетка
-    // зупиниться (офіцери - одразу, як і весь розіграш).
-    const revealLater = Boolean(round.prize.hidden) && !opts.isOfficer();
+    // зупиниться (офіцер, що веде розіграш, - одразу; інші офіцери - як гравці).
+    const revealLater = Boolean(round.prize.hidden) && !canManage();
     prizeRow.appendChild(giveawayPrizeNode(revealLater ? { type: 'hidden' } : round.prize, 'medium'));
     box.appendChild(prizeRow);
 
