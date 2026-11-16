@@ -156,7 +156,9 @@
         </div>
 
         <div id="adminTabPane" hidden>
-          <div class="account-admin-tools">
+          <!-- Дві колонки - той самий шаблон, що "Фони сайту" / "Теми сайту". -->
+          <div class="account-admin-tools account-stats-pair">
+          <div class="account-stats-block">
             <h2>Офіцери за замовчуванням</h2>
             <p class="account-admin-hint">Ці гравці автоматично отримують права офіцера в кожному новому рейді.</p>
             <div class="account-default-officers-add">
@@ -170,7 +172,7 @@
             <p id="defaultOfficersStatus"></p>
           </div>
 
-          <div class="account-admin-tools">
+          <div class="account-stats-block">
             <h2>Звільнити персонажа</h2>
             <p class="account-admin-hint">Примусово прибирає персонажа з чужого акаунту (виправлення помилкового застовплення).</p>
             <form id="adminRemoveCharacterForm" class="account-form">
@@ -178,6 +180,7 @@
               <button type="submit" class="compare-btn">Звільнити</button>
             </form>
             <p id="adminCharacterStatus"></p>
+          </div>
           </div>
 
           <div class="account-admin-tools account-stats-pair">
