@@ -7858,6 +7858,18 @@ body.raid-manager-detail-page .giveaway-card-body {
   padding: 0.6rem;
 }
 
+/* WoW ID не перебирають по одиниці - без стрілок браузера. */
+body.raid-manager-detail-page .giveaway-editor-id {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+body.raid-manager-detail-page .giveaway-editor-id::-webkit-inner-spin-button,
+body.raid-manager-detail-page .giveaway-editor-id::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 body.raid-manager-detail-page .giveaway-editor-result {
   font-size: 0.85rem;
   color: var(--color-text-faint);
