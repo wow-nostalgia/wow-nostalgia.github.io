@@ -1193,7 +1193,7 @@ function renderPotionLogTable(statsRaid) {
   wrap.className = 'ranking-table-wrap';
   const table = document.createElement('table');
   table.className = 'raid-table';
-  table.innerHTML = "<thead><tr><th>Ім'я</th><th><abbr class=\"table-header-icon\" aria-label=\"Рейтинг сервера\">" + RANK_HEADER_ICON_SVG + "</abbr></th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Insane Strength Potion</th><th>Потів/бос за всі рейди</th></tr></thead>";
+  table.innerHTML = "<thead><tr><th>Ім'я</th><th><abbr class=\"table-header-icon\" aria-label=\"Рейтинг сервера\">" + RANK_HEADER_ICON_SVG + "</abbr></th><th>Всього</th><th>Potion of Speed</th><th>Potion of Wild Magic</th><th>Insane Strength Potion</th></tr></thead>";
   // .tooltipped::after тут обрізається (той самий клипаючий-контейнер
   // патерн, що й .raid-tables-grid .ranking-table-wrap - див. ui-consistency
   // SKILL.md) - тому JS-тултіп, не CSS-клас.
@@ -1293,12 +1293,6 @@ function renderPotionLogTable(statsRaid) {
       td.textContent = Number(value || 0);
       tr.appendChild(td);
     });
-
-    const hbEntry = honorBoard.find((r) => r.name === player.name);
-    const potionTd = document.createElement('td');
-    potionTd.textContent = hbEntry ? hbEntry.averagePotionsPerBoss.toFixed(2) : '—';
-    potionTd.className = 'penalty-potion-stat';
-    tr.appendChild(potionTd);
 
     if (cdMode) {
       const statusTd = document.createElement('td');
