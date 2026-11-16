@@ -631,6 +631,31 @@ export async function countUsersByTheme(db) {
   }));
 }
 
+// Статистика GS для адмін-панелі: скільки акаунтів вказали GS хоча б для
+// одного свого персонажа і скільки - для всіх. GS персонажа - є хоча б один
+// спек (число чи BiS) або старий GS одним числом (як умова розіграшу).
+export async function countUsersByGearScore(db) {
+  const { results } = await db.prepare(
+    `SELECT ${displayNameSubquery('u')} AS name, t.total, t.with_gs
+     FROM (
+       SELECT c.discord_id, COUNT(*) AS total,
+              SUM(CASE WHEN c.gear_score IS NOT NULL OR EXISTS (
+                    SELECT 1 FROM character_gear_scores g
+                    WHERE g.discord_id = c.discord_id AND g.character_name = c.character_name)
+                  THEN 1 ELSE 0 END) AS with_gs
+       FROM user_characters c GROUP BY c.discord_id
+     ) t JOIN users u ON u.discord_id = t.discord_id`
+  ).all();
+  const sortNames = (rows) => rows.map((r) => r.name).sort((a, b) => a.localeCompare(b));
+  const any = results.filter((r) => r.with_gs > 0);
+  const all = results.filter((r) => r.with_gs === r.total);
+  return {
+    withCharacters: results.length,
+    any: { count: any.length, names: sortNames(any) },
+    all: { count: all.length, names: sortNames(all) }
+  };
+}
+
 // Публічна мапа "застовплений персонаж -> ім'я для тултіпа" (основний
 // персонаж власника, або username, якщо основного не позначено) — для
 // тултіпів у статичній аналітиці/таблиці гравців рейду. Без авторизації:

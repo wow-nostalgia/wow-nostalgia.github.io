@@ -128,6 +128,7 @@ import {
   resetCharacterCooldowns,
   countUsersByBackground,
   countUsersByTheme,
+  countUsersByGearScore,
   listRaidOfficers,
   getUserCharactersJoined,
   listWeightTransfers,
@@ -534,6 +535,10 @@ async function routeAdmin(request, env, parts, session) {
 
   if (sub === 'theme-stats' && !sub2 && method === 'GET') {
     return jsonResponse(await countUsersByTheme(env.DB));
+  }
+
+  if (sub === 'gear-score-stats' && !sub2 && method === 'GET') {
+    return jsonResponse(await countUsersByGearScore(env.DB));
   }
 
   if (sub === 'background-stats' && !sub2 && method === 'GET') {

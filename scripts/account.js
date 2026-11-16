@@ -1162,6 +1162,37 @@ async function loadThemeStats() {
   }
 }
 
+// Статистика GS: скільки гравців вказали GS хоча б для одного свого
+// персонажа і скільки - для всіх (з тих, у кого є персонажі в профілі).
+async function loadGearScoreStats() {
+  const list = document.getElementById('gearScoreStatsList');
+  const status = document.getElementById('gearScoreStatsStatus');
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/admin/gear-score-stats`, {
+      headers: { Authorization: `Bearer ${getSessionToken()}` }
+    });
+    if (!res.ok) throw new Error(await readErrorMessage(res));
+    const stats = await res.json();
+    list.innerHTML = '';
+    [['Хоча б для одного персонажа', stats.any], ['Для всіх персонажів', stats.all]].forEach(([title, row]) => {
+      const tr = document.createElement('tr');
+      const titleTd = document.createElement('td');
+      titleTd.textContent = title;
+      const countTd = document.createElement('td');
+      countTd.className = 'account-bg-stats-count';
+      countTd.textContent = `${row.count} з ${stats.withCharacters}`;
+      const namesTd = document.createElement('td');
+      namesTd.className = 'account-bg-stats-names';
+      namesTd.textContent = row.names.length ? row.names.join(', ') : '—';
+      tr.append(titleTd, countTd, namesTd);
+      list.appendChild(tr);
+    });
+    status.textContent = '';
+  } catch (err) {
+    status.textContent = `Помилка завантаження: ${err.message}`;
+  }
+}
+
 // Вихід живе тут, у профілі (раніше — у меню акаунта в навбарі). Після
 // перезавантаження сторінка покаже "Увійти через Discord".
 logoutBtn.addEventListener('click', async () => {
@@ -1220,6 +1251,7 @@ async function init() {
       loadDefaultOfficers();
       loadBackgroundStats();
       loadThemeStats();
+      loadGearScoreStats();
     }
   });
 

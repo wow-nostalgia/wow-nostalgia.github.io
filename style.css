@@ -8077,3 +8077,8 @@ body.raid-manager-detail-page .giveaway-editor-add.compare-btn:hover:not(:disabl
   margin: 0 0 1rem;
   color: var(--color-text);
 }
+
+/* Другий заголовок у блоці статистики адмін-панелі (GearScore під темами). */
+body.account-page .account-stats-subhead {
+  margin-top: 1.5rem;
+}

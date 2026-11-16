@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Профіль — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../style.css?v=262">
+  <link rel="stylesheet" href="../style.css?v=263">
   <script src="/scripts/background.js?v=4"></script>
 </head>
 
@@ -214,6 +214,22 @@
                 </table>
               </div>
               <p id="themeStatsStatus"></p>
+
+              <h2 class="account-stats-subhead">GearScore</h2>
+              <p class="account-admin-hint">Скільки гравців вказали GS для своїх персонажів (GS спеку, BiS або старий GS одним числом).</p>
+              <div class="ranking-table-wrap account-bg-stats-table-wrap">
+                <table class="account-bg-stats-table">
+                  <thead>
+                    <tr>
+                      <th>GS вказано</th>
+                      <th class="account-bg-stats-count">Гравців</th>
+                      <th>Акаунт</th>
+                    </tr>
+                  </thead>
+                  <tbody id="gearScoreStatsList"></tbody>
+                </table>
+              </div>
+              <p id="gearScoreStatsStatus"></p>
             </div>
           </div>
         </div>
@@ -269,7 +285,7 @@
   <script src="../scripts/name-translations.js?v=4"></script>
   <script src="../scripts/ui-shared.js?v=22"></script>
   <script src="../scripts/wow-specs.js?v=2"></script>
-  <script src="../scripts/account.js?v=47"></script>
+  <script src="../scripts/account.js?v=48"></script>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
     data-cf-beacon='{"token": "60fd199ec615489eaa708683f6fb26e7"}'></script><!-- End Cloudflare Web Analytics -->
