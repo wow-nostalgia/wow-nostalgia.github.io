@@ -7864,6 +7864,20 @@ body.raid-manager-detail-page .giveaway-editor-result {
   overflow-wrap: anywhere;
 }
 
+/* "Умови участі" ліворуч, "Запуск" праворуч (вузько - одна під одною). */
+body.raid-manager-detail-page .giveaway-launch-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+@media (max-width: 720px) {
+  body.raid-manager-detail-page .giveaway-launch-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 body.raid-manager-detail-page .giveaway-launch {
   flex-direction: row;
   flex-wrap: wrap;
