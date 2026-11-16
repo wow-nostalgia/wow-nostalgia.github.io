@@ -1180,7 +1180,7 @@ async function loadGearScoreStats() {
       titleTd.textContent = title;
       const countTd = document.createElement('td');
       countTd.className = 'account-bg-stats-count';
-      countTd.textContent = `${row.count} з ${stats.withCharacters}`;
+      countTd.textContent = String(row.count);
       const namesTd = document.createElement('td');
       namesTd.className = 'account-bg-stats-names';
       namesTd.textContent = row.names.length ? row.names.join(', ') : '—';
