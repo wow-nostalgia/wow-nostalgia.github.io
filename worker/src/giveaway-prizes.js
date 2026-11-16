@@ -41,6 +41,10 @@ export const GIVEAWAY_PRIZE_CATEGORIES = [
     "label": "Компаньйони"
   },
   {
+    "key": "transmog",
+    "label": "Трансмог"
+  },
+  {
     "key": "mounts",
     "label": "Маунти"
   }
