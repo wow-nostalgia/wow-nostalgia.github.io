@@ -29,7 +29,6 @@ const GIVEAWAY_CRITERIA = [
   { key: 'noPenalties', label: 'Немає штрафів у цьому рейді' }
 ];
 const GIVEAWAY_GIFT_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M2 2.75A2.75 2.75 0 0 1 4.75 0c.983 0 1.873.42 2.57 1.232.268.318.497.668.68 1.042.183-.375.411-.725.68-1.044C9.376.42 10.266 0 11.25 0a2.75 2.75 0 0 1 2.45 4h.55c.966 0 1.75.784 1.75 1.75v2c0 .698-.409 1.301-1 1.582v4.918A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V9.332C.409 9.05 0 8.448 0 7.75v-2C0 4.784.784 4 1.75 4h.55c-.192-.375-.3-.8-.3-1.25ZM7.25 9.5H2.5v4.75c0 .138.112.25.25.25h4.5Zm1.5 0v5h4.5a.25.25 0 0 0 .25-.25V9.5Zm0-4V8h5.5a.25.25 0 0 0 .25-.25v-2a.25.25 0 0 0-.25-.25Zm-7 0a.25.25 0 0 0-.25.25v2c0 .138.112.25.25.25h5.5V5.5h-5.5Zm3-4a1.25 1.25 0 0 0 0 2.5h2.309c-.233-.818-.542-1.401-.878-1.793-.43-.502-.915-.707-1.431-.707ZM8.941 4h2.309a1.25 1.25 0 0 0 0-2.5c-.516 0-1 .205-1.43.707-.337.392-.646.975-.879 1.793Z"/></svg>';
-const GIVEAWAY_TRASH_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M11 1.75V3h2.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75ZM4.496 6.675l.66 6.6a.25.25 0 0 0 .249.225h5.19a.25.25 0 0 0 .249-.225l.66-6.6a.75.75 0 0 1 1.492.149l-.66 6.6A1.748 1.748 0 0 1 10.595 15h-5.19a1.75 1.75 0 0 1-1.741-1.575l-.66-6.6a.75.75 0 1 1 1.492-.15ZM6.5 1.75V3h3V1.75a.25.25 0 0 0-.25-.25h-2.5a.25.25 0 0 0-.25.25Z"/></svg>';
 // Закрити завершений розіграш - хрестик (Octicons x-16).
 const GIVEAWAY_CLOSE_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/></svg>';
 // Згорнути банер - риска, як 'Згорнути' у вікнах (Octicons dash-16).
@@ -808,6 +807,10 @@ function initRaidGiveaway(opts) {
       catalog.prizes
         .filter((p) => (!cat || p.category === cat) && (!q || p.name.toLocaleLowerCase('en').includes(q) || String(p.id) === q))
         .forEach((p) => {
+          // Рядок: кнопка-призу (додає в обрані) + "×" (прибрати з каталогу,
+          // лише офіцерам гільдії) - дві кнопки поруч, не одна в одній.
+          const row = document.createElement('div');
+          row.className = 'giveaway-catalog-row';
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'giveaway-catalog-item';
@@ -815,7 +818,22 @@ function initRaidGiveaway(opts) {
           btn.dataset.itemId = String(p.id);
           btn.appendChild(giveawayPrizeNode({ type: 'item', itemId: p.id, icon: p.icon, name: p.name, quality: p.quality }));
           btn.addEventListener('click', () => addPrize({ key: `i${p.id}`, itemId: p.id, prize: { type: 'item', itemId: p.id, icon: p.icon, name: p.name, quality: p.quality } }));
-          list.appendChild(btn);
+          row.appendChild(btn);
+          if (catalog.canEditCatalog) {
+            const del = document.createElement('button');
+            del.type = 'button';
+            // Той самий '✕', що біля софтів (.raid-remove-btn); JS-тултіп - список прокручується й обрізав би CSS-тултіп.
+            del.className = 'raid-remove-btn giveaway-catalog-remove';
+            del.setAttribute('aria-label', 'Прибрати з каталогу');
+            del.textContent = '✕';
+            bindTooltip(del);
+            del.addEventListener('click', async () => {
+              if (!(await giveawayConfirm(`Прибрати «${p.name}» з каталогу призів для всіх рейдів?`, 'Прибрати'))) return;
+              catalogRequest('DELETE', `/raids/${raidId}/giveaway/catalog/${p.id}`, undefined, del);
+            });
+            row.appendChild(del);
+          }
+          list.appendChild(row);
         });
       if (!list.children.length) list.textContent = 'Нічого не знайдено';
     };
@@ -824,7 +842,23 @@ function initRaidGiveaway(opts) {
     registerCatalogTooltips();
     renderCatalog();
 
-    // Редактор каталогу за WoW ID - лише офіцерам гільдії (рішення сервера).
+    // Зміна каталогу (офіцери гільдії): відповідь - оновлений каталог.
+    const catalogRequest = async (method, path, body, btn) => {
+      btn.disabled = true;
+      try {
+        catalog = await apiCall(method, path, { token: getSessionToken(), body });
+        registerCatalogTooltips();
+        renderCatalog();
+        return true;
+      } catch (err) {
+        showMessageModal(err.message, 'Каталог призів');
+        return false;
+      } finally {
+        btn.disabled = false;
+      }
+    };
+
+    // Додати в каталог за WoW ID - лише офіцерам гільдії (рішення сервера).
     const editor = form.querySelector('.giveaway-catalog-editor');
     if (editor && catalog.canEditCatalog) {
       editor.hidden = false;
@@ -833,48 +867,16 @@ function initRaidGiveaway(opts) {
       const result = editor.querySelector('.giveaway-editor-result');
       catSelect.innerHTML = '<option value="">Категорія...</option>';
       catalog.categories.forEach((c) => catSelect.add(new Option(c.label, c.key)));
-      const showResult = (itemId) => {
-        result.innerHTML = '';
-        const p = catalog.prizes.find((x) => x.id === itemId);
-        if (p) {
-          const node = giveawayPrizeNode({ type: 'item', itemId: p.id, icon: p.icon, name: p.name, quality: p.quality });
-          result.append(node, document.createTextNode(' - у каталозі'));
-        } else {
-          result.textContent = `#${itemId} - прибрано з каталогу`;
-        }
-      };
-      const run = async (method, path, body, itemId, btn) => {
-        btn.disabled = true;
-        try {
-          catalog = await apiCall(method, path, { token: getSessionToken(), body });
-          registerCatalogTooltips();
-          renderCatalog();
-          showResult(itemId);
-        } catch (err) {
-          showMessageModal(err.message, 'Каталог призів');
-        } finally {
-          btn.disabled = false;
-        }
-      };
-      const readId = () => {
+      editor.querySelector('.giveaway-editor-add').addEventListener('click', async (e) => {
         const id = Number(idInput.value);
-        if (!Number.isInteger(id) || id < 1) { idInput.focus(); return null; }
-        return id;
-      };
-      editor.querySelector('.giveaway-editor-add').addEventListener('click', (e) => {
-        const id = readId();
-        if (!id) return;
+        if (!Number.isInteger(id) || id < 1) { idInput.focus(); return; }
         if (!catSelect.value) { catSelect.focus(); return; }
-        run('POST', `/raids/${raidId}/giveaway/catalog`, { itemId: id, category: catSelect.value }, id, e.currentTarget);
-      });
-      editor.querySelector('.giveaway-editor-remove').addEventListener('click', async (e) => {
-        const id = readId();
-        if (!id) return;
-        const btn = e.currentTarget;
+        if (!(await catalogRequest('POST', `/raids/${raidId}/giveaway/catalog`, { itemId: id, category: catSelect.value }, e.currentTarget))) return;
+        // Доданий предмет - під кнопкою, з іконкою й підказкою.
         const p = catalog.prizes.find((x) => x.id === id);
-        if (!p) { showMessageModal(`Предмета #${id} немає в каталозі`, 'Каталог призів'); return; }
-        if (!(await giveawayConfirm(`Прибрати «${p.name}» з каталогу призів для всіх рейдів?`, 'Прибрати'))) return;
-        run('DELETE', `/raids/${raidId}/giveaway/catalog/${id}`, undefined, id, btn);
+        result.innerHTML = '';
+        if (p) result.append(giveawayPrizeNode({ type: 'item', itemId: p.id, icon: p.icon, name: p.name, quality: p.quality }), document.createTextNode(' - додано'));
+        idInput.value = '';
       });
     }
 
@@ -991,9 +993,10 @@ function initRaidGiveaway(opts) {
       hiddenLabel.append(hidden, document.createTextNode('наосліп'));
       const remove = document.createElement('button');
       remove.type = 'button';
-      remove.className = 'raid-icon-btn tooltipped';
+      remove.className = 'raid-remove-btn';
       remove.setAttribute('aria-label', 'Прибрати приз');
-      remove.innerHTML = GIVEAWAY_TRASH_ICON;
+      remove.textContent = '✕';
+      bindTooltip(remove);
       remove.addEventListener('click', () => { selected.splice(index, 1); renderSelected(); });
       row.append(count, hiddenLabel, remove);
       box.appendChild(row);
