@@ -7802,7 +7802,51 @@ body.raid-manager-detail-page .giveaway-delivered {
 /* Форма старту у вкладці "Налаштування". */
 /* Розіграш призів - окрема вкладка "Призи" (лише офіцери). */
 body.raid-manager-detail-page .giveaway-settings {
-  max-width: 640px;
+  max-width: 960px;
+}
+
+/* Каталог ліворуч, редактор каталогу за WoW ID - праворуч (вузько - під ним). */
+body.raid-manager-detail-page .giveaway-picker-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+body.raid-manager-detail-page .giveaway-picker-row:has(> .giveaway-catalog-editor[hidden]) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (max-width: 720px) {
+  body.raid-manager-detail-page .giveaway-picker-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+body.raid-manager-detail-page .giveaway-catalog-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-soft);
+}
+
+body.raid-manager-detail-page .giveaway-catalog-editor[hidden] {
+  display: none;
+}
+
+body.raid-manager-detail-page .giveaway-editor-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+body.raid-manager-detail-page .giveaway-editor-result {
+  font-size: 0.85rem;
+  color: var(--color-text-faint);
+  overflow-wrap: anywhere;
 }
 
 body.raid-manager-detail-page .giveaway-settings-title {

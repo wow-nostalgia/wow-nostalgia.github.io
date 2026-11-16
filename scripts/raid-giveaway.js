@@ -68,6 +68,10 @@ function giveawayPrizeNode(prize, size = 'small') {
   // Підказка Wowhead при наведенні - спільний обробник сторінки рейду
   // ([data-item-id] + data/item-icons.json). Прихований приз - без неї.
   if (prize.type === 'item' && prize.itemId) wrap.dataset.itemId = String(prize.itemId);
+  // Предмет, доданий офіцерами з сайту, - опис приходить від воркера.
+  if (prize.tooltip && typeof itemIconData === 'object' && itemIconData && !itemIconData[prize.itemId]) {
+    itemIconData[prize.itemId] = { icon: prize.icon, quality: prize.quality, tooltip: prize.tooltip };
+  }
   const img = document.createElement('img');
   img.src = giveawayIconUrl(look.icon, size);
   img.alt = '';
@@ -758,6 +762,15 @@ function initRaidGiveaway(opts) {
     if (!catalog) loadCatalog();
   }
 
+  // Предмети, додані офіцерами, - не в статичному data/item-icons.json:
+  // їхні іконки й описи (з Wowhead) кладемо в спільну мапу підказок сторінки.
+  function registerCatalogTooltips() {
+    if (typeof itemIconData !== 'object' || !itemIconData) return;
+    catalog.prizes.forEach((p) => {
+      if (p.tooltip && !itemIconData[p.id]) itemIconData[p.id] = { icon: p.icon, quality: p.quality, tooltip: p.tooltip };
+    });
+  }
+
   async function loadCatalog() {
     catalog = { loading: true };
     try {
@@ -793,7 +806,7 @@ function initRaidGiveaway(opts) {
       }
       if (cat === GIVEAWAY_GOLD_CATEGORY) return;
       catalog.prizes
-        .filter((p) => (!cat || p.category === cat) && (!q || p.name.toLocaleLowerCase('en').includes(q)))
+        .filter((p) => (!cat || p.category === cat) && (!q || p.name.toLocaleLowerCase('en').includes(q) || String(p.id) === q))
         .forEach((p) => {
           const btn = document.createElement('button');
           btn.type = 'button';
@@ -808,7 +821,62 @@ function initRaidGiveaway(opts) {
     };
     categorySelect.addEventListener('change', renderCatalog);
     search.addEventListener('input', renderCatalog);
+    registerCatalogTooltips();
     renderCatalog();
+
+    // Редактор каталогу за WoW ID - лише офіцерам гільдії (рішення сервера).
+    const editor = form.querySelector('.giveaway-catalog-editor');
+    if (editor && catalog.canEditCatalog) {
+      editor.hidden = false;
+      const idInput = editor.querySelector('.giveaway-editor-id');
+      const catSelect = editor.querySelector('.giveaway-editor-category');
+      const result = editor.querySelector('.giveaway-editor-result');
+      catSelect.innerHTML = '<option value="">Категорія...</option>';
+      catalog.categories.forEach((c) => catSelect.add(new Option(c.label, c.key)));
+      const showResult = (itemId) => {
+        result.innerHTML = '';
+        const p = catalog.prizes.find((x) => x.id === itemId);
+        if (p) {
+          const node = giveawayPrizeNode({ type: 'item', itemId: p.id, icon: p.icon, name: p.name, quality: p.quality });
+          result.append(node, document.createTextNode(' - у каталозі'));
+        } else {
+          result.textContent = `#${itemId} - прибрано з каталогу`;
+        }
+      };
+      const run = async (method, path, body, itemId, btn) => {
+        btn.disabled = true;
+        try {
+          catalog = await apiCall(method, path, { token: getSessionToken(), body });
+          registerCatalogTooltips();
+          renderCatalog();
+          showResult(itemId);
+        } catch (err) {
+          showMessageModal(err.message, 'Каталог призів');
+        } finally {
+          btn.disabled = false;
+        }
+      };
+      const readId = () => {
+        const id = Number(idInput.value);
+        if (!Number.isInteger(id) || id < 1) { idInput.focus(); return null; }
+        return id;
+      };
+      editor.querySelector('.giveaway-editor-add').addEventListener('click', (e) => {
+        const id = readId();
+        if (!id) return;
+        if (!catSelect.value) { catSelect.focus(); return; }
+        run('POST', `/raids/${raidId}/giveaway/catalog`, { itemId: id, category: catSelect.value }, id, e.currentTarget);
+      });
+      editor.querySelector('.giveaway-editor-remove').addEventListener('click', async (e) => {
+        const id = readId();
+        if (!id) return;
+        const btn = e.currentTarget;
+        const p = catalog.prizes.find((x) => x.id === id);
+        if (!p) { showMessageModal(`Предмета #${id} немає в каталозі`, 'Каталог призів'); return; }
+        if (!(await giveawayConfirm(`Прибрати «${p.name}» з каталогу призів для всіх рейдів?`, 'Прибрати'))) return;
+        run('DELETE', `/raids/${raidId}/giveaway/catalog/${id}`, undefined, id, btn);
+      });
+    }
 
     const durationSelect = form.querySelector('.giveaway-duration');
     durationSelect.innerHTML = '';

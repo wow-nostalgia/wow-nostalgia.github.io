@@ -14,7 +14,7 @@
 import { HttpError, jsonResponse, readJson } from './util.js';
 import { insertAudit, getUserDisplayName } from './db.js';
 import { isRaidOfficer, requireRaidOfficer } from './auth.js';
-import { GIVEAWAY_PRIZES, GIVEAWAY_PRIZE_CATEGORIES, GIVEAWAY_PRIZES_BY_ID } from './giveaway-prizes.js';
+import { GIVEAWAY_PRIZE_CATEGORIES, GIVEAWAY_PRIZES_BY_ID } from './giveaway-prizes.js';
 
 export const GIVEAWAY_ROUND_SECONDS = [20, 30, 60];
 // Відлік до старту раунду (анонс). Про новий розіграш сторінка дізнається
@@ -261,13 +261,15 @@ function prizeView(round, canSee = true) {
   if (hidden && !canSee && !['done', 'void', 'rerolled'].includes(round.status)) return { type: 'hidden', hidden: true };
   const quantity = round.quantity || 1;
   if (round.gold != null) return { type: 'gold', gold: round.gold, quantity, hidden };
-  const item = GIVEAWAY_PRIZES_BY_ID.get(round.item_id);
+  const item = catalogById.get(round.item_id);
   return {
     type: 'item',
     itemId: round.item_id,
     name: item?.name || `#${round.item_id}`,
     icon: item?.icon || 'inv_misc_questionmark',
     quality: item?.quality ?? 1,
+    // Доданим з сайту предметам опису немає в data/item-icons.json - шлемо його.
+    tooltip: item?.custom ? item.tooltip : undefined,
     quantity,
     hidden
   };
@@ -288,6 +290,7 @@ async function requireGiveawayOwner(db, raid, session, giveaway) {
 }
 
 async function giveawayState(db, raid, session) {
+  await loadCatalog(db);
   const giveaway = await getLatestGiveaway(db, raid.id);
   const isOfficer = await isRaidOfficer(db, raid.id, raid, session.discordId);
   if (!giveaway) return { serverNow: nowIso(), canManage: isOfficer, giveaway: null, me: null };
@@ -348,12 +351,96 @@ export async function handleGetGiveaway(request, env, raid, session) {
 
 export async function handleListGiveawayPrizes(request, env, raid, session) {
   await requireRaidOfficer(env.DB, raid.id, raid, session);
-  return jsonResponse({ categories: GIVEAWAY_PRIZE_CATEGORIES, prizes: GIVEAWAY_PRIZES, roundSeconds: GIVEAWAY_ROUND_SECONDS });
+  return jsonResponse(await catalogResponse(env.DB, session));
+}
+
+// ---------- каталог призів (редагують офіцери гільдії) ----------
+
+// Каталог = вбудований (giveaway-prizes.js) + рядки giveaway_catalog.
+// catalogById - усі відомі предмети (і прибрані - для старих раундів),
+// activeCatalogIds - ті, що зараз можна обрати. Оновлюється на початку
+// кожного запиту, що їх читає (loadCatalog).
+let catalogById = new Map(GIVEAWAY_PRIZES_BY_ID);
+let activeCatalogIds = new Set(GIVEAWAY_PRIZES_BY_ID.keys());
+
+async function loadCatalog(db) {
+  const { results } = await db.prepare('SELECT * FROM giveaway_catalog').all();
+  const byId = new Map(GIVEAWAY_PRIZES_BY_ID);
+  const active = new Set(GIVEAWAY_PRIZES_BY_ID.keys());
+  for (const r of results) {
+    byId.set(r.item_id, {
+      id: r.item_id, name: r.name, icon: r.icon, quality: r.quality, category: r.category, tooltip: r.tooltip, custom: true
+    });
+    if (r.removed) active.delete(r.item_id); else active.add(r.item_id);
+  }
+  catalogById = byId;
+  activeCatalogIds = active;
+}
+
+async function isGuildOfficer(db, discordId) {
+  return Boolean(await db.prepare('SELECT 1 FROM default_officers WHERE discord_id = ?').bind(discordId).first());
+}
+
+async function requireGuildOfficer(db, session) {
+  if (!(await isGuildOfficer(db, session.discordId))) throw new HttpError(403, 'Каталог призів редагують лише офіцери гільдії');
+}
+
+async function catalogResponse(db, session) {
+  await loadCatalog(db);
+  return {
+    categories: GIVEAWAY_PRIZE_CATEGORIES,
+    prizes: [...activeCatalogIds].map((id) => catalogById.get(id)),
+    roundSeconds: GIVEAWAY_ROUND_SECONDS,
+    canEditCatalog: await isGuildOfficer(db, session.discordId)
+  };
+}
+
+function upsertCatalogRow(db, item, removed, session) {
+  return db.prepare(
+    `INSERT INTO giveaway_catalog (item_id, name, icon, quality, category, tooltip, removed, updated_by, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT (item_id) DO UPDATE SET name = excluded.name, icon = excluded.icon, quality = excluded.quality,
+       category = excluded.category, tooltip = excluded.tooltip, removed = excluded.removed,
+       updated_by = excluded.updated_by, updated_at = excluded.updated_at`
+  ).bind(item.id, item.name, item.icon, item.quality ?? 1, item.category, item.tooltip || null, removed, session.username, nowIso()).run();
+}
+
+// body: { itemId, category } - додати предмет за WoW ID; назва, іконка,
+// якість і опис - з Wowhead (WotLK).
+export async function handleAddCatalogPrize(request, env, raid, session) {
+  const db = env.DB;
+  await requireGuildOfficer(db, session);
+  const body = await readJson(request);
+  const itemId = Number(body.itemId);
+  if (!Number.isInteger(itemId) || itemId < 1 || itemId > 999999) throw new HttpError(400, 'WoW ID - ціле додатне число');
+  if (!GIVEAWAY_PRIZE_CATEGORIES.some((c) => c.key === body.category)) throw new HttpError(400, 'Обери категорію');
+  let data = null;
+  try {
+    const res = await fetch(`https://nether.wowhead.com/tooltip/item/${itemId}?dataEnv=8&locale=0`, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+    if (res.ok) data = await res.json();
+  } catch { data = null; }
+  if (!data?.name || !data?.icon) throw new HttpError(404, `Предмет ${itemId} не знайдено на Wowhead`);
+  await upsertCatalogRow(db, {
+    id: itemId, name: data.name, icon: data.icon, quality: data.quality, category: body.category, tooltip: data.tooltip
+  }, 0, session);
+  return jsonResponse(await catalogResponse(db, session));
+}
+
+// Прибрати предмет з каталогу (і вбудований теж): рядок лишається з
+// removed = 1 - старі раунди й далі показують назву та іконку.
+export async function handleRemoveCatalogPrize(request, env, raid, session, itemId) {
+  const db = env.DB;
+  await requireGuildOfficer(db, session);
+  await loadCatalog(db);
+  if (!activeCatalogIds.has(itemId)) throw new HttpError(404, 'Цього предмета немає в каталозі');
+  await upsertCatalogRow(db, catalogById.get(itemId), 1, session);
+  return jsonResponse(await catalogResponse(db, session));
 }
 
 // body: { prizes: [{ itemId, count, hidden? } | { gold, count, hidden? }], criteria: {...}, roundSeconds }
 export async function handleStartGiveaway(request, env, raid, session) {
   const db = env.DB;
+  await loadCatalog(db);
   await requireRaidOfficer(db, raid.id, raid, session);
   if (raid.status === 'completed') throw new HttpError(400, 'Рейд завершено');
 
@@ -379,7 +466,7 @@ export async function handleStartGiveaway(request, env, raid, session) {
     }
     if (p.itemId != null) {
       const itemId = Number(p.itemId);
-      if (!GIVEAWAY_PRIZES_BY_ID.has(itemId)) throw new HttpError(400, `Невідомий приз: ${p.itemId}`);
+      if (!activeCatalogIds.has(itemId)) throw new HttpError(400, `Невідомий приз: ${p.itemId}`);
       rounds.push({ itemId, gold: null, quantity, hidden: Boolean(p.hidden) });
     } else {
       const gold = Number(p.gold);
@@ -404,7 +491,7 @@ export async function handleStartGiveaway(request, env, raid, session) {
     // Приховані призи в історії не розкриваємо.
     prizes: body.prizes.map((p) => (p.hidden ? { hidden: true }
       : p.itemId != null
-        ? { name: GIVEAWAY_PRIZES_BY_ID.get(Number(p.itemId)).name, count: Number(p.count ?? 1) }
+        ? { name: catalogById.get(Number(p.itemId)).name, count: Number(p.count ?? 1) }
         : { gold: Number(p.gold), count: Number(p.count ?? 1) })),
     criteria
   });
@@ -477,6 +564,7 @@ export async function handleRerollGiveawayRound(request, env, raid, session, rou
   await requireRaidOfficer(db, raid.id, raid, session);
   if (raid.status === 'completed') throw new HttpError(400, 'Рейд завершено');
   const round = await loadRoundOr404(db, raid, roundId);
+  await loadCatalog(db);
   if (!['done', 'void'].includes(round.status)) throw new HttpError(400, 'Перекинути можна лише зіграний раунд');
   if (round.delivered) throw new HttpError(400, 'Приз уже видано');
   const giveaway = await getGiveaway(db, raid.id, round.giveaway_id);
@@ -513,6 +601,7 @@ export async function handleSetGiveawayDelivered(request, env, raid, session, ro
   const db = env.DB;
   await requireRaidOfficer(db, raid.id, raid, session);
   const round = await loadRoundOr404(db, raid, roundId);
+  await loadCatalog(db);
   if (round.status !== 'done') throw new HttpError(400, 'У раунді немає переможця');
   const giveaway = await getGiveaway(db, raid.id, round.giveaway_id);
   await requireGiveawayOwner(db, raid, session, giveaway);

@@ -55,7 +55,9 @@ import {
   handleCancelGiveaway,
   handleRerollGiveawayRound,
   handleSetGiveawayDelivered,
-  handleNextGiveawayRound
+  handleNextGiveawayRound,
+  handleAddCatalogPrize,
+  handleRemoveCatalogPrize
 } from './giveaways.js';
 import {
   handleListPenaltyTemplates,
@@ -281,6 +283,13 @@ async function routeRaids(request, env, parts, session) {
     if (target === 'roll' && method === 'POST') return handleGiveawayRoll(request, env, raid, session);
     if (target === 'cancel' && method === 'POST') return handleCancelGiveaway(request, env, raid, session);
     if (target === 'next' && method === 'POST') return handleNextGiveawayRound(request, env, raid, session);
+    // Каталог призів (спільний для всіх рейдів; офіцери гільдії): POST додати, DELETE /catalog/{itemId}.
+    if (target === 'catalog' && !parts[3] && method === 'POST') return handleAddCatalogPrize(request, env, raid, session);
+    if (target === 'catalog' && parts[3] && method === 'DELETE') {
+      const itemId = Number(parts[3]);
+      if (!Number.isInteger(itemId)) throw new HttpError(400, 'Некоректний WoW ID');
+      return handleRemoveCatalogPrize(request, env, raid, session, itemId);
+    }
     if (target === 'rounds' && parts[3] && method === 'POST') {
       const roundId = Number(parts[3]);
       if (!Number.isInteger(roundId)) throw new HttpError(400, 'Некоректний раунд');

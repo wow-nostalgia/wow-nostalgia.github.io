@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Рейд — Рейд-менеджер</title>
-  <link rel="stylesheet" href="../../style.css?v=258">
+  <link rel="stylesheet" href="../../style.css?v=259">
   <script src="/scripts/background.js?v=4"></script>
 </head>
 
@@ -303,12 +303,25 @@
               <h3 class="giveaway-settings-title">Розіграш призів</h3>
               <p class="giveaway-settings-active" hidden>Розіграш триває - керування в банері вгорі сторінки.</p>
               <form class="giveaway-form" hidden>
+                <div class="giveaway-picker-row">
                 <div class="giveaway-picker">
                   <div class="giveaway-picker-filters">
                     <select class="giveaway-category" aria-label="Категорія призів"></select>
                     <input type="search" class="giveaway-search" placeholder="Пошук призу..." aria-label="Пошук призу" autocomplete="off">
                   </div>
                   <div class="giveaway-catalog" role="list"></div>
+                </div>
+                <!-- Каталог призів за WoW ID (лише офіцери гільдії; scripts/raid-giveaway.js). -->
+                <div class="giveaway-catalog-editor" hidden>
+                  <div class="giveaway-subtitle">Каталог призів</div>
+                  <input type="number" class="giveaway-editor-id" min="1" step="1" placeholder="WoW ID" aria-label="WoW ID предмета">
+                  <select class="giveaway-editor-category" aria-label="Категорія"></select>
+                  <div class="giveaway-editor-actions">
+                    <button type="button" class="compare-btn giveaway-editor-add">Додати</button>
+                    <button type="button" class="link-button-std link-button-std--danger giveaway-editor-remove">Видалити</button>
+                  </div>
+                  <div class="giveaway-editor-result" aria-live="polite"></div>
+                </div>
                 </div>
                 <div class="giveaway-subtitle">Призи (кожен - окремий раунд)</div>
                 <div class="giveaway-selected"></div>
@@ -463,7 +476,7 @@
   <script src="../../scripts/raid-manager-shared.js?v=12"></script>
   <script src="../../scripts/name-translations.js?v=4"></script>
   <script src="../../scripts/wow-specs.js?v=2"></script>
-  <script src="../../scripts/raid-giveaway.js?v=19"></script>
+  <script src="../../scripts/raid-giveaway.js?v=20"></script>
   <script src="../../scripts/raid-signups.js?v=15"></script>
   <script src="../../scripts/raid-manager-detail.js?v=164"></script>
   <!-- Cloudflare Web Analytics -->
