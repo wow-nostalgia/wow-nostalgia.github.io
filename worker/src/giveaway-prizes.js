@@ -37,6 +37,10 @@ export const GIVEAWAY_PRIZE_CATEGORIES = [
     "label": "Сумки"
   },
   {
+    "key": "pets",
+    "label": "Компаньйони"
+  },
+  {
     "key": "mounts",
     "label": "Маунти"
   }
