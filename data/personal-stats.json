@@ -1,5 +1,1835 @@
 [
   {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-11-15--20-41--Borolgin--FreedomUA/",
+    "date": "2026-11-15",
+    "boss": "Lord Marrowgar",
+    "durationSeconds": 102.711,
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 23898.2
+      },
+      {
+        "name": "Tuf",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 22548.6
+      },
+      {
+        "name": "Санако",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 19122.7
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 18664.6
+      },
+      {
+        "name": "Colaa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence",
+        "dps": 18634.7
+      },
+      {
+        "name": "Ефеймл",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 17461.8
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 16372.3
+      },
+      {
+        "name": "Айронхайд",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 16194.6
+      },
+      {
+        "name": "Vetala",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 15983.6
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 15908.6
+      },
+      {
+        "name": "Ксеноморф",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 15682.3
+      },
+      {
+        "name": "Zulgorran",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 15516.8
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 15414.9
+      },
+      {
+        "name": "Bu",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 14204.9
+      },
+      {
+        "name": "Турбо",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 14187.9
+      },
+      {
+        "name": "Явжетут",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 14138.8
+      },
+      {
+        "name": "Geefors",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 13760.2
+      },
+      {
+        "name": "Турісто",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 13685
+      },
+      {
+        "name": "Прістуля",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 11822.7
+      },
+      {
+        "name": "Dwalin",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "dps": 4077.2
+      },
+      {
+        "name": "Vesper",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 3778.5
+      },
+      {
+        "name": "Вовабрат",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 291.1
+      },
+      {
+        "name": "Kawaibaka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 266.2
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 45.3
+      },
+      {
+        "name": "Дцп'пріст",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "dps": 33.9
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-11-15--20-41--Borolgin--FreedomUA/",
+    "date": "2026-11-15",
+    "boss": "Lady Deathwhisper",
+    "durationSeconds": 271.191,
+    "players": [
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 13363.1
+      },
+      {
+        "name": "Турісто",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 11852.7
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 11728.3
+      },
+      {
+        "name": "Tuf",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 11654.9
+      },
+      {
+        "name": "Ефеймл",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 11232.1
+      },
+      {
+        "name": "Zulgorran",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 10819.4
+      },
+      {
+        "name": "Ксеноморф",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 10645.3
+      },
+      {
+        "name": "Явжетут",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 10062
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 9908.4
+      },
+      {
+        "name": "Турбо",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 9729
+      },
+      {
+        "name": "Geefors",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 9540.2
+      },
+      {
+        "name": "Прістуля",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 9023.1
+      },
+      {
+        "name": "Санако",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 8942.5
+      },
+      {
+        "name": "Bu",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 8695.4
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 8605.9
+      },
+      {
+        "name": "Vetala",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 8181.4
+      },
+      {
+        "name": "Dwalin",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "dps": 4555.8
+      },
+      {
+        "name": "Айронхайд",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 4418.2
+      },
+      {
+        "name": "Colaa",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 4144.9
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 3478.1
+      },
+      {
+        "name": "Vesper",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 2833.6
+      },
+      {
+        "name": "Вовабрат",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 274.8
+      },
+      {
+        "name": "Дцп'пріст",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "dps": 138.9
+      },
+      {
+        "name": "Kawaibaka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-11-15--20-41--Borolgin--FreedomUA/",
+    "date": "2026-11-15",
+    "boss": "Deathbringer Saurfang",
+    "durationSeconds": 119.94,
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 26176.8
+      },
+      {
+        "name": "Tuf",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 22483.2
+      },
+      {
+        "name": "Colaa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence",
+        "dps": 21648
+      },
+      {
+        "name": "Санако",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 21373.6
+      },
+      {
+        "name": "Ефеймл",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 20970.3
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 20790.7
+      },
+      {
+        "name": "Айронхайд",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 20564
+      },
+      {
+        "name": "Vetala",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 20353.7
+      },
+      {
+        "name": "Турісто",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 18730.1
+      },
+      {
+        "name": "Дцп'пріст",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 18494.3
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 18404
+      },
+      {
+        "name": "Zulgorran",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 18314.7
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 16921
+      },
+      {
+        "name": "Ксеноморф",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 16230.3
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 16204.2
+      },
+      {
+        "name": "Bu",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 15976.6
+      },
+      {
+        "name": "Турбо",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 15581.8
+      },
+      {
+        "name": "Явжетут",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 15431
+      },
+      {
+        "name": "Geefors",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 15336.4
+      },
+      {
+        "name": "Прістуля",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 14776.4
+      },
+      {
+        "name": "Dwalin",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "dps": 4191.7
+      },
+      {
+        "name": "Vesper",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 3922.4
+      },
+      {
+        "name": "Вовабрат",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 206.4
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 0
+      },
+      {
+        "name": "Kawaibaka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-11-15--20-41--Borolgin--FreedomUA/",
+    "date": "2026-11-15",
+    "boss": "Blood Prince Council",
+    "durationSeconds": 165.11,
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 18505.4
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 14677.8
+      },
+      {
+        "name": "Ефеймл",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 12587.6
+      },
+      {
+        "name": "Tuf",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 11479.6
+      },
+      {
+        "name": "Colaa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence",
+        "dps": 11373.9
+      },
+      {
+        "name": "Vetala",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 11364.9
+      },
+      {
+        "name": "Айронхайд",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 10868.7
+      },
+      {
+        "name": "Прістуля",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 10704.2
+      },
+      {
+        "name": "Турбо",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 9627
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 9625.3
+      },
+      {
+        "name": "Geefors",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 8521.9
+      },
+      {
+        "name": "Турісто",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 8471.4
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 8329.7
+      },
+      {
+        "name": "Явжетут",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 7574.1
+      },
+      {
+        "name": "Bu",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 7530.2
+      },
+      {
+        "name": "Ксеноморф",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 5746.6
+      },
+      {
+        "name": "Zulgorran",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 5480.5
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 4703.5
+      },
+      {
+        "name": "Санако",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 3752.8
+      },
+      {
+        "name": "Dwalin",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "dps": 3450.6
+      },
+      {
+        "name": "Vesper",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 256.6
+      },
+      {
+        "name": "Вовабрат",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 141.7
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 0
+      },
+      {
+        "name": "Kawaibaka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      },
+      {
+        "name": "Дцп'пріст",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-11-15--20-41--Borolgin--FreedomUA/",
+    "date": "2026-11-15",
+    "boss": "Festergut",
+    "durationSeconds": 160.34300000000002,
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 22546.5
+      },
+      {
+        "name": "Tuf",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 20651.2
+      },
+      {
+        "name": "Айронхайд",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 19866
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 19455.1
+      },
+      {
+        "name": "Vetala",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 18281.5
+      },
+      {
+        "name": "Санако",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 17134.2
+      },
+      {
+        "name": "Colaa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence",
+        "dps": 16843.5
+      },
+      {
+        "name": "Ефеймл",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 16773.6
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 16720.7
+      },
+      {
+        "name": "Турбо",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 15951.6
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 15806.6
+      },
+      {
+        "name": "Ксеноморф",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 15485.4
+      },
+      {
+        "name": "Bu",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 15254.2
+      },
+      {
+        "name": "Явжетут",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 15183.3
+      },
+      {
+        "name": "Geefors",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 14477.3
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 14335.9
+      },
+      {
+        "name": "Турісто",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 14204.1
+      },
+      {
+        "name": "Zulgorran",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 14124
+      },
+      {
+        "name": "Прістуля",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 14099.9
+      },
+      {
+        "name": "Vesper",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 5420.2
+      },
+      {
+        "name": "Dwalin",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "dps": 3405.4
+      },
+      {
+        "name": "Вовабрат",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 191
+      },
+      {
+        "name": "Дцп'пріст",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "dps": 0
+      },
+      {
+        "name": "Kawaibaka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-11-15--20-41--Borolgin--FreedomUA/",
+    "date": "2026-11-15",
+    "boss": "Rotface",
+    "durationSeconds": 183.528,
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 19020.1
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 16511.4
+      },
+      {
+        "name": "Tuf",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 15656.7
+      },
+      {
+        "name": "Айронхайд",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 15421.8
+      },
+      {
+        "name": "Vetala",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 14034.8
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 13853.3
+      },
+      {
+        "name": "Zulgorran",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 13828.6
+      },
+      {
+        "name": "Санако",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 12980.8
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 12937.4
+      },
+      {
+        "name": "Ефеймл",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 12897.5
+      },
+      {
+        "name": "Турісто",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 12886.4
+      },
+      {
+        "name": "Colaa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence",
+        "dps": 12714
+      },
+      {
+        "name": "Турбо",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 12333.7
+      },
+      {
+        "name": "Geefors",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 11937.6
+      },
+      {
+        "name": "Bu",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 11489.6
+      },
+      {
+        "name": "Прістуля",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 11117.3
+      },
+      {
+        "name": "Явжетут",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 11115.5
+      },
+      {
+        "name": "Ксеноморф",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 10956.6
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 10889.9
+      },
+      {
+        "name": "Dwalin",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "dps": 4270
+      },
+      {
+        "name": "Vesper",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 709.1
+      },
+      {
+        "name": "Вовабрат",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 377.6
+      },
+      {
+        "name": "Дцп'пріст",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "dps": 244.3
+      },
+      {
+        "name": "Kawaibaka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 156.8
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-11-15--20-41--Borolgin--FreedomUA/",
+    "date": "2026-11-15",
+    "boss": "Professor Putricide",
+    "durationSeconds": 299.28499999999997,
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 21641.2
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 15305
+      },
+      {
+        "name": "Tuf",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 12831.6
+      },
+      {
+        "name": "Айронхайд",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 12114
+      },
+      {
+        "name": "Санако",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 12041.3
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 11810.9
+      },
+      {
+        "name": "Colaa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence",
+        "dps": 11758.1
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 11390.5
+      },
+      {
+        "name": "Ксеноморф",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 11152.7
+      },
+      {
+        "name": "Ефеймл",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 10957.9
+      },
+      {
+        "name": "Турбо",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 10371.8
+      },
+      {
+        "name": "Прістуля",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 10113.8
+      },
+      {
+        "name": "Zulgorran",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 10065
+      },
+      {
+        "name": "Vetala",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 10002.2
+      },
+      {
+        "name": "Турісто",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 9705.6
+      },
+      {
+        "name": "Geefors",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 8796.6
+      },
+      {
+        "name": "Bu",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 8482.2
+      },
+      {
+        "name": "Явжетут",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 7897.9
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 7760.6
+      },
+      {
+        "name": "Vesper",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 3396.9
+      },
+      {
+        "name": "Dwalin",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "dps": 248.8
+      },
+      {
+        "name": "Вовабрат",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 241.2
+      },
+      {
+        "name": "Дцп'пріст",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "dps": 164.2
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 0
+      },
+      {
+        "name": "Kawaibaka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-11-15--20-41--Borolgin--FreedomUA/",
+    "date": "2026-11-15",
+    "boss": "Blood-Queen Lana'thel",
+    "durationSeconds": 221.726,
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 45180.2
+      },
+      {
+        "name": "Санако",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 23491.3
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 22401.3
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 17381.9
+      },
+      {
+        "name": "Ксеноморф",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 17365.4
+      },
+      {
+        "name": "Айронхайд",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 16712.7
+      },
+      {
+        "name": "Tuf",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 16265.4
+      },
+      {
+        "name": "Vetala",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 15031.1
+      },
+      {
+        "name": "Zulgorran",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 14962.7
+      },
+      {
+        "name": "Colaa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence",
+        "dps": 14578.9
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 14262.3
+      },
+      {
+        "name": "Bu",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 14062.5
+      },
+      {
+        "name": "Турісто",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 13884.7
+      },
+      {
+        "name": "Geefors",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 12476
+      },
+      {
+        "name": "Прістуля",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 12213.5
+      },
+      {
+        "name": "Турбо",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 11960
+      },
+      {
+        "name": "Явжетут",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 11032.1
+      },
+      {
+        "name": "Ефеймл",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 10623.2
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 10084.1
+      },
+      {
+        "name": "Dwalin",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "dps": 4427.5
+      },
+      {
+        "name": "Vesper",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 2972.3
+      },
+      {
+        "name": "Вовабрат",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 201.6
+      },
+      {
+        "name": "Дцп'пріст",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "dps": 0
+      },
+      {
+        "name": "Kawaibaka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-11-15--20-41--Borolgin--FreedomUA/",
+    "date": "2026-11-15",
+    "boss": "Valithria Dreamwalker",
+    "durationSeconds": 308.476,
+    "players": [
+      {
+        "name": "Айронхайд",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 8186.8
+      },
+      {
+        "name": "Geefors",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 6901.7
+      },
+      {
+        "name": "Турбо",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 5987.5
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 5447
+      },
+      {
+        "name": "Colaa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence",
+        "dps": 4862.2
+      },
+      {
+        "name": "Zulgorran",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 4736.2
+      },
+      {
+        "name": "Явжетут",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 4270
+      },
+      {
+        "name": "Турісто",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 4180
+      },
+      {
+        "name": "Ксеноморф",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 4168.9
+      },
+      {
+        "name": "Прістуля",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 3368.2
+      },
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 3203.2
+      },
+      {
+        "name": "Ефеймл",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 3197.8
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 3063.3
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 2839.2
+      },
+      {
+        "name": "Bu",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 2581.7
+      },
+      {
+        "name": "Vetala",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 2473.2
+      },
+      {
+        "name": "Dwalin",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "dps": 1957.4
+      },
+      {
+        "name": "Vesper",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 1648.3
+      },
+      {
+        "name": "Tuf",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 508.2
+      },
+      {
+        "name": "Дцп'пріст",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "dps": 46.5
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 0
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      },
+      {
+        "name": "Санако",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      },
+      {
+        "name": "Kawaibaka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      },
+      {
+        "name": "Вовабрат",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 0
+      }
+    ]
+  },
+  {
+    "raidUrl": "https://uwu-logs.xyz/reports/26-11-15--20-41--Borolgin--FreedomUA/",
+    "date": "2026-11-15",
+    "boss": "Sindragosa",
+    "durationSeconds": 280.446,
+    "players": [
+      {
+        "name": "Rebecca",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 13321.4
+      },
+      {
+        "name": "Ефеймл",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 13078
+      },
+      {
+        "name": "Colaa",
+        "class": "Death Knight",
+        "spec": "Unholy",
+        "icon": "spell_deathknight_unholypresence",
+        "dps": 12898
+      },
+      {
+        "name": "Майорр",
+        "class": "Mage",
+        "spec": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "dps": 12696.7
+      },
+      {
+        "name": "Турісто",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 11564.7
+      },
+      {
+        "name": "Айронхайд",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 11336.5
+      },
+      {
+        "name": "Zulgorran",
+        "class": "Hunter",
+        "spec": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "dps": 11316.8
+      },
+      {
+        "name": "Tuf",
+        "class": "Druid",
+        "spec": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "dps": 11166.2
+      },
+      {
+        "name": "Чикса",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 11073.1
+      },
+      {
+        "name": "Vetala",
+        "class": "Warlock",
+        "spec": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "dps": 10311.3
+      },
+      {
+        "name": "Прістуля",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 9858.8
+      },
+      {
+        "name": "Турбо",
+        "class": "Warrior",
+        "spec": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "dps": 9442.2
+      },
+      {
+        "name": "Geefors",
+        "class": "Paladin",
+        "spec": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "dps": 9337
+      },
+      {
+        "name": "Явжетут",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 8615.3
+      },
+      {
+        "name": "Ксеноморф",
+        "class": "Priest",
+        "spec": "Shadow",
+        "icon": "spell_shadow_shadowwordpain",
+        "dps": 7945.2
+      },
+      {
+        "name": "Bu",
+        "class": "Warlock",
+        "spec": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "dps": 7720.7
+      },
+      {
+        "name": "Shh",
+        "class": "Rogue",
+        "spec": "Combat",
+        "icon": "ability_backstab",
+        "dps": 7216
+      },
+      {
+        "name": "Санако",
+        "class": "Druid",
+        "spec": "Balance",
+        "icon": "spell_nature_starfall",
+        "dps": 6939.3
+      },
+      {
+        "name": "Vesper",
+        "class": "Death Knight",
+        "spec": "Blood",
+        "icon": "spell_deathknight_bloodpresence",
+        "dps": 2529.9
+      },
+      {
+        "name": "Dwalin",
+        "class": "Paladin",
+        "spec": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "dps": 1500.1
+      },
+      {
+        "name": "Вовабрат",
+        "class": "Paladin",
+        "spec": "Holy",
+        "icon": "spell_holy_holybolt",
+        "dps": 226.3
+      },
+      {
+        "name": "Borolgin",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 3.3
+      },
+      {
+        "name": "Kawaibaka",
+        "class": "Druid",
+        "spec": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "dps": 0
+      },
+      {
+        "name": "Дцп'пріст",
+        "class": "Priest",
+        "spec": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "dps": 0
+      },
+      {
+        "name": "Торпедіс",
+        "class": "Shaman",
+        "spec": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "dps": 0
+      }
+    ]
+  },
+  {
     "raidUrl": "https://uwu-logs.xyz/reports/26-11-14--20-23--%D0%9A%D1%83%D0%BC%D0%B1%D1%83%D1%80%D1%96--FreedomUA/",
     "date": "2026-11-14",
     "boss": "Lord Marrowgar",
