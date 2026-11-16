@@ -368,8 +368,10 @@ async function loadCatalog(db) {
   const byId = new Map(GIVEAWAY_PRIZES_BY_ID);
   const active = new Set(GIVEAWAY_PRIZES_BY_ID.keys());
   for (const r of results) {
+    // gems-red/-blue/... - старі категорії, до об'єднання в "Камені".
+    const category = r.category.startsWith('gems-') ? 'gems' : r.category;
     byId.set(r.item_id, {
-      id: r.item_id, name: r.name, icon: r.icon, quality: r.quality, category: r.category, tooltip: r.tooltip, custom: true
+      id: r.item_id, name: r.name, icon: r.icon, quality: r.quality, category, tooltip: r.tooltip, custom: true
     });
     if (r.removed) active.delete(r.item_id); else active.add(r.item_id);
   }
