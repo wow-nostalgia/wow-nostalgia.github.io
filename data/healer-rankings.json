@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-11-20T04:35:08.685Z",
+  "updatedAt": "2026-11-21T04:35:42.693Z",
   "specs": [
     {
       "class": "Paladin",
@@ -878,6 +878,10 @@
         {
           "name": "Олень",
           "hps": 25630.7
+        },
+        {
+          "name": "Мев",
+          "hps": 25607.9
         },
         {
           "name": "Mutinywithin",
@@ -3266,6 +3270,10 @@
           "hps": 16487.7
         },
         {
+          "name": "Hoover",
+          "hps": 16461.7
+        },
+        {
           "name": "Melris",
           "hps": 16461.2
         },
@@ -5302,6 +5310,10 @@
         {
           "name": "Таурус",
           "hps": 18522.6
+        },
+        {
+          "name": "Чокошокомоко",
+          "hps": 18477.6
         },
         {
           "name": "Dikey",
