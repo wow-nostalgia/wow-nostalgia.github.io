@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-11-23T04:21:44.769Z",
+  "updatedAt": "2026-11-24T07:34:53.980Z",
   "specs": [
     {
       "class": "Paladin",
@@ -884,6 +884,10 @@
           "hps": 25630.7
         },
         {
+          "name": "Riodeposadka",
+          "hps": 25610.1
+        },
+        {
           "name": "Мев",
           "hps": 25607.9
         },
@@ -962,10 +966,6 @@
         {
           "name": "Ворон",
           "hps": 23298.4
-        },
-        {
-          "name": "Riodeposadka",
-          "hps": 23040.7
         },
         {
           "name": "Бандеровець",
@@ -3586,6 +3586,10 @@
           "hps": 13118.5
         },
         {
+          "name": "Koffein",
+          "hps": 13101.9
+        },
+        {
           "name": "Yapi",
           "hps": 13033.7
         },
@@ -3704,10 +3708,6 @@
         {
           "name": "Кібердру",
           "hps": 12135.8
-        },
-        {
-          "name": "Koffein",
-          "hps": 11861.4
         },
         {
           "name": "Чизкейк",
