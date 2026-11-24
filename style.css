@@ -4233,6 +4233,24 @@ body.raid-manager-detail-page .raid-officer-panel h2 {
   margin-top: 0;
 }
 
+/* Перемикач офіцерська панель <-> інфо-панель (лише офіцерам) - правий
+   верхній кут панелі. */
+body.raid-manager-detail-page .raid-officer-panel,
+body.raid-manager-detail-page .raid-benchmark-panel {
+  position: relative;
+}
+
+body.raid-manager-detail-page .raid-panel-switch {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+/* Довгий заголовок не заходить під кнопку. */
+body.raid-manager-detail-page .raid-panel-switch + h2 {
+  padding-right: 2.5rem;
+}
+
 body.raid-manager-detail-page .raid-benchmark-panel {
   padding: 0.75rem;
   border: 1px solid var(--color-border-mid);

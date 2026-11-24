@@ -483,13 +483,45 @@ const BENCHMARK_CONTENT = {
   }
 };
 
+// Офіцер може перемкнутись з офіцерської панелі на інфо-панель гравців і
+// назад - кнопка в правому верхньому куті панелі; вибір пам'ятає браузер.
+const OFFICER_INFO_VIEW_KEY = 'raidOfficerInfoView';
+const PANEL_SWITCH_ICON = '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M5.22 14.78a.75.75 0 0 0 1.06-1.06L4.56 12h8.69a.75.75 0 0 0 0-1.5H4.56l1.72-1.72a.75.75 0 0 0-1.06-1.06l-3 3a.75.75 0 0 0 0 1.06l3 3Zm5.56-6.5a.75.75 0 1 1-1.06-1.06l1.72-1.72H2.75a.75.75 0 0 1 0-1.5h8.69L9.72 2.28a.75.75 0 0 1 1.06-1.06l3 3a.75.75 0 0 1 0 1.06l-3 3Z"/></svg>';
+
+function officerPrefersInfo() {
+  try { return localStorage.getItem(OFFICER_INFO_VIEW_KEY) === '1'; } catch { return false; }
+}
+
+function panelSwitchButton(label, toInfo) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'raid-icon-btn tooltipped tooltipped--sw raid-panel-switch';
+  btn.setAttribute('aria-label', label);
+  btn.innerHTML = PANEL_SWITCH_ICON;
+  btn.addEventListener('click', () => {
+    try { localStorage.setItem(OFFICER_INFO_VIEW_KEY, toInfo ? '1' : '0'); } catch { /* лише до перезавантаження */ }
+    officerInfoView = toInfo;
+    renderBenchmarkPanel();
+  });
+  return btn;
+}
+
+let officerInfoView = officerPrefersInfo();
+
+// Яку панель показати праворуч від "Мій софт": гравцям - інфо-панель (якщо
+// для рейду є опис), офіцерам - офіцерську або, на їхній вибір, інфо-панель.
 function renderBenchmarkPanel() {
-  const data = BENCHMARK_CONTENT[raid.instance];
-  const show = !isOfficerMode() && raid.difficulty === '25H' && data;
+  const data = raid.difficulty === '25H' ? BENCHMARK_CONTENT[raid.instance] : null;
+  const officer = isOfficerMode();
+  const show = Boolean(data) && (!officer || officerInfoView);
+  officerPanel.hidden = !officer || show;
+  officerPanel.querySelector('.raid-panel-switch')?.remove();
+  if (officer && data && !show) officerPanel.prepend(panelSwitchButton('Показати інфо-панель гравців', true));
   benchmarkPanel.hidden = !show;
   if (!show) return;
 
   benchmarkPanel.innerHTML = '';
+  if (officer) benchmarkPanel.appendChild(panelSwitchButton('Повернути офіцерську панель', false));
   const title = document.createElement('h2');
   title.textContent = data.title;
   benchmarkPanel.appendChild(title);
@@ -3247,7 +3279,7 @@ async function init() {
 
   applyOfficers(officers);
   renderBanner();
-  officerPanel.hidden = !isOfficerMode();
+  renderBenchmarkPanel(); // і видимість офіцерської панелі
   raidGiveaway = initRaidGiveaway({
     raidId,
     isOfficer: isOfficerMode,
