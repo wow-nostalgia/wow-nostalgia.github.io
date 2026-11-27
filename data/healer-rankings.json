@@ -1,7 +1,7 @@
 {
   "boss": "Valithria Dreamwalker",
   "mode": "25H",
-  "updatedAt": "2026-11-26T05:40:51.014Z",
+  "updatedAt": "2026-11-27T05:35:16.507Z",
   "specs": [
     {
       "class": "Paladin",
@@ -278,6 +278,10 @@
         {
           "name": "Гирклас",
           "hps": 37263.5
+        },
+        {
+          "name": "Sealtiel",
+          "hps": 37241.3
         },
         {
           "name": "Chzs",
@@ -790,10 +794,6 @@
         {
           "name": "Bitdragon",
           "hps": 27729.1
-        },
-        {
-          "name": "Sealtiel",
-          "hps": 27722.4
         },
         {
           "name": "Deadinsside",
@@ -3446,6 +3446,10 @@
           "hps": 14856.5
         },
         {
+          "name": "Dobruy",
+          "hps": 14839.8
+        },
+        {
           "name": "Eluriana",
           "hps": 14757.7
         },
@@ -3680,10 +3684,6 @@
         {
           "name": "Waterdevice",
           "hps": 12366.6
-        },
-        {
-          "name": "Dobruy",
-          "hps": 12344.7
         },
         {
           "name": "Джонтриволта",
@@ -5060,6 +5060,10 @@
           "hps": 21805.3
         },
         {
+          "name": "Windfury",
+          "hps": 21742.1
+        },
+        {
           "name": "Bigi",
           "hps": 21711.3
         },
@@ -5158,6 +5162,10 @@
         {
           "name": "Doro",
           "hps": 20544.4
+        },
+        {
+          "name": "Fromsham",
+          "hps": 20413.5
         },
         {
           "name": "Ака",
@@ -5458,10 +5466,6 @@
         {
           "name": "Maleficenta",
           "hps": 15741.8
-        },
-        {
-          "name": "Windfury",
-          "hps": 15695.5
         },
         {
           "name": "Такахулі",
