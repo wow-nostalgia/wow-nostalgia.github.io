@@ -107,6 +107,8 @@ const penaltiesPane = document.getElementById('penaltiesPane');
 const raidPenaltiesBody = document.getElementById('raidPenaltiesBody');
 
 const itemTooltipEl = document.getElementById('raidItemTooltip');
+// Пристрій без наведення (телефон, планшет) - див. обробник підказки предметів.
+const NO_HOVER_MEDIA = window.matchMedia('(hover: none)');
 
 const transferModal = document.getElementById('transferModal');
 const transferModalBackdrop = document.getElementById('transferModalBackdrop');
@@ -1699,7 +1701,10 @@ document.addEventListener('mousemove', (event) => {
     return;
   }
 
-  const target = event.target.closest('[data-item-id]');
+  // Сенсорний екран: тап у випадаючому списку предметів імітує mousemove,
+  // і опис перекривав би сам список - там опису не показуємо.
+  const inTouchPicker = NO_HOVER_MEDIA.matches && event.target.closest('.raid-item-picker');
+  const target = inTouchPicker ? null : event.target.closest('[data-item-id]');
   if (!target) {
     if (currentTooltipItemId !== null) {
       itemTooltipEl.hidden = true;
