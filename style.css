@@ -8199,17 +8199,64 @@ body.raid-manager-detail-page .raid-input-clear::after {
   }
 }
 
-/* Список у стилі "Предмет" поверх нативного select (scripts/raid-manager-detail.js,
-   enhanceSelect): сам select прихований, лишається джерелом значення. */
-body.raid-manager-detail-page .raid-select-native {
-  display: none;
+/* ===== Випадаючі списки в стилі сайту (scripts/ui-shared.js, initSitePickers) =====
+   Системний select лишається видимим, але не відкриває свій список - тап
+   ловить скрипт і показує .ui-select-list (вигляд - як список "Предмет"). */
+.ui-select-on select:not([multiple]):not([data-native-select]) {
+  pointer-events: none;
 }
 
-body.raid-manager-detail-page .raid-select-option--current {
-  background-color: var(--color-hover);
+.ui-select-list {
+  position: fixed;
+  z-index: var(--z-nav-dropdown);
+  max-width: calc(100vw - 16px);
+  overflow-y: auto;
+  padding: 0.25rem 0;
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-input-solid);
+  box-shadow: var(--shadow-md);
+  outline: none;
+  animation: primer-dropdown-in 0.12s cubic-bezier(0, 0.1, 0.1, 1) backwards;
 }
 
-body.raid-manager-detail-page .raid-select-option--disabled {
+.ui-select-option {
+  padding: 0.4rem 0.75rem;
+  font-size: var(--font-size-base);
+  color: var(--color-text-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.ui-select-option--grouped {
+  padding-left: 1.25rem;
+}
+
+.ui-select-option--current {
+  font-weight: var(--font-weight-semibold);
+}
+
+.ui-select-option:hover,
+.ui-select-option.is-active {
+  background-color: color-mix(in srgb, var(--color-link) 18%, transparent);
+}
+
+.ui-select-option--disabled {
   opacity: 0.5;
   cursor: default;
+}
+
+.ui-select-group {
+  padding: 0.4rem 0.75rem 0.2rem;
+  color: var(--color-text-faint);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-select-list {
+    animation: none;
+  }
 }

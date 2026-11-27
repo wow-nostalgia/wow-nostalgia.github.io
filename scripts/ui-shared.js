@@ -564,3 +564,171 @@ function showMessageModal(text, title = 'Повідомлення') {
   openModal(messageModalEl);
   messageModalEl.querySelector('.compare-btn').focus();
 }
+
+// ---- Випадаючі списки в стилі сайту замість системних ----
+// Системний <select> на телефоні відкривався на весь екран і всюди виглядав
+// не як решта сайту. Сам <select> лишається видимим (його стилі, ширина,
+// поточне значення) - у нього лише забрано відкриття системного списку
+// (pointer-events: none, клас ui-select-on на <html>). Тап/клік у межах
+// select-а ловимо на рівні документа й відкриваємо свій список під полем.
+// Вибір пише select.value і шле "input" + "change" - код сторінок працює як
+// зі звичайним select. Нові select-и (створені кодом пізніше) підхоплюються
+// автоматично. Виняток: select[multiple] і data-native-select.
+(function initSitePickers() {
+  const SELECTOR = 'select:not([multiple]):not([data-native-select])';
+  let current = null; // { select, list, options: [{ el, option }], active }
+
+  document.documentElement.classList.add('ui-select-on');
+
+  // Select під точкою кліку, якщо його не перекриває інший шар (модалка тощо).
+  function selectAt(x, y) {
+    const top = document.elementFromPoint(x, y);
+    if (!top) return null;
+    for (const select of document.querySelectorAll(SELECTOR)) {
+      if (select.disabled || select.closest('[inert]')) continue;
+      const r = select.getBoundingClientRect();
+      if (!r.width || x < r.left || x > r.right || y < r.top || y > r.bottom) continue;
+      if (top === select || top.contains(select)) return select;
+    }
+    return null;
+  }
+
+  function close({ refocus = false } = {}) {
+    if (!current) return;
+    const { select, list } = current;
+    list.remove();
+    current = null;
+    if (refocus) select.focus({ preventScroll: true });
+  }
+
+  function setActive(index) {
+    if (!current) return;
+    const items = current.options.filter((o) => !o.option.disabled);
+    if (!items.length) return;
+    const clamped = Math.max(0, Math.min(items.length - 1, index));
+    current.options.forEach((o) => o.el.classList.remove('is-active'));
+    current.active = clamped;
+    items[clamped].el.classList.add('is-active');
+    items[clamped].el.scrollIntoView({ block: 'nearest' });
+  }
+
+  function choose(option) {
+    if (!current || option.disabled) return;
+    const { select } = current;
+    close({ refocus: true });
+    if (select.value === option.value && select.selectedIndex === option.index) return;
+    select.selectedIndex = option.index;
+    select.dispatchEvent(new Event('input', { bubbles: true }));
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  function position(select, list) {
+    const r = select.getBoundingClientRect();
+    const gap = 4;
+    list.style.minWidth = `${Math.round(r.width)}px`;
+    list.style.left = `${Math.round(Math.max(8, Math.min(r.left, window.innerWidth - list.offsetWidth - 8)))}px`;
+    const below = window.innerHeight - r.bottom - gap - 8;
+    const above = r.top - gap - 8;
+    const h = list.offsetHeight;
+    if (h > below && above > below) {
+      list.style.maxHeight = `${Math.min(300, above)}px`;
+      list.style.top = `${Math.round(r.top - gap - Math.min(h, above, 300))}px`;
+    } else {
+      list.style.maxHeight = `${Math.min(300, Math.max(below, 120))}px`;
+      list.style.top = `${Math.round(r.bottom + gap)}px`;
+    }
+  }
+
+  function open(select) {
+    close();
+    const list = document.createElement('div');
+    list.className = 'ui-select-list';
+    list.setAttribute('role', 'listbox');
+    list.tabIndex = -1;
+    const options = [];
+    let lastGroup = null;
+    [...select.options].forEach((option) => {
+      if (option.hidden) return;
+      const group = option.parentElement.tagName === 'OPTGROUP' ? option.parentElement : null;
+      if (group && group !== lastGroup) {
+        const head = document.createElement('div');
+        head.className = 'ui-select-group';
+        head.textContent = group.label;
+        list.appendChild(head);
+      }
+      lastGroup = group;
+      const el = document.createElement('div');
+      el.className = 'ui-select-option';
+      el.setAttribute('role', 'option');
+      el.textContent = option.textContent;
+      if (group) el.classList.add('ui-select-option--grouped');
+      if (option.style.color) el.style.color = option.style.color;
+      if (option.disabled) el.classList.add('ui-select-option--disabled');
+      if (option.selected) {
+        el.classList.add('ui-select-option--current');
+        el.setAttribute('aria-selected', 'true');
+      }
+      el.addEventListener('mousedown', (event) => event.preventDefault());
+      el.addEventListener('click', (event) => { event.stopPropagation(); choose(option); });
+      list.appendChild(el);
+      options.push({ el, option });
+    });
+    // У модалці (top layer) - всередину неї, інакше список опинився б під нею.
+    (select.closest('dialog[open]') || document.body).appendChild(list);
+    current = { select, list, options, active: -1 };
+    position(select, list);
+    const enabled = options.filter((o) => !o.option.disabled);
+    const selectedIdx = enabled.findIndex((o) => o.option.selected);
+    setActive(selectedIdx >= 0 ? selectedIdx : 0);
+    list.focus({ preventScroll: true });
+  }
+
+  document.addEventListener('click', (event) => {
+    if (current && current.list.contains(event.target)) return;
+    const select = event.isTrusted && event.detail !== 0 ? selectAt(event.clientX, event.clientY) : null;
+    if (current) {
+      const same = current.select === select;
+      close();
+      if (same) return;
+    }
+    if (select) {
+      event.preventDefault();
+      select.focus({ preventScroll: true });
+      open(select);
+    }
+  }, true);
+
+  document.addEventListener('keydown', (event) => {
+    if (current) {
+      const items = current.options.filter((o) => !o.option.disabled);
+      if (event.key === 'ArrowDown') { event.preventDefault(); setActive(current.active + 1); }
+      else if (event.key === 'ArrowUp') { event.preventDefault(); setActive(current.active - 1); }
+      else if (event.key === 'Home') { event.preventDefault(); setActive(0); }
+      else if (event.key === 'End') { event.preventDefault(); setActive(items.length - 1); }
+      else if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        if (items[current.active]) choose(items[current.active].option);
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        event.stopPropagation();
+        close({ refocus: true });
+      } else if (event.key === 'Tab') {
+        close({ refocus: true });
+      }
+      return;
+    }
+    // Фокус на select: Enter / пробіл / Alt+стрілка - наш список, не системний.
+    const target = event.target;
+    if (!(target instanceof HTMLSelectElement) || !target.matches(SELECTOR) || target.disabled) return;
+    if (event.key === 'Enter' || event.key === ' ' || event.key === 'F4' || (event.altKey && (event.key === 'ArrowDown' || event.key === 'ArrowUp'))) {
+      event.preventDefault();
+      open(target);
+    }
+  }, true);
+
+  // Прокрутка сторінки / зміна розміру - список закриваємо (він position: fixed).
+  window.addEventListener('scroll', (event) => {
+    if (current && !current.list.contains(event.target)) close();
+  }, true);
+  window.addEventListener('resize', () => close());
+})();
