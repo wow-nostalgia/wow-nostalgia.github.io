@@ -1656,6 +1656,72 @@ function setupItemPickerToggle(triggerBtn, listEl) {
   });
 }
 
+// Випадаючий список у стилі списку предметів поверх нативного <select>
+// ("Мій персонаж", боси): системний список на телефоні відкривався на весь
+// екран. <select> лишається джерелом правди (прихований): вибір пише в нього
+// value і шле "change", тож решта коду працює як із звичайним select.
+// Опції, значення (і програмне select.value = ...), колір і disabled
+// підхоплюються автоматично.
+function enhanceSelect(select) {
+  const picker = document.createElement('div');
+  picker.className = 'raid-item-picker raid-select-picker';
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'raid-item-picker-trigger';
+  trigger.setAttribute('aria-haspopup', 'listbox');
+  const label = select.id ? document.querySelector(`label[for="${select.id}"]`) : null;
+  if (label) {
+    if (!label.id) label.id = `${select.id}Label`;
+    trigger.setAttribute('aria-labelledby', label.id);
+    // Клік по підпису - відкрити список (прихований select фокус не прийме).
+    label.addEventListener('click', (event) => { event.preventDefault(); trigger.focus(); });
+  }
+  const list = document.createElement('div');
+  list.className = 'raid-item-picker-list';
+  list.setAttribute('role', 'listbox');
+  picker.append(trigger, list);
+  select.after(picker);
+  select.classList.add('raid-select-native');
+
+  const proto = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value');
+  const render = () => {
+    const current = select.options[select.selectedIndex];
+    trigger.textContent = current ? current.textContent : '';
+    trigger.style.color = select.style.color || '';
+    trigger.disabled = select.disabled;
+    list.innerHTML = '';
+    [...select.options].forEach((option) => {
+      const opt = document.createElement('div');
+      opt.className = 'raid-item-picker-option';
+      opt.setAttribute('role', 'option');
+      opt.setAttribute('aria-selected', String(option === current));
+      if (option === current) opt.classList.add('raid-select-option--current');
+      if (option.disabled) opt.classList.add('raid-select-option--disabled');
+      opt.textContent = option.textContent;
+      if (option.style.color) opt.style.color = option.style.color;
+      opt.addEventListener('mousedown', (event) => {
+        event.preventDefault();
+        if (option.disabled) return;
+        closeItemPicker(list);
+        if (option.value === proto.get.call(select)) return;
+        proto.set.call(select, option.value);
+        render();
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      list.appendChild(opt);
+    });
+  };
+  // Програмне select.value = ... подій не шле - перехоплюємо сеттер.
+  Object.defineProperty(select, 'value', {
+    configurable: true,
+    get() { return proto.get.call(select); },
+    set(v) { proto.set.call(select, v); render(); }
+  });
+  new MutationObserver(render).observe(select, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'disabled'] });
+  setupItemPickerToggle(trigger, list);
+  render();
+}
+
 function setupWeightToggle(toggleEl, hiddenInput) {
   toggleEl.addEventListener('click', (event) => {
     const btn = event.target.closest('.raid-weight-toggle-btn');
@@ -2728,6 +2794,8 @@ softBoss.addEventListener('change', () => populateItemPicker(softItem, softItemT
 assignBoss.addEventListener('change', () => populateItemPicker(assignItem, assignItemTrigger, assignItemList, assignBoss.value));
 setupItemPickerToggle(softItemTrigger, softItemList);
 setupItemPickerToggle(assignItemTrigger, assignItemList);
+// "Мій персонаж" і боси - такий самий список, як "Предмет" (див. enhanceSelect).
+[softPlayerNameInput, softBoss, assignBoss].forEach(enhanceSelect);
 setupWeightToggle(softWeightToggle, softWeight);
 setupWeightToggle(assignWeightToggle, assignWeight);
 assignPlayerNameClear.addEventListener('click', () => {

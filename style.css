@@ -8198,3 +8198,18 @@ body.raid-manager-detail-page .raid-input-clear::after {
     white-space: normal;
   }
 }
+
+/* Список у стилі "Предмет" поверх нативного select (scripts/raid-manager-detail.js,
+   enhanceSelect): сам select прихований, лишається джерелом значення. */
+body.raid-manager-detail-page .raid-select-native {
+  display: none;
+}
+
+body.raid-manager-detail-page .raid-select-option--current {
+  background-color: var(--color-hover);
+}
+
+body.raid-manager-detail-page .raid-select-option--disabled {
+  opacity: 0.5;
+  cursor: default;
+}
