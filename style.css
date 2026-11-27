@@ -8100,3 +8100,101 @@ body.raid-manager-detail-page .giveaway-editor-add.compare-btn:hover:not(:disabl
 body.account-page .account-stats-subhead {
   margin-top: 1.5rem;
 }
+
+/* ===== Сторінка рейду на телефоні (мобільний аудит 2026-11-27) ===== */
+
+/* 1. Колонки форм ("Мій софт" / офіцерська панель): мінімум 320px більше
+   за ширину вузького екрана (360px) - сторінка їхала вбік. */
+body.raid-manager-detail-page .raid-forms-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+}
+
+/* 2. Зона дотику: значок лишається малим, невидима область кліку - ~32px. */
+body.raid-manager-detail-page .raid-remove-btn {
+  position: relative;
+}
+
+body.raid-manager-detail-page .raid-remove-btn::after,
+body.raid-manager-detail-page .raid-input-clear::after {
+  content: '';
+  position: absolute;
+  inset: -0.55rem;
+}
+
+@media (max-width: 640px) {
+  /* 2. Чекбокси - більші. */
+  body.raid-manager-detail-page input[type="checkbox"] {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  /* 3. Підписи над полями: поле на всю ширину, "Кількість софтів" не
+     розривається. !important - елементи, прибиті до другої колонки
+     (grid-column: 2 у кількох правилах вище), інакше створили б зайву. */
+  body.raid-manager-detail-page .raid-soft-form {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.3rem;
+    max-width: none;
+  }
+
+  body.raid-manager-detail-page .raid-soft-form > * {
+    grid-column: 1 / -1 !important;
+  }
+
+  body.raid-manager-detail-page .raid-soft-form > label:not(.raid-filter-checkbox) {
+    margin-top: 0.35rem;
+    color: var(--color-text-faint);
+    font-size: var(--font-size-sm);
+  }
+
+  /* 4. Вкладки - одним рядком з горизонтальною прокруткою. */
+  body.raid-manager-detail-page .raid-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  body.raid-manager-detail-page .raid-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  body.raid-manager-detail-page .raid-tab {
+    flex-shrink: 0;
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+
+  /* 5. "Гравці": софти під ім'ям на всю ширину, без бокової прокрутки;
+     назви предметів переносяться. */
+  body.raid-manager-detail-page #raidPlayersTable thead {
+    display: none;
+  }
+
+  body.raid-manager-detail-page #raidPlayersTable tr {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+  }
+
+  body.raid-manager-detail-page #raidPlayersTable td {
+    border-bottom: none;
+  }
+
+  body.raid-manager-detail-page #raidPlayersTable td.raid-softs-col {
+    grid-column: 1 / -1;
+    padding-top: 0;
+  }
+
+  body.raid-manager-detail-page #raidPlayersTable tbody tr {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  body.raid-manager-detail-page #raidPlayersTable tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  body.raid-manager-detail-page #raidPlayersTable .raid-reserve-item {
+    white-space: normal;
+  }
+}

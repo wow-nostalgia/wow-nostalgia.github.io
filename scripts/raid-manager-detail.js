@@ -2639,10 +2639,22 @@ hiddenReservesToggle.addEventListener('change', async () => {
 
 const TAB_PANES = { players: playersPane, items: itemsPane, signups: signupsPane, potions: potionsPane, audit: auditPane, penalties: penaltiesPane, officers: officersPane, settings: settingsPane, prizes: prizesPane };
 
+// Телефон: вкладки в один рядок з прокруткою - активну підкручуємо у видиму
+// зону (лише сам рядок вкладок, сторінка не зсувається).
+function scrollActiveTabIntoView() {
+  if (raidTabsList.scrollWidth <= raidTabsList.clientWidth) return;
+  const active = raidTabsList.querySelector('.raid-tab--active');
+  if (!active) return;
+  const left = active.offsetLeft - raidTabsList.offsetLeft;
+  const target = left - (raidTabsList.clientWidth - active.offsetWidth) / 2;
+  raidTabsList.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+}
+
 async function setActiveTab(tab) {
   activeTab = tab;
   raidTabs.forEach((btn) => btn.classList.toggle('raid-tab--active', btn.dataset.tab === tab));
   syncTabs(raidTabsList);
+  scrollActiveTabIntoView();
   Object.entries(TAB_PANES).forEach(([key, el]) => { el.hidden = key !== tab; });
   if (tab === 'audit') await loadAudit();
   if (tab === 'penalties') await loadAndRenderPenalties();
